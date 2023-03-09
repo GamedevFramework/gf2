@@ -1,0 +1,244 @@
+= `Vec3<T>` type
+v0.1
+:toc: right
+:toclevels: 3
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+A `Vec3<T>` represents a three-dimension vector.
+
+xref:core_math.adoc[< Back to `core` Math]
+
+== Description
+
+The member data can be accessed with the (`x`,`y`,`z`) representation, used for generic coordinates in the 3D space
+
+Several common typedef are defined:
+
+- `gf::Vec3F` with `float` as `T`
+- `gf::Vec3D` with `double` as `T`
+- `gf::Vec3I` with `int` as `T`
+- `gf::Vec3U` with `unsigned` as `T`
+
+See also: xref:Vec2.adoc[`Vec2<T>`], xref:core_vec.adoc[vector-related types and functions]
+
+== Member Functions
+
+=== `Vec3` constructors
+
+[source]
+----
+Vec3() = default; <1>
+constexpr Vec3(T x, T y, T z) noexcept; <2>
+Vec3(const Vec3& other) = default; <3>
+template<typename U>
+constexpr Vec3(Vec3<U> other) noexcept; <4>
+----
+
+<1> Default constructor.
+<2> Constructor with `x`, `y` and `z` initializers.
+<3> Default copy constructor.
+<4> Converting constructor from a `Vec3<U>`.
+
+=== `operator=`
+
+[source]
+----
+Vec3& operator=(const Vec3& other) = default; <1>
+template<typename U>
+Vec3& operator=(Vec3<U> other) noexcept; <2>
+----
+
+<1> Default assignment operator.
+<2> Converting assignment operator from a `Vec3<U>`.
+
+== Operators
+
+=== `operator==`
+
+[source]
+----
+template<typename T>
+constexpr bool operator==(Vec3<T> lhs, Vec3<T> rhs);
+----
+
+Test the equality of two vectors.
+
+=== `operator!=`
+
+[source]
+----
+template<typename T>
+constexpr bool operator!=(Vec3<T> lhs, Vec3<T> rhs);
+----
+
+Test the inequality of two vectors.
+
+=== `operator-` (unary)
+
+[source]
+----
+template<typename T>
+constexpr Vec3<T> operator-(Vec3<T> vec);
+----
+
+Compute the opposite of `vec`.
+
+=== `operator+`
+
+[source]
+----
+template<typename T, typename U>
+constexpr Vec3<std::common_type_t<T, U>> operator+(Vec3<T> lhs, Vec3<U> rhs); <1>
+template<typename T, typename U>
+constexpr Vec3<std::common_type_t<T, U>> operator+(Vec3<T> lhs, U rhs); <2>
+template<typename T, typename U>
+constexpr Vec3<std::common_type_t<T, U>> operator+(T lhs, Vec3<U> rhs); <3>
+----
+
+<1> Compute a component-wise addition.
+<2> Compute a right scalar addition.
+<3> Compute a left scalar addition.
+
+`T` and `U` may be different types.
+The result is a `Vec3` templated with the link:https://en.cppreference.com/w/cpp/types/common_type[common type] of `T` and `U`.
+
+=== `operator+=`
+
+[source]
+----
+template<typename T, typename U>
+constexpr Vec3<T>& operator+=(Vec3<T>& lhs, Vec3<U> rhs); <1>
+template<typename T, typename U>
+constexpr Vec3<T>& operator+=(Vec3<T>& lhs, U rhs); <2>
+----
+
+<1> Compute a component-wise addition and assignment.
+<2> Compute a right scalar addition and assignment.
+
+`T` and `U` may be different types. The result is assigned to `lhs`.
+
+=== `operator-`
+
+[source]
+----
+template<typename T, typename U>
+constexpr Vec3<std::common_type_t<T, U>> operator-(Vec3<T> lhs, Vec3<U> rhs); <1>
+template<typename T, typename U>
+constexpr Vec3<std::common_type_t<T, U>> operator-(Vec3<T> lhs, U rhs); <2>
+template<typename T, typename U>
+constexpr Vec3<std::common_type_t<T, U>> operator-(T lhs, Vec3<U> rhs); <3>
+----
+
+<1> Compute a component-wise substraction.
+<2> Compute a right scalar substraction.
+<3> Compute a left scalar substraction.
+
+`T` and `U` may be different types.
+The result is a `Vec3` templated with the link:https://en.cppreference.com/w/cpp/types/common_type[common type] of `T` and `U`.
+
+=== `operator-=`
+
+[source]
+----
+template<typename T, typename U>
+constexpr Vec3<T>& operator-=(Vec3<T>& lhs, Vec3<U> rhs); <1>
+template<typename T, typename U>
+constexpr Vec3<T>& operator-=(Vec3<T>& lhs, U rhs); <2>
+----
+
+<1> Compute a component-wise substraction and assignment.
+<2> Compute a right scalar substraction and assignment.
+
+`T` and `U` may be different types. The result is assigned to `lhs`.
+
+=== `operator*`
+
+[source]
+----
+template<typename T, typename U>
+constexpr Vec3<std::common_type_t<T, U>> operator*(Vec3<T> lhs, Vec3<U> rhs); <1>
+template<typename T, typename U>
+constexpr Vec3<std::common_type_t<T, U>> operator*(Vec3<T> lhs, U rhs); <2>
+template<typename T, typename U>
+constexpr Vec3<std::common_type_t<T, U>> operator*(T lhs, Vec3<U> rhs); <3>
+----
+
+<1> Compute a component-wise multiplication.
+<2> Compute a right scalar multiplication.
+<3> Compute a left scalar multiplication.
+
+`T` and `U` may be different types.
+The result is a `Vec3` templated with the link:https://en.cppreference.com/w/cpp/types/common_type[common type] of `T` and `U`.
+
+=== `operator*=`
+
+[source]
+----
+template<typename T, typename U>
+constexpr Vec3<T>& operator*=(Vec3<T>& lhs, Vec3<U> rhs); <1>
+template<typename T, typename U>
+constexpr Vec3<T>& operator*=(Vec3<T>& lhs, U rhs); <2>
+----
+
+<1> Compute a component-wise multiplication and assignment.
+<2> Compute a right scalar multiplication and assignment.
+
+`T` and `U` may be different types. The result is assigned to `lhs`.
+
+=== `operator/`
+
+[source]
+----
+template<typename T, typename U>
+constexpr Vec3<std::common_type_t<T, U>> operator/(Vec3<T> lhs, Vec3<U> rhs); <1>
+template<typename T, typename U>
+constexpr Vec3<std::common_type_t<T, U>> operator/(Vec3<T> lhs, U rhs); <2>
+template<typename T, typename U>
+constexpr Vec3<std::common_type_t<T, U>> operator/(T lhs, Vec3<U> rhs); <3>
+----
+
+<1> Compute a component-wise division.
+<2> Compute a right scalar division.
+<3> Compute a left scalar division.
+
+`T` and `U` may be different types.
+The result is a `Vec3` templated with the link:https://en.cppreference.com/w/cpp/types/common_type[common type] of `T` and `U`.
+
+=== `operator/=`
+
+[source]
+----
+template<typename T, typename U>
+constexpr Vec3<T>& operator/=(Vec3<T>& lhs, Vec3<U> rhs); <1>
+template<typename T, typename U>
+constexpr Vec3<T>& operator/=(Vec3<T>& lhs, U rhs); <2>
+----
+
+<1> Compute a component-wise division and assignment.
+<2> Compute a right scalar division and assignment.
+
+`T` and `U` may be different types. The result is assigned to `lhs`.
+
+
+== Functions
+
+[#_vec3]
+=== `gf::vec`
+
+[source]
+----
+#include <gf2/Vec3.h>
+template<typename Tx, typename Ty, typename Tz>
+constexpr auto vec(Tx x, Ty y, Tz z) -> Vec3<std::common_type_t<Tx, Ty, Tz>>
+----
+
+Construct a `Vec3<T>` with the suitable type.

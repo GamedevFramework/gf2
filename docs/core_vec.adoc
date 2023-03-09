@@ -1,0 +1,498 @@
+= `core` Math, vector-related types and functions
+v0.1
+:toc: right
+:toclevels: 3
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+// :docinfo: shared-head
+:icons: font
+
+`core` Math provides some types and functions that are useful in conjunction with xref:Vec2.adoc[`Vec2<T>`] et xref:Vec3.adoc[`Vec3<T>`].
+
+xref:core_math.adoc[< Back to `core` Math]
+
+== Types
+
+[#_distance2]
+=== `Distance2<T>`
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+using Distance2 = T (*)(Vec2<T>, Vec2<T>);
+----
+
+A distance function for `Vec2<T>`.
+
+See also: <<_chebyshev_distance>>, <<_euclidean_distance>>, <<_manhattan_distance>>, <<_natural_distance>>, <<_square_distance>>
+
+[#_distance3]
+=== `Distance3<T>`
+
+[source]
+----
+#include <gf2/Vec3.h>
+template<typename T>
+using Distance3 = T (*)(Vec3<T>, Vec3<T>);
+----
+
+A distance function for `Vec3<T>`.
+
+See also: <<_chebyshev_distance>>, <<_euclidean_distance>>, <<_manhattan_distance>>, <<_natural_distance>>, <<_square_distance>>
+
+== Functions
+
+[#_angle]
+=== `gf::angle`
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+inline T angle(Vec2<T> vec);
+----
+
+Return the angle of a vector relative to the x-axis.
+
+See also: <<_unit>>
+
+[#_angle_to]
+=== `gf::angle_to`
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+inline T angle_to(Vec2<T> lhs, Vec2<T> rhs);
+----
+
+Return the signed angle between two vectors.
+
+[#_chebyshev_distance]
+=== `gf::chebyshev_distance`
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+constexpr T chebyshev_distance(Vec2<T> lhs, Vec2<T> rhs);
+#include <gf2/Vec3.h>
+template<typename T>
+constexpr T chebyshev_distance(Vec3<T> lhs, Vec3<T> rhs);
+----
+
+The Chebyshev distance between two vectors is the Chebyshev length of the difference of the two vectors.
+
+See also: <<_chebyshev_length>>, <<_distance2>>, <<_distance3>>
+
+[#_chebyshev_length]
+=== `gf::chebyshev_length`
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+T chebyshev_length(Vec2<T> vec);
+#include <gf2/Vec3.h>
+template<typename T>
+T chebyshev_length(Vec3<T> vec);
+----
+
+The Chebyshev length stem:[\|\mathbf{u}\|_{\infty}] of a vector stem:[\mathbf{u} = (u_1, \ldots, u_N)] is:
+[stem]
+++++
+\|\mathbf{u}\|_{\infty} = \max_{i = 1}^{N} |u_i|
+++++
+
+The Chebyshev length is also called the infinity norm or maximum norm.
+
+
+See also: <<_chebyshev_distance>>
+
+[#_cross2]
+=== `gf::cross` (`Vec2<T>`)
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+constexpr T cross(Vec2<T> lhs, Vec2<T> rhs);
+----
+
+The cross product of 2D vectors is not really a cross product, it is the magnitude of the vector resulting from a 3D cross product of 2D vectors with stem:[z = 0]. The cross product stem:[\mathbf{a} \times \mathbf{b}] of the vectors stem:[\mathbf{a}] and stem:[\mathbf{b}] is:
+[stem]
+++++
+\mathbf{a} \times \mathbf{b} = \mathbf{a}^{\perp} \cdot \mathbf{b}
+++++
+
+The 2D cross product is also known as the perp dot product or wedge product.
+
+[#_cross3]
+=== `gf::cross` (`Vec3<T>`)
+
+[source]
+----
+#include <gf2/Vec3.h>
+template<typename T>
+constexpr Vec3<T> cross(Vec3<T> lhs, Vec3<T> rhs);
+----
+
+The link:https://en.wikipedia.org/wiki/Cross_product[cross product] stem:[\mathbf{a} \times \mathbf{b}] of the vectors stem:[\mathbf{a}] and stem:[\mathbf{b}] is:
+[stem]
+++++
+\mathbf{a} \times \mathbf{b} = \|\mathbf{a}\| \|\mathbf{b}\| \sin(\theta)\, \mathbf{n}
+++++
+where stem:[\theta] is the angle between stem:[\mathbf{a}] and stem:[\mathbf{b}] and stem:[\mathbf{n}] is a unit vector perpendicular to stem:[\mathbf{a}] and stem:[\mathbf{b}].
+
+[#_dirx]
+=== `gf::dirx`
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+constexpr Vec2<T> dirx(T length);
+----
+
+Return a vector in a x-direction of size `length`.
+
+[#_diry]
+=== `gf::diry`
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+constexpr Vec2<T> diry(T length);
+----
+
+Return a vector in a y-direction of size `length`.
+
+[#_dot]
+=== `gf::dot`
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+constexpr T dot(Vec2<T> lhs, Vec2<T> rhs);
+#include <gf2/Vec3.h>
+template<typename T>
+constexpr T dot(Vec3<T> lhs, Vec3<T> rhs);
+----
+
+The link:https://en.wikipedia.org/wiki/Dot_product[scalar product] or dot product of two vectors stem:[\mathbf{a} = (a_1, \ldots, a_N)] and stem:[\mathbf{b} = (b_1, \ldots, b_N)] is:
+[stem]
+++++
+\mathbf{a} \cdot \mathbf{b} = \sum_{i=1}^{N} a_i b_i = a_1 b_1 + \ldots + a_N b_N
+++++
+
+[#_euclidean_distance]
+=== `gf::euclidean_distance`
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+inline auto euclidean_distance(Vec2<T> lhs, Vec2<T> rhs);
+#include <gf2/Vec3.h>
+template<typename T>
+inline auto euclidean_distance(Vec3<T> lhs, Vec3<T> rhs);
+----
+
+The Euclidean distance between two vectors is the Euclidean length of the difference of the two vectors. If `T` is integral, then the result is a `double`, otherwise it is a `T`.
+
+See also: <<_euclidean_length>>, <<_distance2>>, <<_distance3>>
+
+[#_euclidean_length]
+=== `gf::euclidean_length`
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+inline auto euclidean_length(Vec2<T> vec);
+#include <gf2/Vec3.h>
+template<typename T>
+inline auto euclidean_length(Vec3<T> vec);
+----
+
+The Euclidean length stem:[\|\mathbf{u}\|_2] of a vector stem:[\mathbf{u} = (u_1, \ldots, u_N)] is:
+[stem]
+++++
+\|\mathbf{u}\|_2 = \sqrt{\sum_{i = 1}^{N} u_i^2}
+++++
+
+The Euclidean length is also called the 2-norm. If `T` is integral, then the result is a `double`, otherwise it is a `T`.
+
+See also: <<_euclidean_distance>>
+
+[#_inverse_triple_product]
+=== `gf::inverse_triple_product`
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+constexpr Vec2<T> inverse_triple_product(Vec2<T> a, Vec2<T> b, Vec2<T> c);
+----
+
+The inverse link:https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product[vector triple product] of vectors stem:[\mathbf{a}], stem:[\mathbf{b}] and stem:[\mathbf{c}] is:
+[stem]
+++++
+(\mathbf{a} \times \mathbf{b}) \times \mathbf{c}
+  = -\mathbf{c} \times (\mathbf{a} \times \mathbf{b})
+  = -(\mathbf{c} \cdot \mathbf{b}) \mathbf{a} + (\mathbf{c} \cdot \mathbf{a}) \mathbf{b}
+++++
+
+See also: <<_triple_product>>
+
+[#_manhattan_distance]
+=== `gf::manhattan_distance`
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+inline T manhattan_distance(Vec2<T> lhs, Vec2<T> rhs);
+#include <gf2/Vec3.h>
+template<typename T>
+inline T manhattan_distance(Vec3<T> lhs, Vec3<T> rhs);
+----
+
+The Manhattan distance between two vectors is the Manhattan length of the difference of the two vectors.
+
+See also: <<_manhattan_length>>, <<_distance2>>, <<_distance3>>
+
+[#_manhattan_length]
+=== `gf::manhattan_length`
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+inline T manhattan_length(Vec2<T> vec);
+#include <gf2/Vec3.h>
+template<typename T>
+inline T manhattan_length(Vec3<T> vec);
+----
+
+The Manhattan length stem:[\|\mathbf{u}\|_1] of a vector stem:[\mathbf{u} = (u_1, \ldots, u_N)] is:
+[stem]
+++++
+\|\mathbf{u}\|_1 = \sum_{i = 1}^{N} |u_i|
+++++
+
+The Manhattan length is also called the 1-norm.
+
+See also: <<_manhattan_distance>>
+
+[#_natural_distance]
+=== `gf::natural_distance`
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+inline T natural_distance(Vec2<T> lhs, Vec2<T> rhs);
+#include <gf2/Vec3.h>
+template<typename T>
+inline T natural_distance(Vec3<T> lhs, Vec3<T> rhs);
+----
+
+The natural distance between two vectors is the natural length of the difference of the two vectors.
+
+See also: <<_natural_length>>, <<_distance2>>, <<_distance3>>
+
+[#_natural_length]
+=== `gf::natural_length`
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+inline T natural_length(Vec2<T> vec);
+#include <gf2/Vec3.h>
+template<typename T>
+inline T natural_length(Vec3<T> vec);
+----
+
+The natural length stem:[L] of a vector stem:[\mathbf{u} = (u_1, \ldots, u_N)] is:
+[stem]
+++++
+L = \|\mathbf{u}\|_1 + \|\mathbf{u}\|_2^2
+  = \sum_{i = 1}^{N} |u_i| + \sum_{i = 1}^{N} u_i^2
+++++
+
+It's the sum of the Manhattan length and the square length.
+
+See also: <<_natural_distance>>
+
+[#_normalize]
+=== `gf::normalize`
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+inline Vec2<T> normalize(Vec2<T> vec);
+#include <gf2/Vec3.h>
+template<typename T>
+inline Vec3<T> normalize(Vec3<T> vec);
+----
+
+The normalized vector of stem:[\mathbf{u}] is a vector in the same direction but with a (euclidean) length of 1:
+[stem]
+++++
+\frac{\mathbf{u}}{\|\mathbf{u}\|_2}
+++++
+
+A normalized vector is also called a link:https://en.wikipedia.org/wiki/Unit_vector[unit vector].
+
+[#_perp]
+=== `gf::perp`
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+constexpr Vec2<T> perp(Vec2<T> vec);
+----
+
+The perpendicular vector stem:[\mathbf{u}^{\perp}] of vector stem:[\mathbf{u} = (x, y)] is:
+[stem]
+++++
+\mathbf{u}^{\perp} = (-y, x)
+++++
+
+[#_project_onto]
+=== `gf::project_onto`
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+constexpr Vec2<T> project_onto(Vec2<T> vec, Vec2<T> axis);
+----
+
+Return the projection of `vec` on `axis`.
+
+[#_projx]
+=== `gf::projx`
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+constexpr Vec2<T> projx(Vec2<T> vec);
+#include <gf2/Vec3.h>
+template<typename T>
+constexpr Vec3<T> projx(Vec3<T> vec);
+----
+
+Return the projection of vector `vec` on the x-axis.
+
+[#_projy]
+=== `gf::projy`
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+constexpr Vec2<T> projy(Vec2<T> vec);
+#include <gf2/Vec3.h>
+template<typename T>
+constexpr Vec3<T> projy(Vec3<T> vec);
+----
+
+Return the projection of vector `vec` on the y-axis.
+
+[#_projz]
+=== `gf::projz`
+
+[source]
+----
+#include <gf2/Vec3.h>
+template<typename T>
+constexpr Vec3<T> projz(Vec3<T> vec);
+----
+
+Return the projection of vector `vec` on the z-axis.
+
+[#_square_distance]
+=== `gf::square_distance`
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+constexpr T square_distance(Vec2<T> lhs, Vec2<T> rhs);
+#include <gf2/Vec3.h>
+template<typename T>
+constexpr T square_distance(Vec3<T> lhs, Vec3<T> rhs);
+----
+
+The square Euclidean distance between two vectors is the square Euclidean length of the difference of the two vectors.
+
+See also: <<_square_length>>, <<_distance2>>, <<_distance3>>
+
+[#_square_length]
+=== `gf::square_length`
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+constexpr T square_length(Vec2<T> vec);
+#include <gf2/Vec3.h>
+template<typename T>
+constexpr T square_length(Vec3<T> vec);
+----
+
+The square Euclidean length stem:[\|\mathbf{u}\|_2^2] of a vector stem:[\mathbf{u} = (u_1, \ldots, u_N)] is:
+[stem]
+++++
+\|\mathbf{u}\|_2^2 = \sum_{i = 1}^{N} u_i^2
+++++
+
+See also: <<_square_distance>>
+
+[#_triple_product]
+=== `gf::triple_product`
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+constexpr Vec2<T> triple_product(Vec2<T> a, Vec2<T> b, Vec2<T> c);
+----
+
+The regular link:https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product[vector triple product] of vectors stem:[\mathbf{a}], stem:[\mathbf{b}] and stem:[\mathbf{c}] is:
+[stem]
+++++
+\mathbf{a} \times (\mathbf{b} \times \mathbf{c})
+= (\mathbf{a} \cdot \mathbf{c}) \mathbf{b} - (\mathbf{a} \cdot \mathbf{b}) \mathbf{c}
+++++
+
+See also: <<_inverse_triple_product>>
+
+[#_unit]
+=== `gf::unit`
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+inline Vec2<T> unit(T angle);
+----
+
+Return a unit vector in the specified direction `angle`.
+
+See also: <<_angle>>

@@ -1,0 +1,410 @@
+= `core` Math
+v0.1
+:toc: right
+:toclevels: 3
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+// :docinfo: shared-head
+:icons: font
+
+The math component contains well-known constants, algebra types and usual mathematical functions.
+
+xref:reference.adoc[< Back to reference]
+
+== Variables
+
+[#_epsilon]
+=== `gf::Epsilon`
+
+[source]
+----
+#include <gf2/Math.h>
+constexpr float gf::Epsilon;
+----
+
+The link:https://en.wikipedia.org/wiki/Machine_epsilon[machine epsilon].
+
+[#_inv_sqrt2]
+=== `gf::InvSqrt2`
+
+[source]
+----
+#include <gf2/Math.h>
+constexpr float gf::InvSqrt2;
+----
+
+The stem:[\frac{1}{\sqrt{2}}] constant.
+
+See also: <<_sqrt2>>
+
+[#_inv_sqrt3]
+=== `gf::InvSqrt3`
+
+[source]
+----
+#include <gf2/Math.h>
+constexpr float gf::InvSqrt3;
+----
+
+The stem:[\frac{1}{\sqrt{3}}] constant.
+
+See also: <<_sqrt3>>
+
+[#_pi]
+=== `gf::Pi`
+
+[source]
+----
+#include <gf2/Math.h>
+constexpr float gf::Pi;
+----
+
+The stem:[\pi] constant.
+
+[#_pi2]
+=== `gf::Pi2`
+
+[source]
+----
+#include <gf2/Math.h>
+constexpr float gf::Pi2;
+----
+
+The stem:[\frac{\pi}{2}] constant.
+
+[#_pi3]
+=== `gf::Pi3`
+
+[source]
+----
+#include <gf2/Math.h>
+constexpr float gf::Pi3;
+----
+
+The stem:[\frac{\pi}{3}] constant.
+
+[#_pi4]
+=== `gf::Pi4`
+
+[source]
+----
+#include <gf2/Math.h>
+constexpr float gf::Pi4;
+----
+
+The stem:[\frac{\pi}{4}] constant.
+
+[#_pi6]
+=== `gf::Pi6`
+
+[source]
+----
+#include <gf2/Math.h>
+constexpr float gf::Pi6;
+----
+
+The stem:[\frac{\pi}{6}] constant.
+
+[#_sqrt2]
+=== `gf::Sqrt2`
+
+[source]
+----
+#include <gf2/Math.h>
+constexpr float gf::Sqrt2;
+----
+
+The stem:[\sqrt{2}] constant.
+
+See also: <<_inv_sqrt2>>
+
+[#_sqrt3]
+=== `gf::Sqrt3`
+
+[source]
+----
+#include <gf2/Math.h>
+constexpr float gf::Sqrt3;
+----
+
+The stem:[\sqrt{3}] constant.
+
+
+== Types
+
+[#_step]
+=== `gf::Step<T>`
+
+[source]
+----
+#include <gf2/Math.h>
+template<typename T>
+using Step = T (*)(T);
+----
+
+A step stem:[f] is a (mathematical) function which has the following properties:
+
+- stem:[f(0) = 0]
+- stem:[f(1) = 1]
+
+It can be used to smooth a linear interpolation.
+
+.Example for `gf::Step`
+[source,indent=0]
+----
+include::snippets/core_math.cc[tag=step]
+----
+
+See also: <<_linear_step>>, <<_cubic_step>>, <<_quintic_step>>, <<_cosine_step>>
+
+[#_vec2]
+=== `gf::Vec2<T>`
+
+[source]
+----
+#include <gf2/Vec2.h>
+template<typename T>
+struct Vec2;
+----
+
+A `Vec2<T>` represents a two-dimension vector. xref:Vec2.adoc[Read more...].
+
+See also: <<_vec3>>, xref:core_vec.adoc[vector-related types and functions]
+
+[#_vec3]
+=== `gf::Vec3<T>`
+
+[source]
+----
+#include <gf2/Vec3.h>
+template<typename T>
+struct Vec3;
+----
+
+A `Vec3<T>` represents a two-dimension vector. xref:Vec3.adoc[Read more...].
+
+See also: <<_vec2>>, xref:core_vec.adoc[vector-related types and functions]
+
+== Functions
+
+[#_absdiff]
+=== `gf::absdiff`
+
+[source]
+----
+#include <gf2/Math.h>
+template<typename T>
+constexpr T absdiff(T lhs, T rhs);
+----
+
+This function is defined as:
+[stem]
+++++
+\text{absdiff}(a, b) = |a - b|
+++++
+
+[#_almost_equals]
+=== `gf::almost_equals`
+
+[source]
+----
+#include <gf2/Math.h>
+template<typename T>
+constexpr bool almost_equals(T a, T b, T abs_error = ..., T rel_error = ...);
+----
+
+Compare the equality of two floats `a` and `b` considering the `abs_error` the maximum absolute error and `rel_error` the maximum relative error. By default, `abs_error` and `rel_error` are set to the link:https://en.wikipedia.org/wiki/Machine_epsilon[machine epsilon].
+
+[#_clamp]
+=== `gf::clamp`
+
+[source]
+----
+#include <gf2/Math.h>
+template<typename T>
+constexpr T clamp(T val, T lo, T hi);
+----
+
+This function takes a value `val` and returns it if it is in between `lo` and `hi`. If not, the returned value is the nearest value in the range.
+
+[#_cosine_step]
+=== `gf::cosine_step`
+
+[source]
+----
+#include <gf2/Math.h>
+template<typename T>
+inline T cosine_step(T t);
+----
+
+[stem]
+++++
+f(t) = (1 - \cos(\pi * t)) * 0.5
+++++
+
+See also: <<_step>>
+
+[#_cube]
+=== `gf::cube`
+
+[source]
+----
+#include <gf2/Math.h>
+template<typename T>
+constexpr T cube(T val);
+----
+
+For a value stem:[x], the cube value is stem:[x^3].
+
+See also: <<_square>>
+
+[#_cubic_step]
+=== `gf::cubic_step`
+
+[source]
+----
+#include <gf2/Math.h>
+template<typename T>
+constexpr T cubic_step(T t);
+----
+
+[stem]
+++++
+f(t) = -2 * t^3 + 3 * t^2
+++++
+
+Compared to a step, it has the following properties:
+
+- stem:[f'(0) = 0]
+- stem:[f'(1) = 0]
+
+This function is also known as link:https://en.wikipedia.org/wiki/Smoothstep[smoothstep].
+
+See also: <<_step>>
+
+[#_degrees_to_radians]
+=== `gf::degrees_to_radians`
+
+[source]
+----
+#include <gf2/Math.h>
+template<typename T>
+constexpr T degrees_to_radians(T degrees);
+----
+
+Convert the angle `degrees` in radians. `T` must be a floating point.
+
+See also: <<_radians_to_degrees>>
+
+[#_lerp]
+=== `gf::lerp`
+
+[source]
+----
+#include <gf2/Math.h>
+template<typename T, typename U>
+constexpr T lerp(T lhs, T rhs, U t);
+----
+
+This functions returns an interpolated value between two values `lhs` and `rhs` according to a parameter stem:[t]. When stem:[t = 0] then `lhs` is returned, and when stem:[t = 1] then `rhs` is returned.
+
+
+[#_linear_step]
+=== `gf::linear_step`
+
+[source]
+----
+#include <gf2/Math.h>
+template<typename T>
+constexpr T linear_step(T t)
+----
+
+[stem]
+++++
+f(t) = t
+++++
+
+See also: <<_step>>
+
+[#_quintic_step]
+=== `gf::quintic_step`
+
+[source]
+----
+#include <gf2/Math.h>
+template<typename T>
+constexpr T quintic_step(T t);
+----
+
+[stem]
+++++
+f(t) = 6 * t^5 - 15 * t^4 + 10 * t^3
+++++
+
+Compared to a step, it has the following properties:
+
+- stem:[f'(0) = 0]
+- stem:[f'(1) = 0]
+- stem:[f''(0) = 0]
+- stem:[f''(1) = 0]
+
+This function is also known as link:https://en.wikipedia.org/wiki/Smoothstep#Variations[smootherstep].
+
+See also: <<_step>>
+
+[#_radians_to_degrees]
+=== `gf::radians_to_degrees`
+
+[source]
+----
+#include <gf2/Math.h>
+template<typename T>
+constexpr T radians_to_degrees(T radians)
+----
+
+Convert the angle `radians` in degrees. `T` must be a floating point.
+
+See also: <<_degrees_to_radians>>
+
+[#_sign]
+=== `gf::sign`
+
+[source]
+----
+#include <gf2/Math.h>
+template<typename T>
+constexpr int sign(T val);
+----
+
+This function is defined as:
+
+[stem]
+++++
+\text{sign}(x) = \begin{cases}
+- 1 & \text{ if } x < 0 \\
+0 & \text{ if } x = 0 \\
+1 & \text{ if } x > 0
+\end{cases}
+++++
+
+See also: link:https://en.wikipedia.org/wiki/Sign_function[Sign function]
+
+[#_square]
+=== `gf::square`
+
+[source]
+----
+#include <gf2/Math.h>
+template<typename T>
+constexpr T square(T val);
+----
+
+For a value stem:[x], the square value is stem:[x^2].
+
+See also: <<_cube>>

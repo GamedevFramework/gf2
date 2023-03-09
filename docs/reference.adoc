@@ -1,0 +1,27 @@
+= gf2 Reference Documentation
+v0.1
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+The gf2 reference documentation contains all the types, functions and variables of the library.
+
+xref:index.adoc[< Back to main page]
+
+== `core`
+
+- Vocabulary
+- xref:core_math.adoc[Math] (xref:Vec2.adoc[`Vec2<T>`], xref:Vec3.adoc[`Vec3<T>`], xref:core_vec.adoc[vector-related types and functions], ...)
+
+== `graphics`
+
+== `net`
+
+== `audio`
