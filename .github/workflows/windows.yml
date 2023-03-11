@@ -2,9 +2,9 @@ name: WindowsBuild
 
 on:
   push:
-    branches: [ master, develop ]
+    branches: [ main ]
   pull_request:
-    branches: [ master, develop ]
+    branches: [ main ]
 
 env:
   BUILD_TYPE: Release
