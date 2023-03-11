@@ -45,13 +45,13 @@ namespace gf {
       return true;
     }
 
-    T diff = std::abs(a - b);
+    const T diff = std::abs(a - b);
 
     if (diff <= abs_error) {
       return true;
     }
 
-    double max = std::min(std::max(std::abs(a), std::abs(b)), std::numeric_limits<T>::max());
+    const double max = std::min(std::max(std::abs(a), std::abs(b)), std::numeric_limits<T>::max());
     return diff <= max * rel_error;
   }
 

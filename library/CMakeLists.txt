@@ -36,6 +36,7 @@ endfunction()
 # gf2::core
 
 add_library(gf2core0
+  core/Color.cc
   core/Math.cc
   core/Vec2.cc
   core/Vec3.cc

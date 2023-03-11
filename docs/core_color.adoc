@@ -1,0 +1,266 @@
+= `core` Color
+v0.1
+:toc: right
+:toclevels: 3
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+// :docinfo: shared-head
+:icons: font
+
+The color component defines color-related constants, types and functions.
+
+xref:reference.adoc[< Back to reference]
+
+== Variables
+
+[#_azure]
+=== `gf::Azure`
+
+[source]
+----
+#include <gf2/Color.h>
+constexpr Color Azure;
+----
+
+The azure predefined color.
+
+[#_black]
+=== `gf::Black`
+
+[source]
+----
+#include <gf2/Color.h>
+constexpr Color Black;
+----
+
+The black predefined color.
+
+[#_blue]
+=== `gf::Blue`
+
+[source]
+----
+#include <gf2/Color.h>
+constexpr Color Blue;
+----
+
+The blue predefined color.
+
+[#_chartreuse]
+=== `gf::Chartreuse`
+
+[source]
+----
+#include <gf2/Color.h>
+constexpr Color Chartreuse;
+----
+
+The chartreuse predefined color.
+
+[#_cyan]
+=== `gf::Cyan`
+
+[source]
+----
+#include <gf2/Color.h>
+constexpr Color Cyan;
+----
+
+The cyan predefined color.
+
+[#_gray0]
+=== `gf::Gray`
+
+[source]
+----
+#include <gf2/Color.h>
+constexpr Color Gray;
+----
+
+The gray predefined color.
+
+[#_green]
+=== `gf::Green`
+
+[source]
+----
+#include <gf2/Color.h>
+constexpr Color Green;
+----
+
+The green predefined color.
+
+[#_magenta]
+=== `gf::Magenta`
+
+[source]
+----
+#include <gf2/Color.h>
+constexpr Color Magenta;
+----
+
+The magenta predefined color.
+
+[#_orange]
+=== `gf::Orange`
+
+[source]
+----
+#include <gf2/Color.h>
+constexpr Color Orange;
+----
+
+The orange predefined color.
+
+[#_red]
+=== `gf::Red`
+
+[source]
+----
+#include <gf2/Color.h>
+constexpr Color Red;
+----
+
+The red predefined color.
+
+[#_rose]
+=== `gf::Rose`
+
+[source]
+----
+#include <gf2/Color.h>
+constexpr Color Rose;
+----
+
+The rose predefined color.
+
+[#_spring]
+=== `gf::Spring`
+
+[source]
+----
+#include <gf2/Color.h>
+constexpr Color Spring;
+----
+
+The spring predefined color.
+
+[#_violet]
+=== `gf::Violet`
+
+[source]
+----
+#include <gf2/Color.h>
+constexpr Color Violet;
+----
+
+The violet predefined color.
+
+[#_white]
+=== `gf::White`
+
+[source]
+----
+#include <gf2/Color.h>
+constexpr Color White;
+----
+
+The white predefined color.
+
+[#_yellow]
+=== `gf::Yellow`
+
+[source]
+----
+#include <gf2/Color.h>
+constexpr Color Yellow;
+----
+
+The yellow predefined color.
+
+== Types
+
+[#_color]
+=== `gf::Color`
+
+[source]
+----
+#include <gf2/Color.h>
+struct Color;
+----
+
+A color in the link:https://en.wikipedia.org/wiki/RGB_color_model[RGB color model]. xref:Color.adoc[*Read more...*].
+
+== Functions
+
+[#_darker]
+=== `gf::darker`
+
+[source]
+----
+#include <gf2/Color.h>
+Color darker(Color color, float percent = 0.5f)
+----
+
+Compute a darker color.
+
+This function takes a `color` and gives a darker color based on a percentage. If this `percent` is 0, the same color is returned. If this `percent` is 1, the black color is returned.
+
+.Example for `gf::darker`
+[source,indent=0]
+----
+include::snippets/core_color.cc[tag=darker]
+----
+
+[#_gray1]
+=== `gf::gray`
+
+[source]
+----
+#include <gf2/Color.h>
+constexpr Color gray(float value = 0.5f);
+----
+
+Compute a gray color with `value`.
+
+[#_lighter]
+=== `gf::lighter`
+
+[source]
+----
+#include <gf2/Color.h>
+Color lighter(Color color, float percent = 0.5f);
+----
+
+Compute a lighter color.
+
+This function takes a `color` and gives a lighter color based on a percentage. If this `percent` is 0, the same color is returned. If this `percent` is 1, the white color is returned.
+
+.Example for `gf::lighter`
+[source,indent=0]
+----
+include::snippets/core_color.cc[tag=lighter]
+----
+
+[#_opaque]
+=== `gf::opaque`
+
+[source]
+----
+#include <gf2/Color.h>
+constexpr Color opaque(float value = 0.5f);
+----
+
+Compute an opaque white with `value` as its opacity. If `value` is 0, then transparent white is returned. If `value` is 1, then opaque white is returned.
+
+.Example for `gf::opaque`
+[source,indent=0]
+----
+include::snippets/core_color.cc[tag=opaque]
+----

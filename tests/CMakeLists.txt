@@ -8,6 +8,7 @@ include(GoogleTest)
 add_executable(gf2_core_tests
   main.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googletest/src/gtest-all.cc
+  tests_core_Color.cc
   tests_core_Math.cc
   tests_core_Vec2.cc
   tests_core_Vec3.cc

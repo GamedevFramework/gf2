@@ -19,7 +19,7 @@ xref:core_math.adoc[< Back to `core` Math]
 
 == Description
 
-The member data can be accessed with the (`x`,`y`,`z`) representation, used for generic coordinates in the 3D space
+The data members can be accessed with the (`x`,`y`,`z`) representation, used for generic coordinates in the 3D space
 
 Several common typedef are defined:
 

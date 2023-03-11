@@ -25,7 +25,7 @@ xref:reference.adoc[< Back to reference]
 [source]
 ----
 #include <gf2/Math.h>
-constexpr float gf::Epsilon;
+constexpr float Epsilon;
 ----
 
 The link:https://en.wikipedia.org/wiki/Machine_epsilon[machine epsilon].
@@ -36,7 +36,7 @@ The link:https://en.wikipedia.org/wiki/Machine_epsilon[machine epsilon].
 [source]
 ----
 #include <gf2/Math.h>
-constexpr float gf::InvSqrt2;
+constexpr float InvSqrt2;
 ----
 
 The stem:[\frac{1}{\sqrt{2}}] constant.
@@ -49,7 +49,7 @@ See also: <<_sqrt2>>
 [source]
 ----
 #include <gf2/Math.h>
-constexpr float gf::InvSqrt3;
+constexpr float InvSqrt3;
 ----
 
 The stem:[\frac{1}{\sqrt{3}}] constant.
@@ -62,7 +62,7 @@ See also: <<_sqrt3>>
 [source]
 ----
 #include <gf2/Math.h>
-constexpr float gf::Pi;
+constexpr float Pi;
 ----
 
 The stem:[\pi] constant.
@@ -73,7 +73,7 @@ The stem:[\pi] constant.
 [source]
 ----
 #include <gf2/Math.h>
-constexpr float gf::Pi2;
+constexpr float Pi2;
 ----
 
 The stem:[\frac{\pi}{2}] constant.
@@ -84,7 +84,7 @@ The stem:[\frac{\pi}{2}] constant.
 [source]
 ----
 #include <gf2/Math.h>
-constexpr float gf::Pi3;
+constexpr float Pi3;
 ----
 
 The stem:[\frac{\pi}{3}] constant.
@@ -95,7 +95,7 @@ The stem:[\frac{\pi}{3}] constant.
 [source]
 ----
 #include <gf2/Math.h>
-constexpr float gf::Pi4;
+constexpr float Pi4;
 ----
 
 The stem:[\frac{\pi}{4}] constant.
@@ -106,7 +106,7 @@ The stem:[\frac{\pi}{4}] constant.
 [source]
 ----
 #include <gf2/Math.h>
-constexpr float gf::Pi6;
+constexpr float Pi6;
 ----
 
 The stem:[\frac{\pi}{6}] constant.
@@ -117,7 +117,7 @@ The stem:[\frac{\pi}{6}] constant.
 [source]
 ----
 #include <gf2/Math.h>
-constexpr float gf::Sqrt2;
+constexpr float Sqrt2;
 ----
 
 The stem:[\sqrt{2}] constant.
@@ -130,11 +130,13 @@ See also: <<_inv_sqrt2>>
 [source]
 ----
 #include <gf2/Math.h>
-constexpr float gf::Sqrt3;
+constexpr float Sqrt3;
 ----
 
 The stem:[\sqrt{3}] constant.
 
+
+See also: <<_inv_sqrt3>>
 
 == Types
 
@@ -173,7 +175,7 @@ template<typename T>
 struct Vec2;
 ----
 
-A `Vec2<T>` represents a two-dimension vector. xref:Vec2.adoc[Read more...].
+A `Vec2<T>` represents a two-dimension vector. xref:Vec2.adoc[*Read more...*].
 
 See also: <<_vec3>>, xref:core_vec.adoc[vector-related types and functions]
 
@@ -187,7 +189,7 @@ template<typename T>
 struct Vec3;
 ----
 
-A `Vec3<T>` represents a two-dimension vector. xref:Vec3.adoc[Read more...].
+A `Vec3<T>` represents a two-dimension vector. xref:Vec3.adoc[*Read more...*].
 
 See also: <<_vec2>>, xref:core_vec.adoc[vector-related types and functions]
 
@@ -322,7 +324,7 @@ This functions returns an interpolated value between two values `lhs` and `rhs` 
 ----
 #include <gf2/Math.h>
 template<typename T>
-constexpr T linear_step(T t)
+constexpr T linear_step(T t);
 ----
 
 [stem]
@@ -365,7 +367,7 @@ See also: <<_step>>
 ----
 #include <gf2/Math.h>
 template<typename T>
-constexpr T radians_to_degrees(T radians)
+constexpr T radians_to_degrees(T radians);
 ----
 
 Convert the angle `radians` in degrees. `T` must be a floating point.

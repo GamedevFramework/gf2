@@ -19,7 +19,7 @@ xref:core_math.adoc[< Back to `core` Math]
 
 == Description
 
-The member data can be accessed with various representations:
+The data members can be accessed with various representations:
 
 - the (`x`,`y`) representation, used for generic coordinates in the 2D space
 - the (`u`,`v`) representation, used for texture coordinates (see link:https://en.wikipedia.org/wiki/UV_mapping[UV mapping])

@@ -1,0 +1,180 @@
+= `Color` type
+v0.1
+:toc: right
+:toclevels: 2
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+A `Color` represents a color in the link:https://en.wikipedia.org/wiki/RGB_color_model[RGB color model].
+
+xref:core_color.adoc[< Back to `core` Color]
+
+== Description
+
+A `Color` data members are:
+
+- `r` for the red channel
+- `g` for the green channel
+- `b` for the blue channel
+- `a` for the link:https://en.wikipedia.org/wiki/Alpha_compositing[alpha channel]
+
+== Member Functions
+
+=== `Color` constructors
+
+[source]
+----
+constexpr Color(); <1>
+constexpr Color(float r, float g, float b, float a = 1.0f); <2>
+constexpr Color(uint32_t rgb, uint8_t a = 255); <3>
+----
+
+<1> Default constructor, the color is transparent black.
+<2> Constructor with `r`, `g`, `b` and optionally `a` initializers.
+<3> Constructor with an link:https://en.wikipedia.org/wiki/Web_colors#Hex_triplet[hex triplet] and an alpha channel
+
+== Operators
+
+=== `operator==`
+
+[source]
+----
+template<typename T>
+constexpr bool operator==(Color lhs, Color rhs);
+----
+
+Test the equality of two colors.
+
+=== `operator!=`
+
+[source]
+----
+template<typename T>
+constexpr bool operator!=(Color lhs, Color rhs);
+----
+
+Test the inequality of two colors.
+
+=== `operator+`
+
+[source]
+----
+template<typename T, typename U>
+constexpr Color operator+(Color lhs, Color rhs); <1>
+template<typename T, typename U>
+constexpr Color operator+(Color lhs, U rhs); <2>
+template<typename T, typename U>
+constexpr Color operator+(T lhs, Color rhs); <3>
+----
+
+<1> Compute a component-wise addition.
+<2> Compute a right scalar addition.
+<3> Compute a left scalar addition.
+
+=== `operator+=`
+
+[source]
+----
+template<typename T, typename U>
+constexpr Color& operator+=(Color& lhs, Color rhs); <1>
+template<typename T, typename U>
+constexpr Color& operator+=(Color& lhs, U rhs); <2>
+----
+
+<1> Compute a component-wise addition and assignment.
+<2> Compute a right scalar addition and assignment.
+
+=== `operator-`
+
+[source]
+----
+template<typename T, typename U>
+constexpr Color operator-(Color lhs, Color rhs); <1>
+template<typename T, typename U>
+constexpr Color operator-(Color lhs, U rhs); <2>
+template<typename T, typename U>
+constexpr Color operator-(T lhs, Color rhs); <3>
+----
+
+<1> Compute a component-wise substraction.
+<2> Compute a right scalar substraction.
+<3> Compute a left scalar substraction.
+
+=== `operator-=`
+
+[source]
+----
+template<typename T, typename U>
+constexpr Color& operator-=(Color& lhs, Color rhs); <1>
+template<typename T, typename U>
+constexpr Color& operator-=(Color& lhs, U rhs); <2>
+----
+
+<1> Compute a component-wise substraction and assignment.
+<2> Compute a right scalar substraction and assignment.
+
+=== `operator*`
+
+[source]
+----
+template<typename T, typename U>
+constexpr Color operator*(Color lhs, Color rhs); <1>
+template<typename T, typename U>
+constexpr Color operator*(Color lhs, U rhs); <2>
+template<typename T, typename U>
+constexpr Color operator*(T lhs, Color rhs); <3>
+----
+
+<1> Compute a component-wise multiplication.
+<2> Compute a right scalar multiplication.
+<3> Compute a left scalar multiplication.
+
+=== `operator*=`
+
+[source]
+----
+template<typename T, typename U>
+constexpr Color& operator*=(Color& lhs, Color rhs); <1>
+template<typename T, typename U>
+constexpr Color& operator*=(Color& lhs, U rhs); <2>
+----
+
+<1> Compute a component-wise multiplication and assignment.
+<2> Compute a right scalar multiplication and assignment.
+
+=== `operator/`
+
+[source]
+----
+template<typename T, typename U>
+constexpr Color operator/(Color lhs, Color rhs); <1>
+template<typename T, typename U>
+constexpr Color operator/(Color lhs, U rhs); <2>
+template<typename T, typename U>
+constexpr Color operator/(T lhs, Color rhs); <3>
+----
+
+<1> Compute a component-wise division.
+<2> Compute a right scalar division.
+<3> Compute a left scalar division.
+
+=== `operator/=`
+
+[source]
+----
+template<typename T, typename U>
+constexpr Color& operator/=(Color& lhs, Color rhs); <1>
+template<typename T, typename U>
+constexpr Color& operator/=(Color& lhs, U rhs); <2>
+----
+
+<1> Compute a component-wise division and assignment.
+<2> Compute a right scalar division and assignment.
