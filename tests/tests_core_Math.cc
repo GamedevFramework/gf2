@@ -44,10 +44,10 @@ TEST(MathTest, DegreesToRadians) {
   EXPECT_FLOAT_EQ(gf::degrees_to_radians(90.0f), gf::Pi2);
   EXPECT_FLOAT_EQ(gf::degrees_to_radians(180.0f), gf::Pi);
 
-  EXPECT_FLOAT_EQ(gf::degrees_to_radians(0.0), 0.0);
-  EXPECT_FLOAT_EQ(gf::degrees_to_radians(45.0), gf::constants::Pi<double> / 4);
-  EXPECT_FLOAT_EQ(gf::degrees_to_radians(90.0), gf::constants::Pi<double> / 2);
-  EXPECT_FLOAT_EQ(gf::degrees_to_radians(180.0), gf::constants::Pi<double>);
+  EXPECT_DOUBLE_EQ(gf::degrees_to_radians(0.0), 0.0);
+  EXPECT_DOUBLE_EQ(gf::degrees_to_radians(45.0), gf::constants::Pi<double> / 4);
+  EXPECT_DOUBLE_EQ(gf::degrees_to_radians(90.0), gf::constants::Pi<double> / 2);
+  EXPECT_DOUBLE_EQ(gf::degrees_to_radians(180.0), gf::constants::Pi<double>);
 
   constexpr auto value_float = gf::degrees_to_radians(0.0f);
   static_assert(std::is_same_v<std::remove_cv_t<decltype(value_float)>, float>, "Check degrees_to_radians");
@@ -64,10 +64,10 @@ TEST(MathTest, RadiansToDegrees) {
   EXPECT_FLOAT_EQ(gf::radians_to_degrees(gf::Pi2), 90.0f);
   EXPECT_FLOAT_EQ(gf::radians_to_degrees(gf::Pi), 180.0f);
 
-  EXPECT_FLOAT_EQ(gf::radians_to_degrees(0.0), 0.0);
-  EXPECT_FLOAT_EQ(gf::radians_to_degrees(gf::constants::Pi<double> / 4), 45.0);
-  EXPECT_FLOAT_EQ(gf::radians_to_degrees(gf::constants::Pi<double> / 2), 90.0);
-  EXPECT_FLOAT_EQ(gf::radians_to_degrees(gf::constants::Pi<double>), 180.0);
+  EXPECT_DOUBLE_EQ(gf::radians_to_degrees(0.0), 0.0);
+  EXPECT_DOUBLE_EQ(gf::radians_to_degrees(gf::constants::Pi<double> / 4), 45.0);
+  EXPECT_DOUBLE_EQ(gf::radians_to_degrees(gf::constants::Pi<double> / 2), 90.0);
+  EXPECT_DOUBLE_EQ(gf::radians_to_degrees(gf::constants::Pi<double>), 180.0);
 
   constexpr auto value_float = gf::radians_to_degrees(0.0f);
   static_assert(std::is_same_v<std::remove_cv_t<decltype(value_float)>, float>, "Check radians_to_degrees");
