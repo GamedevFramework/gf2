@@ -7,10 +7,9 @@ project(GF
 
 include(GenerateExportHeader)
 
-set(CMAKE_CXX_VISIBILITY_PRESET hidden)
-set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+option(BUILD_SHARED_LIBS "Build the library as a shared library" ON)
 option(BUILD_TESTING "Build tests" ON)
 
 
