@@ -263,13 +263,13 @@ namespace gf {
   }
 
   template<typename T>
-  inline
+  constexpr
   T manhattan_length(Vec3<T> vec) {
-    return std::abs(vec.x) + std::abs(vec.y) + std::abs(vec.z);
+    return details::abs(vec.x) + details::abs(vec.y) + details::abs(vec.z);
   }
 
   template<typename T>
-  inline
+  constexpr
   T manhattan_distance(Vec3<T> lhs, Vec3<T> rhs) {
     return manhattan_length(lhs - rhs);
   }
@@ -299,25 +299,25 @@ namespace gf {
   }
 
   template<typename T>
-  inline
+  constexpr
   T chebyshev_length(Vec3<T> vec) {
-    return std::max(std::abs(vec.x), std::max(std::abs(vec.y), std::abs(vec.z)));
+    return std::max(details::abs(vec.x), std::max(details::abs(vec.y), details::abs(vec.z)));
   }
 
   template<typename T>
-  inline
+  constexpr
   T chebyshev_distance(Vec3<T> lhs, Vec3<T> rhs) {
     return chebyshev_length(lhs - rhs);
   }
 
   template<typename T>
-  inline
+  constexpr
   T natural_length(Vec3<T> vec) {
     return manhattan_length(vec) + square_length(vec);
   }
 
   template<typename T>
-  inline
+  constexpr
   T natural_distance(Vec3<T> lhs, Vec3<T> rhs) {
     return natural_length(lhs - rhs);
   }

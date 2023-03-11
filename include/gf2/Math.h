@@ -36,6 +36,17 @@ namespace gf {
   constexpr float InvSqrt3 = 1 / Sqrt3;
   constexpr float Epsilon = std::numeric_limits<float>::epsilon();
 
+  namespace details {
+
+    // std::abs is not constexpr in C++17
+    template<typename T>
+    constexpr
+    std::enable_if_t<std::is_arithmetic_v<T>, T> abs(T value) {
+      return value < T(0) ? -value : value;
+    }
+
+  }
+
   template<typename T>
   constexpr
   bool almost_equals(T a, T b, T abs_error = std::numeric_limits<T>::epsilon(), T rel_error = std::numeric_limits<T>::epsilon()) {
@@ -45,13 +56,13 @@ namespace gf {
       return true;
     }
 
-    const T diff = std::abs(a - b);
+    const T diff = details::abs(a - b);
 
     if (diff <= abs_error) {
       return true;
     }
 
-    const double max = std::min(std::max(std::abs(a), std::abs(b)), std::numeric_limits<T>::max());
+    const double max = std::min(std::max(details::abs(a), details::abs(b)), std::numeric_limits<T>::max());
     return diff <= max * rel_error;
   }
 

@@ -155,13 +155,16 @@ TEST(Vec3Test, Dot) {
 
   constexpr gf::Vec3I cvec0(3, 4, 5);
   constexpr gf::Vec3I cvec1(5, 6, 7);
-  static_assert(gf::dot(cvec0, cvec1) == 74, "Chech Vec3");
+  static_assert(gf::dot(cvec0, cvec1) == 74, "Check Vec3");
 }
 
 TEST(Vec3Test, ManhattanLength) {
   gf::Vec3I vec0(-3, 4, -5);
 
   EXPECT_EQ(gf::manhattan_length(vec0), 12);
+
+  constexpr gf::Vec3I cvec0(-3, 4, -5);
+  static_assert(gf::manhattan_length(cvec0) == 12, "Check Vec3");
 }
 
 TEST(Vec3Test, ManhattanDistance) {
@@ -169,6 +172,10 @@ TEST(Vec3Test, ManhattanDistance) {
   gf::Vec3I vec1(5, -2, 1);
 
   EXPECT_EQ(gf::manhattan_distance(vec0, vec1), 20);
+
+  constexpr gf::Vec3I cvec0(-3, 4, -5);
+  constexpr gf::Vec3I cvec1(5, -2, 1);
+  static_assert(gf::manhattan_distance(cvec0, cvec1) == 20, "Check Vec3");
 }
 
 TEST(Vec3Test, SquareLength) {
@@ -208,6 +215,9 @@ TEST(Vec3Test, CheyshevLength) {
   gf::Vec3I vec0(-3, 4, -5);
 
   EXPECT_EQ(gf::chebyshev_length(vec0), 5);
+
+  constexpr gf::Vec3I cvec0(-3, 4, -5);
+  static_assert(gf::chebyshev_length(cvec0) == 5, "Check Vec3");
 }
 
 TEST(Vec3Test, CheyshevDistance) {
@@ -215,12 +225,19 @@ TEST(Vec3Test, CheyshevDistance) {
   gf::Vec3I vec1(5, -2, 1);
 
   EXPECT_EQ(gf::chebyshev_distance(vec0, vec1), 8);
+
+  constexpr gf::Vec3I cvec0(-3, 4, -5);
+  constexpr gf::Vec3I cvec1(5, -2, 1);
+  static_assert(gf::chebyshev_distance(cvec0, cvec1) == 8, "Check Vec3");
 }
 
 TEST(Vec3Test, NaturalLength) {
   gf::Vec3I vec0(-3, 4, -5);
 
   EXPECT_EQ(gf::natural_length(vec0), 62);
+
+  constexpr gf::Vec3I cvec0(-3, 4, -5);
+  static_assert(gf::natural_length(cvec0) == 62, "Check Vec3");
 }
 
 TEST(Vec3Test, NaturalDistance) {
@@ -228,6 +245,10 @@ TEST(Vec3Test, NaturalDistance) {
   gf::Vec3I vec1(5, -2, 1);
 
   EXPECT_EQ(gf::natural_distance(vec0, vec1), 156);
+
+  constexpr gf::Vec3I cvec0(-3, 4, -5);
+  constexpr gf::Vec3I cvec1(5, -2, 1);
+  static_assert(gf::natural_distance(cvec0, cvec1) == 156, "Check Vec3");
 }
 
 TEST(Vec3Test, Normalize) {
