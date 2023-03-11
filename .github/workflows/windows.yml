@@ -48,23 +48,23 @@ jobs:
           repository: GamedevFramework/gf2
           submodules: recursive
           ref: ${{ steps.extract_branch.outputs.branch }}
-          path: gf
+          path: gf2
 
       - name: Configure gf
         shell: cmd
         run: |
-          set PATH=%PATH%;${{github.workspace}}/gf/build/library/${{ env.BUILD_TYPE }}
-          cmake -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/vcpkg/scripts/buildsystems/vcpkg.cmake -S ${{ github.workspace }}/gf -B ${{ github.workspace }}/gf/build
+          set PATH=%PATH%;${{github.workspace}}/gf2/build/library/${{ env.BUILD_TYPE }}
+          cmake -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/vcpkg/scripts/buildsystems/vcpkg.cmake -S ${{ github.workspace }}/gf2 -B ${{ github.workspace }}/gf2/build
 
       - name: Build gf
         shell: cmd
         run: |
-          set PATH=%PATH%;${{github.workspace}}/gf/build/library/${{ env.BUILD_TYPE }}
-          cmake --build ${{ github.workspace }}/gf/build --config ${{ env.BUILD_TYPE }} --parallel
+          set PATH=%PATH%;${{github.workspace}}/gf2/build/library/${{ env.BUILD_TYPE }}
+          cmake --build ${{ github.workspace }}/gf2/build --config ${{ env.BUILD_TYPE }} --parallel
 
       - name: Run tests
         shell: cmd
-        working-directory: ${{ github.workspace }}/gf/build
+        working-directory: ${{ github.workspace }}/gf2/build
         run: |
-          set PATH=%PATH%;${{github.workspace}}/gf/build/library/${{ env.BUILD_TYPE }}
+          set PATH=%PATH%;${{github.workspace}}/gf2/build/library/${{ env.BUILD_TYPE }}
           ctest -j $(nproc) -C ${{ env.BUILD_TYPE }} --output-on-failure
