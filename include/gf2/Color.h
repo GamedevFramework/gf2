@@ -5,9 +5,11 @@
 
 #include <cstdint>
 
+#include "CoreApi.h"
+
 namespace gf {
 
-  struct Color {
+  struct GF_CORE_API Color {
     constexpr
     Color()
     : r(0.0f), g(0.0f), b(0.0f), a(0.0f)
@@ -194,8 +196,8 @@ namespace gf {
     return Color(lhs / rhs.r, lhs / rhs.g, lhs / rhs.b, lhs / rhs.a);
   }
 
-  Color lighter(Color color, float percent = 0.5f);
-  Color darker(Color color, float percent = 0.5f);
+  GF_CORE_API Color lighter(Color color, float percent = 0.5f);
+  GF_CORE_API Color darker(Color color, float percent = 0.5f);
 
   constexpr
   Color opaque(float value = 0.5f) {

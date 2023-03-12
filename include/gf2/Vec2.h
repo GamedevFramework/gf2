@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <type_traits>
 
+#include "CoreApi.h"
 #include "Math.h"
 
 namespace gf {
@@ -64,10 +65,10 @@ namespace gf {
 
 // MSVC does not like extern template
 #ifndef _MSC_VER
-//   extern template struct GF_CORE_API Vec2<float>;
-//   extern template struct GF_CORE_API Vec2<double>;
-//   extern template struct GF_CORE_API Vec2<int>;
-//   extern template struct GF_CORE_API Vec2<unsigned>;
+  extern template struct GF_CORE_API Vec2<float>;
+  extern template struct GF_CORE_API Vec2<double>;
+  extern template struct GF_CORE_API Vec2<int>;
+  extern template struct GF_CORE_API Vec2<unsigned>;
 #endif
 
   template<typename T>
