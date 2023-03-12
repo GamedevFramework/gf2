@@ -5,7 +5,6 @@
 
 #include <cassert>
 #include <cstddef>
-#include <algorithm>
 #include <type_traits>
 
 #include "CoreApi.h"
@@ -300,7 +299,7 @@ namespace gf {
   template<typename T>
   constexpr
   T chebyshev_length(Vec2<T> vec) {
-    return std::max(details::abs(vec.x), details::abs(vec.y));
+    return details::max(details::abs(vec.x), details::abs(vec.y));
   }
 
   template<typename T>

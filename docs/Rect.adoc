@@ -1,0 +1,197 @@
+= `gf::Rect<T>` type
+v0.1
+:toc: right
+:toclevels: 2
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+A `Rect<T>` represents an axis-aligned rectangle.
+
+xref:core_math.adoc[< Back to `core` Math]
+
+== Description
+
+A rectangle is defined by the position of its top-left corner (called `offset`) and its size (called `extent`).
+
+A `Rect<T>` uses the usual rules for its boundaries:
+
+- The left and top edges are included in the rectangle's area
+- The right and bottom edges are excluded from the rectangle's area
+
+`Rect<T>` is a template and may be used with any numeric type, but for simplicity, some common typedef are defined:
+
+- `RectF` with `float` as `T`
+- `RectD` with `double` as `T`
+- `RectI` with `int` as `T`
+- `RectU` with `unsigned` as `T`
+
+== Static Member Functions
+
+=== `from_center_size`
+
+[source]
+----
+static constexpr Rect from_center_size(Vec2<T> center, Vec2<T> size) noexcept;
+----
+
+Create a rectangle from a center and a size.
+
+=== `from_min_max`
+
+[source]
+----
+static constexpr Rect from_min_max(Vec2<T> min, Vec2<T> max) noexcept;
+----
+
+Create a rectangle from a min point and a max point.
+
+=== `from_position_size`
+
+[source]
+----
+static constexpr Rect from_position_size(Vec2<T> position, Vec2<T> size) noexcept;
+----
+
+Create a rectangle from a position (top-left) and a size.
+
+=== `from_size`
+
+[source]
+----
+static constexpr Rect from_size(Vec2<T> size) noexcept;
+----
+
+Create a rectangle from a size.
+
+The position of the rectangle is assumed to be at stem:[(0, 0)].
+
+
+== Member Functions
+
+=== `center`
+
+[source]
+----
+constexpr Vec2<T> center() const noexcept;
+----
+
+Get the center of the rectangle.
+
+=== `contains`
+
+[source]
+----
+constexpr bool contains(Vec2<T> point) const noexcept; <1>
+constexpr bool contains(Rect other) const noexcept; <2>
+----
+
+<1> Check if a point is inside the rectangle.
+<2> Check if a rectangle is totally inside the rectangle.
+
+=== `empty`
+
+[source]
+----
+constexpr bool empty() const noexcept;
+----
+
+Check if the rectangle is empty, i.e. if the width or the height of the rectangle is not positive.
+
+=== `extend_to`
+
+[source]
+----
+constexpr Rect& extend_to(Vec2<T> point) noexcept; <1>
+constexpr Rect& extend_to(Rect other) noexcept; <2>
+----
+
+<1> Extend the rectangle with a point.
+<2> Extend the rectangle with a rectangle.
+
+=== `intersection`
+
+[source]
+----
+constexpr std::optional<Rect> intersection(Rect other) const noexcept;
+----
+
+Compute the intersection of two rectangles, if it exists.
+
+See also <<_intersects>>
+
+=== `intersects`
+
+[source]
+----
+constexpr bool intersects(Rect other) const noexcept;
+----
+
+Check if two rectangles interset.
+
+See also: <<_intersection>>
+
+=== `max`
+
+[source]
+----
+constexpr Vec2<T> max() const noexcept;
+----
+
+Get the max point of the rectangle, i.e. the coordinates of the bottom-right corner.
+
+=== `min`
+
+[source]
+----
+constexpr Vec2<T> min() const noexcept;
+----
+
+Get the min point of the rectangle, i.e. the coordinates of the top-left corner.
+
+=== `position`
+
+[source]
+----
+constexpr Vec2<T> position() const noexcept;
+----
+
+Get the position of the rectangle, i.e. the coordinates of the top-left corner.
+
+=== `size`
+
+[source]
+----
+constexpr Vec2<T> size() const noexcept;
+----
+
+Get the size of the rectangle.
+
+== Operators
+
+=== `operator==`
+
+[source]
+----
+template<typename T>
+constexpr bool operator==(Rect<T> lhs, Rect<T> rhs);
+----
+
+Test the equality of two rectangles.
+
+=== `operator!=`
+
+[source]
+----
+template<typename T>
+constexpr bool operator!=(Rect<T> lhs, Rect<T> rhs);
+----
+
+Test the inequality of two rectangles.

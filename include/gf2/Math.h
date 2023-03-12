@@ -45,6 +45,17 @@ namespace gf {
       return value < T(0) ? -value : value;
     }
 
+    template<typename T>
+    constexpr
+    std::enable_if_t<std::is_arithmetic_v<T>, T> max(T a, T b) {
+      return a < b ? b : a;
+    }
+
+    template<typename T>
+    constexpr
+    std::enable_if_t<std::is_arithmetic_v<T>, T> min(T a, T b) {
+      return a < b ? a : b;
+    }
   }
 
   template<typename T>
@@ -62,7 +73,7 @@ namespace gf {
       return true;
     }
 
-    const double max = std::min(std::max(details::abs(a), details::abs(b)), std::numeric_limits<T>::max());
+    const double max = details::min(details::max(details::abs(a), details::abs(b)), std::numeric_limits<T>::max());
     return diff <= max * rel_error;
   }
 

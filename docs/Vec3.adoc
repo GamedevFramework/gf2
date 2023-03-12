@@ -1,4 +1,4 @@
-= `Vec3<T>` type
+= `gf::Vec3<T>` type
 v0.1
 :toc: right
 :toclevels: 3
@@ -23,10 +23,10 @@ The data members can be accessed with the (`x`,`y`,`z`) representation, used for
 
 Several common typedef are defined:
 
-- `gf::Vec3F` with `float` as `T`
-- `gf::Vec3D` with `double` as `T`
-- `gf::Vec3I` with `int` as `T`
-- `gf::Vec3U` with `unsigned` as `T`
+- `Vec3F` with `float` as `T`
+- `Vec3D` with `double` as `T`
+- `Vec3I` with `int` as `T`
+- `Vec3U` with `unsigned` as `T`
 
 See also: xref:Vec2.adoc[`Vec2<T>`], xref:core_vec.adoc[vector-related types and functions]
 

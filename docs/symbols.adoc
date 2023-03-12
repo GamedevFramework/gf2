@@ -123,6 +123,7 @@ xref:index.adoc[< Back to main page]
 == R
 
 - xref:core_math.adoc#_radians_to_degrees[`gf::radians_to_degrees`] function
+- xref:Rect.adoc[`Rect<T>`] type
 - xref:core_color.adoc#_red[`gf::Red`] variable
 - xref:core_color.adoc#_rose[`gf::Rose`] variable
 

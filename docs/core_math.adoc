@@ -140,6 +140,18 @@ See also: <<_inv_sqrt3>>
 
 == Types
 
+[#_rect]
+=== `gf::Rect<T>`
+
+[source]
+----
+#include <gf2/Rect.h>
+template<typename T>
+struct Rect;
+----
+
+A `Rect<T>` represents an axis-aligned rectangle. xref:Rect.adoc[*Read more...*]
+
 [#_step]
 === `gf::Step<T>`
 

@@ -1,4 +1,4 @@
-= `Color` type
+= `gf::Color` type
 v0.1
 :toc: right
 :toclevels: 2

@@ -1,4 +1,4 @@
-= `Vec2<T>` type
+= `gf::Vec2<T>` type
 v0.1
 :toc: right
 :toclevels: 2
@@ -27,10 +27,10 @@ The data members can be accessed with various representations:
 
 Several common typedef are defined:
 
-- `gf::Vec2F` with `float` as `T`
-- `gf::Vec2D` with `double` as `T`
-- `gf::Vec2I` with `int` as `T`
-- `gf::Vec2U` with `unsigned` as `T`
+- `Vec2F` with `float` as `T`
+- `Vec2D` with `double` as `T`
+- `Vec2I` with `int` as `T`
+- `Vec2U` with `unsigned` as `T`
 
 See also: xref:Vec3.adoc[`Vec3<T>`], xref:core_vec.adoc[vector-related types and functions]
 

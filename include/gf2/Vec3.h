@@ -302,7 +302,7 @@ namespace gf {
   template<typename T>
   constexpr
   T chebyshev_length(Vec3<T> vec) {
-    return std::max(details::abs(vec.x), std::max(details::abs(vec.y), details::abs(vec.z)));
+    return details::max(details::abs(vec.x), std::max(details::abs(vec.y), details::abs(vec.z)));
   }
 
   template<typename T>
