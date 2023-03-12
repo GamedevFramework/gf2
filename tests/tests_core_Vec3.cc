@@ -208,7 +208,7 @@ TEST(Vec3Test, EuclideanDistance) {
   gf::Vec3F vec0(-2.0f, 3.0f, -6.0f);
   gf::Vec3F vec1(2.0f, -1.0f, 1.0f);
 
-  EXPECT_EQ(gf::euclidean_distance(vec0, vec1), 9.0f);
+  EXPECT_FLOAT_EQ(gf::euclidean_distance(vec0, vec1), 9.0f);
 }
 
 TEST(Vec3Test, CheyshevLength) {
@@ -290,7 +290,7 @@ TEST(Vec3Test, Cross) {
 
   EXPECT_EQ(gf::cross(vec0, vec1), gf::vec(-6, -22, -14));
 
-//   constexpr gf::Vec3I cvec0(-3, 4);
-//   constexpr gf::Vec3I cvec1(5, -2);
-//   static_assert(gf::cross(cvec0, cvec1) == -14, "Check Vec3");
+  constexpr gf::Vec3I cvec0(-3, 4, -5);
+  constexpr gf::Vec3I cvec1(5, -2, 1);
+  static_assert(gf::cross(cvec0, cvec1) == gf::vec(-6, -22, -14), "Check Vec3");
 }
