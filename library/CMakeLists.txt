@@ -59,8 +59,10 @@ endfunction()
 # gf2::core
 
 add_library(gf2core0
+  core/Array2D.cc
   core/Color.cc
   core/Math.cc
+  core/Range.cc
   core/Rect.cc
   core/Vec2.cc
   core/Vec3.cc
