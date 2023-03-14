@@ -10,7 +10,7 @@ v0.1
 :sectanchors:
 :xrefstyle: full
 :nofooter:
-// :docinfo: shared-head
+:docinfo: shared-head
 :icons: font
 
 `core` Math provides some types and functions that are useful in conjunction with xref:Vec2.adoc[`Vec2<T>`] et xref:Vec3.adoc[`Vec3<T>`].
@@ -20,7 +20,7 @@ xref:core_math.adoc[< Back to `core` Math]
 == Types
 
 [#_distance2]
-=== `Distance2<T>`
+=== `gf::Distance2<T>`
 
 [source]
 ----
@@ -34,7 +34,7 @@ A distance function for `Vec2<T>`.
 See also: <<_chebyshev_distance>>, <<_euclidean_distance>>, <<_manhattan_distance>>, <<_natural_distance>>, <<_square_distance>>
 
 [#_distance3]
-=== `Distance3<T>`
+=== `gf::Distance3<T>`
 
 [source]
 ----

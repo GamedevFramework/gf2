@@ -1,0 +1,223 @@
+= `gf::Array2D<T>` type
+v0.1
+:toc: right
+:toclevels: 3
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+An `Array2D<T>` represents a two-dimension array, organized in row-major order.
+
+xref:core_container.adoc[< Back to `core` Container]
+
+== Description
+
+The array is templated with the type of the data in the array.
+
+The convention for accessing the data is an index with a row and a column of type `int`. It can be done with a `Vec2I` with `x` representing the row and `y` representing the column. The <<_index>> function can be used to create this type of index. Moreover, given a vector, <<_row>> and <<_col>> can be used to access the corresponding row and column.
+
+Additionally, it is possible to access the data with a `std::size_t` index.
+
+
+== Member functions
+
+=== `Array2D` constructors
+
+[source]
+----
+Array2D(); <1>
+Array2D(Vec2I size); <2>
+Array2D(Vec2I size, const T& value); <3>
+----
+
+<1> Default contructor. The size of the array is stem:[(0, 0)]
+<2> Constructor with a `size`. Elements are default constructed.
+<3> Constructor with a `size` and a `value`. Elements are copied from `value`.
+
+=== `operator()`
+
+[source]
+----
+const T& operator()(Vec2I position) const noexcept; <1>
+T& operator()(Vec2I position) noexcept; <2>
+const T& operator()(std::size_t index) const noexcept; <3>
+T& operator()(std::size_t index) noexcept; <4>
+----
+
+<1> Get the element at a given 2D position.
+<2> Same but the element can be modified.
+<3> Get the element at a given 1D index.
+<4> Same but the element can be modified.
+
+=== `begin`
+
+[source]
+----
+const T* begin() const noexcept; <1>
+T* begin() noexcept; <2>
+----
+
+<1> Get an iterator to the first element of the array.
+<2> Same but the iterator is not `const`.
+
+See also: <<_end>>
+
+=== `cols`
+
+[source]
+----
+int cols() const noexcept;
+----
+
+Get the number of columns of the array.
+
+See also: <<_rows>>
+
+=== `empty`
+
+[source]
+----
+bool empty() const noexcept;
+----
+
+Check if the array is empty. An empty array is an array with stem:[0] elements, i.e. either the number of rows is stem:[0] or the number of columns is stem:[0].
+
+See also: <<_size>>
+
+=== `end`
+
+[source]
+----
+const T* end() const noexcept; <1>
+T* end() noexcept; <2>
+----
+
+<1> Get an iterator to the element following the last element of the array.
+<2> Same but the iterator is not `const`.
+
+See also: <<_begin>>
+
+=== `index_range`
+
+[source]
+----
+IndexRange index_range() const noexcept;
+----
+
+Get the 1D index range of the array.
+
+See also: <<_position_range>>
+
+=== `position_range`
+
+[source]
+----
+PositionRange position_range() const noexcept;
+----
+
+Get the 2D index range of the array.
+
+See also: <<_index_range>>
+
+=== `raw_data`
+
+[source]
+----
+const T *raw_data() const noexcept;
+----
+
+Get the pointer to raw data. The returned pointer is `const` so you can not modify the array with this function.
+
+=== `raw_size`
+
+[source]
+----
+const std::size_t raw_size() const noexcept;
+----
+
+Get the raw size of the data, i.e. the total number of elements in the array.
+
+=== `rows`
+
+[source]
+----
+int rows() const noexcept;
+----
+
+Get the number of rows of the array.
+
+See also: <<_cols>>
+
+=== `size`
+
+[source]
+----
+Vec2I size() const noexcept;
+----
+
+Get the size of the array.
+
+See also: <<_empty>>
+
+=== `valid`
+
+[source]
+----
+bool valid(Vec2I index) const noexcept;
+----
+
+Check if a position if valid in the array.
+
+== Operators
+
+=== `operator==`
+
+[source]
+----
+template<typename T>
+bool operator==(const Array2D<T>& lhs, const Array2D<T>& rhs);
+----
+
+Check if two arrays are equals.
+
+== Functions
+
+[#_col]
+=== `gf::col`
+
+[source]
+----
+#include <gf2/Array2D.h>
+constexpr int col(Vec2I index);
+----
+
+Get the column associated with the `Vec2I` index, i.e. the `y` coordinate.
+
+[#_index]
+=== `gf::index`
+
+[source]
+----
+#include <gf2/Array2D.h>
+constexpr Vec2I index(int row, int col)
+----
+
+Build an index for `Array2D<T>` with a row and a column.
+
+[#_row]
+=== `gf::row`
+
+[source]
+----
+#include <gf2/Array2D.h>
+constexpr int row(Vec2I index);
+----
+
+Get the row associated with the `Vec2I` index, i.e. the `x` coordinate.

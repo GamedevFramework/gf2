@@ -1,0 +1,48 @@
+= `gf::Range2D<T>` type
+v0.1
+:toc: right
+:toclevels: 2
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+A `Range2D<T>` represents a range accross a 2D area.
+
+xref:core_container.adoc[< Back to `core` Container]
+
+== Description
+
+The 2D area is defined by a xref:Range.adoc[`Range<T>`] accross the first dimension, called `dx`, and a xref:Range.adoc[`Range<T>`] accross the second dimension, called `dy`. The associated iterator starts at the top-left (the minimum of each range) of the area and finish at the bottom-right (the maximum of each range), iterating over the first dimension first and then over the second dimension.
+
+== Types
+
+=== `Range2D<T>::Iterator`
+
+A link:https://en.cppreference.com/w/cpp/named_req/ForwardIterator[forward iterator] that is used for iterating over the range.
+
+== Member functions
+
+=== `begin`
+
+[source]
+----
+constexpr Iterator begin() const noexcept;
+----
+
+Get an iterator to the start of the range.
+
+=== `end`
+
+[source]
+----
+constexpr Iterator end() const noexcept;
+----
+
+Get an end iterator of the range.

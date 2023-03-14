@@ -1,0 +1,80 @@
+= `gf::Range<T>` type
+v0.1
+:toc: right
+:toclevels: 2
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+A `Range<T>` represents a half-open range of values.
+
+xref:core_container.adoc[< Back to `core` Container]
+
+== Types
+
+=== `Range<T>::Iterator`
+
+A link:https://en.cppreference.com/w/cpp/named_req/BidirectionalIterator[bidirectional iterator] that is used for iterating over the range.
+
+== Member functions
+
+=== `begin`
+
+[source]
+----
+constexpr Iterator begin() const noexcept;
+----
+
+Get an iterator to the start of the range.
+
+=== `contains`
+
+[source]
+----
+constexpr bool contains(T value) const noexcept;
+----
+
+Check if `value` is in a range.
+
+=== `empty`
+
+[source]
+----
+constexpr bool empty() const noexcept;
+----
+
+Check is the range is empty.
+
+=== `end`
+
+[source]
+----
+constexpr Iterator end() const noexcept;
+----
+
+Get an end iterator of the range.
+
+=== `size`
+
+[source]
+----
+constexpr T size() const noexcept;
+----
+
+Get the size of the range.
+
+=== `valid`
+
+[source]
+----
+constexpr bool valid() const noexcept
+----
+
+Check if the range is valid.

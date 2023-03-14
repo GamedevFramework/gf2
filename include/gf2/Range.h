@@ -51,7 +51,7 @@ template<typename T>
       return Iterator(hi);
     }
 
-    constexpr T length() const noexcept {
+    constexpr T size() const noexcept {
       return hi - lo;
     }
 
@@ -82,7 +82,7 @@ template<typename T>
   }
 
   template<typename T>
-  struct RectangularRange {
+  struct Range2D {
     Range<T> dx;
     Range<T> dy;
 
@@ -93,7 +93,7 @@ template<typename T>
       using reference = value_type;
       using iterator_category = std::forward_iterator_tag;
 
-      Range<T> dx;
+      Range<T> dy;
       Vec2<T> position;
 
       constexpr Iterator(Range<T> dx, Vec2<T> position) noexcept
@@ -118,31 +118,31 @@ template<typename T>
 
     private:
       void step() noexcept {
-        ++position.x;
+        ++position.y;
 
-        if (position.x >= dx.hi) {
-          position.x = dx.lo;
-          ++position.y;
+        if (position.y >= dy.hi) {
+          position.y = dy.lo;
+          ++position.x;
         }
       }
     };
 
     constexpr Iterator begin() const noexcept {
-      return Iterator(dx, { dx.lo, dy.lo });
+      return Iterator(dy, { dx.lo, dy.lo });
     }
 
     constexpr Iterator end() const noexcept {
-      return Iterator(dx, { dx.lo, dy.hi });
+      return Iterator(dy, { dx.hi, dy.lo });
     }
   };
 
   template<typename T>
   inline
-  void swap(typename RectangularRange<T>::Iterator& lhs, typename RectangularRange<T>::Iterator& rhs) noexcept {
+  void swap(typename Range2D<T>::Iterator& lhs, typename Range2D<T>::Iterator& rhs) noexcept {
     lhs.swap(rhs);
   }
 
-  using PositionRange = RectangularRange<int>;
+  using PositionRange = Range2D<int>;
 
   constexpr PositionRange position_range(Vec2I size) {
     return { range(0, size.x), range(0, size.y) };

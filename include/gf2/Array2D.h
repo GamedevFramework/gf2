@@ -57,7 +57,7 @@ namespace gf {
       return m_data.empty();
     }
 
-    bool is_valid(Vec2I index) const noexcept {
+    bool valid(Vec2I index) const noexcept {
       return 0 <= index.x && index.x < m_size.x && 0 <= index.y && index.y < m_size.y;
     }
 
@@ -105,7 +105,7 @@ namespace gf {
 
   private:
     std::size_t linearize(Vec2I index) const {
-      return static_cast<std::size_t>(index.x) * static_cast<std::size_t>(m_size.y) + static_cast<std::size_t>(index.y);
+      return static_cast<std::size_t>(index.x) + static_cast<std::size_t>(index.y) * static_cast<std::size_t>(m_size.x);
     }
 
   private:

@@ -10,7 +10,7 @@ v0.1
 :sectanchors:
 :xrefstyle: full
 :nofooter:
-// :docinfo: shared-head
+:docinfo: shared-head
 :icons: font
 
 The math component contains well-known constants, algebra types and usual mathematical functions.
