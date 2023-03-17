@@ -96,15 +96,15 @@ template<typename T>
       Range<T> dy;
       Vec2<T> position;
 
-      constexpr Iterator(Range<T> dx, Vec2<T> position) noexcept
-      : dx(dx)
+      constexpr Iterator(Range<T> dy, Vec2<T> position) noexcept
+      : dy(dy)
       , position(position)
       {
       }
 
       void swap(Iterator& other) noexcept {
         using std::swap;
-        swap(dx, other.dx);
+        swap(dy, other.dy);
         swap(position, other.position);
       }
 

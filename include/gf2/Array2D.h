@@ -70,12 +70,12 @@ namespace gf {
     }
 
     const T& operator()(Vec2I position) const noexcept {
-      assert(is_valid(position));
+      assert(valid(position));
       return m_data[linearize(position)];
     }
 
     T& operator()(Vec2I position) noexcept {
-      assert(is_valid(position));
+      assert(valid(position));
       return m_data[linearize(position)];
     }
 
