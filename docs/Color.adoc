@@ -26,6 +26,8 @@ A `Color` data members are:
 - `b` for the blue channel
 - `a` for the link:https://en.wikipedia.org/wiki/Alpha_compositing[alpha channel]
 
+The native representation of a channel is a `float`.
+
 == Member Functions
 
 === `Color` constructors
@@ -47,7 +49,6 @@ constexpr Color(uint32_t rgb, uint8_t a = 255); <3>
 
 [source]
 ----
-template<typename T>
 constexpr bool operator==(Color lhs, Color rhs);
 ----
 
@@ -57,7 +58,6 @@ Test the equality of two colors.
 
 [source]
 ----
-template<typename T>
 constexpr bool operator!=(Color lhs, Color rhs);
 ----
 
@@ -67,11 +67,8 @@ Test the inequality of two colors.
 
 [source]
 ----
-template<typename T, typename U>
 constexpr Color operator+(Color lhs, Color rhs); <1>
-template<typename T, typename U>
 constexpr Color operator+(Color lhs, U rhs); <2>
-template<typename T, typename U>
 constexpr Color operator+(T lhs, Color rhs); <3>
 ----
 
@@ -83,9 +80,7 @@ constexpr Color operator+(T lhs, Color rhs); <3>
 
 [source]
 ----
-template<typename T, typename U>
 constexpr Color& operator+=(Color& lhs, Color rhs); <1>
-template<typename T, typename U>
 constexpr Color& operator+=(Color& lhs, U rhs); <2>
 ----
 
@@ -96,11 +91,8 @@ constexpr Color& operator+=(Color& lhs, U rhs); <2>
 
 [source]
 ----
-template<typename T, typename U>
 constexpr Color operator-(Color lhs, Color rhs); <1>
-template<typename T, typename U>
 constexpr Color operator-(Color lhs, U rhs); <2>
-template<typename T, typename U>
 constexpr Color operator-(T lhs, Color rhs); <3>
 ----
 
@@ -112,9 +104,7 @@ constexpr Color operator-(T lhs, Color rhs); <3>
 
 [source]
 ----
-template<typename T, typename U>
 constexpr Color& operator-=(Color& lhs, Color rhs); <1>
-template<typename T, typename U>
 constexpr Color& operator-=(Color& lhs, U rhs); <2>
 ----
 
@@ -125,11 +115,8 @@ constexpr Color& operator-=(Color& lhs, U rhs); <2>
 
 [source]
 ----
-template<typename T, typename U>
 constexpr Color operator*(Color lhs, Color rhs); <1>
-template<typename T, typename U>
 constexpr Color operator*(Color lhs, U rhs); <2>
-template<typename T, typename U>
 constexpr Color operator*(T lhs, Color rhs); <3>
 ----
 
@@ -141,9 +128,7 @@ constexpr Color operator*(T lhs, Color rhs); <3>
 
 [source]
 ----
-template<typename T, typename U>
 constexpr Color& operator*=(Color& lhs, Color rhs); <1>
-template<typename T, typename U>
 constexpr Color& operator*=(Color& lhs, U rhs); <2>
 ----
 
@@ -154,11 +139,8 @@ constexpr Color& operator*=(Color& lhs, U rhs); <2>
 
 [source]
 ----
-template<typename T, typename U>
 constexpr Color operator/(Color lhs, Color rhs); <1>
-template<typename T, typename U>
 constexpr Color operator/(Color lhs, U rhs); <2>
-template<typename T, typename U>
 constexpr Color operator/(T lhs, Color rhs); <3>
 ----
 
@@ -170,9 +152,7 @@ constexpr Color operator/(T lhs, Color rhs); <3>
 
 [source]
 ----
-template<typename T, typename U>
 constexpr Color& operator/=(Color& lhs, Color rhs); <1>
-template<typename T, typename U>
 constexpr Color& operator/=(Color& lhs, U rhs); <2>
 ----
 

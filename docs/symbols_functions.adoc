@@ -1,0 +1,135 @@
+= Function symbols index
+v0.1
+:toc: right
+:toclevels: 3
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+This page contains all the public function symbols of the library.
+
+xref:symbols.adoc[< Back to symbols]
+
+== A
+
+- xref:core_math.adoc#_absdiff[`gf::absdiff`] function
+- xref:core_math.adoc#_almost_equals[`gf::almost_equals`] function
+- xref:core_vec.adoc#_angle[`gf::angle`] function
+- xref:core_vec.adoc#_angle_to[`gf::angle_to`] function
+
+== B
+
+== C
+
+- xref:core_vec.adoc#_chebyshev_distance[`gf::chebyshev_distance`] function
+- xref:core_vec.adoc#_chebyshev_length[`gf::chebyshev_length`] function
+- xref:core_math.adoc#_clamp[`gf::clamp`] function
+- xref:core_math.adoc#_cosine_step[`gf::cosine_step`] function
+- xref:core_vec.adoc#_cross2[`gf::cross`] function (`Vec2<T>`)
+- xref:core_vec.adoc#_cross3[`gf::cross`] function (`Vec3<T>`)
+- xref:core_math.adoc#_cube[`gf::cube`] function
+- xref:core_math.adoc#_cubic_step[`gf::cubic_step`] function
+
+== D
+
+- xref:core_color.adoc#_darker[`gf::darker`] function
+- xref:core_math.adoc#_degrees_to_radians[`gf::degrees_to_radians`] function
+- xref:core_vec.adoc#_dirx[`gf::dirx`] function
+- xref:core_vec.adoc#_diry[`gf::diry`] function
+- xref:core_vec.adoc#_diry[`gf::dirz`] function
+- xref:core_vec.adoc#_dot[`gf::dot`] function
+
+== E
+
+- xref:core_vec.adoc#_euclidean_distance[`gf::euclidean_distance`] function
+- xref:core_vec.adoc#_euclidean_length[`gf::euclidean_length`] function
+
+== F
+
+== G
+
+- xref:core_color.adoc#_gray1[`gf::gray`] function
+
+== H
+
+== I
+
+- xref:core_vec.adoc#_inverse_triple_product[`gf::inverse_triple_product`] function
+
+== J
+
+== K
+
+== L
+
+- xref:core_math.adoc#_lerp[`gf::lerp`] function
+- xref:core_color.adoc#_lighter[`gf::lighter`] function
+- xref:core_math.adoc#_linear_step[`gf::linear_step`] function
+
+== M
+
+- xref:core_vec.adoc#_manhattan_distance[`gf::manhattan_distance`] function
+- xref:core_vec.adoc#_manhattan_length[`gf::manhattan_length`] function
+
+== N
+
+- xref:core_vec.adoc#_natural_distance[`gf::natural_distance`] function
+- xref:core_vec.adoc#_natural_length[`gf::natural_length`] function
+- xref:core_vec.adoc#_normalize[`gf::normalize`] function
+
+== O
+
+- xref:core_color.adoc#_opaque[`gf::opaque`] function
+
+== P
+
+- xref:core_vec.adoc#_perp[`gf::perp`] function
+- xref:core_vec.adoc#_project_onto[`gf::project_onto`] function
+- xref:core_vec.adoc#_projx[`gf::projx`] function
+- xref:core_vec.adoc#_projy[`gf::projy`] function
+- xref:core_vec.adoc#_projz[`gf::projz`] function
+
+== Q
+
+- xref:core_math.adoc#_quintic_step[`gf::quintic_step`] function
+
+== R
+
+- xref:core_math.adoc#_radians_to_degrees[`gf::radians_to_degrees`] function
+
+
+== S
+
+- xref:core_math.adoc#_sign[`gf::sign`] function
+- xref:core_math.adoc#_square[`gf::square`] function
+- xref:core_vec.adoc#_square_distance[`gf::square_distance`] function
+- xref:core_vec.adoc#_square_length[`gf::square_length`] function
+
+== T
+
+- xref:core_vec.adoc#_triple_product[`gf::triple_product`] function
+
+== U
+
+- xref:core_vec.adoc#_unit[`gf::unit`] function
+
+== V
+
+- xref:Vec2.adoc#_vec2[`gf::vec`] function (`Vec2<T>`)
+- xref:Vec3.adoc#_vec3[`gf::vec`] function (`Vec3<T>`)
+
+== W
+
+== X
+
+== Y
+
+== Z
+

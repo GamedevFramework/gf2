@@ -1,0 +1,87 @@
+= Type symbols index
+v0.1
+:toc: right
+:toclevels: 3
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+This page contains all the public type symbols of the library.
+
+xref:symbols.adoc[< Back to symbols]
+
+== A
+
+== B
+
+== C
+
+- xref:Color.adoc[`gf::Color`] type
+
+== D
+
+- xref:core_vec.adoc#_distance2[`gf::Distance2<T>`] type
+- xref:core_vec.adoc#_distance3[`gf::Distance3<T>`] type
+
+== E
+
+== F
+
+== G
+
+== H
+
+== I
+
+== J
+
+== K
+
+== L
+
+== M
+
+- xref:Mat3.adoc[`Mat3<T>`] type
+
+== N
+
+== O
+
+== P
+
+== Q
+
+== R
+
+- xref:Rect.adoc[`Rect<T>`] type
+
+== S
+
+- xref:Span.adoc[`Span<T>`] type
+- xref:StaticSpan.adoc[`StaticSpan<T>`] type
+- xref:core_math.adoc#_step[`gf::Step`] type
+
+== T
+
+== U
+
+== V
+
+- xref:Vec2.adoc[`gf::Vec2<T>`] type
+- xref:Vec3.adoc[`gf::Vec3<T>`] type
+
+== W
+
+== X
+
+== Y
+
+== Z
+

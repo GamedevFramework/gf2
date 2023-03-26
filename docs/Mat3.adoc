@@ -1,0 +1,61 @@
+= `gf::Mat3<T>` type
+v0.1
+:toc: right
+:toclevels: 3
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+A `Mat3<T>` represents affine transformation of 2D vectors (using homogeneous coordinates).
+
+xref:core_math.adoc[< Back to `core` Math]
+
+== Description
+
+The elements of the matrix can be accessed with a row and a column.
+
+A common typedef is defined:
+
+- `gf::Mat3F` with `float` as `T`.
+
+== Member Functions
+
+=== `operator()`
+
+[source]
+----
+const T& operator()(int row, int col) const; <1>
+T& operator()(int row, int col); <2>
+----
+
+<1> Get the element at a given `row`,`col`.
+<2> Same but the element can be modified.
+
+=== `data`
+
+[source]
+----
+const T* data() const;
+----
+
+Get a pointer to the raw data.
+
+== Operators
+
+=== `operator*`
+
+[source]
+----
+template<typename T>
+inline
+Mat3<T> operator*(const Mat3<T>& lhs, const Mat3<T>& rhs)
+----
+
+Compute a matrix multiplication.

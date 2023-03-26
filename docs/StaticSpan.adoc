@@ -1,0 +1,189 @@
+= `gf::StaticSpan<T>` type
+v0.1
+:toc: right
+:toclevels: 2
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+A static span is a non-owning reference to a contiguous sequence of objects whose number is known at compile-time.
+
+xref:core_container.adoc[< Back to `core` Container]
+
+== Description
+
+This class stores a pointer to some data. It can be built from various inputs: `std::array`, static array, pointer and size.
+
+See also: xref:Span.adoc[`Span<T>`]
+
+== Member functions
+
+=== `StaticSpan<T>` constructors
+
+[source]
+----
+constexpr StaticSpan() noexcept; <1>
+constexpr StaticSpan(std::nullptr_t) noexcept; <2>
+constexpr StaticSpan(T *data, std::size_t size) noexcept; <3>
+template<typename U>
+constexpr StaticSpan(U (&data)[N]) noexcept; <4>
+template<typename U>
+constexpr StaticSpan(std::array<U, N>& values) noexcept; <5>
+template<typename U>
+constexpr StaticSpan(StaticSpan<U, N> other) noexcept; <6>
+----
+
+<1> Default constructor, `data` is `nullptr`.
+<2> Null constructor, `data` is `nullptr`.
+<3> Constructor from a pointer and a size. The size must match the constant size of the span.
+<4> Constructor from a static array. The size must match the constant size of the span.
+<5> Constructor from a `std::array`. The size must match the constant size of the span.
+<6> Constructor from another span.
+
+=== `begin`
+
+[source]
+----
+constexpr const T *begin() const noexcept; <1>
+constexpr T *begin() noexcept; <2>
+----
+
+<1> Get an iterator to the first element of the span.
+<2> Same but the iterator is not `const`.
+
+See also: <<_end>>
+
+=== `data`
+
+[source]
+----
+constexpr const T *data() const noexcept; <1>
+constexpr T *data() noexcept; <2>
+----
+
+<1> Get a pointer to the elements.
+<2> Same but the elements can be modified.
+
+=== `empty`
+
+[source]
+----
+constexpr bool empty() const noexcept;
+----
+
+Check is the span is empty.
+
+=== `end`
+
+[source]
+----
+constexpr const T *end() const noexcept; <1>
+constexpr T *end() noexcept; <2>
+----
+
+<1> Get an iterator past the last element of the span.
+<2> Same but the iterator is not `const`.
+
+See also: <<_begin>>
+
+=== `first`
+
+[source]
+----
+constexpr Span<T> first(std::size_t count) const noexcept; <1>
+template<std::size_t C>
+constexpr StaticSpan<T, C> first() const noexcept; <2>
+----
+
+<1> Take a runtime span on the first `count` elements.
+<2> Take a compile-time span on the first `C` elements.
+
+=== `first_except`
+
+[source]
+----
+constexpr Span<T> first_except(std::size_t count) const noexcept; <1>
+template<std::size_t C>
+constexpr StaticSpan<T, Size - C> first_except() const noexcept; <2>
+----
+
+<1> Take a runtime span on the first elements except the `count` last.
+<2> Take a compile-time span on the first elements except the `C` last.
+
+=== `get`
+
+[source]
+----
+template<std::size_t I>
+constexpr const T& get() const noexcept; <1>
+template<std::size_t I>
+constexpr T& get() noexcept; <2>
+----
+
+<1> Get an element at a constant index.
+<2> Same but the element can be modified.
+
+=== `last`
+
+[source]
+----
+constexpr Span<T> last(std::size_t count) const noexcept; <1>
+template<std::size_t C>
+constexpr StaticSpan<T, C> last() const noexcept; <2>
+----
+
+<1> Take a runtime span on the last `count` elements.
+<2> Take a compile-time span on the last `C` elements.
+
+=== `last_except`
+
+[source]
+----
+constexpr Span<T> last_except(std::size_t count) const noexcept; <1>
+template<std::size_t C>
+constexpr StaticSpan<T, Size - C> last_except() const noexcept; <2>
+----
+
+<1> Take a runtime span on the last elements except the `count` first.
+<2> Take a compile-time span on the last elements except the `C` first.
+
+=== `size`
+
+[source]
+----
+constexpr std::size_t size() const noexcept;
+----
+
+Get the number of elements in the span.
+
+=== `slice`
+
+[source]
+----
+constexpr Span<T> slice(std::size_t b, std::size_t e) const noexcept; <1>
+template<std::size_t B, std::size_t E>
+constexpr StaticSpan<T, E - B> slice() const noexcept; <2>
+----
+
+<1> Take a runtime sub-span between `b` (included) and `e` (not included).
+<2> Take a compile-time sub-span between `B` (included) and `E` (not included).
+
+== Operators
+
+=== `operator[]`
+
+[source]
+----
+constexpr const T& operator[](std::size_t index) const noexcept; <1>
+constexpr T& operator[](std::size_t index) noexcept; <2>
+----
+
+<1> Get the element at a given index.
+<2> Same but the element can be modified.

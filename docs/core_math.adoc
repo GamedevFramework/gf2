@@ -140,6 +140,18 @@ See also: <<_inv_sqrt3>>
 
 == Types
 
+[#_mat3]
+=== `gf::Mat3<T>`
+
+[source]
+----
+#include <gf2/Mat3.h>
+template<typename T>
+struct Mat3;
+----
+
+A `Mat3<T>` represents affine transformation of 2D vectors (using homogeneous coordinates). xref:Mat3.adoc[*Read mode...*]
+
 [#_rect]
 === `gf::Rect<T>`
 

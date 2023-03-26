@@ -44,6 +44,34 @@ An `IndexRange` is a xref:Range.adoc[`Range<T>`] specialized for `std::size_t` i
 
 See also: <<_index_range_function>>
 
+[#_span]
+=== `gf::Span<T>`
+
+[source]
+----
+#include <gf/Span.h>
+template<typename T>
+class Span;
+----
+
+A span is a non-owning reference to a contiguous sequence of objects. xref:Span.adoc[*Read more...*]
+
+See also: <<_static_span>>
+
+[#_static_span]
+=== `gf::StaticSpan<T>`
+
+[source]
+----
+#include <gf/Span.h>
+template<typename T>
+class StaticSpan;
+----
+
+A static span is a non-owning reference to a contiguous sequence of objects whose number is known at compile-time. xref:StaticSpan.adoc[*Read more...*]
+
+See also: <<_span>>
+
 [#_position_range_type]
 === `gf::PositionRange`
 
