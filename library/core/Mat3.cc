@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
-#include "Mat3.h"
+#include <gf2/Mat3.h>
 
 namespace gf {
 

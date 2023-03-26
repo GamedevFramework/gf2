@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
-#include "Color.h"
+#include <gf2/Color.h>
 
 #include <cassert>
 #include <cmath>

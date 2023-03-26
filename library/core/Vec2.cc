@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
-#include "Vec2.h"
+#include <gf2/Vec2.h>
 
 namespace gf {
 
