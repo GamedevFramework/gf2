@@ -12,7 +12,7 @@ namespace gf {
 
   constexpr Vec2I index(int row, int col)
   {
-    return Vec2I(row, col);
+    return { row, col };
   }
 
   constexpr int row(Vec2I index)
@@ -126,7 +126,6 @@ namespace gf {
       return static_cast<std::size_t>(index.x) + static_cast<std::size_t>(index.y) * static_cast<std::size_t>(m_size.x);
     }
 
-  private:
     Vec2I m_size;
     std::vector<T> m_data;
   };

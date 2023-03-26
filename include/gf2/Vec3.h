@@ -16,6 +16,7 @@ namespace gf {
   template<typename T>
   struct Vec3 {
     Vec3() = default;
+    ~Vec3() = default;
 
     constexpr Vec3(T x, T y, T z) noexcept
     : x(x)
@@ -46,6 +47,9 @@ namespace gf {
       z = static_cast<T>(other.z);
       return *this;
     }
+
+    Vec3(Vec3&& other) noexcept = default;
+    Vec3& operator=(Vec3&& other) noexcept = default;
 
     T x;
     T y;

@@ -16,6 +16,7 @@ namespace gf {
   template<typename T>
   struct Vec2 {
     Vec2() = default;
+    ~Vec2() = default;
 
     constexpr Vec2(T x, T y) noexcept
     : x(x)
@@ -43,6 +44,9 @@ namespace gf {
       y = static_cast<T>(other.y);
       return *this;
     }
+
+    Vec2(Vec2&& other) noexcept = default;
+    Vec2& operator=(Vec2&& other) noexcept = default;
 
     union {
       T x;

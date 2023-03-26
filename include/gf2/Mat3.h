@@ -16,14 +16,14 @@ namespace gf {
     {
       assert(0 <= row && row < 3);
       assert(0 <= col && col < 3);
-      return m[row][col];
+      return m[row][col]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     }
 
     T& operator()(int row, int col)
     {
       assert(0 <= row && row < 3);
       assert(0 <= col && col < 3);
-      return m[row][col];
+      return m[row][col]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     }
 
     const T* data() const

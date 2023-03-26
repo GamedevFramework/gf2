@@ -22,11 +22,11 @@ namespace gf {
 
     constexpr Color(uint32_t rgb, uint8_t a = 255)
     // clang-format off
-    : r(((rgb >> 16) & 0xFF) / 255.0f)
-    , g(((rgb >> 8)  & 0xFF) / 255.0f)
-    , b(((rgb >> 0)  & 0xFF) / 255.0f)
+    : r(static_cast<float>((rgb >> 16) & 0xFF) / 255.0f)
+    , g(static_cast<float>((rgb >> 8)  & 0xFF) / 255.0f)
+    , b(static_cast<float>((rgb >> 0)  & 0xFF) / 255.0f)
     // clang-format on
-    , a(a / 255.0f)
+    , a(static_cast<float>(a) / 255.0f)
     {
     }
 
@@ -52,7 +52,7 @@ namespace gf {
 
   constexpr Color operator+(Color lhs, Color rhs)
   {
-    return Color(lhs.r + rhs.r, lhs.g + rhs.g, lhs.b + rhs.b, lhs.a + rhs.a);
+    return { lhs.r + rhs.r, lhs.g + rhs.g, lhs.b + rhs.b, lhs.a + rhs.a };
   }
 
   constexpr Color& operator+=(Color& lhs, Color rhs)
@@ -66,7 +66,7 @@ namespace gf {
 
   constexpr Color operator+(Color lhs, float rhs)
   {
-    return Color(lhs.r + rhs, lhs.g + rhs, lhs.b + rhs, lhs.a + rhs);
+    return { lhs.r + rhs, lhs.g + rhs, lhs.b + rhs, lhs.a + rhs };
   }
 
   constexpr Color& operator+=(Color& lhs, float rhs)
@@ -80,7 +80,7 @@ namespace gf {
 
   constexpr Color operator+(float lhs, Color rhs)
   {
-    return Color(lhs + rhs.r, lhs + rhs.g, lhs + rhs.b, lhs + rhs.a);
+    return { lhs + rhs.r, lhs + rhs.g, lhs + rhs.b, lhs + rhs.a };
   }
 
   /*
@@ -89,7 +89,7 @@ namespace gf {
 
   constexpr Color operator-(Color lhs, Color rhs)
   {
-    return Color(lhs.r - rhs.r, lhs.g - rhs.g, lhs.b - rhs.b, lhs.a - rhs.a);
+    return { lhs.r - rhs.r, lhs.g - rhs.g, lhs.b - rhs.b, lhs.a - rhs.a };
   }
 
   constexpr Color& operator-=(Color& lhs, Color rhs)
@@ -103,7 +103,7 @@ namespace gf {
 
   constexpr Color operator-(Color lhs, float rhs)
   {
-    return Color(lhs.r - rhs, lhs.g - rhs, lhs.b - rhs, lhs.a - rhs);
+    return { lhs.r - rhs, lhs.g - rhs, lhs.b - rhs, lhs.a - rhs };
   }
 
   constexpr Color& operator-=(Color& lhs, float rhs)
@@ -117,7 +117,7 @@ namespace gf {
 
   constexpr Color operator-(float lhs, Color rhs)
   {
-    return Color(lhs - rhs.r, lhs - rhs.g, lhs - rhs.b, lhs - rhs.a);
+    return { lhs - rhs.r, lhs - rhs.g, lhs - rhs.b, lhs - rhs.a };
   }
 
   /*
@@ -126,7 +126,7 @@ namespace gf {
 
   constexpr Color operator*(Color lhs, Color rhs)
   {
-    return Color(lhs.r * rhs.r, lhs.g * rhs.g, lhs.b * rhs.b, lhs.a * rhs.a);
+    return { lhs.r * rhs.r, lhs.g * rhs.g, lhs.b * rhs.b, lhs.a * rhs.a };
   }
 
   constexpr Color& operator*=(Color& lhs, Color rhs)
@@ -140,7 +140,7 @@ namespace gf {
 
   constexpr Color operator*(Color lhs, float rhs)
   {
-    return Color(lhs.r * rhs, lhs.g * rhs, lhs.b * rhs, lhs.a * rhs);
+    return { lhs.r * rhs, lhs.g * rhs, lhs.b * rhs, lhs.a * rhs };
   }
 
   constexpr Color& operator*=(Color& lhs, float rhs)
@@ -154,7 +154,7 @@ namespace gf {
 
   constexpr Color operator*(float lhs, Color rhs)
   {
-    return Color(lhs * rhs.r, lhs * rhs.g, lhs * rhs.b, lhs * rhs.a);
+    return { lhs * rhs.r, lhs * rhs.g, lhs * rhs.b, lhs * rhs.a };
   }
 
   /*
@@ -163,7 +163,7 @@ namespace gf {
 
   constexpr Color operator/(Color lhs, Color rhs)
   {
-    return Color(lhs.r / rhs.r, lhs.g / rhs.g, lhs.b / rhs.b, lhs.a / rhs.a);
+    return { lhs.r / rhs.r, lhs.g / rhs.g, lhs.b / rhs.b, lhs.a / rhs.a };
   }
 
   constexpr Color& operator/=(Color& lhs, Color rhs)
@@ -177,7 +177,7 @@ namespace gf {
 
   constexpr Color operator/(Color lhs, float rhs)
   {
-    return Color(lhs.r / rhs, lhs.g / rhs, lhs.b / rhs, lhs.a / rhs);
+    return { lhs.r / rhs, lhs.g / rhs, lhs.b / rhs, lhs.a / rhs };
   }
 
   constexpr Color& operator/=(Color& lhs, float rhs)
@@ -191,7 +191,7 @@ namespace gf {
 
   constexpr Color operator/(float lhs, Color rhs)
   {
-    return Color(lhs / rhs.r, lhs / rhs.g, lhs / rhs.b, lhs / rhs.a);
+    return { lhs / rhs.r, lhs / rhs.g, lhs / rhs.b, lhs / rhs.a };
   }
 
   GF_CORE_API Color lighter(Color color, float percent = 0.5f);

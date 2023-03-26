@@ -16,12 +16,12 @@ namespace gf {
 
     Flags() = default;
 
-    constexpr Flags(NoneType)
+    constexpr Flags(NoneType /* unused */)
     : m_data(0)
     {
     }
 
-    constexpr Flags(AllType)
+    constexpr Flags(AllType /* unused */)
     : m_data(~Type(0))
     {
     }
@@ -125,25 +125,25 @@ namespace gf {
 
   template<typename E>
   struct EnableBitmaskOperators {
-    static constexpr bool value = false;
+    static constexpr bool Value = false;
   };
 
   namespace operators {
 
     template<typename E>
-    constexpr std::enable_if_t<EnableBitmaskOperators<E>::value, Flags<E>> operator|(E lhs, E rhs)
+    constexpr std::enable_if_t<EnableBitmaskOperators<E>::Value, Flags<E>> operator|(E lhs, E rhs)
     {
       return Flags<E>(lhs) | Flags<E>(rhs);
     }
 
     template<typename E>
-    constexpr std::enable_if_t<EnableBitmaskOperators<E>::value, Flags<E>> operator&(E lhs, E rhs)
+    constexpr std::enable_if_t<EnableBitmaskOperators<E>::Value, Flags<E>> operator&(E lhs, E rhs)
     {
       return Flags<E>(lhs) & Flags<E>(rhs);
     }
 
     template<typename E>
-    constexpr std::enable_if_t<EnableBitmaskOperators<E>::value, Flags<E>> operator~(E val)
+    constexpr std::enable_if_t<EnableBitmaskOperators<E>::Value, Flags<E>> operator~(E val)
     {
       return ~Flags<E>(val);
     }
