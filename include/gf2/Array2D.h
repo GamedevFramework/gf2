@@ -93,7 +93,7 @@ namespace gf {
       return m_data.data();
     }
 
-    const std::size_t raw_size() const noexcept {
+    std::size_t raw_size() const noexcept {
       return m_data.size();
     }
 

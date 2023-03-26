@@ -173,3 +173,22 @@ TEST(ColorTest, Division) {
   static_assert(ccolor0 / 0.5f == gf::Color(2.0f, 1.0f, 1.0f, 2.0f), "Check Color");
   static_assert(0.5f / ccolor1 == gf::Color(0.5f, 0.5f, 1.0f, 1.0f), "Check Color");
 }
+
+TEST(ColorTest, Opaque) {
+  for (auto value : { 0.1f, 0.5f, 0.9f }) {
+    gf::Color color = gf::opaque(value);
+    EXPECT_EQ(color.r, 1.0f);
+    EXPECT_EQ(color.g, 1.0f);
+    EXPECT_EQ(color.b, 1.0f);
+    EXPECT_EQ(color.a, value);
+  }
+
+  gf::Color color = gf::opaque();
+  EXPECT_EQ(color.a, 0.5f);
+
+  constexpr gf::Color ccolor = gf::opaque(0.3f);
+  static_assert(ccolor.r == 1.0f, "Check Color");
+  static_assert(ccolor.g == 1.0f, "Check Color");
+  static_assert(ccolor.b == 1.0f, "Check Color");
+  static_assert(ccolor.a == 0.3f, "Check Color");
+}

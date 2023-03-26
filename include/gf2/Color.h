@@ -201,7 +201,7 @@ namespace gf {
 
   constexpr
   Color opaque(float value = 0.5f) {
-    return { 1.0f, 1.0f, 1.0f, 0.5f };
+    return { 1.0f, 1.0f, 1.0f, value };
   }
 
   constexpr

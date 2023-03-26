@@ -139,7 +139,7 @@ Get the pointer to raw data. The returned pointer is `const` so you can not modi
 
 [source]
 ----
-const std::size_t raw_size() const noexcept;
+std::size_t raw_size() const noexcept;
 ----
 
 Get the raw size of the data, i.e. the total number of elements in the array.
