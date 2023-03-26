@@ -10,8 +10,7 @@ enum Foo {
 };
 
 template<>
-struct gf::EnableBitmaskOperators<Foo> {
-  static constexpr bool value = true;
+struct gf::EnableBitmaskOperators<Foo> : std::true_type {
 };
 
 enum class Bar : uint32_t {
@@ -22,8 +21,7 @@ enum class Bar : uint32_t {
 };
 
 template<>
-struct gf::EnableBitmaskOperators<Bar> {
-  static constexpr bool value = true;
+struct gf::EnableBitmaskOperators<Bar> : std::true_type {
 };
 
 enum class Baz {
@@ -178,8 +176,7 @@ enum class AnimalProperties {
 };
 
 template<>
-struct gf::EnableBitmaskOperators<AnimalProperties> {
-  static constexpr bool value = true;
+struct gf::EnableBitmaskOperators<AnimalProperties> : std::true_type {
 };
 
 TEST(FlagsTest, Example) {

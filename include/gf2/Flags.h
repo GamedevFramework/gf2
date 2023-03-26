@@ -124,26 +124,25 @@ namespace gf {
   }
 
   template<typename E>
-  struct EnableBitmaskOperators {
-    static constexpr bool Value = false;
+  struct EnableBitmaskOperators : std::false_type {
   };
 
   namespace operators {
 
     template<typename E>
-    constexpr std::enable_if_t<EnableBitmaskOperators<E>::Value, Flags<E>> operator|(E lhs, E rhs)
+    constexpr std::enable_if_t<EnableBitmaskOperators<E>::value, Flags<E>> operator|(E lhs, E rhs)
     {
       return Flags<E>(lhs) | Flags<E>(rhs);
     }
 
     template<typename E>
-    constexpr std::enable_if_t<EnableBitmaskOperators<E>::Value, Flags<E>> operator&(E lhs, E rhs)
+    constexpr std::enable_if_t<EnableBitmaskOperators<E>::value, Flags<E>> operator&(E lhs, E rhs)
     {
       return Flags<E>(lhs) & Flags<E>(rhs);
     }
 
     template<typename E>
-    constexpr std::enable_if_t<EnableBitmaskOperators<E>::Value, Flags<E>> operator~(E val)
+    constexpr std::enable_if_t<EnableBitmaskOperators<E>::value, Flags<E>> operator~(E val)
     {
       return ~Flags<E>(val);
     }
