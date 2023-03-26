@@ -9,4 +9,4 @@ namespace gf {
   template struct Rect<unsigned>;
 #endif
 
-}
+} // namespace gf

@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
-#include <gf2/Color.h>
+#include "Color.h"
 
 #include <cassert>
 #include <cmath>
+
 #include <algorithm>
 #include <type_traits>
 
@@ -18,8 +19,8 @@ namespace gf {
       float a;
     };
 
-
-    HSV rgb_to_hsv(Color color) {
+    HSV rgb_to_hsv(Color color)
+    {
       const float min = std::min({ color.r, color.g, color.b });
       const float max = std::max({ color.r, color.g, color.b });
 
@@ -43,7 +44,8 @@ namespace gf {
       return { hue, sat, val, color.a };
     }
 
-    Color hsv_to_rgb(HSV hsv) {
+    Color hsv_to_rgb(HSV hsv)
+    {
       const float hue = hsv.h / 60.0f;
       const float sat = hsv.s;
       const float val = hsv.v;
@@ -61,47 +63,48 @@ namespace gf {
       color.a = hsv.a;
 
       switch (i) {
-        case 0:
-          color.r = val;
-          color.g = z;
-          color.b = x;
-          break;
-        case 1:
-          color.r = y;
-          color.g = val;
-          color.b = x;
-          break;
-        case 2:
-          color.r = x;
-          color.g = val;
-          color.b = z;
-          break;
-        case 3:
-          color.r = x;
-          color.g = y;
-          color.b = val;
-          break;
-        case 4:
-          color.r = z;
-          color.g = x;
-          color.b = val;
-          break;
-        case 5:
-          color.r = val;
-          color.g = x;
-          color.b = y;
-          break;
-        default:
-          assert(false);
-          break;
+      case 0:
+        color.r = val;
+        color.g = z;
+        color.b = x;
+        break;
+      case 1:
+        color.r = y;
+        color.g = val;
+        color.b = x;
+        break;
+      case 2:
+        color.r = x;
+        color.g = val;
+        color.b = z;
+        break;
+      case 3:
+        color.r = x;
+        color.g = y;
+        color.b = val;
+        break;
+      case 4:
+        color.r = z;
+        color.g = x;
+        color.b = val;
+        break;
+      case 5:
+        color.r = val;
+        color.g = x;
+        color.b = y;
+        break;
+      default:
+        assert(false);
+        break;
       }
 
       return color;
     }
 
-  }
+  } // namespace
 
-  Color lighter(Color color, float percent) {
+  Color lighter(Color color, float percent)
+  {
     assert(0.0f <= percent && percent <= 1.0f);
     auto hsv = rgb_to_hsv(color);
     hsv.v += hsv.v * percent;
@@ -119,11 +122,12 @@ namespace gf {
     return hsv_to_rgb(hsv);
   }
 
-  Color darker(Color color, float percent) {
+  Color darker(Color color, float percent)
+  {
     assert(0.0f <= percent && percent <= 1.0f);
     auto hsv = rgb_to_hsv(color);
     hsv.v -= hsv.v * percent;
     return hsv_to_rgb(hsv);
   }
 
-}
+} // namespace gf

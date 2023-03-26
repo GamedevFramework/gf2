@@ -3,9 +3,9 @@
 #ifndef GF_FLAGS_H
 #define GF_FLAGS_H
 
-#include <type_traits>
-
 #include "Types.h"
+
+#include <type_traits>
 
 namespace gf {
 
@@ -31,54 +31,64 @@ namespace gf {
     {
     }
 
-    constexpr Flags operator~() const {
+    constexpr Flags operator~() const
+    {
       return Flags(~m_data);
     }
 
-    constexpr Flags operator|(Flags flags) const {
+    constexpr Flags operator|(Flags flags) const
+    {
       return Flags(m_data | flags.m_data);
     }
 
-    Flags& operator|=(Flags flags) {
+    Flags& operator|=(Flags flags)
+    {
       m_data |= flags.m_data;
       return *this;
     }
 
-    constexpr Flags operator&(Flags flags) const {
+    constexpr Flags operator&(Flags flags) const
+    {
       return Flags(m_data & flags.m_data);
     }
 
-    Flags& operator&=(Flags flags) {
+    Flags& operator&=(Flags flags)
+    {
       m_data &= flags.m_data;
       return *this;
     }
 
-    constexpr operator bool() const {
+    constexpr operator bool() const
+    {
       return m_data != 0;
     }
 
-    constexpr bool test(E flag) const {
+    constexpr bool test(E flag) const
+    {
       return (m_data & static_cast<Type>(flag)) != 0;
     }
 
-    void set(E flag) {
+    void set(E flag)
+    {
       m_data |= static_cast<Type>(flag);
     }
 
-    void reset(E flag) {
+    void reset(E flag)
+    {
       m_data &= ~static_cast<Type>(flag);
     }
 
     using Type = std::underlying_type_t<E>;
 
-    constexpr Type value() const {
+    constexpr Type value() const
+    {
       return m_data;
     }
 
-//     template<typename T>
-//     friend Serializer& operator|(Serializer& ar, Flags<T> data);
-//     template<typename T>
-//     friend Deserializer& operator|(Deserializer& ar, Flags<T>& data);
+    //     template<typename T>
+    //     friend Serializer& operator|(Serializer& ar, Flags<T> data);
+    //     template<typename T>
+    //     friend Deserializer& operator|(Deserializer& ar, Flags<T>& data);
 
   private:
     constexpr Flags(Type data)
@@ -90,26 +100,26 @@ namespace gf {
   };
 
   template<typename E>
-  constexpr
-  Flags<E> operator|(Flags<E> lhs, E rhs) {
+  constexpr Flags<E> operator|(Flags<E> lhs, E rhs)
+  {
     return lhs | Flags<E>(rhs);
   }
 
   template<typename E>
-  constexpr
-  Flags<E> operator|(E lhs, Flags<E> rhs) {
+  constexpr Flags<E> operator|(E lhs, Flags<E> rhs)
+  {
     return Flags<E>(lhs) | rhs;
   }
 
   template<typename E>
-  constexpr
-  Flags<E> operator&(Flags<E> lhs, E rhs) {
+  constexpr Flags<E> operator&(Flags<E> lhs, E rhs)
+  {
     return lhs & Flags<E>(rhs);
   }
 
   template<typename E>
-  constexpr
-  Flags<E> operator&(E lhs, Flags<E> rhs) {
+  constexpr Flags<E> operator&(E lhs, Flags<E> rhs)
+  {
     return Flags<E>(lhs) & rhs;
   }
 
@@ -121,28 +131,25 @@ namespace gf {
   namespace operators {
 
     template<typename E>
-    constexpr
-    std::enable_if_t<EnableBitmaskOperators<E>::value, Flags<E>>
-    operator|(E lhs, E rhs) {
+    constexpr std::enable_if_t<EnableBitmaskOperators<E>::value, Flags<E>> operator|(E lhs, E rhs)
+    {
       return Flags<E>(lhs) | Flags<E>(rhs);
     }
 
     template<typename E>
-    constexpr
-    std::enable_if_t<EnableBitmaskOperators<E>::value, Flags<E>>
-    operator&(E lhs, E rhs) {
+    constexpr std::enable_if_t<EnableBitmaskOperators<E>::value, Flags<E>> operator&(E lhs, E rhs)
+    {
       return Flags<E>(lhs) & Flags<E>(rhs);
     }
 
     template<typename E>
-    constexpr
-    std::enable_if_t<EnableBitmaskOperators<E>::value, Flags<E>>
-    operator~(E val) {
+    constexpr std::enable_if_t<EnableBitmaskOperators<E>::value, Flags<E>> operator~(E val)
+    {
       return ~Flags<E>(val);
     }
 
-  }
-}
+  } // namespace operators
+} // namespace gf
 
 using namespace gf::operators;
 

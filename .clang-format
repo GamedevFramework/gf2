@@ -1,0 +1,58 @@
+# format style for gf2
+AccessModifierOffset: -2
+AlignArrayOfStructures: Right
+AlignEscapedNewlines: Left
+AllowShortBlocksOnASingleLine: Never
+AlwaysBreakAfterReturnType: None
+AlwaysBreakTemplateDeclarations: Yes
+BinPackArguments: false
+BreakBeforeBraces: WebKit
+BreakConstructorInitializers: BeforeComma
+BreakInheritanceList: BeforeComma
+ColumnLimit: 0
+ConstructorInitializerIndentWidth: 0
+ContinuationIndentWidth: 4
+Cpp11BracedListStyle: false
+EmptyLineAfterAccessModifier: Leave
+EmptyLineBeforeAccessModifier: Always
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex: '<c[[:alnum:]]+>'
+    Priority: 1
+  - Regex: '<[[:alnum:]_]+>'
+    Priority: 2
+  - Regex: '<[[:alnum:]]+/[[:alnum:]._]+>'
+    Priority: 3
+  - Regex: '"[[:alnum:]._]+"'
+    Priority: 4
+IndentAccessModifiers: false
+IndentCaseBlocks: true
+IndentCaseLabels: false
+IndentPPDirectives: AfterHash
+IndentWidth: 2
+InsertBraces: true
+InsertNewlineAtEOF: true
+InsertTrailingCommas: Wrapped
+LambdaBodyIndentation: OuterScope
+Language: Cpp
+LineEnding: LF
+MaxEmptyLinesToKeep: 1
+NamespaceIndentation: All
+PackConstructorInitializers: NextLine
+PointerAlignment: Left
+QualifierAlignment: Custom
+QualifierOrder: [ 'friend', 'static', 'inline', 'constexpr', 'volatile', 'const', 'type' ]
+ReferenceAlignment: Left
+RemoveBracesLLVM: false
+SeparateDefinitionBlocks: Leave
+SortIncludes: CaseSensitive
+SortUsingDeclarations: LexicographicNumeric
+SpaceAfterTemplateKeyword: false
+SpaceAroundPointerQualifiers: Both
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCaseColon: false
+SpaceBeforeParens: ControlStatements
+SpaceInEmptyBlock: true
+SpacesInContainerLiterals: true
+Standard: c++17
+UseTab: Never

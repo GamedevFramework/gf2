@@ -16,61 +16,79 @@ namespace gf {
 
     Rect() = default;
 
-    static constexpr Rect from_position_size(Vec2<T> position, Vec2<T> size) noexcept {
+    static constexpr Rect from_position_size(Vec2<T> position, Vec2<T> size) noexcept
+    {
       return { position, size };
     }
 
-    static constexpr Rect from_size(Vec2<T> size) noexcept {
+    static constexpr Rect from_size(Vec2<T> size) noexcept
+    {
       return { Vec2<T>(T(0), T(0)), size };
     }
 
-    static constexpr Rect from_min_max(Vec2<T> min, Vec2<T> max) noexcept {
+    static constexpr Rect from_min_max(Vec2<T> min, Vec2<T> max) noexcept
+    {
       return { min, max - min };
     }
 
-    static constexpr Rect from_center_size(Vec2<T> center, Vec2<T> size) noexcept {
+    static constexpr Rect from_center_size(Vec2<T> center, Vec2<T> size) noexcept
+    {
       return { center - size / 2, size };
     }
 
-    constexpr bool empty() const noexcept {
+    constexpr bool empty() const noexcept
+    {
       return extent.x <= T(0) || extent.y <= T(0);
     }
 
-    constexpr Vec2<T> position() const noexcept {
+    constexpr Vec2<T> position() const noexcept
+    {
       return offset;
     }
 
-    constexpr Vec2<T> size() const noexcept {
+    constexpr Vec2<T> size() const noexcept
+    {
       return extent;
     }
 
-    constexpr Vec2<T> min() const noexcept {
+    constexpr Vec2<T> min() const noexcept
+    {
       return offset;
     }
 
-    constexpr Vec2<T> max() const noexcept {
+    constexpr Vec2<T> max() const noexcept
+    {
       return offset + extent;
     }
 
-    constexpr Vec2<T> center() const noexcept {
+    constexpr Vec2<T> center() const noexcept
+    {
       return offset + extent / 2;
     }
 
-    constexpr bool contains(Vec2<T> point) const noexcept {
+    constexpr bool contains(Vec2<T> point) const noexcept
+    {
       return offset.x <= point.x && point.x < offset.x + extent.x && offset.y <= point.y && point.y < offset.y + extent.y;
     }
 
-    constexpr bool contains(Rect other) const noexcept {
+    constexpr bool contains(Rect other) const noexcept
+    {
+      // clang-format off
       return offset.x <= other.offset.x && other.offset.x + other.extent.x <= offset.x + extent.x
           && offset.y <= other.offset.y && other.offset.y + other.extent.y <= offset.y + extent.y;
+      // clang-format on
     }
 
-    constexpr bool intersects(Rect other) const noexcept {
+    constexpr bool intersects(Rect other) const noexcept
+    {
+      // clang-format off
       return offset.x + extent.x > other.offset.x && offset.x < other.offset.x + other.extent.x
          &&  offset.y + extent.y > other.offset.y && offset.y < other.offset.y + other.extent.y;
+      // clang-format on
     }
 
-    constexpr std::optional<Rect> intersection(Rect other) const noexcept {
+    constexpr std::optional<Rect> intersection(Rect other) const noexcept
+    {
       if (!intersects(other)) {
         return std::nullopt;
       }
@@ -86,7 +104,8 @@ namespace gf {
       return from_min_max(min, max);
     }
 
-    constexpr Rect& extend_to(Vec2<T> point) noexcept {
+    constexpr Rect& extend_to(Vec2<T> point) noexcept
+    {
       if (point.x < offset.x) {
         extent.x += (offset.x - point.x);
         offset.x = point.x;
@@ -104,10 +123,10 @@ namespace gf {
       return *this;
     }
 
-    constexpr Rect& extend_to(Rect other) noexcept {
+    constexpr Rect& extend_to(Rect other) noexcept
+    {
       return extend_to(other.min()).extend_to(other.max());
     }
-
   };
 
   using RectF = Rect<float>;
@@ -116,12 +135,14 @@ namespace gf {
   using RectU = Rect<unsigned>;
 
   template<typename T>
-  constexpr bool operator==(Rect<T> lhs, Rect<T> rhs) {
+  constexpr bool operator==(Rect<T> lhs, Rect<T> rhs)
+  {
     return lhs.offset == rhs.offset && lhs.extent == rhs.extent;
   }
 
   template<typename T>
-  constexpr bool operator!=(Rect<T> lhs, Rect<T> rhs) {
+  constexpr bool operator!=(Rect<T> lhs, Rect<T> rhs)
+  {
     return lhs.offset != rhs.offset || lhs.extent != rhs.extent;
   }
 
@@ -133,6 +154,6 @@ namespace gf {
   extern template struct GF_CORE_API Rect<unsigned>;
 #endif
 
-}
+} // namespace gf
 
 #endif // GF_RECT_H

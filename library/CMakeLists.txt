@@ -9,6 +9,7 @@ function(gf2_handle_library target)
   target_include_directories(${target}
     PUBLIC
       $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+      $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include/gf2>
       $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
       $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
   )

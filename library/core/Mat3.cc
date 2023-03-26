@@ -1,33 +1,36 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
-#include <gf2/Mat3.h>
+#include "Mat3.h"
 
 namespace gf {
 
-  Vec2F transform_point(const Mat3F& mat, Vec2F vec) {
+  Vec2F transform_point(const Mat3F& mat, Vec2F vec)
+  {
     Vec2F result;
     result.x = mat(0, 0) * vec.x + mat(0, 1) * vec.y + mat(0, 2);
     result.y = mat(1, 0) * vec.x + mat(1, 1) * vec.y + mat(1, 2);
     return result;
   }
 
-  Vec2F transform_vector(const Mat3F& mat, Vec2F vec) {
+  Vec2F transform_vector(const Mat3F& mat, Vec2F vec)
+  {
     Vec2F result;
     result.x = mat(0, 0) * vec.x + mat(0, 1) * vec.y;
     result.y = mat(1, 0) * vec.x + mat(1, 1) * vec.y;
     return result;
   }
 
-  Mat3F inverse(const Mat3F& mat) {
+  Mat3F inverse(const Mat3F& mat)
+  {
     Mat3F result;
     result(0, 0) = mat(1, 1) * mat(2, 2) - mat(2, 1) * mat(1, 2);
-    result(0, 1) = - (mat(0, 1) * mat(2, 2) - mat(2, 1) * mat(0, 2));
+    result(0, 1) = -(mat(0, 1) * mat(2, 2) - mat(2, 1) * mat(0, 2));
     result(0, 2) = mat(0, 1) * mat(1, 2) - mat(1, 1) * mat(0, 2);
-    result(1, 0) = - (mat(1, 0) * mat(2, 2) - mat(2, 0) * mat(1, 2));
+    result(1, 0) = -(mat(1, 0) * mat(2, 2) - mat(2, 0) * mat(1, 2));
     result(1, 1) = mat(0, 0) * mat(2, 2) - mat(2, 0) * mat(0, 2);
-    result(1, 2) = - (mat(0, 0) * mat(1, 2) - mat(1, 0) * mat(0, 2));
+    result(1, 2) = -(mat(0, 0) * mat(1, 2) - mat(1, 0) * mat(0, 2));
     result(2, 0) = mat(1, 0) * mat(2, 1) - mat(2, 0) * mat(1, 1);
-    result(2, 1) = - (mat(0, 0) * mat(2, 1) - mat(2, 0) * mat(0, 1));
+    result(2, 1) = -(mat(0, 0) * mat(2, 1) - mat(2, 0) * mat(0, 1));
     result(2, 2) = mat(0, 0) * mat(1, 1) - mat(1, 0) * mat(0, 1);
 
     float det = mat(0, 0) * result(0, 0) + mat(0, 1) * result(1, 0) + mat(0, 2) * result(2, 0);
@@ -42,4 +45,4 @@ namespace gf {
     return result;
   }
 
-}
+} // namespace gf

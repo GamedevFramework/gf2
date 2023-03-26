@@ -8,17 +8,17 @@
 namespace gf {
 
   struct GF_CORE_API NoneType { };
-  constexpr NoneType None = { };
+  constexpr NoneType None = {};
 
-  struct GF_CORE_API AllType {  };
-  constexpr AllType All = { };
+  struct GF_CORE_API AllType { };
+  constexpr AllType All = {};
 
-  struct GF_CORE_API AnyType {  };
-  constexpr AnyType Any = { };
+  struct GF_CORE_API AnyType { };
+  constexpr AnyType Any = {};
 
   struct GF_CORE_API ZeroType { };
-  constexpr ZeroType Zero = { };
+  constexpr ZeroType Zero = {};
 
-}
+} // namespace gf
 
 #endif // GF_TYPES_H

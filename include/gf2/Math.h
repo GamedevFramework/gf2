@@ -4,7 +4,9 @@
 #define GF_MATH_H
 
 #include <cmath>
+
 #include <limits>
+
 #include <type_traits>
 
 namespace gf {
@@ -12,18 +14,15 @@ namespace gf {
   namespace constants {
 
     template<typename T>
-    constexpr
-    T Pi = T(3.141592653589793238462643383279502884197169399L);
+    constexpr T Pi = T(3.141592653589793238462643383279502884197169399L);
 
     template<typename T>
-    constexpr
-    T Sqrt2 = T(1.4142135623730950488016887242096980785696718753769480731L);
+    constexpr T Sqrt2 = T(1.4142135623730950488016887242096980785696718753769480731L);
 
     template<typename T>
-    constexpr
-    T Sqrt3 = T(1.7320508075688772935274463415058723669428052538103806280L);
+    constexpr T Sqrt3 = T(1.7320508075688772935274463415058723669428052538103806280L);
 
-  }
+  } // namespace constants
 
   constexpr float Pi = constants::Pi<float>;
   constexpr float Pi2 = Pi / 2;
@@ -40,27 +39,27 @@ namespace gf {
 
     // std::abs is not constexpr in C++17
     template<typename T>
-    constexpr
-    std::enable_if_t<std::is_arithmetic_v<T>, T> abs(T value) {
+    constexpr std::enable_if_t<std::is_arithmetic_v<T>, T> abs(T value)
+    {
       return value < T(0) ? -value : value;
     }
 
     template<typename T>
-    constexpr
-    std::enable_if_t<std::is_arithmetic_v<T>, T> max(T a, T b) {
+    constexpr std::enable_if_t<std::is_arithmetic_v<T>, T> max(T a, T b)
+    {
       return a < b ? b : a;
     }
 
     template<typename T>
-    constexpr
-    std::enable_if_t<std::is_arithmetic_v<T>, T> min(T a, T b) {
+    constexpr std::enable_if_t<std::is_arithmetic_v<T>, T> min(T a, T b)
+    {
       return a < b ? a : b;
     }
-  }
+  } // namespace details
 
   template<typename T>
-  constexpr
-  bool almost_equals(T a, T b, T abs_error = std::numeric_limits<T>::epsilon(), T rel_error = std::numeric_limits<T>::epsilon()) {
+  constexpr bool almost_equals(T a, T b, T abs_error = std::numeric_limits<T>::epsilon(), T rel_error = std::numeric_limits<T>::epsilon())
+  {
     static_assert(std::is_floating_point_v<T>, "Comparison should be between two floats.");
 
     if (a == b) {
@@ -78,14 +77,14 @@ namespace gf {
   }
 
   template<typename T>
-  constexpr
-  std::enable_if_t<std::is_floating_point_v<T>, T> degrees_to_radians(T degrees) {
+  constexpr std::enable_if_t<std::is_floating_point_v<T>, T> degrees_to_radians(T degrees)
+  {
     return degrees * constants::Pi<T> / T(180);
   }
 
   template<typename T>
-  constexpr
-  std::enable_if_t<std::is_floating_point_v<T>, T> radians_to_degrees(T radians) {
+  constexpr std::enable_if_t<std::is_floating_point_v<T>, T> radians_to_degrees(T radians)
+  {
     return radians * T(180) / constants::Pi<T>;
   }
 
@@ -93,65 +92,65 @@ namespace gf {
   using Step = T (*)(T);
 
   template<typename T>
-  constexpr
-  T linear_step(T t) {
+  constexpr T linear_step(T t)
+  {
     return t;
   }
 
   template<typename T>
-  constexpr
-  T cubic_step(T t) {
+  constexpr T cubic_step(T t)
+  {
     return (-T(2) * t + T(3)) * t * t;
   }
 
   template<typename T>
-  constexpr
-  T quintic_step(T t) {
+  constexpr T quintic_step(T t)
+  {
     return ((T(6) * t - T(15)) * t + T(10)) * t * t * t;
   }
 
   template<typename T>
-  inline
-  T cosine_step(T t) {
+  inline T cosine_step(T t)
+  {
     return (T(1) - std::cos(constants::Pi<T> * t)) * T(0.5);
   }
 
   template<typename T, typename U>
-  constexpr
-  T lerp(T lhs, T rhs, U t) {
+  constexpr T lerp(T lhs, T rhs, U t)
+  {
     return T((U(1) - t) * lhs + t * rhs);
   }
 
   template<typename T>
-  constexpr
-  T clamp(T val, T lo, T hi) {
+  constexpr T clamp(T val, T lo, T hi)
+  {
     return val < lo ? lo : (hi < val ? hi : val);
   }
 
   template<typename T>
-  constexpr
-  T square(T val) {
+  constexpr T square(T val)
+  {
     return val * val;
   }
 
   template<typename T>
-  constexpr
-  T cube(T val) {
+  constexpr T cube(T val)
+  {
     return val * val * val;
   }
 
   template<typename T>
-  constexpr
-  int sign(T val) {
+  constexpr int sign(T val)
+  {
     return (val > T(0)) - (val < T(0));
   }
 
   template<typename T>
-  constexpr
-  T absdiff(T lhs, T rhs) {
+  constexpr T absdiff(T lhs, T rhs)
+  {
     return lhs > rhs ? lhs - rhs : rhs - lhs;
   }
 
-}
+} // namespace gf
 
 #endif // GF_MATH_H

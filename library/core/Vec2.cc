@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
-#include <gf2/Vec2.h>
+#include "Vec2.h"
 
 namespace gf {
 
@@ -11,4 +11,4 @@ namespace gf {
   template struct Vec2<unsigned>;
 #endif
 
-}
+} // namespace gf

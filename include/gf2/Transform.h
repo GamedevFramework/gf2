@@ -25,6 +25,6 @@ namespace gf {
     Mat3F compute_matrix(RectF bounds) const;
   };
 
-}
+} // namespace gf
 
 #endif // GF_TRANSFORM_H
