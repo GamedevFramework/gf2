@@ -9,6 +9,7 @@ add_executable(gf2_core_tests
   main.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googletest/src/gtest-all.cc
   tests_core_Color.cc
+  tests_core_Flags.cc
   tests_core_Math.cc
   tests_core_Range.cc
   tests_core_Rect.cc

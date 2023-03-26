@@ -48,7 +48,7 @@ xref:symbols.adoc[< Back to symbols]
 
 == M
 
-- xref:Mat3.adoc[`Mat3<T>`] type
+- xref:Mat3.adoc[`gf::Mat3<T>`] type
 
 == N
 
@@ -60,12 +60,12 @@ xref:symbols.adoc[< Back to symbols]
 
 == R
 
-- xref:Rect.adoc[`Rect<T>`] type
+- xref:Rect.adoc[`gf::Rect<T>`] type
 
 == S
 
-- xref:Span.adoc[`Span<T>`] type
-- xref:StaticSpan.adoc[`StaticSpan<T>`] type
+- xref:Span.adoc[`gf::Span<T>`] type
+- xref:StaticSpan.adoc[`gf::StaticSpan<T>`] type
 - xref:core_math.adoc#_step[`gf::Step`] type
 
 == T

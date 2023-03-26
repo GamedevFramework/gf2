@@ -1,0 +1,41 @@
+= `core` Vocabulary
+v0.1
+:toc: right
+:toclevels: 3
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+The vocabulary component contains some types and variables that express explicit intent.
+
+xref:reference.adoc[< Back to reference]
+
+== Variables
+
+=== `gf::All`
+
+=== `gf::Any`
+
+=== `gf::None`
+
+=== `gf::Zero`
+
+== Types
+
+=== `gf::AllType`
+
+=== `gf::AnyType`
+
+=== `gf::Flags<E>`
+
+=== `gf::NoneType`
+
+=== `gf::ZeroType`
+
