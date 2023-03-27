@@ -3,9 +3,9 @@
 #ifndef GF_FLAGS_H
 #define GF_FLAGS_H
 
-#include "Types.h"
-
 #include <type_traits>
+
+#include "Types.h"
 
 namespace gf {
 

@@ -6,10 +6,10 @@
 #include <cassert>
 #include <cstddef>
 
+#include <type_traits>
+
 #include "CoreApi.h"
 #include "Math.h"
-
-#include <type_traits>
 
 namespace gf {
 
