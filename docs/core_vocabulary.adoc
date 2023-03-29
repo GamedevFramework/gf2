@@ -35,6 +35,8 @@ xref:reference.adoc[< Back to reference]
 
 === `gf::Flags<E>`
 
+A `Flags<E>` stores a bit field relying on an enumeration `E`. xref:Flags.adoc[*Read more...*]
+
 === `gf::NoneType`
 
 === `gf::ZeroType`

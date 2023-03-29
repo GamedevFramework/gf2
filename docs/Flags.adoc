@@ -1,0 +1,157 @@
+= `gf::Flags<E>` type
+v0.1
+:toc: right
+:toclevels: 3
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+A `Flags<E>` stores a link:https://en.wikipedia.org/wiki/Bit_field[bit field] relying on an enumeration `E`.
+
+xref:core_vocabulary.adoc[< Back to `core` Vocabulary]
+
+== Description
+
+If you do not initialize flags, then the state is undefined. You can use semantic constants `gf::All` and `gf::None` to set all the flags or none.
+
+== Types
+
+=== `Type`
+
+[source]
+----
+using Type = std::underlying_type_t<E>;
+----
+
+The type of the underlying type of the enumeration `E`. This is the internal representation of the bit field.
+
+== Member Functions
+
+=== `Flags` constructor
+
+[source]
+----
+Flags(); <1>
+constexpr Flags(NoneType); <2>
+constexpr Flags(AllType); <3>
+constexpr Flags(E e); <4>
+----
+
+<1> Default constructor. The value is undefined.
+<2> Constructor with no flag set.
+<3> Constructor with all flags set.
+<4> Constructor with an enum value `e`.
+
+
+=== `operator bool`
+
+[source]
+----
+constexpr operator bool() const;
+----
+
+Test if any flag is set.
+
+=== `reset`
+
+[source]
+----
+void reset(E flag);
+----
+
+Reset a flag in the bit field.
+
+=== `set`
+
+[source]
+----
+void set(E flag);
+----
+
+Set a flag in the bit field.
+
+=== `test`
+
+[source]
+----
+constexpr bool test(E flag) const;
+----
+
+Test if a specified flag is set.
+
+=== `value`
+
+[source]
+----
+constexpr Type value() const;
+----
+
+Get the underlying value of the flags. This function should not be used in normal cases.
+
+== Operators
+
+=== `operator~`
+
+[source]
+----
+constexpr Flags<E> operator~(Flags<E> flags); <1>
+constexpr Flags<E> operator~(E value); <2>
+----
+
+<1> Binary NOT operator. Return a new flag with all the bits inverted.
+<2> Same but with a single flag. This function is available only if `gf::EnableBitmaskOperators<E>::value` is `true`.
+
+=== `operator|`
+
+[source]
+----
+constexpr Flags<E> operator|(Flags<E> lhs, Flags<E> rhs); <1>
+constexpr Flags<E> operator|(Flags<E> lhs, E rhs); <2>
+constexpr Flags<E> operator|(E lhs, Flags<E> rhs); <3>
+constexpr Flags<E> operator|(E lhs, E rhs); <4>
+----
+
+<1> Binary OR between two bit field.
+<2> Binary OR between a bit field and a flag.
+<3> Binary OR between a flag and a bit field.
+<4> Binary OR between two flags. This function is available only if `gf::EnableBitmaskOperators<E>::value` is `true`.
+
+=== `operator|=`
+
+[source]
+----
+Flags& operator|=(Flags& lhs, Flags rhs);
+----
+
+Binary OR and assignment.
+
+=== `operator&`
+
+[source]
+----
+constexpr Flags<E> operator&(Flags<E> lhs, Flags<E> rhs); <1>
+constexpr Flags<E> operator&(Flags<E> lhs, E rhs); <2>
+constexpr Flags<E> operator&(E lhs, Flags<E> rhs); <3>
+constexpr Flags<E> operator&(E lhs, E rhs); <4>
+----
+
+<1> Binary AND between two bit field.
+<2> Binary AND between a bit field and a flag.
+<3> Binary AND between a flag and a bit field.
+<4> Binary AND between two flags. This function is available only if `gf::EnableBitmaskOperators<E>::value` is `true`.
+
+=== `operator&=`
+
+[source]
+----
+Flags& operator&=(Flags& lhs, Flags rhs);
+----
+
+Binary AND and assignment.

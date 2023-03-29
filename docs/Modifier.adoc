@@ -1,0 +1,81 @@
+= `gf::Modifier` type
+v0.1
+:toc: right
+:toclevels: 2
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+:experimental: // for kbd
+
+A modifier key is a special key that can be used in combinaison with another key.
+
+xref:graphics_devices.adoc[< Back to `graphics` Devices]
+
+== Description
+
+The main modifiers (shift, control, atl, gui) generally have two instances on keyboards, one on the left of the space bar, one on the right of the space bar. The enumeration handle both instances, but can also be used to address the two instances at a time.
+
+`Modifier` can be used with xref:Flags.adoc[`Flags<E>`].
+
+== Enumerators
+
+.Enumerators for `gf::Modifier`
+[cols="1,1"]
+|===
+| Value | Description
+
+| `gf::Modifier::None`
+| No modifier
+
+| `gf::Modifier::LeftShift`
+| Left kbd:[Shift]
+
+| `gf::Modifier::RightShift`
+| Right kbd:[Shift]
+
+| `gf::Modifier::LeftControl`
+| Left kbd:[Ctrl]
+
+| `gf::Modifier::RightControl`
+| Right kbd:[Ctrl]
+
+| `gf::Modifier::LeftAlt`
+| Left kbd:[Alt]
+
+| `gf::Modifier::RightAlt`
+| Right kbd:[Alt]
+
+| `gf::Modifier::LeftGui`
+| Left kbd:[Gui]
+
+| `gf::Modifier::RightGui`
+| Right kbd:[Gui]
+
+| `gf::Modifier::Num`
+| kbd:[Num Lock]
+
+| `gf::Modifier::Caps`
+| kbd:[Caps Lock]
+
+| `gf::Modifier::Mode`
+| kbd:[AltGr]
+
+| `gf::Modifier::Shift`
+| Any kbd:[Shift]
+
+| `gf::Modifier::Control`
+| Any kbd:[Ctrl]
+
+| `gf::Modifier::Alt`
+| Any kbd:[Atl]
+
+| `gf::Modifier::Gui`
+| Any kbd:[Gui]
+|===

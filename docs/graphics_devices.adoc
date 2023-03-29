@@ -1,0 +1,60 @@
+= `graphics` Devices
+v0.1
+:toc: right
+:toclevels: 3
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+The devices component contains enumerations and types that describe input devices.
+
+xref:reference.adoc[< Back to reference]
+
+== Types
+
+=== `Keycode`
+
+[source]
+----
+#include <gf2/Keyboard.h>
+enum class Keycode : uint32_t;
+----
+
+See also: <<_scancode>>, <<_keyboard>>
+
+=== `Keyboard`
+
+[source]
+----
+#include <gf2/Keyboard.h>
+struct Keyboard;
+----
+
+See also: <<_scancode>>, <<_keycode>>
+
+=== `Modifier`
+
+[source]
+----
+#include <gf2/Keyboard.h>
+enum class Modifiers : uint32_t;
+----
+
+A modifier key is a special key that can be used in combinaison with another key. xref:Modifier.adoc[*Read more...*]
+
+=== `Scancode`
+
+[source]
+----
+#include <gf2/Keyboard.h>
+enum class Scancode : uint32_t;
+----
+
+See also: <<_keycode>>, <<_keyboard>>

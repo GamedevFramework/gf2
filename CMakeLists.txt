@@ -12,6 +12,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 option(BUILD_SHARED_LIBS "Build the library as a shared library" ON)
 option(BUILD_TESTING "Build tests" ON)
 
+set(SDL2_BUILDING_LIBRARY TRUE)
+find_package(SDL2 REQUIRED)
+
 if(MSVC)
   message(STATUS "Using MSVC compiler")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /DNOMINMAX /W3 /utf-8")

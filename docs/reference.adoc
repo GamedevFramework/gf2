@@ -24,6 +24,8 @@ xref:index.adoc[< Back to main page]
 
 == `graphics`
 
+- xref:graphics_devices.adoc[Devices]
+
 == `net`
 
 == `audio`

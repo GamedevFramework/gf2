@@ -79,3 +79,25 @@ gf2_handle_library(gf2core0
   EXPORT_FILE_NAME
     "CoreApi.h"
 )
+
+# gf2::graphics
+
+add_library(gf2graphics0
+  graphics/Keyboard.cc
+)
+
+gf2_handle_library(gf2graphics0
+  EXPORT_NAME
+    "graphics"
+  EXPORT_MACRO_NAME
+    GRAPHICS_API
+  EXPORT_FILE_NAME
+    "GraphicsApi.h"
+)
+
+target_link_libraries(gf2graphics0
+  PUBLIC
+    gf2core0
+  PRIVATE
+    SDL2::SDL2
+)
