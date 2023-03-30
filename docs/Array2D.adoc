@@ -19,6 +19,13 @@ xref:core_container.adoc[< Back to `core` Container]
 
 == Description
 
+[source]
+----
+#include <gf/Array2D.h>
+template<typename T>
+class Array;
+----
+
 The array is templated with the type of the data in the array.
 
 The convention for accessing the data is an index with a row and a column of type `int`. It can be done with a `Vec2I` with `x` representing the row and `y` representing the column. The <<_index>> function can be used to create this type of index. Moreover, given a vector, <<_row>> and <<_col>> can be used to access the corresponding row and column.

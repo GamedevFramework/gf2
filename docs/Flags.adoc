@@ -19,6 +19,13 @@ xref:core_vocabulary.adoc[< Back to `core` Vocabulary]
 
 == Description
 
+[source]
+----
+#include <gf2/Flags.h>
+template<typename E>
+class Flags;
+----
+
 If you do not initialize flags, then the state is undefined. You can use semantic constants `gf::All` and `gf::None` to set all the flags or none.
 
 == Types

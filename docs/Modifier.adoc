@@ -20,6 +20,12 @@ xref:graphics_devices.adoc[< Back to `graphics` Devices]
 
 == Description
 
+[source]
+----
+#include <gf2/Keyboard.h>
+enum class Modifiers : uint32_t;
+----
+
 The main modifiers (shift, control, atl, gui) generally have two instances on keyboards, one on the left of the space bar, one on the right of the space bar. The enumeration handle both instances, but can also be used to address the two instances at a time.
 
 `Modifier` can be used with xref:Flags.adoc[`Flags<E>`].

@@ -19,25 +19,41 @@ xref:reference.adoc[< Back to reference]
 
 == Variables
 
+[#_all]
 === `gf::All`
 
+[#_any]
 === `gf::Any`
 
+[#_none]
 === `gf::None`
 
+[#_zero]
 === `gf::Zero`
 
 == Types
 
+[#_all_type]
 === `gf::AllType`
 
+[#_any_type]
 === `gf::AnyType`
 
+[#_flags]
 === `gf::Flags<E>`
+
+[source]
+----
+#include <gf2/Flags.h>
+template<typename E>
+class Flags;
+----
 
 A `Flags<E>` stores a bit field relying on an enumeration `E`. xref:Flags.adoc[*Read more...*]
 
+[#_none_type]
 === `gf::NoneType`
 
+[#_zero_type]
 === `gf::ZeroType`
 

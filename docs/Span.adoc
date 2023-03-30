@@ -19,6 +19,13 @@ xref:core_container.adoc[< Back to `core` Container]
 
 == Description
 
+[source]
+----
+#include <gf/Span.h>
+template<typename T>
+class Span;
+----
+
 This class stores a pointer to some data and its size. It can be built from various inputs: `std::vector`, static array, pointer and size.
 
 See also: xref:StaticSpan.adoc[`StaticSpan<T>`]

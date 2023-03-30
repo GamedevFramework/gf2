@@ -61,7 +61,9 @@ xref:symbols.adoc[< Back to symbols]
 
 == I
 
+- xref:core_container.adoc#_index_range_function[`gf::index_range`] function
 - xref:core_vec.adoc#_inverse_triple_product[`gf::inverse_triple_product`] function
+
 
 == J
 
@@ -91,6 +93,7 @@ xref:symbols.adoc[< Back to symbols]
 == P
 
 - xref:core_vec.adoc#_perp[`gf::perp`] function
+- xref:core_container.adoc#_position_range_function[`gf::position_range`] function
 - xref:core_vec.adoc#_project_onto[`gf::project_onto`] function
 - xref:core_vec.adoc#_projx[`gf::projx`] function
 - xref:core_vec.adoc#_projy[`gf::projy`] function
@@ -103,6 +106,7 @@ xref:symbols.adoc[< Back to symbols]
 == R
 
 - xref:core_math.adoc#_radians_to_degrees[`gf::radians_to_degrees`] function
+- xref:core_container.adoc#_range_function[`gf::range`] function
 
 
 == S

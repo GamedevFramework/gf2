@@ -19,6 +19,13 @@ xref:core_math.adoc[< Back to `core` Math]
 
 == Description
 
+[source]
+----
+#include <gf2/Mat3.h>
+template<typename T>
+struct Mat3;
+----
+
 The elements of the matrix can be accessed with a row and a column.
 
 A common typedef is defined:

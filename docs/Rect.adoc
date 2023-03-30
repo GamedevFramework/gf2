@@ -19,6 +19,13 @@ xref:core_math.adoc[< Back to `core` Math]
 
 == Description
 
+[source]
+----
+#include <gf2/Rect.h>
+template<typename T>
+struct Rect;
+----
+
 A rectangle is defined by the position of its top-left corner (called `offset`) and its size (called `extent`).
 
 A `Rect<T>` uses the usual rules for its boundaries:

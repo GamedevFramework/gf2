@@ -19,6 +19,8 @@ xref:symbols.adoc[< Back to symbols]
 
 == A
 
+- xref:Array2D.adoc[`Array2D<T>`] type
+
 == B
 
 == C
@@ -34,11 +36,15 @@ xref:symbols.adoc[< Back to symbols]
 
 == F
 
+- xref:Flags.adoc[`gf::Flags<E>`] type
+
 == G
 
 == H
 
 == I
+
+- xref:core_container.adoc#_index_range_type[`gf::IndexRange`] type
 
 == J
 
@@ -49,6 +55,7 @@ xref:symbols.adoc[< Back to symbols]
 == M
 
 - xref:Mat3.adoc[`gf::Mat3<T>`] type
+- xref:Modifier.adoc[`gf::Modifier`] type
 
 == N
 
@@ -56,10 +63,14 @@ xref:symbols.adoc[< Back to symbols]
 
 == P
 
+- xref:core_container.adoc#_position_range_type[`gf::PositionRange`] type
+
 == Q
 
 == R
 
+- xref:Range.adoc[`gf::Range<T>`] type
+- xref:Range2D.adoc[`gf::Range2D<T>`] type
 - xref:Rect.adoc[`gf::Rect<T>`] type
 
 == S
