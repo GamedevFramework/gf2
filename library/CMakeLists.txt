@@ -84,6 +84,7 @@ gf2_handle_library(gf2core0
 
 add_library(gf2graphics0
   graphics/Keyboard.cc
+  graphics/Mouse.cc
 )
 
 gf2_handle_library(gf2graphics0

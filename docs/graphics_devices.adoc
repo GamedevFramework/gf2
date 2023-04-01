@@ -49,6 +49,16 @@ enum class Modifiers : uint32_t;
 
 A modifier key is a special key that can be used in combinaison with another key. xref:Modifier.adoc[*Read more...*]
 
+=== `MouseButton`
+
+[source]
+----
+#include <gf2/Mouse.h>
+enum class MouseButton : uint32_t;
+----
+
+`MouseButton` describes all the mouse buttons. xref:MouseButton.adoc[*Read more...*]
+
 === `Scancode`
 
 [source]

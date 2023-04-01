@@ -1,0 +1,58 @@
+= `gf::MouseButton` type
+v0.1
+:toc: right
+:toclevels: 2
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+`MouseButton` describes all the mouse buttons.
+
+xref:graphics_devices.adoc[< Back to `graphics` Devices]
+
+== Description
+
+[source]
+----
+#include <gf2/Mouse.h>
+enum class MouseButton : uint32_t;
+----
+
+== Enumerators
+
+.Enumerators for `gf::MouseButton`
+[cols="1,1"]
+|===
+| Value | Description
+
+| `gf::MouseButton::None`
+| No button
+
+| `gf::MouseButton::Left`
+| Left mouse button
+
+| `gf::MouseButton::Middle`
+| Middle mouse button
+
+| `gf::MouseButton::Right`
+| Right mouse button
+
+| `gf::MouseButton::XButton1`
+| First extra mouse button
+
+| `gf::MouseButton::XButton2`
+| Second extra mouse button
+
+| `gf::MouseButton::Touch1`
+| First specific touchpad button
+
+| `gf::MouseButton::Touch2`
+| Second specific touchpad button
+|===
