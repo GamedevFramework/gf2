@@ -30,6 +30,8 @@ The main modifiers (shift, control, atl, gui) generally have two instances on ke
 
 `Modifier` can be used with xref:Flags.adoc[`Flags<E>`].
 
+See also: xref:Scancode.adoc[`Scancode`]
+
 == Enumerators
 
 .Enumerators for `gf::Modifier`
@@ -46,10 +48,10 @@ The main modifiers (shift, control, atl, gui) generally have two instances on ke
 | `gf::Modifier::RightShift`
 | Right kbd:[Shift]
 
-| `gf::Modifier::LeftControl`
+| `gf::Modifier::LeftCtrl`
 | Left kbd:[Ctrl]
 
-| `gf::Modifier::RightControl`
+| `gf::Modifier::RightCtrl`
 | Right kbd:[Ctrl]
 
 | `gf::Modifier::LeftAlt`
@@ -76,7 +78,7 @@ The main modifiers (shift, control, atl, gui) generally have two instances on ke
 | `gf::Modifier::Shift`
 | Any kbd:[Shift]
 
-| `gf::Modifier::Control`
+| `gf::Modifier::Ctrl`
 | Any kbd:[Ctrl]
 
 | `gf::Modifier::Alt`

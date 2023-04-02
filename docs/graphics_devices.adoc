@@ -15,6 +15,10 @@ v0.1
 
 The devices component contains enumerations and types that describe input devices.
 
+- Keyboard: <<_scancode>>, <<_keycode>>, <<_modifier>> (<<_keyboard>>)
+- Mouse: <<_mousebutton>>
+- Gamepad:
+
 xref:reference.adoc[< Back to reference]
 
 == Types
@@ -66,5 +70,7 @@ enum class MouseButton : uint32_t;
 #include <gf2/Keyboard.h>
 enum class Scancode : uint32_t;
 ----
+
+`Scancode` describes all the physical keyboard buttons. xref:Scancode.adoc[*Read more...*]
 
 See also: <<_keycode>>, <<_keyboard>>

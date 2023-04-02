@@ -14,8 +14,8 @@ namespace gf {
   MODIFIER_CHECK(Modifier::None, KMOD_NONE);
   MODIFIER_CHECK(Modifier::LeftShift, KMOD_LSHIFT);
   MODIFIER_CHECK(Modifier::RightShift, KMOD_RSHIFT);
-  MODIFIER_CHECK(Modifier::LeftControl, KMOD_LCTRL);
-  MODIFIER_CHECK(Modifier::RightControl, KMOD_RCTRL);
+  MODIFIER_CHECK(Modifier::LeftCtrl, KMOD_LCTRL);
+  MODIFIER_CHECK(Modifier::RightCtrl, KMOD_RCTRL);
   MODIFIER_CHECK(Modifier::LeftAlt, KMOD_LALT);
   MODIFIER_CHECK(Modifier::RightAlt, KMOD_RALT);
   MODIFIER_CHECK(Modifier::LeftGui, KMOD_LGUI);
@@ -24,7 +24,7 @@ namespace gf {
   MODIFIER_CHECK(Modifier::Caps, KMOD_CAPS);
   MODIFIER_CHECK(Modifier::Mode, KMOD_MODE);
   MODIFIER_CHECK(Modifier::Shift, KMOD_SHIFT);
-  MODIFIER_CHECK(Modifier::Control, KMOD_CTRL);
+  MODIFIER_CHECK(Modifier::Ctrl, KMOD_CTRL);
   MODIFIER_CHECK(Modifier::Alt, KMOD_ALT);
   MODIFIER_CHECK(Modifier::Gui, KMOD_GUI);
 

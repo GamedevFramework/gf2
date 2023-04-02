@@ -1,0 +1,686 @@
+= `gf::Scancode` type
+v0.1
+:toc: right
+:toclevels: 2
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+:experimental: // for kbd
+
+`Scancode` describes all the physical keyboard buttons.
+
+xref:graphics_devices.adoc[< Back to `graphics` Devices]
+
+== Description
+
+[source]
+----
+#include <gf2/Mouse.h>
+enum class Scancode : uint32_t;
+----
+
+The name of the keys corresponds to the US layout. You should use scancodes when you want a key with a specific location on the keyboard, whatever is written on the key. For example, if you want the link:https://en.wikipedia.org/wiki/Arrow_keys#WASD_keys:[keys for moving] to be located at kbd:[W]kbd:[A]kbd:[S]kbd:[D], you should use scancodes.
+
+.Common keyboard layouts with their physical keys (image by link:https://commons.wikimedia.org/wiki/File:Physical_keyboard_layouts_comparison_ANSI_ISO_KS_ABNT_JIS.png[Brilliantwiki2], CC-BY-SA 4.0)
+image::media/keyboard_layouts.png[]
+
+The underlying values corresponds to link:http://www.usb.org/developers/hidpage/Hut1_12v2.pdf[USB key codes].
+
+See also: xref:Modifier.adoc[`Modifier`]
+
+== Enumerators
+
+.Enumerators for `gf::Scancode`
+[cols="1,1"]
+|===
+| Value | Description
+
+| `gf::Scancode::Unknown`
+|
+
+| `gf::Scancode::A`
+| kbd:[A]
+
+| `gf::Scancode::B`
+| kbd:[B]
+
+| `gf::Scancode::C`
+| kbd:[C]
+
+| `gf::Scancode::D`
+| kbd:[D]
+
+| `gf::Scancode::E`
+| kbd:[E]
+
+| `gf::Scancode::F`
+| kbd:[F]
+
+| `gf::Scancode::G`
+| kbd:[G]
+
+| `gf::Scancode::H`
+| kbd:[H]
+
+| `gf::Scancode::I`
+| kbd:[I]
+
+| `gf::Scancode::J`
+| kbd:[J]
+
+| `gf::Scancode::K`
+| kbd:[K]
+
+| `gf::Scancode::L`
+| kbd:[L]
+
+| `gf::Scancode::M`
+| kbd:[M]
+
+| `gf::Scancode::N`
+| kbd:[N]
+
+| `gf::Scancode::O`
+| kbd:[O]
+
+| `gf::Scancode::P`
+| kbd:[P]
+
+| `gf::Scancode::Q`
+| kbd:[Q]
+
+| `gf::Scancode::R`
+| kbd:[R]
+
+| `gf::Scancode::S`
+| kbd:[S]
+
+| `gf::Scancode::T`
+| kbd:[T]
+
+| `gf::Scancode::U`
+| kbd:[U]
+
+| `gf::Scancode::V`
+| kbd:[V]
+
+| `gf::Scancode::W`
+| kbd:[W]
+
+| `gf::Scancode::X`
+| kbd:[X]
+
+| `gf::Scancode::Y`
+| kbd:[Y]
+
+| `gf::Scancode::Z`
+| kbd:[Z]
+
+| `gf::Scancode::Num1`
+| kbd:[1]
+
+| `gf::Scancode::Num2`
+| kbd:[2]
+
+| `gf::Scancode::Num3`
+| kbd:[3]
+
+| `gf::Scancode::Num4`
+| kbd:[4]
+
+| `gf::Scancode::Num5`
+| kbd:[5]
+
+| `gf::Scancode::Num6`
+| kbd:[6]
+
+| `gf::Scancode::Num7`
+| kbd:[7]
+
+| `gf::Scancode::Num8`
+| kbd:[8]
+
+| `gf::Scancode::Num9`
+| kbd:[9]
+
+| `gf::Scancode::Num0`
+| kbd:[0]
+
+| `gf::Scancode::Return`
+| kbd:[Return]
+
+| `gf::Scancode::Escape`
+| kbd:[Escape]
+
+| `gf::Scancode::Backspace`
+| kbd:[Backspace]
+
+| `gf::Scancode::Tab`
+| kbd:[Tab]
+
+| `gf::Scancode::Space`
+| kbd:[Space]
+
+| `gf::Scancode::Minus`
+| kbd:[-]
+
+| `gf::Scancode::Equals`
+| kbd:[=]
+
+| `gf::Scancode::LeftBracket`
+| kbd:[(]
+
+| `gf::Scancode::RightBracket`
+| kbd:[)]
+
+| `gf::Scancode::Backslash`
+| kbd:[\ ]
+
+| `gf::Scancode::NonUsHash`
+|
+
+| `gf::Scancode::Semicolon`
+| kbd:[;]
+
+| `gf::Scancode::Apostrophe`
+| kbd:[']
+
+| `gf::Scancode::Grave`
+| kbd:[`]
+
+| `gf::Scancode::Comma`
+| kbd:[,]
+
+| `gf::Scancode::Period`
+| kbd:[.]
+
+| `gf::Scancode::Slash`
+| kbd:[/]
+
+| `gf::Scancode::CapsLock`
+| kbd:[Caps Lock]
+
+| `gf::Scancode::F1`
+| kbd:[F1]
+
+| `gf::Scancode::F2`
+| kbd:[F2]
+
+| `gf::Scancode::F3`
+| kbd:[F3]
+
+| `gf::Scancode::F4`
+| kbd:[F4]
+
+| `gf::Scancode::F5`
+| kbd:[F5]
+
+| `gf::Scancode::F6`
+| kbd:[F6]
+
+| `gf::Scancode::F7`
+| kbd:[F7]
+
+| `gf::Scancode::F8`
+| kbd:[F8]
+
+| `gf::Scancode::F9`
+| kbd:[F9]
+
+| `gf::Scancode::F10`
+| kbd:[F10]
+
+| `gf::Scancode::F11`
+| kbd:[F11]
+
+| `gf::Scancode::F12`
+| kbd:[F12]
+
+| `gf::Scancode::PrintScreen`
+| kbd:[Print Screen]
+
+| `gf::Scancode::ScrollLock`
+| kbd:[Scroll Lock]
+
+| `gf::Scancode::Pause`
+| kbd:[Pause]
+
+| `gf::Scancode::Insert`
+| kbd:[Insert]
+
+| `gf::Scancode::Home`
+| kbd:[Home]
+
+| `gf::Scancode::PageUp`
+| kbd:[Page Up]
+
+| `gf::Scancode::Delete`
+| kbd:[Delete]
+
+| `gf::Scancode::End`
+| kbd:[End]
+
+| `gf::Scancode::PageDown`
+| kbd:[Page Down]
+
+| `gf::Scancode::Right`
+| kbd:[→]
+
+| `gf::Scancode::Left`
+| kbd:[←]
+
+| `gf::Scancode::Down`
+| kbd:[↓]
+
+| `gf::Scancode::Up`
+| kbd:[↑]
+
+| `gf::Scancode::NumLockClear`
+|
+
+| `gf::Scancode::NumpadDivide`
+|
+
+| `gf::Scancode::NumpadMultiply`
+|
+
+| `gf::Scancode::NumpadMinus`
+|
+
+| `gf::Scancode::NumpadPlus`
+|
+
+| `gf::Scancode::NumpadEnter`
+|
+
+| `gf::Scancode::Numpad1`
+|
+
+| `gf::Scancode::Numpad2`
+|
+
+| `gf::Scancode::Numpad3`
+|
+
+| `gf::Scancode::Numpad4`
+|
+
+| `gf::Scancode::Numpad5`
+|
+
+| `gf::Scancode::Numpad6`
+|
+
+| `gf::Scancode::Numpad7`
+|
+
+| `gf::Scancode::Numpad8`
+|
+
+| `gf::Scancode::Numpad9`
+|
+
+| `gf::Scancode::Numpad0`
+|
+
+| `gf::Scancode::NumpadPeriod`
+|
+
+| `gf::Scancode::NonUsBackslash`
+|
+
+| `gf::Scancode::Application`
+|
+
+| `gf::Scancode::Power`
+|
+
+| `gf::Scancode::NumpadEquals`
+|
+
+| `gf::Scancode::F13`
+|
+
+| `gf::Scancode::F14`
+|
+
+| `gf::Scancode::F15`
+|
+
+| `gf::Scancode::F16`
+|
+
+| `gf::Scancode::F17`
+|
+
+| `gf::Scancode::F18`
+|
+
+| `gf::Scancode::F19`
+|
+
+| `gf::Scancode::F20`
+|
+
+| `gf::Scancode::F21`
+|
+
+| `gf::Scancode::F22`
+|
+
+| `gf::Scancode::F23`
+|
+
+| `gf::Scancode::F24`
+|
+
+| `gf::Scancode::Execute`
+|
+
+| `gf::Scancode::Help`
+|
+
+| `gf::Scancode::Menu`
+|
+
+| `gf::Scancode::Select`
+|
+
+| `gf::Scancode::Stop`
+|
+
+| `gf::Scancode::Again`
+|
+
+| `gf::Scancode::Undo`
+|
+
+| `gf::Scancode::Cut`
+|
+
+| `gf::Scancode::Copy`
+|
+
+| `gf::Scancode::Paste`
+|
+
+| `gf::Scancode::Find`
+|
+
+| `gf::Scancode::Mute`
+|
+
+| `gf::Scancode::VolumeUp`
+|
+
+| `gf::Scancode::VolumeDown`
+|
+
+| `gf::Scancode::NumpadComma`
+|
+
+| `gf::Scancode::NumpadEqualsAs400`
+|
+
+| `gf::Scancode::International1`
+|
+
+| `gf::Scancode::International2`
+|
+
+| `gf::Scancode::International3`
+|
+
+| `gf::Scancode::International4`
+|
+
+| `gf::Scancode::International5`
+|
+
+| `gf::Scancode::International6`
+|
+
+| `gf::Scancode::International7`
+|
+
+| `gf::Scancode::International8`
+|
+
+| `gf::Scancode::International9`
+|
+
+| `gf::Scancode::Lang1`
+|
+
+| `gf::Scancode::Lang2`
+|
+
+| `gf::Scancode::Lang3`
+|
+
+| `gf::Scancode::Lang4`
+|
+
+| `gf::Scancode::Lang5`
+|
+
+| `gf::Scancode::Lang6`
+|
+
+| `gf::Scancode::Lang7`
+|
+
+| `gf::Scancode::Lang8`
+|
+
+| `gf::Scancode::Lang9`
+|
+
+| `gf::Scancode::AltErase`
+|
+
+| `gf::Scancode::SysReq`
+|
+
+| `gf::Scancode::Cancel`
+|
+
+| `gf::Scancode::Clear`
+|
+
+| `gf::Scancode::Prior`
+|
+
+| `gf::Scancode::Return2`
+|
+
+| `gf::Scancode::Separator`
+|
+
+| `gf::Scancode::Out`
+|
+
+| `gf::Scancode::Oper`
+|
+
+| `gf::Scancode::ClearAgain`
+|
+
+| `gf::Scancode::CrSel`
+|
+
+| `gf::Scancode::ExSel`
+|
+
+| `gf::Scancode::Numpad00`
+|
+
+| `gf::Scancode::Numpad000`
+|
+
+| `gf::Scancode::ThousandsSeparator`
+|
+
+| `gf::Scancode::DecimalSeparator`
+|
+
+| `gf::Scancode::CurrencyUnit`
+|
+
+| `gf::Scancode::CurrencySubUnit`
+|
+
+| `gf::Scancode::NumpadLeftParen`
+|
+
+| `gf::Scancode::NumpadRightParen`
+|
+
+| `gf::Scancode::NumpadLeftBrace`
+|
+
+| `gf::Scancode::NumpadRightBrace`
+|
+
+| `gf::Scancode::NumpadTab`
+|
+
+| `gf::Scancode::NumpadBackspace`
+|
+
+| `gf::Scancode::NumpadA`
+|
+
+| `gf::Scancode::NumpadB`
+|
+
+| `gf::Scancode::NumpadC`
+|
+
+| `gf::Scancode::NumpadD`
+|
+
+| `gf::Scancode::NumpadE`
+|
+
+| `gf::Scancode::NumpadF`
+|
+
+| `gf::Scancode::NumpadXor`
+|
+
+| `gf::Scancode::NumpadPower`
+|
+
+| `gf::Scancode::NumpadPercent`
+|
+
+| `gf::Scancode::NumpadLess`
+|
+
+| `gf::Scancode::NumpadGreater`
+|
+
+| `gf::Scancode::NumpadAmpersand`
+|
+
+| `gf::Scancode::NumpadDblAmpersand`
+|
+
+| `gf::Scancode::NumpadVerticalBar`
+|
+
+| `gf::Scancode::NumpadDblVerticalBar`
+|
+
+| `gf::Scancode::NumpadColon`
+|
+
+| `gf::Scancode::NumpadHash`
+|
+
+| `gf::Scancode::NumpadSpace`
+|
+
+| `gf::Scancode::NumpadAt`
+|
+
+| `gf::Scancode::NumpadExclam`
+|
+
+| `gf::Scancode::NumpadMemStore`
+|
+
+| `gf::Scancode::NumpadMemRecall`
+|
+
+| `gf::Scancode::NumpadMemClear`
+|
+
+| `gf::Scancode::NumpadMemAdd`
+|
+
+| `gf::Scancode::NumpadMemSubtract`
+|
+
+| `gf::Scancode::NumpadMemMultiply`
+|
+
+| `gf::Scancode::NumpadMemDivide`
+|
+
+| `gf::Scancode::NumpadPlusMinus`
+|
+
+| `gf::Scancode::NumpadClear`
+|
+
+| `gf::Scancode::NumpadClearEntry`
+|
+
+| `gf::Scancode::NumpadBinary`
+|
+
+| `gf::Scancode::NumpadOctal`
+|
+
+| `gf::Scancode::NumpadDecimal`
+|
+
+| `gf::Scancode::NumpadHexadecimal`
+|
+
+| `gf::Scancode::LeftCtrl`
+|
+
+| `gf::Scancode::LeftShift`
+|
+
+| `gf::Scancode::LeftAlt`
+|
+
+| `gf::Scancode::LeftGui`
+|
+
+| `gf::Scancode::RightCtrl`
+|
+
+| `gf::Scancode::RightShift`
+|
+
+| `gf::Scancode::RightAlt`
+|
+
+| `gf::Scancode::RightGui`
+|
+
+| `gf::Scancode::Mode`
+|
+|===
