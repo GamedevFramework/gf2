@@ -9,14 +9,23 @@
 
 namespace gf {
 
-#define MOUSE_CHECK(GF_VAL, SDL_VAL) static_assert(static_cast<uint32_t>(GF_VAL) == (SDL_VAL), "Problem with " #SDL_VAL)
+  namespace {
 
-  MOUSE_CHECK(MouseButton::Left, SDL_BUTTON_LEFT);
-  MOUSE_CHECK(MouseButton::Middle, SDL_BUTTON_MIDDLE);
-  MOUSE_CHECK(MouseButton::Right, SDL_BUTTON_RIGHT);
-  MOUSE_CHECK(MouseButton::XButton1, SDL_BUTTON_X1);
-  MOUSE_CHECK(MouseButton::XButton2, SDL_BUTTON_X2);
+    template<MouseButton Button, uint32_t Value>
+    constexpr void mouse_button_check()
+    {
+      static_assert(static_cast<uint32_t>(Button) == Value, "Check gf::GamepadButton");
+    }
 
-#undef MOUSE_CHECK
+    [[maybe_unused]] constexpr void mouse_check()
+    {
+      mouse_button_check<MouseButton::Left, SDL_BUTTON_LEFT>();
+      mouse_button_check<MouseButton::Middle, SDL_BUTTON_MIDDLE>();
+      mouse_button_check<MouseButton::Right, SDL_BUTTON_RIGHT>();
+      mouse_button_check<MouseButton::XButton1, SDL_BUTTON_X1>();
+      mouse_button_check<MouseButton::XButton2, SDL_BUTTON_X2>();
+    }
+
+  } // namespace
 
 } // namespace gf

@@ -253,7 +253,7 @@ namespace gf {
   namespace details {
     constexpr uint32_t to_keycode(Scancode scancode)
     {
-      return static_cast<uint32_t>(scancode) | (1 << 30);
+      return static_cast<uint32_t>(scancode) | (UINT32_C(1) << 30);
     }
   } // namespace details
 
