@@ -17,12 +17,16 @@ EmptyLineAfterAccessModifier: Leave
 EmptyLineBeforeAccessModifier: Always
 IncludeBlocks: Regroup
 IncludeCategories:
-  - Regex: '<c[[:alnum:]]+>'
+  # c headers
+  - Regex: '<(cassert|ccomplex|cctype|cerrno|cfenv|cfloat|cinttypes|ciso646|climits|clocale|cmath|csetjmp|csignal|cstdalign|cstdarg|cstdbool|cstddef|cstdint|cstdio|cstdlib|cstring|ctgmath|ctime|cuchar|cwchar|cwctype)>'
     Priority: 1
+  # c++ headers
   - Regex: '<[[:alnum:]_]+>'
     Priority: 2
+  # other headers
   - Regex: '<[[:alnum:]]+/[[:alnum:]._]+>'
     Priority: 3
+  # local headers
   - Regex: '"[[:alnum:]._]+"'
     Priority: 4
 IndentAccessModifiers: false
