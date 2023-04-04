@@ -22,7 +22,7 @@ xref:graphics_devices.adoc[< Back to `graphics` Devices]
 
 [source]
 ----
-#include <gf2/Mouse.h>
+#include <gf2/Keyboard.h>
 enum class Scancode : uint32_t;
 ----
 
@@ -33,7 +33,7 @@ image::media/keyboard_layouts.png[]
 
 The underlying values corresponds to link:http://www.usb.org/developers/hidpage/Hut1_12v2.pdf[USB key codes].
 
-See also: xref:Modifier.adoc[`Modifier`]
+See also: xref:Keycode.adoc[`Keycode`], xref:Modifier.adoc[`Modifier`]
 
 == Enumerators
 

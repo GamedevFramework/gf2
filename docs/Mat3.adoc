@@ -61,8 +61,7 @@ Get a pointer to the raw data.
 [source]
 ----
 template<typename T>
-inline
-Mat3<T> operator*(const Mat3<T>& lhs, const Mat3<T>& rhs)
+inline Mat3<T> operator*(const Mat3<T>& lhs, const Mat3<T>& rhs)
 ----
 
 Compute a matrix multiplication.

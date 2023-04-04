@@ -1,0 +1,672 @@
+= `gf::Keycode` type
+v0.1
+:toc: right
+:toclevels: 2
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+:experimental: // for kbd
+
+`Keycode` describes all the logical keyboard buttons.
+
+xref:graphics_devices.adoc[< Back to `graphics` Devices]
+
+== Description
+
+[source]
+----
+#include <gf2/Keyboard.h>
+enum class Keycode : uint32_t;
+----
+
+The keycodes corresponds to what is written on the keys of the keyboard. You should use keycodes when you target a special letter. For example, if you want the player to press kbd:[I] for opening the inventory, you should use a keycode.
+
+See also: xref:Scancode.adoc[`Scancode`], xref:Modifier.adoc[`Modifier`]
+
+== Enumerators
+
+.Enumerators for `gf::Keycode`
+[cols="1,1"]
+|===
+| Value | Description
+
+| `gf::Keycode::Unknown`
+|
+
+| `gf::Keycode::Return`
+| kbd:[Return]
+
+| `gf::Keycode::Escape`
+| kbd:[Escape]
+
+| `gf::Keycode::Backspace`
+| kbd:[Backspace]
+
+| `gf::Keycode::Tab`
+| kbd:[Tab]
+
+| `gf::Keycode::Space`
+| kbd:[Space]
+
+| `gf::Keycode::Exclaim`
+| kbd:[!]
+
+| `gf::Keycode::QuoteDbl`
+| kbd:["]
+
+| `gf::Keycode::Hash`
+| kbd:[#]
+
+| `gf::Keycode::Percent`
+| kbd:[%]
+
+| `gf::Keycode::Dollar`
+| kbd:[$]
+
+| `gf::Keycode::Ampersand`
+| kbd:[&]
+
+| `gf::Keycode::Quote`
+| kbd:[']
+
+| `gf::Keycode::LeftParen`
+| kbd:[(]
+
+| `gf::Keycode::RightParen`
+| kbd:[)]
+
+| `gf::Keycode::Asterisk`
+| kbd:[*]
+
+| `gf::Keycode::Plus`
+| kbd:[+]
+
+| `gf::Keycode::Comma`
+| kbd:[,]
+
+| `gf::Keycode::Minus`
+| kbd:[-]
+
+| `gf::Keycode::Period`
+| kbd:[,]
+
+| `gf::Keycode::Slash`
+| kbd:[/]
+
+| `gf::Keycode::Num0`
+| kbd:[0]
+
+| `gf::Keycode::Num1`
+| kbd:[1]
+
+| `gf::Keycode::Num2`
+| kbd:[2]
+
+| `gf::Keycode::Num3`
+| kbd:[3]
+
+| `gf::Keycode::Num4`
+| kbd:[4]
+
+| `gf::Keycode::Num5`
+| kbd:[5]
+
+| `gf::Keycode::Num6`
+| kbd:[6]
+
+| `gf::Keycode::Num7`
+| kbd:[7]
+
+| `gf::Keycode::Num8`
+| kbd:[8]
+
+| `gf::Keycode::Num9`
+| kbd:[9]
+
+| `gf::Keycode::Colon`
+| kbd:[:]
+
+| `gf::Keycode::SemiColon`
+| kbd:[;]
+
+| `gf::Keycode::Less`
+| kbd:[<]
+
+| `gf::Keycode::Equals`
+| kbd:[=]
+
+| `gf::Keycode::Greater`
+| kbd:[>]
+
+| `gf::Keycode::Question`
+| kbd:[?]
+
+| `gf::Keycode::At`
+| kbd:[@]
+
+| `gf::Keycode::LeftBracket`
+| kbd:[[]
+
+| `gf::Keycode::Backslash`
+| kbd:[\ ]
+
+| `gf::Keycode::RightBracket`
+| kbd:[\]]
+
+| `gf::Keycode::Caret`
+| kbd:[^]
+
+| `gf::Keycode::Underscore`
+| kbd:[_]
+
+| `gf::Keycode::Backquote`
+| kbd:[`]
+
+| `gf::Keycode::A`
+| kbd:[A]
+
+| `gf::Keycode::B`
+| kbd:[B]
+
+| `gf::Keycode::C`
+| kbd:[C]
+
+| `gf::Keycode::D`
+| kbd:[D]
+
+| `gf::Keycode::E`
+| kbd:[E]
+
+| `gf::Keycode::F`
+| kbd:[F]
+
+| `gf::Keycode::G`
+| kbd:[G]
+
+| `gf::Keycode::H`
+| kbd:[H]
+
+| `gf::Keycode::I`
+| kbd:[I]
+
+| `gf::Keycode::J`
+| kbd:[J]
+
+| `gf::Keycode::K`
+| kbd:[K]
+
+| `gf::Keycode::L`
+| kbd:[L]
+
+| `gf::Keycode::M`
+| kbd:[M]
+
+| `gf::Keycode::N`
+| kbd:[N]
+
+| `gf::Keycode::O`
+| kbd:[O]
+
+| `gf::Keycode::P`
+| kbd:[P]
+
+| `gf::Keycode::Q`
+| kbd:[Q]
+
+| `gf::Keycode::R`
+| kbd:[R]
+
+| `gf::Keycode::S`
+| kbd:[S]
+
+| `gf::Keycode::T`
+| kbd:[T]
+
+| `gf::Keycode::U`
+| kbd:[U]
+
+| `gf::Keycode::V`
+| kbd:[V]
+
+| `gf::Keycode::W`
+| kbd:[W]
+
+| `gf::Keycode::X`
+| kbd:[X]
+
+| `gf::Keycode::Y`
+| kbd:[Y]
+
+| `gf::Keycode::Z`
+| kbd:[Z]
+
+| `gf::Keycode::CapsLock`
+| kbd:[Caps Lock]
+
+| `gf::Keycode::F1`
+| kbd:[F1]
+
+| `gf::Keycode::F2`
+| kbd:[F2]
+
+| `gf::Keycode::F3`
+| kbd:[F3]
+
+| `gf::Keycode::F4`
+| kbd:[F4]
+
+| `gf::Keycode::F5`
+| kbd:[F5]
+
+| `gf::Keycode::F6`
+| kbd:[F6]
+
+| `gf::Keycode::F7`
+| kbd:[F7]
+
+| `gf::Keycode::F8`
+| kbd:[F8]
+
+| `gf::Keycode::F9`
+| kbd:[F9]
+
+| `gf::Keycode::F10`
+| kbd:[F10]
+
+| `gf::Keycode::F11`
+| kbd:[F11]
+
+| `gf::Keycode::F12`
+| kbd:[F12]
+
+| `gf::Keycode::PrintScreen`
+| kbd:[Print Screen]
+
+| `gf::Keycode::ScrollLock`
+| kbd:[Scroll Lock]
+
+| `gf::Keycode::Pause`
+| kbd:[Pause]
+
+| `gf::Keycode::Insert`
+| kbd:[Insert]
+
+| `gf::Keycode::Home`
+| kbd:[Home]
+
+| `gf::Keycode::PageUp`
+| kbd:[Page Up]
+
+| `gf::Keycode::Delete`
+| kbd:[Delete]
+
+| `gf::Keycode::End`
+| kbd:[End]
+
+| `gf::Keycode::PageDown`
+| kbd:[Page Down]
+
+| `gf::Keycode::Right`
+| kbd:[→]
+
+| `gf::Keycode::Left`
+| kbd:[←]
+
+| `gf::Keycode::Down`
+| kbd:[↓]
+
+| `gf::Keycode::Up`
+| kbd:[↑]
+
+| `gf::Keycode::NumLockClear`
+|
+
+| `gf::Keycode::NumpadDivide`
+|
+
+| `gf::Keycode::NumpadMultiply`
+|
+
+| `gf::Keycode::NumpadMinus`
+|
+
+| `gf::Keycode::NumpadPlus`
+|
+
+| `gf::Keycode::NumpadEnter`
+|
+
+| `gf::Keycode::Numpad1`
+|
+
+| `gf::Keycode::Numpad2`
+|
+
+| `gf::Keycode::Numpad3`
+|
+
+| `gf::Keycode::Numpad4`
+|
+
+| `gf::Keycode::Numpad5`
+|
+
+| `gf::Keycode::Numpad6`
+|
+
+| `gf::Keycode::Numpad7`
+|
+
+| `gf::Keycode::Numpad8`
+|
+
+| `gf::Keycode::Numpad9`
+|
+
+| `gf::Keycode::Numpad0`
+|
+
+| `gf::Keycode::NumpadPeriod`
+|
+
+| `gf::Keycode::Application`
+|
+
+| `gf::Keycode::Power`
+|
+
+| `gf::Keycode::NumpadEquals`
+|
+
+| `gf::Keycode::F13`
+|
+
+| `gf::Keycode::F14`
+|
+
+| `gf::Keycode::F15`
+|
+
+| `gf::Keycode::F16`
+|
+
+| `gf::Keycode::F17`
+|
+
+| `gf::Keycode::F18`
+|
+
+| `gf::Keycode::F19`
+|
+
+| `gf::Keycode::F20`
+|
+
+| `gf::Keycode::F21`
+|
+
+| `gf::Keycode::F22`
+|
+
+| `gf::Keycode::F23`
+|
+
+| `gf::Keycode::F24`
+|
+
+| `gf::Keycode::Execute`
+|
+
+| `gf::Keycode::Help`
+|
+
+| `gf::Keycode::Menu`
+|
+
+| `gf::Keycode::Select`
+|
+
+| `gf::Keycode::Stop`
+|
+
+| `gf::Keycode::Again`
+|
+
+| `gf::Keycode::Undo`
+|
+
+| `gf::Keycode::Cut`
+|
+
+| `gf::Keycode::Copy`
+|
+
+| `gf::Keycode::Paste`
+|
+
+| `gf::Keycode::Find`
+|
+
+| `gf::Keycode::Mute`
+|
+
+| `gf::Keycode::VolumeUp`
+|
+
+| `gf::Keycode::VolumeDown`
+|
+
+| `gf::Keycode::NumpadComma`
+|
+
+| `gf::Keycode::NumpadEqualsAs400`
+|
+
+| `gf::Keycode::AltErase`
+|
+
+| `gf::Keycode::SysReq`
+|
+
+| `gf::Keycode::Cancel`
+|
+
+| `gf::Keycode::Clear`
+|
+
+| `gf::Keycode::Prior`
+|
+
+| `gf::Keycode::Return2`
+|
+
+| `gf::Keycode::Separator`
+|
+
+| `gf::Keycode::Out`
+|
+
+| `gf::Keycode::Oper`
+|
+
+| `gf::Keycode::ClearAgain`
+|
+
+| `gf::Keycode::CrSel`
+|
+
+| `gf::Keycode::ExSel`
+|
+
+| `gf::Keycode::Numpad00`
+|
+
+| `gf::Keycode::Numpad000`
+|
+
+| `gf::Keycode::ThousandsSeparator`
+|
+
+| `gf::Keycode::DecimalSeparator`
+|
+
+| `gf::Keycode::CurrencyUnit`
+|
+
+| `gf::Keycode::CurrencySubUnit`
+|
+
+| `gf::Keycode::NumpadLeftParen`
+|
+
+| `gf::Keycode::NumpadRightParen`
+|
+
+| `gf::Keycode::NumpadLeftBrace`
+|
+
+| `gf::Keycode::NumpadRightBrace`
+|
+
+| `gf::Keycode::NumpadTab`
+|
+
+| `gf::Keycode::NumpadBackspace`
+|
+
+| `gf::Keycode::NumpadA`
+|
+
+| `gf::Keycode::NumpadB`
+|
+
+| `gf::Keycode::NumpadC`
+|
+
+| `gf::Keycode::NumpadD`
+|
+
+| `gf::Keycode::NumpadE`
+|
+
+| `gf::Keycode::NumpadF`
+|
+
+| `gf::Keycode::NumpadXor`
+|
+
+| `gf::Keycode::NumpadPower`
+|
+
+| `gf::Keycode::NumpadPercent`
+|
+
+| `gf::Keycode::NumpadLess`
+|
+
+| `gf::Keycode::NumpadGreater`
+|
+
+| `gf::Keycode::NumpadAmpersand`
+|
+
+| `gf::Keycode::NumpadDblAmpersand`
+|
+
+| `gf::Keycode::NumpadVerticalBar`
+|
+
+| `gf::Keycode::NumpadDblVerticalBar`
+|
+
+| `gf::Keycode::NumpadColon`
+|
+
+| `gf::Keycode::NumpadHash`
+|
+
+| `gf::Keycode::NumpadSpace`
+|
+
+| `gf::Keycode::NumpadAt`
+|
+
+| `gf::Keycode::NumpadExclam`
+|
+
+| `gf::Keycode::NumpadMemStore`
+|
+
+| `gf::Keycode::NumpadMemRecall`
+|
+
+| `gf::Keycode::NumpadMemClear`
+|
+
+| `gf::Keycode::NumpadMemAdd`
+|
+
+| `gf::Keycode::NumpadMemSubtract`
+|
+
+| `gf::Keycode::NumpadMemMultiply`
+|
+
+| `gf::Keycode::NumpadMemDivide`
+|
+
+| `gf::Keycode::NumpadPlusMinus`
+|
+
+| `gf::Keycode::NumpadClear`
+|
+
+| `gf::Keycode::NumpadClearEntry`
+|
+
+| `gf::Keycode::NumpadBinary`
+|
+
+| `gf::Keycode::NumpadOctal`
+|
+
+| `gf::Keycode::NumpadDecimal`
+|
+
+| `gf::Keycode::NumpadHexadecimal`
+|
+
+| `gf::Keycode::LeftCtrl`
+|
+
+| `gf::Keycode::LeftShift`
+|
+
+| `gf::Keycode::LeftAlt`
+|
+
+| `gf::Keycode::LeftGui`
+|
+
+| `gf::Keycode::RightCtrl`
+|
+
+| `gf::Keycode::RightShift`
+|
+
+| `gf::Keycode::RightAlt`
+|
+
+| `gf::Keycode::RightGui`
+|
+
+| `gf::Keycode::Mode`
+|
+|===

@@ -17,11 +17,105 @@ The devices component contains enumerations and types that describe input device
 
 - Keyboard: <<_scancode>>, <<_keycode>>, <<_modifier>> (<<_keyboard>>)
 - Mouse: <<_mousebutton>>
-- Gamepad:
+- Gamepad: <<_gamepadaxis>>, <<_gamepadbutton>> (<<_gamepad>>)
 
 xref:reference.adoc[< Back to reference]
 
+== Variables
+
+=== `AnyGamepad`
+
+[source]
+----
+#include <gf2/Gamepad.h>
+constexpr GamepadId AnyGamepad;
+----
+
+A special identifier for all gamepads.
+
+This identifier can be used in controls for specifying any gamepad. This is especially useful for single player game, as you do not have to reconfigure the action in case of gamepad disconnection/reconnection.
+
 == Types
+
+=== `Gamepad`
+
+[source]
+----
+#include <gf2/Gamepad.h>
+class Gamepad;
+----
+
+`Gamepad` provides useful functions for handling gamepads. xref:Gamepad.adoc[*Read more...*]
+
+=== `GamepadAxis`
+
+[source]
+----
+#include <gf2/Gamepad.h>
+enum class GamepadAxis : int32_t;
+----
+
+`GamepadAxis` describes all the gamepad axis. xref:GamepadAxis.adoc[*Read more...*]
+
+=== `GamepadAxisDirection`
+
+[source]
+----
+#include <gf2/Gamepad.h>
+enum class GamepadAxisDirection : uint32_t;
+----
+
+`GamepadAxisDirection` describes a gamepad axis direction.
+
+The positive direction is right with a X axis and down with a Y axis. For triggers, there is only a positive direction.
+
+.Enumerators for `gf::GamepadAxisDirection`
+[cols="1,1"]
+|===
+| Value | Description
+
+| `gf::GamepadAxisDirection::Positive`
+| Positive direction of the axis.
+
+| `gf::GamepadAxisDirection::Negative`
+| Negative direction of the axis.
+|===
+
+See also: <<_gamepadaxis>>
+
+=== `GamepadButton`
+
+[source]
+----
+#include <gf2/Gamepad.h>
+enum class GamepadButton : int32_t;
+----
+
+`GamepadButton` describes all the gamepad buttons. xref:GamepadButton.adoc[*Read more...*]
+
+=== `GamepadHwId`
+
+[source]
+----
+#include <gf2/Gamepad.h>
+enum class GamepadHwId : int;
+----
+
+`GamepadHwId` is a gamepad hardware identifier. This identifier is given when a gamepad has just been connected. It must be transformed in a <<_gamepadid>> with xref:Gamepad.adoc[`Gamepad::open`].
+
+See also: <<_gamepadid>>
+
+=== `GamepadId`
+
+[source]
+----
+#include <gf2/Gamepad.h>
+enum class GamepadId : int32_t;
+----
+
+`GamepadId` is a gamepad identifier. This identifier is the representation of a connected gamepad that has been opened with xref:Gamepad.adoc[`Gamepad::open`]. It is used in the subsequent events related to this gamepad.
+
+See also: <<_gamepadhwid>>
 
 === `Keycode`
 
@@ -30,6 +124,8 @@ xref:reference.adoc[< Back to reference]
 #include <gf2/Keyboard.h>
 enum class Keycode : uint32_t;
 ----
+
+`Keycode` describes all the logical keyboard buttons. xref:Keycode.adoc[*Read more...*]
 
 See also: <<_scancode>>, <<_keyboard>>
 
@@ -40,6 +136,8 @@ See also: <<_scancode>>, <<_keyboard>>
 #include <gf2/Keyboard.h>
 struct Keyboard;
 ----
+
+`Keyboard` provides useful functions for handling keyboards. xref:Keyboard.adoc[*Read more...*]
 
 See also: <<_scancode>>, <<_keycode>>
 

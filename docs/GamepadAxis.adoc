@@ -1,0 +1,59 @@
+= `gf::GamepadAxis` type
+v0.1
+:toc: right
+:toclevels: 2
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+`GamepadAxis` describes all the gamepad axis.
+
+xref:graphics_devices.adoc[< Back to `graphics` Devices]
+
+== Description
+
+[source]
+----
+#include <gf2/Gamepad.h>
+enum class GamepadAxis : int32_t;
+----
+
+The axis are named after the link:https://en.wikipedia.org/wiki/Xbox_360_controller[Xbox 360 controller].
+
+See also: xref:GamepadButton.adoc[`GamepadButton`]
+
+== Enumerators
+
+.Enumerators for `gf::Modifier`
+[cols="1,1"]
+|===
+| Value | Description
+
+| `gf::GamepadAxis::Invalid`
+| Invalid axis
+
+| `gf::GamepadAxis::LeftX`
+| The left stick X axis
+
+| `gf::GamepadAxis::LeftY`
+| The left stick Y axis
+
+| `gf::GamepadAxis::RightX`
+| The right stick X axis
+
+| `gf::GamepadAxis::RightY`
+| The right stick Y axis
+
+| `gf::GamepadAxis::TriggerLeft`
+| The left trigger axis
+
+| `gf::GamepadAxis::TriggerRight`
+| The right trigger axis
+|===

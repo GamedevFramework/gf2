@@ -30,7 +30,7 @@ The main modifiers (shift, control, atl, gui) generally have two instances on ke
 
 `Modifier` can be used with xref:Flags.adoc[`Flags<E>`].
 
-See also: xref:Scancode.adoc[`Scancode`]
+See also: xref:Keycode.adoc[`Keycode`], xref:Scancode.adoc[`Scancode`]
 
 == Enumerators
 

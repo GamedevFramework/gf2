@@ -64,7 +64,7 @@ See also: <<_static_span>>
 [source]
 ----
 #include <gf/Span.h>
-template<typename T>
+template<typename T, std::size_t N>
 class StaticSpan;
 ----
 

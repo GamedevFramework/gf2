@@ -1,0 +1,83 @@
+= `gf::Keyboard` type
+v0.1
+:toc: right
+:toclevels: 2
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+`Keyboard` provides useful functions for handling keyboards.
+
+xref:graphics_devices.adoc[< Back to `graphics` Devices]
+
+== Description
+
+[source]
+----
+#include <gf2/Keyboard.h>
+----
+
+The provided functions handle various aspects of xref:Scancode.adoc[`Scancode`] and xref:Keycode.adoc[`Keycode`].
+
+== Static Member Functions
+
+=== `keycode_name`
+
+[source]
+----
+const char* keycode_name(Keycode keycode);
+----
+
+Get the name of a keycode.
+
+=== `keycode_from_name`
+
+[source]
+----
+Keycode keycode_from_name(const char* name);
+----
+
+Get the keycode associated to a name.
+
+=== `localize`
+
+[source]
+----
+Keycode localize(Scancode scancode);
+----
+
+Get the keycode corresponding to the scancode, or `gf::Keycode::Unknown` if the scancode cannot be mapped.
+
+=== `scancode_name`
+
+[source]
+----
+const char* scancode_name(Scancode scancode);
+----
+
+Get the name of the scancode.
+
+=== `scancode_from_name`
+
+[source]
+----
+Scancode scancode_from_name(const char* name);
+----
+
+Get the scancode associated to a name.
+
+=== `unlocalize`
+
+[source]
+----
+Scancode unlocalize(Keycode keycode);
+----
+
+Get the scancode corresponding to the keycode, or `gf::Scancode::Unknown` if the keycode cannot be mapped.

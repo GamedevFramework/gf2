@@ -22,7 +22,7 @@ xref:core_container.adoc[< Back to `core` Container]
 [source]
 ----
 #include <gf/Span.h>
-template<typename T>
+template<typename T, std::size_t N>
 class StaticSpan;
 ----
 
