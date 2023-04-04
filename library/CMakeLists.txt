@@ -85,6 +85,8 @@ gf2_handle_library(gf2core0
 # gf2::graphics
 
 add_library(gf2graphics0
+  graphics/Gamepad.cc
+  graphics/GraphicsInitializer.cc
   graphics/Keyboard.cc
   graphics/Mouse.cc
 )
