@@ -62,6 +62,7 @@ add_library(gf2core0
   core/Array2D.cc
   core/Color.cc
   core/Flags.cc
+  core/Log.cc
   core/Math.cc
   core/Mat3.cc
   core/Range.cc
