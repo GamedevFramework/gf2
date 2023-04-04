@@ -4,9 +4,9 @@
 #define GF_PORTABILITY_H
 
 #ifdef __GNUC__
-  #define GF_FORMAT(X, Y) __attribute__ ((format (printf, X, Y)))
+#  define GF_FORMAT(X, Y) __attribute__((format(printf, X, Y))) // NOLINT
 #else
-  #define GF_FORMAT(X, Y)
+#  define GF_FORMAT(X, Y)
 #endif
 
 #endif // GF_PORTABILITY_H

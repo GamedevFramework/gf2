@@ -14,7 +14,7 @@
 namespace gf {
 
   namespace {
-    std::atomic_int g_loaded = 0;
+    std::atomic_int g_loaded = 0; // NOLINT
   }
 
   GraphicsInitializer::GraphicsInitializer()
@@ -48,12 +48,12 @@ namespace gf {
     }
   }
 
-  GraphicsInitializer::GraphicsInitializer(GraphicsInitializer&&) noexcept
+  GraphicsInitializer::GraphicsInitializer(GraphicsInitializer&& /* unused */) noexcept
   {
     g_loaded.fetch_add(1);
   }
 
-  GraphicsInitializer& GraphicsInitializer::operator=(GraphicsInitializer&&) noexcept
+  GraphicsInitializer& GraphicsInitializer::operator=(GraphicsInitializer&& /* unused */) noexcept
   {
     g_loaded.fetch_add(1);
     return *this;

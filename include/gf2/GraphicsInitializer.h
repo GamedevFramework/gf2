@@ -12,11 +12,11 @@ namespace gf {
     GraphicsInitializer();
     ~GraphicsInitializer();
 
-    GraphicsInitializer(const GraphicsInitializer&) = delete;
-    GraphicsInitializer(GraphicsInitializer&&) noexcept;
+    GraphicsInitializer(const GraphicsInitializer& /* unused */) = delete;
+    GraphicsInitializer(GraphicsInitializer&& /* unused */) noexcept;
 
-    GraphicsInitializer& operator=(const GraphicsInitializer&) = delete;
-    GraphicsInitializer& operator=(GraphicsInitializer&&) noexcept;
+    GraphicsInitializer& operator=(const GraphicsInitializer& /* unused */) = delete;
+    GraphicsInitializer& operator=(GraphicsInitializer&& /* unused */) noexcept;
 
     static bool initialized();
   };
