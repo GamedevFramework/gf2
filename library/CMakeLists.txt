@@ -67,6 +67,7 @@ add_library(gf2core0
   core/Mat3.cc
   core/Range.cc
   core/Rect.cc
+  core/Ref.cc
   core/Transform.cc
   core/Vec2.cc
   core/Vec3.cc
