@@ -23,7 +23,7 @@ namespace gf {
       // initialize SDL
 
       if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER | SDL_INIT_AUDIO) != 0) {
-        Log::error("Unable to initialize SDL: '%s'\n", SDL_GetError());
+        Log::error("Unable to initialize SDL: '{}'\n", SDL_GetError());
         return;
       }
 

@@ -37,6 +37,25 @@ namespace gf {
       return "?";
     }
 
+    void print_timestamp_and_level(Log::Level level)
+    {
+      const auto now = std::chrono::system_clock::now();
+      const auto epoch = now.time_since_epoch();
+      const auto seconds = std::chrono::duration_cast<std::chrono::seconds>(epoch);
+      const std::time_t integer_part = seconds.count();
+
+      const auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(epoch) % std::chrono::seconds(1);
+      const int64_t fractional_part = microseconds.count();
+
+      static constexpr std::size_t BufferSize = 1024;
+      std::array<char, BufferSize> buffer = {};
+
+      const std::size_t size = std::strftime(buffer.data(), buffer.size(), "%F %T", std::localtime(&integer_part));
+      std::snprintf(buffer.data() + size, buffer.size() - size, ".%06" PRIi64, fractional_part);
+
+      std::fprintf(stderr, "[%s][%s] ", buffer.data(), to_string(level));
+    }
+
   } // namespace
 
   Log::Level Log::s_level = Log::Debug; // NOLINT
@@ -46,28 +65,14 @@ namespace gf {
     s_level = level;
   }
 
-  void Log::log(Level level, const char* fmt, va_list ap)
+  void Log::log(Level level, const std::string& string)
   {
     if (level < s_level) {
       return;
     }
 
-    const auto now = std::chrono::system_clock::now();
-    const auto epoch = now.time_since_epoch();
-    const auto seconds = std::chrono::duration_cast<std::chrono::seconds>(epoch);
-    const std::time_t integer_part = seconds.count();
-
-    const auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(epoch) % std::chrono::seconds(1);
-    const int64_t fractional_part = microseconds.count();
-
-    static constexpr std::size_t BufferSize = 1024;
-    std::array<char, BufferSize> buffer = {};
-
-    const std::size_t size = std::strftime(buffer.data(), buffer.size(), "%F %T", std::localtime(&integer_part));
-    std::snprintf(buffer.data() + size, buffer.size() - size, ".%06" PRIi64, fractional_part);
-
-    std::fprintf(stderr, "[%s][%s] ", buffer.data(), to_string(level));
-    std::vfprintf(stderr, fmt, ap);
+    print_timestamp_and_level(level);
+    fprintf(stderr, "%s\n", string.c_str());
   }
 
 } // namespace gf

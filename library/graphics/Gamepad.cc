@@ -81,14 +81,14 @@ namespace gf {
     SDL_GameController* controller = SDL_GameControllerOpen(index);
 
     if (controller == nullptr) {
-      Log::error("Could not open gamepad %i: %s\n", index, SDL_GetError());
+      Log::error("Could not open gamepad {}: {}\n", index, SDL_GetError());
       return static_cast<GamepadId>(-1);
     }
 
     SDL_Joystick* joystick = SDL_GameControllerGetJoystick(controller);
     const SDL_JoystickID instance_id = SDL_JoystickInstanceID(joystick);
 
-    Log::debug("New gamepad (device: %i / instance: %i): '%s'\n", index, instance_id, SDL_GameControllerName(controller));
+    Log::debug("New gamepad (device: {} / instance: {}): '{}'\n", index, instance_id, SDL_GameControllerName(controller));
     return static_cast<GamepadId>(instance_id);
   }
 

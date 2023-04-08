@@ -3,12 +3,12 @@
 #ifndef GF_LOG_H
 #define GF_LOG_H
 
-#include <cstdarg>
 #include <cstdint>
 #include <cstdlib>
 
+#include <fmt/core.h>
+
 #include "CoreApi.h"
-#include "Portability.h"
 
 namespace gf {
 
@@ -26,51 +26,45 @@ namespace gf {
 
     static void set_level(Level level);
 
-    static void debug(const char* fmt, ...) GF_FORMAT(1, 2)
+    template<typename... T>
+    static void debug(fmt::format_string<T...> fmt, T&&... args)
     {
-      va_list ap;
-      va_start(ap, fmt);          // NOLINT
-      log(Level::Debug, fmt, ap); // NOLINT
-      va_end(ap);                 // NOLINT
+      auto string = fmt::format(fmt, std::forward<T>(args)...);
+      log(Level::Debug, string);
     }
 
-    static void info(const char* fmt, ...) GF_FORMAT(1, 2)
+    template<typename... T>
+    static void info(fmt::format_string<T...> fmt, T&&... args)
     {
-      va_list ap;
-      va_start(ap, fmt);         // NOLINT
-      log(Level::Info, fmt, ap); // NOLINT
-      va_end(ap);                // NOLINT
+      auto string = fmt::format(fmt, std::forward<T>(args)...);
+      log(Level::Info, string);
     }
 
-    static void warning(const char* fmt, ...) GF_FORMAT(1, 2)
+    template<typename... T>
+    static void warning(fmt::format_string<T...> fmt, T&&... args)
     {
-      va_list ap;
-      va_start(ap, fmt);         // NOLINT
-      log(Level::Warn, fmt, ap); // NOLINT
-      va_end(ap);                // NOLINT
+      auto string = fmt::format(fmt, std::forward<T>(args)...);
+      log(Level::Warn, string);
     }
 
-    static void error(const char* fmt, ...) GF_FORMAT(1, 2)
+    template<typename... T>
+    static void error(fmt::format_string<T...> fmt, T&&... args)
     {
-      va_list ap;
-      va_start(ap, fmt);          // NOLINT
-      log(Level::Error, fmt, ap); // NOLINT
-      va_end(ap);                 // NOLINT
+      auto string = fmt::format(fmt, std::forward<T>(args)...);
+      log(Level::Error, string);
     }
 
-    static void fatal(const char* fmt, ...) GF_FORMAT(1, 2)
+    template<typename... T>
+    static void fatal(fmt::format_string<T...> fmt, T&&... args)
     {
-      va_list ap;
-      va_start(ap, fmt);          // NOLINT
-      log(Level::Fatal, fmt, ap); // NOLINT
-      va_end(ap);                 // NOLINT
-
+      auto string = fmt::format(fmt, std::forward<T>(args)...);
+      log(Level::Fatal, string);
       std::abort();
     }
 
   private:
     static Level s_level; // NOLINT
-    static void log(Level level, const char* fmt, va_list ap);
+    static void log(Level level, const std::string& string);
   };
 
 } // namespace gf
