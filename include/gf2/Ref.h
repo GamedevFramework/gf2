@@ -22,7 +22,7 @@ namespace gf {
 
     Ref([[maybe_unused]] const Ref& other) noexcept = default;
 
-    template<typename U, typename = std::enable_if_t<std::is_base_of<T, U>::value>>
+    template<typename U, typename = std::enable_if_t<std::is_base_of_v<T, U>>>
     Ref(const Ref<U>& other) noexcept
     : m_ptr(std::addressof(other.get()))
     {
@@ -32,7 +32,7 @@ namespace gf {
 
     Ref& operator=([[maybe_unused]] const Ref& other) noexcept = default;
 
-    template<typename U, typename = std::enable_if_t<std::is_base_of<T, U>::value>>
+    template<typename U, typename = std::enable_if_t<std::is_base_of_v<T, U>>>
     Ref& operator=(const Ref<U>& other) noexcept
     {
       m_ptr = std::addressof(other.get());
@@ -79,7 +79,7 @@ namespace gf {
   }
 
   template<typename T>
-  Ref<T> ref(const T&&) = delete;
+  Ref<T> ref(T&&) = delete;
 
 } // namespace gf
 
