@@ -76,6 +76,11 @@ gf2_handle_library(gf2core0
     "core"
 )
 
+target_link_libraries(gf2core0
+  PUBLIC
+    fmt::fmt-header-only
+)
+
 # gf2::graphics
 
 add_library(gf2graphics0
