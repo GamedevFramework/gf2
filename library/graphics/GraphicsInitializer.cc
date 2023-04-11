@@ -14,16 +14,16 @@
 namespace gf {
 
   namespace {
-    std::atomic_int g_loaded = 0; // NOLINT
+    std::atomic_bool g_graphics_loaded = false; // NOLINT
   }
 
   GraphicsInitializer::GraphicsInitializer()
   {
-    if (g_loaded.fetch_add(1) == 0) { // we are the first
+    if (!g_graphics_loaded.exchange(true)) { // we are the first
       // initialize SDL
 
       if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER | SDL_INIT_AUDIO) != 0) {
-        Log::error("Unable to initialize SDL: '{}'\n", SDL_GetError());
+        Log::error("Unable to initialize SDL: '{}'", SDL_GetError());
         return;
       }
 
@@ -38,30 +38,9 @@ namespace gf {
           Gamepad::open(static_cast<GamepadHwId>(index));
         }
       }
+    } else {
+      Log::warning("You are trying to load SDL multiple times. Do not do that!");
     }
-  }
-
-  GraphicsInitializer::~GraphicsInitializer()
-  {
-    if (g_loaded.fetch_sub(1) == 1) { // we are the last
-      SDL_Quit();
-    }
-  }
-
-  GraphicsInitializer::GraphicsInitializer(GraphicsInitializer&& /* unused */) noexcept
-  {
-    g_loaded.fetch_add(1);
-  }
-
-  GraphicsInitializer& GraphicsInitializer::operator=(GraphicsInitializer&& /* unused */) noexcept
-  {
-    g_loaded.fetch_add(1);
-    return *this;
-  }
-
-  bool GraphicsInitializer::initialized()
-  {
-    return g_loaded > 0;
   }
 
 } // namespace gf

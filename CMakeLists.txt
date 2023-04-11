@@ -5,8 +5,6 @@ project(GF
   LANGUAGES CXX C
 )
 
-include(GenerateExportHeader)
-
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 option(BUILD_SHARED_LIBS "Build the library as a shared library" ON)

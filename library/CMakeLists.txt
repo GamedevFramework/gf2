@@ -1,26 +1,33 @@
 
 function(gf2_handle_library target)
   set(options "")
-  set(value_options EXPORT_NAME EXPORT_MACRO_NAME EXPORT_FILE_NAME)
+  set(value_options EXPORT_NAME)
   set(multi_value_options "")
 
   cmake_parse_arguments(MY "${options}" "${value_options}" "${multi_value_options}" ${ARGN})
 
+  string(TOUPPER "${MY_EXPORT_NAME}" LIBRARY_NAME)
+
   target_include_directories(${target}
     PUBLIC
       $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
       $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
   )
 
   if(NOT BUILD_SHARED_LIBS)
     target_compile_definitions(${target}
-      PUBLIC GF_STATIC
+      PUBLIC
+        GF_${LIBRARY_NAME}_STATIC
     )
 
     set_target_properties(${target}
       PROPERTIES
         POSITION_INDEPENDENT_CODE ON
+    )
+  else()
+    target_compile_definitions(${target}
+      PRIVATE
+        GF_${LIBRARY_NAME}_BUILD
     )
   endif()
 
@@ -45,15 +52,6 @@ function(gf2_handle_library target)
       VERSION ${PROJECT_VERSION}
       SOVERSION ${PROJECT_VERSION_MAJOR}
   )
-
-  generate_export_header(${target}
-    BASE_NAME "${MY_EXPORT_NAME}"
-    EXPORT_MACRO_NAME "${MY_EXPORT_MACRO_NAME}"
-    EXPORT_FILE_NAME "${MY_EXPORT_FILE_NAME}"
-    STATIC_DEFINE STATIC
-    PREFIX_NAME GF_
-  )
-
 endfunction()
 
 # gf2::core
@@ -76,16 +74,13 @@ add_library(gf2core0
 gf2_handle_library(gf2core0
   EXPORT_NAME
     "core"
-  EXPORT_MACRO_NAME
-    CORE_API
-  EXPORT_FILE_NAME
-    "CoreApi.h"
 )
 
 # gf2::graphics
 
 add_library(gf2graphics0
   graphics/Gamepad.cc
+  graphics/Initializer.cc
   graphics/GraphicsInitializer.cc
   graphics/Keyboard.cc
   graphics/Mouse.cc
@@ -94,10 +89,6 @@ add_library(gf2graphics0
 gf2_handle_library(gf2graphics0
   EXPORT_NAME
     "graphics"
-  EXPORT_MACRO_NAME
-    GRAPHICS_API
-  EXPORT_FILE_NAME
-    "GraphicsApi.h"
 )
 
 target_link_libraries(gf2graphics0
