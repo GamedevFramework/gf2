@@ -1,0 +1,31 @@
+= `core` Utilities
+v0.1
+:toc: right
+:toclevels: 3
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+The utilities component provides common features for the library.
+
+xref:reference.adoc[< Back to reference]
+
+== Types
+
+[#_log]
+=== `gf::Log`
+
+[source]
+----
+#include <gf2/Log.h>
+class Log;
+----
+
+Logging functions are used to report some events that have happened in the system. xref:Log.adoc[*Read more...*]

@@ -23,7 +23,8 @@ xref:reference.adoc[< Back to reference]
 
 == Variables
 
-=== `AnyGamepad`
+[#_anygamepad]
+=== `gf::AnyGamepad`
 
 [source]
 ----
@@ -37,7 +38,8 @@ This identifier can be used in controls for specifying any gamepad. This is espe
 
 == Types
 
-=== `Gamepad`
+[#_gamepad]
+=== `gf::Gamepad`
 
 [source]
 ----
@@ -47,7 +49,8 @@ class Gamepad;
 
 `Gamepad` provides useful functions for handling gamepads. xref:Gamepad.adoc[*Read more...*]
 
-=== `GamepadAxis`
+[#_gamepadaxis]
+=== `gf::GamepadAxis`
 
 [source]
 ----
@@ -57,7 +60,8 @@ enum class GamepadAxis : int32_t;
 
 `GamepadAxis` describes all the gamepad axis. xref:GamepadAxis.adoc[*Read more...*]
 
-=== `GamepadAxisDirection`
+[#_gamepadaxisdirection]
+=== `gf::GamepadAxisDirection`
 
 [source]
 ----
@@ -83,7 +87,8 @@ The positive direction is right with a X axis and down with a Y axis. For trigge
 
 See also: <<_gamepadaxis>>
 
-=== `GamepadButton`
+[#_gamepadbutton]
+=== `gf::GamepadButton`
 
 [source]
 ----
@@ -93,7 +98,8 @@ enum class GamepadButton : int32_t;
 
 `GamepadButton` describes all the gamepad buttons. xref:GamepadButton.adoc[*Read more...*]
 
-=== `GamepadHwId`
+[#_gamepadhwid]
+=== `gf::GamepadHwId`
 
 [source]
 ----
@@ -105,7 +111,8 @@ enum class GamepadHwId : int;
 
 See also: <<_gamepadid>>
 
-=== `GamepadId`
+[#_gamepadid]
+=== `gf::GamepadId`
 
 [source]
 ----
@@ -117,19 +124,8 @@ enum class GamepadId : int32_t;
 
 See also: <<_gamepadhwid>>
 
-=== `Keycode`
-
-[source]
-----
-#include <gf2/Keyboard.h>
-enum class Keycode : uint32_t;
-----
-
-`Keycode` describes all the logical keyboard buttons. xref:Keycode.adoc[*Read more...*]
-
-See also: <<_scancode>>, <<_keyboard>>
-
-=== `Keyboard`
+[#_keyboard]
+=== `gf::Keyboard`
 
 [source]
 ----
@@ -141,7 +137,21 @@ struct Keyboard;
 
 See also: <<_scancode>>, <<_keycode>>
 
-=== `Modifier`
+[#_keycode]
+=== `gf::Keycode`
+
+[source]
+----
+#include <gf2/Keyboard.h>
+enum class Keycode : uint32_t;
+----
+
+`Keycode` describes all the logical keyboard buttons. xref:Keycode.adoc[*Read more...*]
+
+See also: <<_scancode>>, <<_keyboard>>
+
+[#_modifier]
+=== `gf::Modifier`
 
 [source]
 ----
@@ -151,7 +161,8 @@ enum class Modifiers : uint32_t;
 
 A modifier key is a special key that can be used in combinaison with another key. xref:Modifier.adoc[*Read more...*]
 
-=== `MouseButton`
+[#_mousebutton]
+=== `gf::MouseButton`
 
 [source]
 ----
@@ -161,7 +172,8 @@ enum class MouseButton : uint32_t;
 
 `MouseButton` describes all the mouse buttons. xref:MouseButton.adoc[*Read more...*]
 
-=== `Scancode`
+[#_scancode]
+=== `gf::Scancode`
 
 [source]
 ----

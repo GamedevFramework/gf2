@@ -1,0 +1,52 @@
+= `gf::Ref<T>` type
+v0.1
+:toc: right
+:toclevels: 2
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+
+
+xref:core_container.adoc[< Back to `core` Container]
+
+== Description
+
+[source]
+----
+#include <gf/Ref.h>
+template<typename T>
+class Ref;
+----
+
+== Member functions
+
+=== `Ref` constructors
+
+[source]
+----
+explicit Ref(T& ref) noexcept; <1>
+Ref(const Ref& other) noexcept = default; <2>
+template<typename U>
+Ref(const Ref<U>& other) noexcept; <3>
+Ref(T&& other) = delete; <4>
+Ref([[maybe_unused]] Ref&& other) = delete; <5>
+----
+
+=== `operator=`
+
+[source]
+----
+Ref& operator=(const Ref& other) noexcept = default; <1>
+template<typename U>
+Ref& operator=(const Ref<U>& other) noexcept; <2>
+Ref& operator=(Ref&& other) = delete; <3>
+----
+

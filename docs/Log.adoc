@@ -1,0 +1,128 @@
+= `gf::Log` type
+v0.1
+:toc: right
+:toclevels: 3
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+Logging functions are used to report some events that have happened in the system.
+
+xref:core_utilities.adoc[< Back to `core` Utilities]
+
+== Description
+
+[source]
+----
+#include <gf2/Log.h>
+class Log;
+----
+
+The logging functions print messages to the standard error and _they add a newline at the end_. They use  link:https://fmt.dev[`{fmt}`], so you can use its format string and features.
+
+A message is associated to a severity level. The severity level indicates the severity of the message and range from a simple debug message to a fatal message.
+
+You can set the minimum severity for which messages are displayed. By default, the minimum severity level is `gf::Log::Debug`.
+
+== Types
+
+=== `Level`
+
+[source]
+----
+enum Level : uint32_t;
+----
+
+`Level` represents the severity level of the log.
+
+.Enumerators for `gf::Log::Level`
+[cols="1,1"]
+|===
+| Value | Description
+
+| `gf::Log::Debug`
+| The debug level
+
+| `gf::Log::Info`
+| The info level
+
+| `gf::Log::Warn`
+| The warn level
+
+| `gf::Log::Error`
+| The error level
+
+| `gf::Log::Fatal`
+| The fatal level
+|===
+
+
+== Static Member Functions
+
+=== `debug`
+
+[source]
+----
+template<typename... T>
+static void debug(fmt::format_string<T...> fmt, T&&... args);
+----
+
+Print a debug message.
+
+=== `error`
+
+[source]
+----
+template<typename... T>
+static void error(fmt::format_string<T...> fmt, T&&... args);
+----
+
+Print an error message.
+
+=== `fatal`
+
+[source]
+----
+template<typename... T>
+static void fatal(fmt::format_string<T...> fmt, T&&... args);
+----
+
+Print a fatal message and abort the program.
+
+=== `info`
+
+[source]
+----
+template<typename... T>
+static void info(fmt::format_string<T...> fmt, T&&... args);
+----
+
+Print an info message.
+
+=== `set_level`
+
+[source]
+----
+static void set_level(Level level);
+----
+
+Set the global severity level for which the messages are displayed.
+
+=== `warning`
+
+[source]
+----
+template<typename... T>
+static void warning(fmt::format_string<T...> fmt, T&&... args);
+----
+
+Print a warning message.
+
+
