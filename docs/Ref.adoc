@@ -13,9 +13,9 @@ v0.1
 :docinfo: shared-head
 :icons: font
 
+`Ref<T>` is a reference wrapper.
 
-
-xref:core_container.adoc[< Back to `core` Container]
+xref:core_vocabulary.adoc[< Back to `core` Vocabulary]
 
 == Description
 
@@ -26,19 +26,27 @@ template<typename T>
 class Ref;
 ----
 
+`Ref<T>` is similar to link:https://en.cppreference.com/w/cpp/utility/functional/reference_wrapper[`std::reference_wrapper`], but much simpler.
+
 == Member functions
 
 === `Ref` constructors
 
 [source]
 ----
-explicit Ref(T& ref) noexcept; <1>
+explicit Ref(T& object) noexcept; <1>
 Ref(const Ref& other) noexcept = default; <2>
 template<typename U>
 Ref(const Ref<U>& other) noexcept; <3>
 Ref(T&& other) = delete; <4>
-Ref([[maybe_unused]] Ref&& other) = delete; <5>
+Ref(Ref&& other) = delete; <5>
 ----
+
+<1> Constructor with a lvalue reference.
+<2> Copy constructor.
+<3> Copy constructor from compatible reference type.
+<4> Deleted constructor with rvalue reference to `T`.
+<5> Deleted move constructor.
 
 === `operator=`
 
@@ -50,3 +58,56 @@ Ref& operator=(const Ref<U>& other) noexcept; <2>
 Ref& operator=(Ref&& other) = delete; <3>
 ----
 
+<1> Copy assignment.
+<2> Copy assignment from compatible reference type.
+<3> Deleted move assignment.
+
+=== `operator T&`
+
+[source]
+----
+operator T&() const noexcept;
+----
+
+Convert to a reference.
+
+=== `get`
+
+[source]
+----
+T& get() const noexcept;
+----
+
+Get a reference to the object.
+
+== Operators
+
+=== `operator==`
+
+[source]
+----
+template<typename T>
+constexpr bool operator==(Ref<T> lhs, Ref<T> rhs) noexcept; <1>
+template<typename T>
+constexpr bool operator==(Ref<T> lhs, const T& rhs) noexcept; <2>
+template<typename T>
+constexpr bool operator==(const T& lhs, Ref<T> rhs) noexcept; <3>
+----
+
+<1> Comparison between two `Ref<T>`
+<2> Comparison between a `Ref<T>` and a `T&`
+<3> Comparison between a `T&` and a `Ref<T>`
+
+The references are compared by address, not by value.
+
+== Functions
+
+=== `ref`
+
+[source]
+----
+template<typename T>
+Ref<T> ref(T& object);
+----
+
+Create a `Ref<T>` with automatic type deduction. This function may be used to assess the fact that what is passed to a function is a reference, not a value to be copied or moved.

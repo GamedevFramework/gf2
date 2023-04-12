@@ -46,7 +46,7 @@ A `Rect<T>` uses the usual rules for its boundaries:
 
 [source]
 ----
-static constexpr Rect from_center_size(Vec2<T> center, Vec2<T> size) noexcept;
+constexpr Rect from_center_size(Vec2<T> center, Vec2<T> size) noexcept;
 ----
 
 Create a rectangle from a center and a size.
@@ -55,7 +55,7 @@ Create a rectangle from a center and a size.
 
 [source]
 ----
-static constexpr Rect from_min_max(Vec2<T> min, Vec2<T> max) noexcept;
+constexpr Rect from_min_max(Vec2<T> min, Vec2<T> max) noexcept;
 ----
 
 Create a rectangle from a min point and a max point.
@@ -64,7 +64,7 @@ Create a rectangle from a min point and a max point.
 
 [source]
 ----
-static constexpr Rect from_position_size(Vec2<T> position, Vec2<T> size) noexcept;
+constexpr Rect from_position_size(Vec2<T> position, Vec2<T> size) noexcept;
 ----
 
 Create a rectangle from a position (top-left) and a size.
@@ -73,7 +73,7 @@ Create a rectangle from a position (top-left) and a size.
 
 [source]
 ----
-static constexpr Rect from_size(Vec2<T> size) noexcept;
+constexpr Rect from_size(Vec2<T> size) noexcept;
 ----
 
 Create a rectangle from a size.

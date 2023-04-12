@@ -54,6 +54,18 @@ A `Flags<E>` stores a bit field relying on an enumeration `E`. xref:Flags.adoc[*
 [#_none_type]
 === `gf::NoneType`
 
+[#_ref]
+=== `gf::Ref<T>`
+
+[source]
+----
+#include <gf/Ref.h>
+template<typename T>
+class Ref;
+----
+
+`Ref<T>` is a reference wrapper. xref:Ref.adoc[*Read more...*]
+
 [#_zero_type]
 === `gf::ZeroType`
 

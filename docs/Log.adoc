@@ -71,7 +71,7 @@ enum Level : uint32_t;
 [source]
 ----
 template<typename... T>
-static void debug(fmt::format_string<T...> fmt, T&&... args);
+void debug(fmt::format_string<T...> fmt, T&&... args);
 ----
 
 Print a debug message.
@@ -81,7 +81,7 @@ Print a debug message.
 [source]
 ----
 template<typename... T>
-static void error(fmt::format_string<T...> fmt, T&&... args);
+void error(fmt::format_string<T...> fmt, T&&... args);
 ----
 
 Print an error message.
@@ -91,7 +91,7 @@ Print an error message.
 [source]
 ----
 template<typename... T>
-static void fatal(fmt::format_string<T...> fmt, T&&... args);
+void fatal(fmt::format_string<T...> fmt, T&&... args);
 ----
 
 Print a fatal message and abort the program.
@@ -101,7 +101,7 @@ Print a fatal message and abort the program.
 [source]
 ----
 template<typename... T>
-static void info(fmt::format_string<T...> fmt, T&&... args);
+void info(fmt::format_string<T...> fmt, T&&... args);
 ----
 
 Print an info message.
@@ -110,7 +110,7 @@ Print an info message.
 
 [source]
 ----
-static void set_level(Level level);
+void set_level(Level level);
 ----
 
 Set the global severity level for which the messages are displayed.
@@ -120,9 +120,7 @@ Set the global severity level for which the messages are displayed.
 [source]
 ----
 template<typename... T>
-static void warning(fmt::format_string<T...> fmt, T&&... args);
+void warning(fmt::format_string<T...> fmt, T&&... args);
 ----
 
 Print a warning message.
-
-

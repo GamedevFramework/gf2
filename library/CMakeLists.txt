@@ -42,6 +42,13 @@ function(gf2_handle_library target)
       cxx_std_17
   )
 
+  if(MSVC)
+    target_compile_definitions(${target}
+      PRIVATE
+        _CRT_SECURE_NO_WARNINGS
+    )
+  endif()
+
   set_target_properties(${target}
     PROPERTIES
       EXPORT_NAME "${MY_EXPORT_NAME}"

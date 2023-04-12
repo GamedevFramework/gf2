@@ -11,8 +11,8 @@ namespace gf {
   template<typename T>
   class Ref {
   public:
-    explicit Ref(T& ref) noexcept
-    : m_ptr(std::addressof(ref))
+    explicit Ref(T& object) noexcept
+    : m_ptr(std::addressof(object))
     {
     }
 

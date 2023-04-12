@@ -1,0 +1,86 @@
+= `gf::GamepadButton` type
+v0.1
+:toc: right
+:toclevels: 2
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+`GamepadButton` describes all the gamepad buttons.
+
+xref:graphics_devices.adoc[< Back to `graphics` Devices]
+
+== Description
+
+[source]
+----
+#include <gf2/Gamepad.h>
+enum class GamepadButton : int32_t;
+----
+
+The buttons are named after the link:https://en.wikipedia.org/wiki/Xbox_360_controller[Xbox 360 controller].
+
+See also: xref:GamepadAxis.adoc[`GamepadAxis`]
+
+== Enumerators
+
+.Enumerators for `gf::GamepadButton`
+[cols="1,1"]
+|===
+| Value | Description
+
+| `gf::GamepadAxis::Invalid`
+| Invalid button
+
+| `gf::GamepadAxis::A`
+| The A button
+
+| `gf::GamepadAxis::B`
+| The B button
+
+| `gf::GamepadAxis::X`
+| The X button
+
+| `gf::GamepadAxis::Y`
+| The Y button
+
+| `gf::GamepadAxis::Back`
+| The Back button
+
+| `gf::GamepadAxis::Guide`
+| The Guide button
+
+| `gf::GamepadAxis::Start`
+| The Start button
+
+| `gf::GamepadAxis::LeftStick`
+| The left stick button
+
+| `gf::GamepadAxis::RightStick`
+| The right stick button
+
+| `gf::GamepadAxis::LeftBumper`
+| The left bumper button
+
+| `gf::GamepadAxis::RightBumper`
+| The right bumper button
+
+| `gf::GamepadAxis::DPadUp`
+| The directional pad up button
+
+| `gf::GamepadAxis::DPadDown`
+| The directional pad down button
+
+| `gf::GamepadAxis::DPadLeft`
+| The directional pad left button
+
+| `gf::GamepadAxis::DPadRight`
+| The directional pad right button
+|===

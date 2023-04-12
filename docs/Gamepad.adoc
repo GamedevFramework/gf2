@@ -1,0 +1,89 @@
+= `gf::Gamepad` type
+v0.1
+:toc: right
+:toclevels: 2
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+`Gamepad` provides useful functions for handling gamepads.
+
+xref:graphics_devices.adoc[< Back to `graphics` Devices]
+
+== Description
+
+[source]
+----
+#include <gf2/Gamepad.h>
+class Gamepad;
+----
+
+
+See also: xref:GamepadAxis.adoc[`GamepadAxis`], xref:GamepadButton.adoc[`GamepadButton`]
+
+== Static Member Functions
+
+=== `attached`
+
+[source]
+----
+bool attached(GamepadId id);
+----
+
+Check if the gamepad identified by `id` is attached.
+
+=== `axis_name`
+
+[source]
+----
+const char* axis_name(GamepadAxis axis);
+----
+
+Get the axis name.
+
+=== `button_name`
+
+[source]
+----
+const char* button_name(GamepadButton button);
+----
+
+Get the button name.
+
+=== `close`
+
+[source]
+----
+void close(GamepadId id);
+----
+
+Close a gamepad. Generally, this function is called after a `GamepadDisconnected` event.
+
+See also: <<_open>>
+
+=== `gamepad_name`
+
+[source]
+----
+const char* gamepad_name(GamepadId id);
+----
+
+Get the name of the gamepad.
+
+=== `open`
+
+[source]
+----
+GamepadId open(GamepadHwId hwid);
+----
+
+Open a gamepad. Generally, this function is called after a `GamepadConnected` event.
+
+See also: <<_close>>

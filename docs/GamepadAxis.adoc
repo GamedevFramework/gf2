@@ -31,7 +31,7 @@ See also: xref:GamepadButton.adoc[`GamepadButton`]
 
 == Enumerators
 
-.Enumerators for `gf::Modifier`
+.Enumerators for `gf::GamepadAxis`
 [cols="1,1"]
 |===
 | Value | Description

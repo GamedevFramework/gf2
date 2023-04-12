@@ -51,9 +51,9 @@ namespace gf {
       std::array<char, BufferSize> buffer = {};
 
       const std::size_t size = std::strftime(buffer.data(), buffer.size(), "%F %T", std::localtime(&integer_part));
-      std::snprintf(buffer.data() + size, buffer.size() - size, ".%06" PRIi64, fractional_part);
+      std::snprintf(buffer.data() + size, buffer.size() - size, ".%06" PRIi64, fractional_part); // NOLINT
 
-      std::fprintf(stderr, "[%s][%s] ", buffer.data(), to_string(level));
+      std::fprintf(stderr, "[%s][%s] ", buffer.data(), to_string(level)); // NOLINT
     }
 
   } // namespace
@@ -72,7 +72,7 @@ namespace gf {
     }
 
     print_timestamp_and_level(level);
-    fprintf(stderr, "%s\n", string.c_str());
+    fprintf(stderr, "%s\n", string.c_str()); // NOLINT
   }
 
 } // namespace gf
