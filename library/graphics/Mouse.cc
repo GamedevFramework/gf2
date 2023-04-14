@@ -5,6 +5,8 @@
 #include <gf2/Mouse.h>
 // clang-format on
 
+#include <type_traits>
+
 #include <SDL2/SDL.h>
 
 namespace gf {
