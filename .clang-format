@@ -31,7 +31,7 @@ IncludeCategories:
     Priority: 4
 IndentAccessModifiers: false
 IndentCaseBlocks: true
-IndentCaseLabels: false
+IndentCaseLabels: true
 IndentPPDirectives: AfterHash
 IndentWidth: 2
 InsertBraces: true

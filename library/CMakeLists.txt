@@ -91,11 +91,13 @@ target_link_libraries(gf2core0
 # gf2::graphics
 
 add_library(gf2graphics0
+  graphics/Event.cc
   graphics/Gamepad.cc
-  graphics/Initializer.cc
   graphics/GraphicsInitializer.cc
+  graphics/Initializer.cc
   graphics/Keyboard.cc
   graphics/Mouse.cc
+  graphics/Touch.cc
 )
 
 gf2_handle_library(gf2graphics0

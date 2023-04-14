@@ -18,6 +18,10 @@ namespace gf {
     Touch2,
   };
 
-}
+  enum class MouseId : uint32_t;
+
+  constexpr MouseId TouchMouseId = MouseId{ 0xFFFFFFFF };
+
+} // namespace gf
 
 #endif // GF_MOUSE_H

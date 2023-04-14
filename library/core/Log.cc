@@ -21,16 +21,16 @@ namespace gf {
     const char* to_string(Log::Level level)
     {
       switch (level) {
-      case Log::Debug:
-        return "Debug";
-      case Log::Info:
-        return "Info";
-      case Log::Warn:
-        return "Warn";
-      case Log::Error:
-        return "Error";
-      case Log::Fatal:
-        return "Fatal";
+        case Log::Debug:
+          return "Debug";
+        case Log::Info:
+          return "Info";
+        case Log::Warn:
+          return "Warn";
+        case Log::Error:
+          return "Error";
+        case Log::Fatal:
+          return "Fatal";
       }
 
       assert(false);

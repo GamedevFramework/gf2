@@ -66,39 +66,39 @@ namespace gf {
       color.a = hsv.a;
 
       switch (i) {
-      case 0:
-        color.r = val;
-        color.g = z;
-        color.b = x;
-        break;
-      case 1:
-        color.r = y;
-        color.g = val;
-        color.b = x;
-        break;
-      case 2:
-        color.r = x;
-        color.g = val;
-        color.b = z;
-        break;
-      case 3:
-        color.r = x;
-        color.g = y;
-        color.b = val;
-        break;
-      case 4:
-        color.r = z;
-        color.g = x;
-        color.b = val;
-        break;
-      case 5:
-        color.r = val;
-        color.g = x;
-        color.b = y;
-        break;
-      default:
-        assert(false);
-        break;
+        case 0:
+          color.r = val;
+          color.g = z;
+          color.b = x;
+          break;
+        case 1:
+          color.r = y;
+          color.g = val;
+          color.b = x;
+          break;
+        case 2:
+          color.r = x;
+          color.g = val;
+          color.b = z;
+          break;
+        case 3:
+          color.r = x;
+          color.g = y;
+          color.b = val;
+          break;
+        case 4:
+          color.r = z;
+          color.g = x;
+          color.b = val;
+          break;
+        case 5:
+          color.r = val;
+          color.g = x;
+          color.b = y;
+          break;
+        default:
+          assert(false);
+          break;
       }
 
       return color;
