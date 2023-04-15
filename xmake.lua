@@ -8,6 +8,10 @@ add_rules("mode.asan", "mode.tsan", "mode.ubsan", "mode.coverage", "mode.debug",
 set_warnings("all")
 set_languages("cxx17")
 
+if is_plat("windows") then
+  add_cxflags("/wd4251") -- Disable warning: class needs to have dll-interface to be used by clients of class blah blah blah
+end
+
 target("gf2core0")
     set_kind("shared")
     add_defines("GF_CORE_BUILD")
