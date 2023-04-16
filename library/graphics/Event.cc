@@ -26,7 +26,7 @@ namespace gf {
         event.resize.size.w = raw_event->window.data1;
         event.resize.size.h = raw_event->window.data2;
       } else {
-        event.type = EventType::Window;
+        event.type = EventType::WindowChanged;
         event.resize.window_id = raw_event->window.windowID;
 
         switch (raw_event->window.event) {
@@ -203,7 +203,7 @@ namespace gf {
           event.type = EventType::TouchBegan;
           event.touch.window_id = raw_event->tfinger.windowID;
           event.touch.touch_id = static_cast<TouchId>(raw_event->tfinger.touchId);
-          event.touch.finger = raw_event->tfinger.fingerId;
+          event.touch.finger = static_cast<FingerId>(raw_event->tfinger.fingerId);
           event.touch.coordinates.x = raw_event->tfinger.x;
           event.touch.coordinates.y = raw_event->tfinger.y;
           event.touch.motion.x = raw_event->tfinger.dx;
@@ -215,7 +215,7 @@ namespace gf {
           event.type = EventType::TouchMoved;
           event.touch.window_id = raw_event->tfinger.windowID;
           event.touch.touch_id = static_cast<TouchId>(raw_event->tfinger.touchId);
-          event.touch.finger = raw_event->tfinger.fingerId;
+          event.touch.finger = static_cast<FingerId>(raw_event->tfinger.fingerId);
           event.touch.coordinates.x = raw_event->tfinger.x;
           event.touch.coordinates.y = raw_event->tfinger.y;
           event.touch.motion.x = raw_event->tfinger.dx;
@@ -227,7 +227,7 @@ namespace gf {
           event.type = EventType::TouchEnded;
           event.touch.window_id = raw_event->tfinger.windowID;
           event.touch.touch_id = static_cast<TouchId>(raw_event->tfinger.touchId);
-          event.touch.finger = raw_event->tfinger.fingerId;
+          event.touch.finger = static_cast<FingerId>(raw_event->tfinger.fingerId);
           event.touch.coordinates.x = raw_event->tfinger.x;
           event.touch.coordinates.y = raw_event->tfinger.y;
           event.touch.motion.x = raw_event->tfinger.dx;

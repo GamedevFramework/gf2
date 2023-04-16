@@ -11,6 +11,8 @@ namespace gf {
 
   constexpr TouchId MouseTouchId = TouchId{ -1 };
 
+  enum class FingerId : int64_t;
+
 } // namespace gf
 
 #endif // GF_TOUCH_H

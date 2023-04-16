@@ -25,7 +25,8 @@ xref:index.adoc[< Back to main page]
 
 == `graphics`
 
-- xref:graphics_devices.adoc[Devices]
+- xref:graphics_devices.adoc[Devices] (xref:Scancode.adoc[`Scancode`], xref:Keycode.adoc[`Keycode`], xref:MouseButton.adoc[`MouseButton`])
+- xref:graphics_events.adoc[Events] (xref:Event.adoc[`Event`])
 
 == `net`
 

@@ -1,0 +1,86 @@
+= `gf::Event` type
+v0.1
+:toc: right
+:toclevels: 2
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+`Event` is a link:https://en.wikipedia.org/wiki/Tagged_union[tagged union] to describe system events.
+
+xref:graphics_events.adoc[< Back to `graphics` Events]
+
+== Description
+
+[source]
+----
+#include <gf2/Event.h>
+struct Event;
+----
+
+The tag for the union is in the `type` field. A `timestamp` of type `uint32_t` is also given as a common field to all events. Then, the union field to address depends on `type` and is given in the following table.
+
+See also: xref:EventType.adoc[`EventType`]
+
+== Data members
+
+.Data members for `gf::Event`
+[cols="1,1,2"]
+|===
+| Name | Type | Tags
+
+| `window`
+| xref:graphics_events.adoc#_window_event[`WindowEvent`]
+| `gf::EventType::WindowChanged`
+
+| `resize`
+| xref:graphics_events.adoc#_key_event[`ResizeEvent`]
+| `gf::EventType::Resized`
+
+| `key`
+| xref:graphics_events.adoc#_key_event[`KeyEvent`]
+| `gf::EventType::KeyPressed`, `gf::EventType::KeyRepeated`, `gf::EventType::KeyReleased`
+
+| `text`
+| xref:graphics_events.adoc#_text_event[`TextEvent`]
+| `gf::EventType::TextEntered`
+
+| `mouse_button`
+| xref:graphics_events.adoc#_mouse_button_event[`MouseButtonEvent`]
+| `gf::EventType::MouseButtonPressed`, `gf::EventType::MouseButtonReleased`
+
+| `mouse_motion`
+| xref:graphics_events.adoc#_mouse_motion_event[`MouseMotionEvent`]
+| `gf::EventType::MouseMoved`
+
+| `mouse_wheel`
+| xref:graphics_events.adoc#_mouse_wheel_event[`MouseWheelEvent`]
+| `gf::EventType::MouseWheelScrolled`
+
+| `gamepad_axis`
+| xref:graphics_events.adoc#_gamepad_axis_event[`GamepadAxisEvent`]
+| `gf::EventType::GamepadAxisMoved`
+
+| `gamepad_button`
+| xref:graphics_events.adoc#_gamepad_button_event[`GamepadButtonEvent`]
+| `gf::EventType::GamepadButtonPressed`, `gf::EventType::GamepadButtonReleased`
+
+| `gamepad_connection`
+| xref:graphics_events.adoc#_gamepad_connection_event[`GamepadConnectionEvent`]
+| `gf::EventType::GamepadConnected`
+
+| `gamepad_disconnection`
+| xref:graphics_events.adoc#_gamepad_disconnection_event[`GamepadDisconnectionEvent`]
+| `gf::EventType::GamepadDisconnected`
+
+| `touch`
+| xref:graphics_events.adoc#_touch_event[`TouchEvent`]
+| `gf::EventType::TouchBegan`, `gf::EventType::TouchMoved`, `gf::EventType::TouchEnded`
+|===

@@ -28,6 +28,8 @@ namespace gf {
     DPadRight,
   };
 
+  constexpr GamepadButton AnyGamepadButton = static_cast<GamepadButton>(0x7FFFFFFF);
+
   enum class GamepadAxis : int32_t {
     Invalid = -1,
     LeftX,
@@ -37,6 +39,8 @@ namespace gf {
     TriggerLeft,
     TriggerRight,
   };
+
+  constexpr GamepadAxis AnyGamepadAxis = static_cast<GamepadAxis>(0x7FFFFFFF);
 
   enum class GamepadAxisDirection : uint32_t {
     Positive,

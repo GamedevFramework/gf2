@@ -19,21 +19,21 @@ namespace gf {
 
   enum EventType : uint32_t {
     Quit,
-    Window,
+    WindowChanged,
     Resized,
 
     KeyPressed,
     KeyRepeated,
     KeyReleased,
 
-    MouseWheelScrolled,
     MouseButtonPressed,
     MouseButtonReleased,
     MouseMoved,
+    MouseWheelScrolled,
 
+    GamepadAxisMoved,
     GamepadButtonPressed,
     GamepadButtonReleased,
-    GamepadAxisMoved,
     GamepadConnected,
     GamepadDisconnected,
 
@@ -116,18 +116,18 @@ namespace gf {
     bool pressed;
   };
 
-  struct GamepadConnectionEvent {
+  struct GF_GRAPHICS_API GamepadConnectionEvent {
     GamepadHwId gamepad_hw_id;
   };
 
-  struct GamepadDisconnectionEvent {
+  struct GF_GRAPHICS_API GamepadDisconnectionEvent {
     GamepadId gamepad_id;
   };
 
-  struct TouchEvent {
+  struct GF_GRAPHICS_API TouchEvent {
     uint32_t window_id;
     TouchId touch_id;
-    int64_t finger;
+    FingerId finger;
     Vec2F coordinates;
     Vec2F motion;
     float pressure;

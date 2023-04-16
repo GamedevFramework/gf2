@@ -1,0 +1,93 @@
+= `gf::EventType` type
+v0.1
+:toc: right
+:toclevels: 2
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+`EventType` describes all system events that can occur.
+
+xref:graphics_events.adoc[< Back to `graphics` Events]
+
+== Description
+
+[source]
+----
+#include <gf2/Event.h>
+enum EventType : uint32_t;
+----
+
+See also: xref:Event.adoc[`Event`]
+
+== Enumerators
+
+.Enumerators for `gf::EventType`
+[cols="2,3"]
+|===
+| Value | Description
+
+| `gf::EventType::Quit`
+| The application is asked to quit
+
+| `gf::EventType::WindowChanged`
+| The window changed one of its states (data in `window`)
+
+| `gf::EventType::Resized`
+| The window was resized (data in `resize`)
+
+| `gf::EventType::KeyPressed`
+| A key was pressed (data in `key`)
+
+| `gf::EventType::KeyRepeated`
+| A key was repeated (data in `key`)
+
+| `gf::EventType::KeyReleased`
+| A key was released (data in `key`)
+
+| `gf::EventType::MouseButtonPressed`
+| A mouse button was pressed (data in `mouse_button`)
+
+| `gf::EventType::MouseButtonReleased`
+| A mouse button was released (data in `mouse_button`)
+
+| `gf::EventType::MouseMoved`
+| The mouse cursor was moved (data in `mouse_cursor`)
+
+| `gf::EventType::MouseWheelScrolled`
+| The mouse wheel was scrolled (data in `mouse_wheel`)
+
+| `gf::EventType::GamepadAxisMoved`
+| A gamepad axis was move (data in `gamepad_axis`)
+
+| `gf::EventType::GamepadButtonPressed`
+| A gamepad button was pressed (data in `gamepad_button`)
+
+| `gf::EventType::GamepadButtonReleased`
+| A gamepad button was released (data in `gamepad_button`)
+
+| `gf::EventType::GamepadConnected`
+| A gamepad was connected (data in `gamepad_connection`)
+
+| `gf::EventType::GamepadDisconnected`
+| A gamepad was disconnected (data in `gamepad_disconnection`)
+
+| `gf::EventType::TextEntered`
+| A text was entered (data in `text`)
+
+| `gf::EventType::TouchBegan`
+| A touch began (data in `touch`)
+
+| `gf::EventType::TouchMoved`
+| A touch moved (data in `touch`)
+
+| `gf::EventType::TouchEnded`
+| A touch ended (data in `touch`)
+|===
