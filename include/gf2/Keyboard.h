@@ -250,7 +250,7 @@ namespace gf {
     Mode = 257,
   };
 
-  constexpr Scancode AnyScancode = Scancode{0xFFFFFFFF};
+  constexpr Scancode AnyScancode = static_cast<Scancode>(0xFFFFFFFF);
 
   namespace details {
     constexpr uint32_t to_keycode(Scancode scancode)
@@ -473,7 +473,7 @@ namespace gf {
     Mode = details::to_keycode(Scancode::Mode),
   };
 
-  constexpr Keycode AnyKeycode = Keycode{0xFFFFFFFF};
+  constexpr Keycode AnyKeycode = static_cast<Keycode>(0xFFFFFFFF);
 
   struct GF_GRAPHICS_API Keyboard {
     static const char* scancode_name(Scancode scancode);

@@ -84,3 +84,27 @@ See also: xref:EventType.adoc[`EventType`]
 | xref:graphics_events.adoc#_touch_event[`TouchEvent`]
 | `gf::EventType::TouchBegan`, `gf::EventType::TouchMoved`, `gf::EventType::TouchEnded`
 |===
+
+== Static Member Functions
+
+=== `poll`
+
+[source]
+----
+std::optional<Event> poll();
+----
+
+Pop the event on top of the event queue, if any, and return it.
+
+This function is not blocking: if there's no pending event then it will return `std::nullopt`. Note that more than one event may be present in the event queue, thus you should always call this function in a loop to make sure that you process every pending event.
+
+=== `wait`
+
+[source]
+----
+std::optional<Event> wait();
+----
+
+Wait for an event and return it.
+
+This function is blocking: if there's no pending event then it will wait until an event is received. This function is typically used when you have a thread that is dedicated to events handling: you want to make this thread sleep as long as no new event is received.
