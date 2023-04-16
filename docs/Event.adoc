@@ -27,6 +27,12 @@ struct Event;
 
 The tag for the union is in the `type` field. A `timestamp` of type `uint32_t` is also given as a common field to all events. Then, the union field to address depends on `type` and is given in the following table.
 
+.Example for `gf::Event`
+[source,indent=0]
+----
+include::snippets/graphics_event.cc[tag=loop]
+----
+
 See also: xref:EventType.adoc[`EventType`]
 
 == Data members
