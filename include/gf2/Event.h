@@ -153,7 +153,7 @@ namespace gf {
     };
 
     static std::optional<Event> poll();
-    static std::optional<Event> wait();
+    static Event wait();
   };
 
 } // namespace gf

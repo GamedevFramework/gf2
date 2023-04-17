@@ -108,7 +108,7 @@ This function is not blocking: if there's no pending event then it will return `
 
 [source]
 ----
-std::optional<Event> wait();
+Event wait();
 ----
 
 Wait for an event and return it.
