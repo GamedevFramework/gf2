@@ -140,6 +140,18 @@ See also: <<_inv_sqrt3>>
 
 == Types
 
+[#_circ]
+=== `gf::Circ<T>`
+
+[source]
+----
+#include <gf2/Circ.h>
+template<typename T>
+struct Circ;
+----
+
+A `Circ<T>` represents a circle. xref:Circ.adoc[*Read more...*]
+
 [#_mat3]
 === `gf::Mat3<T>`
 

@@ -19,6 +19,17 @@ xref:reference.adoc[< Back to reference]
 
 == Types
 
+[#_id]
+=== `gf::Id`
+
+[source]
+----
+#include <gf2/Id.h>
+enum class Id : uint64_t;
+----
+
+`Id` represents a generic identifier. xref:Id.adoc[*Read more...*]
+
 [#_log]
 === `gf::Log`
 
@@ -29,3 +40,25 @@ class Log;
 ----
 
 Logging functions are used to report some events that have happened in the system. xref:Log.adoc[*Read more...*]
+
+[#_random]
+=== `gf::Random`
+
+[source]
+----
+#include <gf2/Random.h>
+class Random;
+----
+
+`Random` offers a set of random utilities. xref:Random.adoc[*Read more...*]
+
+[#_random_engine]
+=== `gf::RandomEngine`
+
+[source]
+----
+#include <gf2/Random.h>
+class RandomEngine;
+----
+
+`RandomEngine` is a modern random engine. xref:RandomEngine.adoc[*Read more...*]

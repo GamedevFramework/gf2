@@ -141,7 +141,7 @@ See also <<_intersects>>
 constexpr bool intersects(Rect other) const noexcept;
 ----
 
-Check if two rectangles interset.
+Check if two rectangles intersect.
 
 See also: <<_intersection>>
 

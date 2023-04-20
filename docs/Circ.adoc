@@ -1,0 +1,107 @@
+= `gf::Circ<T>` type
+v0.1
+:toc: right
+:toclevels: 2
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+A `Circ<T>` represents a circle.
+
+xref:core_math.adoc[< Back to `core` Math]
+
+== Description
+
+[source]
+----
+#include <gf2/Circ.h>
+template<typename T>
+struct Circ;
+----
+
+A circle is defined by its center and its radius. It is a very simple class defined for convenience, so its data members (`center` and `radius`) are public and can be accessed directly.
+
+`Circ<T>` is a template and may be used with any numeric type, but for simplicity, some common typedef are defined:
+
+- `CircF` with `float` as `T`
+- `CircD` with `double` as `T`
+- `CircI` with `int` as `T`
+- `CircU` with `unsigned` as `T`
+
+== Static Member Functions
+
+=== `from_center_radius`
+
+[source]
+----
+constexpr Circ from_center_radius(Vec2<T> center, T radius) noexcept;
+----
+
+Create a circle from a center and a radius.
+
+=== `from_radius`
+
+[source]
+----
+constexpr Circ from_radius(T radius) noexcept;
+----
+
+Create a circle from a radius, the center is at stem:[(0,0)].
+
+== Member Functions
+
+=== `contains`
+
+[source]
+----
+constexpr bool contains(Vec2<T> point) const noexcept;
+----
+
+Check if a point is inside the circle.
+
+=== `empty`
+
+[source]
+----
+constexpr bool empty() const noexcept;
+----
+
+Check if the circle is empty, i.e. if the radius of the circle is zero.
+
+=== `intersects`
+
+[source]
+----
+constexpr bool intersects(Circ other) const noexcept;
+----
+
+Check if two circles intersect.
+
+== Operators
+
+=== `operator==`
+
+[source]
+----
+template<typename T>
+constexpr bool operator==(Circ<T> lhs, Circ<T> rhs);
+----
+
+Test the equality of two circles.
+
+=== `operator!=`
+
+[source]
+----
+template<typename T>
+constexpr bool operator!=(Circ<T> lhs, Circ<T> rhs);
+----
+
+Test the inequality of two circles.

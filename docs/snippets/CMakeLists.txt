@@ -1,5 +1,6 @@
 add_library(gf2_core_doc
   core_color.cc
+  core_id.cc
   core_math.cc
 )
 

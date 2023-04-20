@@ -1,0 +1,109 @@
+= `gf::RandomEngine` type
+v0.1
+:toc: right
+:toclevels: 2
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+`RandomEngine` is a link:https://prng.di.unimi.it/[modern random engine].
+
+xref:core_utilities.adoc[< Back to `core` Utilities]
+
+== Description
+
+[source]
+----
+#include <gf2/Random.h>
+class RandomEngine;
+----
+
+The random engine uses link:https://prng.di.unimi.it/xoshiro256plusplus.c[xoshiro256++] which is fast and shows good statistical behavior.
+
+`RandomEngine` satisfies the requirements of link:https://en.cppreference.com/w/cpp/named_req/UniformRandomBitGenerator[UniformRandomBitGenerator] and can be used like any other random engines from the standard library. In particular, it may be used with any link:https://en.cppreference.com/w/cpp/numeric/random[random number distributions].
+
+See also: xref:Random.adoc[`Random`]
+
+== Types
+
+=== `result_type`
+
+[source]
+----
+using result_type = uint64_t;
+----
+
+The result type of the engine.
+
+== Member Functions
+
+[#_constructors]
+=== `RandomEngine` contructors
+
+[source]
+----
+RandomEngine(); <1>
+RandomEngine(result_type seed); <2>
+----
+
+<1> The state is initialized with link:https://en.cppreference.com/w/cpp/numeric/random/random_device[`std::random_device`]
+<2> The state is initialized with `seed` and link:https://prng.di.unimi.it/splitmix64.c[`SplitMix`]
+
+=== `operator()`
+
+[source]
+----
+result_type operator()();
+----
+
+Return a new random value.
+
+=== `long_jump`
+
+[source]
+----
+void long_jump();
+----
+
+Advances the generator as if `operator()` had been called stem:[2^{192}] times.
+
+See also: <<_short_jump>>
+
+=== `short_jump`
+
+[source]
+----
+void short_jump();
+----
+
+Advances the generator as if `operator()` had been called stem:[2^{128}] times.
+
+See also: <<_long_jump>>
+
+
+== Static Members Functions
+
+=== `min`
+
+[source]
+----
+constexpr result_type min();
+----
+
+Return the smallest value returned by the engine.
+
+=== `max`
+
+[source]
+----
+constexpr result_type max();
+----
+
+Return the largest value returned by the engine.

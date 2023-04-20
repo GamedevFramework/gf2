@@ -1,0 +1,137 @@
+= `gf::Random` type
+v0.1
+:toc: right
+:toclevels: 2
+:homepage: https://gamedevframework.github.io/
+:stem: latexmath
+:source-highlighter: rouge
+:source-language: c++
+:rouge-style: thankful_eyes
+:sectanchors:
+:xrefstyle: full
+:nofooter:
+:docinfo: shared-head
+:icons: font
+
+`Random` offers a set of random utilities.
+
+xref:core_utilities.adoc[< Back to `core` Utilities]
+
+== Description
+
+[source]
+----
+#include <gf2/Random.h>
+class Random;
+----
+
+`Random` is a wrapper around link:http://en.cppreference.com/w/cpp/numeric/random[C++11 standard random features]. It embeds a xref:RandomEngine.adoc[`RandomEngine`] and provides several usual distributions above this engine.
+
+See also: xref:RandomEngine.adoc[`RandomEngine`]
+
+== Member Functions
+
+=== `Random` contructors
+
+[source]
+----
+Random(); <1>
+Random(uint64_t seed); <2>
+----
+
+<1> Initialize the engine with default initialization
+<2> Initialize the engine with `seed`
+
+See xref:RandomEngine.adoc#_constructors[`RandomEngine` constructors] for details.
+
+=== `compute_angle`
+
+[source]
+----
+float compute_angle();
+----
+
+Compute an angle in the range stem:[0, 2\pi].
+
+See also: <<_compute_radius>>
+
+=== `compute_bernoulli`
+
+[source]
+----
+bool compute_bernoulli(double p);
+----
+
+Return `true` with a probability `p`.
+
+=== `compute_id`
+
+[source]
+----
+Id compute_id();
+----
+
+Compute a valid `Id`.
+
+=== `compute_normal_float`
+
+[source]
+----
+template<typename T>
+T compute_normal_float(T mean, T stddev);
+----
+
+Compute a float with a normal distribution with parameters `mean` and `stddev`.
+
+=== `compute_position`
+
+[source]
+----
+Vec2F compute_position(const RectF& area); <1>
+Vec2I compute_position(const RectI& area); <2>
+Vec2F compute_position(const CircF& area); <3>
+----
+
+<1> Compute a uniform position in a float rectangle.
+<2> Compute a uniform position in an integer rectangle.
+<3> Compute a uniform position in a circle.
+
+=== `compute_radius`
+
+[source]
+----
+float compute_radius(float radius_min, float radius_max);
+----
+
+Compute a uniform radius between `radius_min` and `radius_max`.
+
+See also: <<_compute_angle>>
+
+=== `compute_uniform_float`
+
+[source]
+----
+template<typename T>
+T compute_uniform_float(T min, T max);
+----
+
+Compute a uniform float between `min` (included) and `max` (excluded).
+
+=== `compute_uniform_integer`
+
+[source]
+----
+template<typename T>
+T compute_uniform_integer(T min, T max);
+----
+
+Compute a uniform integer between `min` (included) and `max` (excluded).
+
+=== `engine`
+
+[source]
+----
+RandomEngine& engine();
+----
+
+Get the underlying engine if you need it to use a distribution that is not provided.
