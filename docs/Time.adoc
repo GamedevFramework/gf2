@@ -115,7 +115,7 @@ constexpr bool operator<(Time lhs, Time rhs);
 
 Test the equality if `rhs` is less than `lhs`
 
-=== `operator<=`
+=== `operator\<=`
 
 [source]
 ----
