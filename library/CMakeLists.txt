@@ -66,6 +66,7 @@ endfunction()
 add_library(gf2core0
   core/Array2D.cc
   core/Circ.cc
+  core/Clock.cc
   core/Color.cc
   core/Flags.cc
   core/Id.cc
@@ -76,6 +77,7 @@ add_library(gf2core0
   core/Range.cc
   core/Rect.cc
   core/Ref.cc
+  core/Time.cc
   core/Transform.cc
   core/Vec2.cc
   core/Vec3.cc

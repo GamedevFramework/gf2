@@ -11,7 +11,8 @@ namespace gf {
 
   enum class Id : uint64_t;
 
-  constexpr Id id(uint64_t id) {
+  constexpr Id id(uint64_t id)
+  {
     return static_cast<Id>(id);
   }
 

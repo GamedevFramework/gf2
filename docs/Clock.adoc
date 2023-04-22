@@ -1,0 +1,59 @@
+= `gf::Clock` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`Clock` measures the elapsed time.
+
+xref:core_utilities.adoc[< Back to `core` Utilities]
+
+== Description
+
+[source]
+----
+#include <gf2/Clock.h>
+class Clock;
+----
+
+`Clock` is a lightweight class for measuring time. It is a thin wrapper around link:http://en.cppreference.com/w/cpp/chrono/steady_clock[`std::chrono::steady_clock`].
+
+Its provides the most precise time that the underlying OS can achieve (generally microseconds or nanoseconds). It also ensures monotonicity, which means that the returned time can never go backward, even if the system time is changed.
+
+.Example for `gf::Clock`
+[source,indent=0]
+----
+include::snippets/core_clock.cc[tag=clock]
+----
+
+The `Time` value returned by the clock can then be converted to a number of seconds, milliseconds or even microseconds.
+
+See also: xref:Time.adoc[`Time`]
+
+== Member Functions
+
+=== `Clock` contructors
+
+[source]
+----
+Clock();
+----
+
+The clock starts automaticaaly after begin constructed.
+
+=== `elapsed_time`
+
+[source]
+----
+Time elapsed_time() const;
+----
+
+Get the elapsed time since the last call to <<_restart>> (or the construction of the instance if <<_restart>> has not been called).
+
+=== `restart`
+
+[source]
+----
+Time restart();
+----
+
+Restart the clock. This function puts the time counter back to zero. It also returns the time elapsed since the clock was started.

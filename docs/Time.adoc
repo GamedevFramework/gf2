@@ -1,0 +1,279 @@
+= `gf::Time` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`Time` represents a time value.
+
+xref:core_utilities.adoc[< Back to `core` Utilities]
+
+== Description
+
+[source]
+----
+#include <gf2/Time.h>
+class Time;
+----
+
+`Time` encapsulates a time value in a flexible way. It allows to define a time value either as a number of seconds, milliseconds or microseconds. It also works the other way round: you can read a time value as either a number of seconds, milliseconds or microseconds.
+
+By using such a flexible interface, the API doesn't impose any fixed type or resolution for time values, and let the user choose its own favorite representation.
+
+Since they represent a time span and not an absolute time value, times can also be negative.
+
+`Time` is a thin wrapper around C++ link:http://en.cppreference.com/w/cpp/chrono/steady_clock[`std::chrono::steady_clock`].
+
+.Example for `gf::Time`
+[source,indent=0]
+----
+include::snippets/core_time.cc[tag=time]
+----
+
+See also: xref:Clock.adoc[`Clock`]
+
+== Member Functions
+
+=== `Time` contructors
+
+[source]
+----
+constexpr Time(); <1>
+constexpr explicit Time(std::chrono::steady_clock::duration duration); <2>
+----
+
+<1> Default constructor. Set the time value to zero.
+<2> Constructor with a duration.
+
+=== `as_duration`
+
+[source]
+----
+constexpr std::chrono::steady_clock::duration as_duration() const;
+----
+
+Return the time as a duration.
+
+=== `as_microseconds`
+
+[source]
+----
+constexpr int64_t as_microseconds() const;
+----
+
+Return the time as a number of microseconds.
+
+See also: <<_microseconds>>, <<_operator_microseconds>>
+
+=== `as_milliseconds`
+
+[source]
+----
+constexpr int32_t as_milliseconds() const;
+----
+
+Return the time as a number of milliseconds.
+
+See also: <<_milliseconds>>, <<_operator_milliseconds>>
+
+=== `as_seconds`
+
+[source]
+----
+constexpr float as_seconds() const
+----
+
+Return the time as a number of seconds.
+
+See also: <<_seconds>>, <<_operator_seconds>>
+
+== Operators
+
+=== `operator==`
+
+[source]
+----
+constexpr bool operator==(Time lhs, Time rhs);
+----
+
+Test the equality of two times.
+
+=== `operator!=`
+
+[source]
+----
+constexpr bool operator!=(Time lhs, Time rhs);
+----
+
+Test the inequality of two times.
+
+=== `operator<`
+
+[source]
+----
+constexpr bool operator<(Time lhs, Time rhs);
+----
+
+Test the equality if `rhs` is less than `lhs`
+
+=== `operator<=`
+
+[source]
+----
+constexpr bool operator<=(Time lhs, Time rhs);
+----
+
+Test the equality if `rhs` is less than or equal to `lhs`
+
+=== `operator>`
+
+[source]
+----
+constexpr bool operator>(Time lhs, Time rhs);
+----
+
+Test the equality if `rhs` is greater than `lhs`
+
+=== `operator>=`
+
+[source]
+----
+constexpr bool operator<=(Time lhs, Time rhs);
+----
+
+Test the equality if `rhs` is greater than or equal to `lhs`
+
+=== `operator+`
+
+[source]
+----
+constexpr Time operator+(Time lhs, Time rhs);
+----
+
+Compute the addition of two times.
+
+=== `operator+=`
+
+[source]
+----
+constexpr Time& operator+=(Time& rhs, Time lhs);
+----
+
+Compute the addition and assignment of two times. The result is assigned to `lhs`.
+
+=== `operator-`
+
+[source]
+----
+constexpr Time operator-(Time lhs, Time rhs);
+----
+
+Compute the substraction of two times.
+
+=== `operator-=`
+
+[source]
+----
+constexpr Time& operator-=(Time& rhs, Time lhs);
+----
+
+Compute the substraction and assignment of two times. The result is assigned to `lhs`.
+
+== User-Defined Literals
+
+[#_operator_microseconds]
+=== `gf::literals::_microseconds`
+
+[source]
+----
+constexpr Time operator"" _microseconds(unsigned long long int amount);
+----
+
+Create a time value from a litteral number of microseconds.
+
+This operator is defined in the `gf::literals` namespace.
+
+.Example for `operator"" _microseconds`
+[source,indent=0]
+----
+include::snippets/core_time.cc[tag=time_us]
+----
+
+See also: <<_as_microseconds>>
+
+[#_operator_milliseconds]
+=== `gf::literals::_milliseconds`
+
+[source]
+----
+constexpr Time operator"" _milliseconds(unsigned long long int amount);
+----
+
+Create a time value from a litteral number of milliseconds.
+
+This operator is defined in the `gf::literals` namespace.
+
+.Example for `operator"" _milliseconds`
+[source,indent=0]
+----
+include::snippets/core_time.cc[tag=time_ms]
+----
+
+See also: <<_as_milliseconds>>
+
+[#_operator_seconds]
+=== `gf::literals::_seconds`
+
+[source]
+----
+constexpr Time operator"" _seconds(long double amount);
+----
+
+Create a time value from a litteral number of seconds.
+
+This operator is defined in the `gf::literals` namespace.
+
+.Example for `operator"" _seconds`
+[source,indent=0]
+----
+include::snippets/core_time.cc[tag=time_s]
+----
+
+See also: <<_as_seconds>>
+
+== Functions
+
+[#_microseconds]
+=== `gf::microseconds`
+
+[source]
+----
+constexpr Time microseconds(int64_t amount);
+----
+
+Create a time value from a number of microseconds.
+
+See also: <<_as_microseconds>>
+
+[#_milliseconds]
+=== `gf::milliseconds`
+
+[source]
+----
+constexpr Time milliseconds(int32_t amount);
+----
+
+Create a time value from a number of milliseconds.
+
+See also: <<_as_milliseconds>>
+
+[#_seconds]
+=== `gf::seconds`
+
+[source]
+----
+constexpr Time seconds(float amount);
+----
+
+Create a time value from a number of seconds.
+
+See also: <<_as_seconds>>
