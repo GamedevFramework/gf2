@@ -1,17 +1,7 @@
 = `core` Vocabulary
 v0.1
+include::bits/attributes.adoc[]
 :toc: right
-:toclevels: 3
-:homepage: https://gamedevframework.github.io/
-:stem: latexmath
-:source-highlighter: rouge
-:source-language: c++
-:rouge-style: thankful_eyes
-:sectanchors:
-:xrefstyle: full
-:nofooter:
-:docinfo: shared-head
-:icons: font
 
 The vocabulary component contains some types and variables that express explicit intent.
 
@@ -22,22 +12,82 @@ xref:reference.adoc[< Back to reference]
 [#_all]
 === `gf::All`
 
+[source]
+----
+#include <gf2/Types.h>
+constexpr AllType All;
+----
+
+Constant to represent "all".
+
+See also: <<_all_type>>
+
 [#_any]
 === `gf::Any`
+
+[source]
+----
+#include <gf2/Types.h>
+constexpr AnyType Any;
+----
+
+Constant to represent "any".
+
+See also: <<_any_type>>
 
 [#_none]
 === `gf::None`
 
+[source]
+----
+#include <gf2/Types.h>
+constexpr NoneType None;
+----
+
+Constant to represent "none".
+
+See also: <<_none_type>>
+
 [#_zero]
 === `gf::Zero`
+
+[source]
+----
+#include <gf2/Types.h>
+constexpr ZeroType Zero;
+----
+
+Constant to represent "zero".
+
+See also: <<_zero_type>>
 
 == Types
 
 [#_all_type]
 === `gf::AllType`
 
+[source]
+----
+#include <gf2/Types.h>
+struct AllType;
+----
+
+Semantic type to represente "all".
+
+See also: <<_all>>
+
 [#_any_type]
 === `gf::AnyType`
+
+[source]
+----
+#include <gf2/Types.h>
+struct AnyType;
+----
+
+Semantic type to represente "any".
+
+See also: <<_any>>
 
 [#_flags]
 === `gf::Flags<E>`
@@ -51,8 +101,29 @@ class Flags;
 
 A `Flags<E>` stores a bit field relying on an enumeration `E`. xref:Flags.adoc[*Read more...*]
 
+[#_id]
+=== `gf::Id`
+
+[source]
+----
+#include <gf2/Id.h>
+enum class Id : uint64_t;
+----
+
+`Id` represents a generic identifier. xref:Id.adoc[*Read more...*]
+
 [#_none_type]
 === `gf::NoneType`
+
+[source]
+----
+#include <gf2/Types.h>
+struct NoneType;
+----
+
+Semantic type to represente "none".
+
+See also: <<_none>>
 
 [#_ref]
 === `gf::Ref<T>`
@@ -69,3 +140,12 @@ class Ref;
 [#_zero_type]
 === `gf::ZeroType`
 
+[source]
+----
+#include <gf2/Types.h>
+struct ZeroType;
+----
+
+Semantic type to represente "zero".
+
+See also: <<_zero>>

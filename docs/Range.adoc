@@ -1,17 +1,7 @@
 = `gf::Range<T>` type
 v0.1
+include::bits/attributes.adoc[]
 :toc: right
-:toclevels: 2
-:homepage: https://gamedevframework.github.io/
-:stem: latexmath
-:source-highlighter: rouge
-:source-language: c++
-:rouge-style: thankful_eyes
-:sectanchors:
-:xrefstyle: full
-:nofooter:
-:docinfo: shared-head
-:icons: font
 
 A `Range<T>` represents a half-open range of values.
 
@@ -30,7 +20,12 @@ See also: xref:Range2D.adoc[`Range2D<T>`]
 
 == Types
 
-=== `Range<T>::Iterator`
+=== `Iterator`
+
+[source]
+----
+struct Iterator;
+----
 
 A link:https://en.cppreference.com/w/cpp/named_req/BidirectionalIterator[bidirectional iterator] that is used for iterating over the range.
 

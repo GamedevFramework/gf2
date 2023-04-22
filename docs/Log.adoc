@@ -1,17 +1,7 @@
 = `gf::Log` type
 v0.1
+include::bits/attributes.adoc[]
 :toc: right
-:toclevels: 3
-:homepage: https://gamedevframework.github.io/
-:stem: latexmath
-:source-highlighter: rouge
-:source-language: c++
-:rouge-style: thankful_eyes
-:sectanchors:
-:xrefstyle: full
-:nofooter:
-:docinfo: shared-head
-:icons: font
 
 Logging functions are used to report some events that have happened in the system.
 

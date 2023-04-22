@@ -1,17 +1,7 @@
 = `gf::Flags<E>` type
 v0.1
+include::bits/attributes.adoc[]
 :toc: right
-:toclevels: 3
-:homepage: https://gamedevframework.github.io/
-:stem: latexmath
-:source-highlighter: rouge
-:source-language: c++
-:rouge-style: thankful_eyes
-:sectanchors:
-:xrefstyle: full
-:nofooter:
-:docinfo: shared-head
-:icons: font
 
 A `Flags<E>` stores a link:https://en.wikipedia.org/wiki/Bit_field[bit field] relying on an enumeration `E`.
 

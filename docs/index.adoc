@@ -1,24 +1,19 @@
 = Gamedev Framework 2 (gf2)
 v0.1
-:homepage: https://gamedevframework.github.io/
-:stem: latexmath
-:source-highlighter: rouge
-:source-language: c++
-:rouge-style: thankful_eyes
-:sectanchors:
-:xrefstyle: full
-:nofooter:
-:docinfo: shared-head
-:icons: font
+include::bits/attributes.adoc[]
 
 *Gamedev Framework 2* (gf2) is a modern framework to build 2D games in C++17.
 
 image::logoex.png[Gamedev Framework 2]
 
-== User documentation
+== User Documentation
 
 - Quickstart
 - Installation
 - Tutorials
 - xref:reference.adoc[Reference]
 - xref:symbols.adoc[Symbols] (xref:symbols_types.adoc[Types], xref:symbols_variables.adoc[Variables], xref:symbols_functions.adoc[Functions])
+
+== Dev Documentation
+
+- xref:documentation_writing_rules.adoc[Documentation Writing Rules]

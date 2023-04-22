@@ -1,17 +1,7 @@
 = `core` Math, vector-related types and functions
 v0.1
+include::bits/attributes.adoc[]
 :toc: right
-:toclevels: 3
-:homepage: https://gamedevframework.github.io/
-:stem: latexmath
-:source-highlighter: rouge
-:source-language: c++
-:rouge-style: thankful_eyes
-:sectanchors:
-:xrefstyle: full
-:nofooter:
-:docinfo: shared-head
-:icons: font
 
 `core` Math provides some types and functions that are useful in conjunction with xref:Vec2.adoc[`Vec2<T>`] et xref:Vec3.adoc[`Vec3<T>`].
 

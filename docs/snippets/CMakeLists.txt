@@ -1,7 +1,9 @@
 add_library(gf2_core_doc
+  core_clock.cc
   core_color.cc
   core_id.cc
   core_math.cc
+  core_time.cc
 )
 
 target_link_libraries(gf2_core_doc

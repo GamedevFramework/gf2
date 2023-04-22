@@ -1,17 +1,7 @@
 = `core` Utilities
 v0.1
+include::bits/attributes.adoc[]
 :toc: right
-:toclevels: 3
-:homepage: https://gamedevframework.github.io/
-:stem: latexmath
-:source-highlighter: rouge
-:source-language: c++
-:rouge-style: thankful_eyes
-:sectanchors:
-:xrefstyle: full
-:nofooter:
-:docinfo: shared-head
-:icons: font
 
 The utilities component provides common features for the library.
 
@@ -19,16 +9,18 @@ xref:reference.adoc[< Back to reference]
 
 == Types
 
-[#_id]
-=== `gf::Id`
+[#_clock]
+=== `gf:Clock`
 
 [source]
 ----
-#include <gf2/Id.h>
-enum class Id : uint64_t;
+#include <gf2/Clock.h>
+class Clock;
 ----
 
-`Id` represents a generic identifier. xref:Id.adoc[*Read more...*]
+`Clock` measures the elapsed time. xref:Clock.adoc[*Read more...*]
+
+See also: <<_time>>
 
 [#_log]
 === `gf::Log`
@@ -62,3 +54,16 @@ class RandomEngine;
 ----
 
 `RandomEngine` is a modern random engine. xref:RandomEngine.adoc[*Read more...*]
+
+[#_time]
+=== `gf::Time`
+
+[source]
+----
+#include <gf2/Time.h>
+class Time;
+----
+
+`Time` represents a time value. xref:Time.adoc[*Read more...*]
+
+See also: <<_clock>>

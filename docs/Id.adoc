@@ -1,21 +1,11 @@
 = `gf::Id` type
 v0.1
+include::bits/attributes.adoc[]
 :toc: right
-:toclevels: 2
-:homepage: https://gamedevframework.github.io/
-:stem: latexmath
-:source-highlighter: rouge
-:source-language: c++
-:rouge-style: thankful_eyes
-:sectanchors:
-:xrefstyle: full
-:nofooter:
-:docinfo: shared-head
-:icons: font
 
 `Id` represents a generic identifier.
 
-xref:core_utilities.adoc[< Back to `core` Utilities]
+xref:core_vocabulary.adoc[< Back to `core` Vocabulary]
 
 == Description
 
@@ -29,6 +19,7 @@ An `Id` represents an identifier that has been computed from a string. Technical
 
 There are two ways to get an id from a string. The first one is to call `gf::hash` with the string. You can use a C string or a `std::string` or anything that can be converted to a `std::string_view`.
 
+.Example for `gf::Id`: use of `gf::hash`
 [source,indent=0]
 ----
 include::snippets/core_id.cc[tag=hash]
@@ -36,6 +27,7 @@ include::snippets/core_id.cc[tag=hash]
 
 The second one is to use the user-defined literal  `_id`. First, you have to include a `using namespace` directive in order to be able to use this user-defined literal.
 
+.Example for `gf::Id`: `gf::literals` namespace
 [source,indent=0]
 ----
 include::snippets/core_id.cc[tag=using]
@@ -43,6 +35,7 @@ include::snippets/core_id.cc[tag=using]
 
 Then you can use the user-defined literal on literal strings.
 
+.Example for `gf::Id`: user-defined literal
 [source,indent=0]
 ----
 include::snippets/core_id.cc[tag=udl]
@@ -50,6 +43,7 @@ include::snippets/core_id.cc[tag=udl]
 
 The main advantage is that the id is computed at compile-time.
 
+.Example for `gf::Id`: compile-time features
 [source,indent=0]
 ----
 include::snippets/core_id.cc[tag=comptime]
@@ -57,6 +51,7 @@ include::snippets/core_id.cc[tag=comptime]
 
 So you can even use this property to compute a switch statement on a string.
 
+.Example for `gf::Id`: use in `switch`
 [source,indent=0]
 ----
 include::snippets/core_id.cc[tag=switch]
@@ -75,7 +70,7 @@ The invalid id (which is 0)
 
 == Functions
 
-=== `id`
+=== `gf::id`
 
 [source]
 ----
@@ -84,7 +79,7 @@ constexpr Id id(uint64_t id);
 
 Create an identifier from an integer.
 
-=== `hash`
+=== `gf::hash`
 
 [source]
 ----
@@ -95,9 +90,9 @@ constexpr Id hash(std::string_view str); <2>
 <1> Get an identifier from a string `str` of size `sz`.
 <2> Get an identifier from a string represented by `str`.
 
-== Operators
+== User-Defined Literals
 
-=== `operator"" _id`
+=== `gf::literals::_id`
 
 [source]
 ----
