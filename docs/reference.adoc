@@ -13,12 +13,18 @@ xref:index.adoc[< Back to main page]
 - xref:core_math.adoc[Math] (xref:Vec2.adoc[`Vec2<T>`], xref:Vec3.adoc[`Vec3<T>`], xref:core_vec.adoc[vector-related types and functions], xref:Rect.adoc[`Rect<T>`], xref:Circ.adoc[`Circ<T>`])
 - xref:core_color.adoc[Color] (xref:Color.adoc[`Color`])
 - xref:core_container.adoc[Container] (xref:Array2D.adoc[`Array2D<T>`], xref:Span.adoc[`Span<T>`])
+- Streams (`InputStream`, `OutputStream`)
+- Serialization (`Serializer`, `Deserializer`)
 
 == `graphics`
 
+- Initialization (`GraphicsInitializer`, `FontInitializer`)
 - xref:graphics_devices.adoc[Devices] (xref:Scancode.adoc[`Scancode`], xref:Keycode.adoc[`Keycode`], xref:MouseButton.adoc[`MouseButton`])
 - xref:graphics_events.adoc[Events] (xref:Event.adoc[`Event`])
 
 == `net`
+
+- Utilities (`Queue<T>`, `Packet`)
+- Sockets (`TcpSocket`, `TcpListener`, `TcpSelector`, `UdpSocket`)
 
 == `audio`

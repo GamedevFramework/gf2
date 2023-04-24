@@ -77,6 +77,8 @@ add_library(gf2core0
   core/Range.cc
   core/Rect.cc
   core/Ref.cc
+  core/Stream.cc
+  core/Streams.cc
   core/Time.cc
   core/Transform.cc
   core/Vec2.cc
@@ -91,6 +93,12 @@ gf2_handle_library(gf2core0
 target_link_libraries(gf2core0
   PUBLIC
     fmt::fmt-header-only
+    ZLIB::ZLIB
+)
+
+target_compile_definitions(gf2core0
+  PRIVATE
+    ZLIB_CONST
 )
 
 # gf2::graphics

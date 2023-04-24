@@ -1,7 +1,7 @@
 set_project("gf")
 set_version("0.0.1")
 
-add_requires("sdl2", "fmt")
+add_requires("fmt", "sdl2", "zlib")
 
 add_rules("mode.asan", "mode.tsan", "mode.ubsan", "mode.coverage", "mode.debug", "mode.releasedbg", "mode.release")
 
@@ -15,9 +15,11 @@ end
 target("gf2core0")
     set_kind("shared")
     add_defines("GF_CORE_BUILD")
+    add_defines("ZLIB_CONST")
     add_files("library/core/*.cc")
     add_includedirs("include", { public = true })
     add_packages("fmt", { public = true })
+    add_packages("zlib", { public = true })
 
 target("gf2graphics0")
     set_kind("shared")

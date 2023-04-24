@@ -13,6 +13,7 @@ option(BUILD_TESTING "Build tests" ON)
 set(SDL2_BUILDING_LIBRARY TRUE)
 find_package(SDL2 REQUIRED)
 find_package(fmt REQUIRED)
+find_package(ZLIB REQUIRED)
 
 if(MSVC)
   message(STATUS "Using MSVC compiler")
