@@ -28,7 +28,7 @@ See also: xref:Span.adoc[`Span<T>`]
 ----
 constexpr StaticSpan() noexcept; <1>
 constexpr StaticSpan(std::nullptr_t) noexcept; <2>
-constexpr StaticSpan(T *data, std::size_t size) noexcept; <3>
+constexpr StaticSpan(T* data, std::size_t size) noexcept; <3>
 template<typename U>
 constexpr StaticSpan(U (&data)[N]) noexcept; <4>
 template<typename U>
@@ -48,8 +48,8 @@ constexpr StaticSpan(StaticSpan<U, N> other) noexcept; <6>
 
 [source]
 ----
-constexpr const T *begin() const noexcept; <1>
-constexpr T *begin() noexcept; <2>
+constexpr const T* begin() const noexcept; <1>
+constexpr T* begin() noexcept; <2>
 ----
 
 <1> Get an iterator to the first element of the span.
@@ -61,8 +61,8 @@ See also: <<_end>>
 
 [source]
 ----
-constexpr const T *data() const noexcept; <1>
-constexpr T *data() noexcept; <2>
+constexpr const T* data() const noexcept; <1>
+constexpr T* data() noexcept; <2>
 ----
 
 <1> Get a pointer to the elements.
@@ -81,8 +81,8 @@ Check is the span is empty.
 
 [source]
 ----
-constexpr const T *end() const noexcept; <1>
-constexpr T *end() noexcept; <2>
+constexpr const T* end() const noexcept; <1>
+constexpr T* end() noexcept; <2>
 ----
 
 <1> Get an iterator past the last element of the span.

@@ -4,6 +4,7 @@
 #define GF_SPAN_H
 
 #include <cassert>
+#include <cstdint>
 
 #include <array>
 #include <vector>
@@ -379,6 +380,12 @@ namespace gf {
   constexpr StaticSpan<T, N> span(T (&data)[N])
   {
     return StaticSpan<T, N>(data);
+  }
+
+  template<typename T>
+  constexpr Span<uint8_t> bytes(T *object)
+  {
+    return span(reinterpret_cast<uint8_t*>(object), sizeof(T));
   }
 
 } // namespace gf
