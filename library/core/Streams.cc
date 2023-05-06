@@ -21,14 +21,14 @@ namespace gf {
   FileInputStream::FileInputStream(const std::filesystem::path& path)
   {
     if (!std::filesystem::is_regular_file(path)) {
-      Log::error("Could not find the following file for streaming: '{}'\n", path.string());
+      Log::error("Could not find the following file for streaming: '{}'", path.string());
       return;
     }
 
     m_file = std::fopen(path.string().c_str(), "rb");
 
     if (m_file == nullptr) {
-      Log::error("Could not open the following file for streaming: '{}'\n", path.string());
+      Log::error("Could not open the following file for streaming: '{}'", path.string());
     }
   }
 

@@ -63,4 +63,18 @@ namespace gf {
     return {};
   }
 
+  /*
+   * TarballLoader
+   */
+
+  TarballLoader::TarballLoader(const std::filesystem::path& tarball_path)
+  : m_tarball(tarball_path)
+  {
+  }
+
+  std::vector<uint8_t> TarballLoader::search(const std::filesystem::path& relative_path)
+  {
+    return m_tarball.extract(relative_path);
+  }
+
 } // namespace gf

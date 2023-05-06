@@ -9,6 +9,7 @@
 #include "ResourceLoader.h"
 #include "Span.h"
 #include "Streams.h"
+#include "Tarball.h"
 
 namespace gf {
 
@@ -53,6 +54,29 @@ namespace gf {
 
   private:
     std::map<std::filesystem::path, Span<uint8_t>> m_buffers;
+  };
+
+  class GF_CORE_API TarballLoader {
+  public:
+    TarballLoader(const std::filesystem::path& tarball_path);
+
+    std::vector<uint8_t> search(const std::filesystem::path& relative_path);
+
+    template<typename T>
+    std::unique_ptr<T> operator()(const std::filesystem::path& path)
+    {
+      auto buffer = search(path);
+
+      if (buffer.empty()) {
+        return nullptr;
+      }
+
+      BufferInputStream input(gf::ref(buffer));
+      return std::make_unique<T>(input);
+    }
+
+  private:
+    Tarball m_tarball;
   };
 
 } // namespace gf

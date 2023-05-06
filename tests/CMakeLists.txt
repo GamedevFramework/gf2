@@ -34,3 +34,12 @@ target_link_libraries(gf2_core_tests
 )
 
 gtest_discover_tests(gf2_core_tests)
+
+add_executable(gf2_tarball_ls
+  tarball_ls.cc
+)
+
+target_link_libraries(gf2_tarball_ls
+  PRIVATE
+    gf2core0
+)

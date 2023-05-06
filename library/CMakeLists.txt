@@ -83,6 +83,7 @@ add_library(gf2core0
   core/ResourceRegistry.cc
   core/Stream.cc
   core/Streams.cc
+  core/Tarball.cc
   core/Time.cc
   core/Transform.cc
   core/Vec2.cc

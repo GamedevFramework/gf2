@@ -383,9 +383,9 @@ namespace gf {
   }
 
   template<typename T>
-  constexpr Span<uint8_t> bytes(T *object)
+  constexpr Span<uint8_t> bytes(T* object)
   {
-    return span(reinterpret_cast<uint8_t*>(object), sizeof(T));
+    return span(reinterpret_cast<uint8_t*>(object), sizeof(T)); // NOLINT
   }
 
 } // namespace gf
