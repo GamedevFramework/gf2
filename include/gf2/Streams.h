@@ -75,7 +75,7 @@ namespace gf {
 
   class GF_CORE_API BufferInputStream : public InputStream {
   public:
-    BufferInputStream(Ref<std::vector<uint8_t>> bytes);
+    explicit BufferInputStream(Ref<std::vector<uint8_t>> bytes);
 
     std::vector<uint8_t>& bytes()
     {
@@ -94,12 +94,12 @@ namespace gf {
 
   class GF_CORE_API FileOutputStream : public OutputStream {
   public:
-    enum class Mode {
+    enum class Mode : uint8_t {
       Write,
       Append,
     };
 
-    FileOutputStream(const std::filesystem::path& path, Mode mode = Mode::Write);
+    explicit FileOutputStream(const std::filesystem::path& path, Mode mode = Mode::Write);
     FileOutputStream(const FileOutputStream&) = delete;
     FileOutputStream(FileOutputStream&& other) noexcept;
     ~FileOutputStream() override;
@@ -148,7 +148,7 @@ namespace gf {
 
   class GF_CORE_API BufferOutputStream : public OutputStream {
   public:
-    BufferOutputStream(Ref<std::vector<uint8_t>> bytes);
+    explicit BufferOutputStream(Ref<std::vector<uint8_t>> bytes);
 
     std::size_t write(Span<const uint8_t> buffer) override;
     std::size_t written_bytes() const override;

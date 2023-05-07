@@ -1,0 +1,53 @@
+= `gf::FileOutputStream` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`FileOutputStream` is an output stream based on a file.
+
+xref:core_streams.adoc[< Back to `core` Streams]
+
+== Description
+
+[source]
+----
+#include <gf2/Streams.h>
+class FileOutputStream : public OutputStream;
+----
+
+*Inherits*: xref:OutputStream.adoc[`OutputStream`]
+
+See also: xref:FileInputStream.adoc[`FileInputStream`]
+
+== Types
+
+=== `Mode`
+
+[source]
+----
+enum class Mode : uint8_t;
+----
+
+.Enumerators for `gf::FileOutputStream::Mode`
+[cols="1,1"]
+|===
+| Value | Description
+
+| `gf::FileOutputStream::Mode::Write`
+| Truncate the file or create the file.
+
+| `gf::FileOutputStream::Mode::Append`
+| Write at the end of the file.
+|===
+
+== Member Functions
+
+[#_constructors]
+=== `FileOutputStream` contructors
+
+[source]
+----
+explicit FileOutputStream(const std::filesystem::path& path, Mode mode = Mode::Write);
+----
+
+Constructor from a file located at `path` according to `mode`.

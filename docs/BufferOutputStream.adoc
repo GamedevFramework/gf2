@@ -1,0 +1,41 @@
+= `gf::BufferOutputStream` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`BufferOutputStream` is an output stream based on dynamic size buffer.
+
+xref:core_streams.adoc[< Back to `core` Streams]
+
+== Description
+
+[source]
+----
+#include <gf2/Streams.h>
+class BufferOutputStream : public OutputStream;
+----
+
+*Inherits*: xref:OutputStream.adoc[`OutputStream`]
+
+See also: xref:BufferInputStream.adoc[`BufferInputStream`]
+
+== Member Functions
+
+[#_constructors]
+=== `BufferOutputStream` contructors
+
+[source]
+----
+explicit BufferOutputStream(Ref<std::vector<uint8_t>> bytes);
+----
+
+Constructor with a reference to a dynamic byte buffer.
+
+=== `bytes`
+
+[source]
+----
+std::vector<uint8_t>& bytes();
+----
+
+Return the reference to the dynamic byte buffer.

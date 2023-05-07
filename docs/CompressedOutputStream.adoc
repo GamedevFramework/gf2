@@ -1,0 +1,34 @@
+= `gf::CompressedOutputStream` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`CompressedOutputStream` is an output stream based on dynamic size buffer.
+
+xref:core_streams.adoc[< Back to `core` Streams]
+
+== Description
+
+[source]
+----
+#include <gf2/Streams.h>
+class CompressedOutputStream : public OutputStream;
+----
+
+*Inherits*: xref:OutputStream.adoc[`OutputStream`]
+
+The compressed stream use the link:https://en.wikipedia.org/wiki/Deflate[DEFLATE] algorithm, implemented in link:https://zlib.net/[zlib] among others.
+
+See also: xref:CompressedInputStream.adoc[`CompressedInputStream`]
+
+== Member Functions
+
+[#_constructors]
+=== `CompressedOutputStream` contructors
+
+[source]
+----
+explicit CompressedOutputStream(Ref<OutputStream> compressed);
+----
+
+Constructor with a reference to a compressed output stream.

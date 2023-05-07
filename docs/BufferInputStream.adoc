@@ -1,0 +1,41 @@
+= `gf::BufferInputStream` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`BufferInputStream` is an input stream based on a dynamic size buffer.
+
+xref:core_streams.adoc[< Back to `core` Streams]
+
+== Description
+
+[source]
+----
+#include <gf2/Streams.h>
+class BufferInputStream : public InputStream;
+----
+
+*Inherits*: xref:InputStream.adoc[`InputStream`]
+
+See also: xref:BufferOutputStream.adoc[`BufferOutputStream`]
+
+== Member Functions
+
+[#_constructors]
+=== `BufferInputStream` contructors
+
+[source]
+----
+explicit BufferInputStream(Ref<std::vector<uint8_t>> bytes);
+----
+
+Constructor with a reference to a dynamic byte buffer.
+
+=== `bytes`
+
+[source]
+----
+std::vector<uint8_t>& bytes();
+----
+
+Return the reference to the dynamic byte buffer.

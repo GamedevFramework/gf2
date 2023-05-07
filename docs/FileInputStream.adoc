@@ -1,0 +1,32 @@
+= `gf::FileInputStream` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`FileInputStream` is an input stream based on a file.
+
+xref:core_streams.adoc[< Back to `core` Streams]
+
+== Description
+
+[source]
+----
+#include <gf2/Streams.h>
+class FileInputStream : public InputStream;
+----
+
+*Inherits*: xref:InputStream.adoc[`InputStream`]
+
+See also: xref:FileOutputStream.adoc[`FileOutputStream`]
+
+== Member Functions
+
+[#_constructors]
+=== `FileInputStream` contructors
+
+[source]
+----
+explicit FileInputStream(const std::filesystem::path& path);
+----
+
+Constructor from a file located at `path`.

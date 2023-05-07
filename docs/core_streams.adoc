@@ -1,0 +1,147 @@
+= `core` Streams
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The streams component provides several tools for input et ouput.
+
+The base classes for all inputs and outputs are in `<gf2/Stream.h>`:
+
+- <<_input_stream>>
+- <<_output_stream>>
+
+The various implementations of streams are in `<gf2/Streams.h>` (with a final `s`).
+
+xref:reference.adoc[< Back to reference]
+
+== Types
+
+[#_buffer_input_stream]
+=== `gf:BufferInputStream`
+
+[source]
+----
+#include <gf2/Streams.h>
+class BufferInputStream : public InputStream;
+----
+
+`BufferInputStream` is an input stream based on a dynamic size buffer. xref:BufferInputStream.adoc[*Read more...*]
+
+See also: <<_buffer_output_stream>>
+
+[#_buffer_output_stream]
+=== `gf:BufferOutputStream`
+
+[source]
+----
+#include <gf2/Streams.h>
+class BufferOutputStream : public OutputStream;
+----
+
+`BufferOutputStream` is an output stream based on dynamic size buffer. xref:BufferOutputStream.adoc[*Read more...*]
+
+See also: <<_buffer_input_stream>>
+
+[#_compressed_input_stream]
+=== `gf:CompressedInputStream`
+
+[source]
+----
+#include <gf2/Streams.h>
+class CompressedInputStream : public InputStream;
+----
+
+`CompressedInputStream` is an input stream based on another compressed stream. xref:CompressedInputStream.adoc[*Read more...*]
+
+See also: <<_compressed_output_stream>>
+
+[#_compressed_output_stream]
+=== `gf:CompressedOutputStream`
+
+[source]
+----
+#include <gf2/Streams.h>
+class CompresedOutputStream : public OutputStream;
+----
+
+`CompressedOutputStream` is an output stream based on a another compressed stream. xref:CompressedOutputStream.adoc[*Read more...*]
+
+See also: <<_compressed_input_stream>>
+
+[#_file_input_stream]
+=== `gf:FileInputStream`
+
+[source]
+----
+#include <gf2/Streams.h>
+class FileInputStream : public InputStream;
+----
+
+`FileInputStream` is an input stream based on a file. xref:FileInputStream.adoc[*Read more...*]
+
+See also: <<_file_output_stream>>
+
+[#_file_output_stream]
+=== `gf:FileOutputStream`
+
+[source]
+----
+#include <gf2/Streams.h>
+class FileOutputStream : public OutputStream;
+----
+
+`FileOutputStream` is an output stream based on a file. xref:FileOutputStream.adoc[*Read more...*]
+
+See also: <<_file_input_stream>>
+
+[#_input_stream]
+=== `gf:InputStream`
+
+[source]
+----
+#include <gf2/Stream.h>
+class InputStream;
+----
+
+`InputStream` is the base class for all input streams. xref:InputStream.adoc[*Read more...*]
+
+See also: <<_output_stream>>
+
+[#_memory_input_stream]
+=== `gf:MemoryInputStream`
+
+[source]
+----
+#include <gf2/Streams.h>
+class MemoryInputStream : public InputStream;
+----
+
+`MemoryInputStream` is an input stream based on a fixed-size memory. xref:MemoryInputStream.adoc[*Read more...*]
+
+See also: <<_memory_output_stream>>
+
+[#_memory_output_stream]
+=== `gf:MemoryOutputStream`
+
+[source]
+----
+#include <gf2/Streams.h>
+class MemoryOutputStream : public OutputStream;
+----
+
+`MemoryOutputStream` is an output stream based on a fixed-size memory. xref:MemoryOutputStream.adoc[*Read more...*]
+
+See also: <<_memory_input_stream>>
+
+[#_output_stream]
+=== `gf:OutputStream`
+
+[source]
+----
+#include <gf2/Stream.h>
+class OutputStream;
+----
+
+`OutputStream` is the base class for all output streams. xref:OutputStream.adoc[*Read more...*]
+
+See also: <<_input_stream>>

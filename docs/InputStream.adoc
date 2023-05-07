@@ -1,0 +1,103 @@
+= `gf::InputStream` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`InputStream` is the base class for all input streams.
+
+xref:core_streams.adoc[< Back to `core` Streams]
+
+== Description
+
+[source]
+----
+#include <gf2/Stream.h>
+class InputStream;
+----
+
+An input stream can be used to load resources from various data sources. Generally, resource classes have a constructor that takes an `InputStream`.
+
+The classes that inherits `InputStream` are:
+
+- xref:BufferInputStream.adoc[`BufferInputStream`]
+- xref:CompressedInputStream.adoc[`CompressedInputStream`]
+- xref:FileInputStream.adoc[`FileInputStream`]
+- xref:MemoryInputStream.adoc[`MemoryInputStream`]
+
+See also: xref:OutputStream.adoc[`OutputStream`]
+
+== Member Functions
+
+[#_constructors]
+=== `InputStream` contructors
+
+[source]
+----
+InputStream() = default; <1>
+InputStream(const InputStream&) = delete; <2>
+InputStream(InputStream&&) noexcept = default; <3>
+----
+
+<1> Default constructor.
+<2> Deleted copy constructor.
+<3> Defaulted move constructor.
+
+=== `InputStream` destructor
+
+[source]
+----
+virtual ~InputStream();
+----
+
+Destructor is virtual so that you can use pointers to `InputStream` safely.
+
+=== `operator=`
+
+[source]
+----
+InputStream& operator=(const InputStream&) = delete; <1>
+InputStream& operator=(InputStream&&) noexcept = default; <2>
+----
+
+<1> Deleted copy assignment.
+<2> Defaulted move assignment.
+
+=== `finished`
+
+[source]
+----
+virtual bool finished() = 0;
+----
+
+Tell if the stream is at the end.
+
+=== `read`
+
+[source]
+----
+virtual std::size_t read(Span<uint8_t> buffer) = 0; <1>
+std::size_t read(uint8_t& byte); <2>
+----
+
+<1> Read data from the stream to a buffer
+<2> Read a single byte from the stream
+
+Return the number of bytes actually read.
+
+=== `seek`
+
+[source]
+----
+virtual void seek(std::ptrdiff_t position) = 0;
+----
+
+Change the current reading position, from the beginning.
+
+=== `skip`
+
+[source]
+----
+virtual void skip(std::ptrdiff_t position) = 0;
+----
+
+Change the current reading position, from the current position.

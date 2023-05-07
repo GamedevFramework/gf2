@@ -1,0 +1,86 @@
+= `gf::OutputStream` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`OutputStream` is the base class for all output streams.
+
+xref:core_streams.adoc[< Back to `core` Streams]
+
+== Description
+
+[source]
+----
+#include <gf2/Stream.h>
+class OutputStream;
+----
+
+An output stream can be used to save resources to various data sinks.
+
+The classes that inherits `OutputStream` are:
+
+- xref:BufferOutputStream.adoc[`BufferOutputStream`]
+- xref:CompressedOutputStream.adoc[`CompressedOutputStream`]
+- xref:FileOutputStream.adoc[`FileOutputStream`]
+- xref:MemoryOutputStream.adoc[`MemoryOutputStream`]
+
+See also: xref:InputStream.adoc[`InputStream`]
+
+== Member Functions
+
+[#_constructors]
+=== `OutputStream` contructors
+
+[source]
+----
+OutputStream() = default; <1>
+OutputStream(const OutputStream&) = delete; <2>
+OutputStream(OutputStream&&) noexcept = default; <3>
+----
+
+<1> Default constructor.
+<2> Deleted copy constructor.
+<3> Defaulted move constructor.
+
+=== `OutputStream` destructor
+
+[source]
+----
+virtual ~OutputStream();
+----
+
+Destructor is virtual so that you can use pointers to `OutputStream` safely.
+
+=== `operator=`
+
+[source]
+----
+OutputStream& operator=(const OutputStream&) = delete; <1>
+OutputStream& operator=(OutputStream&&) noexcept = default; <2>
+----
+
+<1> Deleted copy assignment.
+<2> Defaulted move assignment.
+
+=== `write`
+
+[source]
+----
+virtual std::size_t write(Span<const uint8_t> buffer) = 0; <1>
+std::size_t write(uint8_t byte); <2>
+----
+
+<1> Write data to the stream from a buffer
+<2> Write a single byte to the stream
+
+Return the number of bytes actually written.
+
+=== `written_bytes`
+
+[source]
+----
+virtual std::size_t written_bytes() const = 0;
+----
+
+Return the number of bytes actually written so far.
+

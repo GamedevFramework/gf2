@@ -1,0 +1,32 @@
+= `gf::MemoryOutputStream` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`MemoryOutputStream` is an output stream based on a fixed-size memory.
+
+xref:core_streams.adoc[< Back to `core` Streams]
+
+== Description
+
+[source]
+----
+#include <gf2/Streams.h>
+class MemoryOutputStream : public OutputStream;
+----
+
+*Inherits*: xref:OutputStream.adoc[`OutputStream`]
+
+See also: xref:MemoryInputStream.adoc[`MemoryInputStream`]
+
+== Member Functions
+
+[#_constructors]
+=== `MemoryOutputStream` contructors
+
+[source]
+----
+explicit MemoryOutputStream(Span<uint8_t> memory);
+----
+
+Constructor with a fixed-size memory.

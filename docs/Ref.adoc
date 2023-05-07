@@ -18,6 +18,21 @@ class Ref;
 
 `Ref<T>` is similar to link:https://en.cppreference.com/w/cpp/utility/functional/reference_wrapper[`std::reference_wrapper`], but much simpler.
 
+There is no automatic conversion from a reference to a `T` to a `Ref<T>`. When you have a `Ref<T>` appearing as an argument of a function, it means the function is asking for a stable reference to an object. In this case, you have to use <<_ref>> in order to create the `Ref<T>` from the object and make it explicit in your code that you provide a stable reference to an object.
+
+For example, if a function is defined as:
+[source,indent=0]
+----
+include::snippets/core_ref.cc[tag=ref_func]
+----
+
+you can then call that function like this:
+[source,indent=0]
+----
+include::snippets/core_ref.cc[tag=ref]
+----
+
+
 == Member functions
 
 === `Ref` constructors
@@ -32,7 +47,7 @@ Ref(T&& other) = delete; <4>
 Ref(Ref&& other) = delete; <5>
 ----
 
-<1> Constructor with a lvalue reference.
+<1> Constructor with a lvalue reference. This constructor is explicit.
 <2> Copy constructor.
 <3> Copy constructor from compatible reference type.
 <4> Deleted constructor with rvalue reference to `T`.

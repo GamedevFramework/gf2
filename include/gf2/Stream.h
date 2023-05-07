@@ -15,11 +15,11 @@ namespace gf {
   public:
     InputStream() = default;
     InputStream(const InputStream&) = delete;
-    InputStream(InputStream&&) = default;
+    InputStream(InputStream&&) noexcept = default;
     virtual ~InputStream();
 
     InputStream& operator=(const InputStream&) = delete;
-    InputStream& operator=(InputStream&&) = default;
+    InputStream& operator=(InputStream&&) noexcept = default;
 
     virtual std::size_t read(Span<uint8_t> buffer) = 0;
     virtual void seek(std::ptrdiff_t position) = 0;
@@ -36,11 +36,11 @@ namespace gf {
   public:
     OutputStream() = default;
     OutputStream(const OutputStream&) = delete;
-    OutputStream(OutputStream&&) = default;
+    OutputStream(OutputStream&&) noexcept = default;
     virtual ~OutputStream();
 
     OutputStream& operator=(const OutputStream&) = delete;
-    OutputStream& operator=(OutputStream&&) = default;
+    OutputStream& operator=(OutputStream&&) noexcept = default;
 
     virtual std::size_t write(Span<const uint8_t> buffer) = 0;
     virtual std::size_t written_bytes() const = 0;
