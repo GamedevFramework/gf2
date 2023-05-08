@@ -4,6 +4,10 @@
 void function_with_ref(gf::Ref<int> ref);
 // end::ref_func[]
 
+void function_with_ref([[maybe_unused]] gf::Ref<int> ref)
+{
+}
+
 void doc_Ref() {
 
 // tag::ref[]
