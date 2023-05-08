@@ -70,6 +70,7 @@ add_library(gf2core0
   core/Color.cc
   core/Flags.cc
   core/Id.cc
+  core/Image.cc
   core/Log.cc
   core/Math.cc
   core/Mat3.cc
@@ -104,6 +105,12 @@ target_link_libraries(gf2core0
 target_compile_definitions(gf2core0
   PRIVATE
     ZLIB_CONST
+)
+
+target_include_directories(gf2core0
+  SYSTEM
+  PRIVATE
+    "${Stb_INCLUDE_DIR}"
 )
 
 # gf2::graphics
