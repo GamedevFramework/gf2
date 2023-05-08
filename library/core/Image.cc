@@ -198,18 +198,20 @@ namespace gf {
       c = std::tolower(c, std::locale::classic());
     }
 
+    std::string filename_string = filename.string();
+
     if (extension == ".png") {
-      stbi_write_png(filename.c_str(), m_size.w, m_size.h, 4, m_pixels.data(), 0);
+      stbi_write_png(filename_string.c_str(), m_size.w, m_size.h, 4, m_pixels.data(), 0);
       return;
     }
 
     if (extension == ".bmp") {
-      stbi_write_bmp(filename.c_str(), m_size.w, m_size.h, 4, m_pixels.data());
+      stbi_write_bmp(filename_string.c_str(), m_size.w, m_size.h, 4, m_pixels.data());
       return;
     }
 
     if (extension == ".tga") {
-      stbi_write_tga(filename.c_str(), m_size.w, m_size.h, 4, m_pixels.data());
+      stbi_write_tga(filename_string.c_str(), m_size.w, m_size.h, 4, m_pixels.data());
       return;
     }
 
