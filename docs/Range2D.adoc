@@ -16,7 +16,7 @@ template<typename T>
 struct Range2D;
 ----
 
-The 2D area is defined by a xref:Range.adoc[`Range<T>`] accross the first dimension, called `dx`, and a xref:Range.adoc[`Range<T>`] accross the second dimension, called `dy`. The associated iterator starts at the top-left (the minimum of each range) of the area and finish at the bottom-right (the maximum of each range), iterating over the first dimension first and then over the second dimension.
+The 2D area is defined by a xref:Range.adoc[`Range<T>`] accross the first dimension, called `dx`, and a xref:Range.adoc[`Range<T>`] accross the second dimension, called `dy`. The associated iterator starts at the top-left (the minimum of each range) of the area and finish at the bottom-right (the maximum of each range), iterating over the second dimension first and then over the first dimension.
 
 == Types
 

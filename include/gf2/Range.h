@@ -130,11 +130,11 @@ namespace gf {
       using reference = value_type;
       using iterator_category = std::forward_iterator_tag;
 
-      Range<T> dy;
+      Range<T> dx;
       Vec2<T> position;
 
-      constexpr Iterator(Range<T> dy, Vec2<T> position) noexcept
-      : dy(dy)
+      constexpr Iterator(Range<T> dx, Vec2<T> position) noexcept
+      : dx(dx)
       , position(position)
       {
       }
@@ -142,7 +142,7 @@ namespace gf {
       void swap(Iterator& other) noexcept
       {
         using std::swap;
-        swap(dy, other.dy);
+        swap(dx, other.dx);
         swap(position, other.position);
       }
 
@@ -168,23 +168,23 @@ namespace gf {
     private:
       void step() noexcept
       {
-        ++position.y;
+        ++position.x;
 
-        if (position.y >= dy.hi) {
-          position.y = dy.lo;
-          ++position.x;
+        if (position.x >= dx.hi) {
+          position.x = dx.lo;
+          ++position.y;
         }
       }
     };
 
     constexpr Iterator begin() const noexcept
     {
-      return Iterator(dy, { dx.lo, dy.lo });
+      return Iterator(dx, { dx.lo, dy.lo });
     }
 
     constexpr Iterator end() const noexcept
     {
-      return Iterator(dy, { dx.hi, dy.lo });
+      return Iterator(dx, { dx.lo, dy.hi });
     }
   };
 
