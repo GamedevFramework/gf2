@@ -54,7 +54,7 @@ jobs:
         shell: cmd
         run: |
           set PATH=%PATH%;${{github.workspace}}/gf2/build/library/${{ env.BUILD_TYPE }}
-          cmake -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/vcpkg/scripts/buildsystems/vcpkg.cmake -S ${{ github.workspace }}/gf2 -B ${{ github.workspace }}/gf2/build
+          cmake -DGF_USE_EMBEDDED_LIBS=OFF -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/vcpkg/scripts/buildsystems/vcpkg.cmake -S ${{ github.workspace }}/gf2 -B ${{ github.workspace }}/gf2/build
 
       - name: Build gf
         shell: cmd
