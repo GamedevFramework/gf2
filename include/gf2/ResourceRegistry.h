@@ -7,7 +7,6 @@
 #include <vector>
 
 #include "Log.h"
-#include "Ref.h"
 #include "ResourceLoader.h"
 
 namespace gf {
@@ -21,29 +20,29 @@ namespace gf {
       m_loaders.push_back(std::move(loader));
     }
 
-    bool loaded(const std::filesystem::path& path)
+    bool loaded(const std::filesystem::path& path) const
     {
       return m_cache.find(path) != m_cache.end();
     }
 
-    Ref<T> get(const std::filesystem::path& path)
+    T& get(const std::filesystem::path& path)
     {
       if (auto cache_iterator = m_cache.find(path); cache_iterator != m_cache.end()) {
         auto& [_, counted] = *cache_iterator;
         // no ref increase
-        return gf::ref(*counted.pointer);
+        return *counted.pointer;
       }
 
       Log::error("Resource not already loaded: '{}'", path.string());
       throw std::runtime_error("Resource not already loaded");
     }
 
-    Ref<T> load(const std::filesystem::path& path)
+    T& load(const std::filesystem::path& path)
     {
       if (auto cache_iterator = m_cache.find(path); cache_iterator != m_cache.end()) {
         auto& [_, counted] = *cache_iterator;
         ++counted.count;
-        return gf::ref(*counted.pointer);
+        return *counted.pointer;
       }
 
       for (auto& loader : m_loaders) {
@@ -60,7 +59,8 @@ namespace gf {
           throw std::runtime_error("Resource not inserted in the registry.");
         }
 
-        return gf::ref(*iterator->second.pointer);
+        auto& [_, counted] = *iterator;
+        return *counted.pointer;
       }
 
       Log::error("Resource not loaded: '{}'", path.string());

@@ -187,6 +187,17 @@ struct Color;
 
 A color in the link:https://en.wikipedia.org/wiki/RGB_color_model[RGB color model]. xref:Color.adoc[*Read more...*].
 
+[#_image]
+=== `gf::Image`
+
+[source]
+----
+#include <gf2/Image.h>
+class Image;
+----
+
+`Image` represents a bidimensional array of pixels. xref:Image.adoc[*Read more...*]
+
 == Functions
 
 [#_darker]

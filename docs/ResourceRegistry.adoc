@@ -1,0 +1,73 @@
+= `gf::ResourceRegistry<T>` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`ResourceRegistry<T>` handles one or many resource loaders and ensures each resource is loaded only once.
+
+xref:core_resources.adoc[< Back to `core` Resources]
+
+== Description
+
+[source]
+----
+#include <gf2/ResourceManager.h>
+template<typename T>
+class ResourceRegistry;
+----
+
+See also: xref:ResourceManager.adoc[`ResourceManager`]
+
+== Member functions
+
+=== `add_loader`
+
+[source]
+----
+void add_loader(ResourceLoader<T> loader);
+----
+
+Add a loader for type `T`.
+
+=== `get`
+
+[source]
+----
+T& get(const std::filesystem::path& path)
+----
+
+Return a resource identified by `path` that already has been loaded.
+
+See also: <<_load>>
+
+=== `load`
+
+[source]
+----
+T& load(const std::filesystem::path& path)
+----
+
+Load a resource identified by `path` and return this resource.
+
+See also: <<_unload>>, <<_get>>
+
+
+=== `load`
+
+[source]
+----
+bool loaded(const std::filesystem::path& path) const;
+----
+
+Check if the resource identified by `path` is already loaded.
+
+=== `unload`
+
+[source]
+----
+void unload(const std::filesystem::path& path)
+----
+
+Unload the resource identified by `path`.
+
+See also: <<_load>>

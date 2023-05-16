@@ -16,12 +16,12 @@ xref:graphics_devices.adoc[< Back to `graphics` Devices]
 enum class Scancode : uint32_t;
 ----
 
-The name of the keys corresponds to the US layout. You should use scancodes when you want a key with a specific location on the keyboard, whatever is written on the key. For example, if you want the link:https://en.wikipedia.org/wiki/Arrow_keys#WASD_keys:[keys for moving] to be located at kbd:[W]kbd:[A]kbd:[S]kbd:[D], you should use scancodes.
+The name of the keys corresponds to the US layout. You should use scancodes when you want a key with a specific location on the keyboard, whatever is written on the key. For example, if you want the link:https://en.wikipedia.org/wiki/Arrow_keys#WASD_keys[keys for moving] to be located at kbd:[W]kbd:[A]kbd:[S]kbd:[D], you should use scancodes.
 
 .Common keyboard layouts with their physical keys (image by link:https://commons.wikimedia.org/wiki/File:Physical_keyboard_layouts_comparison_ANSI_ISO_KS_ABNT_JIS.png[Brilliantwiki2], CC-BY-SA 4.0)
 image::media/keyboard_layouts.png[]
 
-The underlying values corresponds to link:http://www.usb.org/developers/hidpage/Hut1_12v2.pdf[USB key codes].
+The underlying values corresponds to link:https://www.usb.org/sites/default/files/hut1_4.pdf[USB key codes].
 
 See also: xref:Keycode.adoc[`Keycode`], xref:Modifier.adoc[`Modifier`]
 

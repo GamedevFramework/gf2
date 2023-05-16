@@ -1,0 +1,116 @@
+= `core` Resources
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The resources component provides classes for handling resources.
+
+There are four levels:
+
+- Resource: a resource can be any piece of data that can be loaded at runtime, it is identified by a unique relative path.
+- Loader: a resource loader is responsible for loading a resource from raw data coming from various sources (files, tarballs, memory...). It has the `ResourceLoader<T>` type.
+- Registry: a registry must ensure that a resource is not loaded more than once, it can handle several loaders. It is represented by `ResourceRegistry<T>`.
+- Manager: a manager handles several registries, one for each type of resource. It is represented by `ResourceManager`.
+
+The resources that can be used with any resource loader in gf2 are: xref:Image.adoc[`Image`]
+
+
+xref:reference.adoc[< Back to reference]
+
+== Types
+
+[#_file_loader]
+=== `gf::FileLoader`
+
+[source]
+----
+#include <gf2/ResourceLoaders.h>
+class FileLoader;
+----
+
+`FileLoader` is a resource loader for resources in files. xref:FileLoader.adoc[*Read more...*]
+
+[#_memory_loader]
+=== `gf::MemoryLoader`
+
+[source]
+----
+#include <gf2/ResourceLoaders.h>
+class MemoryLoader;
+----
+
+`MemoryLoader` is a resource loader for resources in memory. xref:MemoryLoader.adoc[*Read more...*]
+
+[#_resource_loader]
+=== `gf::ResourceLoader<T>`
+
+[source]
+----
+#include <gf2/ResourceLoader.h>
+template<typename T>
+using ResourceLoader = std::function<std::unique_ptr<T>(const std::filesystem::path&)>;
+----
+
+`ResourceLoader<T>` is a generic type for representing a resource loader.
+
+See also: <<_loader_for>>
+
+[#_resource_manager]
+=== `gf::ResourceManager`
+
+[source]
+----
+#include <gf2/ResourceManager.h>
+class ResourceManager;
+----
+
+`ResourceManager` uses many registries to give access to all kind of resources. xref:ResourceManager.adoc[*Read more...*]
+
+[#_resource_registry]
+=== `gf::ResourceRegistry<T>`
+
+[source]
+----
+#include <gf2/ResourceRegistry.h>
+template<typename T>
+class ResourceRegistry;
+----
+
+`ResourceRegistry<T>` handles one or many resource loaders and ensures each resource is loaded only once. xref:ResourceRegistry.adoc[*Read more...*]
+
+[#_tarball]
+=== `gf::Tarball`
+
+[source]
+----
+#include <gf2/Tarball.h>
+class Tarball;
+----
+
+`Tarball` can load files from a link:https://en.wikipedia.org/wiki/Tar_(computing)[tarball]. xref:Tarball.adoc[*Read more...*]
+
+[#_tarball_loader]
+=== `gf::TarballLoader`
+
+[source]
+----
+#include <gf2/ResourceLoaders.h>
+class TarballLoader;
+----
+
+`TarballLoader` is a resource loader for resources in link:https://en.wikipedia.org/wiki/Tar_(computing)[tarballs]. xref:TarballLoader.adoc[*Read more...*]
+
+== Functions
+
+=== `loader_for`
+
+[source]
+----
+#include <gf2/ResourceLoader.h>
+template<typename T, typename U>
+ResourceLoader<T> loader_for(U& loader);
+----
+
+When implementing a resource loader with a generic functor, the type `T` of the resource loader can not be infered from the arguments. This function is a helper to identify the right instanciation of the generic function.
+
+

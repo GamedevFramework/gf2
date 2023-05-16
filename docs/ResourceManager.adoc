@@ -1,0 +1,76 @@
+= `gf::ResourceManager` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`ResourceManager` uses many registries to give access to all kind of resources.
+
+xref:core_resources.adoc[< Back to `core` Resources]
+
+== Description
+
+[source]
+----
+#include <gf2/ResourceManager.h>
+class ResourceManager;
+----
+
+See also: xref:ResourceRegistry.adoc[`ResourceRegistry<T>`]
+
+== Member functions
+
+=== `acquire`
+
+[source]
+----
+template<typename T>
+T& acquire(const std::filesystem::path& path)
+----
+
+Ensure that the resource identified by `path` is loaded and return this resource. You should use this function if your resource management is very simple: never unload.
+
+=== `add_registry`
+
+[source]
+----
+template<typename T>
+void add_registry(Ref<ResourceRegistry<T>> registry);
+----
+
+Add a registry for type `T`. There can be only a single registry for type `T`.
+
+=== `get`
+
+[source]
+----
+template<typename T>
+T& get(const std::filesystem::path& path)
+----
+
+Return a resource identified by `path` that already has been loaded.
+
+See also: <<_load>>
+
+=== `load`
+
+[source]
+----
+template<typename T>
+T& load(const std::filesystem::path& path)
+----
+
+Load a resource identified by `path` and return this resource.
+
+See also: <<_unload>>, <<_get>>
+
+=== `unload`
+
+[source]
+----
+template<typename T>
+void unload(const std::filesystem::path& path)
+----
+
+Unload the resource identified by `path`.
+
+See also: <<_load>>

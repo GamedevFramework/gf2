@@ -1,0 +1,50 @@
+= `gf::FileLoader` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`FileLoader` is a resource loader for resources in files.
+
+xref:core_resources.adoc[< Back to `core` Resources]
+
+== Description
+
+[source]
+----
+#include <gf2/ResourceLoaders.h>
+class FileLoader;
+----
+
+`FileLoader` can take a set of base directories for searching files. The directories are searched in the same order as their insertion in the loader.
+
+`FileLoader` provides a generic loader, so you should use xref:core_resources.adoc#_loader_for[`loader_for`] in order to use it with xref:ResourceRegistry.adoc[`ResourceRegistry`].
+
+== Member Functions
+
+=== `operator()`
+
+[source]
+----
+template<typename T>
+std::unique_ptr<T> operator()(const std::filesystem::path& path);
+----
+
+Generic loader for a resource in a file. The resource type `T` should provide a constructor with a `const std::filesystem::path&` argument.
+
+=== `add_search_directory`
+
+[source]
+----
+void add_search_directory(std::filesystem::path directory);
+----
+
+Add a search directory to the file loader.
+
+=== `search`
+
+[source]
+----
+std::filesystem::path search(const std::filesystem::path& relative_path);
+----
+
+Search a file in one of the search directories. Return an empty path if no file has been found.

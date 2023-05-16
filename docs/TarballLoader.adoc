@@ -1,0 +1,54 @@
+= `gf::TarballLoader` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`TarballLoader` is a resource loader for resources in link:https://en.wikipedia.org/wiki/Tar_(computing)[tarballs].
+
+xref:core_resources.adoc[< Back to `core` Resources]
+
+== Description
+
+[source]
+----
+#include <gf2/ResourceLoaders.h>
+class TarballLoader;
+----
+
+`TarballLoader` loads a tarball and can provide the content of any file in the tarball.
+
+`TarballLoader` provides a generic loader, so you should use xref:core_resources.adoc#_loader_for[`loader_for`] in order to use it with xref:ResourceRegistry.adoc[`ResourceRegistry`].
+
+See also: xref:Tarball.adoc[`Tarball`]
+
+== Member Functions
+
+=== `TarballLoader` constructors
+
+[source]
+----
+TarballLoader(const std::filesystem::path& tarball_path);
+----
+
+Use the tarball located at `tarball_path` to initialize the loader.
+
+=== `operator()`
+
+[source]
+----
+template<typename T>
+std::unique_ptr<T> operator()(const std::filesystem::path& path);
+----
+
+Generic loader for a resource in a tarball. The resource type `T` should provide a constructor with a `InputStream&` argument.
+
+See also: xref:InputStream.adoc[`InputStream`]
+
+=== `search`
+
+[source]
+----
+std::vector<uint8_t> search(const std::filesystem::path& relative_path);
+----
+
+Search the content of a file in the tarball. Return an empty vector if no file has been found.

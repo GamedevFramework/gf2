@@ -17,7 +17,7 @@ xref:reference.adoc[< Back to reference]
 == Types
 
 [#_buffer_input_stream]
-=== `gf:BufferInputStream`
+=== `gf::BufferInputStream`
 
 [source]
 ----
@@ -30,7 +30,7 @@ class BufferInputStream : public InputStream;
 See also: <<_buffer_output_stream>>
 
 [#_buffer_output_stream]
-=== `gf:BufferOutputStream`
+=== `gf::BufferOutputStream`
 
 [source]
 ----
@@ -43,7 +43,7 @@ class BufferOutputStream : public OutputStream;
 See also: <<_buffer_input_stream>>
 
 [#_compressed_input_stream]
-=== `gf:CompressedInputStream`
+=== `gf::CompressedInputStream`
 
 [source]
 ----
@@ -56,7 +56,7 @@ class CompressedInputStream : public InputStream;
 See also: <<_compressed_output_stream>>
 
 [#_compressed_output_stream]
-=== `gf:CompressedOutputStream`
+=== `gf::CompressedOutputStream`
 
 [source]
 ----
@@ -69,7 +69,7 @@ class CompresedOutputStream : public OutputStream;
 See also: <<_compressed_input_stream>>
 
 [#_file_input_stream]
-=== `gf:FileInputStream`
+=== `gf::FileInputStream`
 
 [source]
 ----
@@ -82,7 +82,7 @@ class FileInputStream : public InputStream;
 See also: <<_file_output_stream>>
 
 [#_file_output_stream]
-=== `gf:FileOutputStream`
+=== `gf::FileOutputStream`
 
 [source]
 ----
@@ -95,7 +95,7 @@ class FileOutputStream : public OutputStream;
 See also: <<_file_input_stream>>
 
 [#_input_stream]
-=== `gf:InputStream`
+=== `gf::InputStream`
 
 [source]
 ----
@@ -108,7 +108,7 @@ class InputStream;
 See also: <<_output_stream>>
 
 [#_memory_input_stream]
-=== `gf:MemoryInputStream`
+=== `gf::MemoryInputStream`
 
 [source]
 ----
@@ -121,7 +121,7 @@ class MemoryInputStream : public InputStream;
 See also: <<_memory_output_stream>>
 
 [#_memory_output_stream]
-=== `gf:MemoryOutputStream`
+=== `gf::MemoryOutputStream`
 
 [source]
 ----
@@ -134,7 +134,7 @@ class MemoryOutputStream : public OutputStream;
 See also: <<_memory_input_stream>>
 
 [#_output_stream]
-=== `gf:OutputStream`
+=== `gf::OutputStream`
 
 [source]
 ----

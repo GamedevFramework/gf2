@@ -1,0 +1,49 @@
+= `gf::Tarball` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`Tarball` can load files from a link:https://en.wikipedia.org/wiki/Tar_(computing)[tarball].
+
+xref:core_resources.adoc[< Back to `core` Resources]
+
+== Description
+
+[source]
+----
+#include <gf2/Tarball.h>
+class Tarball;
+----
+
+The content of the tarball is scanned at the construction of `Tarball`. Then the content of the tarball can be fetched at any time.
+
+See also: xref:TarballLoader.adoc[`TarballLoader`]
+
+== Member Functions
+
+=== `Tarball` constructors
+
+[source]
+----
+Tarball(const std::filesystem::path& tarball_path);
+----
+
+Open the tarball located at `tarball_path` and scan its content.
+
+=== `entries`
+
+[source]
+----
+std::vector<std::filesystem::path> entries() const;
+----
+
+Get all the file entries in the tarball. Directory entries are ignored.
+
+=== `extract`
+
+[source]
+----
+std::vector<uint8_t> extract(const std::filesystem::path& path);
+----
+
+Extract the content of the file identified by `path` in the tarball. Return an empty vector if the path does not match any file.

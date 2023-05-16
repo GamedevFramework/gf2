@@ -1,0 +1,89 @@
+= `gf::Image` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`Image` represents a bidimensional array of pixels.
+
+xref:core_color.adoc[< Back to `core` Color]
+
+== Description
+
+[source]
+----
+#include <gf2/Image.h>
+----
+
+The internal representation of the pixels of an image is RGBA 32 bits, i.e. 8 bits for each channel (red, green, blue, alpha). However, the class also provides an interface that uses xref:Color.adoc[`Color`] in order to ease its manipulation.
+
+The position of the pixels is defined with the stem:[(0,0)] at the upper left corner, with the stem:[x]-axis going right and the stem:[y]-axis going down.
+
+== Member Functions
+
+=== `Image` constructors
+
+[source]
+----
+Image(); <1>
+Image(Vec2I size); <2>
+Image(Vec2I size, Color color); <3>
+Image(Vec2I size, const uint8_t* pixels, PixelFormat format = PixelFormat::Rgba32); <4>
+Image(const std::filesystem::path& filename); <5>
+Image(InputStream& stream); <6>
+----
+
+<1> Default constructor.
+<2> Constructor from a `size`, the image is transparent.
+<3> Constructor from a `size` and a `color`.
+<4> Constructor from a `size` and raw pixels with the specified `format`.
+<5> Constructor from a file located at `filename`.
+<6> Constructor from an xref:InputStream.adoc[`InputStream`].
+
+[#_operator_index]
+=== `operator()`
+
+[source]
+----
+Color operator()(Vec2I position) const;
+----
+
+See also: <<_put_pixel>>
+
+=== `put_pixel`
+
+[source]
+----
+void put_pixel(Vec2I position, Color color);
+----
+
+See also: <<_operator_index>>
+
+=== `raw_pixels`
+
+[source]
+----
+const uint8_t* raw_pixels() const;
+----
+
+=== `save_to_file`
+
+[source]
+----
+void save_to_file(const std::filesystem::path& filename) const;
+----
+
+=== `size`
+
+[source]
+----
+Vec2I size() const;
+----
+
+=== `sub_image`
+
+[source]
+----
+Image sub_image(RectI area) const;
+----
+
+

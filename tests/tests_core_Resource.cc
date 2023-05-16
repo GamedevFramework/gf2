@@ -219,5 +219,5 @@ TEST(ResourceTest, MemoryLoader) {
 
   auto reference = registry.load("foo");
 
-  EXPECT_EQ(reference.get().x, resource.x);
+  EXPECT_EQ(reference.x, resource.x);
 }
