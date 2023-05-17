@@ -1,3 +1,4 @@
+#include <gf2/ResourceBundle.h>
 #include <gf2/ResourceLoaders.h>
 #include <gf2/ResourceManager.h>
 #include <gf2/ResourceRegistry.h>
@@ -209,15 +210,87 @@ TEST(ResourceTest, ManagerAcquire) {
 }
 
 TEST(ResourceTest, MemoryLoader) {
-  DummyResource resource(42);
+  std::size_t raw_resource = 42;
 
   gf::MemoryLoader loader;
-  loader.add_buffer("foo", gf::bytes(&resource));
+  loader.add_buffer("foo", gf::bytes(&raw_resource));
 
   gf::ResourceRegistry<DummyResource> registry;
   registry.add_loader(gf::loader_for<DummyResource>(loader));
 
   auto reference = registry.load("foo");
 
-  EXPECT_EQ(reference.x, resource.x);
+  EXPECT_EQ(reference.x, raw_resource);
+}
+
+TEST(ResourceTest, BundleEmpty) {
+  gf::ResourceManager manager;
+
+  gf::ResourceBundle bundle;
+
+  EXPECT_NO_THROW(bundle.load_from(manager));
+  EXPECT_NO_THROW(bundle.unload_from(manager));
+}
+
+TEST(ResourceTest, BundleLoadUnload) {
+  gf::ResourceRegistry<DummyResource> registry;
+
+  DummyLoader loader;
+  registry.add_loader(gf::loader_for<DummyResource>(loader));
+
+  gf::ResourceManager manager;
+  manager.add_registry(gf::ref(registry));
+
+  gf::ResourceBundle bundle;
+  bundle.set_callback([](gf::ResourceBundle& bundle, auto manager, auto action) {
+    bundle.handle<DummyResource>("foo", manager, action);
+    bundle.handle<DummyResource>("bar", manager, action);
+  });
+
+  bundle.load_from(manager);
+
+  EXPECT_TRUE(registry.loaded("foo"));
+  EXPECT_TRUE(registry.loaded("bar"));
+
+  bundle.unload_from(manager);
+
+  EXPECT_FALSE(registry.loaded("foo"));
+  EXPECT_FALSE(registry.loaded("bar"));
+}
+
+TEST(ResourceTest, BundleMultiple) {
+  gf::ResourceRegistry<DummyResource> registry;
+
+  DummyLoader loader;
+  registry.add_loader(gf::loader_for<DummyResource>(loader));
+
+  gf::ResourceManager manager;
+  manager.add_registry(gf::ref(registry));
+
+  gf::ResourceBundle bundle1;
+  bundle1.set_callback([](gf::ResourceBundle& bundle, auto manager, auto action) {
+    bundle.handle<DummyResource>("foo", manager, action);
+    bundle.handle<DummyResource>("bar", manager, action);
+  });
+
+  gf::ResourceBundle bundle2;
+  bundle2.set_callback([](gf::ResourceBundle& bundle, auto manager, auto action) {
+    bundle.handle<DummyResource>("foo", manager, action);
+  });
+
+  bundle1.load_from(manager);
+
+  EXPECT_TRUE(registry.loaded("foo"));
+  EXPECT_TRUE(registry.loaded("bar"));
+
+  bundle2.load_from(manager);
+  bundle1.unload_from(manager);
+
+  EXPECT_TRUE(registry.loaded("foo"));
+  EXPECT_FALSE(registry.loaded("bar"));
+
+  bundle2.unload_from(manager);
+
+  EXPECT_FALSE(registry.loaded("foo"));
+  EXPECT_FALSE(registry.loaded("bar"));
 }

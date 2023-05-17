@@ -79,7 +79,7 @@ namespace gf {
   }
 
   template<typename T>
-  Ref<T> ref(T&&) = delete;
+  Ref<T> ref(T&&) = delete; // NOLINT
 
 } // namespace gf
 

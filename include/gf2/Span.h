@@ -211,7 +211,7 @@ namespace gf {
 
     template<typename U, std::size_t N, typename = std::enable_if_t<std::is_convertible_v<U (*)[], T (*)[]>>>
     constexpr Span(U (&data)[N])
-    : m_data(data)
+    : m_data(std::begin(data))
     , m_size(N)
     {
     }

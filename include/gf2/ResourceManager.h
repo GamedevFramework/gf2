@@ -11,8 +11,8 @@
 
 #include "CoreApi.h"
 #include "Log.h"
-#include "ResourceRegistry.h"
 #include "Ref.h"
+#include "ResourceRegistry.h"
 
 namespace gf {
 

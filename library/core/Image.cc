@@ -198,7 +198,7 @@ namespace gf {
       c = std::tolower(c, std::locale::classic());
     }
 
-    std::string filename_string = filename.string();
+    const std::string filename_string = filename.string();
 
     if (extension == ".png") {
       stbi_write_png(filename_string.c_str(), m_size.w, m_size.h, 4, m_pixels.data(), 0);

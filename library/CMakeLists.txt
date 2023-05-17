@@ -78,6 +78,7 @@ add_library(gf2core0
   core/Range.cc
   core/Rect.cc
   core/Ref.cc
+  core/ResourceBundle.cc
   core/ResourceLoader.cc
   core/ResourceLoaders.cc
   core/ResourceManager.cc
