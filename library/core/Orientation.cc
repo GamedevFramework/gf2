@@ -7,30 +7,32 @@
 
 #include <cassert>
 #include <cmath>
+
 #include <limits>
 
 #include <gf/Math.h>
 
 namespace gf {
 
-  Vec2F unit(Orientation orientation) {
+  Vec2F unit(Orientation orientation)
+  {
     switch (orientation) {
       case Orientation::Center:
-        return {  0.0f,  0.0f };
+        return { +0.0f, +0.0f };
       case Orientation::North:
-        return {  0.0f, -1.0f };
+        return { +0.0f, -1.0f };
       case Orientation::NorthEast:
-        return {  InvSqrt2, -InvSqrt2 };
+        return { InvSqrt2, -InvSqrt2 };
       case Orientation::East:
-        return {  1.0f,  0.0f };
+        return { +1.0f, +0.0f };
       case Orientation::SouthEast:
-        return {  InvSqrt2,  InvSqrt2 };
+        return { InvSqrt2, InvSqrt2 };
       case Orientation::South:
-        return {  0.0f,  1.0f };
+        return { +0.0f, +1.0f };
       case Orientation::SouthWest:
-        return { -InvSqrt2,  InvSqrt2 };
+        return { -InvSqrt2, InvSqrt2 };
       case Orientation::West:
-        return { -1.0f,  0.0f };
+        return { -1.0f, +0.0f };
       case Orientation::NorthWest:
         return { -InvSqrt2, -InvSqrt2 };
     }
@@ -39,24 +41,25 @@ namespace gf {
     return { 0, 0 };
   }
 
-  Vec2I displacement(Orientation orientation) {
+  Vec2I displacement(Orientation orientation)
+  {
     switch (orientation) {
       case Orientation::Center:
-        return {  0,  0 };
+        return { +0, +0 };
       case Orientation::North:
-        return {  0, -1 };
+        return { +0, -1 };
       case Orientation::NorthEast:
-        return {  1, -1 };
+        return { +1, -1 };
       case Orientation::East:
-        return {  1,  0 };
+        return { +1, +0 };
       case Orientation::SouthEast:
-        return {  1,  1 };
+        return { +1, +1 };
       case Orientation::South:
-        return {  0,  1 };
+        return { +0, +1 };
       case Orientation::SouthWest:
-        return { -1,  1 };
+        return { -1, +1 };
       case Orientation::West:
-        return { -1,  0 };
+        return { -1, +0 };
       case Orientation::NorthWest:
         return { -1, -1 };
     }
@@ -65,7 +68,8 @@ namespace gf {
     return { 0, 0 };
   }
 
-  float angle(Orientation orientation) {
+  float angle(Orientation orientation)
+  {
     switch (orientation) {
       case Orientation::Center:
         return std::numeric_limits<float>::quiet_NaN();
@@ -91,7 +95,8 @@ namespace gf {
     return std::numeric_limits<float>::quiet_NaN();
   }
 
-  Orientation orientation(float angle) {
+  Orientation orientation(float angle)
+  {
     float normalized = std::fmod(angle, 2 * Pi);
 
     if (angle < 0) {
@@ -103,18 +108,35 @@ namespace gf {
 
     static constexpr float Pi8 = Pi / 8.0f;
 
-    if (normalized <  1 * Pi8) { return Orientation::East; }
-    if (normalized <  3 * Pi8) { return Orientation::SouthEast; }
-    if (normalized <  5 * Pi8) { return Orientation::South; }
-    if (normalized <  7 * Pi8) { return Orientation::SouthWest; }
-    if (normalized <  9 * Pi8) { return Orientation::West; }
-    if (normalized < 11 * Pi8) { return Orientation::NorthWest; }
-    if (normalized < 13 * Pi8) { return Orientation::North; }
-    if (normalized < 15 * Pi8) { return Orientation::NorthEast; }
+    if (normalized < 1 * Pi8) {
+      return Orientation::East;
+    }
+    if (normalized < 3 * Pi8) {
+      return Orientation::SouthEast;
+    }
+    if (normalized < 5 * Pi8) {
+      return Orientation::South;
+    }
+    if (normalized < 7 * Pi8) {
+      return Orientation::SouthWest;
+    }
+    if (normalized < 9 * Pi8) {
+      return Orientation::West;
+    }
+    if (normalized < 11 * Pi8) {
+      return Orientation::NorthWest;
+    }
+    if (normalized < 13 * Pi8) {
+      return Orientation::North;
+    }
+    if (normalized < 15 * Pi8) {
+      return Orientation::NorthEast;
+    }
     return Orientation::East;
   }
 
-  Orientation opposite(Orientation orientation) {
+  Orientation opposite(Orientation orientation)
+  {
     if (orientation == Orientation::Center) {
       return Orientation::Center;
     }
@@ -123,4 +145,4 @@ namespace gf {
     return static_cast<Orientation>((val + 4) % 8);
   }
 
-}
+} // namespace gf

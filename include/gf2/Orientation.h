@@ -9,15 +9,15 @@
 namespace gf {
 
   enum class Orientation : int8_t {
-    Center    = -1, ///< The center, indicates no orientation
-    North     =  0, ///< The north orientation
-    NorthEast =  1, ///< The north-east orientation
-    East      =  2, ///< The east orientation
-    SouthEast =  3, ///< The south-east orientation
-    South     =  4, ///< The south orientation
-    SouthWest =  5, ///< The south-west orientation
-    West      =  6, ///< The west orientation
-    NorthWest =  7, ///< The north-west orientation
+    Center = -1,
+    North = 0,
+    NorthEast = 1,
+    East = 2,
+    SouthEast = 3,
+    South = 4,
+    SouthWest = 5,
+    West = 6,
+    NorthWest = 7,
   };
 
   GF_CORE_API Vec2F unit(Orientation orientation);
@@ -26,6 +26,6 @@ namespace gf {
   GF_CORE_API Orientation orientation(float angle);
   GF_CORE_API Orientation opposite(Orientation orientation);
 
-}
+} // namespace gf
 
 #endif // GF_ORIENTATION_H

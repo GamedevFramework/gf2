@@ -37,7 +37,7 @@ namespace gf {
 
     template<typename U, typename = std::enable_if_t<std::is_convertible_v<U (*)[], T (*)[]>>>
     constexpr StaticSpan(U (&data)[N]) noexcept
-    : m_data(data)
+    : m_data(std::begin(data))
     {
     }
 

@@ -6,57 +6,62 @@
 // clang-format on
 
 #include <cassert>
+
 #include <limits>
 
 #include <gf2/Math.h>
 
 namespace gf {
 
-  Vec2F unit(Direction direction) {
+  Vec2F unit(Direction direction)
+  {
     switch (direction) {
       case Direction::Center:
-        return {  0.0f,  0.0f };
+        return { +0.0f, +0.0f };
       case Direction::Up:
-        return {  0.0f, -1.0f };
+        return { +0.0f, -1.0f };
       case Direction::Right:
-        return {  1.0f,  0.0f };
+        return { +1.0f, +0.0f };
       case Direction::Down:
-        return {  0.0f,  1.0f };
+        return { +0.0f, +1.0f };
       case Direction::Left:
-        return { -1.0f,  0.0f };
+        return { -1.0f, +0.0f };
     }
 
     assert(false);
     return { 0.0f, 0.0f };
   }
 
-  Vec2I displacement(Direction direction) {
+  Vec2I displacement(Direction direction)
+  {
     switch (direction) {
       case Direction::Center:
-        return {  0,  0 };
+        return { +0, +0 };
       case Direction::Up:
-        return {  0, -1 };
+        return { +0, -1 };
       case Direction::Right:
-        return {  1,  0 };
+        return { +1, +0 };
       case Direction::Down:
-        return {  0,  1 };
+        return { +0, +1 };
       case Direction::Left:
-        return { -1,  0 };
+        return { -1, +0 };
     }
 
     assert(false);
     return { 0, 0 };
   }
 
-  float angle(Direction direction) {
+  float angle(Direction direction)
+  {
     if (direction == Direction::Center) {
       return std::numeric_limits<float>::quiet_NaN();
     }
 
-    return static_cast<int8_t>(direction) * Pi / 2;
+    return static_cast<float>(direction) * Pi / 2;
   }
 
-  Direction opposite(Direction direction) {
+  Direction opposite(Direction direction)
+  {
     if (direction == Direction::Center) {
       return Direction::Center;
     }
@@ -65,4 +70,4 @@ namespace gf {
     return static_cast<Direction>((val + 2) % 4);
   }
 
-}
+} // namespace gf

@@ -9,7 +9,8 @@
 
 namespace gf {
 
-  float angular_factor(AngularMove move) {
+  float angular_factor(AngularMove move)
+  {
     switch (move) {
       case AngularMove::None:
         return 0.0f;
@@ -23,7 +24,8 @@ namespace gf {
     return 0.0f;
   }
 
-  float linear_factor(LinearMove move) {
+  float linear_factor(LinearMove move)
+  {
     switch (move) {
       case LinearMove::None:
         return 0.0f;
@@ -37,4 +39,4 @@ namespace gf {
     return 0.0f;
   }
 
-}
+} // namespace gf

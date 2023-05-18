@@ -23,6 +23,6 @@ namespace gf {
 
   GF_CORE_API float linear_factor(LinearMove move);
 
-}
+} // namespace gf
 
 #endif // GF_MOVE_H

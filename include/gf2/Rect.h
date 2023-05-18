@@ -5,6 +5,7 @@
 
 #include <optional>
 
+#include "Anchor.h"
 #include "Vec2.h"
 
 namespace gf {
@@ -126,6 +127,32 @@ namespace gf {
     constexpr Rect& extend_to(Rect other) noexcept
     {
       return extend_to(other.min()).extend_to(other.max());
+    }
+
+    constexpr Vec2<T> position_from_anchor(Anchor anchor) const noexcept
+    {
+      switch (anchor) {
+        case Anchor::TopLeft:
+          return offset;
+        case Anchor::TopCenter:
+          return offset + gf::vec(extent.x / T(2), T(0));
+        case Anchor::TopRight:
+          return offset + gf::vec(extent.x, T(0));
+        case Anchor::CenterLeft:
+          return offset + gf::vec(T(0), extent.y / T(2));
+        case Anchor::Center:
+          return offset + extent / T(2);
+        case Anchor::CenterRight:
+          return offset + gf::vec(extent.x / T(2), extent.y / T(2));
+        case Anchor::BottomLeft:
+          return offset + gf::vec(T(0), extent.y);
+        case Anchor::BottomCenter:
+          return offset + gf::vec(extent.x / T(2), extent.y);
+        case Anchor::BottomRight:
+          return offset + extent;
+      }
+
+      return offset;
     }
   };
 
