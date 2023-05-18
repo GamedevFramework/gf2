@@ -10,7 +10,7 @@
 
 #include <limits>
 
-#include <gf/Math.h>
+#include <gf2/Math.h>
 
 namespace gf {
 
