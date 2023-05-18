@@ -53,6 +53,7 @@ namespace gf {
   class GF_CORE_API HexagonalCells {
   public:
     HexagonalCells(Vec2F tile_size, float side_length, CellAxis axis, CellIndex index);
+    HexagonalCells(float radius, CellAxis axis, CellIndex index);
 
     RectF compute_bounds(Vec2I layer_size) const;
     RectI compute_visible_area(RectF local) const;
@@ -60,6 +61,8 @@ namespace gf {
     Vec2I compute_coordinates(Vec2F position) const;
     std::vector<Vec2F> compute_contour(Vec2I coordinates) const;
     std::vector<Vec2I> compute_neighbors(Vec2I coordinates, Vec2I layer_size, Flags<CellNeighborQuery> flags = None) const;
+
+    static Vec2F compute_regular_size(CellAxis axis, float radius);
 
   private:
     Vec2F m_tile_size;
@@ -75,6 +78,7 @@ namespace gf {
     static Cells make_orthogonal(Vec2F tile_size);
     static Cells make_staggered(Vec2F tile_size, CellAxis axis, CellIndex index);
     static Cells make_hexagonal(Vec2F tile_size, float side_length, CellAxis axis, CellIndex index);
+    static Cells make_hexagonal(float radius, CellAxis axis, CellIndex index);
 
     RectF compute_bounds(Vec2I layer_size) const;
     RectI compute_visible_area(RectF local) const;

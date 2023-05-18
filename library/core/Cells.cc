@@ -229,6 +229,14 @@ namespace gf {
   {
   }
 
+  HexagonalCells::HexagonalCells(float radius, CellAxis axis, CellIndex index)
+  : m_tile_size(compute_regular_size(axis, radius))
+  , m_side_length(radius)
+  , m_axis(axis)
+  , m_index(index)
+  {
+  }
+
   RectF HexagonalCells::compute_bounds(Vec2I layer_size) const
   {
     Vec2F size = gf::vec(0.0f, 0.0f);
@@ -437,6 +445,23 @@ namespace gf {
     return neighbors;
   }
 
+  Vec2F HexagonalCells::compute_regular_size(CellAxis axis, float radius)
+  {
+    Vec2F size = gf::vec(0.0f, 0.0f);
+
+    switch (axis) {
+      case CellAxis::X:
+        size = { radius * 2.0f, radius * Sqrt3 };
+        break;
+
+      case CellAxis::Y:
+        size = { radius * Sqrt3, radius * 2.0f };
+        break;
+    }
+
+    return size;
+  }
+
   /*
    * Cells
    */
@@ -469,6 +494,11 @@ namespace gf {
   Cells Cells::make_hexagonal(Vec2F tile_size, float side_length, CellAxis axis, CellIndex index)
   {
     return { HexagonalCells(tile_size, side_length, axis, index) };
+  }
+
+  Cells Cells::make_hexagonal(float radius, CellAxis axis, CellIndex index)
+  {
+    return { HexagonalCells(radius, axis, index) };
   }
 
   RectF Cells::compute_bounds(Vec2I layer_size) const
