@@ -68,12 +68,15 @@ add_library(gf2core0
   core/Circ.cc
   core/Clock.cc
   core/Color.cc
+  core/Direction.cc
   core/Flags.cc
   core/Id.cc
   core/Image.cc
   core/Log.cc
   core/Math.cc
   core/Mat3.cc
+  core/Move.cc
+  core/Orientation.cc
   core/Random.cc
   core/Range.cc
   core/Rect.cc
@@ -83,6 +86,8 @@ add_library(gf2core0
   core/ResourceLoaders.cc
   core/ResourceManager.cc
   core/ResourceRegistry.cc
+  core/Serialization.cc
+  core/SerializationOps.cc
   core/Stream.cc
   core/Streams.cc
   core/Tarball.cc

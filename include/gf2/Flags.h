@@ -8,6 +8,8 @@
 #include "Types.h"
 
 namespace gf {
+  class Serializer;
+  class Deserializer;
 
   template<typename E>
   class Flags {
@@ -85,10 +87,10 @@ namespace gf {
       return m_data;
     }
 
-    //     template<typename T>
-    //     friend Serializer& operator|(Serializer& ar, Flags<T> data);
-    //     template<typename T>
-    //     friend Deserializer& operator|(Deserializer& ar, Flags<T>& data);
+    template<typename T>
+    friend Serializer& operator|(Serializer& ar, Flags<T> data);
+    template<typename T>
+    friend Deserializer& operator|(Deserializer& ar, Flags<T>& data);
 
   private:
     constexpr Flags(Type data)
