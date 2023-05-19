@@ -45,10 +45,10 @@ namespace gf {
     const RectF bounds = compute_cell_bounds(coordinates);
 
     std::vector<Vec2F> contour;
-    contour.push_back(bounds.position_from_anchor(Anchor::TopLeft));
-    contour.push_back(bounds.position_from_anchor(Anchor::TopRight));
-    contour.push_back(bounds.position_from_anchor(Anchor::BottomRight));
-    contour.push_back(bounds.position_from_anchor(Anchor::BottomLeft));
+    contour.push_back(bounds.position_at(Orientation::NorthWest));
+    contour.push_back(bounds.position_at(Orientation::NorthEast));
+    contour.push_back(bounds.position_at(Orientation::SouthEast));
+    contour.push_back(bounds.position_at(Orientation::SouthWest));
     return contour;
   }
 

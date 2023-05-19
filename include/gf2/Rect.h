@@ -5,7 +5,7 @@
 
 #include <optional>
 
-#include "Anchor.h"
+#include "Orientation.h"
 #include "Vec2.h"
 
 namespace gf {
@@ -129,26 +129,26 @@ namespace gf {
       return extend_to(other.min()).extend_to(other.max());
     }
 
-    constexpr Vec2<T> position_from_anchor(Anchor anchor) const noexcept
+    constexpr Vec2<T> position_at(Orientation orientation) const noexcept
     {
-      switch (anchor) {
-        case Anchor::TopLeft:
+      switch (orientation) {
+        case Orientation::NorthWest:
           return offset;
-        case Anchor::TopCenter:
+        case Orientation::North:
           return offset + gf::vec(extent.x / T(2), T(0));
-        case Anchor::TopRight:
+        case Orientation::NorthEast:
           return offset + gf::vec(extent.x, T(0));
-        case Anchor::CenterLeft:
+        case Orientation::West:
           return offset + gf::vec(T(0), extent.y / T(2));
-        case Anchor::Center:
+        case Orientation::Center:
           return offset + extent / T(2);
-        case Anchor::CenterRight:
+        case Orientation::East:
           return offset + gf::vec(extent.x / T(2), extent.y / T(2));
-        case Anchor::BottomLeft:
+        case Orientation::SouthWest:
           return offset + gf::vec(T(0), extent.y);
-        case Anchor::BottomCenter:
+        case Orientation::South:
           return offset + gf::vec(extent.x / T(2), extent.y);
-        case Anchor::BottomRight:
+        case Orientation::SouthEast:
           return offset + extent;
       }
 
