@@ -143,3 +143,19 @@ target_link_libraries(gf2graphics0
   PRIVATE
     SDL2::SDL2
 )
+
+# gf2::network
+
+add_library(gf2network0
+  network/Queue.cc
+)
+
+gf2_handle_library(gf2network0
+  EXPORT_NAME
+    "network"
+)
+
+target_link_libraries(gf2network0
+  PUBLIC
+    gf2core0
+)
