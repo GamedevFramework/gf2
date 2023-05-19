@@ -147,6 +147,7 @@ target_link_libraries(gf2graphics0
 # gf2::network
 
 add_library(gf2network0
+  network/NetworkInitializer.cc
   network/Queue.cc
 )
 

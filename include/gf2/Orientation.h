@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Zlib
+// Copyright (c) 2023 Julien Bernard
 #ifndef GF_ORIENTATION_H
 #define GF_ORIENTATION_H
 
