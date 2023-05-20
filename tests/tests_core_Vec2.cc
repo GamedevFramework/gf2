@@ -1,6 +1,6 @@
-#include <gf2/Vec2.h>
-
 #include <type_traits>
+
+#include <gf2/Vec2.h>
 
 #include "gtest/gtest.h"
 
@@ -112,7 +112,9 @@ TEST(Vec2Test, Multiplication) {
   gf::Vec2I vec0(6, 13);
   gf::Vec2I vec1(3, 4);
 
+  // clang-format off
   EXPECT_EQ(vec0 * vec1, gf::vec(18, 52));
+  // clang-format on
   EXPECT_EQ(vec0 * 5, gf::vec(30, 65));
   EXPECT_EQ(12 * vec0, gf::vec(72, 156));
 

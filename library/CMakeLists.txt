@@ -176,3 +176,10 @@ if (WIN32)
       ws2_32
   )
 endif()
+
+if (UNIX AND NOT APPLE)
+  target_compile_definitions(gf2network0
+    PUBLIC
+      _POSIX_C_SOURCE=200809L
+  )
+endif()

@@ -1,5 +1,3 @@
-#include <gf2/SerializationOps.h>
-
 #include <cstdint>
 #include <cstring>
 
@@ -8,6 +6,7 @@
 
 #include <gf2/Array2D.h>
 #include <gf2/Flags.h>
+#include <gf2/SerializationOps.h>
 #include <gf2/Streams.h>
 #include <gf2/Vec2.h>
 #include <gf2/Vec3.h>
@@ -17,7 +16,8 @@
 namespace {
 
   template<typename T>
-  void save_and_load(T& in, T& out) {
+  void save_and_load(T& in, T& out)
+  {
     std::vector<uint8_t> bytes;
 
     {
@@ -37,19 +37,20 @@ namespace {
     std::size_t size;
   };
 
-  gf::Serializer& operator|(gf::Serializer& ar, const SizeWrapper& data) {
+  gf::Serializer& operator|(gf::Serializer& ar, const SizeWrapper& data)
+  {
     ar.write_raw_size(data.size);
     return ar;
   }
 
-  gf::Deserializer& operator|(gf::Deserializer& ar, SizeWrapper& data) {
+  gf::Deserializer& operator|(gf::Deserializer& ar, SizeWrapper& data)
+  {
     data.size = 0;
     ar.read_raw_size(data.size);
     return ar;
   }
 
-}
-
+} // namespace
 
 TEST(SerialTest, Version) {
   constexpr uint16_t Version = 42;
@@ -297,7 +298,7 @@ TEST(SerialTest, Size) {
   SizeWrapper out;
 
   for (auto size : tests) {
-    SizeWrapper in{size};
+    SizeWrapper in{ size };
     save_and_load(in, out);
     EXPECT_EQ(in.size, out.size);
   }
@@ -331,7 +332,7 @@ TEST(SerialTest, String) {
 
 TEST(SerialTest, Binary) {
   std::vector<uint8_t> tests1[] = {
-    { },
+    {},
     { 0x00, 0xFF },
     std::vector<uint8_t>(UINT8_MAX + 1, 0x02),
     std::vector<uint8_t>(UINT16_MAX + 1, 0x03)
@@ -345,9 +346,9 @@ TEST(SerialTest, Binary) {
   }
 
   std::array<uint8_t, 256> tests2[] = {
-    { },
-    {{ 0x00, 0xFF }},
-    {{ 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09 }}
+    {},
+    { { 0x00, 0xFF } },
+    { { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09 } }
   };
 
   std::array<uint8_t, 256> out2;
@@ -369,7 +370,7 @@ TEST(SerialTest, Binary) {
 
 TEST(SerialTest, Array) {
   std::vector<int32_t> tests1[] = {
-    {  },
+    {},
     { 0, 2, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX },
     std::vector<int>(16, 42),
     std::vector<int>(17, 42),
@@ -393,9 +394,9 @@ TEST(SerialTest, Array) {
   }
 
   std::array<int32_t, 256> tests2[] = {
-    { },
-    {{ 0x00, 0xFF }},
-    {{ 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09 }}
+    {},
+    { { 0x00, 0xFF } },
+    { { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09 } }
   };
 
   std::array<int32_t, 256> out2;
@@ -417,12 +418,12 @@ TEST(SerialTest, Array) {
 
 TEST(SerialTest, Set) {
   std::set<std::string> tests1[] = {
-    { },
-    { "First" "Second" },
-    { },
-    { },
-    { },
-    { },
+    {},
+    { "First", "Second" },
+    {},
+    {},
+    {},
+    {},
   };
 
   for (int32_t i = 0; i < 16; ++i) {
@@ -453,12 +454,12 @@ TEST(SerialTest, Set) {
   }
 
   std::unordered_set<std::string> tests2[] = {
-    { },
+    {},
     { "First", "Second" },
-    { },
-    { },
-    { },
-    { },
+    {},
+    {},
+    {},
+    {},
   };
 
   for (int32_t i = 0; i < 16; ++i) {
@@ -491,12 +492,12 @@ TEST(SerialTest, Set) {
 
 TEST(SerialTest, Map) {
   std::map<std::string, int32_t> tests1[] = {
-    { },
+    {},
     { { "First", 1 }, { "Second", 2 } },
-    { },
-    { },
-    { },
-    { },
+    {},
+    {},
+    {},
+    {},
   };
 
   for (int32_t i = 0; i < 16; ++i) {
@@ -527,12 +528,12 @@ TEST(SerialTest, Map) {
   }
 
   std::unordered_map<std::string, int32_t> tests2[] = {
-    { },
+    {},
     { { "First", 1 }, { "Second", 2 } },
-    { },
-    { },
-    { },
-    { },
+    {},
+    {},
+    {},
+    {},
   };
 
   for (int32_t i = 0; i < 16; ++i) {
@@ -576,7 +577,6 @@ namespace {
 template<>
 struct gf::EnableBitmaskOperators<Bits> : std::true_type {
 };
-
 
 TEST(SerialTest, Flags) {
   gf::Flags<Bits> tests[] = {

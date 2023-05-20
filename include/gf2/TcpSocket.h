@@ -12,7 +12,7 @@
 #include "Span.h"
 
 namespace gf {
-  struct Packet;
+  class Packet;
 
   class GF_NETWORK_API TcpSocket : public Socket {
   public:

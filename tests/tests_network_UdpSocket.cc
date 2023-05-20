@@ -1,20 +1,21 @@
-#include <gf2/UdpSocket.h>
-
 #include <cstdint>
+
 #include <thread>
 #include <vector>
 
+#include <gf2/SerializationOps.h>
+#include <gf2/UdpSocket.h>
+
 #include "gtest/gtest.h"
 
-#include <gf2/SerializationOps.h>
-
 namespace {
-  constexpr const char *TestService = "12345";
-  constexpr const char *Host = "localhost";
+  constexpr const char* UdpTestService = "12345";
+  constexpr const char* UdpHost = "localhost";
 
   template<gf::SocketFamily Family>
-  void test_udp_socket_service() {
-    gf::UdpSocket socket(TestService, Family);
+  void test_udp_socket_service()
+  {
+    gf::UdpSocket socket(UdpTestService, Family);
 
     ASSERT_TRUE(socket);
 
@@ -24,7 +25,8 @@ namespace {
   }
 
   template<gf::SocketFamily Family>
-  void test_udp_socket_any() {
+  void test_udp_socket_any()
+  {
     gf::UdpSocket socket(gf::Any, Family);
 
     ASSERT_TRUE(socket);
@@ -35,8 +37,9 @@ namespace {
   }
 
   template<gf::SocketFamily Family>
-  void test_udp_socket_one_way_communication() {
-    gf::UdpSocket socket(TestService, Family);
+  void test_udp_socket_one_way_communication()
+  {
+    gf::UdpSocket socket(UdpTestService, Family);
     ASSERT_TRUE(socket);
 
     std::thread client_thread([]() {
@@ -45,7 +48,7 @@ namespace {
 
       auto actual_family = socket.local_address().family();
 
-      gf::SocketAddress address = socket.remote_address(Host, TestService);
+      gf::SocketAddress address = socket.remote_address(UdpHost, UdpTestService);
       EXPECT_EQ(address.family(), actual_family);
 
       uint8_t buffer[4] = { 0x42, 0x69, 0xFF, 0x12 };
@@ -57,7 +60,7 @@ namespace {
     auto actual_family = socket.local_address().family();
 
     uint8_t buffer[10];
-    auto [ res, address ] = socket.recv_raw_bytes_from(buffer);
+    auto [res, address] = socket.recv_raw_bytes_from(buffer);
     EXPECT_EQ(res.status, gf::SocketStatus::Data);
     EXPECT_EQ(res.length, 4u);
     EXPECT_EQ(buffer[0], 0x42);
@@ -71,8 +74,9 @@ namespace {
   }
 
   template<gf::SocketFamily Family>
-  void test_udp_socket_two_way_communication() {
-    gf::UdpSocket socket(TestService, Family);
+  void test_udp_socket_two_way_communication()
+  {
+    gf::UdpSocket socket(UdpTestService, Family);
     ASSERT_TRUE(socket);
 
     std::thread client_thread([]() {
@@ -82,7 +86,7 @@ namespace {
       auto actual_family = socket.local_address().family();
 
       {
-        gf::SocketAddress address = socket.remote_address(Host, TestService);
+        gf::SocketAddress address = socket.remote_address(UdpHost, UdpTestService);
         EXPECT_EQ(address.family(), actual_family);
         uint8_t buffer[4] = { 0x42, 0x69, 0xFF, 0x12 };
         auto res = socket.send_raw_bytes_to(buffer, address);
@@ -92,7 +96,7 @@ namespace {
 
       {
         uint8_t buffer[10];
-        auto [ res, address ] = socket.recv_raw_bytes_from(buffer);
+        auto [res, address] = socket.recv_raw_bytes_from(buffer);
         EXPECT_EQ(res.status, gf::SocketStatus::Data);
         EXPECT_EQ(res.length, 4u);
         EXPECT_EQ(buffer[0], 0x23);
@@ -108,7 +112,7 @@ namespace {
 
     {
       uint8_t buffer[10];
-      auto [ res, address ] = socket.recv_raw_bytes_from(buffer);
+      auto [res, address] = socket.recv_raw_bytes_from(buffer);
       EXPECT_EQ(res.status, gf::SocketStatus::Data);
       EXPECT_EQ(res.length, 4u);
       EXPECT_EQ(buffer[0], 0x42);
@@ -129,7 +133,7 @@ namespace {
     client_thread.join();
   }
 
-}
+} // namespace
 
 TEST(SocketTest, UdpSocketDefault) {
   gf::UdpSocket socket;

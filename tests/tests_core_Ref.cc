@@ -1,6 +1,6 @@
-#include <gf2/Ref.h>
-
 #include <type_traits>
+
+#include <gf2/Ref.h>
 
 #include "gtest/gtest.h"
 
@@ -12,7 +12,7 @@ namespace {
   struct Derived : Base {
   };
 
-}
+} // namespace
 
 TEST(RefTest, Constructor) {
   int data = 42;

@@ -169,9 +169,9 @@ TEST(FlagsTest, EnumOr) {
 }
 
 enum class AnimalProperties {
-  HasClaws     = 0x01,
-  CanFly       = 0x02,
-  EatsFish     = 0x04,
+  HasClaws = 0x01,
+  CanFly = 0x02,
+  EatsFish = 0x04,
   IsEndangered = 0x08,
 };
 

@@ -1,9 +1,9 @@
+#include <type_traits>
+
 #include <gf2/ResourceBundle.h>
 #include <gf2/ResourceLoaders.h>
 #include <gf2/ResourceManager.h>
 #include <gf2/ResourceRegistry.h>
-
-#include <type_traits>
 
 #include "gtest/gtest.h"
 
@@ -30,14 +30,13 @@ namespace {
   struct DummyLoader {
 
     template<typename T>
-    std::unique_ptr<T> operator()(const std::filesystem::path& path) {
+    std::unique_ptr<T> operator()(const std::filesystem::path& path)
+    {
       return std::make_unique<T>(path);
     }
-
   };
 
-}
-
+} // namespace
 
 TEST(ResourceTest, RegistryConstructor) {
   gf::ResourceRegistry<DummyResource> registry;
@@ -61,8 +60,7 @@ TEST(ResourceTest, RegistryLoadOnce) {
 
   EXPECT_FALSE(registry.loaded("foo"));
 
-  [[maybe_unused]]
-  auto resource = registry.load("foo");
+  [[maybe_unused]] auto resource = registry.load("foo");
 
   EXPECT_TRUE(registry.loaded("foo"));
 }
@@ -75,10 +73,8 @@ TEST(ResourceTest, RegistryLoadTwice) {
 
   EXPECT_FALSE(registry.loaded("foo"));
 
-  [[maybe_unused]]
-  auto resource0 = registry.load("foo");
-  [[maybe_unused]]
-  auto resource1 = registry.load("foo");
+  [[maybe_unused]] auto resource0 = registry.load("foo");
+  [[maybe_unused]] auto resource1 = registry.load("foo");
 
   EXPECT_TRUE(registry.loaded("foo"));
 }
@@ -91,8 +87,7 @@ TEST(ResourceTest, RegistryUnloadOnce) {
 
   EXPECT_FALSE(registry.loaded("foo"));
 
-  [[maybe_unused]]
-  auto resource = registry.load("foo");
+  [[maybe_unused]] auto resource = registry.load("foo");
 
   EXPECT_TRUE(registry.loaded("foo"));
 
@@ -109,10 +104,8 @@ TEST(ResourceTest, RegistryUnloadTwice) {
 
   EXPECT_FALSE(registry.loaded("foo"));
 
-  [[maybe_unused]]
-  auto resource0 = registry.load("foo");
-  [[maybe_unused]]
-  auto resource1 = registry.load("foo");
+  [[maybe_unused]] auto resource0 = registry.load("foo");
+  [[maybe_unused]] auto resource1 = registry.load("foo");
 
   EXPECT_TRUE(registry.loaded("foo"));
 
@@ -146,10 +139,8 @@ TEST(ResourceTest, RegistryGet) {
 
   EXPECT_FALSE(registry.loaded("foo"));
 
-  [[maybe_unused]]
-  auto resource0 = registry.load("foo");
-  [[maybe_unused]]
-  auto resource1 = registry.get("foo");
+  [[maybe_unused]] auto resource0 = registry.load("foo");
+  [[maybe_unused]] auto resource1 = registry.get("foo");
 
   EXPECT_TRUE(registry.loaded("foo"));
 
@@ -167,8 +158,7 @@ TEST(ResourceTest, RegistryInvalidGet) {
   EXPECT_FALSE(registry.loaded("foo"));
 
   EXPECT_ANY_THROW({
-    [[maybe_unused]]
-    auto resource0 = registry.get("foo");
+    [[maybe_unused]] auto resource0 = registry.get("foo");
   });
 
   EXPECT_FALSE(registry.loaded("foo"));

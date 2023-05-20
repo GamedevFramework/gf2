@@ -77,7 +77,9 @@ TEST(SpanTest, RawArrayCtor) {
 }
 
 TEST(SpanTest, StdArrayCtor) {
-  std::array<int, 8> input = {{ 1, 2, 3, 4, 5, 6, 7, 8 }};
+  std::array<int, 8> input = {
+    {1, 2, 3, 4, 5, 6, 7, 8}
+  };
 
   {
     gf::Span<int> span(input);
@@ -117,7 +119,6 @@ TEST(SpanTest, StaticSpanCtor) {
   EXPECT_EQ(input, span1.data());
 }
 
-
 TEST(SpanTest, Subscript) {
   int input[] = { 1, 2, 3, 4, 5, 6, 7, 8 };
 
@@ -150,7 +151,6 @@ TEST(SpanTest, SpanFunction) {
   EXPECT_EQ(input, span.data());
   static_assert(std::is_same_v<decltype(span), gf::Span<int>>, "Check Span");
 }
-
 
 /*
  * StaticSpan
@@ -220,7 +220,9 @@ TEST(StaticSpanTest, RawArrayCtor) {
 }
 
 TEST(StaticSpanTest, StdArrayCtor) {
-  std::array<int, 8> input = {{ 1, 2, 3, 4, 5, 6, 7, 8 }};
+  std::array<int, 8> input = {
+    {1, 2, 3, 4, 5, 6, 7, 8}
+  };
 
   {
     gf::StaticSpan<int, 8> span(input);

@@ -1,21 +1,22 @@
-#include <gf2/TcpListener.h>
-#include <gf2/TcpSocket.h>
-
 #include <cstdint>
+
 #include <thread>
 #include <vector>
 
+#include <gf2/SerializationOps.h>
+#include <gf2/TcpListener.h>
+#include <gf2/TcpSocket.h>
+
 #include "gtest/gtest.h"
 
-#include <gf2/SerializationOps.h>
-
 namespace {
-  constexpr const char *TestService = "12345";
-  constexpr const char *Host = "localhost";
+  constexpr const char* TcpTestService = "12345";
+  constexpr const char* TcpHost = "localhost";
 
   template<gf::SocketFamily Family>
-  void test_tcp_listener_service() {
-    gf::TcpListener listener(TestService, Family);
+  void test_tcp_listener_service()
+  {
+    gf::TcpListener listener(TcpTestService, Family);
 
     ASSERT_TRUE(listener);
 
@@ -25,12 +26,13 @@ namespace {
   }
 
   template<gf::SocketFamily Family>
-  void test_tcp_listerner_one_client() {
-    gf::TcpListener listener(TestService, Family);
+  void test_tcp_listerner_one_client()
+  {
+    gf::TcpListener listener(TcpTestService, Family);
     ASSERT_TRUE(listener);
 
     std::thread client_thread([]() {
-      gf::TcpSocket socket(Host, TestService, Family);
+      gf::TcpSocket socket(TcpHost, TcpTestService, Family);
       ASSERT_TRUE(socket);
 
       uint8_t buffer[4] = { 0x42, 0x69, 0xFF, 0x12 };
@@ -66,15 +68,16 @@ namespace {
   }
 
   template<gf::SocketFamily Family>
-  void test_tcp_listener_multiple_client() {
+  void test_tcp_listener_multiple_client()
+  {
     static constexpr int ClientCount = 10;
 
-    gf::TcpListener listener(TestService, Family);
+    gf::TcpListener listener(TcpTestService, Family);
     ASSERT_TRUE(listener);
 
     std::thread client_thread([]() {
       for (int i = 0; i < ClientCount; ++i) {
-        gf::TcpSocket socket(Host, TestService, Family);
+        gf::TcpSocket socket(TcpHost, TcpTestService, Family);
         ASSERT_TRUE(socket);
 
         uint8_t buffer[4] = { 0x42, 0x69, 0xFF, 0x12 };
@@ -105,12 +108,13 @@ namespace {
   }
 
   template<gf::SocketFamily Family>
-  void test_tcp_listener_non_blocking() {
-    gf::TcpListener listener(TestService, Family);
+  void test_tcp_listener_non_blocking()
+  {
+    gf::TcpListener listener(TcpTestService, Family);
     ASSERT_TRUE(listener);
 
     std::thread client_thread([]() {
-      gf::TcpSocket socket(Host, TestService, Family);
+      gf::TcpSocket socket(TcpHost, TcpTestService, Family);
       ASSERT_TRUE(socket);
 
       socket.set_non_blocking();
@@ -143,20 +147,19 @@ namespace {
     client_thread.join();
   }
 
-}
-
+} // namespace
 
 TEST(TcpSocketTest, TcpSocketDefault) {
   gf::TcpSocket socket;
 
   EXPECT_FALSE(socket);
-}
+} // TEST(TcpSocketTest)
 
 TEST(TcpSocketTest, TcpListenerDefault) {
   gf::TcpListener listener;
 
   EXPECT_FALSE(listener);
-}
+} // TEST(TcpSocketTest)
 
 TEST(TcpSocketTest, TcpListenerServiceUnspec) {
   test_tcp_listener_service<gf::SocketFamily::Unspec>();

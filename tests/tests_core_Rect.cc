@@ -91,19 +91,19 @@ TEST(RectTest, Empty) {
 TEST(RectTest, ContainsVec) {
   gf::RectI ri = gf::RectI::from_position_size({ 0, 5 }, { 10, 15 });
 
-  EXPECT_TRUE( ri.contains({  5, 10 })); // inside point
-  EXPECT_FALSE(ri.contains({  0,  0 })); // outside point
-  EXPECT_TRUE( ri.contains({  0,  5 })); // top-left
-  EXPECT_FALSE(ri.contains({ 10,  5 })); // top-right
-  EXPECT_FALSE(ri.contains({  0, 20 })); // bottom-left
+  EXPECT_TRUE(ri.contains({ 5, 10 }));   // inside point
+  EXPECT_FALSE(ri.contains({ 0, 0 }));   // outside point
+  EXPECT_TRUE(ri.contains({ 0, 5 }));    // top-left
+  EXPECT_FALSE(ri.contains({ 10, 5 }));  // top-right
+  EXPECT_FALSE(ri.contains({ 0, 20 }));  // bottom-left
   EXPECT_FALSE(ri.contains({ 10, 20 })); // bottom-right
 
   constexpr gf::RectI cri = gf::RectI::from_position_size({ 0, 5 }, { 10, 15 });
-  static_assert( cri.contains({  5, 10 }), "Chech Rect"); // inside point
-  static_assert(!cri.contains({  0,  0 }), "Chech Rect"); // outside point
-  static_assert( cri.contains({  0,  5 }), "Chech Rect"); // top-left
-  static_assert(!cri.contains({ 10,  5 }), "Chech Rect"); // top-right
-  static_assert(!cri.contains({  0, 20 }), "Chech Rect"); // bottom-left
+  static_assert(cri.contains({ 5, 10 }), "Chech Rect");   // inside point
+  static_assert(!cri.contains({ 0, 0 }), "Chech Rect");   // outside point
+  static_assert(cri.contains({ 0, 5 }), "Chech Rect");    // top-left
+  static_assert(!cri.contains({ 10, 5 }), "Chech Rect");  // top-right
+  static_assert(!cri.contains({ 0, 20 }), "Chech Rect");  // bottom-left
   static_assert(!cri.contains({ 10, 20 }), "Chech Rect"); // bottom-right
 
 }

@@ -42,7 +42,7 @@ namespace gf {
   std::string SocketAddress::hostname(SocketAddressFormat format) const
   {
     std::array<char, NI_MAXHOST> host = {};
-    auto err = ::getnameinfo(storage_ptr(), length(), host.data(), host.size(), nullptr, 0, format == SocketAddressFormat::Numeric ? NI_NUMERICHOST : 0);
+    auto err = ::getnameinfo(storage_ptr(), length(), host.data(), NI_MAXHOST, nullptr, 0, format == SocketAddressFormat::Numeric ? NI_NUMERICHOST : 0);
 
     if (err != 0) {
       gf::Log::error("Error while getting the host of an address. Reason: {}", ::gai_strerror(err));
@@ -55,7 +55,7 @@ namespace gf {
   std::string SocketAddress::service(SocketAddressFormat format) const
   {
     std::array<char, NI_MAXSERV> serv = {};
-    auto err = ::getnameinfo(storage_ptr(), length(), nullptr, 0, serv.data(), serv.size(), format == SocketAddressFormat::Numeric ? NI_NUMERICSERV : 0);
+    auto err = ::getnameinfo(storage_ptr(), length(), nullptr, 0, serv.data(), NI_MAXSERV, format == SocketAddressFormat::Numeric ? NI_NUMERICSERV : 0);
 
     if (err != 0) {
       gf::Log::error("Error while getting the service of an address. Reason: {}", ::gai_strerror(err));

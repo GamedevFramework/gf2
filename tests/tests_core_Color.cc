@@ -1,6 +1,6 @@
-#include <gf2/Color.h>
-
 #include <type_traits>
+
+#include <gf2/Color.h>
 
 #include "gtest/gtest.h"
 
@@ -136,7 +136,7 @@ TEST(ColorTest, Multiplication) {
   gf::Color color0(1.0f, 1.0f, 0.5f, 0.5f);
   gf::Color color1(1.0f, 0.5f, 0.5f, 1.0f);
 
-  EXPECT_EQ(color0 * color1, gf::Color(1.0f, 0.5f, 0.25f, 0.5f));
+  EXPECT_EQ(color0* color1, gf::Color(1.0f, 0.5f, 0.25f, 0.5f));
   EXPECT_EQ(color0 * 0.5f, gf::Color(0.5f, 0.5f, 0.25f, 0.25f));
   EXPECT_EQ(0.5f * color1, gf::Color(0.5f, 0.25f, 0.25f, 0.5f));
 

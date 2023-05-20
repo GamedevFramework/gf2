@@ -7,6 +7,7 @@
 #  include <ws2tcpip.h>
 #else
 #  include <cerrno>
+#  include <cstring>
 
 #  include <sys/socket.h>
 #  include <sys/types.h>
@@ -93,7 +94,7 @@ namespace gf::details {
     static constexpr std::size_t BufferSize = 1024;
     auto err = last_error_code();
     std::array<char, BufferSize> buffer = { '\0' };
-    ::strerror_r(err, buffer.data(), buffer.size());
+    [[maybe_unused]] auto ret = ::strerror_r(err, buffer.data(), buffer.size()); // NOLINT
     return buffer.data();
   }
 
