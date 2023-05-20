@@ -148,7 +148,16 @@ target_link_libraries(gf2graphics0
 
 add_library(gf2network0
   network/NetworkInitializer.cc
+  network/Packet.cc
   network/Queue.cc
+  network/Socket.cc
+  network/SocketAddress.cc
+  network/SocketSelector.cc
+  network/SocketTypes.cc
+  network/TcpListener.cc
+  network/TcpSocket.cc
+  network/UdpSocket.cc
+  network/bits/SocketPortability.cc
 )
 
 gf2_handle_library(gf2network0
@@ -160,3 +169,10 @@ target_link_libraries(gf2network0
   PUBLIC
     gf2core0
 )
+
+if (WIN32)
+  target_link_libraries(gf2network0
+    PUBLIC
+      ws2_32
+  )
+endif()

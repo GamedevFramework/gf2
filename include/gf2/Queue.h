@@ -1,17 +1,20 @@
+// SPDX-License-Identifier: Zlib
+// Copyright (c) 2023 Julien Bernard
 #ifndef GF_QUEUE_H
 #define GF_QUEUE_H
 
 #include <condition_variable>
 #include <deque>
-#include <optional>
 #include <mutex>
+#include <optional>
 
 namespace gf {
 
   template<typename T>
   class Queue {
   public:
-    std::optional<T> poll() {
+    std::optional<T> poll()
+    {
       std::lock_guard<std::mutex> lock(m_mutex);
 
       if (m_queue.empty()) {
@@ -23,7 +26,8 @@ namespace gf {
       return value;
     }
 
-    T wait() {
+    T wait()
+    {
       std::unique_lock<std::mutex> lock(m_mutex);
       m_condition.wait(lock, [this]() { return !m_queue.empty(); });
       T value = m_queue.front();
@@ -31,19 +35,22 @@ namespace gf {
       return value;
     }
 
-    void push(const T& value) {
+    void push(const T& value)
+    {
       std::lock_guard<std::mutex> lock(m_mutex);
       m_queue.push_back(value);
       m_condition.notify_one();
     }
 
-    void push(T&& value) {
+    void push(T&& value)
+    {
       std::lock_guard<std::mutex> lock(m_mutex);
       m_queue.push_back(std::move(value));
       m_condition.notify_one();
     }
 
-    void clear() {
+    void clear()
+    {
       std::lock_guard<std::mutex> lock(m_mutex);
       m_queue.clear();
     }
@@ -54,6 +61,6 @@ namespace gf {
     std::deque<T> m_queue;
   };
 
-}
+} // namespace gf
 
 #endif // GF_QUEUE_H

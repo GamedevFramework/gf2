@@ -20,9 +20,8 @@ namespace gf {
     NetworkInitializer& operator=(const NetworkInitializer& /* unused */) = delete;
     NetworkInitializer& operator=(NetworkInitializer&& /* unused */) noexcept;
 #endif
-
   };
 
-}
+} // namespace gf
 
 #endif // GF_NETWORK_INITIALIZER_H

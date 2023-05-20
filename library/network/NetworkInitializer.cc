@@ -6,12 +6,12 @@
 // clang-format on
 
 #ifdef _WIN32
-#include <atomic>
-#include <stdexcept>
+#  include <atomic>
+#  include <stdexcept>
 
-#include <winsock2.h>
+#  include <gf2/Log.h>
 
-#include <gf2/Log.h>
+#  include <winsock2.h>
 #endif
 
 namespace gf {
@@ -43,12 +43,12 @@ namespace gf {
 
   NetworkInitializer::NetworkInitializer(NetworkInitializer&& /* unused */) noexcept
   {
-    g_loaded.fetch_add(1);
+    g_winsock.fetch_add(1);
   }
 
   NetworkInitializer& NetworkInitializer::operator=(NetworkInitializer&& /* unused */) noexcept
   {
-    g_loaded.fetch_add(1);
+    g_winsock.fetch_add(1);
     return *this;
   }
 #endif

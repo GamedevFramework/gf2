@@ -6,7 +6,7 @@ include(GoogleTest)
 # gf::core tests
 
 add_executable(gf2_core_tests
-  main.cc
+  main_core.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googletest/src/gtest-all.cc
   tests_core_Color.cc
   tests_core_Flags.cc
@@ -36,6 +36,31 @@ target_link_libraries(gf2_core_tests
 )
 
 gtest_discover_tests(gf2_core_tests)
+
+# gf::network tests
+
+add_executable(gf2_network_tests
+  main_network.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googletest/src/gtest-all.cc
+  tests_network_TcpSocket.cc
+  tests_network_UdpSocket.cc
+)
+
+target_include_directories(gf2_network_tests
+  PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googletest/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googletest
+)
+
+target_link_libraries(gf2_network_tests
+  PRIVATE
+    gf2network0
+    Threads::Threads
+)
+
+gtest_discover_tests(gf2_network_tests)
+
+# tarball_ls
 
 add_executable(gf2_tarball_ls
   tarball_ls.cc
