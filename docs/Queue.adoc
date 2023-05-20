@@ -1,0 +1,58 @@
+= `gf::Queue<T>` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`Queue<T>` is a simple concurrent queue.
+
+xref:network_utilities.adoc[< Back to `network` Utilities]
+
+== Description
+
+[source]
+----
+#include <gf/Queue.h>
+template<typename T>
+class Queue;
+----
+
+`Queue<T>` can be used in a multi-threaded application. For example, it can be used between a thread that receives messages from the network and the main loop that handles the messages.
+
+== Member functions
+
+=== `clear`
+
+[source]
+----
+void clear();
+----
+
+Clear the queue.
+
+=== `poll`
+
+[source]
+----
+std::optional<T> poll();
+----
+
+Poll a value from the queue, if any.
+
+=== `push`
+
+[source]
+----
+void push(const T& value);
+void push(T&& value);
+----
+
+Push a value in the queue.
+
+=== `wait`
+
+[source]
+----
+T wait();
+----
+
+Wait for a value from the queue.

@@ -23,9 +23,10 @@ xref:index.adoc[< Back to main page]
 - xref:graphics_devices.adoc[Devices] (xref:Scancode.adoc[`Scancode`], xref:Keycode.adoc[`Keycode`], xref:MouseButton.adoc[`MouseButton`])
 - xref:graphics_events.adoc[Events] (xref:Event.adoc[`Event`])
 
-== `net`
+== `network`
 
-- Utilities (`Queue<T>`, `Packet`)
-- Sockets (`TcpSocket`, `TcpListener`, `TcpSelector`, `UdpSocket`)
+- Initialization (`NetworkInitializer`)
+- xref:network_utilities.adoc[Utilities] (xref:Queue.adoc[`Queue<T>`], xref:Packet.adoc[`Packet`])
+- xref:network_sockets.adoc[Sockets] (xref:TcpSocket.adoc[`TcpSocket`], xref:TcpListener.adoc[`TcpListener`], xref:SocketSelector.adoc[`SocketSelector`], xref:UdpSocket.adoc[`UdpSocket`])
 
 == `audio`

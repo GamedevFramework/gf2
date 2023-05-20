@@ -1,0 +1,129 @@
+= `gf::TcpSocket` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+A socket for the link:https://en.wikipedia.org/wiki/Transmission_Control_Protocol[Transmission Control Protocol (TCP)].
+
+xref:network_sockets.adoc[< Back to `network` Sockets]
+
+== Description
+
+[source]
+----
+#include <gf/TcpSocket.h>
+class TcpSocket : public Socket;
+----
+
+*Inherits*: xref:Socket.adoc[`Socket`]
+
+TCP provides a reliable communication between two hosts. TCP is connection-oriented i.e. once the connection is established, it can be used to send and/or receive data until it is shutdown.
+
+.Example for `gf::TcpSocket`
+[source,indent=0]
+----
+include::snippets/network_tcp_socket.cc[tag=tcp_socket]
+----
+
+See also: xref:UdpSocket.adoc[`UdpSocket`]
+
+== Member functions
+
+=== `TcpSocket` constructors
+
+[source]
+----
+TcpSocket() = default; <1>
+TcpSocket(const std::string& hostname, const std::string& service, SocketFamily family = SocketFamily::Unspec); <2>
+----
+
+<1> Create an invalid socket.
+<2> Create a socket for `hostname` and `service`, using `family`.
+
+=== `TcpSocket` destructor
+
+[source]
+----
+~TcpSocket();
+----
+
+Shutdown the connection.
+
+=== `send_bytes`
+
+[source]
+----
+SocketStatus send_bytes(Span<const uint8_t> buffer);
+----
+
+Send a whole buffer to the socket. This function ensures the whole buffer is sent unless an error occurs.
+
+See also: <<_recv_bytes>>
+
+=== `send_packet`
+
+[source]
+----
+SocketStatus send_packet(const Packet& packet);
+----
+
+Send a packet to the socket.
+
+See also: <<_recv_packet>>
+
+=== `send_raw_bytes`
+
+[source]
+----
+SocketDataResult send_raw_bytes(Span<const uint8_t> buffer);
+----
+
+Send some bytes over to the socket.
+
+See also: <<_recv_raw_bytes>>
+
+=== `recv_bytes`
+
+[source]
+----
+SocketStatus recv_bytes(Span<uint8_t> buffer);
+----
+
+Receive a whole buffer from the socket. This function ensures the whole buffer is received unless an error occurs.
+
+See also: <<_send_bytes>>
+
+=== `recv_packet`
+
+[source]
+----
+SocketStatus recv_packet(Packet& packet);
+----
+
+Receive a packet from the socket.
+
+See also: <<_send_packet>>
+
+=== `recv_raw_bytes`
+
+[source]
+----
+SocketDataResult recv_raw_bytes(Span<uint8_t> buffer);
+----
+
+Receive some bytes from the socket.
+
+See also: <<_send_raw_bytes>>
+
+=== `remote_address`
+
+[source]
+----
+SocketAddress remote_address() const;
+----
+
+Get the remote address of the socket.
+
+
+
+

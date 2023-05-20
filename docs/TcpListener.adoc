@@ -1,0 +1,81 @@
+= `gf::TcpListener` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+A listener in the link:https://en.wikipedia.org/wiki/Transmission_Control_Protocol[Transmission Control Protocol (TCP)].
+
+xref:network_sockets.adoc[< Back to `network` Sockets]
+
+== Description
+
+[source]
+----
+#include <gf/TcpListener.h>
+class TcpListener : public Socket;
+----
+
+*Inherits*: xref:Socket.adoc[`Socket`]
+
+A TCP listener is a network socket that can handle incoming connections from remote hosts. It can be used to create a TCP server. The listener is associated to a service. The service can be a port number.
+
+.Example for `gf::TcpListener`: service identified by a port number
+[source,indent=0]
+----
+include::snippets/network_tcp_listener.cc[tag=listener_port]
+----
+
+For well-known services, it can also be a name.
+
+.Example for `gf::TcpListener`: service identified by a name
+[source,indent=0]
+----
+include::snippets/network_tcp_listener.cc[tag=listener_service]
+----
+
+A TCP listener is generally created oustide the main loop. Then, for a synchronous server that handles one connection at the time, the listener accept a connection and handle the client.
+
+.Example for `gf::TcpListener`: network loop
+[source,indent=0]
+----
+include::snippets/network_tcp_listener.cc[tag=listener_loop]
+----
+
+See also: xref:TcpSocket.adoc[`TcpSocket`], xref:SocketAddress.adoc[`SocketAddress`]
+
+== Member functions
+
+=== `TcpListener` constructors
+
+[source]
+----
+TcpListener(); <1>
+TcpListener(const std::string& service, SocketFamily family = SocketFamily::Unspec); <2>
+----
+
+<1> Create an invalid listener.
+<2> Create a valid listener with an associated service.
+
+=== `accept`
+
+[source]
+----
+TcpSocket accept();
+----
+
+Accept a new connection from a remote client.
+
+This member function blocks until a new connection arrives (unless the socket was made non-blocking). Then a socket is created for the remote client and returned. The returned socket can be used to communicate with the client.
+
+=== `accept_with_address`
+
+[source]
+----
+std::tuple<TcpSocket, SocketAddress> accept_with_address();
+----
+
+Accept a new connection from a remote client.
+
+This member function blocks until a new connection arrives (unless the socket was made non-blocking). Then a socket is created for the remote client and returned. The returned socket can be used to communicate with the client.
+
+In addition, the caller can obtain the socket address of the remote client when it is accepted.

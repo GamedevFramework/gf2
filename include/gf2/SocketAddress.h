@@ -17,13 +17,13 @@
 
 namespace gf {
 
-  enum class SocketFamily : int {
+  enum class SocketFamily : int32_t {
     Unspec = AF_UNSPEC,
     IPv4 = AF_INET,
     IPv6 = AF_INET6,
   };
 
-  enum class SocketAddressFormat {
+  enum class SocketAddressFormat : uint8_t {
     Unrestricted,
     Numeric,
   };
@@ -68,7 +68,7 @@ namespace gf {
 
   private:
     sockaddr_storage m_storage;
-    StorageLengthType m_length;
+    StorageLengthType m_length = 0;
   };
 
 } // namespace gf

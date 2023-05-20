@@ -10,7 +10,7 @@ xref:reference.adoc[< Back to reference]
 == Types
 
 [#_clock]
-=== `gf:Clock`
+=== `gf::Clock`
 
 [source]
 ----

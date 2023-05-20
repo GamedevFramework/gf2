@@ -22,19 +22,19 @@ namespace gf {
   public:
     SocketSelector() = default;
 
-    void add_socket(Socket& socket);
-    void remove_socket(Socket& socket);
+    void add_socket(const Socket& socket);
+    void remove_socket(const Socket& socket);
     void clear();
 
     SocketSelectorStatus wait(Time duration = seconds(-1));
 
-    bool ready(Socket& socket);
+    bool ready(const Socket& socket);
 
   private:
     std::vector<pollfd> m_fds;
     bool m_sorted = true;
 
-    decltype(m_fds)::iterator find_socket(Socket& socket);
+    decltype(m_fds)::iterator find_socket(const Socket& socket);
   };
 
 } // namespace gf

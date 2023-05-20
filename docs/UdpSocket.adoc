@@ -1,0 +1,88 @@
+= `gf::UdpSocket` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+A socket for the link:https://en.wikipedia.org/wiki/User_Datagram_Protocol[User Datagram Protocol (UDP)].
+
+xref:network_sockets.adoc[< Back to `network` Sockets]
+
+== Description
+
+[source]
+----
+#include <gf/UdpSocket.h>
+class UdpSocket : public Socket;
+----
+
+*Inherits*: xref:Socket.adoc[`Socket`]
+
+UDP provides an unreliable communication between two hosts. UDP is connectionless i.e. no connection is established, the receiver must be set for each communication.
+
+.Example for `gf::UdpSocket`
+[source,indent=0]
+----
+include::snippets/network_udp_socket.cc[tag=udp_socket]
+----
+
+See also: xref:TcpSocket.adoc[`TcpSocket`]
+
+== Member functions
+
+=== `UdpSocket` constructor
+
+[source]
+----
+UdpSocket() = default; <1>
+UdpSocket(AnyType any, SocketFamily family = SocketFamily::Unspec); <2>
+UdpSocket(const std::string& service, SocketFamily family = SocketFamily::Unspec); <3>
+----
+
+<1> Create an invalid socket.
+<2> Create a socket that is not bound to a specific port. The port is chosen by the system. It may be used by a client that do not need a specific port.
+<3> Create a socket that is bound to a specific port. It must be used in case a server wants to be joined with UDP on a specific port.
+
+=== `send_bytes_to`
+
+[source]
+----
+bool send_bytes_to(Span<const uint8_t> buffer, const SocketAddress& address);
+----
+
+Send a whole buffer to the socket. This function ensures the buffer is sent in a single packet. Return a boolean indicating if the bytes have been sent.
+
+=== `send_raw_bytes_to`
+
+[source]
+----
+SocketDataResult send_raw_bytes_to(Span<const uint8_t> buffer, const SocketAddress& address);
+----
+
+Send some bytes over the socket to `address`.
+
+=== `recv_bytes_from`
+
+[source]
+----
+std::tuple<bool, SocketAddress> recv_bytes_from(Span<uint8_t> buffer);
+----
+
+Send a whole buffer to the socket. This function ensures the buffer is received in a single packet. Return a boolean indicating if the bytes have been received and the address of the sending host.
+
+=== `recv_raw_bytes_from`
+
+[source]
+----
+std::tuple<SocketDataResult, SocketAddress> recv_raw_bytes_from(Span<uint8_t> buffer);
+----
+
+Receive some bytes from the socket. Return a result and the address of the sending host.
+
+=== `remote_address`
+
+[source]
+----
+SocketAddress remote_address(const std::string& hostname, const std::string& service);
+----
+
+Get a remote address for this socket. This function provides a suitable socket address that can be used with the sending functions.

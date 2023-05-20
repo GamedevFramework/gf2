@@ -1,0 +1,77 @@
+= `gf::Socket` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`Socket` implements a link:https://en.wikipedia.org/wiki/Network_socket[network socket].
+
+xref:network_sockets.adoc[< Back to `network` Sockets]
+
+== Description
+
+[source]
+----
+#include <gf/Socket.h>
+class Socket;
+----
+
+This is the base class for all the socket types:
+
+- xref:TcpSocket.adoc[`TcpSocket`]
+- xref:TcpListener.adoc[`TcpListener`]
+- xref:UdpSocket.adoc[`UdpSocket`]
+
+You should not use `Socket` directly but instead use one of these classes.
+
+See also: xref:SocketAddress.adoc[`SocketAddress`]
+
+== Member functions
+
+=== `Socket` destructor
+
+[source]
+----
+~Socket();
+----
+
+Close the connection.
+
+=== `operator bool`
+
+[source]
+----
+operator bool () const noexcept;
+----
+
+Return `true` if the socket is valid.
+
+=== `local_address`
+
+[source]
+----
+SocketAddress local_address() const;
+----
+
+Get the local address of the socket.
+
+=== `set_blocking`
+
+[source]
+----
+void set_blocking();
+----
+
+Set the socket in blocking mode
+
+See also: <<_set_non_blocking>>
+
+=== `set_non_blocking`
+
+[source]
+----
+void set_non_blocking();
+----
+
+Set the socket in non-blocking mode
+
+See also: <<_set_blocking>>

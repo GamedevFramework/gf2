@@ -49,13 +49,13 @@ namespace gf {
 
   } // namespace
 
-  void SocketSelector::add_socket(Socket& socket)
+  void SocketSelector::add_socket(const Socket& socket)
   {
     m_fds.push_back(pollfd{ socket.m_handle, POLLIN, 0 });
     m_sorted = false;
   }
 
-  void SocketSelector::remove_socket(Socket& socket)
+  void SocketSelector::remove_socket(const Socket& socket)
   {
     m_fds.erase(std::remove_if(m_fds.begin(), m_fds.end(), PollFdEqualTo(socket.m_handle)), m_fds.end());
     // the vector is still sorted (or unsorted)
@@ -82,7 +82,7 @@ namespace gf {
     return details::native_poll(m_fds, duration);
   }
 
-  bool SocketSelector::ready(Socket& socket)
+  bool SocketSelector::ready(const Socket& socket)
   {
     if (auto iterator = find_socket(socket); iterator != m_fds.end()) {
       return iterator->revents != 0;
@@ -92,7 +92,7 @@ namespace gf {
     return false;
   }
 
-  auto SocketSelector::find_socket(Socket& socket) -> decltype(m_fds)::iterator
+  auto SocketSelector::find_socket(const Socket& socket) -> decltype(m_fds)::iterator
   {
     if (m_sorted) {
       auto iterator = std::lower_bound(m_fds.begin(), m_fds.end(), socket.m_handle, PollFdLess());

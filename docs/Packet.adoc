@@ -1,0 +1,73 @@
+= `gf::Packet` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`Packet` can ease the serialization of network messages.
+
+xref:network_utilities.adoc[< Back to `network` Utilities]
+
+== Description
+
+[source]
+----
+#include <gf/Packet.h>
+class Packet;
+----
+
+A `Packet` is a sequence of bytes that comes from the serialization of a structure. The structure must have a static member `type` of type xref:Id.adoc[`Id`] that identifies the structure. To transform a structure in a sequence of bytes, you must use <<_set>>, and then use this sequence of bytes in a network communication (for example). To transform a sequence of bytes that may come from a network communication into a structure, you must use <<_as>>.
+
+== Member functions
+
+
+=== `as`
+
+[source]
+----
+template<typename T>
+T as()
+----
+
+Deserialize the underlying bytes into an object.
+
+See also: <<_set>>
+
+=== `as_span`
+
+[source]
+----
+Span<uint8_t> as_span();
+Span<const uint8_t> as_span() const;
+----
+
+Get the underlying bytes as a span.
+
+=== `ensure_size`
+
+[source]
+----
+void ensure_size(std::size_t size);
+----
+
+Ensure that the sequence of bytes is large enough.
+
+=== `set`
+
+[source]
+----
+template<typename T>
+void set(const T& data)
+----
+
+Serialize the object into a sequence of bytes.
+
+See also: <<_as>>
+
+=== `type`
+
+[source]
+----
+Id type();
+----
+
+Get the type of the underlying bytes.

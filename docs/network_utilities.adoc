@@ -1,0 +1,33 @@
+= `network` Utilities
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The utilities component provides some high-level helper classes.
+
+xref:reference.adoc[< Back to reference]
+
+== Types
+
+[#_packet]
+=== `gf::Packet`
+
+[source]
+----
+#include <gf2/Packet.h>
+class Packet;
+----
+
+`Packet` can ease the serialization of network messages. xref:Packet.adoc[*Read more...*]
+
+[#_queue]
+=== `gf::Queue<T>`
+
+[source]
+----
+#include <gf2/Queue.h>
+template<typename T>
+class Queue;
+----
+
+`Queue<T>` is a simple concurrent queue. xref:Queue.adoc[*Read more...*]

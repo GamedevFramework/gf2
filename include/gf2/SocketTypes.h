@@ -4,6 +4,7 @@
 #define GF_SOCKET_TYPES_H
 
 #include <cstddef>
+#include <cstdint>
 
 #ifdef _WIN32
 #  include <winsock2.h>
@@ -23,7 +24,7 @@ namespace gf {
 #endif
   } // namespace details
 
-  enum class SocketStatus {
+  enum class SocketStatus : uint8_t {
     Data,
     Block,
     Close,
@@ -35,7 +36,7 @@ namespace gf {
     std::size_t length;
   };
 
-  enum class SocketSelectorStatus {
+  enum class SocketSelectorStatus : uint8_t {
     Event,
     Timeout,
     Error,

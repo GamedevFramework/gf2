@@ -1,0 +1,81 @@
+= `gf::SocketSelector` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`SocketSelector` can wait for one or more sockets to become ready to use.
+
+xref:network_sockets.adoc[< Back to `network` Sockets]
+
+== Description
+
+[source]
+----
+#include <gf/SocketSelector.h>
+class SocketSelector;
+----
+
+`SocketSelector` is based on link:https://en.wikipedia.org/wiki/Poll_(Unix)[`poll(2)`] (and its equivalent on Windows). It's good enough for simple networking applications, but not for the link:https://en.wikipedia.org/wiki/C10k_problem[C10k problem].
+
+.Example for `gf::SocketSelector`
+[source,indent=0]
+----
+include::snippets/network_socket_selector.cc[tag=socket_selector]
+----
+
+== Member functions
+
+=== `add_socket`
+
+[source]
+----
+void add_socket(const Socket& socket);
+----
+
+Add a socket to the selector.
+
+See also: <<_remove_socket>>
+
+=== `clear`
+
+[source]
+----
+void clear();
+----
+
+Clear all the sockets in the selector.
+
+=== `ready`
+
+[source]
+----
+bool ready(const Socket& socket);
+----
+
+Tell if the provided socket is ready.
+
+See also: <<_wait>>
+
+=== `remove_socket`
+
+[source]
+----
+void remove_socket(const Socket& socket);
+----
+
+Remove a socket from the selector.
+
+See also: <<_add_socket>>
+
+=== `wait`
+
+[source]
+----
+SocketSelectorStatus wait(Time duration = seconds(-1));
+----
+
+Wait for an event from the set of sockets.
+
+A duration for a timeout can be provided. In this case, if the duration is negative, it indicates an infinite timeout. If the duration is zero, the call will return immediately. Otherwise, the timeout can occur after the provided duration if no event occurred.
+
+See also: <<_ready>>

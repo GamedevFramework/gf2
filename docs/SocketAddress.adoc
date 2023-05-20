@@ -1,0 +1,60 @@
+= `gf::SocketAddress` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`SocketAddress` implements a link:https://en.wikipedia.org/wiki/IP_address[network address].
+
+xref:network_sockets.adoc[< Back to `network` Sockets]
+
+== Description
+
+[source]
+----
+#include <gf/SocketAddress.h>
+class SocketAddress;
+----
+
+A socket address is composed of an IP address (representing a _hostname_) and a port number (representing a _service_). You cannot create a `SocketAddress` directly. In other libraries, it can also be called "endpoint".
+
+== Member functions
+
+=== `SocketAddress` constructor
+
+[source]
+----
+SocketAddress() = default;
+----
+
+The default address does not represent any address.
+
+=== `family`
+
+[source]
+----
+SocketFamily family() const;
+----
+
+Get the family of the socket address.
+
+=== `hostname`
+
+[source]
+----
+std::string hostname(SocketAddressFormat format = SocketAddressFormat::Unrestricted) const;
+----
+
+Get the hostname associated to the address with the given `format`.
+
+See also: <<_service>>
+
+=== `service`
+
+[source]
+----
+std::string service(SocketAddressFormat format = SocketAddressFormat::Unrestricted) const;
+----
+
+Get the service associated to the address with the given `format`.
+
+See also: <<_hostname>>

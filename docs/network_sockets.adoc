@@ -1,0 +1,212 @@
+= `network` Sockets
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The sockets component provides several types of sockets.
+
+xref:reference.adoc[< Back to reference]
+
+== Types
+
+[#_socket]
+=== `gf::Socket`
+
+[source]
+----
+#include <gf2/Socket.h>
+class Socket;
+----
+
+`Socket` implements a link:https://en.wikipedia.org/wiki/Network_socket[network socket]. xref:Socket.adoc[*Read more...*]
+
+[#_socket_address]
+=== `gf::SocketAddress`
+
+[source]
+----
+#include <gf2/SocketAddress.h>
+class SocketAddress;
+----
+
+`SocketAddress` implements a link:https://en.wikipedia.org/wiki/IP_address[network address]. xref:SocketAddress.adoc[*Read more...*]
+
+[#_socket_address_format]
+=== `gf::SocketAddressFormat`
+
+[source]
+----
+#include <gf2/SocketAddress.h>
+enum class SocketAddressFormat : uint8_t;
+----
+
+A socket address format used to transform a socket address to a string.
+
+.Enumerators for `gf::SocketAddressFormat`
+[cols="1,1"]
+|===
+| Value | Description
+
+| `gf::SocketAddressFormat::Unrestricted`
+| Allow name resolution for the address
+
+| `gf::SocketAddressFormat::Numeric`
+| Use a numeric form for the address
+|===
+
+See also: <<_socket_address>>
+
+[#_socket_data_result]
+=== `gf::SocketDataResult`
+
+[source]
+----
+#include <gf2/SocketTypes.h>
+struct SocketDataResult;
+----
+
+The result of a raw socket operation.
+
+.Data members for `gf::SocketDataResult`
+[cols="1,1,2"]
+|===
+| Name | Type | Description
+
+| `status`
+| `SocketStatus`
+| The status of the operation
+
+| `length`
+| `std::size_t`
+| The length of sent or received data
+|===
+
+
+[#_socket_family]
+=== `gf::SocketFamily`
+
+[source]
+----
+#include <gf2/SocketAddress.h>
+enum class SocketFamily : int32_t;
+----
+
+A socket family indicates the type of socket. The family can be specified explicitely of unspecified, in which case the family is set automatically by the system.
+
+.Enumerators for `gf::SocketFamily`
+[cols="1,1"]
+|===
+| Value | Description
+
+| `gf::SocketFamily::Unspec`
+| Unspecified (either IPv4 or IPv6)
+
+| `gf::SocketFamily::IPv4`
+| IPv4 (link:https://en.wikipedia.org/wiki/Internet_Protocol_version_4[Internet Protocol version 4])
+
+| `gf::SocketFamily::IPv6`
+| IPv6 (link:https://en.wikipedia.org/wiki/IPv6[Internet Protocol version 6])
+|===
+
+See also: <<_socket_address>>
+
+[#_socket_selector]
+=== `gf::SocketSelector`
+
+[source]
+----
+#include <gf2/SocketSelector.h>
+class SocketSelector;
+----
+
+`SocketSelector` can wait for one or more sockets to become ready to use. xref:SocketSelector.adoc[*Read more...*]
+
+[#_socket_selector_status]
+=== `gf::SocketSelectorStatus`
+
+[source]
+----
+#include <gf2/SocketTypes.h>
+enum class SocketSelectorStatus : uint8_t;
+----
+
+The status of the selector.
+
+.Enumerators for `gf::SocketSelectorStatus`
+[cols="1,1"]
+|===
+| Value | Description
+
+| `gf::SocketSelectorStatus::Event`
+| An event is pending on the sockets.
+
+| `gf::SocketSelectorStatus::Timeout`
+| The call timed out.
+
+| `gf::SocketSelectorStatus::Error`
+| An error occurred.
+|===
+
+See also: <<_socket_selector>>
+
+[#_socket_status]
+=== `gf::SocketStatus`
+
+[source]
+----
+#include <gf2/SocketTypes.h>
+enum class SocketStatus : uint8_t;
+----
+
+The status of a socket operation.
+
+.Enumerators for `gf::SocketStatus`
+[cols="1,1"]
+|===
+| Value | Description
+
+| `gf::SocketStatus::Data`
+| Some data has been sent or received.
+
+| `gf::SocketStatus::Block`
+| The socket would have blocked.
+
+| `gf::SocketStatus::Close`
+| The connection is closed.
+
+| `gf::SocketStatus::Error`
+| An error occurred.
+|===
+
+[#_tcp_listener]
+=== `gf::TcpListener`
+
+[source]
+----
+#include <gf2/TcpListener.h>
+class TcpListener : public Socket;
+----
+
+A listener in the link:https://en.wikipedia.org/wiki/Transmission_Control_Protocol[Transmission Control Protocol (TCP)]. xref:TcpListener.adoc[*Read more...*]
+
+[#_tcp_socket]
+=== `gf::TcpSocket`
+
+[source]
+----
+#include <gf2/TcpSocket.h>
+class TcpSocket : public Socket;
+----
+
+A socket for the link:https://en.wikipedia.org/wiki/Transmission_Control_Protocol[Transmission Control Protocol (TCP)]. xref:TcpSocket.adoc[*Read more...*]
+
+[#_udp_socket]
+=== `gf::UdpSocket`
+
+[source]
+----
+#include <gf2/UdpSocket.h>
+class UdpSocket : public Socket;
+----
+
+A socket for the link:https://en.wikipedia.org/wiki/User_Datagram_Protocol[User Datagram Protocol (UDP)]. xref:UdpSocket.adoc[*Read more...*]
