@@ -1,0 +1,91 @@
+= `gf::ResourceBundle` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`ResourceBundle` manage a set of resources that can be loaded or unloaded.
+
+xref:core_resources.adoc[< Back to `core` Resources]
+
+== Description
+
+[source]
+----
+#include <gf2/ResourceBundle.h>
+class ResourceBundle;
+----
+
+A resource bundle is built around a user-provided callback that can be called to load or unload a set of resources. When called, the callback can use <<_handle>> to give the list of resources to be loaded or unloaded dynamically.
+
+See also: xref:ResourceManager.adoc[`ResourceManager`]
+
+== Types
+
+=== `Action`
+
+[source]
+----
+enum class Action : uint8_t;
+----
+
+The action to be taken in the <<_handle>> function.
+
+.Enumerators for `gf::ResourceBundle::Action`
+[cols="1,1"]
+|===
+| Value | Description
+
+| `gf::ResourceBundle::Action::Load`
+| Load the resource
+
+| `gf::ResourceBundle::Action::Unload`
+| Unload the resource
+|===
+
+== Member functions
+
+=== `handle`
+
+[source]
+----
+template<typename T>
+void handle(const std::filesystem::path& path, ResourceManager& manager, ResourceBundle::Action action);
+----
+
+Load or unload a resource of type `T` identified by `path` using `manager`. The action tells if the manager must load or unload the resource.
+
+If the resource has a `bundle()` member function that returns a bundle, then it is called and the resulting bundle is handled (after the resource when loaded, before the resource when unloaded).
+
+=== `load_from`
+
+[source]
+----
+void load_from(ResourceManager& manager);
+----
+
+Load all the resources of the bundle. Actually call the callback with the load action.
+
+See also: <<_unload_from>>
+
+=== `set_callback`
+
+[source]
+----
+template<typename F>
+void set_callback(F&& callback);
+----
+
+Set the callback for the bundle. The callback must have the following signature: `void(ResourceBundle&, ResourceManager&, ResourceBundleAction)`. The manager and the action can be passed to <<_handle>>.
+
+See also: <<_handle>>
+
+=== `unload_from`
+
+[source]
+----
+void unload_from(ResourceManager& manager);
+----
+
+Unload all the resources of the bundle. Actually call the callback with the unload action.
+
+See also: <<_load_from>>

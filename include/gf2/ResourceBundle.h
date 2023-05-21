@@ -3,6 +3,8 @@
 #ifndef GF_RESOURCE_BUNDLE_H
 #define GF_RESOURCE_BUNDLE_H
 
+#include <cstdint>
+
 #include <filesystem>
 #include <functional>
 #include <type_traits>
@@ -20,13 +22,13 @@ namespace gf {
     inline constexpr bool HasBundle<T, std::void_t<decltype(std::declval<T>().bundle())>> = true;
   } // namespace details
 
-  enum class ResourceBundleAction {
-    Load,
-    Unload,
-  };
-
   class GF_CORE_API ResourceBundle {
   public:
+    enum class Action : uint8_t {
+      Load,
+      Unload,
+    };
+
     template<typename F>
     void set_callback(F&& callback)
     {
@@ -37,10 +39,10 @@ namespace gf {
     void unload_from(ResourceManager& manager);
 
     template<typename T>
-    void handle(const std::filesystem::path& path, ResourceManager& manager, ResourceBundleAction action)
+    void handle(const std::filesystem::path& path, ResourceManager& manager, Action action)
     {
       switch (action) {
-        case ResourceBundleAction::Load:
+        case Action::Load:
           {
             [[maybe_unused]] T& ref = manager.load<T>(path);
 
@@ -50,7 +52,7 @@ namespace gf {
           }
           break;
 
-        case ResourceBundleAction::Unload:
+        case Action::Unload:
           {
             if constexpr (details::HasBundle<T>) {
               T& ref = manager.get<T>(path);
@@ -64,7 +66,7 @@ namespace gf {
     }
 
   private:
-    std::function<void(ResourceBundle&, ResourceManager&, ResourceBundleAction)> m_callback;
+    std::function<void(ResourceBundle&, ResourceManager&, Action)> m_callback;
   };
 
 } // namespace gf

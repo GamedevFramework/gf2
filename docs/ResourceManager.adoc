@@ -15,7 +15,7 @@ xref:core_resources.adoc[< Back to `core` Resources]
 class ResourceManager;
 ----
 
-See also: xref:ResourceRegistry.adoc[`ResourceRegistry<T>`]
+See also: xref:ResourceRegistry.adoc[`ResourceRegistry<T>`], xref:ResourceBundle.adoc[`ResourceBundle`]
 
 == Member functions
 
@@ -24,7 +24,7 @@ See also: xref:ResourceRegistry.adoc[`ResourceRegistry<T>`]
 [source]
 ----
 template<typename T>
-T& acquire(const std::filesystem::path& path)
+T& acquire(const std::filesystem::path& path);
 ----
 
 Ensure that the resource identified by `path` is loaded and return this resource. You should use this function if your resource management is very simple: never unload.
@@ -44,7 +44,7 @@ Add a registry for type `T`. There can be only a single registry for type `T`.
 [source]
 ----
 template<typename T>
-T& get(const std::filesystem::path& path)
+T& get(const std::filesystem::path& path);
 ----
 
 Return a resource identified by `path` that already has been loaded.
@@ -56,7 +56,7 @@ See also: <<_load>>
 [source]
 ----
 template<typename T>
-T& load(const std::filesystem::path& path)
+T& load(const std::filesystem::path& path);
 ----
 
 Load a resource identified by `path` and return this resource.
@@ -68,7 +68,7 @@ See also: <<_unload>>, <<_get>>
 [source]
 ----
 template<typename T>
-void unload(const std::filesystem::path& path)
+void unload(const std::filesystem::path& path);
 ----
 
 Unload the resource identified by `path`.

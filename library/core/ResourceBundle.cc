@@ -10,14 +10,14 @@ namespace gf {
   void ResourceBundle::load_from(ResourceManager& manager)
   {
     if (m_callback) {
-      m_callback(*this, manager, ResourceBundleAction::Load);
+      m_callback(*this, manager, ResourceBundle::Action::Load);
     }
   }
 
   void ResourceBundle::unload_from(ResourceManager& manager)
   {
     if (m_callback) {
-      m_callback(*this, manager, ResourceBundleAction::Unload);
+      m_callback(*this, manager, ResourceBundle::Action::Unload);
     }
   }
 

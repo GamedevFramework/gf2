@@ -41,6 +41,17 @@ class MemoryLoader;
 
 `MemoryLoader` is a resource loader for resources in memory. xref:MemoryLoader.adoc[*Read more...*]
 
+[#_resource_bundle]
+=== `gf::ResourceBundle`
+
+[source]
+----
+#include <gf2/ResourceBundle.h>
+class ResourceBundle;
+----
+
+`ResourceBundle` manage a set of resources that can be loaded or unloaded. xref:ResourceBundle.adoc[*Read more...*]
+
 [#_resource_loader]
 === `gf::ResourceLoader<T>`
 
