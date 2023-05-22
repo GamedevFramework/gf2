@@ -12,6 +12,7 @@ xref:core_color.adoc[< Back to `core` Color]
 [source]
 ----
 #include <gf2/Image.h>
+class Image;
 ----
 
 The internal representation of the pixels of an image is RGBA 32 bits, i.e. 8 bits for each channel (red, green, blue, alpha). However, the class also provides an interface that uses xref:Color.adoc[`Color`] in order to ease its manipulation.

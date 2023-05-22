@@ -67,6 +67,12 @@ namespace gf {
   extern template struct GF_CORE_API Circ<unsigned>;
 #endif
 
+  template<typename Archive, typename T>
+  inline Archive& operator|(Archive& ar, Circ<T>& circle)
+  {
+    return ar | circle.center | circle.radius;
+  }
+
 } // namespace gf
 
 #endif // GF_CIRC_H

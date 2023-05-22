@@ -13,7 +13,7 @@ xref:core_container.adoc[< Back to `core` Container]
 ----
 #include <gf/Array2D.h>
 template<typename T>
-class Array;
+class Array2D;
 ----
 
 The array is templated with the type of the data in the array.

@@ -14,8 +14,8 @@ xref:index.adoc[< Back to main page]
 - xref:core_color.adoc[Color] (xref:Color.adoc[`Color`], xref:Image.adoc[`Image`])
 - xref:core_container.adoc[Container] (xref:Array2D.adoc[`Array2D<T>`], xref:Span.adoc[`Span<T>`])
 - xref:core_streams.adoc[Streams] (xref:InputStream.adoc[`InputStream`], xref:OutputStream.adoc[`OutputStream`])
-- xref:core_resources.adoc[Resources] (xref:ResourceManager.adoc[`ResourceManager`])
-- Serialization (`Serializer`, `Deserializer`)
+- xref:core_resources.adoc[Resources] (xref:ResourceManager.adoc[`ResourceManager`], xref:ResourceBundle.adoc[`ResourceBundle`])
+- xref:core_serialization.adoc[Serialization] (xref:Serializer.adoc[`Serializer`], xref:Deserializer.adoc[`Deserializer`])
 
 == `graphics`
 

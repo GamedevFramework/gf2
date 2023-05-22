@@ -14,9 +14,9 @@ xref:reference.adoc[< Back to reference]
 
 [source]
 ----
-#include <gf/Array2D.h>
+#include <gf2/Array2D.h>
 template<typename T>
-class Array;
+class Array2D;
 ----
 
 An `Array2D<T>` represents a two-dimension array, organized in row-major order. xref:Array2D.adoc[*Read more...*]
@@ -26,7 +26,7 @@ An `Array2D<T>` represents a two-dimension array, organized in row-major order. 
 
 [source]
 ----
-#include <gf/Range.h>
+#include <gf2/Range.h>
 using IndexRange = Range<std::size_t>;
 ----
 
@@ -39,7 +39,7 @@ See also: <<_index_range_function>>
 
 [source]
 ----
-#include <gf/Range.h>
+#include <gf2/Range.h>
 using PositionRange = Range2D<int>;
 ----
 
@@ -52,7 +52,7 @@ See also: <<_position_range_function>>
 
 [source]
 ----
-#include <gf/Range.h>
+#include <gf2/Range.h>
 template<typename T>
 struct Range;
 ----
@@ -65,7 +65,7 @@ See also: <<_range_function>>
 
 [source]
 ----
-#include <gf/Range.h>
+#include <gf2/Range.h>
 template<typename T>
 struct Range2D;
 ----
@@ -77,7 +77,7 @@ A `Range2D<T>` represents a range accross a 2D area. xref:Range2D.adoc[*Read mor
 
 [source]
 ----
-#include <gf/Span.h>
+#include <gf2/Span.h>
 template<typename T>
 class Span;
 ----
@@ -91,7 +91,7 @@ See also: <<_static_span>>
 
 [source]
 ----
-#include <gf/Span.h>
+#include <gf2/Span.h>
 template<typename T, std::size_t N>
 class StaticSpan;
 ----
@@ -107,7 +107,7 @@ See also: <<_span>>
 
 [source]
 ----
-#include <gf/Range.h>
+#include <gf2/Range.h>
 constexpr IndexRange index_range(std::size_t size);
 ----
 
@@ -120,7 +120,7 @@ See also: <<_index_range_type>>
 
 [source]
 ----
-#include <gf/Range.h>
+#include <gf2/Range.h>
 constexpr PositionRange position_range(Vec2I size);
 ----
 
@@ -133,6 +133,7 @@ See also: <<_position_range_type>>
 
 [source]
 ----
+#include <gf2/Range.h>
 template<typename T>
 constexpr Range<T> range(T lo, T hi);
 ----

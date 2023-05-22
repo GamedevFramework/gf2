@@ -9,7 +9,13 @@ xref:core_color.adoc[< Back to `core` Color]
 
 == Description
 
-A `Color` data members are:
+[source]
+----
+#include <gf2/Color.h>
+struct Color;
+----
+
+`Color` data members are:
 
 - `r` for the red channel
 - `g` for the green channel

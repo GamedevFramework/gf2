@@ -181,6 +181,12 @@ namespace gf {
   extern template struct GF_CORE_API Rect<unsigned>;
 #endif
 
+  template<typename Archive, typename T>
+  inline Archive& operator|(Archive& ar, Rect<T>& rectangle)
+  {
+    return ar | rectangle.offset | rectangle.extent;
+  }
+
 } // namespace gf
 
 #endif // GF_RECT_H
