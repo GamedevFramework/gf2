@@ -27,6 +27,22 @@ namespace {
     std::size_t x;
   };
 
+  struct DummyCompositeResource {
+
+    DummyCompositeResource(const std::filesystem::path&)
+    {
+    }
+
+    gf::ResourceBundle bundle() {
+      gf::ResourceBundle bundle;
+      bundle.set_callback([](gf::ResourceBundle& bundle, auto manager, auto action) {
+        bundle.handle<DummyResource>("bar", manager, action);
+      });
+      return bundle;
+    }
+
+  };
+
   struct DummyLoader {
 
     template<typename T>
@@ -283,4 +299,33 @@ TEST(ResourceTest, BundleMultiple) {
 
   EXPECT_FALSE(registry.loaded("foo"));
   EXPECT_FALSE(registry.loaded("bar"));
+}
+
+TEST(ResourceTest, BundleComposite) {
+  gf::ResourceRegistry<DummyCompositeResource> registry_for_composite;
+  gf::ResourceRegistry<DummyResource> registry_for_single;
+
+  DummyLoader loader;
+  registry_for_composite.add_loader(gf::loader_for<DummyCompositeResource>(loader));
+  registry_for_single.add_loader(gf::loader_for<DummyResource>(loader));
+
+  gf::ResourceManager manager;
+  manager.add_registry(gf::ref(registry_for_composite));
+  manager.add_registry(gf::ref(registry_for_single));
+
+  gf::ResourceBundle bundle;
+  bundle.set_callback([](gf::ResourceBundle& bundle, auto manager, auto action) {
+    bundle.handle<DummyCompositeResource>("foo", manager, action);
+  });
+
+  bundle.load_from(manager);
+
+  EXPECT_TRUE(registry_for_composite.loaded("foo"));
+  EXPECT_TRUE(registry_for_single.loaded("bar"));
+
+  bundle.unload_from(manager);
+
+  EXPECT_FALSE(registry_for_composite.loaded("foo"));
+  EXPECT_FALSE(registry_for_single.loaded("bar"));
+
 }

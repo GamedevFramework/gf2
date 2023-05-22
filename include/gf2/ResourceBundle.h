@@ -47,7 +47,7 @@ namespace gf {
             [[maybe_unused]] T& ref = manager.load<T>(path);
 
             if constexpr (details::HasBundle<T>) {
-              ref.bundle().load(manager);
+              ref.bundle().load_from(manager);
             }
           }
           break;
@@ -56,7 +56,7 @@ namespace gf {
           {
             if constexpr (details::HasBundle<T>) {
               T& ref = manager.get<T>(path);
-              ref.bundle().unload(manager);
+              ref.bundle().unload_from(manager);
             }
 
             manager.unload<T>(path);
