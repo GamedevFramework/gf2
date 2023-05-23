@@ -6,6 +6,7 @@
 #include <map>
 
 #include "CoreApi.h"
+#include "ResourceContext.h"
 #include "ResourceLoader.h"
 #include "Span.h"
 #include "Streams.h"
@@ -19,7 +20,7 @@ namespace gf {
     std::filesystem::path search(const std::filesystem::path& relative_path);
 
     template<typename T>
-    std::unique_ptr<T> operator()(const std::filesystem::path& path)
+    std::unique_ptr<T> operator()(const std::filesystem::path& path, const ResourceContext<T>& context = {})
     {
       auto absolute_path = search(path);
 
@@ -27,7 +28,11 @@ namespace gf {
         return nullptr;
       }
 
-      return std::make_unique<T>(absolute_path);
+      if constexpr (std::is_empty_v<gf::ResourceContext<T>>) {
+        return std::make_unique<T>(absolute_path);
+      } else {
+        return std::make_unique<T>(absolute_path, context);
+      }
     }
 
   private:
@@ -40,7 +45,7 @@ namespace gf {
     Span<uint8_t> search(const std::filesystem::path& relative_path);
 
     template<typename T>
-    std::unique_ptr<T> operator()(const std::filesystem::path& path)
+    std::unique_ptr<T> operator()(const std::filesystem::path& path, const ResourceContext<T>& context = {})
     {
       auto buffer = search(path);
 
@@ -49,7 +54,12 @@ namespace gf {
       }
 
       MemoryInputStream input(buffer);
-      return std::make_unique<T>(input);
+
+      if constexpr (std::is_empty_v<gf::ResourceContext<T>>) {
+        return std::make_unique<T>(input);
+      } else {
+        return std::make_unique<T>(input, context);
+      }
     }
 
   private:
@@ -63,7 +73,7 @@ namespace gf {
     std::vector<uint8_t> search(const std::filesystem::path& relative_path);
 
     template<typename T>
-    std::unique_ptr<T> operator()(const std::filesystem::path& path)
+    std::unique_ptr<T> operator()(const std::filesystem::path& path, const ResourceContext<T>& context = {})
     {
       auto buffer = search(path);
 
@@ -72,7 +82,12 @@ namespace gf {
       }
 
       BufferInputStream input(gf::ref(buffer));
-      return std::make_unique<T>(input);
+
+      if constexpr (std::is_empty_v<gf::ResourceContext<T>>) {
+        return std::make_unique<T>(input);
+      } else {
+        return std::make_unique<T>(input, context);
+      }
     }
 
   private:

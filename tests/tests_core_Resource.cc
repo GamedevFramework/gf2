@@ -43,12 +43,26 @@ namespace {
 
   };
 
+  struct DummyContextResource {
+    struct Context {
+      bool dummy;
+    };
+
+    DummyContextResource(const std::filesystem::path&, const Context&)
+    {
+    }
+  };
+
   struct DummyLoader {
 
     template<typename T>
-    std::unique_ptr<T> operator()(const std::filesystem::path& path)
+    std::unique_ptr<T> operator()(const std::filesystem::path& path, [[maybe_unused]] const gf::ResourceContext<T>& context = {})
     {
-      return std::make_unique<T>(path);
+      if constexpr (std::is_empty_v<gf::ResourceContext<T>>) {
+        return std::make_unique<T>(path);
+      } else {
+        return std::make_unique<T>(path, context);
+      }
     }
   };
 
@@ -194,6 +208,7 @@ TEST(ResourceTest, ManagerWithRegistry) {
   registry.add_loader(gf::loader_for<DummyResource>(loader));
 
   EXPECT_NO_THROW(manager.load<DummyResource>("foo"));
+  EXPECT_TRUE(registry.loaded("foo"));
 }
 
 TEST(ResourceTest, ManagerInvalidRegistry) {
@@ -328,4 +343,29 @@ TEST(ResourceTest, BundleComposite) {
   EXPECT_FALSE(registry_for_composite.loaded("foo"));
   EXPECT_FALSE(registry_for_single.loaded("bar"));
 
+}
+
+TEST(ResourceTest, BundleContext) {
+  gf::ResourceRegistry<DummyContextResource> registry;
+
+  gf::ResourceManager manager;
+  manager.add_registry(gf::ref(registry));
+
+  DummyLoader loader;
+  registry.add_loader(gf::loader_for<DummyContextResource>(loader));
+
+  DummyContextResource::Context context;
+
+  gf::ResourceBundle bundle;
+  bundle.set_callback([&context](gf::ResourceBundle& bundle, auto manager, auto action) {
+    bundle.handle<DummyContextResource>("foo", context, manager, action);
+  });
+
+  bundle.load_from(manager);
+
+  EXPECT_TRUE(registry.loaded("foo"));
+
+  bundle.unload_from(manager);
+
+  EXPECT_FALSE(registry.loaded("foo"));
 }

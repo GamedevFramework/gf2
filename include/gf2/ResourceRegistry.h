@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "Log.h"
+#include "ResourceContext.h"
 #include "ResourceLoader.h"
 
 namespace gf {
@@ -37,7 +38,7 @@ namespace gf {
       throw std::runtime_error("Resource not already loaded");
     }
 
-    T& load(const std::filesystem::path& path)
+    T& load(const std::filesystem::path& path, const ResourceContext<T>& context = {})
     {
       if (auto cache_iterator = m_cache.find(path); cache_iterator != m_cache.end()) {
         auto& [_, counted] = *cache_iterator;
@@ -46,7 +47,13 @@ namespace gf {
       }
 
       for (auto& loader : m_loaders) {
-        auto pointer = loader(path);
+        std::unique_ptr<T> pointer;
+
+        if constexpr (std::is_empty_v<ResourceContext<T>>) {
+          pointer = loader(path);
+        } else {
+          pointer = loader(path, context);
+        }
 
         if (!pointer) {
           continue;

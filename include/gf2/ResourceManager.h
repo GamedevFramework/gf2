@@ -12,6 +12,7 @@
 #include "CoreApi.h"
 #include "Log.h"
 #include "Ref.h"
+#include "ResourceContext.h"
 #include "ResourceRegistry.h"
 
 namespace gf {
@@ -34,7 +35,7 @@ namespace gf {
     }
 
     template<typename T>
-    T& acquire(const std::filesystem::path& path)
+    T& acquire(const std::filesystem::path& path, const ResourceContext<T>& context = {})
     {
       ResourceRegistry<T>& registry = search_registry<T>();
 
@@ -42,14 +43,14 @@ namespace gf {
         return registry.get(path);
       }
 
-      return registry.load(path);
+      return registry.load(path, context);
     }
 
     template<typename T>
-    T& load(const std::filesystem::path& path)
+    T& load(const std::filesystem::path& path, const ResourceContext<T>& context = {})
     {
       ResourceRegistry<T>& registry = search_registry<T>();
-      return registry.load(path);
+      return registry.load(path, context);
     }
 
     template<typename T>

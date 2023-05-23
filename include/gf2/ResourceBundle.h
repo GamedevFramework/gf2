@@ -41,10 +41,41 @@ namespace gf {
     template<typename T>
     void handle(const std::filesystem::path& path, ResourceManager& manager, Action action)
     {
+      static_assert(std::is_empty_v<ResourceContext<T>>, "Resource context should be empty.");
+
       switch (action) {
         case Action::Load:
           {
             [[maybe_unused]] T& ref = manager.load<T>(path);
+
+            if constexpr (details::HasBundle<T>) {
+              ref.bundle().load_from(manager);
+            }
+          }
+          break;
+
+        case Action::Unload:
+          {
+            if constexpr (details::HasBundle<T>) {
+              T& ref = manager.get<T>(path);
+              ref.bundle().unload_from(manager);
+            }
+
+            manager.unload<T>(path);
+          }
+          break;
+      }
+    }
+
+    template<typename T>
+    void handle(const std::filesystem::path& path, const ResourceContext<T>& context, ResourceManager& manager, Action action)
+    {
+      static_assert(!std::is_empty_v<ResourceContext<T>>, "Resource context should be non-empty.");
+
+      switch (action) {
+        case Action::Load:
+          {
+            [[maybe_unused]] T& ref = manager.load<T>(path, context);
 
             if constexpr (details::HasBundle<T>) {
               ref.bundle().load_from(manager);
