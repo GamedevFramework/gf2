@@ -12,12 +12,13 @@
 
 namespace gf {
 
+  // clang-format: off
   template<typename T>
   using ResourceLoader = std::conditional_t<
-    std::is_empty_v<ResourceContext<T>>,
-    std::function<std::unique_ptr<T>(const std::filesystem::path&)>,
-    std::function<std::unique_ptr<T>(const std::filesystem::path&, const ResourceContext<T>&)>
-  >;
+      std::is_empty_v<ResourceContext<T>>,
+      std::function<std::unique_ptr<T>(const std::filesystem::path&)>,
+      std::function<std::unique_ptr<T>(const std::filesystem::path&, const ResourceContext<T>&)>>;
+  // clang-format: on
 
   template<typename T, typename U>
   ResourceLoader<T> loader_for(U& loader)
