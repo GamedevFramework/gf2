@@ -16,11 +16,11 @@ namespace gf {
   public:
     AudioManager();
     AudioManager(const AudioManager&) = delete;
-    AudioManager(AudioManager&& other) noexcept = default;
+    AudioManager(AudioManager&& other) noexcept;
     ~AudioManager();
 
     AudioManager& operator=(const AudioManager&) = delete;
-    AudioManager& operator=(AudioManager&& other) noexcept = default;
+    AudioManager& operator=(AudioManager&& other) noexcept;
 
     std::string device_name() const;
 

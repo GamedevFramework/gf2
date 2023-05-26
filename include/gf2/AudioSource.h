@@ -23,11 +23,11 @@ namespace gf {
   class GF_AUDIO_API AudioSource {
   public:
     AudioSource(const AudioSource&) = delete;
-    AudioSource(AudioSource&&) noexcept = default;
+    AudioSource(AudioSource&&) noexcept;
     ~AudioSource();
 
     AudioSource& operator=(const AudioSource&) = delete;
-    AudioSource& operator=(AudioSource&&) noexcept = default;
+    AudioSource& operator=(AudioSource&&) noexcept;
 
     void start();
     void stop();

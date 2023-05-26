@@ -24,10 +24,14 @@ namespace gf {
     }
   }
 
+  AudioSource::AudioSource(AudioSource&&) noexcept = default;
+
   AudioSource::~AudioSource()
   {
     ma_sound_uninit(m_source.get());
   }
+
+  AudioSource& AudioSource::operator=(AudioSource&&) noexcept = default;
 
   void AudioSource::start()
   {

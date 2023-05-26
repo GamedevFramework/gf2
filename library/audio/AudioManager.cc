@@ -80,6 +80,7 @@ namespace gf {
 
           device_info.id.custom.i = i;
           std::strncpy(device_info.name, SDL_GetAudioDeviceName(i, 0), sizeof(device_info.name));
+          device_info.name[sizeof(device_info.name) - 1] = '\0';
 
           if (i == 0) {
             device_info.isDefault = MA_TRUE;
@@ -104,6 +105,7 @@ namespace gf {
 
           device_info.id.custom.i = i;
           std::strncpy(device_info.name, SDL_GetAudioDeviceName(i, 0), sizeof(device_info.name));
+          device_info.name[sizeof(device_info.name) - 1] = '\0';
 
           if (i == 0) {
             device_info.isDefault = MA_TRUE;
@@ -121,7 +123,7 @@ namespace gf {
       return MA_SUCCESS;
     }
 
-    ma_result sdl_context_get_device_info(ma_context* context, ma_device_type device, const ma_device_id* device_id, ma_device_info* device_info)
+    ma_result sdl_context_get_device_info([[maybe_unused]] ma_context* context, ma_device_type device, const ma_device_id* device_id, ma_device_info* device_info)
     {
       assert(context != nullptr);
       const int is_capture = (device == ma_device_type_playback) ? 0 : 1;
@@ -137,6 +139,7 @@ namespace gf {
       } else {
         device_info->id.custom.i = device_id->custom.i;
         std::strncpy(device_info->name, SDL_GetAudioDeviceName(device_id->custom.i, is_capture), sizeof(device_info->name));
+        device_info->name[sizeof(device_info->name) - 1] = '\0';
       }
 
       if (device_info->id.custom.i == 0) {
@@ -341,7 +344,7 @@ namespace gf {
       return MA_SUCCESS;
     }
 
-    static ma_result sdl_context_init(ma_context* context, [[maybe_unused]] const ma_context_config* config, ma_backend_callbacks* callbacks)
+    static ma_result sdl_context_init([[maybe_unused]] ma_context* context, [[maybe_unused]] const ma_context_config* config, ma_backend_callbacks* callbacks)
     {
       assert(context != NULL);
 
@@ -399,12 +402,16 @@ namespace gf {
     }
   }
 
+  AudioManager::AudioManager(AudioManager&& other) noexcept = default;
+
   AudioManager::~AudioManager()
   {
     ma_engine_uninit(&m_system->engine);
     ma_device_uninit(&m_system->device);
     ma_context_uninit(&m_system->context);
   }
+
+  AudioManager& AudioManager::operator=(AudioManager&& other) noexcept = default;
 
   std::string AudioManager::device_name() const
   {
