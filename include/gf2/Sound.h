@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
-#ifndef GF_MUSIC_H
-#define GF_MUSIC_H
+#ifndef GF_SOUND_H
+#define GF_SOUND_H
 
 #include "AudioApi.h"
 #include "AudioSource.h"
@@ -17,4 +17,4 @@ namespace gf {
 
 }
 
-#endif // GF_MUSIC_H
+#endif // GF_SOUND_H

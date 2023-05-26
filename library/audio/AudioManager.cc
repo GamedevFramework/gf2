@@ -8,6 +8,8 @@
 #include <cassert>
 #include <cstring>
 
+#include <array>
+
 #include <SDL2/SDL_audio.h>
 #include <gf2/Log.h>
 
@@ -18,12 +20,12 @@
 
 namespace gf {
 
-  namespace {
+  struct sdl_device : ma_device {
+    int device_id_playback;
+    int device_id_capture;
+  };
 
-    struct sdl_device : ma_device {
-      int device_id_playback;
-      int device_id_capture;
-    };
+  namespace {
 
     ma_format to_miniaudio(SDL_AudioFormat format)
     {
@@ -402,6 +404,13 @@ namespace gf {
     ma_engine_uninit(&m_system->engine);
     ma_device_uninit(&m_system->device);
     ma_context_uninit(&m_system->context);
+  }
+
+  std::string AudioManager::device_name() const
+  {
+    std::array<char, MA_MAX_DEVICE_NAME_LENGTH + 1> buffer = {};
+    ma_device_get_name(&m_system->device, ma_device_type_playback, buffer.data(), buffer.size(), nullptr);
+    return buffer.data();
   }
 
   ma_engine* AudioManager::engine()

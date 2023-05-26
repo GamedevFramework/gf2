@@ -1,7 +1,8 @@
 set_project("gf")
 set_version("0.1.0")
 
-add_requires("fmt", "miniaudio", "sdl2", "stb", "zlib")
+add_requires("fmt", "miniaudio", "sdl2", "zlib")
+add_requires("stb", { system = false })
 
 add_rules("mode.asan", "mode.tsan", "mode.ubsan", "mode.coverage", "mode.debug", "mode.releasedbg", "mode.release")
 
@@ -48,6 +49,7 @@ target("gf2audio0")
     add_includedirs("include", { public = true })
     add_packages("miniaudio")
     add_packages("sdl2")
+    add_packages("stb")
     add_deps("gf2core0")
 
 target("gf2_core_tests")
@@ -76,3 +78,18 @@ target("gf2_network_tests")
     if is_plat("linux") then
         add_syslinks("pthread")
     end
+
+target("gf2_audio_tests")
+    set_kind("binary")
+    set_languages("cxx17")
+    add_files("tests/tests_audio_*.cc", "tests/main_audio.cc")
+    add_files("tests/googletest/googletest/src/gtest-all.cc")
+    add_includedirs("tests/googletest/googletest")
+    add_includedirs("tests/googletest/googletest/include")
+    add_deps("gf2audio0")
+    if is_plat("linux") then
+        add_syslinks("pthread")
+    end
+    set_configvar("GF_TEST_ASSETS_DIRECTORY", "$(projectdir)/tests/assets")
+    add_configfiles("tests/config.h.in", {pattern = "@(.-)@"})
+    add_includedirs("$(buildir)")

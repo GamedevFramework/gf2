@@ -4,6 +4,7 @@
 #define GF_AUDIO_MANAGER_H
 
 #include <memory>
+#include <string>
 
 #include "AudioApi.h"
 
@@ -20,6 +21,8 @@ namespace gf {
 
     AudioManager& operator=(const AudioManager&) = delete;
     AudioManager& operator=(AudioManager&& other) noexcept = default;
+
+    std::string device_name() const;
 
   private:
     friend class AudioSource;
