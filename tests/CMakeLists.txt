@@ -86,5 +86,4 @@ target_link_libraries(gf2_audio_tests
     Threads::Threads
 )
 
-# disable this line for vcpkg
-# gtest_discover_tests(gf2_audio_tests)
+gtest_discover_tests(gf2_audio_tests)

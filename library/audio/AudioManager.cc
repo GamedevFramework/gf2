@@ -20,6 +20,7 @@
 
 namespace gf {
 
+#if 0
   struct sdl_device : ma_device {
     int device_id_playback;
     int device_id_capture;
@@ -361,10 +362,13 @@ namespace gf {
     }
 
   }
+#endif
 
   struct AudioManager::AudioSystem {
+#if 0
     ma_context context;
     sdl_device device;
+#endif
     ma_engine engine;
   };
 
@@ -372,6 +376,7 @@ namespace gf {
   : m_system(std::make_unique<AudioSystem>())
   {
     using namespace std::literals;
+#if 0
     assert(ma_is_backend_enabled(ma_backend_custom) == MA_TRUE);
 
     ma_backend backends[] = {
@@ -381,7 +386,7 @@ namespace gf {
     ma_context_config context_config = ma_context_config_init();
     context_config.custom.onContextInit = sdl_context_init;
 
-    if (auto result = ma_context_init(std::begin(backends), std::size(backends), &context_config, &m_system->context); result != MA_SUCCESS) {
+    if (auto result = ma_context_init(std::begin(backends), static_cast<ma_uint32>(std::size(backends)), &context_config, &m_system->context); result != MA_SUCCESS) {
       Log::error("Unable to initialize audio context: {}", ma_result_description(result));
       throw std::runtime_error("Unable to initialize audio context: "s + ma_result_description(result));
     }
@@ -400,6 +405,12 @@ namespace gf {
       Log::error("Unable to initialize audio engine: {}", ma_result_description(result));
       throw std::runtime_error("Unable to initialize audio engine: "s + ma_result_description(result));
     }
+#else
+    if (auto result = ma_engine_init(nullptr, &m_system->engine); result != MA_SUCCESS) {
+      Log::error("Unable to initialize audio engine: {}", ma_result_description(result));
+      throw std::runtime_error("Unable to initialize audio engine: "s + ma_result_description(result));
+    }
+#endif
   }
 
   AudioManager::AudioManager(AudioManager&& other) noexcept = default;
@@ -407,8 +418,10 @@ namespace gf {
   AudioManager::~AudioManager()
   {
     ma_engine_uninit(&m_system->engine);
+#if 0
     ma_device_uninit(&m_system->device);
     ma_context_uninit(&m_system->context);
+#endif
   }
 
   AudioManager& AudioManager::operator=(AudioManager&& other) noexcept = default;
@@ -416,7 +429,7 @@ namespace gf {
   std::string AudioManager::device_name() const
   {
     std::array<char, MA_MAX_DEVICE_NAME_LENGTH + 1> buffer = {};
-    ma_device_get_name(&m_system->device, ma_device_type_playback, buffer.data(), buffer.size(), nullptr);
+    ma_device_get_name(ma_engine_get_device(&m_system->engine), ma_device_type_playback, buffer.data(), buffer.size(), nullptr);
     return buffer.data();
   }
 
