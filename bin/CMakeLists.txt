@@ -1,0 +1,22 @@
+
+# gf2_tarball_listfiles
+
+add_executable(gf2_tarball_listfiles
+  gf2_tarball_listfiles.cc
+)
+
+target_link_libraries(gf2_tarball_listfiles
+  PRIVATE
+    gf2core0
+)
+
+# gf2_play_sound
+
+add_executable(gf2_play_sound
+  gf2_play_sound.cc
+)
+
+target_link_libraries(gf2_play_sound
+  PRIVATE
+    gf2audio0
+)

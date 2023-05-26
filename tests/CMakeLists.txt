@@ -87,14 +87,3 @@ target_link_libraries(gf2_audio_tests
 )
 
 gtest_discover_tests(gf2_audio_tests)
-
-# tarball_ls
-
-add_executable(gf2_tarball_ls
-  tarball_ls.cc
-)
-
-target_link_libraries(gf2_tarball_ls
-  PRIVATE
-    gf2core0
-)
