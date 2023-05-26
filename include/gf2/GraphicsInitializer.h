@@ -4,13 +4,19 @@
 #define GF_GRAPHICS_INITIALIZER_H
 
 #include "GraphicsApi.h"
-#include "Initializer.h"
 
 namespace gf {
 
-  class GF_GRAPHICS_API GraphicsInitializer : public Initializer {
+  class GF_GRAPHICS_API GraphicsInitializer {
   public:
     GraphicsInitializer();
+    ~GraphicsInitializer();
+
+    GraphicsInitializer(const GraphicsInitializer& /* unused */) = delete;
+    GraphicsInitializer(GraphicsInitializer&& /* unused */) noexcept = default;
+
+    GraphicsInitializer& operator=(const GraphicsInitializer& /* unused */) = delete;
+    GraphicsInitializer& operator=(GraphicsInitializer&& /* unused */) noexcept = default;
   };
 
 } // namespace gf

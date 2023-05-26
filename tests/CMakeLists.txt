@@ -3,6 +3,9 @@ find_package(Threads REQUIRED)
 include(CTest)
 include(GoogleTest)
 
+set(GF_TEST_ASSETS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/assets")
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h @ONLY)
+
 # gf::core tests
 
 add_executable(gf2_core_tests
@@ -27,6 +30,7 @@ target_include_directories(gf2_core_tests
   PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googletest/include
     ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googletest
+    ${CMAKE_CURRENT_BINARY_DIR}
 )
 
 target_link_libraries(gf2_core_tests
@@ -59,6 +63,30 @@ target_link_libraries(gf2_network_tests
 )
 
 gtest_discover_tests(gf2_network_tests)
+
+# gf::audio tests
+
+add_executable(gf2_audio_tests
+  main_audio.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googletest/src/gtest-all.cc
+  tests_audio_AudioManager.cc
+  tests_audio_Sound.cc
+)
+
+target_include_directories(gf2_audio_tests
+  PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googletest/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googletest
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+target_link_libraries(gf2_audio_tests
+  PRIVATE
+    gf2audio0
+    Threads::Threads
+)
+
+gtest_discover_tests(gf2_audio_tests)
 
 # tarball_ls
 

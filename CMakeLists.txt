@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 project(GF
-  VERSION 1.1.0
+  VERSION 0.1.0
   LANGUAGES CXX C
 )
 
@@ -20,9 +20,11 @@ find_package(ZLIB REQUIRED)
 if(GF_USE_EMBEDDED_LIBS)
   message(STATUS "Build with embedded libraries")
   set(Stb_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/library/vendor/stb")
+  set(MINIAUDIO_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/library/vendor/miniaudio")
 else()
   # works on vcpkg
   find_package(Stb REQUIRED)
+  find_path(MINIAUDIO_INCLUDE_DIR "miniaudio.h")
 endif()
 
 if(MSVC)

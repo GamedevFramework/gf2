@@ -127,7 +127,6 @@ add_library(gf2graphics0
   graphics/Event.cc
   graphics/Gamepad.cc
   graphics/GraphicsInitializer.cc
-  graphics/Initializer.cc
   graphics/Keyboard.cc
   graphics/Mouse.cc
   graphics/Touch.cc
@@ -184,3 +183,32 @@ if (UNIX AND NOT APPLE)
       _POSIX_C_SOURCE=200809L
   )
 endif()
+
+# gf2::audio
+
+add_library(gf2audio0
+  audio/AudioInitializer.cc
+  audio/AudioManager.cc
+  audio/AudioSource.cc
+  audio/Music.cc
+  audio/Sound.cc
+)
+
+gf2_handle_library(gf2audio0
+  EXPORT_NAME
+    "audio"
+)
+
+target_link_libraries(gf2audio0
+  PUBLIC
+    gf2core0
+  PRIVATE
+    SDL2::SDL2
+)
+
+target_include_directories(gf2audio0
+  SYSTEM
+  PRIVATE
+    "${MINIAUDIO_INCLUDE_DIR}"
+    "${Stb_INCLUDE_DIR}"
+)

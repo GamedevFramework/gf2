@@ -5,6 +5,8 @@
 #include <gf2/ResourceManager.h>
 #include <gf2/ResourceRegistry.h>
 
+#include "config.h"
+
 #include "gtest/gtest.h"
 
 namespace {
@@ -33,14 +35,14 @@ namespace {
     {
     }
 
-    gf::ResourceBundle bundle() {
+    gf::ResourceBundle bundle()
+    {
       gf::ResourceBundle bundle;
       bundle.set_callback([](gf::ResourceBundle& bundle, auto manager, auto action) {
         bundle.handle<DummyResource>("bar", manager, action);
       });
       return bundle;
     }
-
   };
 
   struct DummyContextResource {

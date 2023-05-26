@@ -22,7 +22,7 @@ namespace gf {
     if (!g_graphics_loaded.exchange(true)) { // we are the first
       // initialize SDL
 
-      if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER | SDL_INIT_AUDIO) != 0) {
+      if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER) != 0) {
         Log::error("Unable to initialize SDL: '{}'", SDL_GetError());
         return;
       }
@@ -40,6 +40,17 @@ namespace gf {
       }
     } else {
       Log::warning("You are trying to load SDL multiple times. Do not do that!");
+    }
+  }
+
+  GraphicsInitializer::~GraphicsInitializer()
+  {
+    SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER);
+    g_graphics_loaded = false;
+
+    if (SDL_WasInit(0) == 0) {
+      Log::info("Quitting SDL.");
+      SDL_Quit();
     }
   }
 
