@@ -3,9 +3,9 @@
 #include <gf2/AudioManager.h>
 #include <gf2/Sound.h>
 
-#include "gtest/gtest.h"
-
 #include "config.h"
+
+#include "gtest/gtest.h"
 
 TEST(SoundTest, Constructor) {
   gf::AudioManager audio;

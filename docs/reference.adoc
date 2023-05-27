@@ -19,7 +19,7 @@ xref:index.adoc[< Back to main page]
 
 == `graphics`
 
-- Initialization (`GraphicsInitializer`, `FontInitializer`)
+- Initialization (`GraphicsInitializer`)
 - xref:graphics_devices.adoc[Devices] (xref:Scancode.adoc[`Scancode`], xref:Keycode.adoc[`Keycode`], xref:MouseButton.adoc[`MouseButton`])
 - xref:graphics_events.adoc[Events] (xref:Event.adoc[`Event`])
 
@@ -30,3 +30,6 @@ xref:index.adoc[< Back to main page]
 - xref:network_sockets.adoc[Sockets] (xref:TcpSocket.adoc[`TcpSocket`], xref:TcpListener.adoc[`TcpListener`], xref:SocketSelector.adoc[`SocketSelector`], xref:UdpSocket.adoc[`UdpSocket`])
 
 == `audio`
+
+- Source (`Sound`, `Music`)
+- Management (`AudioManager`, `AudioListener`)

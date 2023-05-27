@@ -13,8 +13,6 @@ int main(int argc, char *argv[]) {
 
   gf::AudioInitializer audio_initializer;
   gf::AudioManager audio_manager;
-  std::cout << "Playing on " << audio_manager.device_name() << '\n';
-
   gf::Sound sound(argv[1], { gf::ref(audio_manager) });
   sound.start();
 

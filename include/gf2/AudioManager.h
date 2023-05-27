@@ -3,10 +3,14 @@
 #ifndef GF_AUDIO_MANAGER_H
 #define GF_AUDIO_MANAGER_H
 
+#include <cstdint>
+
 #include <memory>
 #include <string>
 
 #include "AudioApi.h"
+#include "AudioListener.h"
+#include "Vec3.h"
 
 using ma_engine = struct ma_engine;
 
@@ -22,15 +26,21 @@ namespace gf {
     AudioManager& operator=(const AudioManager&) = delete;
     AudioManager& operator=(AudioManager&& other) noexcept;
 
-    std::string device_name() const;
+    uint32_t channels() const;
+    uint32_t sample_rate() const;
+
+    void set_volume(float volume);
+
+    AudioListener default_listener();
+    AudioListener closest_listener(Vec3F position);
 
   private:
     friend class AudioSource;
-    struct AudioSystem;
 
     ma_engine* engine();
+    const ma_engine* engine() const;
 
-    std::unique_ptr<AudioSystem> m_system;
+    std::unique_ptr<ma_engine> m_engine;
   };
 
 }

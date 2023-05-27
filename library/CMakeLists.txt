@@ -188,8 +188,10 @@ endif()
 
 add_library(gf2audio0
   audio/AudioInitializer.cc
+  audio/AudioListener.cc
   audio/AudioManager.cc
   audio/AudioSource.cc
+  audio/AudioSpatialization.cc
   audio/Music.cc
   audio/Sound.cc
 )
