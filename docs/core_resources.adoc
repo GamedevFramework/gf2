@@ -102,9 +102,14 @@ struct ResourceContextTraits;
 ----
 #include <gf2/ResourceLoader.h>
 template<typename T>
-using ResourceLoader = std::function<std::unique_ptr<T>(const std::filesystem::path&)>; <1>
+using ResourceLoader = std::function<std::unique_ptr<T>( <1>
+    const std::filesystem::path&
+)>;
 template<typename T>
-using ResourceLoader = std::function<std::unique_ptr<T>(const std::filesystem::path&, const ResourceContext<T>&)>; <2>
+using ResourceLoader = std::function<std::unique_ptr<T>( <2>
+    const std::filesystem::path&,
+    const ResourceContext<T>&
+)>;
 ----
 
 `ResourceLoader<T>` is a generic type for representing a resource loader. Its type depends if `T` has a context.
