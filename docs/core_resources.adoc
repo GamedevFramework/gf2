@@ -3,17 +3,36 @@ v0.1
 include::bits/attributes.adoc[]
 :toc: right
 
-The resources component provides classes for handling resources.
+The resources component provides classes for handling resources of any type that can be loaded from any source.
 
-There are four levels:
+A *resource* is a piece of data that can be loaded and unloaded at runtime, it is identified by a unique relative path. A resource can have a *context*, a structure that is needed to load the resource. For example, to load fonts, you may need a font manager as the context. For a resource of type `T`, the context type is `T::Context`. If it is not possible to change type `T`, you may also provide a specialization of `gf::ResourceContextTraits<T>` with the context type given in `Type`. Finally, the type `ResourceContext<T>` gives the context of type `T` if one has been given, or an empty context type. Having no context or an empty context type is exactly the same from the point of view of other types in this component: you do not need to pass a context for the loading of the resource.
 
-- Resource: a resource can be any piece of data that can be loaded at runtime, it is identified by a unique relative path.
-- Loader: a resource loader is responsible for loading a resource from raw data coming from various sources (files, tarballs, memory...). It has the `ResourceLoader<T>` type.
-- Registry: a registry must ensure that a resource is not loaded more than once, it can handle several loaders. It is represented by `ResourceRegistry<T>`.
-- Manager: a manager handles several registries, one for each type of resource. It is represented by `ResourceManager`.
+Resources can be grouped in a *bundle*. For example, all the resources of a game level may be in the same bundle. A bundle describes the set of resources in a link:https://en.cppreference.com/w/cpp/utility/functional[function object] where it calls a generic function of the bundle that load or unload the resource. A bundle is useful if you want to load a set of resources at the same time, maybe asynchronously, or if you want to optimize the resources that must be loaded at one point. Typically, for two consecutive levels, you may load the bundle of the next level and then unload the bundle of the previous level, so that the resources that are common to both levels will not be unloaded. See <<_resource_bundle>>.
 
-The resources that can be used with any resource loader in gf2 are: xref:Image.adoc[`Image`]
+The *resource manager* handles the loading and unloading of all the resources, either standalone resources or bundles. In order to manage resources of type `T`, a *registry* for type `T` must be added to the resource manager. The registry is responsible for all the resources of a single type `T`. It ensures a resource is loaded only once by refcounting its use (through loading and unloading). The registry uses one or several *loaders* that provide the functions needed to actually load the resource from a source: filesystem, memory, tarball... See <<_resource_manager>>.
 
+The following table gives the list of resources in the gf2 libraries that can be loaded with a resource manager, either through a filename, or through an xref:InputStream.adoc[`InputStream`].
+
+.List of resources in the gf2 libraries
+[cols="2,2,1,1"]
+|===
+| Resource | Library | File | Stream
+
+| xref:Image.adoc[`Image`]
+| `core`
+| &check;
+| &check;
+
+| xref:Music.adoc[`Music`]
+| `audio`
+| &check;
+|
+
+| xref:Sound.adoc[`Sound`]
+| `audio`
+| &check;
+|
+|===
 
 xref:reference.adoc[< Back to reference]
 
@@ -52,6 +71,30 @@ class ResourceBundle;
 
 `ResourceBundle` manage a set of resources that can be loaded or unloaded. xref:ResourceBundle.adoc[*Read more...*]
 
+[#_resource_context]
+=== `gf::ResourceContext`
+
+[source]
+----
+#include <gf2/ResourceContext.h>
+template<typename T>
+using ResourceContext = typename ResourceContextTraits<T>::Type;
+----
+
+`ResourceContext<T>` determines the type of the context of resource `T`, if any, or provides an empty context.
+
+[#_resource_context_traits]
+=== `gf::ResourceContextTraits<T>`
+
+[source]
+----
+#include <gf2/ResourceContext.h>
+template<typename T>
+struct ResourceContextTraits;
+----
+
+`ResourceContextTraits<T>` provides a `Type` type that identifies the context of resource `T`. It is set to `T::Context` if available. Users can also provide a specialization of this trait in order to provide the type of the context.
+
 [#_resource_loader]
 === `gf::ResourceLoader<T>`
 
@@ -59,10 +102,15 @@ class ResourceBundle;
 ----
 #include <gf2/ResourceLoader.h>
 template<typename T>
-using ResourceLoader = std::function<std::unique_ptr<T>(const std::filesystem::path&)>;
+using ResourceLoader = std::function<std::unique_ptr<T>(const std::filesystem::path&)>; <1>
+template<typename T>
+using ResourceLoader = std::function<std::unique_ptr<T>(const std::filesystem::path&, const ResourceContext<T>&)>; <2>
 ----
 
-`ResourceLoader<T>` is a generic type for representing a resource loader.
+`ResourceLoader<T>` is a generic type for representing a resource loader. Its type depends if `T` has a context.
+
+<1> Resource loader for types that do not have any context, or an empty context
+<2> Resource loader for types that have a context.
 
 See also: <<_loader_for>>
 
@@ -122,6 +170,13 @@ template<typename T, typename U>
 ResourceLoader<T> loader_for(U& loader);
 ----
 
-When implementing a resource loader with a generic functor, the type `T` of the resource loader can not be infered from the arguments. This function is a helper to identify the right instanciation of the generic function.
+When implementing a resource loader with a generic functor, the type `T` of the resource loader cannot be infered from the arguments. This function is a helper to identify the right instanciation of the generic function.
+
+.Example for `gf::loader_for`
+[source,indent=0]
+----
+include::snippets/core_resources.cc[tag=loader_for]
+----
+
 
 

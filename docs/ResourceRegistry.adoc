@@ -44,10 +44,10 @@ See also: <<_load>>
 
 [source]
 ----
-T& load(const std::filesystem::path& path)
+T& load(const std::filesystem::path& path, const ResourceContext<T>& context = {})
 ----
 
-Load a resource identified by `path` and return this resource.
+Load a resource identified by `path`, and possibly its context, and return this resource.
 
 See also: <<_unload>>, <<_get>>
 

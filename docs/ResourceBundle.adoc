@@ -49,8 +49,13 @@ The action to be taken in the <<_handle>> function.
 [source]
 ----
 template<typename T>
-void handle(const std::filesystem::path& path, ResourceManager& manager, ResourceBundle::Action action);
+void handle(const std::filesystem::path& path, ResourceManager& manager, ResourceBundle::Action action); <1>
+template<typename T>
+void handle(const std::filesystem::path& path, const ResourceContext<T>& context, ResourceManager& manager, Action action); <2>
 ----
+
+<1> Handle a resource with no context, or an empty context
+<2> Handle a resource with a context
 
 Load or unload a resource of type `T` identified by `path` using `manager`. The action tells if the manager must load or unload the resource.
 

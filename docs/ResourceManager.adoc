@@ -24,10 +24,10 @@ See also: xref:ResourceRegistry.adoc[`ResourceRegistry<T>`], xref:ResourceBundle
 [source]
 ----
 template<typename T>
-T& acquire(const std::filesystem::path& path);
+T& acquire(const std::filesystem::path& path, const ResourceContext<T>& context = {});
 ----
 
-Ensure that the resource identified by `path` is loaded and return this resource. You should use this function if your resource management is very simple: never unload.
+Ensure that the resource identified by `path` is loaded and return this resource. If the resource is not loaded, the manager uses `path`, and possibly a context, to load the resource. You should use this function if your resource management is very simple: never unload.
 
 === `add_registry`
 
@@ -56,10 +56,10 @@ See also: <<_load>>
 [source]
 ----
 template<typename T>
-T& load(const std::filesystem::path& path);
+T& load(const std::filesystem::path& path, const ResourceContext<T>& context = {});
 ----
 
-Load a resource identified by `path` and return this resource.
+Load a resource identified by `path`, and possibly its context, and return this resource.
 
 See also: <<_unload>>, <<_get>>
 

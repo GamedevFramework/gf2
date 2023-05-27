@@ -37,10 +37,10 @@ Use the tarball located at `tarball_path` to initialize the loader.
 [source]
 ----
 template<typename T>
-std::unique_ptr<T> operator()(const std::filesystem::path& path);
+std::unique_ptr<T> operator()(const std::filesystem::path& path, const ResourceContext<T>& context = {});
 ----
 
-Generic loader for a resource in a tarball. The resource type `T` should provide a constructor with a `InputStream&` argument.
+Generic loader for a resource in a tarball. The resource type `T` should provide a constructor with a `InputStream&` argument. Moreover if the resource has a non-empty context, the constructor must have a second argument of type `const ResourceContext<T>&`.
 
 See also: xref:InputStream.adoc[`InputStream`]
 
