@@ -14,7 +14,6 @@
 #include <gf2/Log.h>
 
 // clang-format: off
-#define GF_AUDIO_BACKEND_IMPLEMENTATION
 #include "bits/AudioBackend.h"
 // clang-format on
 

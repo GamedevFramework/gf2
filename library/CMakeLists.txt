@@ -194,8 +194,14 @@ add_library(gf2audio0
   audio/AudioSpatialization.cc
   audio/Music.cc
   audio/Sound.cc
+  audio/bits/AudioBackend.cc
 )
 
+set_source_files_properties(
+  audio/bits/AudioBackend.cc
+  PROPERTIES
+    SKIP_UNITY_BUILD_INCLUSION ON
+)
 gf2_handle_library(gf2audio0
   EXPORT_NAME
     "audio"
