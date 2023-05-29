@@ -5,6 +5,28 @@ include::bits/attributes.adoc[]
 
 The serialization component gives classes to serialize and deserialize a wide range of types.
 
+link:https://en.wikipedia.org/wiki/Serialization[Serialization] is an important process that can be used in gamedev for resources, saves or network messages.
+
+An *archive* is a piece of serialized data. It can be handled by any xref:core_streams.adoc[streams]. The transformation between in-memory data and an archive is achieved with a serializer and a deserializer.
+
+An archive has a header with two fields: a magic constant of 16 bits (the two characters `'g'` and `'f'`) and a version integer of 16 bits encoded in big endian. Then data is serialized as specified by the serialization operators. Basic types are handled directly by the serializer and deserializer through direct methods. Complex types are handled by <<_operator_pipe>>.
+
+User defined types may easily be serialized and deserialized with a generic function taking an archive as a template argument.
+
+.Example for serialization of user-defined types
+[source,indent=0]
+----
+include::snippets/core_serialization.cc[tag=user_defined]
+----
+
+The version of the archive may be used to handle the evolution of the archive data in a transparent way.
+
+.Example for the use of version
+[source,indent=0]
+----
+include::snippets/core_serialization.cc[tag=version]
+----
+
 xref:reference.adoc[< Back to reference]
 
 == Types
@@ -34,6 +56,7 @@ class Serializer;
 
 == Operators
 
+[#_operator_pipe]
 === `operator|`
 
 [source,subs="verbatim,quotes"]

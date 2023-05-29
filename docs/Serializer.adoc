@@ -1,0 +1,164 @@
+= `gf::Serializer` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`Serializer` is responsible for serializing basic types.
+
+xref:core_serialization.adoc[< Back to `core` Serialization]
+
+== Description
+
+[source]
+----
+#include <gf2/Serialization.h>
+class Serializer;
+----
+
+See also: xref:Deserializer.adoc[`Deserializer`]
+
+== Member functions
+
+=== `Serializer` constructors
+
+[source]
+----
+Serializer(Ref<OutputStream> stream, uint16_t version = 0);
+----
+
+Create a serializer that writes to `stream`, with the specified version for the archive.
+
+=== `version`
+
+[source]
+----
+uint16_t version() const;
+----
+
+Return the version of the archive.
+
+=== `write_bool`
+
+[source]
+----
+void write_bool(bool data);
+----
+
+Write a `bool` to the stream.
+
+=== `write_char`
+
+[source]
+----
+void write_char(char data);
+----
+
+Write a `char` to the stream.
+
+=== `write_f32`
+
+[source]
+----
+void write_f32(float data);
+----
+
+Write a `float` to the stream.
+
+=== `write_f64`
+
+[source]
+----
+void write_f64(double data);
+----
+
+Write a `double` to the stream.
+
+=== `write_i8`
+
+[source]
+----
+void write_i8(int8_t data);
+----
+
+Write a `int8_t` to the stream.
+
+=== `write_i16`
+
+[source]
+----
+void write_i16(int16_t data);
+----
+
+Write a `int16_t` to the stream.
+
+=== `write_i32`
+
+[source]
+----
+void write_i32(int32_t data);
+----
+
+Write a `int32_t` to the stream.
+
+=== `write_i64`
+
+[source]
+----
+void write_i64(int64_t data);
+----
+
+Write a `int64_t` to the stream.
+
+=== `write_raw_size`
+
+[source]
+----
+void write_raw_size(std::size_t data);
+----
+
+Write a generic size to the stream.
+
+=== `write_raw_string`
+
+[source]
+----
+void write_raw_string(const char* data, std::size_t size);
+----
+
+Write a generic string to the stream.
+
+=== `write_u8`
+
+[source]
+----
+void write_u8(uint8_t data);
+----
+
+Write a `uint8_t` to the stream.
+
+=== `write_u16`
+
+[source]
+----
+void write_u16(uint16_t data);
+----
+
+Write a `uint16_t` to the stream.
+
+=== `write_u32`
+
+[source]
+----
+void write_u32(uint32_t data);
+----
+
+Write a `uint32_t` to the stream.
+
+=== `write_u64`
+
+[source]
+----
+void write_u64(uint64_t data);
+----
+
+Write a `uint64_t` to the stream.

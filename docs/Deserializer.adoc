@@ -1,0 +1,164 @@
+= `gf::Deserializer` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`Deserializer` is responsible for deserializing basic types.
+
+xref:core_serialization.adoc[< Back to `core` Serialization]
+
+== Description
+
+[source]
+----
+#include <gf2/Serialization.h>
+class Deserializer;
+----
+
+See also: xref:Serializer.adoc[`Serializer`]
+
+== Member functions
+
+=== `Deserializer` constructors
+
+[source]
+----
+Deserializer(Ref<InputStream> stream);
+----
+
+Create a deserializer that read from `stream`.
+
+=== `version`
+
+[source]
+----
+uint16_t version() const;
+----
+
+Return the version of the archive.
+
+=== `read_bool`
+
+[source]
+----
+bool read_bool(bool& data);
+----
+
+Read a `bool` from the stream.
+
+=== `read_char`
+
+[source]
+----
+bool read_char(char& data);
+----
+
+Read a `char` from the stream.
+
+=== `read_f32`
+
+[source]
+----
+bool read_f32(float& data);
+----
+
+Read a `float` from the stream.
+
+=== `read_f64`
+
+[source]
+----
+bool read_f64(double& data);
+----
+
+Read a `double` from the stream.
+
+=== `read_i8`
+
+[source]
+----
+bool read_i8(int8_t& data);
+----
+
+Read a `int8_t` from the stream.
+
+=== `read_i16`
+
+[source]
+----
+bool read_i16(int16_t& data);
+----
+
+Read a `int16_t` from the stream.
+
+=== `read_i32`
+
+[source]
+----
+bool read_i32(int32_t& data);
+----
+
+Read a `int32_t` from the stream.
+
+=== `read_i64`
+
+[source]
+----
+bool read_i64(int64_t& data);
+----
+
+Read a `int64_t` from the stream.
+
+=== `read_raw_size`
+
+[source]
+----
+bool read_raw_size(std::size_t& data);
+----
+
+Read a generic size from the stream.
+
+=== `read_raw_string`
+
+[source]
+----
+bool read_raw_string(const char* data, std::size_t size);
+----
+
+Read a generic string from the stream.
+
+=== `read_u8`
+
+[source]
+----
+bool read_u8(uint8_t& data);
+----
+
+Read a `uint8_t` from the stream.
+
+=== `read_u16`
+
+[source]
+----
+bool read_u16(uint16_t& data);
+----
+
+Read a `uint16_t` from the stream.
+
+=== `read_u32`
+
+[source]
+----
+bool read_u32(uint32_t& data);
+----
+
+Read a `uint32_t` from the stream.
+
+=== `read_u64`
+
+[source]
+----
+bool read_u64(uint64_t& data);
+----
+
+Read a `uint64_t` from the stream.
