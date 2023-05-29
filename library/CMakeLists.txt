@@ -88,6 +88,7 @@ add_library(gf2core0
   core/ResourceLoaders.cc
   core/ResourceManager.cc
   core/ResourceRegistry.cc
+  core/Result.cc
   core/Serialization.cc
   core/SerializationOps.cc
   core/Stream.cc
