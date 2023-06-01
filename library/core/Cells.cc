@@ -463,45 +463,45 @@ namespace gf {
   }
 
   /*
-   * Cells
+   * AnyCells
    */
 
-  Cells::Cells(OrthogonalCells cells)
+  AnyCells::AnyCells(OrthogonalCells cells)
   : m_variant(cells)
   {
   }
 
-  Cells::Cells(StaggeredCells cells)
+  AnyCells::AnyCells(StaggeredCells cells)
   : m_variant(cells)
   {
   }
 
-  Cells::Cells(HexagonalCells cells)
+  AnyCells::AnyCells(HexagonalCells cells)
   : m_variant(cells)
   {
   }
 
-  Cells Cells::make_orthogonal(Vec2F tile_size)
+  AnyCells AnyCells::make_orthogonal(Vec2F tile_size)
   {
     return { OrthogonalCells(tile_size) };
   }
 
-  Cells Cells::make_staggered(Vec2F tile_size, CellAxis axis, CellIndex index)
+  AnyCells AnyCells::make_staggered(Vec2F tile_size, CellAxis axis, CellIndex index)
   {
     return { StaggeredCells(tile_size, axis, index) };
   }
 
-  Cells Cells::make_hexagonal(Vec2F tile_size, float side_length, CellAxis axis, CellIndex index)
+  AnyCells AnyCells::make_hexagonal(Vec2F tile_size, float side_length, CellAxis axis, CellIndex index)
   {
     return { HexagonalCells(tile_size, side_length, axis, index) };
   }
 
-  Cells Cells::make_hexagonal(float radius, CellAxis axis, CellIndex index)
+  AnyCells AnyCells::make_hexagonal(float radius, CellAxis axis, CellIndex index)
   {
     return { HexagonalCells(radius, axis, index) };
   }
 
-  RectF Cells::compute_bounds(Vec2I layer_size) const
+  RectF AnyCells::compute_bounds(Vec2I layer_size) const
   {
     return std::visit([=](auto&& cells) {
       using T = std::decay_t<decltype(cells)>;
@@ -514,7 +514,7 @@ namespace gf {
         m_variant);
   }
 
-  RectI Cells::compute_visible_area(RectF local) const
+  RectI AnyCells::compute_visible_area(RectF local) const
   {
     return std::visit([=](auto&& cells) {
       using T = std::decay_t<decltype(cells)>;
@@ -527,7 +527,7 @@ namespace gf {
         m_variant);
   }
 
-  RectF Cells::compute_cell_bounds(Vec2I coordinates) const
+  RectF AnyCells::compute_cell_bounds(Vec2I coordinates) const
   {
     return std::visit([=](auto&& cells) {
       using T = std::decay_t<decltype(cells)>;
@@ -540,7 +540,7 @@ namespace gf {
         m_variant);
   }
 
-  Vec2I Cells::compute_coordinates(Vec2F position) const
+  Vec2I AnyCells::compute_coordinates(Vec2F position) const
   {
     return std::visit([=](auto&& cells) {
       using T = std::decay_t<decltype(cells)>;
@@ -553,7 +553,7 @@ namespace gf {
         m_variant);
   }
 
-  std::vector<Vec2F> Cells::compute_contour(Vec2I coordinates) const
+  std::vector<Vec2F> AnyCells::compute_contour(Vec2I coordinates) const
   {
     return std::visit([=](auto&& cells) {
       using T = std::decay_t<decltype(cells)>;
@@ -567,7 +567,7 @@ namespace gf {
         m_variant);
   }
 
-  std::vector<Vec2I> Cells::compute_neighbors(Vec2I coordinates, Vec2I layer_size, Flags<CellNeighborQuery> flags) const
+  std::vector<Vec2I> AnyCells::compute_neighbors(Vec2I coordinates, Vec2I layer_size, Flags<CellNeighborQuery> flags) const
   {
     return std::visit([=](auto&& cells) {
       using T = std::decay_t<decltype(cells)>;

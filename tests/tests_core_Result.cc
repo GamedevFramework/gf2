@@ -121,4 +121,3 @@ TEST(ResultTest, ValueOrWithError) {
   EXPECT_EQ(data.i, 69);
   EXPECT_EQ(data.d, 1.44);
 }
-

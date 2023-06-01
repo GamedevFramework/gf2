@@ -71,14 +71,14 @@ namespace gf {
     CellIndex m_index;
   };
 
-  class GF_CORE_API Cells {
+  class GF_CORE_API AnyCells {
   public:
-    Cells() = default;
+    AnyCells() = default;
 
-    static Cells make_orthogonal(Vec2F tile_size);
-    static Cells make_staggered(Vec2F tile_size, CellAxis axis, CellIndex index);
-    static Cells make_hexagonal(Vec2F tile_size, float side_length, CellAxis axis, CellIndex index);
-    static Cells make_hexagonal(float radius, CellAxis axis, CellIndex index);
+    static AnyCells make_orthogonal(Vec2F tile_size);
+    static AnyCells make_staggered(Vec2F tile_size, CellAxis axis, CellIndex index);
+    static AnyCells make_hexagonal(Vec2F tile_size, float side_length, CellAxis axis, CellIndex index);
+    static AnyCells make_hexagonal(float radius, CellAxis axis, CellIndex index);
 
     RectF compute_bounds(Vec2I layer_size) const;
     RectI compute_visible_area(RectF local) const;
@@ -88,9 +88,9 @@ namespace gf {
     std::vector<Vec2I> compute_neighbors(Vec2I coordinates, Vec2I layer_size, Flags<CellNeighborQuery> flags = None) const;
 
   private:
-    Cells(OrthogonalCells cells);
-    Cells(StaggeredCells cells);
-    Cells(HexagonalCells cells);
+    AnyCells(OrthogonalCells cells);
+    AnyCells(StaggeredCells cells);
+    AnyCells(HexagonalCells cells);
 
     std::variant<std::monostate, OrthogonalCells, StaggeredCells, HexagonalCells> m_variant;
   };

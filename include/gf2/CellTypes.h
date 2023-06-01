@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
-#ifndef GF_CELLS_TYPES_H
-#define GF_CELLS_TYPES_H
+#ifndef GF_CELL_TYPES_H
+#define GF_CELL_TYPES_H
 
 #include <cstdint>
 
@@ -18,14 +18,14 @@ namespace gf {
   };
 
   enum class CellOrientation : uint8_t {
-    Unknown = 0x00,
-    Orthogonal = 0x01,
-    Isometric = 0x02,
-    Staggered = 0x03,
-    Hexagonal = 0x04,
+    Unknown,
+    Orthogonal,
+    Isometric,
+    Staggered,
+    Hexagonal,
   };
 
-  enum class Flip : uint8_t {
+  enum class CellFlip : uint8_t {
     Horizontally = 0x01,
     Vertically = 0x02,
     Diagonally = 0x04,
@@ -35,4 +35,4 @@ namespace gf {
 
 } // namespace gf
 
-#endif // GF_CELLS_TYPES_H
+#endif // GF_CELL_TYPES_H

@@ -1,0 +1,195 @@
+= `core` Grids
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The grids component provides the classes for handling maps organized in grids.
+
+A grid is a set of cells with a specific organization. As a grid is a two-dimensional object, the cells of a grid can be identified with two coordinates. Some kind of grids have several variants according to the layout of the grid. The library supports the following types of grid:
+
+- *Orthogonal grids*
+- *Staggered grids*
+- *Hexagonal grids*
+
+xref:reference.adoc[< Back to reference]
+
+== Types
+
+[#_any_cells]
+=== `gf::AnyCells`
+
+[source]
+----
+#include <gf2/Cells.h>
+class AnyCells;
+----
+
+`AnyCells` can contain any type of cells. xref:AnyCells.adoc[*Read more...*]
+
+See also: <<_hexagonal_cells>>, <<_orthogonal_cells>>, <<_staggered_cells>>
+
+[#_cells_axis]
+=== `gf::CellAxis`
+
+[source]
+----
+#include <gf2/CellTypes.h>
+enum class CellAxis : uint8_t;
+----
+
+The axis that is shifted in staggered and hexagonal maps.
+
+.Enumerators for `gf::CellAxis`
+[cols="2,3"]
+|===
+| Value | Description
+
+| `gf::CellAxis::X`
+| The x-axis is shifted
+
+| `gf::CellAxis::Y`
+| The y-axis is shifted
+|===
+
+
+[#_cell_flip]
+=== `gf::CellFlip`
+
+[source]
+----
+#include <gf2/CellTypes.h>
+enum class CellFlip : uint8_t;
+----
+
+The way a cell may be flipped. `CellFlip` can be used with xref:Flags.adoc[`Flags<E>`].
+
+.Enumerators for `gf::CellFlip`
+[cols="2,3"]
+|===
+| Value | Description
+
+| `gf::CellFlip::Horizontally`
+| The cell is flipped horizontally
+
+| `gf::CellFlip::Vertically`
+| The cell is flipped vertically
+
+| `gf::CellFlip::Diagonally`
+| The cell is flipped diagonally
+
+| `gf::CellFlip::Rotation60`
+| The cell is rotated by 60°
+
+| `gf::CellFlip::Rotation120`
+| The cell is rotated by 120°
+|===
+
+[#_cells_index]
+=== `gf::CellIndex`
+
+[source]
+----
+#include <gf2/CellTypes.h>
+enum class CellIndex : uint8_t;
+----
+
+The indices that are shifted along the shifted axis.
+
+.Enumerators for `gf::CellIndex`
+[cols="2,3"]
+|===
+| Value | Description
+
+| `gf::CellIndex::Odd`
+| The odd indices are shifted.
+
+| `gf::CellIndex::Even`
+| The even indices are shifted.
+|===
+
+
+[#_cells_neighbor_query]
+=== `gf::CellNeighborQuery`
+
+[source]
+----
+#include <gf2/Cells.h>
+enum class CellNeighborQuery : uint8_t;
+----
+
+The specification of the query when asking for neighborhood. `CellNeighborQuery` can be used with xref:Flags.adoc[`Flags<E>`].
+
+.Enumerators for `gf::CellNeighborQuery`
+[cols="2,3"]
+|===
+| Value | Description
+
+| `gf::CellNeighborQuery::Valid`
+| The neighbors must be valid cells.
+
+| `gf::CellNeighborQuery::Diagonal`
+| The neighbors may be in diagonal.
+|===
+
+
+[#_cells_orientation]
+=== `gf::CellOrientation`
+
+[source]
+----
+#include <gf2/CellTypes.h>
+enum class CellOrientation : uint8_t;
+----
+
+The cell orientation of the grid.
+
+.Enumerators for `gf::CellOrientation`
+[cols="2,3"]
+|===
+
+| `gf::CellOrientation::Unknown`
+| Unknown orientation
+
+| `gf::CellOrientation::Orthogonal`
+| Orthogonal orientation
+
+| `gf::CellOrientation::Isometric`
+| Isometric orientation
+
+| `gf::CellOrientation::Staggered`
+| Staggered orientation
+
+| `gf::CellOrientation::Hexagonal`
+| Hexagonal orientation
+|===
+
+
+[#_hexagonal_cells]
+=== `gf::HexagonalCells`
+
+[source]
+----
+#include <gf2/Cells.h>
+class HexagonalCells;
+----
+
+
+[#_orthogonal_cells]
+=== `gf::OrthogonalCells`
+
+[source]
+----
+#include <gf2/Cells.h>
+class OrthogonalCells;
+----
+
+
+[#_staggered_cells]
+=== `gf::StaggeredCells`
+
+[source]
+----
+#include <gf2/Cells.h>
+class StaggeredCells;
+----
+
