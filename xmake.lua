@@ -1,7 +1,9 @@
 set_project("gf")
 set_version("0.1.0")
 
-add_requires("fmt", "miniaudio", "sdl2", "zlib")
+add_requires("sdl2", "zlib")
+add_requires("fmt", { system = false, configs = { header_only = true }})
+add_requires("miniaudio 0.11.17")
 add_requires("stb", { system = false })
 
 add_rules("mode.asan", "mode.tsan", "mode.ubsan", "mode.coverage", "mode.debug", "mode.releasedbg", "mode.release")
@@ -46,6 +48,7 @@ target("gf2audio0")
     set_kind("shared")
     add_defines("GF_AUDIO_BUILD")
     add_files("library/audio/*.cc")
+    add_files("library/audio/bits/*.cc")
     add_includedirs("include", { public = true })
     add_packages("miniaudio")
     add_packages("sdl2")
