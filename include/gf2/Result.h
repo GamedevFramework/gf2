@@ -22,7 +22,6 @@ namespace gf {
     return { std::forward<E>(e) };
   }
 
-
   template<typename T, typename E>
   class Result {
   public:
@@ -34,8 +33,8 @@ namespace gf {
     {
     }
 
-    template<typename ... Args, typename X = std::enable_if_t<std::is_constructible_v<T, Args...>>>
-    Result(std::in_place_t, Args&&... args)
+    template<typename... Args, typename X = std::enable_if_t<std::is_constructible_v<T, Args...>>>
+    Result(std::in_place_t /* unused */, Args&&... args)
     : m_result(std::in_place_index<0>, std::forward<Args>(args)...)
     {
     }
