@@ -131,6 +131,7 @@ add_library(gf2graphics0
   graphics/Keyboard.cc
   graphics/Mouse.cc
   graphics/Touch.cc
+  graphics/Window.cc
 )
 
 gf2_handle_library(gf2graphics0
