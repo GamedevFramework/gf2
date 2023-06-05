@@ -49,7 +49,6 @@ namespace gf {
     g_graphics_loaded = false;
 
     if (SDL_WasInit(0) == 0) {
-      Log::info("Quitting SDL.");
       SDL_Quit();
     }
   }

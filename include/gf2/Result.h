@@ -45,7 +45,7 @@ namespace gf {
     }
 
     Result(Error<E>&& result)
-    : m_result(std::in_place_index<1>, std::move(result.error))
+    : m_result(std::in_place_index<1>, std::move(result).error)
     {
     }
 
@@ -71,7 +71,7 @@ namespace gf {
 
     Result& operator=(Error<E>&& other)
     {
-      m_result.template emplace<1>(std::move(other.error));
+      m_result.template emplace<1>(std::move(other).error);
       return *this;
     }
 
