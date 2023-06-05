@@ -1,5 +1,3 @@
-find_package(Threads REQUIRED)
-
 include(CTest)
 include(GoogleTest)
 

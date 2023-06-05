@@ -16,6 +16,7 @@ set(SDL2_BUILDING_LIBRARY TRUE)
 find_package(SDL2 REQUIRED)
 find_package(fmt REQUIRED)
 find_package(ZLIB REQUIRED)
+find_package(Threads REQUIRED)
 
 if(GF_USE_EMBEDDED_LIBS)
   message(STATUS "Build with embedded libraries")

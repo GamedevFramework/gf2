@@ -52,9 +52,11 @@ target("gf2audio0")
     add_files("library/audio/bits/*.cc")
     add_includedirs("include", { public = true })
     add_packages("miniaudio")
-    add_packages("libsdl")
     add_packages("stb")
     add_deps("gf2core0")
+    if is_plat("linux") then
+        add_syslinks("dl")
+    end
 
 target("gf2_core_tests")
     set_kind("binary")

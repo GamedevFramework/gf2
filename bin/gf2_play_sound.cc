@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 
-#include <gf2/AudioInitializer.h>
 #include <gf2/AudioManager.h>
 #include <gf2/Sound.h>
 
@@ -11,7 +10,6 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  gf::AudioInitializer audio_initializer;
   gf::AudioManager audio_manager;
   gf::Sound sound(argv[1], { gf::ref(audio_manager) });
   sound.start();

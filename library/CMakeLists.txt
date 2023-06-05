@@ -189,7 +189,6 @@ endif()
 # gf2::audio
 
 add_library(gf2audio0
-  audio/AudioInitializer.cc
   audio/AudioListener.cc
   audio/AudioManager.cc
   audio/AudioSource.cc
@@ -214,7 +213,8 @@ target_link_libraries(gf2audio0
   PUBLIC
     gf2core0
   PRIVATE
-    SDL2::SDL2
+    Threads::Threads
+    ${CMAKE_DL_LIBS}
 )
 
 target_include_directories(gf2audio0
