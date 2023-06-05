@@ -380,7 +380,7 @@ struct TouchEvent;
 struct WindowEvent;
 ----
 
-`WindowEvent` is associated with `gf::EventType::Window` event type and can be accessed with `window` in `Event`.
+`WindowEvent` is associated with `gf::EventType::WindowShown`, `gf::EventType::WindowHidden`, `gf::EventType::WindowExposed`, `gf::EventType::WindowMinimized`, `gf::EventType::WindowMaximized`, `gf::EventType::WindowRestored`, `gf::EventType::WindowClosed`, `gf::EventType::MouseFocusGained`, `gf::EventType::MouseFocusLost`, `gf::WindowEventType::KeyboardFocusGained`, `gf::WindowEventType::KeyboardFocusLost` event types and can be accessed with `window` in `Event`.
 
 .Data members for `gf::WindowEvent`
 [cols="1,1,2"]
@@ -390,60 +390,4 @@ struct WindowEvent;
 | `window_id`
 | `uint32_t`
 | Id of the window where the event occurred
-
-| `type`
-| `WindowEventType`
-| Type of change of the window
-|===
-
-See also: <<_window_event_type>>
-
-[#_window_event_type]
-=== `gf::WindowEventType`
-
-[source]
-----
-#include <gf2/Event.h>
-enum WindowEventType : uint8_t;
-----
-
-`WindowEventType` decribes the different window events, when the window changes one of its states.
-
-.Enumerators for `gf::WindowEventType`
-[cols="1,1"]
-|===
-| Value | Description
-
-| `gf::WindowEventType::Shown`
-| The window is shown
-
-| `gf::WindowEventType::Hidden`
-| The window is hidden
-
-| `gf::WindowEventType::Exposed`
-| The window is exposed
-
-| `gf::WindowEventType::Minimized`
-| The window is minimized
-
-| `gf::WindowEventType::Maximized`
-| The window is maximized
-
-| `gf::WindowEventType::Restored`
-| The window is restored
-
-| `gf::WindowEventType::MouseFocusGained`
-| The window gained mouse focus
-
-| `gf::WindowEventType::MouseFocusLost`
-| The window lost mouse focus
-
-| `gf::WindowEventType::KeyboardFocusGained`
-| The window gained keyboard focus
-
-| `gf::WindowEventType::KeyboardFocusLost`
-| The window lost keyboard focus
-
-| `gf::WindowEventType::Closed`
-| The window requested to be closed
 |===

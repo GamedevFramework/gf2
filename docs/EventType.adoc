@@ -27,10 +27,28 @@ See also: xref:Event.adoc[`Event`]
 | `gf::EventType::Quit`
 | The application is asked to quit
 
-| `gf::EventType::WindowChanged`
-| The window changed one of its states (data in `window`)
+| `gf::EventType::WindowShown`
+| The window is shown (data in `window`)
 
-| `gf::EventType::Resized`
+| `gf::EventType::WindowHidden`
+| The window is hidden (data in `window`)
+
+| `gf::EventType::WindowExposed`
+| The window is exposed (data in `window`)
+
+| `gf::EventType::WindowMinimized`
+| The window is minimized (data in `window`)
+
+| `gf::EventType::WindowMaximized`
+| The window is maximized (data in `window`)
+
+| `gf::EventType::WindowRestored`
+| The window is restored (data in `window`)
+
+| `gf::EventType::WindowClosed`
+| The window is requested to be closed (data in `window`)
+
+| `gf::EventType::WindowResized`
 | The window was resized (data in `resize`)
 
 | `gf::EventType::KeyPressed`
@@ -41,6 +59,12 @@ See also: xref:Event.adoc[`Event`]
 
 | `gf::EventType::KeyReleased`
 | A key was released (data in `key`)
+
+| `gf::EventType::KeyboardFocusGained`
+| The window gained keyboard focus
+
+| `gf::EventType::KeyboardFocusLost`
+| The window lost keyboard focus
 
 | `gf::EventType::MouseButtonPressed`
 | A mouse button was pressed (data in `mouse_button`)
@@ -53,6 +77,12 @@ See also: xref:Event.adoc[`Event`]
 
 | `gf::EventType::MouseWheelScrolled`
 | The mouse wheel was scrolled (data in `mouse_wheel`)
+
+| `gf::EventType::MouseFocusGained`
+| The window gained mouse focus
+
+| `gf::EventType::MouseFocusLost`
+| The window lost mouse focus
 
 | `gf::EventType::GamepadAxisMoved`
 | A gamepad axis was move (data in `gamepad_axis`)

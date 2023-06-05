@@ -22,47 +22,46 @@ namespace gf {
       event.timestamp = raw_event.common.timestamp;
 
       if (raw_event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-        event.type = EventType::Resized;
+        event.type = EventType::WindowResized;
         event.resize.window_id = raw_event.window.windowID;
         event.resize.size.w = raw_event.window.data1;
         event.resize.size.h = raw_event.window.data2;
       } else {
-        event.type = EventType::WindowChanged;
-        event.resize.window_id = raw_event.window.windowID;
+        event.window.window_id = raw_event.window.windowID;
 
         switch (raw_event.window.event) {
           case SDL_WINDOWEVENT_SHOWN:
-            event.window.type = WindowEventType::Shown;
+            event.type = EventType::WindowShown;
             break;
           case SDL_WINDOWEVENT_HIDDEN:
-            event.window.type = WindowEventType::Hidden;
+            event.type = EventType::WindowHidden;
             break;
           case SDL_WINDOWEVENT_EXPOSED:
-            event.window.type = WindowEventType::Exposed;
+            event.type = EventType::WindowExposed;
             break;
           case SDL_WINDOWEVENT_MINIMIZED:
-            event.window.type = WindowEventType::Minimized;
+            event.type = EventType::WindowMinimized;
             break;
           case SDL_WINDOWEVENT_MAXIMIZED:
-            event.window.type = WindowEventType::Maximized;
+            event.type = EventType::WindowMaximized;
             break;
           case SDL_WINDOWEVENT_RESTORED:
-            event.window.type = WindowEventType::Restored;
+            event.type = EventType::WindowRestored;
             break;
           case SDL_WINDOWEVENT_ENTER:
-            event.window.type = WindowEventType::MouseFocusGained;
+            event.type = EventType::MouseFocusGained;
             break;
           case SDL_WINDOWEVENT_LEAVE:
-            event.window.type = WindowEventType::MouseFocusLost;
+            event.type = EventType::MouseFocusLost;
             break;
           case SDL_WINDOWEVENT_FOCUS_GAINED:
-            event.window.type = WindowEventType::KeyboardFocusGained;
+            event.type = EventType::KeyboardFocusGained;
             break;
           case SDL_WINDOWEVENT_FOCUS_LOST:
-            event.window.type = WindowEventType::KeyboardFocusLost;
+            event.type = EventType::KeyboardFocusLost;
             break;
           case SDL_WINDOWEVENT_CLOSE:
-            event.window.type = WindowEventType::Closed;
+            event.type = EventType::WindowClosed;
             break;
           default:
             return std::nullopt;

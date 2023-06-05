@@ -34,7 +34,7 @@ See also: xref:EventType.adoc[`EventType`]
 
 | `window`
 | xref:graphics_events.adoc#_window_event[`WindowEvent`]
-| `gf::EventType::WindowChanged`
+| `gf::EventType::WindowShown`, `gf::EventType::WindowHidden`, `gf::EventType::WindowExposed`, `gf::EventType::WindowMinimized`, `gf::EventType::WindowMaximized`, `gf::EventType::WindowRestored`, `gf::EventType::WindowClosed`, `gf::EventType::MouseFocusGained`, `gf::EventType::MouseFocusLost`, `gf::EventType::KeyboardFocusGained`, `gf::EventType::KeyboardFocusLost`
 
 | `resize`
 | xref:graphics_events.adoc#_key_event[`ResizeEvent`]

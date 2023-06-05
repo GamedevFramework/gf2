@@ -19,17 +19,29 @@ namespace gf {
 
   enum EventType : uint32_t {
     Quit,
-    WindowChanged,
-    Resized,
+
+    WindowShown,
+    WindowHidden,
+    WindowExposed,
+    WindowMinimized,
+    WindowMaximized,
+    WindowRestored,
+    WindowClosed,
+    WindowResized,
 
     KeyPressed,
     KeyRepeated,
     KeyReleased,
 
+    KeyboardFocusGained,
+    KeyboardFocusLost,
+
     MouseButtonPressed,
     MouseButtonReleased,
     MouseMoved,
     MouseWheelScrolled,
+    MouseFocusGained,
+    MouseFocusLost,
 
     GamepadAxisMoved,
     GamepadButtonPressed,
@@ -44,23 +56,8 @@ namespace gf {
     TouchEnded,
   };
 
-  enum WindowEventType : uint8_t {
-    Shown,
-    Hidden,
-    Exposed,
-    Minimized,
-    Maximized,
-    Restored,
-    MouseFocusGained,
-    MouseFocusLost,
-    KeyboardFocusGained,
-    KeyboardFocusLost,
-    Closed,
-  };
-
   struct GF_GRAPHICS_API WindowEvent {
     uint32_t window_id;
-    WindowEventType type;
   };
 
   struct GF_GRAPHICS_API ResizeEvent {
