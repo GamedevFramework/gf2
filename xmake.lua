@@ -1,7 +1,7 @@
 set_project("gf")
 set_version("0.1.0")
 
-add_requires("sdl2", "zlib")
+add_requires("libsdl", "zlib")
 add_requires("fmt", { system = false, configs = { header_only = true }})
 add_requires("miniaudio 0.11.17")
 add_requires("stb", { system = false })
@@ -13,6 +13,7 @@ set_languages("cxx17")
 
 if is_plat("windows") then
   add_cxflags("/wd4251") -- Disable warning: class needs to have dll-interface to be used by clients of class blah blah blah
+  add_defines("NOMINMAX")
 end
 
 target("gf2core0")
@@ -30,7 +31,7 @@ target("gf2graphics0")
     add_defines("GF_GRAPHICS_BUILD")
     add_files("library/graphics/*.cc")
     add_includedirs("include", { public = true })
-    add_packages("sdl2")
+    add_packages("libsdl")
     add_deps("gf2core0")
 
 target("gf2network0")
@@ -51,7 +52,7 @@ target("gf2audio0")
     add_files("library/audio/bits/*.cc")
     add_includedirs("include", { public = true })
     add_packages("miniaudio")
-    add_packages("sdl2")
+    add_packages("libsdl")
     add_packages("stb")
     add_deps("gf2core0")
 
