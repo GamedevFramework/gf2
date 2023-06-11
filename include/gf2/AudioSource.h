@@ -62,7 +62,7 @@ namespace gf {
     void set_velocity(Vec3F velocity);
     Vec3F velocity() const;
 
-    void set_positionning(AudioPositioning positioning);
+    void set_positioning(AudioPositioning positioning);
     AudioPositioning positioning() const;
 
     void set_rolloff(float rolloff);
@@ -83,7 +83,7 @@ namespace gf {
     void set_cone(AudioCone cone);
     AudioCone cone() const;
 
-    void set_dopler_factor(float factor);
+    void set_doppler_factor(float factor);
     float doppler_factor() const;
 
     void set_directional_attenuation_factor(float factor);

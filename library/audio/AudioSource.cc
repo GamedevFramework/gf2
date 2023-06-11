@@ -132,7 +132,7 @@ namespace gf {
     return { velocity.x, velocity.y, velocity.z };
   }
 
-  void AudioSource::set_positionning(AudioPositioning positioning)
+  void AudioSource::set_positioning(AudioPositioning positioning)
   {
     ma_sound_set_positioning(m_source.get(), static_cast<ma_positioning>(positioning));
   }
@@ -204,7 +204,7 @@ namespace gf {
     return cone;
   }
 
-  void AudioSource::set_dopler_factor(float factor)
+  void AudioSource::set_doppler_factor(float factor)
   {
     ma_sound_set_doppler_factor(m_source.get(), factor);
   }

@@ -1,0 +1,42 @@
+= `gf::Sound` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+A sound is a short audio source that can be entirely in memory.
+
+xref:audio_sources.adoc[< Back to `audio` Sources]
+
+== Description
+
+[source]
+----
+#include <gf2/Sound.h>
+class Sound : public AudioSource;
+----
+
+*Inherits*: xref:AudioSource.adoc[`AudioSource`]
+
+See also: xref:Music.adoc[`Music`].
+
+== Types
+
+=== `Context`
+
+[source]
+----
+using Context = AudioSourceContext;
+----
+
+The context for loading a sound.
+
+== Member Functions
+
+=== `Sound` constructors
+
+[source]
+----
+Sound(const std::filesystem::path& filename, const Context& context);
+----
+
+Create a sound from a `filename` and a `context`.

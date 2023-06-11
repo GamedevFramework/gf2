@@ -1,0 +1,42 @@
+= `gf::Music` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+A music is a long audio source that should be streamed as necessary.
+
+xref:audio_sources.adoc[< Back to `audio` Sources]
+
+== Description
+
+[source]
+----
+#include <gf2/Music.h>
+class Music : public AudioSource;
+----
+
+*Inherits*: xref:AudioSource.adoc[`AudioSource`]
+
+See also: xref:Sound.adoc[`Sound`].
+
+== Types
+
+=== `Context`
+
+[source]
+----
+using Context = AudioSourceContext;
+----
+
+The context for loading a music.
+
+== Member Functions
+
+=== `Music` constructors
+
+[source]
+----
+Music(const std::filesystem::path& filename, const Context& context);
+----
+
+Create a sound from a `filename` and a `context`.

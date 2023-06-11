@@ -38,6 +38,22 @@ namespace gf {
 
   AudioManager& AudioManager::operator=(AudioManager&& other) noexcept = default;
 
+  void AudioManager::set_time(Time global_time)
+  {
+    if (global_time < Time()) {
+      Log::warning("You should set a positive global time in the audio manager.");
+      global_time = Time();
+    }
+
+    ma_engine_set_time_in_milliseconds(engine(), static_cast<uint64_t>(global_time.as_milliseconds()));
+  }
+
+  Time AudioManager::time() const
+  {
+    uint64_t global_time = ma_engine_get_time_in_milliseconds(engine());
+    return gf::milliseconds(static_cast<int32_t>(global_time));
+  }
+
   uint32_t AudioManager::channels() const
   {
     return ma_engine_get_channels(engine());

@@ -10,6 +10,7 @@
 
 #include "AudioApi.h"
 #include "AudioListener.h"
+#include "Time.h"
 #include "Vec3.h"
 
 using ma_engine = struct ma_engine;
@@ -25,6 +26,9 @@ namespace gf {
 
     AudioManager& operator=(const AudioManager&) = delete;
     AudioManager& operator=(AudioManager&& other) noexcept;
+
+    void set_time(Time global_time);
+    Time time() const;
 
     uint32_t channels() const;
     uint32_t sample_rate() const;

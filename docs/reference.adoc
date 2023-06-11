@@ -32,5 +32,5 @@ xref:index.adoc[< Back to main page]
 
 == `audio`
 
-- Sources (`Sound`, `Music`)
+- xref:audio_sources.adoc[Sources] (xref:Sound.adoc[`Sound`], xref:Music.adoc[`Music`])
 - Management (`AudioManager`, `AudioListener`)
