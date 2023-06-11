@@ -5,6 +5,8 @@
 #include <gf2/Socket.h>
 // clang-format on
 
+#include <utility>
+
 #include <gf2/Log.h>
 
 #include "bits/SocketPortability.h"
