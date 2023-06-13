@@ -100,9 +100,8 @@ namespace gf {
   Font::~Font()
   {
     if (m_face != nullptr) {
-      if (auto err = FT_Done_Face(face_as<FT_Face>())) {
-        Log::error("Could not destroy the font face: {}", FontManager::error_message(err));
-      }
+      [[maybe_unused]] auto err = FT_Done_Face(face_as<FT_Face>());
+      assert(err == FT_Err_Ok);
     }
   }
 
