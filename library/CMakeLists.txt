@@ -71,6 +71,7 @@ add_library(gf2core0
   core/Color.cc
   core/Direction.cc
   core/Flags.cc
+  core/FontManager.cc
   core/Id.cc
   core/Image.cc
   core/Log.cc
@@ -109,6 +110,8 @@ target_link_libraries(gf2core0
   PUBLIC
     fmt::fmt-header-only
     ZLIB::ZLIB
+  PRIVATE
+    Freetype::Freetype
 )
 
 target_compile_definitions(gf2core0

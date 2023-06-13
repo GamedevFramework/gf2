@@ -8,7 +8,7 @@
 #include "gtest/gtest.h"
 
 namespace {
-  
+
   const std::filesystem::path AssetsDirectory = GF_TEST_ASSETS_DIRECTORY;
   const std::filesystem::path OggFile = AssetsDirectory / "mining.ogg";
 

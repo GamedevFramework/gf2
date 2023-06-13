@@ -15,6 +15,7 @@ option(GF_USE_EMBEDDED_LIBS "Build the library with the submodule libraries" ON)
 set(SDL2_BUILDING_LIBRARY TRUE)
 find_package(SDL2 REQUIRED)
 find_package(fmt REQUIRED)
+find_package(Freetype REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package(Threads REQUIRED)
 
