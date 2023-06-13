@@ -21,7 +21,7 @@ namespace gf {
 
   namespace {
 
-    const char* freetype_error_message(FT_Error error)
+    const char* ft_error_message(FT_Error error)
     {
       switch (error) {
 
@@ -46,7 +46,7 @@ namespace gf {
     FT_Library library = nullptr;
 
     if (auto err = FT_Init_FreeType(&library)) {
-      Log::error("Could not init Freetype library: {}", freetype_error_message(err));
+      Log::error("Could not init Freetype library: {}", ft_error_message(err));
       throw std::runtime_error("Could not init Freetype library");
     }
 
@@ -55,7 +55,7 @@ namespace gf {
     FT_Stroker stroker = nullptr;
 
     if (auto err = FT_Stroker_New(library, &stroker)) {
-      Log::error("Could not create the stroker: {}", freetype_error_message(err));
+      Log::error("Could not create the stroker: {}", ft_error_message(err));
       throw std::runtime_error("Could not create the stroker");
     }
 
@@ -86,6 +86,11 @@ namespace gf {
     std::swap(other.m_library, m_library);
     std::swap(other.m_stroker, m_stroker);
     return *this;
+  }
+
+  const char* FontManager::error_message(int error)
+  {
+    return ft_error_message(static_cast<FT_Error>(error));
   }
 
 }

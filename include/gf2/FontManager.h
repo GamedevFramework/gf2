@@ -17,6 +17,9 @@ namespace gf {
     FontManager& operator=(const FontManager&) = delete;
     FontManager& operator=(FontManager&& other) noexcept;
 
+  private:
+    friend class Font;
+
     template<typename T>
     T library_as()
     {
@@ -29,7 +32,8 @@ namespace gf {
       return static_cast<T>(m_stroker);
     }
 
-  private:
+    static const char* error_message(int error);
+
     void* m_library = nullptr;
     void* m_stroker = nullptr;
   };

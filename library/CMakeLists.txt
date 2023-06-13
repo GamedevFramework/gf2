@@ -65,12 +65,14 @@ endfunction()
 
 add_library(gf2core0
   core/Array2D.cc
+  core/Bitmap.cc
   core/Cells.cc
   core/Circ.cc
   core/Clock.cc
   core/Color.cc
   core/Direction.cc
   core/Flags.cc
+  core/Font.cc
   core/FontManager.cc
   core/Id.cc
   core/Image.cc

@@ -81,6 +81,14 @@ namespace gf {
   template<typename T>
   Ref<T> ref(T&&) = delete; // NOLINT
 
+  template<typename T>
+  void swap(Ref<T>& lhs, Ref<T>& rhs)
+  {
+    const Ref<T> tmp = lhs;
+    lhs = rhs;
+    rhs = tmp;
+  }
+
 } // namespace gf
 
 #endif // GF_REF_H

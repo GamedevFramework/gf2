@@ -38,19 +38,19 @@ namespace gf {
       return static_cast<float>(byte) / 255.0f;
     }
 
-    int callback_read(void* user, char* data, int size)
+    int stb_callback_read(void* user, char* data, int size)
     {
       auto* stream = static_cast<InputStream*>(user);
       return static_cast<int>(stream->read(Span<uint8_t>(reinterpret_cast<uint8_t*>(data), size))); // NOLINT
     }
 
-    void callback_skip(void* user, int n)
+    void stb_callback_skip(void* user, int n)
     {
       auto* stream = static_cast<InputStream*>(user);
       stream->skip(n);
     }
 
-    int callback_eof(void* user)
+    int stb_callback_eof(void* user)
     {
       auto* stream = static_cast<InputStream*>(user);
       return static_cast<int>(stream->finished());
@@ -141,9 +141,9 @@ namespace gf {
   : m_size(0, 0)
   {
     stbi_io_callbacks callbacks;
-    callbacks.read = &callback_read;
-    callbacks.skip = &callback_skip;
-    callbacks.eof = &callback_eof;
+    callbacks.read = &stb_callback_read;
+    callbacks.skip = &stb_callback_skip;
+    callbacks.eof = &stb_callback_eof;
 
     int n = 0;
     uint8_t* pixels = stbi_load_from_callbacks(&callbacks, &stream, &m_size.w, &m_size.h, &n, STBI_rgb_alpha); // NOLINT
