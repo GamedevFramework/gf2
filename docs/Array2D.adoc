@@ -18,7 +18,7 @@ class Array2D;
 
 The array is templated with the type of the data in the array.
 
-The convention for accessing the data is an index with a row and a column of type `int`. It can be done with a `Vec2I` with `x` representing the row and `y` representing the column. The <<_index>> function can be used to create this type of index. Moreover, given a vector, <<_row>> and <<_col>> can be used to access the corresponding row and column.
+The convention for accessing the data is an index of type `Vec2I`. `x` represents the column and `y` represents the row.
 
 Additionally, it is possible to access the data with a `std::size_t` index.
 
@@ -65,17 +65,6 @@ T* begin() noexcept; <2>
 <2> Same but the iterator is not `const`.
 
 See also: <<_end>>
-
-=== `cols`
-
-[source]
-----
-int cols() const noexcept;
-----
-
-Get the number of columns of the array.
-
-See also: <<_rows>>
 
 === `empty`
 
@@ -141,17 +130,6 @@ std::size_t raw_size() const noexcept;
 
 Get the raw size of the data, i.e. the total number of elements in the array.
 
-=== `rows`
-
-[source]
-----
-int rows() const noexcept;
-----
-
-Get the number of rows of the array.
-
-See also: <<_cols>>
-
 === `size`
 
 [source]
@@ -183,38 +161,3 @@ bool operator==(const Array2D<T>& lhs, const Array2D<T>& rhs);
 ----
 
 Check if two arrays are equals.
-
-== Functions
-
-[#_col]
-=== `gf::col`
-
-[source]
-----
-#include <gf2/Array2D.h>
-constexpr int col(Vec2I index);
-----
-
-Get the column associated with the `Vec2I` index, i.e. the `y` coordinate.
-
-[#_index]
-=== `gf::index`
-
-[source]
-----
-#include <gf2/Array2D.h>
-constexpr Vec2I index(int row, int col)
-----
-
-Build an index for `Array2D<T>` with a row and a column.
-
-[#_row]
-=== `gf::row`
-
-[source]
-----
-#include <gf2/Array2D.h>
-constexpr int row(Vec2I index);
-----
-
-Get the row associated with the `Vec2I` index, i.e. the `x` coordinate.

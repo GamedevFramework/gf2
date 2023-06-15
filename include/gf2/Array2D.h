@@ -12,21 +12,6 @@
 
 namespace gf {
 
-  constexpr Vec2I index(int row, int col)
-  {
-    return { row, col };
-  }
-
-  constexpr int row(Vec2I index)
-  {
-    return index.x;
-  }
-
-  constexpr int col(Vec2I index)
-  {
-    return index.y;
-  }
-
   template<typename T>
   class Array2D {
   public:
@@ -50,16 +35,6 @@ namespace gf {
     Vec2I size() const noexcept
     {
       return m_size;
-    }
-
-    int rows() const noexcept
-    {
-      return row(m_size);
-    }
-
-    int cols() const noexcept
-    {
-      return col(m_size);
     }
 
     bool empty() const noexcept
