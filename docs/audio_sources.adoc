@@ -11,53 +11,6 @@ xref:reference.adoc[< Back to reference]
 
 == Types
 
-[#_audio_cone]
-=== `gf::AudioCone`
-
-[source]
-----
-#include <gf2/AudioSpatialization.h>
-struct AudioCone;
-----
-
-.Data members for `gf::AudioCone`
-[cols="1,1,2"]
-|===
-| Name | Type | Description
-
-| `inner_angle`
-| `float`
-| The inner angle of the cone.
-
-| `outer_angle`
-| `float`
-| The outner angle of the cone.
-
-| `outer_gain`
-| `float`
-| The outer gain of the cone.
-|===
-
-=== `gf::AudioPositioning`
-
-[source]
-----
-#include <gf2/AudioSpatialization.h>
-enum class AudioPositioning : uint8_t;
-----
-
-.Enumerators for `gf::AudioPositioning`
-[cols="2,3"]
-|===
-| Value | Description
-
-| `gf::AudioPositioning::Absolute`
-| The positioning is absolute.
-
-| `gf::AudioPositioning::Relative`
-| The positioning is relative.
-|===
-
 [#_audio_source]
 === `gf::AudioSource`
 
@@ -70,29 +23,6 @@ class AudioSource;
 An audio source is able to play audio data. xref:AudioSource.adoc[*Read more...*]
 
 See also: <<_music>>, <<_sound>>
-
-[#_audio_source_context]
-=== `gf::AudioSourceContext`
-
-[source]
-----
-#include <gf2/AudioSource.h>
-struct AudioSourceContext;
-----
-
-The resource context for the creation of audio sources.
-
-.Data members for `gf::AudioSourceContext`
-[cols="1,1,2"]
-|===
-| Name | Type | Description
-
-| `audio_manager`
-| `Ref<AudioManager>`
-| The manager that will be used to handle the source.
-|===
-
-See also: xref:AudioManager.adoc[`AudioManager`]
 
 [#_music]
 === `gf::Music`

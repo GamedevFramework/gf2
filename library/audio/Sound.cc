@@ -9,8 +9,8 @@
 
 namespace gf {
 
-  Sound::Sound(const std::filesystem::path& filename, const Context& context)
-  : AudioSource(filename, MA_SOUND_FLAG_DECODE, context)
+  Sound::Sound(const std::filesystem::path& filename, Ref<AudioManager> manager)
+  : AudioSource(filename, MA_SOUND_FLAG_DECODE, manager)
   {
   }
 

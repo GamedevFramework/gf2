@@ -1,0 +1,20 @@
+= `audio` Management
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The management component provides global audio management.
+
+xref:reference.adoc[< Back to reference]
+
+== Types
+
+=== `gf::AudioManager`
+
+[source]
+----
+#include <gf2/AudioManager.h>
+class AudioManager;
+----
+
+The audio manager contains the global audio state. xref:AudioManager.adoc[*Read more...*]

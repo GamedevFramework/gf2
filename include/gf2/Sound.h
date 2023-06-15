@@ -7,12 +7,13 @@
 #include "AudioSource.h"
 
 namespace gf {
+  class AudioManager;
 
   class GF_AUDIO_API Sound : public AudioSource {
   public:
-    using Context = AudioSourceContext;
+    using Context = Ref<AudioManager>;
 
-    Sound(const std::filesystem::path& filename, const Context& context);
+    Sound(const std::filesystem::path& filename, Ref<AudioManager> manager);
   };
 
 }

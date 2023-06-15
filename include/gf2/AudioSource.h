@@ -20,10 +20,6 @@ using ma_sound = struct ma_sound;
 namespace gf {
   class AudioManager;
 
-  struct GF_AUDIO_API AudioSourceContext {
-    Ref<AudioManager> audio_manager;
-  };
-
   class GF_AUDIO_API AudioSource {
   public:
     AudioSource(const AudioSource&) = delete;
@@ -105,7 +101,7 @@ namespace gf {
     Time length();
 
   protected:
-    AudioSource(const std::filesystem::path& filename, uint32_t flags, const AudioSourceContext& context);
+    AudioSource(const std::filesystem::path& filename, uint32_t flags, Ref<AudioManager> manager);
 
   private:
     std::unique_ptr<ma_sound> m_source;

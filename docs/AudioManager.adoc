@@ -1,0 +1,89 @@
+= `gf::AudioManager` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The audio manager contains the global audio state. It is necessary to create audio sources.
+
+xref:audio_management.adoc[< Back to `audio` Management]
+
+== Description
+
+[source]
+----
+#include <gf2/AudioManager.h>
+class AudioManager;
+----
+
+== Member Functions
+
+=== `channels`
+
+[source]
+----
+uint32_t channels() const;
+----
+
+Get the number of channels for this manager.
+
+=== `closest_listener`
+
+[source]
+----
+AudioListener closest_listener(Vec3F position);
+----
+
+Get the closest listener from a position.
+
+See also <<_default_listener>>
+
+=== `default_listener`
+
+[source]
+----
+AudioListener default_listener();
+----
+
+Get the default listener.
+
+See also <<_closest_listener>>
+
+=== `sample_rate`
+
+[source]
+----
+uint32_t sample_rate() const;
+----
+
+Get the sample rate for this manager.
+
+=== `set_time`
+
+[source]
+----
+void set_time(Time global_time);
+----
+
+Set the global time associated with the manager.
+
+See also: <<_time>>
+
+=== `set_volume`
+
+[source]
+----
+void set_volume(float volume);
+----
+
+Set the global volume of the manager.
+
+=== `time`
+
+[source]
+----
+Time time() const;
+----
+
+Get the global time associated with the manager.
+
+See also: <<_set_time>>

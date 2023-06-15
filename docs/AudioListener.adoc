@@ -1,0 +1,150 @@
+= `gf::AudioListener` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+An audio listener handles the properties of a listener in the space.
+
+xref:audio_spatialization.adoc[< Back to `audio` Spatialization]
+
+== Description
+
+[source]
+----
+#include <gf2/AudioListener.h>
+class AudioListener;
+----
+
+== Member Functions
+
+=== `cone`
+
+[source]
+----
+AudioCone cone() const;
+----
+
+Get the cone for directional attenuation.
+
+See also: <<_set_cone>>
+
+=== `direction`
+
+[source]
+----
+Vec3F direction() const;
+----
+
+Get the direction of the listener in 3D.
+
+See also: <<_set_direction>>
+
+=== `enabled`
+
+[source]
+----
+bool enabled() const;
+----
+
+Check if the listener is enabled.
+
+See also: <<_set_enabled>>
+
+=== `position`
+
+[source]
+----
+Vec3F position() const;
+----
+
+Get the position of the listener in 3D.
+
+See also: <<_set_position>>
+
+=== `set_cone`
+
+[source]
+----
+void set_cone(AudioCone cone);
+----
+
+Set the cone for directional attenuation.
+
+See also: <<_cone>>
+
+=== `set_direction`
+
+[source]
+----
+void set_direction(Vec3F direction);
+----
+
+Set the direction of the listener in 3D.
+
+See also: <<_direction>>
+
+=== `set_enabled`
+
+[source]
+----
+void set_enabled(bool enabled);
+----
+
+Enable or disable the listener.
+
+See also: <<_enabled>>
+
+=== `set_position`
+
+[source]
+----
+void set_position(Vec3F position);
+----
+
+Set the position of the listener in 3D.
+
+See also: <<_position>>
+
+=== `set_velocity`
+
+[source]
+----
+void set_velocity(Vec3F velocity);
+----
+
+Set the velocity of the listener in 3D.
+
+See also: <<_velocity>>
+
+=== `set_world_up`
+
+[source]
+----
+void set_world_up(Vec3F direction);
+----
+
+Set the up vector of the listener in 3D.
+
+See also: <<_world_up>>
+
+=== `velocity`
+
+[source]
+----
+Vec3F velocity() const;
+----
+
+Get the velocity of the listener in 3D.
+
+See also: <<_set_velocity>>
+
+=== `world_up`
+
+[source]
+----
+Vec3F world_up() const;
+----
+
+Get the up vector of the listener in 3D.
+
+See also: <<_set_world_up>>

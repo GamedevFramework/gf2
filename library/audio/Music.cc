@@ -9,8 +9,8 @@
 
 namespace gf {
 
-  Music::Music(const std::filesystem::path& filename, const Context& context)
-  : AudioSource(filename, MA_SOUND_FLAG_STREAM, context)
+  Music::Music(const std::filesystem::path& filename, Ref<AudioManager> manager)
+  : AudioSource(filename, MA_SOUND_FLAG_STREAM, manager)
   {
   }
 
