@@ -114,6 +114,24 @@ namespace gf {
     return *this;
   }
 
+  std::string Font::family_name() const
+  {
+    if (m_face == nullptr) {
+      return "";
+    }
+
+    return face_as<FT_Face>()->family_name;
+  }
+
+  std::string Font::style_name() const
+  {
+    if (m_face == nullptr) {
+      return "";
+    }
+
+    return face_as<FT_Face>()->style_name;
+  }
+
   FontGlyph Font::create_glyph(char32_t codepoint, unsigned character_size, float outline_thickness)
   {
     FontGlyph result = {};

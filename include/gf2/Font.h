@@ -33,6 +33,9 @@ namespace gf {
     Font& operator=(const Font&) = delete;
     Font& operator=(Font&& other) noexcept;
 
+    std::string family_name() const;
+    std::string style_name() const;
+
     FontGlyph create_glyph(char32_t codepoint, unsigned character_size, float outline_thickness = 0.0f);
 
     float compute_kerning(char32_t left, char32_t right, unsigned character_size);
@@ -45,6 +48,12 @@ namespace gf {
     T face_as()
     {
       return static_cast<T>(m_face);
+    }
+
+    template<typename T>
+    const T face_as() const
+    {
+      return static_cast<const T>(m_face);
     }
 
     Ref<FontManager> m_manager;

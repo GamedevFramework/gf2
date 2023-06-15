@@ -39,7 +39,7 @@ namespace gf {
   {
     auto* target = m_pixels.data();
 
-    if (pitch == 0) {
+    if (pitch == static_cast<ptrdiff_t>(m_size.w)) {
       std::copy_n(source, compute_bitmap_size(size), target);
     } else {
       for (int row = 0; row < size.y; ++row) {

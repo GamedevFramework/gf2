@@ -10,6 +10,17 @@ target_link_libraries(gf2_tarball_listfiles
     gf2core0
 )
 
+# gf2_font_display
+
+add_executable(gf2_font_display
+  gf2_font_display.cc
+)
+
+target_link_libraries(gf2_font_display
+  PRIVATE
+    gf2core0
+)
+
 # gf2_play_sound
 
 add_executable(gf2_play_sound
