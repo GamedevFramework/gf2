@@ -173,6 +173,7 @@ The cell orientation of the grid.
 class HexagonalCells;
 ----
 
+Hexagonal cells are cells organized in hexagons. xref:HexagonalCells.adoc[*Read more...*]
 
 [#_orthogonal_cells]
 === `gf::OrthogonalCells`
@@ -183,6 +184,7 @@ class HexagonalCells;
 class OrthogonalCells;
 ----
 
+Orthogonal cells are cells organized in rectangles (or squares). xref:OrthogonalCells.adoc[*Read more...*]
 
 [#_staggered_cells]
 === `gf::StaggeredCells`
@@ -193,3 +195,4 @@ class OrthogonalCells;
 class StaggeredCells;
 ----
 
+Staggered cells are cells organized in rhombuses. xref:StaggeredCells.adoc[*Read more...*]

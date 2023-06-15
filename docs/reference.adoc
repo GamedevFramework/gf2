@@ -16,7 +16,7 @@ xref:index.adoc[< Back to main page]
 - xref:core_streams.adoc[Streams] (xref:InputStream.adoc[`InputStream`], xref:OutputStream.adoc[`OutputStream`])
 - xref:core_resources.adoc[Resources] (xref:ResourceManager.adoc[`ResourceManager`], xref:ResourceBundle.adoc[`ResourceBundle`])
 - xref:core_serialization.adoc[Serialization] (xref:Serializer.adoc[`Serializer`], xref:Deserializer.adoc[`Deserializer`])
-- xref:core_grids.adoc[Grids] (Cells, GridMap)
+- xref:core_grids.adoc[Grids] (xref:AnyCells.adoc[`AnyCells`], GridMap)
 
 == `graphics`
 

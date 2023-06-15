@@ -1,0 +1,83 @@
+= `gf::OrthogonalCells` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+Orthogonal cells are cells organized in rectangles (or squares).
+
+xref:core_grids.adoc[< Back to `core` Grids]
+
+== Description
+
+[source]
+----
+#include <gf2/Cells.h>
+class OrthogonalCells;
+----
+
+See also: xref:AnyCells.adoc[`AnyCells`]
+
+== Member functions
+
+=== `OrthogonalCells` constructors
+
+[source]
+----
+OrthogonalCells(Vec2F tile_size);
+----
+
+Create orthogonal cells with a size of `tile_size`.
+
+=== `compute_bounds`
+
+[source]
+----
+RectF compute_bounds(Vec2I layer_size) const;
+----
+
+Compute the local bounds of the cells, with a layer of size `layer_size`.
+
+=== `compute_cell_bounds`
+
+[source]
+----
+RectF compute_cell_bounds(Vec2I coordinates) const;
+----
+
+Compute the cell bounds at the given `coordinates`.
+
+=== `compute_contour`
+
+[source]
+----
+std::vector<Vec2F> compute_contour(Vec2I coordinates) const;
+----
+
+Compute a set of points that delimit the cell.
+
+=== `compute_coordinates`
+
+[source]
+----
+Vec2I compute_coordinates(Vec2F position) const;
+----
+
+Compute the coordinates of a cell identified by its `position`.
+
+=== `compute_neighbors`
+
+[source]
+----
+std::vector<Vec2I> compute_neighbors(Vec2I coordinates, Vec2I layer_size, Flags<CellNeighborQuery> flags = None) const;
+----
+
+Compute the coordinates of the neighbors of a cell at the given `coordinates`.
+
+=== `compute_visible_area`
+
+[source]
+----
+RectI compute_visible_area(RectF local) const;
+----
+
+Compute the visible area in terms of coordinates.

@@ -11,7 +11,7 @@ xref:core_container.adoc[< Back to `core` Container]
 
 [source]
 ----
-#include <gf/Array2D.h>
+#include <gf2/Array2D.h>
 template<typename T>
 class Array2D;
 ----
