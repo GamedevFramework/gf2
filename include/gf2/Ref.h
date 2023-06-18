@@ -82,7 +82,7 @@ namespace gf {
   Ref<T> ref(T&&) = delete; // NOLINT
 
   template<typename T>
-  void swap(Ref<T>& lhs, Ref<T>& rhs)
+  void swap(Ref<T>& lhs, Ref<T>& rhs) noexcept
   {
     const Ref<T> tmp = lhs;
     lhs = rhs;

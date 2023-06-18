@@ -4,6 +4,7 @@
 #define GF_FONT_H
 
 #include <filesystem>
+#include <type_traits>
 
 #include "Bitmap.h"
 #include "CoreApi.h"
@@ -45,15 +46,15 @@ namespace gf {
     bool set_current_character_size(unsigned character_size);
 
     template<typename T>
-    T face_as()
+    auto face_as()
     {
       return static_cast<T>(m_face);
     }
 
     template<typename T>
-    const T face_as() const
+    auto face_as() const
     {
-      return static_cast<const T>(m_face);
+      return static_cast<const std::remove_pointer_t<T>*>(m_face);
     }
 
     Ref<FontManager> m_manager;
