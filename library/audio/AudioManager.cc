@@ -10,7 +10,6 @@
 
 #include <array>
 
-#include <SDL2/SDL_audio.h>
 #include <gf2/Log.h>
 
 // clang-format: off
