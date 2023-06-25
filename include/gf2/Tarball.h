@@ -2,10 +2,11 @@
 #define GF_TARBALL_H
 
 #include <cstdint>
-#include <cstdio>
 
 #include <filesystem>
 #include <vector>
+
+#include <zlib.h>
 
 #include "CoreApi.h"
 
@@ -35,7 +36,7 @@ namespace gf {
     void read_entries();
     std::vector<uint8_t> extract_entry(const Entry& entry);
 
-    std::FILE* m_file = nullptr;
+    gzFile m_file = nullptr;
 
     std::vector<Entry> m_entries;
   };

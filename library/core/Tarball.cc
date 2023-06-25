@@ -54,7 +54,7 @@ namespace gf {
 
   Tarball::Tarball(const std::filesystem::path& file)
   {
-    m_file = std::fopen(file.string().c_str(), "rb");
+    m_file = gzopen(file.string().c_str(), "rb");
 
     if (m_file == nullptr) {
       Log::warning("Could not open the tarball: '{}'", file.string());
@@ -73,7 +73,7 @@ namespace gf {
   Tarball::~Tarball()
   {
     if (m_file != nullptr) {
-      std::fclose(m_file);
+      gzclose(m_file);
     }
   }
 
@@ -111,9 +111,9 @@ namespace gf {
   {
     assert(m_file != nullptr);
 
-    while (std::feof(m_file) == 0) {
+    while (gzeof(m_file) == 0) {
       TarRecord record = {};
-      const std::size_t read = std::fread(&record, sizeof(uint8_t), sizeof(TarRecord), m_file);
+      const std::size_t read = gzfread(&record, sizeof(uint8_t), sizeof(TarRecord), m_file);
 
       if (read == 0) {
         break;
@@ -152,13 +152,13 @@ namespace gf {
         entry.path /= record.header.name;
       }
 
-      entry.offset = std::ftell(m_file);
+      entry.offset = gztell(m_file);
       assert(entry.offset % sizeof(TarRecord) == 0);
       entry.size = size;
       m_entries.push_back(std::move(entry));
 
       const std::size_t record_count = (size + 511) / 512;
-      std::fseek(m_file, static_cast<long>(record_count * sizeof(TarRecord)), SEEK_CUR);
+      gzseek(m_file, static_cast<long>(record_count * sizeof(TarRecord)), SEEK_CUR);
     }
   }
 
@@ -169,13 +169,13 @@ namespace gf {
     std::vector<uint8_t> content;
     content.reserve(entry.size);
 
-    std::fseek(m_file, entry.offset, SEEK_SET);
+    gzseek(m_file, entry.offset, SEEK_SET);
     std::array<uint8_t, 512> buffer = {};
     std::size_t size = 0;
 
-    while (std::feof(m_file) == 0 && size < entry.size) {
+    while (gzeof(m_file) == 0 && size < entry.size) {
       const std::size_t wanted = std::min(buffer.size(), entry.size - size);
-      const std::size_t read = std::fread(buffer.data(), sizeof(uint8_t), wanted, m_file);
+      const std::size_t read = gzfread(buffer.data(), sizeof(uint8_t), wanted, m_file);
       assert(read == wanted);
       content.insert(content.end(), buffer.data(), buffer.data() + read);
       size += read;
