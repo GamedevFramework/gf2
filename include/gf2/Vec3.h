@@ -294,7 +294,7 @@ namespace gf {
   template<typename T>
   inline auto euclidean_length(Vec3<T> vec)
   {
-    return std::hypot(vec.x, vec.y, vec.z);
+    return std::sqrt(square_length(vec));
   }
 
   template<typename T>
