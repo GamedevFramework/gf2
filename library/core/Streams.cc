@@ -5,6 +5,8 @@
 #include <gf2/Streams.h>
 // clang-format on
 
+#include <cassert>
+
 #include <algorithm>
 #include <stdexcept>
 #include <string>
@@ -146,11 +148,12 @@ namespace gf {
    * CompressedInputStream
    */
 
-  CompressedInputStream::CompressedInputStream(Ref<InputStream> compressed)
+  CompressedInputStream::CompressedInputStream(InputStream* compressed)
   : m_compressed(compressed)
   , m_stream()
   , m_buffer()
   {
+    assert(compressed != nullptr);
     m_stream.zalloc = nullptr;
     m_stream.zfree = nullptr;
     [[maybe_unused]] const int err = inflateInit(&m_stream);
@@ -207,7 +210,7 @@ namespace gf {
     while (m_stream.avail_out > 0) {
       if (m_start == m_stop) {
         m_start = 0;
-        m_stop = static_cast<uInt>(m_compressed.get().read(m_buffer));
+        m_stop = static_cast<uInt>(m_compressed->read(m_buffer));
       }
 
       const uInt remaining = m_stop - m_start;
@@ -251,9 +254,10 @@ namespace gf {
    * BufferInputStream
    */
 
-  BufferInputStream::BufferInputStream(Ref<std::vector<uint8_t>> bytes)
+  BufferInputStream::BufferInputStream(std::vector<uint8_t>* bytes)
   : m_bytes(bytes)
   {
+    assert(bytes != nullptr);
   }
 
   std::size_t BufferInputStream::read(Span<uint8_t> buffer)
@@ -263,14 +267,14 @@ namespace gf {
     }
 
     std::size_t count = buffer.size();
-    const std::size_t available = m_bytes.get().size() - m_offset;
+    const std::size_t available = m_bytes->size() - m_offset;
 
     if (count > available) {
       count = available;
     }
 
     if (count > 0) {
-      std::copy_n(m_bytes.get().data() + m_offset, count, buffer.data());
+      std::copy_n(m_bytes->data() + m_offset, count, buffer.data());
       m_offset += count;
     }
 
@@ -284,7 +288,7 @@ namespace gf {
     }
 
     auto offset = static_cast<std::size_t>(position);
-    m_offset = std::min(offset, m_bytes.get().size());
+    m_offset = std::min(offset, m_bytes->size());
   }
 
   void BufferInputStream::skip(std::ptrdiff_t position)
@@ -294,13 +298,13 @@ namespace gf {
       m_offset = offset < m_offset ? m_offset - offset : 0;
     } else {
       auto offset = static_cast<std::size_t>(position);
-      m_offset = std::min(m_offset + offset, m_bytes.get().size());
+      m_offset = std::min(m_offset + offset, m_bytes->size());
     }
   }
 
   bool BufferInputStream::finished()
   {
-    return m_offset == m_bytes.get().size();
+    return m_offset == m_bytes->size();
   }
 
   /*
@@ -397,11 +401,12 @@ namespace gf {
    * CompressedOutputStream
    */
 
-  CompressedOutputStream::CompressedOutputStream(Ref<OutputStream> compressed)
+  CompressedOutputStream::CompressedOutputStream(OutputStream* compressed)
   : m_compressed(compressed)
   , m_stream()
   , m_buffer()
   {
+    assert(compressed != nullptr);
     m_stream.zalloc = nullptr;
     m_stream.zfree = nullptr;
     [[maybe_unused]] const int err = deflateInit(&m_stream, Z_DEFAULT_COMPRESSION);
@@ -434,7 +439,7 @@ namespace gf {
       const uInt written = buffer_size - m_stream.avail_out;
 
       if (written > 0) {
-        [[maybe_unused]] const std::size_t flushed = m_compressed.get().write(gf::span(m_buffer.data(), written));
+        [[maybe_unused]] const std::size_t flushed = m_compressed->write(gf::span(m_buffer.data(), written));
         assert(flushed == written);
 
         m_stream.next_out = m_buffer.data();
@@ -480,7 +485,7 @@ namespace gf {
       const uInt written = buffer_size - m_stream.avail_out;
 
       if (written > 0) {
-        [[maybe_unused]] const std::size_t flushed = m_compressed.get().write(gf::span(m_buffer.data(), written));
+        [[maybe_unused]] const std::size_t flushed = m_compressed->write(gf::span(m_buffer.data(), written));
         assert(flushed == written);
 
         m_stream.next_out = m_buffer.data();
@@ -495,27 +500,28 @@ namespace gf {
 
   std::size_t CompressedOutputStream::written_bytes() const
   {
-    return m_compressed.get().written_bytes();
+    return m_compressed->written_bytes();
   }
 
   /*
    * BufferOutputStream
    */
 
-  BufferOutputStream::BufferOutputStream(Ref<std::vector<uint8_t>> bytes)
+  BufferOutputStream::BufferOutputStream(std::vector<uint8_t>* bytes)
   : m_bytes(bytes)
   {
+    assert(bytes != nullptr);
   }
 
   std::size_t BufferOutputStream::write(Span<const uint8_t> buffer)
   {
-    std::copy_n(buffer.data(), buffer.size(), std::back_inserter(m_bytes.get()));
+    std::copy_n(buffer.data(), buffer.size(), std::back_inserter(*m_bytes));
     return buffer.size();
   }
 
   std::size_t BufferOutputStream::written_bytes() const
   {
-    return m_bytes.get().size();
+    return m_bytes->size();
   }
 
 } // namespace gf

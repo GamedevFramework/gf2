@@ -11,7 +11,6 @@
 #include "AudioApi.h"
 #include "AudioListener.h"
 #include "AudioSpatialization.h"
-#include "Ref.h"
 #include "Time.h"
 #include "Vec3.h"
 
@@ -101,7 +100,7 @@ namespace gf {
     Time length();
 
   protected:
-    AudioSource(const std::filesystem::path& filename, uint32_t flags, Ref<AudioManager> manager);
+    AudioSource(const std::filesystem::path& filename, uint32_t flags, AudioManager* manager);
 
   private:
     std::unique_ptr<ma_sound> m_source;

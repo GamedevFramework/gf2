@@ -16,7 +16,6 @@ add_executable(gf2_core_tests
   tests_core_Move.cc
   tests_core_Range.cc
   tests_core_Rect.cc
-  tests_core_Ref.cc
   tests_core_Resource.cc
   tests_core_Result.cc
   tests_core_Serialization.cc

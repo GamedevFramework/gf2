@@ -23,7 +23,7 @@ See also: xref:Serializer.adoc[`Serializer`]
 
 [source]
 ----
-Deserializer(Ref<InputStream> stream);
+Deserializer(InputStream* stream);
 ----
 
 Create a deserializer that read from `stream`.

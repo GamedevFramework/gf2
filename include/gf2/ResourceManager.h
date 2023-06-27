@@ -2,6 +2,7 @@
 #define RESOURCE_MANAGER_H
 
 #include <cassert>
+#include <cstddef>
 
 #include <any>
 #include <filesystem>
@@ -11,7 +12,6 @@
 
 #include "CoreApi.h"
 #include "Log.h"
-#include "Ref.h"
 #include "ResourceContext.h"
 #include "ResourceRegistry.h"
 
@@ -20,9 +20,12 @@ namespace gf {
   class GF_CORE_API ResourceManager {
   public:
 
+    void add_registry(std::nullptr_t registry) = delete;
+
     template<typename T>
-    void add_registry(Ref<ResourceRegistry<T>> registry)
+    void add_registry(ResourceRegistry<T>* registry)
     {
+      assert(registry != nullptr);
       [[maybe_unused]] auto [iterator, inserted] = m_resources.emplace(std::type_index(typeid(T)), registry);
       assert(inserted);
     }
@@ -66,8 +69,8 @@ namespace gf {
     {
       if (auto resources_iterator = m_resources.find(std::type_index(typeid(T))); resources_iterator != m_resources.end()) {
         auto& [type_index, any_registry] = *resources_iterator;
-        assert(any_registry.type() == typeid(Ref<ResourceRegistry<T>>));
-        return std::any_cast<Ref<ResourceRegistry<T>>>(any_registry);
+        assert(any_registry.type() == typeid(ResourceRegistry<T>*));
+        return *std::any_cast<ResourceRegistry<T>*>(any_registry);
       }
 
       Log::error("No registry for this type of resource.");

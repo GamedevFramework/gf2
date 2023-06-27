@@ -204,7 +204,7 @@ TEST(ResourceTest, ManagerWithRegistry) {
   gf::ResourceRegistry<DummyResource> registry;
 
   gf::ResourceManager manager;
-  manager.add_registry(gf::ref(registry));
+  manager.add_registry(&registry);
 
   DummyLoader loader;
   registry.add_loader(gf::loader_for<DummyResource>(loader));
@@ -222,7 +222,7 @@ TEST(ResourceTest, ManagerAcquire) {
   gf::ResourceRegistry<DummyResource> registry;
 
   gf::ResourceManager manager;
-  manager.add_registry(gf::ref(registry));
+  manager.add_registry(&registry);
 
   DummyLoader loader;
   registry.add_loader(gf::loader_for<DummyResource>(loader));
@@ -262,7 +262,7 @@ TEST(ResourceTest, BundleLoadUnload) {
   registry.add_loader(gf::loader_for<DummyResource>(loader));
 
   gf::ResourceManager manager;
-  manager.add_registry(gf::ref(registry));
+  manager.add_registry(&registry);
 
   gf::ResourceBundle bundle;
   bundle.set_callback([](gf::ResourceBundle& bundle, auto manager, auto action) {
@@ -288,7 +288,7 @@ TEST(ResourceTest, BundleMultiple) {
   registry.add_loader(gf::loader_for<DummyResource>(loader));
 
   gf::ResourceManager manager;
-  manager.add_registry(gf::ref(registry));
+  manager.add_registry(&registry);
 
   gf::ResourceBundle bundle1;
   bundle1.set_callback([](gf::ResourceBundle& bundle, auto manager, auto action) {
@@ -327,8 +327,8 @@ TEST(ResourceTest, BundleComposite) {
   registry_for_single.add_loader(gf::loader_for<DummyResource>(loader));
 
   gf::ResourceManager manager;
-  manager.add_registry(gf::ref(registry_for_composite));
-  manager.add_registry(gf::ref(registry_for_single));
+  manager.add_registry(&registry_for_composite);
+  manager.add_registry(&registry_for_single);
 
   gf::ResourceBundle bundle;
   bundle.set_callback([](gf::ResourceBundle& bundle, auto manager, auto action) {
@@ -351,7 +351,7 @@ TEST(ResourceTest, BundleContext) {
   gf::ResourceRegistry<DummyContextResource> registry;
 
   gf::ResourceManager manager;
-  manager.add_registry(gf::ref(registry));
+  manager.add_registry(&registry);
 
   DummyLoader loader;
   registry.add_loader(gf::loader_for<DummyContextResource>(loader));

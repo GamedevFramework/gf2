@@ -8,7 +8,6 @@
 #include <filesystem>
 
 #include "CoreApi.h"
-#include "Ref.h"
 #include "Stream.h"
 
 #include <zlib.h>
@@ -51,7 +50,7 @@ namespace gf {
 
   class GF_CORE_API CompressedInputStream : public InputStream {
   public:
-    explicit CompressedInputStream(Ref<InputStream> compressed);
+    explicit CompressedInputStream(InputStream* compressed);
     CompressedInputStream(const CompressedInputStream&) = delete;
     CompressedInputStream(CompressedInputStream&& other) noexcept;
     ~CompressedInputStream() override;
@@ -65,7 +64,7 @@ namespace gf {
     bool finished() override;
 
   private:
-    Ref<InputStream> m_compressed;
+    InputStream* m_compressed;
     z_stream m_stream;
     uInt m_start = 0;
     uInt m_stop = 0;
@@ -75,11 +74,11 @@ namespace gf {
 
   class GF_CORE_API BufferInputStream : public InputStream {
   public:
-    explicit BufferInputStream(Ref<std::vector<uint8_t>> bytes);
+    explicit BufferInputStream(std::vector<uint8_t>* bytes);
 
     std::vector<uint8_t>& bytes()
     {
-      return m_bytes;
+      return *m_bytes;
     }
 
     std::size_t read(Span<uint8_t> buffer) override;
@@ -88,7 +87,7 @@ namespace gf {
     bool finished() override;
 
   private:
-    Ref<std::vector<uint8_t>> m_bytes;
+    std::vector<uint8_t>* m_bytes;
     std::size_t m_offset = 0;
   };
 
@@ -129,7 +128,7 @@ namespace gf {
 
   class GF_CORE_API CompressedOutputStream : public OutputStream {
   public:
-    explicit CompressedOutputStream(Ref<OutputStream> compressed);
+    explicit CompressedOutputStream(OutputStream* compressed);
     CompressedOutputStream(const CompressedOutputStream&) = delete;
     CompressedOutputStream(CompressedOutputStream&& other) noexcept;
     ~CompressedOutputStream() override;
@@ -141,25 +140,25 @@ namespace gf {
     std::size_t written_bytes() const override;
 
   private:
-    Ref<OutputStream> m_compressed;
+    OutputStream* m_compressed;
     z_stream m_stream;
     std::array<Bytef, 256> m_buffer;
   };
 
   class GF_CORE_API BufferOutputStream : public OutputStream {
   public:
-    explicit BufferOutputStream(Ref<std::vector<uint8_t>> bytes);
+    explicit BufferOutputStream(std::vector<uint8_t>* bytes);
 
     std::size_t write(Span<const uint8_t> buffer) override;
     std::size_t written_bytes() const override;
 
     std::vector<uint8_t>& bytes()
     {
-      return m_bytes;
+      return *m_bytes;
     }
 
   private:
-    Ref<std::vector<uint8_t>> m_bytes;
+    std::vector<uint8_t>* m_bytes;
   };
 
 } // namespace gf

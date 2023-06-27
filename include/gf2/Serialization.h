@@ -7,7 +7,6 @@
 #include <cstdint>
 
 #include "CoreApi.h"
-#include "Ref.h"
 #include "Stream.h"
 
 namespace gf {
@@ -15,7 +14,7 @@ namespace gf {
   class GF_CORE_API Serializer {
   public:
 
-    Serializer(Ref<OutputStream> stream, uint16_t version = 0);
+    Serializer(OutputStream* stream, uint16_t version = 0);
 
     uint16_t version() const
     {
@@ -49,7 +48,7 @@ namespace gf {
 
   class GF_CORE_API Deserializer {
   public:
-    Deserializer(Ref<InputStream> stream);
+    Deserializer(InputStream* stream);
 
     uint16_t version() const
     {

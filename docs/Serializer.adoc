@@ -23,7 +23,7 @@ See also: xref:Deserializer.adoc[`Deserializer`]
 
 [source]
 ----
-Serializer(Ref<OutputStream> stream, uint16_t version = 0);
+Serializer(OutputStream* stream, uint16_t version = 0);
 ----
 
 Create a serializer that writes to `stream`, with the specified version for the archive.

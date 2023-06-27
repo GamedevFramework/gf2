@@ -26,7 +26,7 @@ See also: xref:BufferInputStream.adoc[`BufferInputStream`]
 
 [source]
 ----
-explicit BufferOutputStream(Ref<std::vector<uint8_t>> bytes);
+explicit BufferOutputStream(std::vector<uint8_t>* bytes);
 ----
 
 Constructor with a reference to a dynamic byte buffer.

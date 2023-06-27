@@ -18,7 +18,7 @@ TEST(SoundTest, Constructor) {
   gf::AudioManager audio;
 
   EXPECT_NO_THROW({
-    gf::Sound sound(OggFile, gf::ref(audio));
+    gf::Sound sound(OggFile, &audio);
   });
 }
 
@@ -26,7 +26,7 @@ TEST(SoundTest, StartStop) {
   using namespace std::chrono_literals;
 
   gf::AudioManager audio;
-  gf::Sound sound(OggFile, gf::ref(audio));
+  gf::Sound sound(OggFile, &audio);
 
   sound.start();
   sound.stop();

@@ -84,7 +84,6 @@ add_library(gf2core0
   core/Random.cc
   core/Range.cc
   core/Rect.cc
-  core/Ref.cc
   core/ResourceBundle.cc
   core/ResourceContext.cc
   core/ResourceLoader.cc

@@ -15,6 +15,8 @@ xref:core_resources.adoc[< Back to `core` Resources]
 class Tarball;
 ----
 
+The tarball may be compressed with gzip.
+
 The content of the tarball is scanned at the construction of `Tarball`. Then the content of the tarball can be fetched at any time.
 
 See also: xref:TarballLoader.adoc[`TarballLoader`]

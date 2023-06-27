@@ -81,7 +81,7 @@ namespace gf {
         return nullptr;
       }
 
-      BufferInputStream input(gf::ref(buffer));
+      BufferInputStream input(&buffer);
 
       if constexpr (std::is_empty_v<gf::ResourceContext<T>>) {
         return std::make_unique<T>(input);

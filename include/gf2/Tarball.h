@@ -6,9 +6,9 @@
 #include <filesystem>
 #include <vector>
 
-#include <zlib.h>
-
 #include "CoreApi.h"
+
+#include <zlib.h>
 
 namespace gf {
 

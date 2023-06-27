@@ -9,7 +9,6 @@
 #include "Bitmap.h"
 #include "CoreApi.h"
 #include "Rect.h"
-#include "Ref.h"
 #include "Stream.h"
 
 namespace gf {
@@ -23,10 +22,10 @@ namespace gf {
 
   class GF_CORE_API Font {
   public:
-    using Context = Ref<FontManager>;
+    using Context = FontManager*;
 
-    Font(const std::filesystem::path& filename, Ref<FontManager> manager);
-    Font(InputStream& stream, Ref<FontManager> manager);
+    Font(const std::filesystem::path& filename, FontManager* manager);
+    Font(InputStream& stream, FontManager* manager);
     Font(const Font&) = delete;
     Font(Font&& other) noexcept;
     ~Font();
@@ -57,7 +56,7 @@ namespace gf {
       return static_cast<const std::remove_pointer_t<T>*>(m_face);
     }
 
-    Ref<FontManager> m_manager;
+    FontManager* m_manager;
     void* m_face = nullptr;
     unsigned m_character_size = 0;
   };

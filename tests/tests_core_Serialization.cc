@@ -21,14 +21,14 @@ namespace {
     std::vector<uint8_t> bytes;
 
     {
-      gf::BufferOutputStream ostream(gf::ref(bytes));
-      gf::Serializer serializer(gf::ref(ostream));
+      gf::BufferOutputStream ostream(&bytes);
+      gf::Serializer serializer(&ostream);
       serializer | in;
     }
 
     {
-      gf::BufferInputStream istream(gf::ref(bytes));
-      gf::Deserializer deserializer(gf::ref(istream));
+      gf::BufferInputStream istream(&bytes);
+      gf::Deserializer deserializer(&istream);
       deserializer | out;
     }
   }
@@ -58,13 +58,13 @@ TEST(SerialTest, Version) {
   std::vector<uint8_t> bytes;
 
   {
-    gf::BufferOutputStream ostream(gf::ref(bytes));
-    gf::Serializer serializer(gf::ref(ostream), Version);
+    gf::BufferOutputStream ostream(&bytes);
+    gf::Serializer serializer(&ostream, Version);
   }
 
   {
-    gf::BufferInputStream istream(gf::ref(bytes));
-    gf::Deserializer deserializer(gf::ref(istream));
+    gf::BufferInputStream istream(&bytes);
+    gf::Deserializer deserializer(&istream);
     EXPECT_EQ(deserializer.version(), Version);
   }
 }
@@ -652,16 +652,16 @@ TEST(SerialTest, Compressed) {
   std::vector<uint8_t> bytes;
 
   {
-    gf::BufferOutputStream ostream(gf::ref(bytes));
-    gf::CompressedOutputStream compressed(gf::ref(ostream));
-    gf::Serializer ar(gf::ref(compressed));
+    gf::BufferOutputStream ostream(&bytes);
+    gf::CompressedOutputStream compressed(&ostream);
+    gf::Serializer ar(&compressed);
     ar | in1;
   }
 
   {
-    gf::BufferInputStream istream(gf::ref(bytes));
-    gf::CompressedInputStream compressed(gf::ref(istream));
-    gf::Deserializer ar(gf::ref(compressed));
+    gf::BufferInputStream istream(&bytes);
+    gf::CompressedInputStream compressed(&istream);
+    gf::Deserializer ar(&compressed);
     ar | out1;
   }
 

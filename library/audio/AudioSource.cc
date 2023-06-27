@@ -5,6 +5,8 @@
 #include <gf2/AudioSource.h>
 // clang-format on
 
+#include <cassert>
+
 #include <gf2/AudioManager.h>
 #include <gf2/Log.h>
 
@@ -12,13 +14,15 @@
 
 namespace gf {
 
-  AudioSource::AudioSource(const std::filesystem::path& filename, uint32_t flags, Ref<AudioManager> manager)
+  AudioSource::AudioSource(const std::filesystem::path& filename, uint32_t flags, AudioManager* manager)
   : m_source(std::make_unique<ma_sound>())
   , m_flags(flags | MA_SOUND_FLAG_NO_SPATIALIZATION)
   {
     using namespace std::literals;
 
-    if (auto result = ma_sound_init_from_file(manager.get().engine(), filename.string().c_str(), m_flags, nullptr, nullptr, m_source.get()); result != MA_SUCCESS) {
+    assert(manager != nullptr);
+
+    if (auto result = ma_sound_init_from_file(manager->engine(), filename.string().c_str(), m_flags, nullptr, nullptr, m_source.get()); result != MA_SUCCESS) {
       Log::error("Unable to initialize audio source: {}", ma_result_description(result));
       throw std::runtime_error("Unable to initialize audio source: "s + ma_result_description(result));
     }

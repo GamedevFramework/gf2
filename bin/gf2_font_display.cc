@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
   }
 
   gf::FontManager font_manager;
-  gf::Font font(argv[1], gf::ref(font_manager));
+  gf::Font font(argv[1], &font_manager);
 
   std::cout << "family: " << font.family_name() << '\n';
   std::cout << "style: " << font.style_name() << '\n';

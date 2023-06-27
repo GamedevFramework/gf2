@@ -28,7 +28,7 @@ See also: xref:CompressedInputStream.adoc[`CompressedInputStream`]
 
 [source]
 ----
-explicit CompressedOutputStream(Ref<OutputStream> compressed);
+explicit CompressedOutputStream(OutputStream* compressed);
 ----
 
 Constructor with a reference to a compressed output stream.

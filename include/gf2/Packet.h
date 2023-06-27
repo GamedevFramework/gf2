@@ -43,8 +43,8 @@ namespace gf {
         return m_type;
       }
 
-      BufferInputStream stream(gf::ref(m_bytes));
-      Deserializer deserializer(gf::ref(stream));
+      BufferInputStream stream(&m_bytes);
+      Deserializer deserializer(&stream);
       deserializer | m_type;
       return m_type;
     }
@@ -52,8 +52,8 @@ namespace gf {
     template<typename T>
     T as()
     {
-      BufferInputStream stream(gf::ref(m_bytes));
-      Deserializer deserializer(gf::ref(stream));
+      BufferInputStream stream(&m_bytes);
+      Deserializer deserializer(&stream);
 
       T data;
       deserializer | m_type | data;
@@ -66,8 +66,8 @@ namespace gf {
     {
       m_bytes.clear();
       m_type = T::type;
-      gf::BufferOutputStream stream(gf::ref(m_bytes));
-      gf::Serializer serializer(gf::ref(stream));
+      gf::BufferOutputStream stream(&m_bytes);
+      gf::Serializer serializer(&stream);
       serializer | m_type | const_cast<T&>(data); // NOLINT
     }
 

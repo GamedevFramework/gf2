@@ -3,7 +3,6 @@ add_library(gf2_core_doc
   core_color.cc
   core_id.cc
   core_math.cc
-  core_ref.cc
   core_resources.cc
   core_serialization.cc
   core_time.cc

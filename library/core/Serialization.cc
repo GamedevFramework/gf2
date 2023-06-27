@@ -35,10 +35,11 @@ namespace gf {
    * Serializer
    */
 
-  Serializer::Serializer(Ref<OutputStream> stream, uint16_t version)
-  : m_stream(&stream.get())
+  Serializer::Serializer(OutputStream* stream, uint16_t version)
+  : m_stream(stream)
   , m_version(version)
   {
+    assert(m_stream != nullptr);
     m_stream->write(Magic);
     write_big_endian_16(version);
   }
@@ -233,9 +234,10 @@ namespace gf {
    * Deserializer
    */
 
-  Deserializer::Deserializer(Ref<InputStream> stream)
-  : m_stream(&stream.get())
+  Deserializer::Deserializer(InputStream* stream)
+  : m_stream(stream)
   {
+    assert(m_stream != nullptr);
     uint8_t magic[2] = { 0u, 0u };
     m_stream->read(magic);
 

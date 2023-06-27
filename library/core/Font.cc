@@ -49,12 +49,14 @@ namespace gf {
 
   }
 
-  Font::Font(const std::filesystem::path& filename, Ref<FontManager> manager)
+  Font::Font(const std::filesystem::path& filename, FontManager* manager)
   : m_manager(manager)
   {
+    assert(manager != nullptr);
+
     FT_Face face = nullptr;
 
-    if (auto err = FT_New_Face(m_manager.get().library_as<FT_Library>(), filename.string().c_str(), 0, &face)) {
+    if (auto err = FT_New_Face(m_manager->library_as<FT_Library>(), filename.string().c_str(), 0, &face)) {
       Log::error("Could not create the font face '{}': {}\n", filename.string(), FontManager::error_message(err));
       throw std::runtime_error("Could not create the font face");
     }
@@ -62,9 +64,11 @@ namespace gf {
     m_face = face;
   }
 
-  Font::Font(InputStream& stream, Ref<FontManager> manager)
+  Font::Font(InputStream& stream, FontManager* manager)
   : m_manager(manager)
   {
+    assert(manager != nullptr);
+
     FT_StreamRec rec = {};
     std::memset(&rec, 0, sizeof(FT_StreamRec));
     rec.base = nullptr;
@@ -82,7 +86,7 @@ namespace gf {
 
     FT_Face face = nullptr;
 
-    if (auto err = FT_Open_Face(m_manager.get().library_as<FT_Library>(), &args, 0, &face)) {
+    if (auto err = FT_Open_Face(m_manager->library_as<FT_Library>(), &args, 0, &face)) {
       Log::error("Could not create the font face from stream: {}", FontManager::error_message(err));
       throw std::runtime_error("Could not create the font face from stream");
     }
@@ -167,7 +171,7 @@ namespace gf {
     if (outline_thickness > 0) {
       assert(glyph->format == FT_GLYPH_FORMAT_OUTLINE);
 
-      auto* stroker = m_manager.get().stroker_as<FT_Stroker>();
+      auto* stroker = m_manager->stroker_as<FT_Stroker>();
 
       FT_Stroker_Set(stroker, static_cast<FT_Fixed>(outline_thickness * Scale), FT_STROKER_LINECAP_ROUND, FT_STROKER_LINEJOIN_ROUND, 0);
       FT_Glyph_Stroke(&glyph, stroker, 0);

@@ -25,7 +25,7 @@ See also: xref:Sound.adoc[`Sound`].
 
 [source]
 ----
-using Context = Ref<AudioManager>;
+using Context = AudioManager*;
 ----
 
 The context for loading a music.
@@ -36,7 +36,7 @@ The context for loading a music.
 
 [source]
 ----
-Music(const std::filesystem::path& filename, Ref<AudioManager> manager);
+Music(const std::filesystem::path& filename, AudioManager* manager);
 ----
 
 Create a sound from a `filename` and a `manager`.

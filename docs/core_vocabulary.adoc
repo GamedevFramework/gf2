@@ -125,18 +125,6 @@ Semantic type to represente "none".
 
 See also: <<_none>>
 
-[#_ref]
-=== `gf::Ref<T>`
-
-[source]
-----
-#include <gf/Ref.h>
-template<typename T>
-class Ref;
-----
-
-`Ref<T>` is a reference wrapper. xref:Ref.adoc[*Read more...*]
-
 [#_zero_type]
 === `gf::ZeroType`
 
