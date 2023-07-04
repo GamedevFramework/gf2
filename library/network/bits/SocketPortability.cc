@@ -150,7 +150,7 @@ namespace gf::details {
       return sock;
     }
 
-    Log::error("Unable to bind service '%s'", service);
+    Log::error("Unable to bind service '{}'", service);
     return InvalidSocketHandle;
   }
 
@@ -173,7 +173,7 @@ namespace gf::details {
       return sock;
     }
 
-    Log::error("Unable to connect to '%s:%s'", hostname, service);
+    Log::error("Unable to connect to '{}:{}'", hostname, service);
     return InvalidSocketHandle;
   }
 
@@ -196,7 +196,7 @@ namespace gf::details {
       return sock;
     }
 
-    Log::error("Unable to bind service '%s'", service);
+    Log::error("Unable to bind service '{}'", service);
     return InvalidSocketHandle;
   }
 
@@ -219,9 +219,9 @@ namespace gf::details {
 
       if (err != 0) {
         if (hostname != nullptr) {
-          gf::Log::error("Error while getting an address for hostname '%s:%s': '%s'", hostname, service, ::gai_strerror(err));
+          Log::error("Error while getting an address for hostname '{}:{}': '{}'", hostname, service, ::gai_strerror(err));
         } else {
-          gf::Log::error("Error while getting an address for service '%s': '%s'", service, ::gai_strerror(err));
+          Log::error("Error while getting an address for service '{}': '{}'", service, ::gai_strerror(err));
         }
 
         return result;
