@@ -37,8 +37,7 @@ namespace {
 
     gf::ResourceBundle bundle()
     {
-      gf::ResourceBundle bundle;
-      bundle.set_callback([](gf::ResourceBundle& bundle, auto manager, auto action) {
+      gf::ResourceBundle bundle([](gf::ResourceBundle& bundle, auto manager, auto action) {
         bundle.handle<DummyResource>("bar", manager, action);
       });
       return bundle;
@@ -264,8 +263,7 @@ TEST(ResourceTest, BundleLoadUnload) {
   gf::ResourceManager manager;
   manager.add_registry(&registry);
 
-  gf::ResourceBundle bundle;
-  bundle.set_callback([](gf::ResourceBundle& bundle, auto manager, auto action) {
+  gf::ResourceBundle bundle([](gf::ResourceBundle& bundle, auto manager, auto action) {
     bundle.handle<DummyResource>("foo", manager, action);
     bundle.handle<DummyResource>("bar", manager, action);
   });
@@ -290,14 +288,12 @@ TEST(ResourceTest, BundleMultiple) {
   gf::ResourceManager manager;
   manager.add_registry(&registry);
 
-  gf::ResourceBundle bundle1;
-  bundle1.set_callback([](gf::ResourceBundle& bundle, auto manager, auto action) {
+  gf::ResourceBundle bundle1([](gf::ResourceBundle& bundle, auto manager, auto action) {
     bundle.handle<DummyResource>("foo", manager, action);
     bundle.handle<DummyResource>("bar", manager, action);
   });
 
-  gf::ResourceBundle bundle2;
-  bundle2.set_callback([](gf::ResourceBundle& bundle, auto manager, auto action) {
+  gf::ResourceBundle bundle2([](gf::ResourceBundle& bundle, auto manager, auto action) {
     bundle.handle<DummyResource>("foo", manager, action);
   });
 
@@ -330,8 +326,7 @@ TEST(ResourceTest, BundleComposite) {
   manager.add_registry(&registry_for_composite);
   manager.add_registry(&registry_for_single);
 
-  gf::ResourceBundle bundle;
-  bundle.set_callback([](gf::ResourceBundle& bundle, auto manager, auto action) {
+  gf::ResourceBundle bundle([](gf::ResourceBundle& bundle, auto manager, auto action) {
     bundle.handle<DummyCompositeResource>("foo", manager, action);
   });
 
@@ -358,8 +353,7 @@ TEST(ResourceTest, BundleContext) {
 
   DummyContextResource::Context context;
 
-  gf::ResourceBundle bundle;
-  bundle.set_callback([&context](gf::ResourceBundle& bundle, auto manager, auto action) {
+  gf::ResourceBundle bundle([&context](gf::ResourceBundle& bundle, auto manager, auto action) {
     bundle.handle<DummyContextResource>("foo", context, manager, action);
   });
 

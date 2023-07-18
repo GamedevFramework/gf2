@@ -29,6 +29,14 @@ namespace gf {
       Unload,
     };
 
+    ResourceBundle() = default;
+
+    template<typename F>
+    ResourceBundle(F&& callback)
+    : m_callback(std::forward<F>(callback))
+    {
+    }
+
     template<typename F>
     void set_callback(F&& callback)
     {
