@@ -46,37 +46,37 @@ UdpSocket(const std::string& service, SocketFamily family = SocketFamily::Unspec
 
 [source]
 ----
-bool send_bytes_to(Span<const uint8_t> buffer, const SocketAddress& address);
+SocketResult send_bytes_to(Span<const uint8_t> buffer, const SocketAddress& remote_address);
 ----
 
-Send a whole buffer to the socket. This function ensures the buffer is sent in a single packet. Return a boolean indicating if the bytes have been sent.
+Send a whole buffer to the socket. This function ensures the buffer is sent in a single packet.
 
 === `send_raw_bytes_to`
 
 [source]
 ----
-SocketDataResult send_raw_bytes_to(Span<const uint8_t> buffer, const SocketAddress& address);
+SocketResult send_raw_bytes_to(Span<const uint8_t> buffer, const SocketAddress& remote_address);
 ----
 
-Send some bytes over the socket to `address`.
+Send some bytes over the socket to `remote_address`.
 
 === `recv_bytes_from`
 
 [source]
 ----
-std::tuple<bool, SocketAddress> recv_bytes_from(Span<uint8_t> buffer);
+SocketResult recv_bytes_from(Span<uint8_t> buffer, SocketAddress* remote_address);
 ----
 
-Send a whole buffer to the socket. This function ensures the buffer is received in a single packet. Return a boolean indicating if the bytes have been received and the address of the sending host.
+Receive a whole buffer from the socket. This function ensures the buffer is received in a single packet. The address of the remote host can be retrieved in `remote_adress`.
 
 === `recv_raw_bytes_from`
 
 [source]
 ----
-std::tuple<SocketDataResult, SocketAddress> recv_raw_bytes_from(Span<uint8_t> buffer);
+SocketResult recv_raw_bytes_from(Span<uint8_t> buffer, SocketAddress* remote_address);
 ----
 
-Receive some bytes from the socket. Return a result and the address of the sending host.
+Receive some bytes from the socket. The address of the remote host can be retrieved in `remote_adress`.
 
 === `remote_address`
 

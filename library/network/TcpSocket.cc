@@ -56,7 +56,7 @@ namespace gf {
     return address;
   }
 
-  SocketDataResult TcpSocket::send_raw_bytes(Span<const uint8_t> buffer)
+  SocketResult TcpSocket::send_raw_bytes(Span<const uint8_t> buffer)
   {
 #ifdef MSG_NOSIGNAL
     static constexpr int SendFlags = MSG_NOSIGNAL;
@@ -67,97 +67,95 @@ namespace gf {
 
     if (ret == details::InvalidCommunication) {
       if (details::native_would_block(details::last_error_code())) {
-        return { SocketStatus::Block, 0u };
+        return error(SocketStatus::Block);
       }
 
       Log::error("Error while sending data. Reason: {}", details::last_error_string());
-      return { SocketStatus::Error, 0u };
+      return error(SocketStatus::Error);
     }
 
-    return { SocketStatus::Data, static_cast<std::size_t>(ret) };
+    return static_cast<std::size_t>(ret);
   }
 
-  SocketDataResult TcpSocket::recv_raw_bytes(Span<uint8_t> buffer)
+  SocketResult TcpSocket::recv_raw_bytes(Span<uint8_t> buffer)
   {
     auto ret = ::recv(handle(), details::recv_pointer(buffer), details::recv_length(buffer), details::NoFlag);
 
     if (ret == details::InvalidCommunication) {
       if (details::native_would_block(details::last_error_code())) {
-        return { SocketStatus::Block, 0u };
+        return error(SocketStatus::Block);
       }
 
       Log::error("Error while receiving data. Reason: {}", details::last_error_string());
-      return { SocketStatus::Error, 0u };
+      return error(SocketStatus::Error);
     }
 
     if (ret == 0) {
-      return { SocketStatus::Close, 0u };
+      return error(SocketStatus::Close);
     }
 
-    return { SocketStatus::Data, static_cast<std::size_t>(ret) };
+    return static_cast<std::size_t>(ret);
   }
 
-  SocketStatus TcpSocket::send_bytes(Span<const uint8_t> buffer)
+  SocketResult TcpSocket::send_bytes(Span<const uint8_t> buffer)
   {
+    const std::size_t buffer_size = buffer.size();
+
     while (!buffer.empty()) {
       auto result = send_raw_bytes(buffer);
 
-      switch (result.status) {
-        case SocketStatus::Data:
-          buffer = buffer.last_except(result.length);
-          break;
-        case SocketStatus::Block:
-          continue;
-        case SocketStatus::Close:
-        case SocketStatus::Error:
-          return result.status;
+      if (result) {
+        buffer = buffer.last_except(*result);
+      } else {
+        if (result.error() != SocketStatus::Block) {
+          return result;
+        }
       }
     }
 
-    return SocketStatus::Data;
+    return buffer_size;
   }
 
-  SocketStatus TcpSocket::recv_bytes(Span<uint8_t> buffer)
+  SocketResult TcpSocket::recv_bytes(Span<uint8_t> buffer)
   {
+    const std::size_t buffer_size = buffer.size();
+
     while (!buffer.empty()) {
       auto result = recv_raw_bytes(buffer);
 
-      switch (result.status) {
-        case SocketStatus::Data:
-          buffer = buffer.last_except(result.length);
-          break;
-        case SocketStatus::Block:
-          continue;
-        case SocketStatus::Close:
-        case SocketStatus::Error:
-          return result.status;
+      if (result) {
+        buffer = buffer.last_except(*result);
+      } else {
+        if (result.error() != SocketStatus::Block) {
+          return result;
+        }
       }
     }
 
-    return SocketStatus::Data;
+    return buffer_size;
   }
 
-  SocketStatus TcpSocket::send_packet(const Packet& packet)
+  SocketResult TcpSocket::send_packet(const Packet& packet)
   {
     auto size = static_cast<uint64_t>(packet.size());
     auto header = details::encode_header(size);
 
-    auto status = send_bytes(header);
+    auto result = send_bytes(header);
 
-    if (status != SocketStatus::Data) {
-      return status;
+    if (!result) {
+      return result;
     }
 
     return send_bytes(packet.as_span());
   }
 
-  SocketStatus TcpSocket::recv_packet(Packet& packet)
+  SocketResult TcpSocket::recv_packet(Packet& packet)
   {
     details::SizeHeader header;
-    auto status = recv_bytes(header);
+    auto result = recv_bytes(header);
 
-    if (status != SocketStatus::Data) {
-      return status;
+    if (!result) {
+      return result;
     }
 
     auto size = details::decode_header(header);

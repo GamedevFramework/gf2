@@ -36,9 +36,9 @@ namespace {
       ASSERT_TRUE(socket);
 
       uint8_t buffer[4] = { 0x42, 0x69, 0xFF, 0x12 };
-      auto res = socket.send_raw_bytes(buffer);
-      EXPECT_EQ(res.status, gf::SocketStatus::Data);
-      EXPECT_EQ(res.length, 4u);
+      auto result = socket.send_raw_bytes(buffer);
+      EXPECT_TRUE(result);
+      EXPECT_EQ(*result, 4u);
 
       auto local = socket.local_address();
       std::cout << "local host: " << local.hostname(gf::SocketAddressFormat::Numeric) << '\n';
@@ -52,17 +52,18 @@ namespace {
     gf::TcpSocket socket = listener.accept();
     ASSERT_TRUE(socket);
 
-    uint8_t buffer[10];
-    auto res = socket.recv_raw_bytes(buffer);
-    EXPECT_EQ(res.status, gf::SocketStatus::Data);
-    EXPECT_EQ(res.length, 4u);
+    uint8_t buffer[10] = { 0 };
+    auto result = socket.recv_raw_bytes(buffer);
+    EXPECT_TRUE(result);
+    EXPECT_EQ(*result, 4u);
     EXPECT_EQ(buffer[0], 0x42);
     EXPECT_EQ(buffer[1], 0x69);
     EXPECT_EQ(buffer[2], 0xFF);
     EXPECT_EQ(buffer[3], 0x12);
 
-    res = socket.recv_raw_bytes(buffer);
-    EXPECT_EQ(res.status, gf::SocketStatus::Close);
+    result = socket.recv_raw_bytes(buffer);
+    EXPECT_FALSE(result);
+    EXPECT_EQ(result.error(), gf::SocketStatus::Close);
 
     client_thread.join();
   }
@@ -81,9 +82,9 @@ namespace {
         ASSERT_TRUE(socket);
 
         uint8_t buffer[4] = { 0x42, 0x69, 0xFF, 0x12 };
-        auto res = socket.send_raw_bytes(buffer);
-        EXPECT_EQ(res.status, gf::SocketStatus::Data);
-        EXPECT_EQ(res.length, 4u);
+        auto result = socket.send_raw_bytes(buffer);
+        EXPECT_TRUE(result);
+        EXPECT_EQ(*result, 4u);
       }
     });
 
@@ -91,17 +92,18 @@ namespace {
       gf::TcpSocket socket = listener.accept();
       ASSERT_TRUE(socket);
 
-      uint8_t buffer[10];
-      auto res = socket.recv_raw_bytes(buffer);
-      EXPECT_EQ(res.status, gf::SocketStatus::Data);
-      EXPECT_EQ(res.length, 4u);
+      uint8_t buffer[10] = { 0 };
+      auto result = socket.recv_raw_bytes(buffer);
+      EXPECT_TRUE(result);
+      EXPECT_EQ(*result, 4u);
       EXPECT_EQ(buffer[0], 0x42);
       EXPECT_EQ(buffer[1], 0x69);
       EXPECT_EQ(buffer[2], 0xFF);
       EXPECT_EQ(buffer[3], 0x12);
 
-      res = socket.recv_raw_bytes(buffer);
-      EXPECT_EQ(res.status, gf::SocketStatus::Close);
+      result = socket.recv_raw_bytes(buffer);
+      EXPECT_FALSE(result);
+      EXPECT_EQ(result.error(), gf::SocketStatus::Close);
     }
 
     client_thread.join();
@@ -120,29 +122,30 @@ namespace {
       socket.set_non_blocking();
 
       uint8_t buffer[4] = { 0x42, 0x69, 0xFF, 0x12 };
-      auto res = socket.send_raw_bytes(buffer);
-      EXPECT_EQ(res.status, gf::SocketStatus::Data);
-      EXPECT_EQ(res.length, 4u);
+      auto result = socket.send_raw_bytes(buffer);
+      EXPECT_TRUE(result);
+      EXPECT_EQ(*result, 4u);
 
-      res = socket.recv_raw_bytes(buffer);
-      EXPECT_EQ(res.status, gf::SocketStatus::Block);
-      EXPECT_EQ(res.length, 0u);
+      result = socket.recv_raw_bytes(buffer);
+      EXPECT_FALSE(result);
+      EXPECT_EQ(result.error(), gf::SocketStatus::Block);
     });
 
     gf::TcpSocket socket = listener.accept();
     ASSERT_TRUE(socket);
 
-    uint8_t buffer[10];
-    auto res = socket.recv_raw_bytes(buffer);
-    EXPECT_EQ(res.status, gf::SocketStatus::Data);
-    EXPECT_EQ(res.length, 4u);
+    uint8_t buffer[10] = { 0 };
+    auto result = socket.recv_raw_bytes(buffer);
+    EXPECT_TRUE(result);
+    EXPECT_EQ(*result, 4u);
     EXPECT_EQ(buffer[0], 0x42);
     EXPECT_EQ(buffer[1], 0x69);
     EXPECT_EQ(buffer[2], 0xFF);
     EXPECT_EQ(buffer[3], 0x12);
 
-    res = socket.recv_raw_bytes(buffer);
-    EXPECT_EQ(res.status, gf::SocketStatus::Close);
+    result = socket.recv_raw_bytes(buffer);
+    EXPECT_FALSE(result);
+    EXPECT_EQ(result.error(), gf::SocketStatus::Close);
 
     client_thread.join();
   }
@@ -153,13 +156,13 @@ TEST(TcpSocketTest, TcpSocketDefault) {
   gf::TcpSocket socket;
 
   EXPECT_FALSE(socket);
-} // TEST(TcpSocketTest)
+}
 
 TEST(TcpSocketTest, TcpListenerDefault) {
   gf::TcpListener listener;
 
   EXPECT_FALSE(listener);
-} // TEST(TcpSocketTest)
+}
 
 TEST(TcpSocketTest, TcpListenerServiceUnspec) {
   test_tcp_listener_service<gf::SocketFamily::Unspec>();

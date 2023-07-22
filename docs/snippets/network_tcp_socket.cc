@@ -12,13 +12,16 @@ void doc_TcpSocket() {
 
   uint8_t bytes[] = { 0x42, 0x69, 0x13, 0x12 };
 
-  if (socket.send_bytes(bytes) != gf::SocketStatus::Data) {
+  auto send_result = socket.send_bytes(bytes);
+
+  if (!send_result) {
     // Handle error
     return;
   }
 
 
-  if (socket.recv_bytes(bytes) != gf::SocketStatus::Data) {
+  auto recv_result = socket.recv_bytes(bytes);
+  if (!recv_result) {
     // Handle error
     return;
   }

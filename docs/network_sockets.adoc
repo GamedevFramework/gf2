@@ -56,32 +56,6 @@ A socket address format used to transform a socket address to a string.
 
 See also: <<_socket_address>>
 
-[#_socket_data_result]
-=== `gf::SocketDataResult`
-
-[source]
-----
-#include <gf2/SocketTypes.h>
-struct SocketDataResult;
-----
-
-The result of a raw socket operation.
-
-.Data members for `gf::SocketDataResult`
-[cols="1,1,2"]
-|===
-| Name | Type | Description
-
-| `status`
-| `SocketStatus`
-| The status of the operation
-
-| `length`
-| `std::size_t`
-| The length of sent or received data
-|===
-
-
 [#_socket_family]
 === `gf::SocketFamily`
 
@@ -109,6 +83,19 @@ A socket family indicates the type of socket. The family can be specified explic
 |===
 
 See also: <<_socket_address>>
+
+[#_socket_result]
+=== `gf::SocketResult`
+
+[source]
+----
+#include <gf2/SocketTypes.h>
+using SocketResult = Result<std::size_t, SocketStatus>;
+----
+
+The result of a socket operation: either a size of the data that was sent or received, or a status of the connection.
+
+See also: <<_socket_status>>
 
 [#_socket_selector]
 === `gf::SocketSelector`
@@ -158,15 +145,12 @@ See also: <<_socket_selector>>
 enum class SocketStatus : uint8_t;
 ----
 
-The status of a socket operation.
+The status of a socket operation in case it did not send any data.
 
 .Enumerators for `gf::SocketStatus`
 [cols="1,1"]
 |===
 | Value | Description
-
-| `gf::SocketStatus::Data`
-| Some data has been sent or received.
 
 | `gf::SocketStatus::Block`
 | The socket would have blocked.
@@ -177,6 +161,8 @@ The status of a socket operation.
 | `gf::SocketStatus::Error`
 | An error occurred.
 |===
+
+See also: <<_socket_result>>
 
 [#_tcp_listener]
 === `gf::TcpListener`

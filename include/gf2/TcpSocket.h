@@ -8,6 +8,7 @@
 #include <string>
 
 #include "NetworkApi.h"
+#include "Result.h"
 #include "Socket.h"
 #include "Span.h"
 
@@ -27,14 +28,14 @@ namespace gf {
 
     SocketAddress remote_address() const;
 
-    SocketDataResult send_raw_bytes(Span<const uint8_t> buffer);
-    SocketDataResult recv_raw_bytes(Span<uint8_t> buffer);
+    SocketResult send_raw_bytes(Span<const uint8_t> buffer);
+    SocketResult recv_raw_bytes(Span<uint8_t> buffer);
 
-    SocketStatus send_bytes(Span<const uint8_t> buffer);
-    SocketStatus recv_bytes(Span<uint8_t> buffer);
+    SocketResult send_bytes(Span<const uint8_t> buffer);
+    SocketResult recv_bytes(Span<uint8_t> buffer);
 
-    SocketStatus send_packet(const Packet& packet);
-    SocketStatus recv_packet(Packet& packet);
+    SocketResult send_packet(const Packet& packet);
+    SocketResult recv_packet(Packet& packet);
 
   private:
     friend class TcpListener;

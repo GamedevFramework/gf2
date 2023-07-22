@@ -11,6 +11,7 @@
 #endif
 
 #include "NetworkApi.h"
+#include "Result.h"
 
 namespace gf {
 
@@ -25,16 +26,12 @@ namespace gf {
   } // namespace details
 
   enum class SocketStatus : uint8_t {
-    Data,
     Block,
     Close,
     Error,
   };
 
-  struct GF_NETWORK_API SocketDataResult {
-    SocketStatus status;
-    std::size_t length;
-  };
+  using SocketResult = Result<std::size_t, SocketStatus>;
 
   enum class SocketSelectorStatus : uint8_t {
     Event,

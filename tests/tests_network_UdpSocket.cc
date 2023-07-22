@@ -52,23 +52,24 @@ namespace {
       EXPECT_EQ(address.family(), actual_family);
 
       uint8_t buffer[4] = { 0x42, 0x69, 0xFF, 0x12 };
-      auto res = socket.send_raw_bytes_to(buffer, address);
-      EXPECT_EQ(res.status, gf::SocketStatus::Data);
-      EXPECT_EQ(res.length, 4u);
+      auto result = socket.send_raw_bytes_to(buffer, address);
+      EXPECT_TRUE(result);
+      EXPECT_EQ(*result, 4u);
     });
 
     auto actual_family = socket.local_address().family();
 
     uint8_t buffer[10];
-    auto [res, address] = socket.recv_raw_bytes_from(buffer);
-    EXPECT_EQ(res.status, gf::SocketStatus::Data);
-    EXPECT_EQ(res.length, 4u);
+    gf::SocketAddress remote_address;
+    auto result = socket.recv_raw_bytes_from(buffer, &remote_address);
+    EXPECT_TRUE(result);
+    EXPECT_EQ(*result, 4u);
     EXPECT_EQ(buffer[0], 0x42);
     EXPECT_EQ(buffer[1], 0x69);
     EXPECT_EQ(buffer[2], 0xFF);
     EXPECT_EQ(buffer[3], 0x12);
 
-    EXPECT_EQ(address.family(), actual_family);
+    EXPECT_EQ(remote_address.family(), actual_family);
 
     client_thread.join();
   }
@@ -89,45 +90,45 @@ namespace {
         gf::SocketAddress address = socket.remote_address(UdpHost, UdpTestService);
         EXPECT_EQ(address.family(), actual_family);
         uint8_t buffer[4] = { 0x42, 0x69, 0xFF, 0x12 };
-        auto res = socket.send_raw_bytes_to(buffer, address);
-        EXPECT_EQ(res.status, gf::SocketStatus::Data);
-        EXPECT_EQ(res.length, 4u);
+        auto result = socket.send_raw_bytes_to(buffer, address);
+        EXPECT_TRUE(result);
+        EXPECT_EQ(*result, 4u);
       }
 
       {
         uint8_t buffer[10];
-        auto [res, address] = socket.recv_raw_bytes_from(buffer);
-        EXPECT_EQ(res.status, gf::SocketStatus::Data);
-        EXPECT_EQ(res.length, 4u);
+        gf::SocketAddress remote_address;
+        auto result = socket.recv_raw_bytes_from(buffer, &remote_address);
+        EXPECT_TRUE(result);
+        EXPECT_EQ(*result, 4u);
         EXPECT_EQ(buffer[0], 0x23);
         EXPECT_EQ(buffer[1], 0x17);
         EXPECT_EQ(buffer[2], 0x21);
         EXPECT_EQ(buffer[3], 0x23);
-        EXPECT_EQ(address.family(), actual_family);
+        EXPECT_EQ(remote_address.family(), actual_family);
       }
     });
 
     auto actual_family = socket.local_address().family();
-    gf::SocketAddress origin;
+    gf::SocketAddress remote_address;
 
     {
       uint8_t buffer[10];
-      auto [res, address] = socket.recv_raw_bytes_from(buffer);
-      EXPECT_EQ(res.status, gf::SocketStatus::Data);
-      EXPECT_EQ(res.length, 4u);
+      auto result = socket.recv_raw_bytes_from(buffer, &remote_address);
+      EXPECT_TRUE(result);
+      EXPECT_EQ(*result, 4u);
       EXPECT_EQ(buffer[0], 0x42);
       EXPECT_EQ(buffer[1], 0x69);
       EXPECT_EQ(buffer[2], 0xFF);
       EXPECT_EQ(buffer[3], 0x12);
-      EXPECT_EQ(address.family(), actual_family);
-      origin = address;
+      EXPECT_EQ(remote_address.family(), actual_family);
     }
 
     {
       uint8_t buffer[4] = { 0x23, 0x17, 0x21, 0x23 };
-      auto res = socket.send_raw_bytes_to(buffer, origin);
-      EXPECT_EQ(res.status, gf::SocketStatus::Data);
-      EXPECT_EQ(res.length, 4u);
+      auto result = socket.send_raw_bytes_to(buffer, remote_address);
+      EXPECT_TRUE(result);
+      EXPECT_EQ(*result, 4u);
     }
 
     client_thread.join();

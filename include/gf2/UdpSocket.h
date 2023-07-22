@@ -22,11 +22,11 @@ namespace gf {
 
     SocketAddress remote_address(const std::string& hostname, const std::string& service);
 
-    SocketDataResult send_raw_bytes_to(Span<const uint8_t> buffer, const SocketAddress& address);
-    std::tuple<SocketDataResult, SocketAddress> recv_raw_bytes_from(Span<uint8_t> buffer);
+    SocketResult send_raw_bytes_to(Span<const uint8_t> buffer, const SocketAddress& remote_address);
+    SocketResult recv_raw_bytes_from(Span<uint8_t> buffer, SocketAddress* remote_address);
 
-    bool send_bytes_to(Span<const uint8_t> buffer, const SocketAddress& address);
-    std::tuple<bool, SocketAddress> recv_bytes_from(Span<uint8_t> buffer);
+    SocketResult send_bytes_to(Span<const uint8_t> buffer, const SocketAddress& remote_address);
+    SocketResult recv_bytes_from(Span<uint8_t> buffer, SocketAddress* remote_address);
   };
 
 } // namespace gf

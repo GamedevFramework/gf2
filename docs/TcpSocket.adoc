@@ -53,7 +53,7 @@ Shutdown the connection.
 
 [source]
 ----
-SocketStatus send_bytes(Span<const uint8_t> buffer);
+SocketResult send_bytes(Span<const uint8_t> buffer);
 ----
 
 Send a whole buffer to the socket. This function ensures the whole buffer is sent unless an error occurs.
@@ -64,7 +64,7 @@ See also: <<_recv_bytes>>
 
 [source]
 ----
-SocketStatus send_packet(const Packet& packet);
+SocketResult send_packet(const Packet& packet);
 ----
 
 Send a packet to the socket.
@@ -75,7 +75,7 @@ See also: <<_recv_packet>>
 
 [source]
 ----
-SocketDataResult send_raw_bytes(Span<const uint8_t> buffer);
+SocketResult send_raw_bytes(Span<const uint8_t> buffer);
 ----
 
 Send some bytes over to the socket.
@@ -86,7 +86,7 @@ See also: <<_recv_raw_bytes>>
 
 [source]
 ----
-SocketStatus recv_bytes(Span<uint8_t> buffer);
+SocketResult recv_bytes(Span<uint8_t> buffer);
 ----
 
 Receive a whole buffer from the socket. This function ensures the whole buffer is received unless an error occurs.
@@ -97,7 +97,7 @@ See also: <<_send_bytes>>
 
 [source]
 ----
-SocketStatus recv_packet(Packet& packet);
+SocketResult recv_packet(Packet& packet);
 ----
 
 Receive a packet from the socket.
@@ -108,7 +108,7 @@ See also: <<_send_packet>>
 
 [source]
 ----
-SocketDataResult recv_raw_bytes(Span<uint8_t> buffer);
+SocketResult recv_raw_bytes(Span<uint8_t> buffer);
 ----
 
 Receive some bytes from the socket.

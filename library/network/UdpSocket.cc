@@ -45,74 +45,59 @@ namespace gf {
     return {};
   }
 
-  SocketDataResult UdpSocket::send_raw_bytes_to(Span<const uint8_t> buffer, const SocketAddress& address)
+  SocketResult UdpSocket::send_raw_bytes_to(Span<const uint8_t> buffer, const SocketAddress& remote_address)
   {
-    auto ret = ::sendto(handle(), details::send_pointer(buffer), details::send_length(buffer), details::NoFlag, address.storage_ptr(), address.length());
+    auto ret = ::sendto(handle(), details::send_pointer(buffer), details::send_length(buffer), details::NoFlag, remote_address.storage_ptr(), remote_address.length());
 
     if (ret == details::InvalidCommunication) {
       if (details::native_would_block(details::last_error_code())) {
-        return { SocketStatus::Block, 0u };
+        return error(SocketStatus::Block);
       }
 
       Log::error("Error while sending data. Reason: {}", details::last_error_string());
-      return { SocketStatus::Error, 0u };
+      return error(SocketStatus::Error);
     }
 
-    return { SocketStatus::Data, static_cast<std::size_t>(ret) };
+    return static_cast<std::size_t>(ret);
   }
 
-  std::tuple<SocketDataResult, SocketAddress> UdpSocket::recv_raw_bytes_from(Span<uint8_t> buffer)
+  SocketResult UdpSocket::recv_raw_bytes_from(Span<uint8_t> buffer, SocketAddress* remote_address)
   {
-    SocketAddress address;
+    SocketAddress dummy;
+    SocketAddress& address = remote_address != nullptr ? *remote_address : dummy;
+
     auto ret = ::recvfrom(handle(), details::recv_pointer(buffer), details::recv_length(buffer), details::NoFlag, address.storage_ptr(), address.length_ptr());
 
     if (ret == details::InvalidCommunication) {
       if (details::native_would_block(details::last_error_code())) {
-        const SocketDataResult result = { SocketStatus::Block, 0u };
-        return std::make_tuple(result, address);
+        return error(SocketStatus::Block);
       }
 
       Log::error("Error while receiving data. Reason: {}", details::last_error_string());
-      const SocketDataResult result = { SocketStatus::Error, 0u };
-      return std::make_tuple(result, address);
+      return error(SocketStatus::Error);
     }
 
-    const SocketDataResult result = { SocketStatus::Data, static_cast<std::size_t>(ret) };
-    return std::make_tuple(result, address);
+    return static_cast<std::size_t>(ret);
   }
 
   static constexpr std::size_t MaxDatagramSize = 65507;
 
-  bool UdpSocket::send_bytes_to(Span<const uint8_t> buffer, const SocketAddress& address)
+  SocketResult UdpSocket::send_bytes_to(Span<const uint8_t> buffer, const SocketAddress& remote_address)
   {
     if (buffer.size() > MaxDatagramSize) {
-      return false;
+      return std::size_t(0);
     }
 
-    auto result = send_raw_bytes_to(buffer, address);
-
-    if (result.status == SocketStatus::Data) {
-      return result.length == buffer.size();
-    }
-
-    assert(result.status != SocketStatus::Close);
-    return false;
+    return send_raw_bytes_to(buffer, remote_address);
   }
 
-  std::tuple<bool, SocketAddress> UdpSocket::recv_bytes_from(Span<uint8_t> buffer)
+  SocketResult UdpSocket::recv_bytes_from(Span<uint8_t> buffer, SocketAddress* remote_address)
   {
     if (buffer.size() > MaxDatagramSize) {
-      return std::make_tuple(false, SocketAddress());
+      return std::size_t(0);
     }
 
-    auto [result, address] = recv_raw_bytes_from(buffer);
-
-    if (result.status == SocketStatus::Data) {
-      return std::make_tuple(result.length == buffer.size(), address);
-    }
-
-    assert(result.status != SocketStatus::Close);
-    return std::make_tuple(false, address);
+    return recv_raw_bytes_from(buffer, remote_address);
   }
 
 } // namespace gf
