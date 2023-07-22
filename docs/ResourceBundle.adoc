@@ -44,6 +44,18 @@ The action to be taken in the <<_handle>> function.
 
 == Member functions
 
+=== `ResourceBundle` constructors
+
+[source]
+----
+ResourceBundle() = default; <1>
+template<typename F>
+ResourceBundle(F&& callback); <2>
+----
+
+<1> Default constructor.
+<2> Constructor with a callback. See <<_set_callback>>.
+
 === `handle`
 
 [source]
