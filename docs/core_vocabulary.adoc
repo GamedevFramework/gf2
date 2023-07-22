@@ -89,6 +89,20 @@ Semantic type to represente "any".
 
 See also: <<_any>>
 
+[#_error_type]
+=== `gf::Error<E>`
+
+[source]
+----
+#include <gf2/Result.h>
+template<typename E>
+struct Error;
+----
+
+An `Error<E>` is a simple wrapper around an error type `E`.
+
+See also: <<_error>>, <<_result>>
+
 [#_flags]
 === `gf::Flags<E>`
 
@@ -125,6 +139,18 @@ Semantic type to represente "none".
 
 See also: <<_none>>
 
+[#_result]
+=== `gf::Result<T,E>`
+
+[source]
+----
+#include <gf2/Result.h>
+template<typename T, typename E>
+class Result;
+----
+
+A `Result<T,E>` represents either a valid value of type `T` or an error of type `E`. xref:Result.adoc[*Read more...*]
+
 [#_zero_type]
 === `gf::ZeroType`
 
@@ -137,3 +163,17 @@ struct ZeroType;
 Semantic type to represente "zero".
 
 See also: <<_zero>>
+
+== Functions
+
+=== `error`
+
+[source]
+----
+template<typename E>
+Error<E> error(E&& e);
+----
+
+Create an error wrapper with a value of type `E`.
+
+See also: <<_error_type>>

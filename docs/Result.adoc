@@ -1,0 +1,141 @@
+= `gf::Result<T,E>` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+A `Result<T,E>` represents either a valid value of type `T` or an error of type `E`.
+
+xref:core_vocabulary.adoc[< Back to `core` Vocabulary]
+
+== Description
+
+[source]
+----
+#include <gf2/Result.h>
+template<typename T, typename E>
+class Result;
+----
+
+A result is backed by a `std::variant<T,E>`.
+
+.Example for `gf::Result<T,E>`
+[source,indent=0]
+----
+include::snippets/core_result.cc[tag=safe_sqrt]
+----
+
+== Member Functions
+
+=== `Result` constructors
+
+[source]
+----
+constexpr Result() = default; <1>
+template<typename U = T>
+constexpr Result(U&& result); <2>
+template<typename... Args>
+constexpr Result(std::in_place_t, Args&&... args); <3>
+constexpr Result(const Error<E>& result); <4>
+constexpr Result(Error<E>&& result); <5>
+----
+
+<1> Default constructor, with a default value.
+<2> Constructor for a value.
+<3> In place constructor for a value.
+<4> Constructor for an error.
+<5> Constructor for an error.
+
+=== `operator=`
+
+[source]
+----
+template<typename U = T>
+Result& operator=(U&& other); <1>
+Result& operator=(const Error<E>& other); <2>
+Result& operator=(Error<E>&& other); <3>
+----
+
+<1> Assign a value.
+<2> Assign an error.
+<3> Assign an error.
+
+=== `operator bool`
+
+[source]
+----
+constexpr explicit operator bool() const noexcept;
+----
+
+Check if the result is a value.
+
+See also: <<_has_value>>
+
+=== `operator\->`
+
+[source]
+----
+constexpr T* operator->();
+constexpr const T* operator->() const;
+----
+
+Get a pointer to the value of the result. The result must hold a value.
+
+=== `operator*`
+
+[source]
+----
+constexpr T& operator*() &;
+constexpr const T& operator*() const &;
+constexpr T&& operator*() &&;
+constexpr const T&& operator*() const &&;
+----
+
+Get a reference to the value of the result. The result must hold a value.
+
+See also: <<_value>>
+
+=== `error`
+
+[source]
+----
+constexpr E& error() &;
+constexpr const E& error() const &;
+constexpr E&& error() &&;
+constexpr const E&& error() const &&;
+----
+
+Get the error of the result. The result must hold an error.
+
+=== `has_value`
+
+[source]
+----
+constexpr bool has_value() const noexcept;
+----
+
+Check if the result has a value.
+
+
+=== `value`
+
+[source]
+----
+constexpr T& value() &;
+constexpr const T& value() const &;
+constexpr T&& value() &&;
+constexpr const T&& value() const &&;
+----
+
+Get the value of the result. The result must hold a value.
+
+=== `value_or`
+
+[source]
+----
+template<typename U>
+constexpr T value_or(U&& default_value) const &;
+template<typename U>
+constexpr T value_or(U&& default_value) &&;
+----
+
+Get the value of the result, or a default value if the result is an error.

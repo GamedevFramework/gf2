@@ -118,7 +118,7 @@ namespace gf::details {
     };
 
     for (int i = 0; i < 8; ++i) {
-      header[8 - i - 1] = static_cast<uint8_t>(size % 0x100);
+      header[8 - i - 1] = static_cast<uint8_t>(size % 0x100); // NOLINT
       size >>= 8;
     }
 

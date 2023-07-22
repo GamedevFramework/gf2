@@ -9,7 +9,7 @@ xref:index.adoc[< Back to main page]
 == `core`
 
 - xref:core_utilities.adoc[Utilities] (xref:Log.adoc[`Log`], xref:Random.adoc[`Random`], xref:Clock.adoc[`Clock`], xref:Time.adoc[`Time`])
-- xref:core_vocabulary.adoc[Vocabulary] (xref:Flags.adoc[`Flags<E>`], xref:Id.adoc[`Id`])
+- xref:core_vocabulary.adoc[Vocabulary] (xref:Result.adoc[`Result<T,E>`], xref:Flags.adoc[`Flags<E>`], xref:Id.adoc[`Id`])
 - xref:core_math.adoc[Math] (xref:Vec2.adoc[`Vec2<T>`], xref:Vec3.adoc[`Vec3<T>`], xref:core_vec.adoc[vector-related types and functions], xref:Rect.adoc[`Rect<T>`], xref:Circ.adoc[`Circ<T>`])
 - xref:core_color.adoc[Color] (xref:Color.adoc[`Color`], xref:Image.adoc[`Image`], `Bitmap`)
 - xref:core_container.adoc[Container] (xref:Array2D.adoc[`Array2D<T>`], xref:Span.adoc[`Span<T>`])

@@ -25,26 +25,26 @@ namespace gf {
   template<typename T, typename E>
   class Result {
   public:
-    Result() = default;
+    constexpr Result() = default;
 
-    template<typename U = T, typename X = std::enable_if_t<std::is_constructible_v<T, U>>>
-    Result(U&& result)
+    template<typename U = T, typename = std::enable_if_t<std::is_constructible_v<T, U>>>
+    constexpr Result(U&& result)
     : m_result(std::in_place_index<0>, std::forward<U>(result))
     {
     }
 
-    template<typename... Args, typename X = std::enable_if_t<std::is_constructible_v<T, Args...>>>
-    Result(std::in_place_t /* unused */, Args&&... args)
+    template<typename... Args, typename = std::enable_if_t<std::is_constructible_v<T, Args...>>>
+    constexpr Result(std::in_place_t /* unused */, Args&&... args)
     : m_result(std::in_place_index<0>, std::forward<Args>(args)...)
     {
     }
 
-    Result(const Error<E>& result)
+    constexpr Result(const Error<E>& result)
     : m_result(std::in_place_index<1>, result.error)
     {
     }
 
-    Result(Error<E>&& result)
+    constexpr Result(Error<E>&& result)
     : m_result(std::in_place_index<1>, std::move(result).error)
     {
     }
@@ -56,7 +56,7 @@ namespace gf {
     Result& operator=(const Result&) = default;
     Result& operator=(Result&&) noexcept = default;
 
-    template<typename U = T, typename X = std::enable_if_t<std::is_constructible_v<T, U>>>
+    template<typename U = T, typename = std::enable_if_t<std::is_constructible_v<T, U>>>
     Result& operator=(U&& other)
     {
       m_result.template emplace<0>(std::forward<U>(other));
@@ -85,82 +85,82 @@ namespace gf {
       return m_result.index() == 0;
     }
 
-    T& value() &
+    constexpr T& value() &
     {
       assert(m_result.index() == 0);
       return std::get<0>(m_result);
     }
 
-    const T& value() const &
+    constexpr const T& value() const &
     {
       assert(m_result.index() == 0);
       return std::get<0>(m_result);
     }
 
-    T&& value() &&
+    constexpr T&& value() &&
     {
       assert(m_result.index() == 0);
       return std::get<0>(std::move(m_result));
     }
 
-    const T&& value() const &&
+    constexpr const T&& value() const &&
     {
       assert(m_result.index() == 0);
       return std::get<0>(std::move(m_result));
     }
 
-    E& error() &
+    constexpr E& error() &
     {
       assert(m_result.index() == 1);
       return std::get<1>(m_result);
     }
 
-    const E& error() const &
+    constexpr const E& error() const &
     {
       assert(m_result.index() == 1);
       return std::get<1>(m_result);
     }
 
-    E&& error() &&
+    constexpr E&& error() &&
     {
       assert(m_result.index() == 1);
       return std::get<1>(std::move(m_result));
     }
 
-    const E&& error() const &&
+    constexpr const E&& error() const &&
     {
       assert(m_result.index() == 1);
       return std::get<1>(std::move(m_result));
     }
 
-    T* operator->() noexcept
+    constexpr T* operator->()
     {
       assert(m_result.index() == 0);
       return &std::get<0>(m_result);
     }
 
-    const T* operator->() const noexcept
+    constexpr const T* operator->() const
     {
       assert(m_result.index() == 0);
       return &std::get<0>(m_result);
     }
 
-    T& operator*() &
+    constexpr T& operator*() &
     {
       return value();
     }
 
-    const T& operator*() const &
+    constexpr const T& operator*() const &
     {
       return value();
     }
 
-    T&& operator*() &&
+    constexpr T&& operator*() &&
     {
       return value();
     }
 
-    const T&& operator*() const &&
+    constexpr const T&& operator*() const &&
     {
       return value();
     }
