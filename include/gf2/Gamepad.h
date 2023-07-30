@@ -9,7 +9,7 @@
 
 namespace gf {
 
-  enum class GamepadButton : int32_t {
+  enum class GamepadButton : int32_t { // NOLINT(performance-enum-size)
     Invalid = -1,
     A,
     B,
@@ -30,7 +30,7 @@ namespace gf {
 
   constexpr GamepadButton AnyGamepadButton = static_cast<GamepadButton>(0x7FFFFFFF);
 
-  enum class GamepadAxis : int32_t {
+  enum class GamepadAxis : int32_t { // NOLINT(performance-enum-size)
     Invalid = -1,
     LeftX,
     LeftY,
@@ -42,15 +42,15 @@ namespace gf {
 
   constexpr GamepadAxis AnyGamepadAxis = static_cast<GamepadAxis>(0x7FFFFFFF);
 
-  enum class GamepadAxisDirection : uint32_t {
+  enum class GamepadAxisDirection : uint8_t {
     Positive,
     Negative,
   };
 
-  enum class GamepadHwId : int {
+  enum class GamepadHwId : int { // NOLINT(performance-enum-size)
   };
 
-  enum class GamepadId : int32_t {
+  enum class GamepadId : int32_t { // NOLINT(performance-enum-size)
   };
 
   constexpr GamepadId AnyGamepad = static_cast<GamepadId>(INT32_C(-1));

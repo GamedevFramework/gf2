@@ -16,7 +16,7 @@ namespace gf {
   public:
     Log() = delete;
 
-    enum Level : uint32_t {
+    enum Level : uint8_t {
       Debug,
       Info,
       Warn,

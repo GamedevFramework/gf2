@@ -15,10 +15,10 @@ using SDL_Window = struct SDL_Window;
 
 namespace gf {
 
-  enum class WindowHints : uint32_t {
-    Resizable = 0x0001,
-    Visible = 0x0002,
-    Decorated = 0x0004,
+  enum class WindowHints : uint8_t {
+    Resizable = 0x01,
+    Visible = 0x02,
+    Decorated = 0x04,
   };
 
   template<>

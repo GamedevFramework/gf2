@@ -25,7 +25,7 @@ A `Packet` is a sequence of bytes that comes from the serialization of a structu
 [source]
 ----
 template<typename T>
-T as()
+T as();
 ----
 
 Deserialize the underlying bytes into an object.
@@ -56,7 +56,7 @@ Ensure that the sequence of bytes is large enough.
 [source]
 ----
 template<typename T>
-void set(const T& data)
+void set(const T& data);
 ----
 
 Serialize the object into a sequence of bytes.

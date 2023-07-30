@@ -15,7 +15,7 @@
 namespace gf {
   class InputStream;
 
-  enum PixelFormat {
+  enum class PixelFormat : uint8_t {
     Rgba32,
     Rgb24,
   };

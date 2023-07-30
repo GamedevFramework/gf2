@@ -17,7 +17,7 @@
 
 namespace gf {
 
-  enum EventType : uint32_t {
+  enum EventType : uint8_t {
     Quit,
 
     WindowShown,

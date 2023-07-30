@@ -46,7 +46,7 @@ namespace {
   gf::Deserializer& operator|(gf::Deserializer& ar, SizeWrapper& data)
   {
     data.size = 0;
-    ar.read_raw_size(data.size);
+    ar.read_raw_size(&data.size);
     return ar;
   }
 

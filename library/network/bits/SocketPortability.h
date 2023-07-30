@@ -93,7 +93,7 @@ namespace gf::details {
   constexpr ssize_t InvalidCommunication = -1;
 #endif
 
-  enum SocketType : int {
+  enum SocketType : int { // NOLINT
     Tcp = SOCK_STREAM,
     Udp = SOCK_DGRAM,
   };

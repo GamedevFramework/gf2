@@ -17,7 +17,7 @@
 
 namespace gf {
 
-  enum class SocketFamily : int32_t {
+  enum class SocketFamily : int32_t { // NOLINT(performance-enum-size)
     Unspec = AF_UNSPEC,
     IPv4 = AF_INET,
     IPv6 = AF_INET6,

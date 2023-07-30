@@ -10,7 +10,7 @@
 
 namespace gf {
 
-  enum class Modifier : uint32_t {
+  enum class Modifier : uint32_t { // NOLINT(performance-enum-size)
     None = 0x0000,
     LeftShift = 0x0001,
     RightShift = 0x0002,
@@ -33,7 +33,7 @@ namespace gf {
   struct EnableBitmaskOperators<Modifier> : std::true_type {
   };
 
-  enum class Scancode : uint32_t {
+  enum class Scancode : uint32_t { // NOLINT(performance-enum-size)
     Unknown = 0,
     A = 4,
     B = 5,

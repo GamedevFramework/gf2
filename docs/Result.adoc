@@ -16,7 +16,7 @@ template<typename T, typename E>
 class Result;
 ----
 
-A result is backed by a `std::variant<T,E>`.
+A result is backed by a link:https://en.cppreference.com/w/cpp/utility/variant[`std::variant`].
 
 .Example for `gf::Result<T,E>`
 [source,indent=0]

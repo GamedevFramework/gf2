@@ -7,7 +7,7 @@
 
 namespace gf {
 
-  enum class MouseButton : uint32_t {
+  enum class MouseButton : uint32_t { // NOLINT(performance-enum-size)
     None,
     Left,
     Middle,

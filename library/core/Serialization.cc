@@ -10,6 +10,7 @@
 #include <cstring>
 
 #include <limits>
+#include <stdexcept>
 
 #include <gf2/Log.h>
 
@@ -143,6 +144,40 @@ namespace gf {
 
   } // namespace
 
+  /* As size is used many times in the library (for every container), and
+   * as small size are the common case, this function use a variable-length
+   * encoding for size.
+   *
+   * Size between 0 and 0xFE (included) are encoded as is.
+   *
+   * Size between 0xFF and 0xFFFE (included) are encoded as follows:
+   * - first a 0xFF is written in the stream
+   * - then an offset of 0xFF is substracted from the size so that it is now
+   *   in the range [ 0x00, 0xFEFF ], meaning that no offseted size starts
+   *   with 0xFF. The result is written as a big endian 2 byte number
+   *
+   * Size between 0xFFFF and 0xFFFFFE (included) are encoded as follows:
+   * - first two 0xFF are written the stream
+   * - then an offset of 0xFFFF is substracted from the size so that is is now
+   *   in the range [ 0x00, 0xFEFFFF ], meaning that no offseted size starts
+   *   with 0xFF. The result is written as a big endian 3 byte number.
+   *
+   * And so on.
+   *
+   * The encoded size of a size is as follows:
+   * from...            to...               encoded size
+   * 0x00               0xFE                1 byte
+   * 0xFF               0xFFFE              3 bytes
+   * 0xFFFF             0xFFFFFE            5 bytes
+   * 0xFFFFFF           0xFFFFFFFE          7 bytes
+   * 0xFFFFFFFF         0xFFFFFFFFFE        9 bytes
+   * 0xFFFFFFFFFF       0xFFFFFFFFFFFE      11 bytes
+   * 0xFFFFFFFFFFFF     0xFFFFFFFFFFFFFE    13 bytes
+   * 0xFFFFFFFFFFFFFF   0xFFFFFFFFFFFFFFFF  15 bytes
+   *
+   * Which means that for values under 0xFFFFFFFE = 2^32 - 1, the encoded size is strictly less than the encoded size of a 64 bit integer.
+   */
+
   void Serializer::write_raw_size(std::size_t raw_size)
   {
     auto size = static_cast<uint64_t>(raw_size);
@@ -242,177 +277,116 @@ namespace gf {
     m_stream->read(magic);
 
     if (magic[0] != Magic[0] || magic[1] != Magic[1]) {
-      Log::error("The stream is not a gf archive."); // throw?
-      return;
+      Log::error("The stream is not a gf archive.");
+      throw std::runtime_error("The stream is not a gf archive.");
     }
 
-    read_big_endian_16(m_version);
+    read_big_endian_16(&m_version);
   }
 
-  bool Deserializer::read_bool(bool& data)
+  void Deserializer::read_bool(bool* data)
   {
+    assert(data != nullptr);
     uint8_t x = 0;
-
-    if (!read_big_endian_8(x)) {
-      Log::error("Asking for a boolean but the file is at the end.");
-      return false;
-    }
-
-    data = (x != 0);
-    return true;
+    read_big_endian_8(&x);
+    *data = (x != 0);
   }
 
-  bool Deserializer::read_char(char& data)
+  void Deserializer::read_char(char* data)
   {
+    assert(data != nullptr);
+
     if constexpr (std::numeric_limits<char>::is_signed) {
       int8_t x = 0;
-
-      if (!read_i8(x)) {
-        Log::error("Asking for a char but the file is at the end.");
-        return false;
-      }
-
-      data = static_cast<char>(x);
+      read_i8(&x);
+      *data = static_cast<char>(x);
     } else {
       uint8_t x = 0;
-
-      if (!read_u8(x)) {
-        Log::error("Asking for a char but the file is at the end.");
-        return false;
-      }
-
-      data = static_cast<char>(x);
+      read_u8(&x);
+      *data = static_cast<char>(x);
     }
-
-    return true;
   }
 
-  bool Deserializer::read_i8(int8_t& data)
+  void Deserializer::read_i8(int8_t* data)
   {
+    assert(data != nullptr);
     uint8_t x = 0;
-
-    if (!read_big_endian_8(x)) {
-      Log::error("Asking for a signed integer but the file is at the end.");
-      return false;
-    }
-
-    data = bit_cast<int8_t>(x);
-    return true;
+    read_big_endian_8(&x);
+    *data = bit_cast<int8_t>(x);
   }
 
-  bool Deserializer::read_i16(int16_t& data)
+  void Deserializer::read_i16(int16_t* data)
   {
+    assert(data != nullptr);
     uint16_t x = 0;
-
-    if (!read_big_endian_16(x)) {
-      Log::error("Asking for a signed integer but the file is at the end.");
-      return false;
-    }
-
-    data = bit_cast<int16_t>(x);
-    return true;
+    read_big_endian_16(&x);
+    *data = bit_cast<int16_t>(x);
   }
 
-  bool Deserializer::read_i32(int32_t& data)
+  void Deserializer::read_i32(int32_t* data)
   {
+    assert(data != nullptr);
     uint32_t x = 0;
-
-    if (!read_big_endian_32(x)) {
-      Log::error("Asking for a signed integer but the file is at the end.");
-      return false;
-    }
-
-    data = bit_cast<int32_t>(x);
-    return true;
+    read_big_endian_32(&x);
+    *data = bit_cast<int32_t>(x);
   }
 
-  bool Deserializer::read_i64(int64_t& data)
+  void Deserializer::read_i64(int64_t* data)
   {
+    assert(data != nullptr);
     uint64_t x = 0;
-
-    if (!read_big_endian_64(x)) {
-      Log::error("Asking for a signed integer but the file is at the end.");
-      return false;
-    }
-
-    data = bit_cast<int64_t>(x);
-    return true;
+    read_big_endian_64(&x);
+    *data = bit_cast<int64_t>(x);
   }
 
-  bool Deserializer::read_u8(uint8_t& data)
+  void Deserializer::read_u8(uint8_t* data)
   {
-    if (!read_big_endian_8(data)) {
-      Log::error("Asking for an unsigned integer but the file is at the end.");
-      return false;
-    }
-
-    return true;
+    assert(data != nullptr);
+    read_big_endian_8(data);
   }
 
-  bool Deserializer::read_u16(uint16_t& data)
+  void Deserializer::read_u16(uint16_t* data)
   {
-    if (!read_big_endian_16(data)) {
-      Log::error("Asking for an unsigned integer but the file is at the end.");
-      return false;
-    }
-
-    return true;
+    assert(data != nullptr);
+    read_big_endian_16(data);
   }
 
-  bool Deserializer::read_u32(uint32_t& data)
+  void Deserializer::read_u32(uint32_t* data)
   {
-    if (!read_big_endian_32(data)) {
-      Log::error("Asking for an unsigned integer but the file is at the end.");
-      return false;
-    }
-
-    return true;
+    assert(data != nullptr);
+    read_big_endian_32(data);
   }
 
-  bool Deserializer::read_u64(uint64_t& data)
+  void Deserializer::read_u64(uint64_t* data)
   {
-    if (!read_big_endian_64(data)) {
-      Log::error("Asking for an unsigned integer but the file is at the end.");
-      return false;
-    }
-
-    return true;
+    assert(data != nullptr);
+    read_big_endian_64(data);
   }
 
-  bool Deserializer::read_f32(float& data)
+  void Deserializer::read_f32(float* data)
   {
+    assert(data != nullptr);
     uint32_t x = 0;
-
-    if (!read_big_endian_32(x)) {
-      Log::error("Asking for a float but the file is at the end.");
-      return false;
-    }
-
-    data = bit_cast<float>(x);
-    return true;
+    read_big_endian_32(&x);
+    *data = bit_cast<float>(x);
   }
 
-  bool Deserializer::read_f64(double& data)
+  void Deserializer::read_f64(double* data)
   {
+    assert(data != nullptr);
     uint64_t x = 0;
-
-    if (!read_big_endian_64(x)) {
-      Log::error("Asking for a double but the file is at the end.");
-      return false;
-    }
-
-    data = bit_cast<double>(x);
-    return true;
+    read_big_endian_64(&x);
+    *data = bit_cast<double>(x);
   }
 
-  bool Deserializer::read_raw_string(char* data, std::size_t size)
+  void Deserializer::read_raw_string(char* data, std::size_t size)
   {
+    assert(data != nullptr);
+
     if (m_stream->read(gf::span(reinterpret_cast<uint8_t*>(data), size)) != size) { // NOLINT
-      Log::error("Asking for a string but the file is at the end.");
-      return false;
+      Log::error("End of stream while reading string.");
+      throw std::runtime_error("End of stream while reading string.");
     }
-
-    return true;
   }
 
   namespace {
@@ -420,6 +394,7 @@ namespace gf {
     template<typename I, std::size_t N>
     I read_integer(uint8_t (&buf)[N])
     {
+      static_assert(sizeof(I) <= N, "Size mismatch.");
       I result = 0;
 
       for (std::size_t i = 0; i < N; ++i) {
@@ -431,17 +406,16 @@ namespace gf {
 
   } // namespace
 
-  bool Deserializer::read_raw_size(std::size_t& raw_size)
+  void Deserializer::read_raw_size(std::size_t* raw_size)
   {
+    assert(raw_size != nullptr);
     static constexpr std::size_t Size = sizeof(uint64_t);
 
     uint8_t data = 0;
     std::size_t n = 0;
 
     for (;;) {
-      if (!read_u8(data)) {
-        return false;
-      }
+      read_u8(&data);
 
       if (data != 0xFF || n == Size - 1) {
         break;
@@ -452,8 +426,8 @@ namespace gf {
 
     if (n == 0) {
       // early exit
-      raw_size = data;
-      return true;
+      *raw_size = data;
+      return;
     }
 
     assert(n < Size);
@@ -467,89 +441,73 @@ namespace gf {
     buf[m] = data; // NOLINT
 
     for (std::size_t i = m + 1; i < Size; ++i) {
-      if (!read_u8(buf[i])) { // NOLINT
-        return false;
-      }
+      read_u8(&buf[i]); // NOLINT
     }
 
     auto size = read_integer<uint64_t>(buf);
 
-    switch (n) {
-      case 1:
-        size += 0xFF;
-        break;
-      case 2:
-        size += 0xFFFF;
-        break;
-      case 3:
-        size += 0xFFFFFF;
-        break;
-      case 4:
-        size += 0xFFFFFFFF;
-        break;
-      case 5:
-        size += 0xFFFFFFFFFF;
-        break;
-      case 6:
-        size += 0xFFFFFFFFFFFF;
-        break;
-      case 7:
-        size += 0xFFFFFFFFFFFFFF;
-        break;
-      case 8:
-        size += 0xFFFFFFFFFFFFFFFF;
-        break;
-      default:
-        assert(false);
-        break;
-    }
+    static constexpr uint64_t Offsets[] = {
+      0x00,
+      UINT64_C(0xFF),
+      UINT64_C(0xFFFF),
+      UINT64_C(0xFFFFFF),
+      UINT64_C(0xFFFFFFFF),
+      UINT64_C(0xFFFFFFFFFF),
+      UINT64_C(0xFFFFFFFFFFFF),
+      UINT64_C(0xFFFFFFFFFFFFFF),
+    };
 
-    raw_size = static_cast<std::size_t>(size);
-    return true;
+    assert(n < std::size(Offsets));
+    size += Offsets[n]; // NOLINT
+
+    *raw_size = static_cast<std::size_t>(size);
   }
 
-  bool Deserializer::read_big_endian_64(uint64_t& data)
+  void Deserializer::read_big_endian_64(uint64_t* data)
   {
-    static constexpr std::size_t Size = sizeof(data);
+    assert(data != nullptr);
+    static constexpr std::size_t Size = sizeof(*data);
     uint8_t buf[Size];
 
     if (m_stream->read(buf) != Size) {
-      return false;
+      throw std::runtime_error("End of stream while reading 8 bytes.");
     }
 
-    data = read_integer<uint64_t>(buf);
-    return true;
+    *data = read_integer<uint64_t>(buf);
   }
 
-  bool Deserializer::read_big_endian_32(uint32_t& data)
+  void Deserializer::read_big_endian_32(uint32_t* data)
   {
-    static constexpr std::size_t Size = sizeof(data);
+    assert(data != nullptr);
+    static constexpr std::size_t Size = sizeof(*data);
     uint8_t buf[Size];
 
     if (m_stream->read(buf) != Size) { // Flawfinder: ignore
-      return false;
+      throw std::runtime_error("End of stream while reading 4 bytes.");
     }
 
-    data = read_integer<uint32_t>(buf);
-    return true;
+    *data = read_integer<uint32_t>(buf);
   }
 
-  bool Deserializer::read_big_endian_16(uint16_t& data)
+  void Deserializer::read_big_endian_16(uint16_t* data)
   {
-    static constexpr std::size_t Size = sizeof(data);
+    assert(data != nullptr);
+    static constexpr std::size_t Size = sizeof(*data);
     uint8_t buf[Size];
 
     if (m_stream->read(buf) != Size) {
-      return false;
+      throw std::runtime_error("End of stream while reading 2 bytes.");
     }
 
-    data = read_integer<uint16_t>(buf);
-    return true;
+    *data = read_integer<uint16_t>(buf);
   }
 
-  bool Deserializer::read_big_endian_8(uint8_t& data)
+  void Deserializer::read_big_endian_8(uint8_t* data)
   {
-    return m_stream->read(data) == 1;
+    assert(data != nullptr);
+    if (m_stream->read(*data) != 1) {
+      throw std::runtime_error("End of stream while reading 1 byte.");
+    }
   }
 
 } // namespace gf
