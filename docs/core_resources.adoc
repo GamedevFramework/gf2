@@ -13,28 +13,9 @@ The *resource manager* handles the loading and unloading of all the resources, e
 
 The following table gives the list of resources in the gf2 libraries that can be loaded with a resource manager, either through a filename, or through an xref:InputStream.adoc[`InputStream`].
 
-.List of resources in the gf2 libraries
-[cols="2,2,1,1"]
-|===
-| Resource | Library | File | Stream
-
-| xref:Image.adoc[`Image`]
-| `core`
-| &check;
-| &check;
-
-| xref:Music.adoc[`Music`]
-| `audio`
-| &check;
-|
-
-| xref:Sound.adoc[`Sound`]
-| `audio`
-| &check;
-|
-|===
-
 xref:reference.adoc[< Back to reference]
+
+See also: xref:core_resource_list.adoc[Resource list].
 
 == Types
 
