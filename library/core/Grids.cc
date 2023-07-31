@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/Cells.h>
+#include <gf2/Grids.h>
 // clang-format on
 
 #include <algorithm>
@@ -12,35 +12,35 @@
 namespace gf {
 
   /*
-   * OrthogonalCells
+   * OrthogonalGrid
    */
 
-  OrthogonalCells::OrthogonalCells(Vec2F tile_size)
+  OrthogonalGrid::OrthogonalGrid(Vec2F tile_size)
   : m_tile_size(tile_size)
   {
   }
 
-  RectF OrthogonalCells::compute_bounds(Vec2I layer_size) const
+  RectF OrthogonalGrid::compute_bounds(Vec2I layer_size) const
   {
     return RectF::from_size(layer_size * m_tile_size);
   }
 
-  RectI OrthogonalCells::compute_visible_area(RectF local) const
+  RectI OrthogonalGrid::compute_visible_area(RectF local) const
   {
     return RectI::from_min_max(local.min() / m_tile_size, local.max() / m_tile_size);
   }
 
-  RectF OrthogonalCells::compute_cell_bounds(Vec2I coordinates) const
+  RectF OrthogonalGrid::compute_cell_bounds(Vec2I coordinates) const
   {
     return RectF::from_position_size(coordinates * m_tile_size, m_tile_size);
   }
 
-  Vec2I OrthogonalCells::compute_coordinates(Vec2F position) const
+  Vec2I OrthogonalGrid::compute_coordinates(Vec2F position) const
   {
     return position / m_tile_size;
   }
 
-  std::vector<Vec2F> OrthogonalCells::compute_contour(Vec2I coordinates) const
+  std::vector<Vec2F> OrthogonalGrid::compute_contour(Vec2I coordinates) const
   {
     const RectF bounds = compute_cell_bounds(coordinates);
 
@@ -53,7 +53,7 @@ namespace gf {
   }
 
   // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
-  std::vector<Vec2I> OrthogonalCells::compute_neighbors(Vec2I coordinates, Vec2I layer_size, Flags<CellNeighborQuery> flags) const
+  std::vector<Vec2I> OrthogonalGrid::compute_neighbors(Vec2I coordinates, Vec2I layer_size, Flags<CellNeighborQuery> flags) const
   {
     std::vector<Vec2I> neighbors;
 
@@ -82,17 +82,17 @@ namespace gf {
   }
 
   /*
-   * StaggeredCells
+   * StaggeredGrid
    */
 
-  StaggeredCells::StaggeredCells(Vec2F tile_size, CellAxis axis, CellIndex index)
+  StaggeredGrid::StaggeredGrid(Vec2F tile_size, CellAxis axis, CellIndex index)
   : m_tile_size(tile_size)
   , m_axis(axis)
   , m_index(index)
   {
   }
 
-  RectF StaggeredCells::compute_bounds(Vec2I layer_size) const
+  RectF StaggeredGrid::compute_bounds(Vec2I layer_size) const
   {
     Vec2F base = layer_size * m_tile_size;
 
@@ -112,12 +112,12 @@ namespace gf {
     return RectF::from_size(base);
   }
 
-  RectI StaggeredCells::compute_visible_area(RectF local) const
+  RectI StaggeredGrid::compute_visible_area(RectF local) const
   {
     return RectI::from_min_max(compute_coordinates(local.min()), compute_coordinates(local.max()));
   }
 
-  RectF StaggeredCells::compute_cell_bounds(Vec2I coordinates) const
+  RectF StaggeredGrid::compute_cell_bounds(Vec2I coordinates) const
   {
     Vec2F base = coordinates * m_tile_size;
 
@@ -159,7 +159,7 @@ namespace gf {
     return RectF::from_position_size(base, m_tile_size);
   }
 
-  Vec2I StaggeredCells::compute_coordinates(Vec2F position) const
+  Vec2I StaggeredGrid::compute_coordinates(Vec2F position) const
   {
     // TODO: quick approximation but not really good
     auto tile_size = m_tile_size;
@@ -176,7 +176,7 @@ namespace gf {
     return position / tile_size;
   }
 
-  std::vector<Vec2F> StaggeredCells::compute_contour(Vec2I coordinates) const
+  std::vector<Vec2F> StaggeredGrid::compute_contour(Vec2I coordinates) const
   {
     const RectF bounds = compute_cell_bounds(coordinates);
     const Vec2F min = bounds.min();
@@ -194,14 +194,14 @@ namespace gf {
   }
 
   // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
-  std::vector<Vec2I> StaggeredCells::compute_neighbors([[maybe_unused]] Vec2I coordinates, [[maybe_unused]] Vec2I layer_size, [[maybe_unused]] Flags<CellNeighborQuery> flags) const
+  std::vector<Vec2I> StaggeredGrid::compute_neighbors([[maybe_unused]] Vec2I coordinates, [[maybe_unused]] Vec2I layer_size, [[maybe_unused]] Flags<CellNeighborQuery> flags) const
   {
     // TODO
     return {};
   }
 
   /*
-   * HexagonalCells
+   * HexagonalGrid
    */
 
   namespace {
@@ -221,7 +221,7 @@ namespace gf {
 
   } // namespace
 
-  HexagonalCells::HexagonalCells(Vec2F tile_size, float side_length, CellAxis axis, CellIndex index)
+  HexagonalGrid::HexagonalGrid(Vec2F tile_size, float side_length, CellAxis axis, CellIndex index)
   : m_tile_size(tile_size)
   , m_side_length(side_length)
   , m_axis(axis)
@@ -229,7 +229,7 @@ namespace gf {
   {
   }
 
-  HexagonalCells::HexagonalCells(float radius, CellAxis axis, CellIndex index)
+  HexagonalGrid::HexagonalGrid(float radius, CellAxis axis, CellIndex index)
   : m_tile_size(compute_regular_size(axis, radius))
   , m_side_length(radius)
   , m_axis(axis)
@@ -237,7 +237,7 @@ namespace gf {
   {
   }
 
-  RectF HexagonalCells::compute_bounds(Vec2I layer_size) const
+  RectF HexagonalGrid::compute_bounds(Vec2I layer_size) const
   {
     Vec2F size = gf::vec(0.0f, 0.0f);
     const float offset = compute_offset(m_tile_size, m_side_length, m_axis);
@@ -257,12 +257,12 @@ namespace gf {
     return RectF::from_size(size);
   }
 
-  RectI HexagonalCells::compute_visible_area(RectF local) const
+  RectI HexagonalGrid::compute_visible_area(RectF local) const
   {
     return RectI::from_min_max(compute_coordinates(local.min()), compute_coordinates(local.max()));
   }
 
-  RectF HexagonalCells::compute_cell_bounds(Vec2I coordinates) const
+  RectF HexagonalGrid::compute_cell_bounds(Vec2I coordinates) const
   {
     Vec2F base = gf::vec(0.0f, 0.0f);
     const float offset = compute_offset(m_tile_size, m_side_length, m_axis);
@@ -308,7 +308,7 @@ namespace gf {
     return RectF::from_position_size(base, m_tile_size);
   }
 
-  Vec2I HexagonalCells::compute_coordinates(Vec2F position) const
+  Vec2I HexagonalGrid::compute_coordinates(Vec2F position) const
   {
     // TODO: good approximation but would need some tweaking
     Vec2I coordinates = gf::vec(0, 0);
@@ -358,7 +358,7 @@ namespace gf {
     return coordinates;
   }
 
-  std::vector<Vec2F> HexagonalCells::compute_contour(Vec2I coordinates) const
+  std::vector<Vec2F> HexagonalGrid::compute_contour(Vec2I coordinates) const
   {
     const float offset = compute_offset(m_tile_size, m_side_length, m_axis);
     const RectF bounds = compute_cell_bounds(coordinates);
@@ -394,7 +394,7 @@ namespace gf {
     return contour;
   }
 
-  std::vector<Vec2I> HexagonalCells::compute_neighbors(Vec2I coordinates, Vec2I layer_size, Flags<CellNeighborQuery> flags) const
+  std::vector<Vec2I> HexagonalGrid::compute_neighbors(Vec2I coordinates, Vec2I layer_size, Flags<CellNeighborQuery> flags) const
   {
     static constexpr Vec2I XOffsets[2][6] = {
       {{ +1, +0 }, { +1, -1 }, { +0, -1 }, { -1, -1 }, { -1, +0 }, { +0, +1 }},
@@ -445,7 +445,7 @@ namespace gf {
     return neighbors;
   }
 
-  Vec2F HexagonalCells::compute_regular_size(CellAxis axis, float radius)
+  Vec2F HexagonalGrid::compute_regular_size(CellAxis axis, float radius)
   {
     Vec2F size = gf::vec(0.0f, 0.0f);
 
@@ -460,125 +460,6 @@ namespace gf {
     }
 
     return size;
-  }
-
-  /*
-   * GridCells
-   */
-
-  GridCells::GridCells(OrthogonalCells cells)
-  : m_variant(cells)
-  {
-  }
-
-  GridCells::GridCells(StaggeredCells cells)
-  : m_variant(cells)
-  {
-  }
-
-  GridCells::GridCells(HexagonalCells cells)
-  : m_variant(cells)
-  {
-  }
-
-  GridCells GridCells::make_orthogonal(Vec2F tile_size)
-  {
-    return { OrthogonalCells(tile_size) };
-  }
-
-  GridCells GridCells::make_staggered(Vec2F tile_size, CellAxis axis, CellIndex index)
-  {
-    return { StaggeredCells(tile_size, axis, index) };
-  }
-
-  GridCells GridCells::make_hexagonal(Vec2F tile_size, float side_length, CellAxis axis, CellIndex index)
-  {
-    return { HexagonalCells(tile_size, side_length, axis, index) };
-  }
-
-  GridCells GridCells::make_hexagonal(float radius, CellAxis axis, CellIndex index)
-  {
-    return { HexagonalCells(radius, axis, index) };
-  }
-
-  RectF GridCells::compute_bounds(Vec2I layer_size) const
-  {
-    return std::visit([=](auto&& cells) {
-      using T = std::decay_t<decltype(cells)>;
-      if constexpr (std::is_same_v<T, std::monostate>) {
-        return RectF::from_size({ 0.0f, 0.0f });
-      } else {
-        return cells.compute_bounds(layer_size);
-      }
-    },
-        m_variant);
-  }
-
-  RectI GridCells::compute_visible_area(RectF local) const
-  {
-    return std::visit([=](auto&& cells) {
-      using T = std::decay_t<decltype(cells)>;
-      if constexpr (std::is_same_v<T, std::monostate>) {
-        return RectI::from_size({ 0, 0 });
-      } else {
-        return cells.compute_visible_area(local);
-      }
-    },
-        m_variant);
-  }
-
-  RectF GridCells::compute_cell_bounds(Vec2I coordinates) const
-  {
-    return std::visit([=](auto&& cells) {
-      using T = std::decay_t<decltype(cells)>;
-      if constexpr (std::is_same_v<T, std::monostate>) {
-        return RectF::from_size({ 0.0f, 0.0f });
-      } else {
-        return cells.compute_cell_bounds(coordinates);
-      }
-    },
-        m_variant);
-  }
-
-  Vec2I GridCells::compute_coordinates(Vec2F position) const
-  {
-    return std::visit([=](auto&& cells) {
-      using T = std::decay_t<decltype(cells)>;
-      if constexpr (std::is_same_v<T, std::monostate>) {
-        return Vec2I(0, 0);
-      } else {
-        return cells.compute_coordinates(position);
-      }
-    },
-        m_variant);
-  }
-
-  std::vector<Vec2F> GridCells::compute_contour(Vec2I coordinates) const
-  {
-    return std::visit([=](auto&& cells) {
-      using T = std::decay_t<decltype(cells)>;
-      if constexpr (std::is_same_v<T, std::monostate>) {
-        std::vector<Vec2F> empty;
-        return empty;
-      } else {
-        return cells.compute_contour(coordinates);
-      }
-    },
-        m_variant);
-  }
-
-  std::vector<Vec2I> GridCells::compute_neighbors(Vec2I coordinates, Vec2I layer_size, Flags<CellNeighborQuery> flags) const
-  {
-    return std::visit([=](auto&& cells) {
-      using T = std::decay_t<decltype(cells)>;
-      if constexpr (std::is_same_v<T, std::monostate>) {
-        std::vector<Vec2I> empty;
-        return empty;
-      } else {
-        return cells.compute_neighbors(coordinates, layer_size, flags);
-      }
-    },
-        m_variant);
   }
 
 } // namespace gf

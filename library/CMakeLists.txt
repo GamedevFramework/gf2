@@ -66,7 +66,6 @@ endfunction()
 add_library(gf2core0
   core/Array2D.cc
   core/Bitmap.cc
-  core/Cells.cc
   core/Circ.cc
   core/Clock.cc
   core/Color.cc
@@ -74,6 +73,8 @@ add_library(gf2core0
   core/Flags.cc
   core/Font.cc
   core/FontManager.cc
+  core/Grid.cc
+  core/Grids.cc
   core/Id.cc
   core/Image.cc
   core/Log.cc

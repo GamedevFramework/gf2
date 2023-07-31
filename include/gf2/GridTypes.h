@@ -1,11 +1,19 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
-#ifndef GF_CELL_TYPES_H
-#define GF_CELL_TYPES_H
+#ifndef GF_GRID_TYPES_H
+#define GF_GRID_TYPES_H
 
 #include <cstdint>
 
 namespace gf {
+
+  enum class GridOrientation : uint8_t {
+    Unknown,
+    Orthogonal,
+    Isometric,
+    Staggered,
+    Hexagonal,
+  };
 
   enum class CellIndex : uint8_t {
     Odd,
@@ -17,14 +25,6 @@ namespace gf {
     Y,
   };
 
-  enum class CellOrientation : uint8_t {
-    Unknown,
-    Orthogonal,
-    Isometric,
-    Staggered,
-    Hexagonal,
-  };
-
   enum class CellFlip : uint8_t {
     Horizontally = 0x01,
     Vertically = 0x02,
@@ -33,6 +33,11 @@ namespace gf {
     Rotation120 = 0x08,
   };
 
+  enum class CellNeighborQuery : uint8_t {
+    Valid = 0x01,
+    Diagonal = 0x02,
+  };
+
 } // namespace gf
 
-#endif // GF_CELL_TYPES_H
+#endif // GF_GRID_TYPES_H
