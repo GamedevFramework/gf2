@@ -1,9 +1,9 @@
-= `gf::AnyCells` type
+= `gf::GridCells` type
 v0.1
 include::bits/attributes.adoc[]
 :toc: right
 
-`AnyCells` can contain any type of cells.
+`GridCells` can contain any type of cells.
 
 xref:core_grids.adoc[< Back to `core` Grids]
 
@@ -12,7 +12,7 @@ xref:core_grids.adoc[< Back to `core` Grids]
 [source]
 ----
 #include <gf2/Cells.h>
-class AnyCells;
+class GridCells;
 ----
 
 This class can be used when the type of cells can be used generically. It contains a link:https://en.cppreference.com/w/cpp/utility/variant[`std::variant`] of all the cells of the library.
@@ -25,8 +25,8 @@ See also: xref:OrthogonalCells.adoc[`OrthogonalCells`], xref:StaggeredCells.adoc
 
 [source]
 ----
-AnyCells make_hexagonal(Vec2F tile_size, float side_length, CellAxis axis, CellIndex index); <1>
-AnyCells make_hexagonal(float radius, CellAxis axis, CellIndex index); <2>
+GridCells make_hexagonal(Vec2F tile_size, float side_length, CellAxis axis, CellIndex index); <1>
+GridCells make_hexagonal(float radius, CellAxis axis, CellIndex index); <2>
 ----
 
 <1> Create generic hexagonal cells.
@@ -36,7 +36,7 @@ AnyCells make_hexagonal(float radius, CellAxis axis, CellIndex index); <2>
 
 [source]
 ----
-AnyCells make_orthogonal(Vec2F tile_size);
+GridCells make_orthogonal(Vec2F tile_size);
 ----
 
 Create orthogonal cells.
@@ -45,7 +45,7 @@ Create orthogonal cells.
 
 [source]
 ----
-AnyCells make_staggered(Vec2F tile_size, CellAxis axis, CellIndex index);
+GridCells make_staggered(Vec2F tile_size, CellAxis axis, CellIndex index);
 ----
 
 Create staggered cells.

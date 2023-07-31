@@ -15,19 +15,6 @@ xref:reference.adoc[< Back to reference]
 
 == Types
 
-[#_any_cells]
-=== `gf::AnyCells`
-
-[source]
-----
-#include <gf2/Cells.h>
-class AnyCells;
-----
-
-`AnyCells` can contain any type of cells. xref:AnyCells.adoc[*Read more...*]
-
-See also: <<_hexagonal_cells>>, <<_orthogonal_cells>>, <<_staggered_cells>>
-
 [#_cells_axis]
 === `gf::CellAxis`
 
@@ -163,6 +150,18 @@ The cell orientation of the grid.
 | Hexagonal orientation
 |===
 
+[#_grid_cells]
+=== `gf::GridCells`
+
+[source]
+----
+#include <gf2/Cells.h>
+class GridCells;
+----
+
+`GridCells` can contain any type of cells. xref:GridCells.adoc[*Read more...*]
+
+See also: <<_hexagonal_cells>>, <<_orthogonal_cells>>, <<_staggered_cells>>
 
 [#_hexagonal_cells]
 === `gf::HexagonalCells`

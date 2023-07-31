@@ -463,45 +463,45 @@ namespace gf {
   }
 
   /*
-   * AnyCells
+   * GridCells
    */
 
-  AnyCells::AnyCells(OrthogonalCells cells)
+  GridCells::GridCells(OrthogonalCells cells)
   : m_variant(cells)
   {
   }
 
-  AnyCells::AnyCells(StaggeredCells cells)
+  GridCells::GridCells(StaggeredCells cells)
   : m_variant(cells)
   {
   }
 
-  AnyCells::AnyCells(HexagonalCells cells)
+  GridCells::GridCells(HexagonalCells cells)
   : m_variant(cells)
   {
   }
 
-  AnyCells AnyCells::make_orthogonal(Vec2F tile_size)
+  GridCells GridCells::make_orthogonal(Vec2F tile_size)
   {
     return { OrthogonalCells(tile_size) };
   }
 
-  AnyCells AnyCells::make_staggered(Vec2F tile_size, CellAxis axis, CellIndex index)
+  GridCells GridCells::make_staggered(Vec2F tile_size, CellAxis axis, CellIndex index)
   {
     return { StaggeredCells(tile_size, axis, index) };
   }
 
-  AnyCells AnyCells::make_hexagonal(Vec2F tile_size, float side_length, CellAxis axis, CellIndex index)
+  GridCells GridCells::make_hexagonal(Vec2F tile_size, float side_length, CellAxis axis, CellIndex index)
   {
     return { HexagonalCells(tile_size, side_length, axis, index) };
   }
 
-  AnyCells AnyCells::make_hexagonal(float radius, CellAxis axis, CellIndex index)
+  GridCells GridCells::make_hexagonal(float radius, CellAxis axis, CellIndex index)
   {
     return { HexagonalCells(radius, axis, index) };
   }
 
-  RectF AnyCells::compute_bounds(Vec2I layer_size) const
+  RectF GridCells::compute_bounds(Vec2I layer_size) const
   {
     return std::visit([=](auto&& cells) {
       using T = std::decay_t<decltype(cells)>;
@@ -514,7 +514,7 @@ namespace gf {
         m_variant);
   }
 
-  RectI AnyCells::compute_visible_area(RectF local) const
+  RectI GridCells::compute_visible_area(RectF local) const
   {
     return std::visit([=](auto&& cells) {
       using T = std::decay_t<decltype(cells)>;
@@ -527,7 +527,7 @@ namespace gf {
         m_variant);
   }
 
-  RectF AnyCells::compute_cell_bounds(Vec2I coordinates) const
+  RectF GridCells::compute_cell_bounds(Vec2I coordinates) const
   {
     return std::visit([=](auto&& cells) {
       using T = std::decay_t<decltype(cells)>;
@@ -540,7 +540,7 @@ namespace gf {
         m_variant);
   }
 
-  Vec2I AnyCells::compute_coordinates(Vec2F position) const
+  Vec2I GridCells::compute_coordinates(Vec2F position) const
   {
     return std::visit([=](auto&& cells) {
       using T = std::decay_t<decltype(cells)>;
@@ -553,7 +553,7 @@ namespace gf {
         m_variant);
   }
 
-  std::vector<Vec2F> AnyCells::compute_contour(Vec2I coordinates) const
+  std::vector<Vec2F> GridCells::compute_contour(Vec2I coordinates) const
   {
     return std::visit([=](auto&& cells) {
       using T = std::decay_t<decltype(cells)>;
@@ -567,7 +567,7 @@ namespace gf {
         m_variant);
   }
 
-  std::vector<Vec2I> AnyCells::compute_neighbors(Vec2I coordinates, Vec2I layer_size, Flags<CellNeighborQuery> flags) const
+  std::vector<Vec2I> GridCells::compute_neighbors(Vec2I coordinates, Vec2I layer_size, Flags<CellNeighborQuery> flags) const
   {
     return std::visit([=](auto&& cells) {
       using T = std::decay_t<decltype(cells)>;

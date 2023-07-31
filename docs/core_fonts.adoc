@@ -1,0 +1,60 @@
+= `core` Fonts
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The fonts component provides utilities for font handling.
+
+xref:reference.adoc[< Back to reference]
+
+== Types
+
+[#_font]
+=== `gf::Font`
+
+[source]
+----
+#include <gf2/Font.h>
+class Font;
+----
+
+`Font` represents a link:https://en.wikipedia.org/wiki/Font[font], i.e. a set of glyph with the same weight and style. xref:Font.adoc[*Read more...*]
+
+[#_font_glyph]
+=== `gf::FontGlyph`
+
+[source]
+----
+#include <gf2/Font.h>
+struct FontGlyph;
+----
+
+`FontGlyph` represents a glyph of a font face and its properties.
+
+.Data members for `gf::FontGlyph`
+[cols="1,1,2"]
+|===
+| Name | Type | Description
+
+| `bounds`
+| xref:Rect.adoc[`RectF`]
+| The bounds of the glyph.
+
+| `advance`
+| `float`
+| The distance to the next glyph.
+
+| `bitmap`
+| xref:Bitmap.adoc[`Bitmap`]
+| The bitmap of the glyph.
+|===
+
+
+[#_font_manager]
+=== `gf::FontManager`
+
+[source]
+----
+#include <gf2/FontManager.h>
+class FontManager;
+----
