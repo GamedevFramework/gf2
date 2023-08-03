@@ -8,24 +8,33 @@ The resource list component provides a list of resources in the gf2 library that
 xref:core_resources.adoc[< Back to `core` Resources]
 
 .List of resources in the gf2 libraries
-[cols="2,2,1,1"]
+[cols="2,1,1,1,1"]
 |===
-| Resource | Library | File | Stream
+| Resource | Library | File | Stream | Context?
+
+| xref:Font.adoc[`Font`]
+| `core`
+| &check;
+| &check;
+| &check;
 
 | xref:Image.adoc[`Image`]
 | `core`
 | &check;
 | &check;
+|
 
 | xref:Music.adoc[`Music`]
 | `audio`
 | &check;
 |
+| &check;
 
 | xref:Sound.adoc[`Sound`]
 | `audio`
 | &check;
 |
+| &check;
 |===
 
 

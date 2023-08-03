@@ -88,6 +88,23 @@ namespace gf {
     return *this;
   }
 
+#define GF_XSTRINGIFY(X) #X
+#define GF_STRINGIFY(X) GF_XSTRINGIFY(X)
+
+  std::string FontManager::backend()
+  {
+    FT_Int major = 0;
+    FT_Int minor = 0;
+    FT_Int patch = 0;
+    FT_Library_Version(library_as<FT_Library>(), &major, &minor, &patch);
+
+    using namespace std::string_literals;
+    return "FreeType "s + std::to_string(major) + '.' + std::to_string(minor) + '.' + std::to_string(patch) + " (" GF_STRINGIFY(FREETYPE_MAJOR) "." GF_STRINGIFY(FREETYPE_MINOR) "." GF_STRINGIFY(FREETYPE_PATCH) ")";
+  }
+
+#undef GF_STRINGIFY
+#undef GF_XSTRINGIFY
+
   const char* FontManager::error_message(int error)
   {
     return ft_error_message(static_cast<FT_Error>(error));

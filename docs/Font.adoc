@@ -1,0 +1,87 @@
+= `gf::Font` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`Font` represents a link:https://en.wikipedia.org/wiki/Font[font], i.e. a set of glyph with the same weight and style.
+
+xref:core_fonts.adoc[< Back to `core` Fonts]
+
+== Description
+
+[source]
+----
+#include <gf2/Font.h>
+class Font;
+----
+
+See also: xref:FontManager.adoc[`FontManager`]
+
+== Types
+
+=== `Context`
+
+[source]
+----
+using Context = FontManager*;
+----
+
+The context for loading a font.
+
+== Member Functions
+
+=== `Font` constructors
+
+[source]
+----
+Font(const std::filesystem::path& filename, FontManager* manager); <1>
+Font(InputStream& stream, FontManager* manager); <2>
+----
+
+<1> Create a font from a `filename` and a `manager`.
+<2> Create a font from a `stream` and a `manager`.
+
+=== `compute_kerning`
+
+[source]
+----
+float compute_kerning(char32_t left, char32_t right, unsigned character_size);
+----
+
+Compute link:https://en.wikipedia.org/wiki/Kerning[kerning], i.e. the space between two consecutive characters (`left` and `right`).
+
+=== `compute_line_spacing`
+
+[source]
+----
+float compute_line_spacing(unsigned character_size);
+----
+
+Compute the space between two consecutive lines of text.
+
+=== `create_glyph`
+
+[source]
+----
+FontGlyph create_glyph(char32_t codepoint, unsigned character_size, float outline_thickness = 0.0f);
+----
+
+Create a glyph from the `codepoint` of the character, the `character_size`. The glyph can be created with an `outline_thickness` if not null.
+
+=== `family_name`
+
+[source]
+----
+std::string family_name() const;
+----
+
+Get the family name of the font.
+
+=== `style_name`
+
+[source]
+----
+std::string style_name() const;
+----
+
+Get the style name of the font.

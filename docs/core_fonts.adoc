@@ -58,3 +58,5 @@ struct FontGlyph;
 #include <gf2/FontManager.h>
 class FontManager;
 ----
+
+`FontManager` handles fonts common features. xref:FontManager.adoc[*Read more...*]

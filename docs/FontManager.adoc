@@ -1,0 +1,38 @@
+= `gf::FontManager` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`FontManager` handles fonts common features.
+
+xref:core_fonts.adoc[< Back to `core` Fonts]
+
+== Description
+
+[source]
+----
+#include <gf2/FontManager.h>
+class FontManager;
+----
+
+See also: xref:Font.adoc[`Font`]
+
+== Member Functions
+
+=== `FontManager` constructors
+
+[source]
+----
+FontManager();
+----
+
+Default constructor.
+
+=== `backend`
+
+[source]
+----
+std::string backend();
+----
+
+Get a string representing the backend used for fonts.

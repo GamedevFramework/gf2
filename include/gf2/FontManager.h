@@ -3,6 +3,8 @@
 #ifndef GF_FONT_MANAGER_H
 #define GF_FONT_MANAGER_H
 
+#include <string>
+
 #include "CoreApi.h"
 
 namespace gf {
@@ -16,6 +18,8 @@ namespace gf {
 
     FontManager& operator=(const FontManager&) = delete;
     FontManager& operator=(FontManager&& other) noexcept;
+
+    std::string backend();
 
   private:
     friend class Font;
