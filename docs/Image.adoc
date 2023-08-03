@@ -48,6 +48,8 @@ Image(InputStream& stream); <6>
 Color operator()(Vec2I position) const;
 ----
 
+Get the color at `position`.
+
 See also: <<_put_pixel>>
 
 === `put_pixel`
@@ -56,6 +58,8 @@ See also: <<_put_pixel>>
 ----
 void put_pixel(Vec2I position, Color color);
 ----
+
+Change the color at `position`.
 
 See also: <<_operator_index>>
 
@@ -66,12 +70,16 @@ See also: <<_operator_index>>
 const uint8_t* raw_pixels() const;
 ----
 
+Get the raw pixels of the image.
+
 === `save_to_file`
 
 [source]
 ----
 void save_to_file(const std::filesystem::path& filename) const;
 ----
+
+Export the image to a file named `filename`.
 
 === `size`
 
@@ -80,6 +88,8 @@ void save_to_file(const std::filesystem::path& filename) const;
 Vec2I size() const;
 ----
 
+Get the size of the image.
+
 === `sub_image`
 
 [source]
@@ -87,4 +97,4 @@ Vec2I size() const;
 Image sub_image(RectI area) const;
 ----
 
-
+Extract a part of the image located at `area`.

@@ -162,6 +162,15 @@ constexpr Vec2<T> position() const noexcept;
 
 Get the position of the rectangle, i.e. the coordinates of the top-left corner.
 
+=== `position_at`
+
+[source]
+----
+constexpr Vec2<T> position_at(Orientation orientation) const noexcept;
+----
+
+Get the position at the given orientation in the rectangle.
+
 === `size`
 
 [source]

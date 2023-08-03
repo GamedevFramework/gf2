@@ -1,0 +1,63 @@
+= `gf::Bitmap` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+A bitmap is a grayscale image with a single 8 bit channel.
+
+xref:core_color.adoc[< Back to `core` Color]
+
+== Description
+
+[source]
+----
+#include <gf2/Bitmap.h>
+class Bitmap;
+----
+
+The position of the pixels is defined with the stem:[(0,0)] at the upper left corner, with the stem:[x]-axis going right and the stem:[y]-axis going down.
+
+== Member Functions
+
+=== `Bitmap` constructors
+
+[source]
+----
+Bitmap(); <1>
+Bitmap(Vec2I size); <2>
+Bitmap(Vec2I size, uint8_t gray); <3>
+Bitmap(Vec2I size, const uint8_t* pixels, ptrdiff_t pitch); <4>
+----
+
+<1> Default constructor.
+<2> Constructor from a `size`, the image is transparent.
+<3> Constructor from a `size` and a `gray` level.
+<4> Constructor from a `size` and raw pixels with the specified `pitch` between each row.
+
+[#_operator_index]
+=== `operator()`
+
+[source]
+----
+uint8_t operator()(Vec2I position) const;
+----
+
+Get the gray level at `position`.
+
+=== `raw_pixels`
+
+[source]
+----
+const uint8_t* raw_pixels() const;
+----
+
+Get the raw pixels of the bitmap.
+
+=== `size`
+
+[source]
+----
+Vec2I size() const;
+----
+
+Get the size of the bitmap.

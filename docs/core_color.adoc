@@ -176,6 +176,17 @@ The yellow predefined color.
 
 == Types
 
+[#_bitmap]
+=== `gf::Bitmap`
+
+[source]
+----
+#include <gf2/Bitmap.h>
+class Bitmap;
+----
+
+A bitmap is a grayscale image with a single 8 bit channel. xref:Bitmap.adoc[*Read more...*]
+
 [#_color]
 === `gf::Color`
 
@@ -197,6 +208,31 @@ class Image;
 ----
 
 `Image` represents a bidimensional array of pixels. xref:Image.adoc[*Read more...*]
+
+[#_pixel_format]
+=== `gf::PixelFormat`
+
+[source]
+----
+#include <gf2/Image.h>
+enum class PixelFormat : uint8_t;
+----
+
+The pixel format of the raw input of an image.
+
+.Enumerators for `gf::PixelFormat`
+[cols="1,1"]
+|===
+| Value | Description
+
+| `gf::PixelFormat::Rgba32`
+| 32 bit color with 8 bit per channel
+
+| `gf::PixelFormat::Rgb24`
+| 24 bit color with 8 bit per channel
+|===
+
+See also: <<_image>>
 
 == Functions
 
