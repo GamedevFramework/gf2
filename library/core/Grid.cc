@@ -122,4 +122,17 @@ namespace gf {
         m_variant);
   }
 
+  bool Grid::are_diagonal_neighbors(Vec2I coordinates0, Vec2I coordinates1) const
+  {
+    return std::visit([=](auto&& grid) {
+      using T = std::decay_t<decltype(grid)>;
+      if constexpr (std::is_same_v<T, std::monostate>) {
+        return false;
+      } else {
+        return grid.are_diagonal_neighbors(coordinates0, coordinates1);
+      }
+    },
+        m_variant);
+  }
+
 } // namespace gf

@@ -360,6 +360,18 @@ f(t) = t
 
 See also: <<_step>>
 
+[#_parity]
+=== `gf::parity`
+
+[source]
+----
+#include <gf2/Math.h>
+template<typename T>
+constexpr T parity(T val)
+----
+
+Return stem:[0] if `val` is even and stem:[1] if `val` is odd.
+
 [#_quintic_step]
 === `gf::quintic_step`
 

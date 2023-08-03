@@ -150,6 +150,12 @@ namespace gf {
     return lhs > rhs ? lhs - rhs : rhs - lhs;
   }
 
+  template<typename T>
+  constexpr std::enable_if_t<std::is_integral_v<T>, T> parity(T val)
+  {
+    return (val % T(2) == T(0)) ? T(0) : T(1);
+  }
+
 } // namespace gf
 
 #endif // GF_MATH_H

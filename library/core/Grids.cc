@@ -5,6 +5,8 @@
 #include <gf2/Grids.h>
 // clang-format on
 
+#include <cstdlib>
+
 #include <algorithm>
 
 #include <gf2/Span.h>
@@ -81,6 +83,12 @@ namespace gf {
     return neighbors;
   }
 
+  // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
+  bool OrthogonalGrid::are_diagonal_neighbors(Vec2I coordinates0, Vec2I coordinates1) const
+  {
+    return std::abs(coordinates0.x - coordinates1.x) == 1 && std::abs(coordinates0.y - coordinates1.y) == 1;
+  }
+
   /*
    * StaggeredGrid
    */
@@ -122,36 +130,18 @@ namespace gf {
     Vec2F base = coordinates * m_tile_size;
 
     switch (m_axis) {
-      case CellAxis::Y:
-        base.y /= 2;
-
-        switch (m_index) {
-          case CellIndex::Odd:
-            if (coordinates.y % 2 != 0) {
-              base.x += m_tile_size.w / 2;
-            }
-            break;
-          case CellIndex::Even:
-            if (coordinates.y % 2 == 0) {
-              base.x += m_tile_size.w / 2;
-            }
-            break;
-        }
-        break;
       case CellAxis::X:
         base.x /= 2;
 
-        switch (m_index) {
-          case CellIndex::Odd:
-            if (coordinates.x % 2 != 0) {
-              base.y += m_tile_size.h / 2;
-            }
-            break;
-          case CellIndex::Even:
-            if (coordinates.x % 2 == 0) {
-              base.y += m_tile_size.h / 2;
-            }
-            break;
+        if ((m_index == CellIndex::Even) == (coordinates.x % 2 == 0)) {
+          base.y += m_tile_size.h / 2;
+        }
+        break;
+      case CellAxis::Y:
+        base.y /= 2;
+
+        if ((m_index == CellIndex::Even) == (coordinates.y % 2 == 0)) {
+          base.x += m_tile_size.w / 2;
         }
         break;
     }
@@ -161,19 +151,46 @@ namespace gf {
 
   Vec2I StaggeredGrid::compute_coordinates(Vec2F position) const
   {
-    // TODO: quick approximation but not really good
-    auto tile_size = m_tile_size;
+    const Vec2F half = m_tile_size / 2.0f;
 
-    switch (m_axis) {
-      case CellAxis::Y:
-        tile_size.y /= 2;
-        break;
-      case CellAxis::X:
-        tile_size.x /= 2;
-        break;
+    const float qx = std::floor(position.x / half.x);
+    const float rx = (position.x - qx * half.x) / half.x;
+    assert(0 <= rx && rx < 1.0f);
+
+    const float qy = std::floor(position.y / half.y);
+    const float ry = (position.y - qy * half.y) / half.y;
+    assert(0 <= ry && ry < 1.0f);
+
+    const int x = static_cast<int>(qx);
+    const int y = static_cast<int>(qy);
+
+    const bool is_diagonally_split = (m_index == CellIndex::Even) == (parity(x) == parity(y));
+
+    gf::Vec2I coords = vec(x, y);
+
+    if (m_axis == CellAxis::X) {
+      if ((is_diagonally_split && rx < ry) || (!is_diagonally_split && (rx + ry) < 1)) {
+        --coords.x;
+      }
+
+      coords.y = y / 2;
+
+      if (parity(y) == 0 && ((is_diagonally_split && rx > ry) || (!is_diagonally_split && (rx + ry) < 1))) {
+        --coords.y;
+      }
+    } else {
+      if ((is_diagonally_split && rx > ry) || (!is_diagonally_split && (rx + ry) < 1)) {
+        --coords.y;
+      }
+
+      coords.x = x / 2;
+
+      if (parity(x) == 0 && ((is_diagonally_split && rx < ry) || (!is_diagonally_split && (rx + ry) < 1))) {
+        --coords.x;
+      }
     }
 
-    return position / tile_size;
+    return coords;
   }
 
   std::vector<Vec2F> StaggeredGrid::compute_contour(Vec2I coordinates) const
@@ -198,6 +215,13 @@ namespace gf {
   {
     // TODO
     return {};
+  }
+
+  // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
+  bool StaggeredGrid::are_diagonal_neighbors([[maybe_unused]] Vec2I coordinates0, [[maybe_unused]] Vec2I coordinates1) const
+  {
+    // TODO
+    return false;
   }
 
   /*
@@ -443,6 +467,12 @@ namespace gf {
     }
 
     return neighbors;
+  }
+
+  // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
+  bool HexagonalGrid::are_diagonal_neighbors([[maybe_unused]] Vec2I coordinates0, [[maybe_unused]] Vec2I coordinates1) const
+  {
+    return false; // there are no diagonal neighbors in hexagonal grids
   }
 
   Vec2F HexagonalGrid::compute_regular_size(CellAxis axis, float radius)

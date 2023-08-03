@@ -25,6 +25,7 @@ namespace gf {
     Vec2I compute_coordinates(Vec2F position) const;
     std::vector<Vec2F> compute_contour(Vec2I coordinates) const;
     std::vector<Vec2I> compute_neighbors(Vec2I coordinates, Vec2I layer_size, Flags<CellNeighborQuery> flags = None) const;
+    bool are_diagonal_neighbors(Vec2I coordinates0, Vec2I coordinates1) const;
 
   private:
     Grid(OrthogonalGrid grid);
