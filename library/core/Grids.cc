@@ -5,6 +5,7 @@
 #include <gf2/Grids.h>
 // clang-format on
 
+#include <cmath>
 #include <cstdlib>
 
 #include <algorithm>
@@ -13,18 +14,27 @@
 
 namespace gf {
 
+  namespace {
+    Vec2I floorvec(float x, float y)
+    {
+      return { static_cast<int>(std::floor(x)), static_cast<int>(std::floor(y)) };
+    }
+
+  }
+
   /*
    * OrthogonalGrid
    */
 
-  OrthogonalGrid::OrthogonalGrid(Vec2F tile_size)
-  : m_tile_size(tile_size)
+  OrthogonalGrid::OrthogonalGrid(Vec2I layer_size, Vec2F tile_size)
+  : m_layer_size(layer_size)
+  , m_tile_size(tile_size)
   {
   }
 
-  RectF OrthogonalGrid::compute_bounds(Vec2I layer_size) const
+  RectF OrthogonalGrid::compute_bounds() const
   {
-    return RectF::from_size(layer_size * m_tile_size);
+    return RectF::from_size(m_layer_size * m_tile_size);
   }
 
   RectI OrthogonalGrid::compute_visible_area(RectF local) const
@@ -39,7 +49,7 @@ namespace gf {
 
   Vec2I OrthogonalGrid::compute_coordinates(Vec2F position) const
   {
-    return position / m_tile_size;
+    return floorvec(position.x / m_tile_size.w, position.y / m_tile_size.h);
   }
 
   std::vector<Vec2F> OrthogonalGrid::compute_contour(Vec2I coordinates) const
@@ -55,7 +65,7 @@ namespace gf {
   }
 
   // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
-  std::vector<Vec2I> OrthogonalGrid::compute_neighbors(Vec2I coordinates, Vec2I layer_size, Flags<CellNeighborQuery> flags) const
+  std::vector<Vec2I> OrthogonalGrid::compute_neighbors(Vec2I coordinates, Flags<CellNeighborQuery> flags) const
   {
     std::vector<Vec2I> neighbors;
 
@@ -72,7 +82,7 @@ namespace gf {
     }
 
     if (flags.test(CellNeighborQuery::Valid)) {
-      const RectI bounds = RectI::from_size(layer_size);
+      const RectI bounds = RectI::from_size(m_layer_size);
       // clang-format off
       neighbors.erase(std::remove_if(neighbors.begin(), neighbors.end(), [bounds](Vec2I neighbor) {
         return !bounds.contains(neighbor);
@@ -90,19 +100,104 @@ namespace gf {
   }
 
   /*
+   * IsometricGrid
+   */
+
+  IsometricGrid::IsometricGrid(Vec2I layer_size, Vec2F tile_size)
+  : m_layer_size(layer_size)
+  , m_tile_size(tile_size)
+  {
+  }
+
+  RectF IsometricGrid::compute_bounds() const
+  {
+    return RectF::from_size((m_layer_size.w + m_layer_size.h) * m_tile_size / 2);
+  }
+
+  RectI IsometricGrid::compute_visible_area(RectF local) const
+  {
+    const Vec2I north_west = compute_coordinates(local.position_at(Orientation::NorthWest));
+    const Vec2I north_east = compute_coordinates(local.position_at(Orientation::NorthEast));
+    const Vec2I south_west = compute_coordinates(local.position_at(Orientation::SouthWest));
+    const Vec2I south_east = compute_coordinates(local.position_at(Orientation::SouthEast));
+    return RectI::from_min_max({ north_west.x, north_east.y }, { south_east.x, south_west.y });
+  }
+
+  RectF IsometricGrid::compute_cell_bounds(Vec2I coordinates) const
+  {
+    const Vec2I transformed = { coordinates.x - coordinates.y + m_layer_size.h - 1, coordinates.x + coordinates.y };
+    return RectF::from_position_size(transformed * m_tile_size / 2, m_tile_size);
+  }
+
+  Vec2I IsometricGrid::compute_coordinates(Vec2F position) const
+  {
+    position.x -= static_cast<float>(m_layer_size.h) * m_tile_size.w / 2;
+    const Vec2F transformed = position / (m_tile_size / 2);
+    return floorvec((transformed.x + transformed.y) / 2, (transformed.y - transformed.x) / 2);
+  }
+
+  std::vector<Vec2F> IsometricGrid::compute_contour(Vec2I coordinates) const
+  {
+    const RectF bounds = compute_cell_bounds(coordinates);
+
+    std::vector<Vec2F> contour;
+    contour.push_back(bounds.position_at(Orientation::North));
+    contour.push_back(bounds.position_at(Orientation::East));
+    contour.push_back(bounds.position_at(Orientation::South));
+    contour.push_back(bounds.position_at(Orientation::West));
+    return contour;
+  }
+
+  // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
+  std::vector<Vec2I> IsometricGrid::compute_neighbors(Vec2I coordinates, Flags<CellNeighborQuery> flags) const
+  {
+    std::vector<Vec2I> neighbors;
+
+    neighbors.push_back(coordinates + gf::vec(-1, +0));
+    neighbors.push_back(coordinates + gf::vec(+1, +0));
+    neighbors.push_back(coordinates + gf::vec(+0, -1));
+    neighbors.push_back(coordinates + gf::vec(+0, +1));
+
+    if (flags.test(CellNeighborQuery::Diagonal)) {
+      neighbors.push_back(coordinates + gf::vec(-1, -1));
+      neighbors.push_back(coordinates + gf::vec(+1, -1));
+      neighbors.push_back(coordinates + gf::vec(-1, +1));
+      neighbors.push_back(coordinates + gf::vec(+1, +1));
+    }
+
+    if (flags.test(CellNeighborQuery::Valid)) {
+      const RectI bounds = RectI::from_size(m_layer_size);
+      // clang-format off
+      neighbors.erase(std::remove_if(neighbors.begin(), neighbors.end(), [bounds](Vec2I neighbor) {
+        return !bounds.contains(neighbor);
+      }), neighbors.end());
+      // clang-format on
+    }
+
+    return neighbors;
+  }
+
+  // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
+  bool IsometricGrid::are_diagonal_neighbors(Vec2I coordinates0, Vec2I coordinates1) const
+  {
+    return std::abs(coordinates0.x - coordinates1.x) == 1 && std::abs(coordinates0.y - coordinates1.y) == 1;
+  }
+
+  /*
    * StaggeredGrid
    */
 
-  StaggeredGrid::StaggeredGrid(Vec2F tile_size, CellAxis axis, CellIndex index)
-  : m_tile_size(tile_size)
+  StaggeredGrid::StaggeredGrid(Vec2I layer_size, Vec2F tile_size, CellAxis axis, CellIndex index)
+  : m_layer_size(layer_size)
+  , m_tile_size(tile_size)
   , m_axis(axis)
   , m_index(index)
   {
   }
 
-  RectF StaggeredGrid::compute_bounds(Vec2I layer_size) const
+  RectF StaggeredGrid::compute_bounds() const
   {
-    Vec2F base = layer_size * m_tile_size;
+    Vec2F base = m_layer_size * m_tile_size;
 
     switch (m_axis) {
       case CellAxis::X:
@@ -196,32 +291,94 @@ namespace gf {
   std::vector<Vec2F> StaggeredGrid::compute_contour(Vec2I coordinates) const
   {
     const RectF bounds = compute_cell_bounds(coordinates);
-    const Vec2F min = bounds.min();
-    const Vec2F max = bounds.max();
 
     std::vector<Vec2F> contour;
-    // clang-format off
-    contour.emplace_back((min.x + max.x) / 2, min.y);
-    contour.emplace_back(max.x,               (min.y + max.y) / 2);
-    contour.emplace_back((min.x + max.x) / 2, max.y);
-    contour.emplace_back(min.x,               (min.y + max.y) / 2);
-    // clang-format on
-
+    contour.push_back(bounds.position_at(Orientation::North));
+    contour.push_back(bounds.position_at(Orientation::East));
+    contour.push_back(bounds.position_at(Orientation::South));
+    contour.push_back(bounds.position_at(Orientation::West));
     return contour;
   }
 
-  // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
-  std::vector<Vec2I> StaggeredGrid::compute_neighbors([[maybe_unused]] Vec2I coordinates, [[maybe_unused]] Vec2I layer_size, [[maybe_unused]] Flags<CellNeighborQuery> flags) const
-  {
-    // TODO
-    return {};
+  namespace {
+    // clang-format off
+    constexpr Vec2I StaggeredNeighborsX1[4] = {{ -1, +0 }, { +1, +0 }, { -1, +1 }, { +1, +1 }};
+    constexpr Vec2I StaggeredNeighborsX0[4] = {{ -1, -1 }, { +1, -1 }, { -1, +0 }, { +1, +0 }};
+    constexpr Vec2I StaggeredNeighborsXD[4] = {{ -2, +0 }, { +0, -1 }, { +2, +0 }, { +0, +1 }};
+
+    constexpr Vec2I StaggeredNeighborsY1[4] = {{ +0, -1 }, { +1, -1 }, { +0, +1 }, { +1, +1 }};
+    constexpr Vec2I StaggeredNeighborsY0[4] = {{ -1, -1 }, { +0, -1 }, { -1, +1 }, { +0, +1 }};
+    constexpr Vec2I StaggeredNeighborsYD[4] = {{ -2, +0 }, { +0, -1 }, { +2, +0 }, { +0, +1 }};
+    // clang-format on
   }
 
-  // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
-  bool StaggeredGrid::are_diagonal_neighbors([[maybe_unused]] Vec2I coordinates0, [[maybe_unused]] Vec2I coordinates1) const
+  std::vector<Vec2I> StaggeredGrid::compute_neighbors(Vec2I coordinates, Flags<CellNeighborQuery> flags) const
   {
-    // TODO
-    return false;
+    StaticSpan<const Vec2I, 4> relative;
+    StaticSpan<const Vec2I, 4> diagonal;
+
+    switch (m_axis) {
+      case CellAxis::X:
+        if ((m_index == CellIndex::Even) == (coordinates.x % 2 == 0)) {
+          relative = StaggeredNeighborsX1;
+        } else {
+          relative = StaggeredNeighborsX0;
+        }
+
+        diagonal = StaggeredNeighborsXD;
+        break;
+      case CellAxis::Y:
+        if ((m_index == CellIndex::Even) == (coordinates.y % 2 == 0)) {
+          relative = StaggeredNeighborsY1;
+        } else {
+          relative = StaggeredNeighborsY0;
+        }
+
+        diagonal = StaggeredNeighborsYD;
+        break;
+    }
+
+    std::vector<Vec2I> neighbors;
+
+    for (auto offset : relative) {
+      neighbors.push_back(coordinates + offset);
+    }
+
+    assert(neighbors.size() == 4);
+
+    if (flags.test(CellNeighborQuery::Diagonal)) {
+      for (auto offset : diagonal) {
+        neighbors.push_back(coordinates + offset);
+      }
+    }
+
+    if (flags.test(CellNeighborQuery::Valid)) {
+      const RectI bounds = RectI::from_size(m_layer_size);
+      // clang-format off
+      neighbors.erase(std::remove_if(neighbors.begin(), neighbors.end(), [bounds](Vec2I neighbor) {
+        return !bounds.contains(neighbor);
+      }), neighbors.end());
+      // clang-format on
+    }
+
+    return neighbors;
+  }
+
+  bool StaggeredGrid::are_diagonal_neighbors(Vec2I coordinates0, Vec2I coordinates1) const
+  {
+    StaticSpan<const Vec2I, 4> diagonal;
+
+    switch (m_axis) {
+      case CellAxis::X:
+        diagonal = StaggeredNeighborsXD;
+        break;
+      case CellAxis::Y:
+        diagonal = StaggeredNeighborsYD;
+        break;
+    }
+
+    const Vec2I offset = coordinates1 - coordinates0;
+    return std::any_of(diagonal.begin(), diagonal.end(), [offset](auto other) { return other == offset; });
   }
 
   /*
@@ -245,36 +402,38 @@ namespace gf {
 
   } // namespace
 
-  HexagonalGrid::HexagonalGrid(Vec2F tile_size, float side_length, CellAxis axis, CellIndex index)
-  : m_tile_size(tile_size)
+  HexagonalGrid::HexagonalGrid(Vec2I layer_size, Vec2F tile_size, float side_length, CellAxis axis, CellIndex index)
+  : m_layer_size(layer_size)
+  , m_tile_size(tile_size)
   , m_side_length(side_length)
   , m_axis(axis)
   , m_index(index)
   {
   }
 
-  HexagonalGrid::HexagonalGrid(float radius, CellAxis axis, CellIndex index)
-  : m_tile_size(compute_regular_size(axis, radius))
+  HexagonalGrid::HexagonalGrid(Vec2I layer_size, float radius, CellAxis axis, CellIndex index)
+  : m_layer_size(layer_size)
+  , m_tile_size(compute_regular_size(axis, radius))
   , m_side_length(radius)
   , m_axis(axis)
   , m_index(index)
   {
   }
 
-  RectF HexagonalGrid::compute_bounds(Vec2I layer_size) const
+  RectF HexagonalGrid::compute_bounds() const
   {
     Vec2F size = gf::vec(0.0f, 0.0f);
     const float offset = compute_offset(m_tile_size, m_side_length, m_axis);
 
     switch (m_axis) {
       case CellAxis::X:
-        size.h = static_cast<float>(layer_size.h) * m_tile_size.h + m_tile_size.h / 2;
-        size.w = static_cast<float>(layer_size.w) * (m_tile_size.w - offset) + offset;
+        size.h = static_cast<float>(m_layer_size.h) * m_tile_size.h + m_tile_size.h / 2;
+        size.w = static_cast<float>(m_layer_size.w) * (m_tile_size.w - offset) + offset;
         break;
 
       case CellAxis::Y:
-        size.w = static_cast<float>(layer_size.w) * m_tile_size.w + m_tile_size.w / 2;
-        size.h = static_cast<float>(layer_size.h) * (m_tile_size.h - offset) + offset;
+        size.w = static_cast<float>(m_layer_size.w) * m_tile_size.w + m_tile_size.w / 2;
+        size.h = static_cast<float>(m_layer_size.h) * (m_tile_size.h - offset) + offset;
         break;
     }
 
@@ -418,7 +577,7 @@ namespace gf {
     return contour;
   }
 
-  std::vector<Vec2I> HexagonalGrid::compute_neighbors(Vec2I coordinates, Vec2I layer_size, Flags<CellNeighborQuery> flags) const
+  std::vector<Vec2I> HexagonalGrid::compute_neighbors(Vec2I coordinates, Flags<CellNeighborQuery> flags) const
   {
     static constexpr Vec2I XOffsets[2][6] = {
       {{ +1, +0 }, { +1, -1 }, { +0, -1 }, { -1, -1 }, { -1, +0 }, { +0, +1 }},
@@ -458,7 +617,7 @@ namespace gf {
     assert(neighbors.size() == 6);
 
     if (flags.test(CellNeighborQuery::Valid)) {
-      const RectI bounds = RectI::from_size(layer_size);
+      const RectI bounds = RectI::from_size(m_layer_size);
       // clang-format off
       neighbors.erase(std::remove_if(neighbors.begin(), neighbors.end(), [bounds](Vec2I neighbor) {
         return !bounds.contains(neighbor);

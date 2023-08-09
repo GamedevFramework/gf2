@@ -12,6 +12,11 @@ namespace gf {
   {
   }
 
+  Grid::Grid(IsometricGrid grid)
+  : m_variant(grid)
+  {
+  }
+
   Grid::Grid(StaggeredGrid grid)
   : m_variant(grid)
   {
@@ -22,34 +27,39 @@ namespace gf {
   {
   }
 
-  Grid Grid::make_orthogonal(Vec2F tile_size)
+  Grid Grid::make_orthogonal(Vec2I layer_size, Vec2F tile_size)
   {
-    return { OrthogonalGrid(tile_size) };
+    return { OrthogonalGrid(layer_size, tile_size) };
   }
 
-  Grid Grid::make_staggered(Vec2F tile_size, CellAxis axis, CellIndex index)
+  Grid Grid::make_isometric(Vec2I layer_size, Vec2F tile_size)
   {
-    return { StaggeredGrid(tile_size, axis, index) };
+    return { IsometricGrid(layer_size, tile_size) };
   }
 
-  Grid Grid::make_hexagonal(Vec2F tile_size, float side_length, CellAxis axis, CellIndex index)
+  Grid Grid::make_staggered(Vec2I layer_size, Vec2F tile_size, CellAxis axis, CellIndex index)
   {
-    return { HexagonalGrid(tile_size, side_length, axis, index) };
+    return { StaggeredGrid(layer_size, tile_size, axis, index) };
   }
 
-  Grid Grid::make_hexagonal(float radius, CellAxis axis, CellIndex index)
+  Grid Grid::make_hexagonal(Vec2I layer_size, Vec2F tile_size, float side_length, CellAxis axis, CellIndex index)
   {
-    return { HexagonalGrid(radius, axis, index) };
+    return { HexagonalGrid(layer_size, tile_size, side_length, axis, index) };
   }
 
-  RectF Grid::compute_bounds(Vec2I layer_size) const
+  Grid Grid::make_hexagonal(Vec2I layer_size, float radius, CellAxis axis, CellIndex index)
+  {
+    return { HexagonalGrid(layer_size, radius, axis, index) };
+  }
+
+  RectF Grid::compute_bounds() const
   {
     return std::visit([=](auto&& grid) {
       using T = std::decay_t<decltype(grid)>;
       if constexpr (std::is_same_v<T, std::monostate>) {
         return RectF::from_size({ 0.0f, 0.0f });
       } else {
-        return grid.compute_bounds(layer_size);
+        return grid.compute_bounds();
       }
     },
         m_variant);
@@ -108,7 +118,7 @@ namespace gf {
         m_variant);
   }
 
-  std::vector<Vec2I> Grid::compute_neighbors(Vec2I coordinates, Vec2I layer_size, Flags<CellNeighborQuery> flags) const
+  std::vector<Vec2I> Grid::compute_neighbors(Vec2I coordinates, Flags<CellNeighborQuery> flags) const
   {
     return std::visit([=](auto&& grid) {
       using T = std::decay_t<decltype(grid)>;
@@ -116,7 +126,7 @@ namespace gf {
         std::vector<Vec2I> empty;
         return empty;
       } else {
-        return grid.compute_neighbors(coordinates, layer_size, flags);
+        return grid.compute_neighbors(coordinates, flags);
       }
     },
         m_variant);
