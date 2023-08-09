@@ -8,7 +8,7 @@ add_requires("stb", { system = false })
 
 add_rules("mode.asan", "mode.tsan", "mode.ubsan", "mode.coverage", "mode.debug", "mode.releasedbg", "mode.release")
 
-set_warnings("all")
+set_warnings("allextra")
 set_languages("cxx17")
 
 if is_plat("windows") then
