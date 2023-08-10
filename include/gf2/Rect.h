@@ -34,7 +34,7 @@ namespace gf {
 
     static constexpr Rect from_center_size(Vec2<T> center, Vec2<T> size) noexcept
     {
-      return { center - size / 2, size };
+      return { center - size / T(2), size };
     }
 
     constexpr bool empty() const noexcept
@@ -153,6 +153,16 @@ namespace gf {
       }
 
       return offset;
+    }
+
+    constexpr Rect grow_by(T value) const noexcept
+    {
+      return from_position_size(offset - value, extent + T(2) * value);
+    }
+
+    constexpr Rect shrink_by(T value) const noexcept
+    {
+      return from_position_size(offset + value, extent - T(2) * value);
     }
   };
 

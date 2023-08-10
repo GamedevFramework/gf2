@@ -41,7 +41,7 @@ See xref:RandomEngine.adoc#_constructors[`RandomEngine` constructors] for detail
 float compute_angle();
 ----
 
-Compute an angle in the range stem:[0, 2\pi].
+Compute an angle in the range stem:[[0, 2\pi\]].
 
 See also: <<_compute_radius>>
 

@@ -113,6 +113,17 @@ constexpr Rect& extend_to(Rect other) noexcept; <2>
 <1> Extend the rectangle with a point.
 <2> Extend the rectangle with a rectangle.
 
+=== `grow_by`
+
+[source]
+----
+constexpr Rect grow_by(T value) const noexcept;
+----
+
+Grow the rectangle and return the result.
+
+See also: <<_shrink_by>>
+
 === `intersection`
 
 [source]
@@ -170,6 +181,17 @@ constexpr Vec2<T> position_at(Orientation orientation) const noexcept;
 ----
 
 Get the position at the given orientation in the rectangle.
+
+=== `shrink_by`
+
+[source]
+----
+constexpr Rect shrink_by(T value) const noexcept;
+----
+
+Shrink the rectangle and return the result.
+
+See also: <<_grow_by>>
 
 === `size`
 
