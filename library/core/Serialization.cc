@@ -412,23 +412,20 @@ namespace gf {
     static constexpr std::size_t Size = sizeof(uint64_t);
 
     uint8_t data = 0;
-    std::size_t n = 0;
+    read_u8(&data);
 
-    for (;;) {
-      read_u8(&data);
-
-      if (data != 0xFF || n == Size - 1) {
-        break;
-      }
-
-      ++n;
-    }
-
-    if (n == 0) {
+    if (data < 0xFF) {
       // early exit
       *raw_size = data;
       return;
     }
+
+    std::size_t n = 0;
+
+    do {
+      read_u8(&data);
+      ++n;
+    } while (data == 0xFF && n < Size - 1);
 
     assert(n < Size);
     uint8_t buf[Size];
