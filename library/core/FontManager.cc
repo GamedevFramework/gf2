@@ -26,7 +26,7 @@ namespace gf {
       switch (error) {
 
 #undef FTERRORS_H_
-// NOLINTNEXTLINE
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define FT_ERRORDEF(e, v, s) \
   case v:                    \
     return s;
@@ -88,7 +88,9 @@ namespace gf {
     return *this;
   }
 
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define GF_XSTRINGIFY(X) #X
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define GF_STRINGIFY(X) GF_XSTRINGIFY(X)
 
   std::string FontManager::backend()
