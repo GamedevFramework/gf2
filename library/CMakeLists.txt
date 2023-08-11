@@ -96,6 +96,7 @@ add_library(gf2core0
   core/SerializationOps.cc
   core/Stream.cc
   core/Streams.cc
+  core/StringUtils.cc
   core/Tarball.cc
   core/Time.cc
   core/Transform.cc

@@ -19,6 +19,7 @@ add_executable(gf2_core_tests
   tests_core_Resource.cc
   tests_core_Result.cc
   tests_core_Serialization.cc
+  tests_core_StringUtils.cc
   tests_core_Span.cc
   tests_core_Vec2.cc
   tests_core_Vec3.cc

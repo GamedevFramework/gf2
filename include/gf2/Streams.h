@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Zlib
+// Copyright (c) 2023 Julien Bernard
 #ifndef GF_STREAMS_H
 #define GF_STREAMS_H
 

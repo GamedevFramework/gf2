@@ -7,10 +7,11 @@
 #include <gf2/FontManager.h>
 #include <gf2/Font.h>
 #include <gf2/Range.h>
+#include <gf2/StringUtils.h>
 
 int main(int argc, char *argv[]) {
   if (argc == 1 || argc > 4) {
-    std::cerr << "gf2_font_display <font> [char] [size]" << std::endl;
+    std::cerr << "gf2_glyph_display <font> [char] [size]" << std::endl;
     return 1;
   }
 
@@ -21,10 +22,14 @@ int main(int argc, char *argv[]) {
   std::cout << "family: " << font.family_name() << '\n';
   std::cout << "style: " << font.style_name() << '\n';
 
-  char c = 'A';
+  char32_t c = U'A';
 
   if (argc > 2) {
-    c = argv[2][0];
+    auto codepoints = gf::codepoints(argv[2]);
+
+    if (codepoints.begin() != codepoints.end()) {
+      c = *codepoints.begin();
+    }
   }
 
   unsigned character_size = 32;

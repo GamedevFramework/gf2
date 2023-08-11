@@ -10,13 +10,13 @@ target_link_libraries(gf2_tarball_listfiles
     gf2core0
 )
 
-# gf2_font_display
+# gf2_glyph_display
 
-add_executable(gf2_font_display
-  gf2_font_display.cc
+add_executable(gf2_glyph_display
+  gf2_glyph_display.cc
 )
 
-target_link_libraries(gf2_font_display
+target_link_libraries(gf2_glyph_display
   PRIVATE
     gf2core0
 )
