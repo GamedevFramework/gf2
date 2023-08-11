@@ -94,7 +94,7 @@ namespace gf {
   }
 
   namespace {
-    constexpr bool is_delimiter(char c, std::string_view delimiters)
+    bool is_delimiter(char c, std::string_view delimiters)
     {
       return std::any_of(delimiters.begin(), delimiters.end(), [c](char d) { return c == d; });
     }
