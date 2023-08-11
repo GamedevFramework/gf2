@@ -471,122 +471,137 @@ namespace gf {
     return RectF::from_position_size(base, m_tile_size);
   }
 
-  Vec2I HexagonalGrid::compute_coordinates(Vec2F position) const
+  Vec2I HexagonalGrid::compute_coordinates_x_axis(Vec2F position) const
   {
+    assert(m_axis == CellAxis::X);
     const Vec2F offset = compute_offset(m_tile_size, m_side_length);
-    Vec2I coordinates = {};
 
-    switch (m_axis) {
-      case CellAxis::X: {
-        const float tx = m_tile_size.w - offset.w;
-        const float qx = std::floor(position.x / tx);
-        const float rx = position.x - qx * tx;
-        const float nrx = rx / offset.w;
+    const float tx = m_tile_size.w - offset.w;
+    const float qx = std::floor(position.x / tx);
+    const float rx = position.x - qx * tx;
+    const float nrx = rx / offset.w;
 
-        const float ty = m_tile_size.h / 2.0f;
-        const float qy = std::floor(position.y / ty);
-        const float ry = position.y - qy * ty;
-        const float nry = ry / ty;
+    const float ty = m_tile_size.h / 2.0f;
+    const float qy = std::floor(position.y / ty);
+    const float ry = position.y - qy * ty;
+    const float nry = ry / ty;
 
-        const int x = static_cast<int>(qx);
-        const int y = static_cast<int>(qy);
+    const int x = static_cast<int>(qx);
+    const int y = static_cast<int>(qy);
 
-        coordinates = vec(x, y);
+    Vec2I coordinates = vec(x, y);
 
-        if ((m_index == CellIndex::Even) == (parity(x) == 0)) {
-          --coordinates.y;
+    if ((m_index == CellIndex::Even) == (parity(x) == 0)) {
+      --coordinates.y;
+    }
+
+    coordinates.y = div_floor(coordinates.y, 2);
+
+    if (rx >= offset.w) {
+      return coordinates;
+    }
+
+    assert(0 <= nrx && nrx < 1);
+    assert(0 <= nry && nry < 1);
+
+    if ((m_index == CellIndex::Even) == (parity(x) == 0)) {
+      if (parity(y) == 0) {
+        if (nrx < nry) {
+          --coordinates.x;
+          ++coordinates.y;
         }
-
-        coordinates.y = div_floor(coordinates.y, 2);
-
-        if (rx < offset.w) {
-          assert(0 <= nrx && nrx < 1);
-          assert(0 <= nry && nry < 1);
-
-          if ((m_index == CellIndex::Even) == (parity(x) == 0)) {
-            if (parity(y) == 0) {
-              if (nrx < nry) {
-                --coordinates.x;
-                ++coordinates.y;
-              }
-            } else {
-              if (nrx + nry < 1) {
-                --coordinates.x;
-              }
-            }
-          } else {
-            if (parity(y) == 0) {
-              if (nrx + nry < 1) {
-                --coordinates.x;
-                --coordinates.y;
-              }
-            } else {
-              if (nrx < nry) {
-                --coordinates.x;
-              }
-            }
-          }
-        }
-
-        break;
-      }
-
-      case CellAxis::Y: {
-        const float ty = m_tile_size.h - offset.h;
-        const float qy = std::floor(position.y / ty);
-        const float ry = position.y - qy * ty;
-        const float nry = ty / offset.h;
-
-        const float tx = m_tile_size.w / 2.0f;
-        const float qx = std::floor(position.x / tx);
-        const float rx = position.x - qx * tx;
-        const float nrx = rx / tx;
-
-        const int x = static_cast<int>(qx);
-        const int y = static_cast<int>(qy);
-
-        coordinates = vec(x, y);
-
-        if ((m_index == CellIndex::Even) == (parity(y) == 0)) {
+      } else {
+        if (nrx + nry < 1) {
           --coordinates.x;
         }
-
-        coordinates.x = div_floor(coordinates.x, 2);
-
-        if (ry < offset.h) {
-          assert(0 <= nrx && nrx < 1);
-          assert(0 <= nry && nry < 1);
-
-          if ((m_index == CellIndex::Even) == (parity(y) == 0)) {
-            if (parity(x) == 0) {
-              if (nrx > nry) {
-                --coordinates.y;
-                ++coordinates.x;
-              }
-            } else {
-              if (nrx + nry < 1) {
-                --coordinates.y;
-              }
-            }
-          } else {
-            if (parity(x) == 0) {
-              if (nrx + nry < 1) {
-                --coordinates.y;
-                --coordinates.x;
-              }
-            } else {
-              if (nrx > nry) {
-                --coordinates.y;
-              }
-            }
-          }
+      }
+    } else {
+      if (parity(y) == 0) {
+        if (nrx + nry < 1) {
+          --coordinates.x;
+          --coordinates.y;
         }
-
-        break;
+      } else {
+        if (nrx < nry) {
+          --coordinates.x;
+        }
       }
     }
 
     return coordinates;
+  }
+
+  Vec2I HexagonalGrid::compute_coordinates_y_axis(Vec2F position) const
+  {
+    assert(m_axis == CellAxis::Y);
+    const Vec2F offset = compute_offset(m_tile_size, m_side_length);
+
+    const float ty = m_tile_size.h - offset.h;
+    const float qy = std::floor(position.y / ty);
+    const float ry = position.y - qy * ty;
+    const float nry = ty / offset.h;
+
+    const float tx = m_tile_size.w / 2.0f;
+    const float qx = std::floor(position.x / tx);
+    const float rx = position.x - qx * tx;
+    const float nrx = rx / tx;
+
+    const int x = static_cast<int>(qx);
+    const int y = static_cast<int>(qy);
+
+    Vec2I coordinates = vec(x, y);
+
+    if ((m_index == CellIndex::Even) == (parity(y) == 0)) {
+      --coordinates.x;
+    }
+
+    coordinates.x = div_floor(coordinates.x, 2);
+
+    if (ry >= offset.h) {
+      return coordinates;
+    }
+
+    assert(0 <= nrx && nrx < 1);
+    assert(0 <= nry && nry < 1);
+
+    if ((m_index == CellIndex::Even) == (parity(y) == 0)) {
+      if (parity(x) == 0) {
+        if (nrx > nry) {
+          --coordinates.y;
+          ++coordinates.x;
+        }
+      } else {
+        if (nrx + nry < 1) {
+          --coordinates.y;
+        }
+      }
+    } else {
+      if (parity(x) == 0) {
+        if (nrx + nry < 1) {
+          --coordinates.y;
+          --coordinates.x;
+        }
+      } else {
+        if (nrx > nry) {
+          --coordinates.y;
+        }
+      }
+    }
+
+    return coordinates;
+  }
+
+  Vec2I HexagonalGrid::compute_coordinates(Vec2F position) const
+  {
+    switch (m_axis) {
+      case CellAxis::X:
+        return compute_coordinates_x_axis(position);
+
+      case CellAxis::Y:
+        return compute_coordinates_y_axis(position);
+    }
+
+    return {};
   }
 
   std::vector<Vec2F> HexagonalGrid::compute_contour(Vec2I coordinates) const
@@ -641,17 +656,17 @@ namespace gf {
 
     switch (m_axis) {
       case CellAxis::X:
-        if ((m_index == CellIndex::Odd && coordinates.x % 2 == 0) || (m_index == CellIndex::Even && coordinates.x % 2 != 0)) {
-          relative = XOffsets[0];
-        } else {
+        if ((m_index == CellIndex::Even) == (coordinates.x % 2 == 0)) {
           relative = XOffsets[1];
+        } else {
+          relative = XOffsets[0];
         }
         break;
       case CellAxis::Y:
-        if ((m_index == CellIndex::Odd && coordinates.y % 2 == 0) || (m_index == CellIndex::Even && coordinates.y % 2 != 0)) {
-          relative = YOffsets[0];
-        } else {
+        if ((m_index == CellIndex::Even) == (coordinates.y % 2 == 0)) {
           relative = YOffsets[1];
+        } else {
+          relative = YOffsets[0];
         }
         break;
     }

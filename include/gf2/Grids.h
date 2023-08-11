@@ -81,6 +81,9 @@ namespace gf {
     static Vec2F compute_regular_size(CellAxis axis, float radius);
 
   private:
+    Vec2I compute_coordinates_x_axis(Vec2F position) const;
+    Vec2I compute_coordinates_y_axis(Vec2F position) const;
+
     Vec2I m_layer_size;
     Vec2F m_tile_size;
     float m_side_length;
