@@ -282,7 +282,6 @@ namespace gf {
     }
 
     assert(false);
-    return Event{};
   }
 
 } // namespace gf

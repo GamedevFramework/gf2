@@ -9,7 +9,7 @@
 
 namespace gf {
 
-  enum class Id : uint64_t;
+  enum class Id : uint64_t {};
 
   constexpr Id id(uint64_t id)
   {

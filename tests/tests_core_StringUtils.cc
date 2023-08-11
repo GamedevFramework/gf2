@@ -5,20 +5,20 @@
 #include "gtest/gtest.h"
 
 TEST(StringUtilsTest, NiceNum) {
-  EXPECT_EQ(gf::nice_num(0, 1.0f), "0");
-  EXPECT_EQ(gf::nice_num(0, 0.0001f), "0");
+  EXPECT_EQ(gf::nice_num(0.0f, 1.0f), "0");
+  EXPECT_EQ(gf::nice_num(0.0f, 0.0001f), "0");
 
-  EXPECT_EQ(gf::nice_num(3.14, 10.0f), "0");
-  EXPECT_EQ(gf::nice_num(3.14, 1.0f), "3");
-  EXPECT_EQ(gf::nice_num(3.14, 0.1f), "3.1");
-  EXPECT_EQ(gf::nice_num(3.14, 0.01f), "3.14");
-  EXPECT_EQ(gf::nice_num(3.14, 0.001f), "3.140");
+  EXPECT_EQ(gf::nice_num(3.14f, 10.0f), "0");
+  EXPECT_EQ(gf::nice_num(3.14f, 1.0f), "3");
+  EXPECT_EQ(gf::nice_num(3.14f, 0.1f), "3.1");
+  EXPECT_EQ(gf::nice_num(3.14f, 0.01f), "3.14");
+  EXPECT_EQ(gf::nice_num(3.14f, 0.001f), "3.140");
 
-  EXPECT_EQ(gf::nice_num(-3.14, 10.0f), "0");
-  EXPECT_EQ(gf::nice_num(-3.14, 1.0f), "-3");
-  EXPECT_EQ(gf::nice_num(-3.14, 0.1f), "-3.1");
-  EXPECT_EQ(gf::nice_num(-3.14, 0.01f), "-3.14");
-  EXPECT_EQ(gf::nice_num(-3.14, 0.001f), "-3.140");
+  EXPECT_EQ(gf::nice_num(-3.14f, 10.0f), "0");
+  EXPECT_EQ(gf::nice_num(-3.14f, 1.0f), "-3");
+  EXPECT_EQ(gf::nice_num(-3.14f, 0.1f), "-3.1");
+  EXPECT_EQ(gf::nice_num(-3.14f, 0.01f), "-3.14");
+  EXPECT_EQ(gf::nice_num(-3.14f, 0.001f), "-3.140");
 }
 
 TEST(StringUtilsTest, EscapeString) {
