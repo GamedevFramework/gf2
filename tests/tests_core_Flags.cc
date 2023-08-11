@@ -44,12 +44,23 @@ TEST(FlagsTest, NoneCtor) {
 TEST(FlagsTest, AllCtor) {
   gf::Flags<Foo> foo(gf::All);
   ASSERT_TRUE(foo);
+  EXPECT_TRUE(foo.test(Foo1));
+  EXPECT_TRUE(foo.test(Foo2));
+  EXPECT_TRUE(foo.test(Foo3));
+  EXPECT_TRUE(foo.test(Foo4));
 
   gf::Flags<Bar> bar(gf::All);
   ASSERT_TRUE(bar);
+  EXPECT_TRUE(bar.test(Bar::Bar1));
+  EXPECT_TRUE(bar.test(Bar::Bar2));
+  EXPECT_TRUE(bar.test(Bar::Bar3));
+  EXPECT_TRUE(bar.test(Bar::Bar4));
 
   gf::Flags<Baz> baz(gf::All);
   ASSERT_TRUE(baz);
+  EXPECT_TRUE(baz.test(Baz::Baz1));
+  EXPECT_TRUE(baz.test(Baz::Baz2));
+  EXPECT_TRUE(baz.test(Baz::Baz3));
 }
 
 TEST(FlagsTest, EnumCtor) {

@@ -24,8 +24,9 @@ namespace gf {
     }
 
     constexpr Flags(AllType /* unused */)
-    : m_data(~Type(0))
+    : m_data(0)
     {
+      m_data = ~m_data;
     }
 
     constexpr Flags(E e)
