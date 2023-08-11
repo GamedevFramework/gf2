@@ -156,6 +156,18 @@ namespace gf {
     return (val % T(2) == T(0)) ? T(0) : T(1);
   }
 
+  template<typename T>
+  constexpr std::enable_if_t<std::is_integral_v<T>, T> div_floor(T dividend, T divisor)
+  {
+    return dividend / divisor - (dividend % divisor != 0) * ((dividend < 0) ^ (divisor < 0));
+  }
+
+  template<typename T>
+  constexpr std::enable_if_t<std::is_integral_v<T>, T> div_ceil(T dividend, T divisor)
+  {
+    return dividend / divisor + (dividend % divisor != 0) * ((dividend > 0) ^ (divisor < 0));
+  }
+
 } // namespace gf
 
 #endif // GF_MATH_H

@@ -330,6 +330,34 @@ Convert the angle `degrees` in radians. `T` must be a floating point.
 
 See also: <<_radians_to_degrees>>
 
+[#_div_ceil]
+=== `gf::div_ceil`
+
+[source]
+----
+#include <gf2/Math.h>
+template<typename T>
+constexpr T div_ceil(T dividend, T divisor);
+----
+
+Compute stem:[\left\lceil\frac{\text{dividend}}{\text{divisor}}\right\rceil]. `dividend` and `divisor` must be integers.
+
+See also: <<_div_floor>>
+
+[#_div_floor]
+=== `gf::div_floor`
+
+[source]
+----
+#include <gf2/Math.h>
+template<typename T>
+constexpr T div_floor(T dividend, T divisor);
+----
+
+Compute stem:[\left\lfloor\frac{\text{dividend}}{\text{divisor}}\right\rfloor]. `dividend` and `divisor` must be integers.
+
+See also: <<_div_ceil>>
+
 [#_lerp]
 === `gf::lerp`
 

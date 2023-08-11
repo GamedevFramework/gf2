@@ -143,3 +143,67 @@ TEST(MathTest, AbsDiff) {
   static_assert(std::is_same_v<std::remove_cv_t<decltype(value_unsigned_neg)>, unsigned>, "Check absdiff");
   static_assert(value_unsigned_neg == 5u, "Check absdiff");
 }
+
+TEST(MathTest, Parity) {
+  EXPECT_EQ(gf::parity(0), 0);
+  EXPECT_EQ(gf::parity(3), 1);
+  EXPECT_EQ(gf::parity(4), 0);
+  EXPECT_EQ(gf::parity(-3), 1);
+  EXPECT_EQ(gf::parity(-4), 0);
+
+  static_assert(gf::parity(0) == 0, "Check parity");
+  static_assert(gf::parity(3) == 1, "Check parity");
+  static_assert(gf::parity(4) == 0, "Check parity");
+  static_assert(gf::parity(-3) == 1, "Check parity");
+  static_assert(gf::parity(-4) == 0, "Check parity");
+}
+
+TEST(MathTest, DivFloor) {
+  EXPECT_EQ(gf::div_floor(+3, +2), +1);
+  EXPECT_EQ(gf::div_floor(+3, -2), -2);
+  EXPECT_EQ(gf::div_floor(-3, +2), -2);
+  EXPECT_EQ(gf::div_floor(-3, -2), +1);
+
+  EXPECT_EQ(gf::div_floor(+4, +2), +2);
+  EXPECT_EQ(gf::div_floor(+4, -2), -2);
+  EXPECT_EQ(gf::div_floor(-4, +2), -2);
+  EXPECT_EQ(gf::div_floor(-4, -2), +2);
+
+  EXPECT_EQ(gf::div_floor(3u, 2u), 1u);
+  EXPECT_EQ(gf::div_floor(4u, 2u), 2u);
+
+  static_assert(gf::div_floor(+3, +2) == +1, "Check div_floor");
+  static_assert(gf::div_floor(+3, -2) == -2, "Check div_floor");
+  static_assert(gf::div_floor(-3, +2) == -2, "Check div_floor");
+  static_assert(gf::div_floor(-3, -2) == +1, "Check div_floor");
+
+  static_assert(gf::div_floor(+4, +2) == +2, "Check div_floor");
+  static_assert(gf::div_floor(+4, -2) == -2, "Check div_floor");
+  static_assert(gf::div_floor(-4, +2) == -2, "Check div_floor");
+  static_assert(gf::div_floor(-4, -2) == +2, "Check div_floor");
+}
+
+TEST(MathTest, DivCeil) {
+  EXPECT_EQ(gf::div_ceil(+3, +2), +2);
+  EXPECT_EQ(gf::div_ceil(+3, -2), -1);
+  EXPECT_EQ(gf::div_ceil(-3, +2), -1);
+  EXPECT_EQ(gf::div_ceil(-3, -2), +2);
+
+  EXPECT_EQ(gf::div_ceil(+4, +2), +2);
+  EXPECT_EQ(gf::div_ceil(+4, -2), -2);
+  EXPECT_EQ(gf::div_ceil(-4, +2), -2);
+  EXPECT_EQ(gf::div_ceil(-4, -2), +2);
+
+  EXPECT_EQ(gf::div_ceil(3u, 2u), 2u);
+  EXPECT_EQ(gf::div_ceil(4u, 2u), 2u);
+
+  static_assert(gf::div_ceil(+3, +2) == +2, "Check div_ceil");
+  static_assert(gf::div_ceil(+3, -2) == -1, "Check div_ceil");
+  static_assert(gf::div_ceil(-3, +2) == -1, "Check div_ceil");
+  static_assert(gf::div_ceil(-3, -2) == +2, "Check div_ceil");
+
+  static_assert(gf::div_ceil(+4, +2) == +2, "Check div_ceil");
+  static_assert(gf::div_ceil(+4, -2) == -2, "Check div_ceil");
+  static_assert(gf::div_ceil(-4, +2) == -2, "Check div_ceil");
+  static_assert(gf::div_ceil(-4, -2) == +2, "Check div_ceil");
+}
