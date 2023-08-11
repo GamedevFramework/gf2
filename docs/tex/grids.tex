@@ -1,0 +1,1045 @@
+\documentclass[a4paper]{article}
+
+% packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\usepackage{tikz}
+
+\definecolor{tilecolor}{rgb}{0,0.5,1}
+
+\newenvironment{gridfig}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}\clearpage}
+
+\newcommand{\basicrhombus}{\draw (0, 0.5) -- (0.5, 1) -- (1, 0.5) -- (0.5, 0) -- cycle ;}
+\newcommand{\rhombus}[3]{\begin{scope}[xshift=#1cm,yshift=#2cm] \basicrhombus \draw (0.5, 0.5) node { #3 } ;\end{scope}}
+
+\newcommand{\basicxhex}{\draw (0, 0.5) -- (0.3, 1) -- (0.7, 1) -- (1, 0.5) -- (0.7, 0) -- (0.3, 0) -- cycle ; }
+\newcommand{\xhex}[3]{\begin{scope}[xshift=#1*1.4cm,yshift=#2cm] \basicxhex \draw (0.5, 0.5) node { #3 } ;\end{scope}}
+\newcommand{\basicyhex}{\draw (0.5, 0) -- (1, 0.3) -- (1, 0.7) -- (0.5, 1) -- (0, 0.7) -- (0, 0.3) -- cycle ; }
+\newcommand{\yhex}[3]{\begin{scope}[xshift=#1cm,yshift=#2*1.4cm] \basicyhex \draw (0.5, 0.5) node { #3 } ;\end{scope}}
+
+
+\begin{document}
+
+\pagestyle{empty}
+
+%
+% Orthogonal grid
+%
+
+% tile
+
+\begin{gridfig}
+\draw[fill=tilecolor] (0, 0) rectangle (5, 4) ;
+\draw[<->,>=stealth] (0, -1) -- (5, -1) node [midway,below] { $T_x$ } ;
+\draw[<->,>=stealth] (6, 0) -- (6, 4) node [midway,right] { $T_y$ } ;
+\end{gridfig}
+
+% layout
+
+\begin{gridfig}[xscale=1.25]
+\draw (0, 0) grid (6, 6) ;
+\draw (0.5, 5.5) node { $0, 0$ } ;
+\draw (1.5, 5.5) node { $1, 0$ } ;
+\draw (2.5, 5.5) node { $2, 0$ } ;
+\draw (0.5, 4.5) node { $0, 1$ } ;
+\draw (1.5, 4.5) node { $1, 1$ } ;
+\draw (2.5, 4.5) node { $2, 1$ } ;
+\draw (0.5, 3.5) node { $0, 2$ } ;
+\draw (1.5, 3.5) node { $1, 2$ } ;
+\draw (2.5, 3.5) node { $2, 2$ } ;
+\end{gridfig}
+
+% neighbors
+
+\begin{gridfig}[xscale=1.25]
+\draw (0, 0) grid[step=2] (6, 6) ;
+\draw (1, 5) node { $x - 1, y - 1$ } ;
+\draw (3, 5) node { $x    , y - 1$ } ;
+\draw (5, 5) node { $x + 1, y - 1$ } ;
+\draw (1, 3) node { $x - 1, y    $ } ;
+\draw (3, 3) node { $x    , y    $ } ;
+\draw (5, 3) node { $x + 1, y    $ } ;
+\draw (1, 1) node { $x - 1, y + 1$ } ;
+\draw (3, 1) node { $x    , y + 1$ } ;
+\draw (5, 1) node { $x + 1, y + 1$ } ;
+\end{gridfig}
+
+%
+% Isometric grid
+%
+
+% tile
+
+\begin{gridfig}
+\draw (0, 0) rectangle (5, 4) ;
+\draw[fill=tilecolor] (2.5, 0) -- (5, 2) -- (2.5, 4) -- (0, 2) -- cycle ;
+\draw[<->,>=stealth] (0, -1) -- (5, -1) node [midway,below] { $T_x$ } ;
+\draw[<->,>=stealth] (6, 0) -- (6, 4) node [midway,right] { $T_y$ } ;
+\end{gridfig}
+
+% layout
+
+\begin{gridfig}[xscale=1.25]
+
+\rhombus{3.0}{8.0}{$0, 0$}
+\rhombus{3.5}{7.5}{$1, 0$}
+\rhombus{4.0}{7.0}{$2, 0$}
+\rhombus{4.5}{6.5}{}
+\rhombus{5.0}{6.0}{}
+\rhombus{5.5}{5.5}{}
+
+\rhombus{2.5}{7.5}{$0, 1$}
+\rhombus{3.0}{7.0}{$1, 1$}
+\rhombus{3.5}{6.5}{$2, 1$}
+\rhombus{4.0}{6.0}{}
+\rhombus{4.5}{5.5}{}
+\rhombus{5.0}{5.0}{}
+
+\rhombus{2.0}{7.0}{$0, 2$}
+\rhombus{2.5}{6.5}{$1, 2$}
+\rhombus{3.0}{6.0}{$2, 2$}
+\rhombus{3.5}{5.5}{}
+\rhombus{4.0}{5.0}{}
+\rhombus{4.5}{4.5}{}
+
+\rhombus{1.5}{6.5}{}
+\rhombus{2.0}{6.0}{}
+\rhombus{2.5}{5.5}{}
+\rhombus{3.0}{5.0}{}
+\rhombus{3.5}{4.5}{}
+\rhombus{4.0}{4.0}{}
+
+\rhombus{1.0}{6.0}{}
+\rhombus{1.5}{5.5}{}
+\rhombus{2.0}{5.0}{}
+\rhombus{2.5}{4.5}{}
+\rhombus{3.0}{4.0}{}
+\rhombus{3.5}{3.5}{}
+
+\rhombus{0.5}{5.5}{}
+\rhombus{1.0}{5.0}{}
+\rhombus{1.5}{4.5}{}
+\rhombus{2.0}{4.0}{}
+\rhombus{2.5}{3.5}{}
+\rhombus{3.0}{3.0}{}
+
+\end{gridfig}
+
+% neighbors
+
+\begin{gridfig}[xscale=2.5,yscale=2]
+
+\rhombus{3.0}{4.0}{$x - 1, y - 1$}
+
+\rhombus{2.5}{3.5}{$x - 1, y$}
+\rhombus{3.5}{3.5}{$x, y - 1$}
+
+\rhombus{2.0}{3.0}{$x - 1, y + 1$}
+\rhombus{3.0}{3.0}{$x, y$}
+\rhombus{4.0}{3.0}{$x + 1, y - 1$}
+
+\rhombus{2.5}{2.5}{$x, y + 1$}
+\rhombus{3.5}{2.5}{$x + 1, y$}
+
+\rhombus{3.0}{2.0}{$x + 1, y + 1$}
+
+\end{gridfig}
+
+
+%
+% Staggered grid
+%
+
+% tile
+
+\begin{gridfig}
+\draw (0, 0) rectangle (5, 4) ;
+\draw[fill=tilecolor] (2.5, 0) -- (5, 2) -- (2.5, 4) -- (0, 2) -- cycle ;
+\draw[<->,>=stealth] (0, -1) -- (5, -1) node [midway,below] { $T_x$ } ;
+\draw[<->,>=stealth] (6, 0) -- (6, 4) node [midway,right] { $T_y$ } ;
+\end{gridfig}
+
+% layouts
+
+% x-even
+
+\begin{gridfig}[xscale=1.25]
+
+\rhombus{0}{5}{$0, 0$}
+\rhombus{0}{4}{$0, 1$}
+\rhombus{0}{3}{$0, 2$}
+\rhombus{0}{2}{}
+\rhombus{0}{1}{}
+\rhombus{0}{0}{}
+
+\rhombus{0.5}{5.5}{$1, 0$}
+\rhombus{0.5}{4.5}{$1, 1$}
+\rhombus{0.5}{3.5}{$1, 2$}
+\rhombus{0.5}{2.5}{}
+\rhombus{0.5}{1.5}{}
+\rhombus{0.5}{0.5}{}
+
+\rhombus{1}{5}{$2, 0$}
+\rhombus{1}{4}{$2, 1$}
+\rhombus{1}{3}{$2, 2$}
+\rhombus{1}{2}{}
+\rhombus{1}{1}{}
+\rhombus{1}{0}{}
+
+\rhombus{1.5}{5.5}{}
+\rhombus{1.5}{4.5}{}
+\rhombus{1.5}{3.5}{}
+\rhombus{1.5}{2.5}{}
+\rhombus{1.5}{1.5}{}
+\rhombus{1.5}{0.5}{}
+
+\rhombus{2}{5}{}
+\rhombus{2}{4}{}
+\rhombus{2}{3}{}
+\rhombus{2}{2}{}
+\rhombus{2}{1}{}
+\rhombus{2}{0}{}
+
+\rhombus{2.5}{5.5}{}
+\rhombus{2.5}{4.5}{}
+\rhombus{2.5}{3.5}{}
+\rhombus{2.5}{2.5}{}
+\rhombus{2.5}{1.5}{}
+\rhombus{2.5}{0.5}{}
+
+\end{gridfig}
+
+% x-odd
+
+\begin{gridfig}[xscale=1.25]
+
+\rhombus{0}{5}{$0, 0$}
+\rhombus{0}{4}{$0, 1$}
+\rhombus{0}{3}{$0, 2$}
+\rhombus{0}{2}{}
+\rhombus{0}{1}{}
+\rhombus{0}{0}{}
+
+\rhombus{0.5}{4.5}{$1, 0$}
+\rhombus{0.5}{3.5}{$1, 1$}
+\rhombus{0.5}{2.5}{$1, 2$}
+\rhombus{0.5}{1.5}{}
+\rhombus{0.5}{0.5}{}
+\rhombus{0.5}{-0.5}{}
+
+\rhombus{1}{5}{$2, 0$}
+\rhombus{1}{4}{$2, 1$}
+\rhombus{1}{3}{$2, 2$}
+\rhombus{1}{2}{}
+\rhombus{1}{1}{}
+\rhombus{1}{0}{}
+
+\rhombus{1.5}{4.5}{}
+\rhombus{1.5}{3.5}{}
+\rhombus{1.5}{2.5}{}
+\rhombus{1.5}{1.5}{}
+\rhombus{1.5}{0.5}{}
+\rhombus{1.5}{-0.5}{}
+
+\rhombus{2}{5}{}
+\rhombus{2}{4}{}
+\rhombus{2}{3}{}
+\rhombus{2}{2}{}
+\rhombus{2}{1}{}
+\rhombus{2}{0}{}
+
+\rhombus{2.5}{4.5}{}
+\rhombus{2.5}{3.5}{}
+\rhombus{2.5}{2.5}{}
+\rhombus{2.5}{1.5}{}
+\rhombus{2.5}{0.5}{}
+\rhombus{2.5}{-0.5}{}
+
+\end{gridfig}
+
+% y-even
+
+\begin{gridfig}[xscale=1.25]
+
+\rhombus{0}{3}{$0, 0$}
+\rhombus{1}{3}{$1, 0$}
+\rhombus{2}{3}{$2, 0$}
+\rhombus{3}{3}{}
+\rhombus{4}{3}{}
+\rhombus{5}{3}{}
+
+\rhombus{-0.5}{2.5}{$0, 1$}
+\rhombus{0.5}{2.5}{$1, 1$}
+\rhombus{1.5}{2.5}{$2, 1$}
+\rhombus{2.5}{2.5}{}
+\rhombus{3.5}{2.5}{}
+\rhombus{4.5}{2.5}{}
+
+\rhombus{0}{2}{$0, 2$}
+\rhombus{1}{2}{$1, 2$}
+\rhombus{2}{2}{$2, 2$}
+\rhombus{3}{2}{}
+\rhombus{4}{2}{}
+\rhombus{5}{2}{}
+
+\rhombus{-0.5}{1.5}{}
+\rhombus{0.5}{1.5}{}
+\rhombus{1.5}{1.5}{}
+\rhombus{2.5}{1.5}{}
+\rhombus{3.5}{1.5}{}
+\rhombus{4.5}{1.5}{}
+
+\rhombus{0}{1}{}
+\rhombus{1}{1}{}
+\rhombus{2}{1}{}
+\rhombus{3}{1}{}
+\rhombus{4}{1}{}
+\rhombus{5}{1}{}
+
+\rhombus{-0.5}{0.5}{}
+\rhombus{0.5}{0.5}{}
+\rhombus{1.5}{0.5}{}
+\rhombus{2.5}{0.5}{}
+\rhombus{3.5}{0.5}{}
+\rhombus{4.5}{0.5}{}
+
+\end{gridfig}
+
+% y-odd
+
+\begin{gridfig}[xscale=1.25]
+
+\rhombus{0}{3}{$0, 0$}
+\rhombus{1}{3}{$1, 0$}
+\rhombus{2}{3}{$2, 0$}
+\rhombus{3}{3}{}
+\rhombus{4}{3}{}
+\rhombus{5}{3}{}
+
+\rhombus{0.5}{2.5}{$0, 1$}
+\rhombus{1.5}{2.5}{$1, 1$}
+\rhombus{2.5}{2.5}{$2, 1$}
+\rhombus{3.5}{2.5}{}
+\rhombus{4.5}{2.5}{}
+\rhombus{5.5}{2.5}{}
+
+\rhombus{0}{2}{$0, 2$}
+\rhombus{1}{2}{$1, 2$}
+\rhombus{2}{2}{$2, 2$}
+\rhombus{3}{2}{}
+\rhombus{4}{2}{}
+\rhombus{5}{2}{}
+
+\rhombus{0.5}{1.5}{}
+\rhombus{1.5}{1.5}{}
+\rhombus{2.5}{1.5}{}
+\rhombus{3.5}{1.5}{}
+\rhombus{4.5}{1.5}{}
+\rhombus{5.5}{1.5}{}
+
+\rhombus{0}{1}{}
+\rhombus{1}{1}{}
+\rhombus{2}{1}{}
+\rhombus{3}{1}{}
+\rhombus{4}{1}{}
+\rhombus{5}{1}{}
+
+\rhombus{0.5}{0.5}{}
+\rhombus{1.5}{0.5}{}
+\rhombus{2.5}{0.5}{}
+\rhombus{3.5}{0.5}{}
+\rhombus{4.5}{0.5}{}
+\rhombus{5.5}{0.5}{}
+
+\end{gridfig}
+
+% rx ry
+
+\begin{gridfig}
+
+\begin{scope}
+\draw[<->,>=stealth] (0, -0.5) node [below left] { $ry$ } -- (0, 4) node [above left] { $O$ } -- (4.5, 4) node [above right] { $rx$ } ;
+\draw (0, 0) node [left] { $1$ } -- (4, 0) -- (4, 4) node [above] { $1$ } ;
+
+\draw (0, 4) -- (4, 0) ;
+\draw (1.3, 1.3) node { $r_x < r_y$ } ;
+\draw (2.7, 2.7) node { $r_x > r_y$ } ;
+\end{scope}
+
+
+\begin{scope}[xshift=6cm]
+\draw[<->,>=stealth] (0, -0.5) node [below left] { $ry$ } -- (0, 4) node [above left] { $O$ } -- (4.5, 4) node [above right] { $rx$ } ;
+\draw (0, 0) node [left] { $1$ } -- (4, 0) -- (4, 4) node [above] { $1$ } ;
+
+\draw (0, 0) -- (4, 4) ;
+\draw (1.3, 2.7) node { $r_x + r_y < 1$ } ;
+\draw (2.7, 1.3) node { $r_x + r_y > 1$ } ;
+\end{scope}
+
+\end{gridfig}
+
+% coordinates (x-even)
+
+\begin{gridfig}[xscale=2.5,yscale=2]
+
+\rhombus{0}{5}{$0, 0$}
+\rhombus{0}{4}{$0, 1$}
+\rhombus{0}{3}{$0, 2$}
+
+\rhombus{0.5}{5.5}{$1, 0$}
+\rhombus{0.5}{4.5}{$1, 1$}
+\rhombus{0.5}{3.5}{$1, 2$}
+
+\rhombus{1}{5}{$2, 0$}
+\rhombus{1}{4}{$2, 1$}
+\rhombus{1}{3}{$2, 2$}
+
+\rhombus{1.5}{5.5}{}
+\rhombus{1.5}{4.5}{}
+\rhombus{1.5}{3.5}{}
+
+\draw[color=gray!70] (0,3) grid[step=0.5] (2.5, 6.5) ;
+
+\draw[color=gray!70] (0.25, 6.5) node [above] { $0$ } ;
+\draw[color=gray!70] (0.75, 6.5) node [above] { $1$ } ;
+\draw[color=gray!70] (1.25, 6.5) node [above] { $2$ } ;
+\draw[color=gray!70] (1.75, 6.5) node [above] { $3$ } ;
+\draw[color=gray!70] (2.25, 6.5) node [above] { $4$ } ;
+\draw[color=gray!70] (2.75, 6.5) node [above] { $q_x$ } ;
+
+\draw[color=gray!70] (0, 6.25) node [left] { $0$ } ;
+\draw[color=gray!70] (0, 5.75) node [left] { $1$ } ;
+\draw[color=gray!70] (0, 5.25) node [left] { $2$ } ;
+\draw[color=gray!70] (0, 4.75) node [left] { $3$ } ;
+\draw[color=gray!70] (0, 4.25) node [left] { $4$ } ;
+\draw[color=gray!70] (0, 3.75) node [left] { $5$ } ;
+\draw[color=gray!70] (0, 3.25) node [left] { $6$ } ;
+\draw[color=gray!70] (0, 2.75) node [left] { $q_y$ } ;
+
+\end{gridfig}
+
+% coordinates (x-odd)
+
+\begin{gridfig}[xscale=2.5,yscale=2]
+
+\rhombus{0}{5}{$0, 0$}
+\rhombus{0}{4}{$0, 1$}
+\rhombus{0}{3}{$0, 2$}
+
+\rhombus{0.5}{4.5}{$1, 0$}
+\rhombus{0.5}{3.5}{$1, 1$}
+\rhombus{0.5}{2.5}{$1, 2$}
+
+\rhombus{1}{5}{$2, 0$}
+\rhombus{1}{4}{$2, 1$}
+\rhombus{1}{3}{$2, 2$}
+
+\rhombus{1.5}{4.5}{}
+\rhombus{1.5}{3.5}{}
+\rhombus{1.5}{2.5}{}
+
+\draw[color=gray!70] (0,2.5) grid[step=0.5] (2.5, 6) ;
+
+\draw[color=gray!70] (0.25, 6) node [above] { $0$ } ;
+\draw[color=gray!70] (0.75, 6) node [above] { $1$ } ;
+\draw[color=gray!70] (1.25, 6) node [above] { $2$ } ;
+\draw[color=gray!70] (1.75, 6) node [above] { $3$ } ;
+\draw[color=gray!70] (2.25, 6) node [above] { $4$ } ;
+\draw[color=gray!70] (2.75, 6) node [above] { $q_x$ } ;
+
+\draw[color=gray!70] (0, 5.75) node [left] { $0$ } ;
+\draw[color=gray!70] (0, 5.25) node [left] { $1$ } ;
+\draw[color=gray!70] (0, 4.75) node [left] { $2$ } ;
+\draw[color=gray!70] (0, 4.25) node [left] { $3$ } ;
+\draw[color=gray!70] (0, 3.75) node [left] { $4$ } ;
+\draw[color=gray!70] (0, 3.25) node [left] { $5$ } ;
+\draw[color=gray!70] (0, 2.75) node [left] { $6$ } ;
+\draw[color=gray!70] (0, 2.25) node [left] { $q_y$ } ;
+
+\end{gridfig}
+
+% coordinates (y-even)
+
+\begin{gridfig}[xscale=2.5,yscale=2]
+
+\rhombus{0}{3}{$0, 0$}
+\rhombus{1}{3}{$1, 0$}
+\rhombus{2}{3}{$2, 0$}
+
+\rhombus{-0.5}{2.5}{$0, 1$}
+\rhombus{0.5}{2.5}{$1, 1$}
+\rhombus{1.5}{2.5}{$2, 1$}
+
+\rhombus{0}{2}{$0, 2$}
+\rhombus{1}{2}{$1, 2$}
+\rhombus{2}{2}{$2, 2$}
+
+\rhombus{-0.5}{1.5}{}
+\rhombus{0.5}{1.5}{}
+\rhombus{1.5}{1.5}{}
+
+\draw[color=gray!70] (-0.5,1.5) grid[step=0.5] (3, 4) ;
+
+\draw[color=gray!70] (-0.25, 4) node [above] { $0$ } ;
+\draw[color=gray!70] (0.25, 4) node [above] { $1$ } ;
+\draw[color=gray!70] (0.75, 4) node [above] { $2$ } ;
+\draw[color=gray!70] (1.25, 4) node [above] { $3$ } ;
+\draw[color=gray!70] (1.75, 4) node [above] { $4$ } ;
+\draw[color=gray!70] (2.25, 4) node [above] { $5$ } ;
+\draw[color=gray!70] (2.75, 4) node [above] { $6$ } ;
+\draw[color=gray!70] (3.25, 4) node [above] { $q_x$ } ;
+
+\draw[color=gray!70] (-0.5, 3.75) node [left] { $0$ } ;
+\draw[color=gray!70] (-0.5, 3.25) node [left] { $1$ } ;
+\draw[color=gray!70] (-0.5, 2.75) node [left] { $2$ } ;
+\draw[color=gray!70] (-0.5, 2.25) node [left] { $3$ } ;
+\draw[color=gray!70] (-0.5, 1.75) node [left] { $4$ } ;
+\draw[color=gray!70] (-0.5, 1.25) node [left] { $q_y$ } ;
+
+\end{gridfig}
+
+% coordinates (y-odd)
+
+\begin{gridfig}[xscale=2.5,yscale=2]
+
+\rhombus{0}{3}{$0, 0$}
+\rhombus{1}{3}{$1, 0$}
+\rhombus{2}{3}{$2, 0$}
+
+\rhombus{0.5}{2.5}{$0, 1$}
+\rhombus{1.5}{2.5}{$1, 1$}
+\rhombus{2.5}{2.5}{$2, 1$}
+
+\rhombus{0}{2}{$0, 2$}
+\rhombus{1}{2}{$1, 2$}
+\rhombus{2}{2}{$2, 2$}
+
+\rhombus{0.5}{1.5}{}
+\rhombus{1.5}{1.5}{}
+\rhombus{2.5}{1.5}{}
+
+\draw[color=gray!70] (0,1.5) grid[step=0.5] (3.5, 4) ;
+
+\draw[color=gray!70] (0.25, 4) node [above] { $0$ } ;
+\draw[color=gray!70] (0.75, 4) node [above] { $1$ } ;
+\draw[color=gray!70] (1.25, 4) node [above] { $2$ } ;
+\draw[color=gray!70] (1.75, 4) node [above] { $3$ } ;
+\draw[color=gray!70] (2.25, 4) node [above] { $4$ } ;
+\draw[color=gray!70] (2.75, 4) node [above] { $5$ } ;
+\draw[color=gray!70] (3.25, 4) node [above] { $6$ } ;
+\draw[color=gray!70] (3.75, 4) node [above] { $q_x$ } ;
+
+\draw[color=gray!70] (0, 3.75) node [left] { $0$ } ;
+\draw[color=gray!70] (0, 3.25) node [left] { $1$ } ;
+\draw[color=gray!70] (0, 2.75) node [left] { $2$ } ;
+\draw[color=gray!70] (0, 2.25) node [left] { $3$ } ;
+\draw[color=gray!70] (0, 1.75) node [left] { $4$ } ;
+\draw[color=gray!70] (0, 1.25) node [left] { $q_y$ } ;
+
+\end{gridfig}
+
+% neighbors (x same parity)
+
+\begin{gridfig}[xscale=2.5,yscale=2]
+\rhombus{3.0}{4.0}{$x, y - 1$}
+
+\rhombus{2.5}{3.5}{$x - 1, y$}
+\rhombus{3.5}{3.5}{$x + 1, y$}
+
+\rhombus{2.0}{3.0}{$x - 2, y$}
+\rhombus{3.0}{3.0}{$x, y$}
+\rhombus{4.0}{3.0}{$x + 2, y$}
+
+\rhombus{2.5}{2.5}{$x - 1, y + 1$}
+\rhombus{3.5}{2.5}{$x + 1, y + 1$}
+
+\rhombus{3.0}{2.0}{$x, y + 1$}
+\end{gridfig}
+
+% neighbors (x different parity)
+
+\begin{gridfig}[xscale=2.5,yscale=2]
+\rhombus{3.0}{4.0}{$x, y - 1$}
+
+\rhombus{2.5}{3.5}{$x - 1, y - 1$}
+\rhombus{3.5}{3.5}{$x + 1, y - 1$}
+
+\rhombus{2.0}{3.0}{$x - 2, y$}
+\rhombus{3.0}{3.0}{$x, y$}
+\rhombus{4.0}{3.0}{$x + 2, y$}
+
+\rhombus{2.5}{2.5}{$x - 1, y$}
+\rhombus{3.5}{2.5}{$x + 1, y$}
+
+\rhombus{3.0}{2.0}{$x, y + 1$}
+\end{gridfig}
+
+% neighbors (y same parity)
+
+\begin{gridfig}[xscale=2.5,yscale=2]
+\rhombus{3.0}{4.0}{$x, y - 2$}
+
+\rhombus{2.5}{3.5}{$x, y - 1$}
+\rhombus{3.5}{3.5}{$x + 1, y - 1$}
+
+\rhombus{2.0}{3.0}{$x - 1, y$}
+\rhombus{3.0}{3.0}{$x, y$}
+\rhombus{4.0}{3.0}{$x + 1, y$}
+
+\rhombus{2.5}{2.5}{$x, y + 1$}
+\rhombus{3.5}{2.5}{$x + 1, y + 1$}
+
+\rhombus{3.0}{2.0}{$x, y + 2$}
+\end{gridfig}
+
+% neighbors (y different parity)
+
+\begin{gridfig}[xscale=2.5,yscale=2]
+\rhombus{3.0}{4.0}{$x, y - 2$}
+
+\rhombus{2.5}{3.5}{$x - 1, y - 1$}
+\rhombus{3.5}{3.5}{$x, y - 1$}
+
+\rhombus{2.0}{3.0}{$x - 1, y$}
+\rhombus{3.0}{3.0}{$x, y$}
+\rhombus{4.0}{3.0}{$x + 1, y$}
+
+\rhombus{2.5}{2.5}{$x - 1, y + 1$}
+\rhombus{3.5}{2.5}{$x, y + 1$}
+
+\rhombus{3.0}{2.0}{$x, y + 2$}
+\end{gridfig}
+
+
+%
+% Hexagonal grid
+%
+
+% tile (x)
+
+\begin{gridfig}
+\draw (0, 0) rectangle (5, 4) ;
+\draw[fill=tilecolor] (0, 2) -- (1.5, 4) -- (3.5, 4) -- (5, 2) -- (3.5, 0) -- (1.5, 0) -- cycle ;
+\draw[<->,>=stealth] (0, -1) -- (5, -1) node [midway,below] { $T_x$ } ;
+\draw[<->,>=stealth] (6, 0) -- (6, 4) node [midway,right] { $T_y$ } ;
+\draw[<->,>=stealth] (1.5, 5) -- (3.5, 5) node [midway,above] { $\ell$ } ;
+\end{gridfig}
+
+% tile (y)
+
+\begin{gridfig}
+\draw (0, 0) rectangle (5, 4) ;
+\draw[fill=tilecolor] (2.5, 0) -- (5, 1) -- (5, 3) -- (2.5, 4) -- (0, 3) -- (0, 1) -- cycle ;
+\draw[<->,>=stealth] (0, -1) -- (5, -1) node [midway,below] { $T_x$ } ;
+\draw[<->,>=stealth] (6, 0) -- (6, 4) node [midway,right] { $T_y$ } ;
+\draw[<->,>=stealth] (-1, 1) -- (-1, 3) node [midway,left] { $\ell$ } ;
+\end{gridfig}
+
+% layout (x-even)
+
+\begin{gridfig}[xscale=1.25]
+
+\xhex{0.0}{5.0}{$0, 0$}
+\xhex{0.5}{5.5}{$1, 0$}
+\xhex{1.0}{5.0}{$2, 0$}
+\xhex{1.5}{5.5}{}
+\xhex{2.0}{5.0}{}
+\xhex{2.5}{5.5}{}
+\xhex{3.0}{5.0}{}
+\xhex{3.5}{5.5}{}
+
+\xhex{0.0}{4.0}{$0, 1$}
+\xhex{0.5}{4.5}{$1, 1$}
+\xhex{1.0}{4.0}{$2, 1$}
+\xhex{1.5}{4.5}{}
+\xhex{2.0}{4.0}{}
+\xhex{2.5}{4.5}{}
+\xhex{3.0}{4.0}{}
+\xhex{3.5}{4.5}{}
+
+\xhex{0.0}{3.0}{$0, 2$}
+\xhex{0.5}{3.5}{$1, 2$}
+\xhex{1.0}{3.0}{$2, 2$}
+\xhex{1.5}{3.5}{}
+\xhex{2.0}{3.0}{}
+\xhex{2.5}{3.5}{}
+\xhex{3.0}{3.0}{}
+\xhex{3.5}{3.5}{}
+
+\xhex{0.0}{2.0}{}
+\xhex{0.5}{2.5}{}
+\xhex{1.0}{2.0}{}
+\xhex{1.5}{2.5}{}
+\xhex{2.0}{2.0}{}
+\xhex{2.5}{2.5}{}
+\xhex{3.0}{2.0}{}
+\xhex{3.5}{2.5}{}
+
+\xhex{0.0}{1.0}{}
+\xhex{0.5}{1.5}{}
+\xhex{1.0}{1.0}{}
+\xhex{1.5}{1.5}{}
+\xhex{2.0}{1.0}{}
+\xhex{2.5}{1.5}{}
+\xhex{3.0}{1.0}{}
+\xhex{3.5}{1.5}{}
+
+\xhex{0.0}{0.0}{}
+\xhex{0.5}{0.5}{}
+\xhex{1.0}{0.0}{}
+\xhex{1.5}{0.5}{}
+\xhex{2.0}{0.0}{}
+\xhex{2.5}{0.5}{}
+\xhex{3.0}{0.0}{}
+\xhex{3.5}{0.5}{}
+
+\end{gridfig}
+
+% layout (x-odd)
+
+\begin{gridfig}[xscale=1.25]
+
+\xhex{0.0}{6.0}{$0, 0$}
+\xhex{0.5}{5.5}{$1, 0$}
+\xhex{1.0}{6.0}{$2, 0$}
+\xhex{1.5}{5.5}{}
+\xhex{2.0}{6.0}{}
+\xhex{2.5}{5.5}{}
+\xhex{3.0}{6.0}{}
+\xhex{3.5}{5.5}{}
+
+\xhex{0.0}{5.0}{$0, 1$}
+\xhex{0.5}{4.5}{$1, 1$}
+\xhex{1.0}{5.0}{$2, 1$}
+\xhex{1.5}{4.5}{}
+\xhex{2.0}{5.0}{}
+\xhex{2.5}{4.5}{}
+\xhex{3.0}{5.0}{}
+\xhex{3.5}{4.5}{}
+
+\xhex{0.0}{4.0}{$0, 2$}
+\xhex{0.5}{3.5}{$1, 2$}
+\xhex{1.0}{4.0}{$2, 2$}
+\xhex{1.5}{3.5}{}
+\xhex{2.0}{4.0}{}
+\xhex{2.5}{3.5}{}
+\xhex{3.0}{4.0}{}
+\xhex{3.5}{3.5}{}
+
+\xhex{0.0}{3.0}{}
+\xhex{0.5}{2.5}{}
+\xhex{1.0}{3.0}{}
+\xhex{1.5}{2.5}{}
+\xhex{2.0}{3.0}{}
+\xhex{2.5}{2.5}{}
+\xhex{3.0}{3.0}{}
+\xhex{3.5}{2.5}{}
+
+\xhex{0.0}{2.0}{}
+\xhex{0.5}{1.5}{}
+\xhex{1.0}{2.0}{}
+\xhex{1.5}{1.5}{}
+\xhex{2.0}{2.0}{}
+\xhex{2.5}{1.5}{}
+\xhex{3.0}{2.0}{}
+\xhex{3.5}{1.5}{}
+
+\xhex{0.0}{1.0}{}
+\xhex{0.5}{0.5}{}
+\xhex{1.0}{1.0}{}
+\xhex{1.5}{0.5}{}
+\xhex{2.0}{1.0}{}
+\xhex{2.5}{0.5}{}
+\xhex{3.0}{1.0}{}
+\xhex{3.5}{0.5}{}
+
+\end{gridfig}
+
+% layout (y-even)
+
+\begin{gridfig}[xscale=1.25]
+
+\yhex{0.5}{5}{$0, 0$}
+\yhex{1.5}{5}{$1, 0$}
+\yhex{2.5}{5}{$2, 0$}
+\yhex{3.5}{5}{}
+\yhex{4.5}{5}{}
+\yhex{5.5}{5}{}
+
+\yhex{0}{4.5}{$0, 1$}
+\yhex{1}{4.5}{$1, 1$}
+\yhex{2}{4.5}{$2, 1$}
+\yhex{3}{4.5}{}
+\yhex{4}{4.5}{}
+\yhex{5}{4.5}{}
+
+\yhex{0.5}{4}{$0, 2$}
+\yhex{1.5}{4}{$1, 2$}
+\yhex{2.5}{4}{$2, 2$}
+\yhex{3.5}{4}{}
+\yhex{4.5}{4}{}
+\yhex{5.5}{4}{}
+
+\yhex{0}{3.5}{}
+\yhex{1}{3.5}{}
+\yhex{2}{3.5}{}
+\yhex{3}{3.5}{}
+\yhex{4}{3.5}{}
+\yhex{5}{3.5}{}
+
+\yhex{0.5}{3}{}
+\yhex{1.5}{3}{}
+\yhex{2.5}{3}{}
+\yhex{3.5}{3}{}
+\yhex{4.5}{3}{}
+\yhex{5.5}{3}{}
+
+\yhex{0}{2.5}{}
+\yhex{1}{2.5}{}
+\yhex{2}{2.5}{}
+\yhex{3}{2.5}{}
+\yhex{4}{2.5}{}
+\yhex{5}{2.5}{}
+
+\end{gridfig}
+
+% layout (y-odd)
+
+\begin{gridfig}[xscale=1.25]
+
+\yhex{0}{5}{$0, 0$}
+\yhex{1}{5}{$1, 0$}
+\yhex{2}{5}{$2, 0$}
+\yhex{3}{5}{}
+\yhex{4}{5}{}
+\yhex{5}{5}{}
+
+\yhex{0.5}{4.5}{$0, 1$}
+\yhex{1.5}{4.5}{$1, 1$}
+\yhex{2.5}{4.5}{$2, 1$}
+\yhex{3.5}{4.5}{}
+\yhex{4.5}{4.5}{}
+\yhex{5.5}{4.5}{}
+
+\yhex{0}{4}{$0, 2$}
+\yhex{1}{4}{$1, 2$}
+\yhex{2}{4}{$2, 2$}
+\yhex{3}{4}{}
+\yhex{4}{4}{}
+\yhex{5}{4}{}
+
+\yhex{0.5}{3.5}{}
+\yhex{1.5}{3.5}{}
+\yhex{2.5}{3.5}{}
+\yhex{3.5}{3.5}{}
+\yhex{4.5}{3.5}{}
+\yhex{5.5}{3.5}{}
+
+\yhex{0}{3}{}
+\yhex{1}{3}{}
+\yhex{2}{3}{}
+\yhex{3}{3}{}
+\yhex{4}{3}{}
+\yhex{5}{3}{}
+
+\yhex{0.5}{2.5}{}
+\yhex{1.5}{2.5}{}
+\yhex{2.5}{2.5}{}
+\yhex{3.5}{2.5}{}
+\yhex{4.5}{2.5}{}
+\yhex{5.5}{2.5}{}
+
+\end{gridfig}
+
+% coordinates (x-even)
+
+\begin{gridfig}[xscale=2.5,yscale=2]
+
+\xhex{0.0}{5.0}{$0, 0$}
+\xhex{0.5}{5.5}{$1, 0$}
+\xhex{1.0}{5.0}{$2, 0$}
+\xhex{1.5}{5.5}{}
+\xhex{2.0}{5.0}{}
+
+\xhex{0.0}{4.0}{$0, 1$}
+\xhex{0.5}{4.5}{$1, 1$}
+\xhex{1.0}{4.0}{$2, 1$}
+\xhex{1.5}{4.5}{}
+\xhex{2.0}{4.0}{}
+
+\xhex{0.0}{3.0}{$0, 2$}
+\xhex{0.5}{3.5}{$1, 2$}
+\xhex{1.0}{3.0}{$2, 2$}
+\xhex{1.5}{3.5}{}
+\xhex{2.0}{3.0}{}
+
+\begin{scope}[xshift=0.3cm]
+\draw[color=gray!60,dashed] (0, 3) grid [xstep=0.7, ystep=0.5] (3, 6.5) ;
+\end{scope}
+
+\draw[color=gray!70] (0, 3) grid [xstep=0.7, ystep=0.5] (3.5, 6.5) ;
+
+\draw[color=gray!70] (0.35, 6.5) node [above] { $0$ } ;
+\draw[color=gray!70] (1.05, 6.5) node [above] { $1$ } ;
+\draw[color=gray!70] (1.75, 6.5) node [above] { $2$ } ;
+\draw[color=gray!70] (2.45, 6.5) node [above] { $3$ } ;
+\draw[color=gray!70] (3.15, 6.5) node [above] { $4$ } ;
+\draw[color=gray!70] (3.85, 6.5) node [above] { $q_x$ } ;
+
+\draw[color=gray!70] (0.0, 6.25) node [left] { $0$ } ;
+\draw[color=gray!70] (0.0, 5.75) node [left] { $1$ } ;
+\draw[color=gray!70] (0.0, 5.25) node [left] { $2$ } ;
+\draw[color=gray!70] (0.0, 4.75) node [left] { $3$ } ;
+\draw[color=gray!70] (0.0, 4.25) node [left] { $4$ } ;
+\draw[color=gray!70] (0.0, 3.75) node [left] { $5$ } ;
+\draw[color=gray!70] (0.0, 3.25) node [left] { $6$ } ;
+\draw[color=gray!70] (0.0, 2.75) node [left] { $q_y$ } ;
+
+\end{gridfig}
+
+% layout (x-even)
+
+\begin{gridfig}[xscale=2.5,yscale=2]
+
+\xhex{0.0}{6.0}{$0, 0$}
+\xhex{0.5}{5.5}{$1, 0$}
+\xhex{1.0}{6.0}{$2, 0$}
+\xhex{1.5}{5.5}{}
+\xhex{2.0}{6.0}{}
+
+\xhex{0.0}{5.0}{$0, 1$}
+\xhex{0.5}{4.5}{$1, 1$}
+\xhex{1.0}{5.0}{$2, 1$}
+\xhex{1.5}{4.5}{}
+\xhex{2.0}{5.0}{}
+
+\xhex{0.0}{4.0}{$0, 2$}
+\xhex{0.5}{3.5}{$1, 2$}
+\xhex{1.0}{4.0}{$2, 2$}
+\xhex{1.5}{3.5}{}
+\xhex{2.0}{4.0}{}
+
+\begin{scope}[xshift=0.3cm]
+\draw[color=gray!60,dashed] (0, 3.5) grid [xstep=0.7, ystep=0.5] (3, 7) ;
+\end{scope}
+
+\draw[color=gray!70] (0, 3.5) grid [xstep=0.7, ystep=0.5] (3.5, 7) ;
+
+\draw[color=gray!70] (0.35, 7) node [above] { $0$ } ;
+\draw[color=gray!70] (1.05, 7) node [above] { $1$ } ;
+\draw[color=gray!70] (1.75, 7) node [above] { $2$ } ;
+\draw[color=gray!70] (2.45, 7) node [above] { $3$ } ;
+\draw[color=gray!70] (3.15, 7) node [above] { $4$ } ;
+\draw[color=gray!70] (3.85, 7) node [above] { $q_x$ } ;
+
+\draw[color=gray!70] (0.0, 6.75) node [left] { $0$ } ;
+\draw[color=gray!70] (0.0, 6.25) node [left] { $1$ } ;
+\draw[color=gray!70] (0.0, 5.75) node [left] { $2$ } ;
+\draw[color=gray!70] (0.0, 5.25) node [left] { $3$ } ;
+\draw[color=gray!70] (0.0, 4.75) node [left] { $4$ } ;
+\draw[color=gray!70] (0.0, 4.25) node [left] { $5$ } ;
+\draw[color=gray!70] (0.0, 3.75) node [left] { $6$ } ;
+\draw[color=gray!70] (0.0, 3.25) node [left] { $q_y$ } ;
+
+\end{gridfig}
+
+% coordinates (y-even)
+
+\begin{gridfig}[xscale=2.5,yscale=2]
+
+\yhex{0.5}{7}{$0, 0$}
+\yhex{1.5}{7}{$1, 0$}
+\yhex{2.5}{7}{$2, 0$}
+
+\yhex{0}{6.5}{$0, 1$}
+\yhex{1}{6.5}{$1, 1$}
+\yhex{2}{6.5}{$2, 1$}
+
+\yhex{0.5}{6}{$0, 2$}
+\yhex{1.5}{6}{$1, 2$}
+\yhex{2.5}{6}{$2, 2$}
+
+\yhex{0}{5.5}{}
+\yhex{1}{5.5}{}
+\yhex{2}{5.5}{}
+
+\yhex{0.5}{5}{}
+\yhex{1.5}{5}{}
+\yhex{2.5}{5}{}
+
+\draw[color=gray!60,dashed] (0, 7) grid [xstep=0.5, ystep=0.7] (3.5, 10.5) ;
+
+\begin{scope}[yshift=0.3cm]
+\draw[color=gray!70] (0, 6.5) grid [xstep=0.5, ystep=0.7] (3.5, 10.5) ;
+\end{scope}
+
+\draw[color=gray!70] (0.25, 10.8) node [above] { $0$ } ;
+\draw[color=gray!70] (0.75, 10.8) node [above] { $1$ } ;
+\draw[color=gray!70] (1.25, 10.8) node [above] { $2$ } ;
+\draw[color=gray!70] (1.75, 10.8) node [above] { $3$ } ;
+\draw[color=gray!70] (2.25, 10.8) node [above] { $4$ } ;
+\draw[color=gray!70] (2.75, 10.8) node [above] { $5$ } ;
+\draw[color=gray!70] (3.25, 10.8) node [above] { $6$ } ;
+\draw[color=gray!70] (3.75, 10.8) node [above] { $q_x$ } ;
+
+\draw[color=gray!70] (0.0, 10.45) node [left] { $0$ } ;
+\draw[color=gray!70] (0.0, 9.75) node [left] { $1$ } ;
+\draw[color=gray!70] (0.0, 9.05) node [left] { $2$ } ;
+\draw[color=gray!70] (0.0, 8.35) node [left] { $3$ } ;
+\draw[color=gray!70] (0.0, 7.65) node [left] { $4$ } ;
+\draw[color=gray!70] (0.0, 6.95) node [left] { $q_y$ } ;
+
+\end{gridfig}
+
+% coordinates (y-odd)
+
+\begin{gridfig}[xscale=2.5,yscale=2]
+
+\yhex{0}{7}{$0, 0$}
+\yhex{1}{7}{$1, 0$}
+\yhex{2}{7}{$2, 0$}
+
+\yhex{0.5}{6.5}{$0, 1$}
+\yhex{1.5}{6.5}{$1, 1$}
+\yhex{2.5}{6.5}{$2, 1$}
+
+\yhex{0}{6}{$0, 2$}
+\yhex{1}{6}{$1, 2$}
+\yhex{2}{6}{$2, 2$}
+
+\yhex{0.5}{5.5}{}
+\yhex{1.5}{5.5}{}
+\yhex{2.5}{5.5}{}
+
+\yhex{0}{5}{}
+\yhex{1}{5}{}
+\yhex{2}{5}{}
+
+\draw[color=gray!60,dashed] (0, 7) grid [xstep=0.5, ystep=0.7] (3.5, 10.5) ;
+
+\begin{scope}[yshift=0.3cm]
+\draw[color=gray!70] (0, 6.5) grid [xstep=0.5, ystep=0.7] (3.5, 10.5) ;
+\end{scope}
+
+\draw[color=gray!70] (0.25, 10.8) node [above] { $0$ } ;
+\draw[color=gray!70] (0.75, 10.8) node [above] { $1$ } ;
+\draw[color=gray!70] (1.25, 10.8) node [above] { $2$ } ;
+\draw[color=gray!70] (1.75, 10.8) node [above] { $3$ } ;
+\draw[color=gray!70] (2.25, 10.8) node [above] { $4$ } ;
+\draw[color=gray!70] (2.75, 10.8) node [above] { $5$ } ;
+\draw[color=gray!70] (3.25, 10.8) node [above] { $6$ } ;
+\draw[color=gray!70] (3.75, 10.8) node [above] { $q_x$ } ;
+
+\draw[color=gray!70] (0.0, 10.45) node [left] { $0$ } ;
+\draw[color=gray!70] (0.0, 9.75) node [left] { $1$ } ;
+\draw[color=gray!70] (0.0, 9.05) node [left] { $2$ } ;
+\draw[color=gray!70] (0.0, 8.35) node [left] { $3$ } ;
+\draw[color=gray!70] (0.0, 7.65) node [left] { $4$ } ;
+\draw[color=gray!70] (0.0, 6.95) node [left] { $q_y$ } ;
+
+\end{gridfig}
+
+\end{document}

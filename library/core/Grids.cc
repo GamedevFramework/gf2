@@ -10,14 +10,20 @@
 
 #include <algorithm>
 
+#include <gf2/Math.h>
 #include <gf2/Span.h>
 
 namespace gf {
 
   namespace {
+    int floorint(float x)
+    {
+      return static_cast<int>(std::floor(x));
+    }
+
     Vec2I floorvec(float x, float y)
     {
-      return { static_cast<int>(std::floor(x)), static_cast<int>(std::floor(y)) };
+      return { floorint(x), floorint(y) };
     }
 
   }
@@ -111,7 +117,7 @@ namespace gf {
 
   RectF IsometricGrid::compute_bounds() const
   {
-    return RectF::from_size((m_layer_size.w + m_layer_size.h) * m_tile_size / 2);
+    return RectF::from_size((m_layer_size.w + m_layer_size.h) * m_tile_size / 2.0f);
   }
 
   RectI IsometricGrid::compute_visible_area(RectF local) const
@@ -126,14 +132,14 @@ namespace gf {
   RectF IsometricGrid::compute_cell_bounds(Vec2I coordinates) const
   {
     const Vec2I transformed = { coordinates.x - coordinates.y + m_layer_size.h - 1, coordinates.x + coordinates.y };
-    return RectF::from_position_size(transformed * m_tile_size / 2, m_tile_size);
+    return RectF::from_position_size(transformed * m_tile_size / 2.0f, m_tile_size);
   }
 
   Vec2I IsometricGrid::compute_coordinates(Vec2F position) const
   {
-    position.x -= static_cast<float>(m_layer_size.h) * m_tile_size.w / 2;
-    const Vec2F transformed = position / (m_tile_size / 2);
-    return floorvec((transformed.x + transformed.y) / 2, (transformed.y - transformed.x) / 2);
+    position.x -= static_cast<float>(m_layer_size.h) * m_tile_size.w / 2.0f;
+    const Vec2F transformed = position / (m_tile_size / 2.0f);
+    return floorvec((transformed.x + transformed.y) / 2.0f, (transformed.y - transformed.x) / 2.0f);
   }
 
   std::vector<Vec2F> IsometricGrid::compute_contour(Vec2I coordinates) const
@@ -201,14 +207,14 @@ namespace gf {
 
     switch (m_axis) {
       case CellAxis::X:
-        base.x /= 2;
-        base.x += m_tile_size.w / 2;
-        base.y += m_tile_size.h / 2;
+        base.x /= 2.0f;
+        base.x += m_tile_size.w / 2.0f;
+        base.y += m_tile_size.h / 2.0f;
         break;
       case CellAxis::Y:
-        base.y /= 2;
-        base.y += m_tile_size.h / 2;
-        base.x += m_tile_size.w / 2;
+        base.y /= 2.0f;
+        base.y += m_tile_size.h / 2.0f;
+        base.x += m_tile_size.w / 2.0f;
         break;
     }
 
@@ -226,17 +232,17 @@ namespace gf {
 
     switch (m_axis) {
       case CellAxis::X:
-        base.x /= 2;
+        base.x /= 2.0f;
 
         if ((m_index == CellIndex::Even) == (coordinates.x % 2 == 0)) {
           base.y += m_tile_size.h / 2;
         }
         break;
       case CellAxis::Y:
-        base.y /= 2;
+        base.y /= 2.0f;
 
         if ((m_index == CellIndex::Even) == (coordinates.y % 2 == 0)) {
-          base.x += m_tile_size.w / 2;
+          base.x += m_tile_size.w / 2.0f;
         }
         break;
     }
@@ -261,31 +267,31 @@ namespace gf {
 
     const bool is_diagonally_split = (m_index == CellIndex::Even) == (parity(x) == parity(y));
 
-    gf::Vec2I coords = vec(x, y);
+    gf::Vec2I coordinates = vec(x, y);
 
     if (m_axis == CellAxis::X) {
       if ((is_diagonally_split && rx < ry) || (!is_diagonally_split && (rx + ry) < 1)) {
-        --coords.x;
+        --coordinates.x;
       }
 
-      coords.y = y / 2;
+      coordinates.y = div_floor(y, 2);
 
       if (parity(y) == 0 && ((is_diagonally_split && rx > ry) || (!is_diagonally_split && (rx + ry) < 1))) {
-        --coords.y;
+        --coordinates.y;
       }
     } else {
       if ((is_diagonally_split && rx > ry) || (!is_diagonally_split && (rx + ry) < 1)) {
-        --coords.y;
+        --coordinates.y;
       }
 
-      coords.x = x / 2;
+      coordinates.x = div_floor(x, 2);
 
       if (parity(x) == 0 && ((is_diagonally_split && rx < ry) || (!is_diagonally_split && (rx + ry) < 1))) {
-        --coords.x;
+        --coordinates.x;
       }
     }
 
-    return coords;
+    return coordinates;
   }
 
   std::vector<Vec2F> StaggeredGrid::compute_contour(Vec2I coordinates) const
@@ -387,17 +393,9 @@ namespace gf {
 
   namespace {
 
-    constexpr float compute_offset(Vec2F tile_size, float side_length, CellAxis axis)
+    constexpr Vec2F compute_offset(Vec2F tile_size, float side_length)
     {
-      switch (axis) {
-        case CellAxis::X:
-          return (tile_size.w - side_length) / 2;
-        case CellAxis::Y:
-          return (tile_size.h - side_length) / 2;
-      }
-
-      assert(false);
-      return 0.0f;
+      return { (tile_size.w - side_length) / 2.0f, (tile_size.h - side_length) / 2.0f };
     }
 
   } // namespace
@@ -423,17 +421,17 @@ namespace gf {
   RectF HexagonalGrid::compute_bounds() const
   {
     Vec2F size = gf::vec(0.0f, 0.0f);
-    const float offset = compute_offset(m_tile_size, m_side_length, m_axis);
+    const Vec2F offset = compute_offset(m_tile_size, m_side_length);
 
     switch (m_axis) {
       case CellAxis::X:
-        size.h = static_cast<float>(m_layer_size.h) * m_tile_size.h + m_tile_size.h / 2;
-        size.w = static_cast<float>(m_layer_size.w) * (m_tile_size.w - offset) + offset;
+        size.w = static_cast<float>(m_layer_size.w) * (m_tile_size.w - offset.w) + offset.w;
+        size.h = static_cast<float>(m_layer_size.h) * m_tile_size.h + m_tile_size.h / 2.0f;
         break;
 
       case CellAxis::Y:
-        size.w = static_cast<float>(m_layer_size.w) * m_tile_size.w + m_tile_size.w / 2;
-        size.h = static_cast<float>(m_layer_size.h) * (m_tile_size.h - offset) + offset;
+        size.w = static_cast<float>(m_layer_size.w) * m_tile_size.w + m_tile_size.w / 2.0f;
+        size.h = static_cast<float>(m_layer_size.h) * (m_tile_size.h - offset.h) + offset.h;
         break;
     }
 
@@ -448,42 +446,24 @@ namespace gf {
   RectF HexagonalGrid::compute_cell_bounds(Vec2I coordinates) const
   {
     Vec2F base = gf::vec(0.0f, 0.0f);
-    const float offset = compute_offset(m_tile_size, m_side_length, m_axis);
+    const Vec2F offset = compute_offset(m_tile_size, m_side_length);
 
     switch (m_axis) {
       case CellAxis::X:
-        base.x = static_cast<float>(coordinates.x) * (m_tile_size.w - offset);
+        base.x = static_cast<float>(coordinates.x) * (m_tile_size.w - offset.w);
         base.y = static_cast<float>(coordinates.y) * m_tile_size.h;
 
-        switch (m_index) {
-          case CellIndex::Odd:
-            if (coordinates.x % 2 != 0) {
-              base.y += m_tile_size.h / 2;
-            }
-            break;
-          case CellIndex::Even:
-            if (coordinates.x % 2 == 0) {
-              base.y += m_tile_size.h / 2;
-            }
-            break;
+        if ((m_index == CellIndex::Even) == (coordinates.x % 2 == 0)) {
+          base.y += m_tile_size.h / 2.0f;
         }
         break;
 
       case CellAxis::Y:
-        base.y = static_cast<float>(coordinates.y) * (m_tile_size.h - offset);
         base.x = static_cast<float>(coordinates.x) * m_tile_size.w;
+        base.y = static_cast<float>(coordinates.y) * (m_tile_size.h - offset.h);
 
-        switch (m_index) {
-          case CellIndex::Odd:
-            if (coordinates.y % 2 != 0) {
-              base.x += m_tile_size.w / 2;
-            }
-            break;
-          case CellIndex::Even:
-            if (coordinates.y % 2 == 0) {
-              base.x += m_tile_size.w / 2;
-            }
-            break;
+        if ((m_index == CellIndex::Even) == (coordinates.y % 2 == 0)) {
+          base.x += m_tile_size.w / 2.0f;
         }
         break;
     }
@@ -493,49 +473,117 @@ namespace gf {
 
   Vec2I HexagonalGrid::compute_coordinates(Vec2F position) const
   {
-    // TODO: good approximation but would need some tweaking
-    Vec2I coordinates = gf::vec(0, 0);
-    const float offset = compute_offset(m_tile_size, m_side_length, m_axis);
+    const Vec2F offset = compute_offset(m_tile_size, m_side_length);
+    Vec2I coordinates = {};
 
     switch (m_axis) {
-      case CellAxis::X:
-        coordinates.x = static_cast<int>(position.x / (m_tile_size.w - offset));
-        switch (m_index) {
-          case CellIndex::Odd:
-            if (coordinates.x % 2 == 0) {
-              coordinates.y = static_cast<int>(position.y / m_tile_size.h);
-            } else {
-              coordinates.y = static_cast<int>((position.y - m_tile_size.h / 2) / m_tile_size.h);
-            }
-            break;
-          case CellIndex::Even:
-            if (coordinates.x % 2 != 0) {
-              coordinates.y = static_cast<int>(position.y / m_tile_size.h);
-            } else {
-              coordinates.y = static_cast<int>((position.y - m_tile_size.h / 2) / m_tile_size.h);
-            }
-            break;
+      case CellAxis::X: {
+        const float tx = m_tile_size.w - offset.w;
+        const float qx = std::floor(position.x / tx);
+        const float rx = position.x - qx * tx;
+        const float nrx = rx / offset.w;
+
+        const float ty = m_tile_size.h / 2.0f;
+        const float qy = std::floor(position.y / ty);
+        const float ry = position.y - qy * ty;
+        const float nry = ry / ty;
+
+        const int x = static_cast<int>(qx);
+        const int y = static_cast<int>(qy);
+
+        coordinates = vec(x, y);
+
+        if ((m_index == CellIndex::Even) == (parity(x) == 0)) {
+          --coordinates.y;
         }
-        break;
-      case CellAxis::Y:
-        coordinates.y = static_cast<int>(position.y / (m_tile_size.h - offset));
-        switch (m_index) {
-          case CellIndex::Odd:
-            if (coordinates.y % 2 == 0) {
-              coordinates.x = static_cast<int>(position.x / m_tile_size.w);
+
+        coordinates.y = div_floor(coordinates.y, 2);
+
+        if (rx < offset.w) {
+          assert(0 <= nrx && nrx < 1);
+          assert(0 <= nry && nry < 1);
+
+          if ((m_index == CellIndex::Even) == (parity(x) == 0)) {
+            if (parity(y) == 0) {
+              if (nrx < nry) {
+                --coordinates.x;
+                ++coordinates.y;
+              }
             } else {
-              coordinates.x = static_cast<int>((position.x - m_tile_size.w / 2) / m_tile_size.w);
+              if (nrx + nry < 1) {
+                --coordinates.x;
+              }
             }
-            break;
-          case CellIndex::Even:
-            if (coordinates.y % 2 != 0) {
-              coordinates.x = static_cast<int>(position.x / m_tile_size.w);
+          } else {
+            if (parity(y) == 0) {
+              if (nrx + nry < 1) {
+                --coordinates.x;
+                --coordinates.y;
+              }
             } else {
-              coordinates.x = static_cast<int>((position.x - m_tile_size.w / 2) / m_tile_size.w);
+              if (nrx < nry) {
+                --coordinates.x;
+              }
             }
-            break;
+          }
         }
+
         break;
+      }
+
+      case CellAxis::Y: {
+        const float ty = m_tile_size.h - offset.h;
+        const float qy = std::floor(position.y / ty);
+        const float ry = position.y - qy * ty;
+        const float nry = ty / offset.h;
+
+        const float tx = m_tile_size.w / 2.0f;
+        const float qx = std::floor(position.x / tx);
+        const float rx = position.x - qx * tx;
+        const float nrx = rx / tx;
+
+        const int x = static_cast<int>(qx);
+        const int y = static_cast<int>(qy);
+
+        coordinates = vec(x, y);
+
+        if ((m_index == CellIndex::Even) == (parity(y) == 0)) {
+          --coordinates.x;
+        }
+
+        coordinates.x = div_floor(coordinates.x, 2);
+
+        if (ry < offset.h) {
+          assert(0 <= nrx && nrx < 1);
+          assert(0 <= nry && nry < 1);
+
+          if ((m_index == CellIndex::Even) == (parity(y) == 0)) {
+            if (parity(x) == 0) {
+              if (nrx > nry) {
+                --coordinates.y;
+                ++coordinates.x;
+              }
+            } else {
+              if (nrx + nry < 1) {
+                --coordinates.y;
+              }
+            }
+          } else {
+            if (parity(x) == 0) {
+              if (nrx + nry < 1) {
+                --coordinates.y;
+                --coordinates.x;
+              }
+            } else {
+              if (nrx > nry) {
+                --coordinates.y;
+              }
+            }
+          }
+        }
+
+        break;
+      }
     }
 
     return coordinates;
@@ -543,7 +591,7 @@ namespace gf {
 
   std::vector<Vec2F> HexagonalGrid::compute_contour(Vec2I coordinates) const
   {
-    const float offset = compute_offset(m_tile_size, m_side_length, m_axis);
+    const Vec2F offset = compute_offset(m_tile_size, m_side_length);
     const RectF bounds = compute_cell_bounds(coordinates);
     const Vec2F min = bounds.min();
     const Vec2F max = bounds.max();
@@ -553,23 +601,23 @@ namespace gf {
     switch (m_axis) {
       case CellAxis::X:
         // clang-format off
-        contour.emplace_back(min.x,           (min.y + max.y) / 2);
-        contour.emplace_back(min.x + offset,  min.y);
-        contour.emplace_back(max.x - offset,  min.y);
-        contour.emplace_back(max.x,           (min.y + max.y) / 2);
-        contour.emplace_back(max.x - offset,  max.y);
-        contour.emplace_back(min.x + offset,  max.y);
+        contour.emplace_back(min.x,             (min.y + max.y) / 2.0f);
+        contour.emplace_back(min.x + offset.w,  min.y);
+        contour.emplace_back(max.x - offset.w,  min.y);
+        contour.emplace_back(max.x,             (min.y + max.y) / 2.0f);
+        contour.emplace_back(max.x - offset.w,  max.y);
+        contour.emplace_back(min.x + offset.w,  max.y);
         // clang-format on
         break;
 
       case CellAxis::Y:
         // clang-format off
-        contour.emplace_back((min.x + max.x) / 2, min.y);
-        contour.emplace_back(min.x,               min.y + offset);
-        contour.emplace_back(min.x,               max.y - offset);
-        contour.emplace_back((min.x + max.x) / 2, max.y);
-        contour.emplace_back(max.x,               max.y - offset);
-        contour.emplace_back(max.x,               min.y + offset);
+        contour.emplace_back((min.x + max.x) / 2.0f, min.y);
+        contour.emplace_back(min.x,                  min.y + offset.h);
+        contour.emplace_back(min.x,                  max.y - offset.h);
+        contour.emplace_back((min.x + max.x) / 2.0f, max.y);
+        contour.emplace_back(max.x,                  max.y - offset.h);
+        contour.emplace_back(max.x,                  min.y + offset.h);
         // clang-format on
         break;
     }
