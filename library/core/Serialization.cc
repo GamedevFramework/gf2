@@ -420,12 +420,13 @@ namespace gf {
       return;
     }
 
-    std::size_t n = 0;
+    read_u8(&data);
+    std::size_t n = 1;
 
-    do {
+    while (data == 0xFF && n < Size - 1) {
       read_u8(&data);
       ++n;
-    } while (data == 0xFF && n < Size - 1);
+    }
 
     assert(n < Size);
     uint8_t buf[Size];
