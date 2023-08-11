@@ -1,9 +1,9 @@
-= `gf::OrthogonalCells` type
+= `gf::StaggeredGrid` type
 v0.1
 include::bits/attributes.adoc[]
 :toc: right
 
-Orthogonal cells are cells organized in rectangles (or squares).
+A staggered grid is a grid with rhombus cells organized in a rectangle.
 
 xref:core_grids.adoc[< Back to `core` Grids]
 
@@ -11,31 +11,31 @@ xref:core_grids.adoc[< Back to `core` Grids]
 
 [source]
 ----
-#include <gf2/Cells.h>
-class OrthogonalCells;
+#include <gf2/Grids.h>
+class StaggeredGrid;
 ----
 
-See also: xref:AnyCells.adoc[`AnyCells`]
+See also: xref:AnyGrid.adoc[`AnyGrid`]
 
 == Member functions
 
-=== `OrthogonalCells` constructors
+=== `StaggeredGrid` constructors
 
 [source]
 ----
-OrthogonalCells(Vec2F tile_size);
+StaggeredGrid(Vec2I layer_size, Vec2F tile_size, CellAxis axis, CellIndex index);
 ----
 
-Create orthogonal cells with a size of `tile_size`.
+Create a staggered grid with a size of `tile_size` and the given `axis` and `index`.
 
 === `compute_bounds`
 
 [source]
 ----
-RectF compute_bounds(Vec2I layer_size) const;
+RectF compute_bounds() const;
 ----
 
-Compute the local bounds of the cells, with a layer of size `layer_size`.
+Compute the local bounds of the grid.
 
 === `compute_cell_bounds`
 
@@ -68,7 +68,7 @@ Compute the coordinates of a cell identified by its `position`.
 
 [source]
 ----
-std::vector<Vec2I> compute_neighbors(Vec2I coordinates, Vec2I layer_size, Flags<CellNeighborQuery> flags = None) const;
+std::vector<Vec2I> compute_neighbors(Vec2I coordinates, Flags<CellNeighborQuery> flags = None) const;
 ----
 
 Compute the coordinates of the neighbors of a cell at the given `coordinates`.

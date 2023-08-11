@@ -64,6 +64,7 @@ endfunction()
 # gf2::core
 
 add_library(gf2core0
+  core/AnyGrid.cc
   core/Array2D.cc
   core/Bitmap.cc
   core/Circ.cc
@@ -73,7 +74,7 @@ add_library(gf2core0
   core/Flags.cc
   core/Font.cc
   core/FontManager.cc
-  core/Grid.cc
+  core/GridMap.cc
   core/Grids.cc
   core/Id.cc
   core/Image.cc

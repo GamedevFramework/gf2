@@ -1,0 +1,85 @@
+= `gf::HexagonalGrid` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+An hexagonal grid is a grid with hexagonal cells organized in a rectangle.
+
+xref:core_grids.adoc[< Back to `core` Grids]
+
+== Description
+
+[source]
+----
+#include <gf2/Grids.h>
+class HexagonalGrid;
+----
+
+See also: xref:AnyGrid.adoc[`AnyGrid`]
+
+== Member functions
+
+=== `HexagonalGrid` constructors
+
+[source]
+----
+HexagonalGrid(Vec2I layer_size, Vec2F tile_size, float side_length, CellAxis axis, CellIndex index); <1>
+HexagonalGrid(Vec2I layer_size, float radius, CellAxis axis, CellIndex index); <2>
+----
+
+<1> Create a generic hexagonal grid with a size of `tile_size`.
+<2> Create a regular hexagonal grid with a radius of `radius`.
+
+=== `compute_bounds`
+
+[source]
+----
+RectF compute_bounds() const;
+----
+
+Compute the local bounds of the grid.
+
+=== `compute_cell_bounds`
+
+[source]
+----
+RectF compute_cell_bounds(Vec2I coordinates) const;
+----
+
+Compute the cell bounds at the given `coordinates`.
+
+=== `compute_contour`
+
+[source]
+----
+std::vector<Vec2F> compute_contour(Vec2I coordinates) const;
+----
+
+Compute a set of points that delimit the cell.
+
+=== `compute_coordinates`
+
+[source]
+----
+Vec2I compute_coordinates(Vec2F position) const;
+----
+
+Compute the coordinates of a cell identified by its `position`.
+
+=== `compute_neighbors`
+
+[source]
+----
+std::vector<Vec2I> compute_neighbors(Vec2I coordinates, Flags<CellNeighborQuery> flags = None) const;
+----
+
+Compute the coordinates of the neighbors of a cell at the given `coordinates`.
+
+=== `compute_visible_area`
+
+[source]
+----
+RectI compute_visible_area(RectF local) const;
+----
+
+Compute the visible area in terms of coordinates.

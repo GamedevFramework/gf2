@@ -1,9 +1,9 @@
-= `gf::HexagonalCells` type
+= `gf::IsometricGrid` type
 v0.1
 include::bits/attributes.adoc[]
 :toc: right
 
-Hexagonal cells are cells organized in hexagons.
+An isometric grid is a grid with rhombus cells organized in a rhombus.
 
 xref:core_grids.adoc[< Back to `core` Grids]
 
@@ -11,33 +11,31 @@ xref:core_grids.adoc[< Back to `core` Grids]
 
 [source]
 ----
-#include <gf2/Cells.h>
-class HexagonalCells;
+#include <gf2/Grids.h>
+class IsometricGrid;
 ----
 
-See also: xref:AnyCells.adoc[`AnyCells`]
+See also: xref:AnyGrid.adoc[`AnyGrid`]
 
 == Member functions
 
-=== `HexagonalCells` constructors
+=== `IsometricGrid` constructors
 
 [source]
 ----
-HexagonalCells(Vec2F tile_size, float side_length, CellAxis axis, CellIndex index); <1>
-HexagonalCells(float radius, CellAxis axis, CellIndex index); <2>
+IsometricGrid(Vec2I layer_size, Vec2F tile_size);
 ----
 
-<1> Create generic hexagonal cells with a size of `tile_size`.
-<2> Create regular hexagonal cells with a radius of `radius`.
+Create an isometric grid with a size of `tile_size`.
 
 === `compute_bounds`
 
 [source]
 ----
-RectF compute_bounds(Vec2I layer_size) const;
+RectF compute_bounds() const;
 ----
 
-Compute the local bounds of the cells, with a layer of size `layer_size`.
+Compute the local bounds of the grid.
 
 === `compute_cell_bounds`
 
@@ -70,7 +68,7 @@ Compute the coordinates of a cell identified by its `position`.
 
 [source]
 ----
-std::vector<Vec2I> compute_neighbors(Vec2I coordinates, Vec2I layer_size, Flags<CellNeighborQuery> flags = None) const;
+std::vector<Vec2I> compute_neighbors(Vec2I coordinates, Flags<CellNeighborQuery> flags = None) const;
 ----
 
 Compute the coordinates of the neighbors of a cell at the given `coordinates`.

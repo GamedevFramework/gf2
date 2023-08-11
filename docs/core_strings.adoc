@@ -1,0 +1,86 @@
+= `core` Strings
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The strings component provides algorithms related to string handling.
+
+xref:reference.adoc[< Back to reference]
+
+== Types
+
+[#_codepoint_range]
+=== `gf::CodepointRange`
+
+[source]
+----
+#include <gf2/StringUtils.h>
+class CodepointRange;
+----
+
+`CodepointRange` is a range range over a sequence of codepoints in UTF-8. xref:CodepointRange.adoc[*Read more...*]
+
+See also: <<_codepoints>>
+
+== Functions
+
+[#_codepoints]
+=== `gf::codepoints`
+
+[source]
+----
+#include <gf2/StringUtils.h>
+constexpr CodepointRange codepoints(std::string_view string) noexcept
+----
+
+Create a range over codepoints from a `string`.
+
+See also: <<_codepoint_range>>
+
+[#_escape_string]
+=== `gf::escape_string`
+
+[source]
+----
+#include <gf2/StringUtils.h>
+std::string escape_string(std::string_view text);
+----
+
+Escape a string. This function replaces characters with their escaped equivalent. For example, a `'\n'` character is replaced with `"\\\n"`. This function can be used to display strings.
+
+[#_nice_num]
+=== `gf::nice_num`
+
+[source]
+----
+#include <gf2/StringUtils.h>
+std::string nice_num(float num, float precision);
+----
+
+Create a string representation of a floating point number `num` with `precision`. It is based on link:https://mail.python.org/pipermail/python-list/1999-October/005748.html[Python niceNum].
+
+[#_split_in_paragraphs]
+=== `gf::split_in_paragraphs`
+
+[source]
+----
+#include <gf2/StringUtils.h>
+std::vector<std::string_view> split_in_paragraphs(std::string_view text);
+----
+
+Split a string in multiples paragraphs. The paragraphs are separated by `'\n'`.
+
+See also: <<_split_in_words>>
+
+[#_split_in_words]
+=== `gf::split_in_words`
+
+[source]
+----
+#include <gf2/StringUtils.h>
+std::vector<std::string_view> split_in_words(std::string_view text);
+----
+
+Split a string in multiples words. The words are separated by `' '` (space) or `'\t'` (tabulation).
+
+See also: <<_split_in_paragraphs>>

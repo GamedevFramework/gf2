@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
-#ifndef GF_GRID_H
-#define GF_GRID_H
+#ifndef GF_ANY_GRID_H
+#define GF_ANY_GRID_H
 
 #include <variant>
 #include <vector>
@@ -10,15 +10,15 @@
 
 namespace gf {
 
-  class GF_CORE_API Grid {
+  class GF_CORE_API AnyGrid {
   public:
-    Grid() = default;
+    AnyGrid() = default;
 
-    static Grid make_orthogonal(Vec2I layer_size, Vec2F tile_size);
-    static Grid make_isometric(Vec2I layer_size, Vec2F tile_size);
-    static Grid make_staggered(Vec2I layer_size, Vec2F tile_size, CellAxis axis, CellIndex index);
-    static Grid make_hexagonal(Vec2I layer_size, Vec2F tile_size, float side_length, CellAxis axis, CellIndex index);
-    static Grid make_hexagonal(Vec2I layer_size, float radius, CellAxis axis, CellIndex index);
+    static AnyGrid make_orthogonal(Vec2I layer_size, Vec2F tile_size);
+    static AnyGrid make_isometric(Vec2I layer_size, Vec2F tile_size);
+    static AnyGrid make_staggered(Vec2I layer_size, Vec2F tile_size, CellAxis axis, CellIndex index);
+    static AnyGrid make_hexagonal(Vec2I layer_size, Vec2F tile_size, float side_length, CellAxis axis, CellIndex index);
+    static AnyGrid make_hexagonal(Vec2I layer_size, float radius, CellAxis axis, CellIndex index);
 
     RectF compute_bounds() const;
     RectI compute_visible_area(RectF local) const;
@@ -29,14 +29,14 @@ namespace gf {
     bool are_diagonal_neighbors(Vec2I coordinates0, Vec2I coordinates1) const;
 
   private:
-    Grid(OrthogonalGrid grid);
-    Grid(IsometricGrid grid);
-    Grid(StaggeredGrid grid);
-    Grid(HexagonalGrid grid);
+    AnyGrid(OrthogonalGrid grid);
+    AnyGrid(IsometricGrid grid);
+    AnyGrid(StaggeredGrid grid);
+    AnyGrid(HexagonalGrid grid);
 
     std::variant<std::monostate, OrthogonalGrid, IsometricGrid, StaggeredGrid, HexagonalGrid> m_variant;
   };
 
 }
 
-#endif // GF_GRID_H
+#endif // GF_ANY_GRID_H

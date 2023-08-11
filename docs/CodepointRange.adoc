@@ -1,0 +1,56 @@
+= `gf::CodepointRange` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`CodepointRange` is a range range over a sequence of codepoints in UTF-8.
+
+xref:core_strings.adoc[< Back to `core` Strings]
+
+== Description
+
+[source]
+----
+#include <gf2/StringUtils.h>
+class CodepointRange;
+----
+
+== Types
+
+=== `Iterator`
+
+[source]
+----
+class Iterator;
+----
+
+A link:https://en.cppreference.com/w/cpp/named_req/ForwardIterator[forward iterator] that is used for iterating over the codepoints.
+
+== Member functions
+
+=== `CodepointRange` constructors
+
+[source]
+----
+constexpr CodepointRange(std::string_view string) noexcept
+----
+
+Create a range from `string`.
+
+=== `begin`
+
+[source]
+----
+constexpr Iterator begin() const noexcept;
+----
+
+Get an iterator to the start of the range.
+
+=== `end`
+
+[source]
+----
+constexpr Iterator end() const noexcept;
+----
+
+Get an end iterator of the range.

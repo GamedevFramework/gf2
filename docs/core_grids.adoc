@@ -7,20 +7,37 @@ The grids component provides the classes for handling maps organized in grids.
 
 A grid is a set of cells with a specific organization. As a grid is a two-dimensional object, the cells of a grid can be identified with two coordinates. Some kind of grids have several variants according to the layout of the grid. The library supports the following types of grid:
 
-- *Orthogonal grids*
-- *Staggered grids*
-- *Hexagonal grids*
+- Orthogonal grids (rectangle cells organised in a rectangle)
+- Isometric grids (rhombus cells organised in a rhombus)
+- Staggered grids (rhombus cells organised in a rectangle)
+- Hexagonal grids (hexagon cells organised in a rectangle)
 
 xref:reference.adoc[< Back to reference]
 
+See also: xref:article_grids_howto.adoc[`Grids How To`]
+
 == Types
+
+[#_any_grid]
+=== `gf::AnyGrid`
+
+[source]
+----
+#include <gf2/AnyGrid.h>
+class AnyGrid;
+----
+
+`AnyGrid` can contain any type of grid. xref:AnyGrid.adoc[*Read more...*]
+
+See also: <<_hexagonal_grid>>, <<_isometric_grid>>, <<_orthogonal_grid>>, <<_staggered_grid>>
+
 
 [#_cells_axis]
 === `gf::CellAxis`
 
 [source]
 ----
-#include <gf2/CellTypes.h>
+#include <gf2/GridTypes.h>
 enum class CellAxis : uint8_t;
 ----
 
@@ -44,7 +61,7 @@ The axis that is shifted in staggered and hexagonal maps.
 
 [source]
 ----
-#include <gf2/CellTypes.h>
+#include <gf2/GridTypes.h>
 enum class CellFlip : uint8_t;
 ----
 
@@ -76,7 +93,7 @@ The way a cell may be flipped. `CellFlip` can be used with xref:Flags.adoc[`Flag
 
 [source]
 ----
-#include <gf2/CellTypes.h>
+#include <gf2/GridTypes.h>
 enum class CellIndex : uint8_t;
 ----
 
@@ -119,79 +136,78 @@ The specification of the query when asking for neighborhood. `CellNeighborQuery`
 |===
 
 
-[#_cells_orientation]
-=== `gf::CellOrientation`
+[#_grid_orientation]
+=== `gf::GridOrientation`
 
 [source]
 ----
-#include <gf2/CellTypes.h>
-enum class CellOrientation : uint8_t;
+#include <gf2/GridTypes.h>
+enum class GridOrientation : uint8_t;
 ----
 
-The cell orientation of the grid.
+The orientation of the grid.
 
-.Enumerators for `gf::CellOrientation`
+.Enumerators for `gf::GridOrientation`
 [cols="2,3"]
 |===
 
-| `gf::CellOrientation::Unknown`
+| `gf::GridOrientation::Unknown`
 | Unknown orientation
 
-| `gf::CellOrientation::Orthogonal`
+| `gf::GridOrientation::Orthogonal`
 | Orthogonal orientation
 
-| `gf::CellOrientation::Isometric`
+| `gf::GridOrientation::Isometric`
 | Isometric orientation
 
-| `gf::CellOrientation::Staggered`
+| `gf::GridOrientation::Staggered`
 | Staggered orientation
 
-| `gf::CellOrientation::Hexagonal`
+| `gf::GridOrientation::Hexagonal`
 | Hexagonal orientation
 |===
 
-[#_grid_cells]
-=== `gf::GridCells`
+
+[#_hexagonal_grid]
+=== `gf::HexagonalGrid`
 
 [source]
 ----
-#include <gf2/Cells.h>
-class GridCells;
+#include <gf2/Grids.h>
+class HexagonalGrid;
 ----
 
-`GridCells` can contain any type of cells. xref:GridCells.adoc[*Read more...*]
+An hexagonal grid is a grid with hexagonal cells organized in a rectangle. xref:HexagonalGrid.adoc[*Read more...*]
 
-See also: <<_hexagonal_cells>>, <<_orthogonal_cells>>, <<_staggered_cells>>
-
-[#_hexagonal_cells]
-=== `gf::HexagonalCells`
+[#_isometric_grid]
+=== `gf::IsometricGrid`
 
 [source]
 ----
-#include <gf2/Cells.h>
-class HexagonalCells;
+#include <gf2/Grids.h>
+class IsometricGrid;
 ----
 
-Hexagonal cells are cells organized in hexagons. xref:HexagonalCells.adoc[*Read more...*]
+An isometric grid is a grid with rhombus cells organized in a rhombus. xref:IsometricGrid.adoc[*Read more...*]
 
-[#_orthogonal_cells]
-=== `gf::OrthogonalCells`
+[#_orthogonal_grid]
+=== `gf::OrthogonalGrid`
 
 [source]
 ----
-#include <gf2/Cells.h>
-class OrthogonalCells;
+#include <gf2/Grids.h>
+class OrthogonalGrid;
 ----
 
-Orthogonal cells are cells organized in rectangles (or squares). xref:OrthogonalCells.adoc[*Read more...*]
+An orthogonal grid is a grid with rectangle cells organized in a rectangle. xref:OrthogonalGrid.adoc[*Read more...*]
 
-[#_staggered_cells]
-=== `gf::StaggeredCells`
+[#_staggered_grid]
+=== `gf::StaggeredGrid`
 
 [source]
 ----
-#include <gf2/Cells.h>
-class StaggeredCells;
+#include <gf2/Grids.h>
+class StaggeredGrid;
 ----
 
-Staggered cells are cells organized in rhombuses. xref:StaggeredCells.adoc[*Read more...*]
+A staggered grid is a grid with rhombus cells organized in a rectangle. xref:StaggeredGrid.adoc[*Read more...*]
