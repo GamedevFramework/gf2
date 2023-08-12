@@ -1,0 +1,14 @@
+= Glossary
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+Here is a list of common terms of the library and their definition.
+
+xref:index.adoc[< Back to main page]
+
+Location::
+  Some float coordinates representing the point of an entity in a continuous 2D world. A location has a xref:Vec2.adoc[`Vec2F`] type.
+
+Position::
+  Some integer coordinates representing a place in a 2D discrete plane. A position has a xref:Vec2.adoc[`Vec2I`] type.
