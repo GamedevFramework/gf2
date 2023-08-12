@@ -115,7 +115,7 @@ template<typename T>
 T compute_uniform_integer(T min, T max);
 ----
 
-Compute a uniform integer between `min` (included) and `max` (excluded).
+Compute a uniform integer between `min` (included) and `max` (included).
 
 === `engine`
 
