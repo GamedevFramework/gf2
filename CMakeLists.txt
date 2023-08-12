@@ -12,6 +12,8 @@ option(BUILD_TESTING "Build tests" ON)
 
 option(GF_USE_EMBEDDED_LIBS "Build the library with the submodule libraries" ON)
 
+include(GNUInstallDirs)
+
 set(SDL2_BUILDING_LIBRARY TRUE)
 find_package(SDL2 REQUIRED)
 find_package(fmt REQUIRED)
@@ -48,3 +50,7 @@ if(BUILD_TESTING)
   add_subdirectory(tests)
 endif()
 
+install(
+  DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/gf2"
+  DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+)

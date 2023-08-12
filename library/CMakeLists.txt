@@ -230,3 +230,37 @@ target_include_directories(gf2audio0
     "${MINIAUDIO_INCLUDE_DIR}"
     "${Stb_INCLUDE_DIR}"
 )
+
+# install
+
+install(
+  TARGETS gf2core0 gf2graphics0 gf2network0 gf2audio0
+  EXPORT gf2Targets
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+
+install(
+  EXPORT gf2Targets
+  NAMESPACE gf2::
+  DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/gf2"
+)
+
+install(
+  FILES gf2Config.cmake
+  DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/gf2"
+)
+
+include(CMakePackageConfigHelpers)
+
+write_basic_package_version_file(
+  "${CMAKE_CURRENT_BINARY_DIR}/gf2ConfigVersion.cmake"
+  VERSION ${PROJECT_VERSION}
+  COMPATIBILITY SameMajorVersion
+)
+
+install(
+  FILES "${CMAKE_CURRENT_BINARY_DIR}/gf2ConfigVersion.cmake"
+  DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/gf2"
+)
