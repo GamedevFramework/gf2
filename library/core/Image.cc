@@ -163,6 +163,11 @@ namespace gf {
     return m_size;
   }
 
+  PositionRange Image::position_range() const
+  {
+    return gf::position_range(m_size);
+  }
+
   Color Image::operator()(Vec2I position) const
   {
     if (position.x < 0 || position.x >= m_size.w || position.y < 0 || position.y >= m_size.h) {

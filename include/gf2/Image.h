@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "Color.h"
+#include "Range.h"
 #include "Rect.h"
 #include "Vec2.h"
 
@@ -20,7 +21,7 @@ namespace gf {
     Rgb24,
   };
 
-  class Image {
+  class GF_CORE_API Image {
   public:
     Image();
     Image(Vec2I size);
@@ -30,6 +31,7 @@ namespace gf {
     Image(InputStream& stream);
 
     Vec2I size() const;
+    PositionRange position_range() const;
 
     Color operator()(Vec2I position) const;
     void put_pixel(Vec2I position, Color color);

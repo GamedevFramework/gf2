@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "CoreApi.h"
+#include "Range.h"
 #include "Vec2.h"
 
 namespace gf {
@@ -21,6 +22,7 @@ namespace gf {
     Bitmap(Vec2I size, const uint8_t* source, ptrdiff_t pitch);
 
     Vec2I size() const;
+    PositionRange position_range() const;
 
     uint8_t operator()(Vec2I position) const;
     const uint8_t* raw_pixels() const;
