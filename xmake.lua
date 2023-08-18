@@ -1,6 +1,7 @@
 set_project("gf")
 set_version("0.1.0")
 
+add_requires("boost")
 add_requires("libsdl", "freetype", "zlib")
 add_requires("fmt", { system = false, configs = { header_only = true }})
 add_requires("miniaudio 0.11.17")
@@ -18,6 +19,7 @@ set_languages("cxx17")
 
 if is_plat("windows") then
   add_cxflags("/wd4251") -- Disable warning: class needs to have dll-interface to be used by clients of class blah blah blah
+  add_cxflags("/utf-8")
   add_defines("NOMINMAX")
 end
 
@@ -27,7 +29,7 @@ target("gf2core0")
     add_defines("ZLIB_CONST")
     add_files("library/core/*.cc")
     add_includedirs("include", { public = true })
-    add_packages("stb", "freetype")
+    add_packages("boost", "freetype", "stb")
     add_packages("fmt", "zlib", { public = true })
 
 target("gf2graphics0")
