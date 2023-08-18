@@ -19,6 +19,12 @@ jobs:
 
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Checkout gf2
+        uses: actions/checkout@v3
+        with:
+          repository: GamedevFramework/gf2
+          submodules: recursive
+
       - name: Setup xmake
         uses: xmake-io/github-action-setup-xmake@v1
         with:
@@ -29,14 +35,8 @@ jobs:
       - name: Update xmake repository
         run: xmake repo --update
 
-      - name: Checkout gf2
-        uses: actions/checkout@v3
-        with:
-          repository: GamedevFramework/gf2
-          submodules: recursive
-
       - name: Configure xmake
-        run: xmake --config --mode=${{ matrix.mode }} --yes
+        run: xmake config --mode=${{ matrix.mode }} --yes
 
       - name: Build gf2
         run: xmake --yes
