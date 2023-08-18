@@ -7,3 +7,6 @@
 [submodule "library/vendor/miniaudio"]
 	path = library/vendor/miniaudio
 	url = https://github.com/mackron/miniaudio.git
+[submodule "library/vendor/vk-bootstrap"]
+	path = library/vendor/vk-bootstrap
+	url = https://github.com/charles-lunarg/vk-bootstrap.git

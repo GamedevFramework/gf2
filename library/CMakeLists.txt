@@ -132,11 +132,17 @@ target_include_directories(gf2core0
 # gf2::graphics
 
 add_library(gf2graphics0
+  graphics/Buffer.cc
+  graphics/CommandBuffer.cc
   graphics/Event.cc
   graphics/Gamepad.cc
   graphics/GraphicsInitializer.cc
   graphics/Keyboard.cc
   graphics/Mouse.cc
+  graphics/Pipeline.cc
+  graphics/Renderer.cc
+  graphics/RenderTarget.cc
+  graphics/Shader.cc
   graphics/Touch.cc
   graphics/Window.cc
 )
@@ -149,9 +155,30 @@ gf2_handle_library(gf2graphics0
 target_link_libraries(gf2graphics0
   PUBLIC
     gf2core0
+    Vulkan::Vulkan
+    GPUOpen::VulkanMemoryAllocator
   PRIVATE
     SDL2::SDL2
 )
+
+if(GF_USE_EMBEDDED_LIBS)
+  target_sources(gf2graphics0
+    PRIVATE
+      "vendor/vk-bootstrap/src/VkBootstrap.cpp"
+  )
+
+  target_include_directories(gf2graphics0
+    SYSTEM
+    PRIVATE
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/vendor/vk-bootstrap/src>
+      $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+  )
+else()
+  target_link_libraries(gf2graphics0
+    PRIVATE
+      vk-bootstrap::vk-bootstrap
+  )
+endif()
 
 # gf2::network
 
@@ -240,6 +267,15 @@ install(
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
+
+if(GF_USE_EMBEDDED_LIBS)
+  install(
+    FILES
+      vendor/vk-bootstrap/src/VkBootstrap.h
+      vendor/vk-bootstrap/src/VkBootstrapDispatch.h
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+  )
+endif()
 
 install(
   EXPORT gf2Targets

@@ -62,6 +62,13 @@ namespace gf {
       std::abort();
     }
 
+    template<typename... T>
+    static void print(Level level, fmt::format_string<T...> fmt, T&&... args)
+    {
+      auto string = fmt::format(fmt, std::forward<T>(args)...);
+      log(level, string);
+    }
+
   private:
     static Level s_level; // NOLINT
     static void log(Level level, const std::string& string);

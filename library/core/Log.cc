@@ -14,6 +14,8 @@
 #include <chrono>
 #include <utility>
 
+#include <fmt/color.h>
+
 namespace gf {
 
   namespace {
@@ -37,6 +39,25 @@ namespace gf {
       return "?";
     }
 
+    fmt::color to_color(Log::Level level)
+    {
+      switch (level) {
+        case Log::Debug:
+          return fmt::color::blue;
+        case Log::Info:
+          return fmt::color::green;
+        case Log::Warn:
+          return fmt::color::orange;
+        case Log::Error:
+          return fmt::color::red;
+        case Log::Fatal:
+          return fmt::color::purple;
+      }
+
+      assert(false);
+      return fmt::color::yellow;
+    }
+
     void print_timestamp_and_level(Log::Level level)
     {
       const auto now = std::chrono::system_clock::now();
@@ -53,7 +74,7 @@ namespace gf {
       const std::size_t size = std::strftime(buffer.data(), buffer.size(), "%F %T", std::localtime(&integer_part));
       std::snprintf(buffer.data() + size, buffer.size() - size, ".%06" PRIi64, fractional_part); // NOLINT
 
-      std::fprintf(stderr, "[%s][%s] ", buffer.data(), to_string(level)); // NOLINT
+      fmt::print(stderr, fmt::emphasis::bold | fmt::fg(to_color(level)), "[{}][{}] ", buffer.data(), to_string(level));
     }
 
   } // namespace
@@ -72,7 +93,7 @@ namespace gf {
     }
 
     print_timestamp_and_level(level);
-    fprintf(stderr, "%s\n", string.c_str()); // NOLINT
+    fmt::print(stderr, "{}\n", string);
   }
 
 } // namespace gf

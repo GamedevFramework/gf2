@@ -39,6 +39,8 @@ macro (load_dependencies component)
     find_dependency(Threads)
     if (NOT BUILD_SHARED_LIBS)
       find_dependency(SDL2)
+      find_dependency(Vulkan)
+      find_dependency(VulkanMemoryAllocator)
     endif()
 
   # For gf2::network
