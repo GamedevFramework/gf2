@@ -144,6 +144,7 @@ add_library(gf2graphics0
   graphics/RenderTarget.cc
   graphics/Shader.cc
   graphics/Touch.cc
+  graphics/Vulkan.cc
   graphics/Window.cc
 )
 
@@ -155,10 +156,16 @@ gf2_handle_library(gf2graphics0
 target_link_libraries(gf2graphics0
   PUBLIC
     gf2core0
-    Vulkan::Vulkan
+    Vulkan::Headers
+    volk::volk_headers
     GPUOpen::VulkanMemoryAllocator
   PRIVATE
     SDL2::SDL2
+)
+
+target_compile_definitions(gf2graphics0
+  PUBLIC
+    VK_NO_PROTOTYPES
 )
 
 if(GF_USE_EMBEDDED_LIBS)

@@ -3,11 +3,10 @@
 #ifndef GF_BUFFER_H
 #define GF_BUFFER_H
 
-#include <vulkan/vulkan.h>
-
 #include <vk_mem_alloc.h>
 
 #include "GraphicsApi.h"
+#include "Vulkan.h"
 
 namespace gf {
 

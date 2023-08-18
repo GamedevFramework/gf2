@@ -8,11 +8,10 @@
 #include <filesystem>
 #include <type_traits>
 
-#include <vulkan/vulkan.h>
-
 #include "GraphicsApi.h"
 #include "Renderer.h"
 #include "Span.h"
+#include "Vulkan.h"
 
 namespace gf {
 

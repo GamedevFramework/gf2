@@ -1,12 +1,11 @@
 #ifndef GF_COMMAND_BUFFER_H
 #define GF_COMMAND_BUFFER_H
 
-#include <vulkan/vulkan.h>
-
 #include "Color.h"
 #include "GraphicsApi.h"
 #include "Rect.h"
 #include "RenderTarget.h"
+#include "Vulkan.h"
 
 namespace gf {
   class Buffer;

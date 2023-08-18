@@ -353,6 +353,10 @@ namespace gf {
     m_instance = instance.instance;
     m_messenger = instance.debug_messenger;
 
+    // load vulkan functions
+
+    volkLoadInstance(m_instance);
+
     // surface
 
     if (SDL_Vulkan_CreateSurface(m_window, m_instance, &m_surface) == SDL_FALSE) {
@@ -408,6 +412,10 @@ namespace gf {
       throw std::runtime_error("Failed to get a graphics queue.");
     }
 
+    // load vulkan device functions
+
+    volkLoadDevice(m_device);
+
     // queues
 
     m_graphics_queue_index = maybe_graphics_queue_index.value();
@@ -446,10 +454,15 @@ namespace gf {
 
   void Renderer::construct_allocator()
   {
+    VmaVulkanFunctions functions = {};
+    functions.vkGetInstanceProcAddr = vkGetInstanceProcAddr;
+    functions.vkGetDeviceProcAddr = vkGetDeviceProcAddr;
+
     VmaAllocatorCreateInfo allocator_info = {};
     allocator_info.physicalDevice = m_physical_device;
     allocator_info.device = m_device;
     allocator_info.instance = m_instance;
+    allocator_info.pVulkanFunctions = &functions;
     allocator_info.vulkanApiVersion = VK_API_VERSION_1_3;
 
     if (vmaCreateAllocator(&allocator_info, &m_allocator) != VK_SUCCESS) {

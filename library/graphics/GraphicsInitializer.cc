@@ -10,6 +10,7 @@
 #include <SDL2/SDL.h>
 #include <gf2/Gamepad.h>
 #include <gf2/Log.h>
+#include <gf2/Vulkan.h>
 
 namespace gf {
 
@@ -38,6 +39,14 @@ namespace gf {
           Gamepad::open(static_cast<GamepadHwId>(index));
         }
       }
+
+      // initialize volk
+
+      if (volkInitialize() != VK_SUCCESS) {
+        Log::error("Unable to initialize volk.");
+        return;
+      }
+
     } else {
       Log::warning("You are trying to load SDL multiple times. Do not do that!");
     }

@@ -15,13 +15,15 @@ option(GF_USE_EMBEDDED_LIBS "Build the library with the submodule libraries" ON)
 include(GNUInstallDirs)
 
 set(SDL2_BUILDING_LIBRARY TRUE)
-find_package(SDL2 REQUIRED)
+
 find_package(fmt REQUIRED)
 find_package(Freetype REQUIRED)
-find_package(ZLIB REQUIRED)
+find_package(SDL2 REQUIRED)
 find_package(Threads REQUIRED)
-find_package(Vulkan REQUIRED COMPONENTS glslc)
+find_package(volk REQUIRED)
+find_package(Vulkan REQUIRED)
 find_package(VulkanMemoryAllocator CONFIG REQUIRED)
+find_package(ZLIB REQUIRED)
 
 if(GF_USE_EMBEDDED_LIBS)
   message(STATUS "Build with embedded libraries")

@@ -4,8 +4,6 @@
 #include <optional>
 #include <vector>
 
-#include <vulkan/vulkan.h>
-
 #include <vk_mem_alloc.h>
 
 #include "Buffer.h"
@@ -15,6 +13,7 @@
 #include "RenderTarget.h"
 #include "Span.h"
 #include "Window.h"
+#include "Vulkan.h"
 
 namespace gf {
 
