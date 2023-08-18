@@ -10,6 +10,7 @@ env:
   BUILD_TYPE: Release
   VCPKG_COMMIT: '2023.04.15'
   VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}\vcpkg\binary-cache
+  VULKAN_SDK: C:\VulkanSDK\
 
 jobs:
   build:
@@ -29,6 +30,16 @@ jobs:
           path: vcpkg
           ref: ${{ env.VCPKG_COMMIT }}
 
+      # https://github.com/actions/runner-images/issues/18
+      - name: Setup Vulkan
+        run: |
+          $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
+          echo Version $ver
+          $ProgressPreference = 'SilentlyContinue'
+          Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/$ver/windows/VulkanSDK-$ver-Installer.exe" -OutFile VulkanSDK.exe
+          echo Downloaded
+          .\VulkanSDK.exe --root C:\VulkanSDK  --accept-licenses --default-answer --confirm-command install
+
       - name: Install vcpkg dependencies
         if: steps.cache-vcpkg.outputs.cache-hit != 'true'
         working-directory: ${{github.workspace}}/vcpkg
@@ -36,7 +47,7 @@ jobs:
           echo $Env:VCPKG_DEFAULT_BINARY_CACHE
           mkdir $Env:VCPKG_DEFAULT_BINARY_CACHE
           .\bootstrap-vcpkg.bat
-          .\vcpkg.exe install boost-algorithm:x64-windows boost-container:x64-windows boost-heap:x64-windows fmt:x64-windows freetype:x64-windows miniaudio:x64-windows pugixml:x64-windows sdl2:x64-windows stb:x64-windows vk-bootstrap:x64-windows vulkan:x64-windows vulkan-memory-allocator:x64-windows zlib:x64-windows
+          .\vcpkg.exe install boost-heap:x64-windows fmt:x64-windows freetype:x64-windows glslang:x64-windows miniaudio:x64-windows pugixml:x64-windows sdl2:x64-windows stb:x64-windows vk-bootstrap:x64-windows vulkan:x64-windows vulkan-memory-allocator:x64-windows zlib:x64-windows
 
       - name: Extract branch name
         shell: bash
