@@ -1,4 +1,4 @@
-name: WindowsBuild
+name: Windows build
 
 on:
   push:
@@ -8,74 +8,41 @@ on:
 
 env:
   BUILD_TYPE: Release
-  VCPKG_COMMIT: '2023.04.15'
-  VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}\vcpkg\binary-cache
-  VULKAN_SDK: C:\VulkanSDK\
 
 jobs:
   build:
-    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ windows-latest ]
+        mode: [ debug, release ]
+
+    runs-on: ${{ matrix.os }}
     steps:
-      - name: vcpkg cache
-        id: cache-vcpkg
-        uses: actions/cache@v3
+      - name: Setup xmake
+        uses: xmake-io/github-action-setup-xmake@v1
         with:
-          path: vcpkg
-          key: ${{ runner.os }}-vcpkg-${{ env.VCPKG_COMMIT }}
+          xmake-version: latest
+          actions-cache-folder: '.xmake-cache'
+          actions-cache-key: 'windows'
 
-      - uses: actions/checkout@v3
-        if: steps.cache-vcpkg.outputs.cache-hit != 'true'
-        with:
-          repository: Microsoft/vcpkg
-          path: vcpkg
-          ref: ${{ env.VCPKG_COMMIT }}
+      - name: Update xmake repository
+        run: xmake repo --update
 
-      # https://github.com/actions/runner-images/issues/18
-      - name: Setup Vulkan
-        run: |
-          $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
-          echo Version $ver
-          $ProgressPreference = 'SilentlyContinue'
-          Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/$ver/windows/VulkanSDK-$ver-Installer.exe" -OutFile VulkanSDK.exe
-          echo Downloaded
-          .\VulkanSDK.exe --root C:\VulkanSDK  --accept-licenses --default-answer --confirm-command install
-
-      - name: Install vcpkg dependencies
-        if: steps.cache-vcpkg.outputs.cache-hit != 'true'
-        working-directory: ${{github.workspace}}/vcpkg
-        run: |
-          echo $Env:VCPKG_DEFAULT_BINARY_CACHE
-          mkdir $Env:VCPKG_DEFAULT_BINARY_CACHE
-          .\bootstrap-vcpkg.bat
-          .\vcpkg.exe install boost-heap:x64-windows fmt:x64-windows freetype:x64-windows glslang:x64-windows miniaudio:x64-windows pugixml:x64-windows sdl2:x64-windows stb:x64-windows vk-bootstrap:x64-windows vulkan:x64-windows vulkan-memory-allocator:x64-windows zlib:x64-windows
-
-      - name: Extract branch name
-        shell: bash
-        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
-        id: extract_branch
-
-      - uses: actions/checkout@v3
+      - name: Checkout gf2
+        uses: actions/checkout@v3
         with:
           repository: GamedevFramework/gf2
           submodules: recursive
-          ref: ${{ steps.extract_branch.outputs.branch }}
-          path: gf2
 
-      - name: Configure gf
-        shell: cmd
-        run: |
-          set PATH=%PATH%;${{github.workspace}}/gf2/build/library/${{ env.BUILD_TYPE }}
-          cmake -DGF_USE_EMBEDDED_LIBS=OFF -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/vcpkg/scripts/buildsystems/vcpkg.cmake -S ${{ github.workspace }}/gf2 -B ${{ github.workspace }}/gf2/build
+      - name: Configure xmake
+        run: xmake --config --mode=${{ matrix.mode }} --yes
 
-      - name: Build gf
-        shell: cmd
-        run: |
-          set PATH=%PATH%;${{github.workspace}}/gf2/build/library/${{ env.BUILD_TYPE }}
-          cmake --build ${{ github.workspace }}/gf2/build --config ${{ env.BUILD_TYPE }} --parallel
+      - name: Build gf2
+        run: xmake --yes
 
-      - name: Run tests
-        shell: cmd
-        working-directory: ${{ github.workspace }}/gf2/build
+      - name: Test gf2
         run: |
-          set PATH=%PATH%;${{github.workspace}}/gf2/build/library/${{ env.BUILD_TYPE }}
-          ctest -j $(nproc) -C ${{ env.BUILD_TYPE }} --output-on-failure
+          xmake run gf2_core_tests
+          xmake run gf2_network_tests
+          xmake run gf2_audio_tests

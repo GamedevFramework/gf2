@@ -1,4 +1,4 @@
-name: UbuntuBuild
+name: Ubuntu build
 
 on:
   push:
@@ -11,30 +11,38 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest ]
+        mode: [ asan, debug, release ]
+
+    runs-on: ${{ matrix.os }}
     steps:
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y glslc libboost-dev libfmt-dev libfreetype6-dev libpugixml-dev libsdl2-dev libvulkan-dev vulkan-validationlayers-dev zlib1g-dev
+      - name: Setup xmake
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: latest
+          actions-cache-folder: '.xmake-cache'
+          actions-cache-key: 'ubuntu'
 
-      - name: Extract branch name
-        shell: bash
-        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
-        id: extract_branch
+      - name: Update xmake repository
+        run: xmake repo --update
 
-      - uses: actions/checkout@v3
+      - name: Checkout gf2
+        uses: actions/checkout@v3
         with:
           repository: GamedevFramework/gf2
           submodules: recursive
-          ref: ${{ steps.extract_branch.outputs.branch }}
 
-      - name: Configure gf
-        run: cmake -DCMAKE_UNITY_BUILD=ON -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} -S ${{ github.workspace }} -B ${{ github.workspace }}/build
+      - name: Configure xmake
+        run: xmake --config --mode=${{ matrix.mode }} --yes
 
-      - name: Build gf
-        run: cmake --build ${{ github.workspace }}/build --config ${{ env.BUILD_TYPE }} --parallel
+      - name: Build gf2
+        run: xmake --yes
 
-      - name: Run tests
-        working-directory: ${{ github.workspace }}/build
-        run: ctest -C ${{ env.BUILD_TYPE }} -T test --output-on-failure
+      - name: Test gf2
+        run: |
+          xmake run gf2_core_tests
+          xmake run gf2_network_tests
+          xmake run gf2_audio_tests
