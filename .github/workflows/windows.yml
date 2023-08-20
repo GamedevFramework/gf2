@@ -25,6 +25,9 @@ jobs:
           repository: GamedevFramework/gf2
           submodules: recursive
 
+      - name: Configure xmake environment
+        run: echo "XMAKE_GLOBALDIR=${{ runner.workspace }}/xmake" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
       - name: Setup xmake
         uses: xmake-io/github-action-setup-xmake@v1
         with:
@@ -32,7 +35,17 @@ jobs:
           actions-cache-folder: '.xmake-cache'
           actions-cache-key: 'windows'
 
-      - name: Update xmake repository
+      - name: Retrieve dependencies hash
+        id: deps_hash
+        run: echo "hash=$(xmake l utils.ci.packageskey)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+
+      - name: Retrieve cached dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.XMAKE_GLOBALDIR }}\.xmake\packages
+          key: windows-${{ matrix.mode }}-${{ steps.dep_hash.outputs.hash }}
+
+      - name: Install gf2 dependencies
         run: xmake repo --update
 
       - name: Configure xmake
