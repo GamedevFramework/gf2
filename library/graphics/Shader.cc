@@ -13,6 +13,7 @@
 #include <fmt/std.h>
 
 #include <gf2/Log.h>
+#include <gf2/Renderer.h>
 
 namespace gf {
 

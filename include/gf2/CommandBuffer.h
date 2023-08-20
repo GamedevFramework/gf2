@@ -20,13 +20,13 @@ namespace gf {
     void set_viewport(RectF viewport);
     void set_scissor(RectI scissor);
 
-    void bind_pipeline(Pipeline* pipeline);
-    void bind_vertex_buffer(Buffer* buffer, std::size_t offset = 0);
+    void bind_pipeline(const Pipeline* pipeline);
+    void bind_vertex_buffer(const Buffer* buffer, std::size_t offset = 0);
 
     void draw(std::size_t vertex_count);
 
   private:
-    friend class Renderer;
+    friend class BasicRenderer;
 
     CommandBuffer(VkCommandBuffer buffer)
     : m_command_buffer(buffer)

@@ -12,9 +12,11 @@
 #include "Vulkan.h"
 
 namespace gf {
+  class Renderer;
 
   class GF_GRAPHICS_API Pipeline {
   public:
+    Pipeline() = default;
     Pipeline(const Pipeline&) = delete;
     Pipeline(Pipeline&& other) noexcept;
     ~Pipeline();

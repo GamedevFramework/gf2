@@ -16,8 +16,8 @@ namespace gf {
     }
 
   private:
+    friend class BasicRenderer;
     friend class CommandBuffer;
-    friend class Renderer;
 
     RenderTarget(VkImageView image_view, VkExtent2D extent)
     : m_image_view(image_view)

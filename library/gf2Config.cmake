@@ -27,7 +27,6 @@ list(REMOVE_DUPLICATES GF2_COMPONENTS)
 macro (load_dependencies component)
   # For gf2::core
   if (${component} STREQUAL "core")
-    find_dependency(Threads)
     find_dependency(fmt)
     if (NOT BUILD_SHARED_LIBS)
       find_dependency(ZLIB)
@@ -36,11 +35,11 @@ macro (load_dependencies component)
 
   # For gf2::graphics
   elseif (${component} STREQUAL "graphics")
-    find_dependency(Threads)
+    find_dependency(Vulkan)
+    find_dependency(volk)
+    find_dependency(VulkanMemoryAllocator)
     if (NOT BUILD_SHARED_LIBS)
       find_dependency(SDL2)
-      find_dependency(Vulkan)
-      find_dependency(VulkanMemoryAllocator)
     endif()
 
   # For gf2::network

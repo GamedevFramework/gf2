@@ -9,11 +9,11 @@
 #include <type_traits>
 
 #include "GraphicsApi.h"
-#include "Renderer.h"
 #include "Span.h"
 #include "Vulkan.h"
 
 namespace gf {
+  class Renderer;
 
   enum class ShaderStage : std::underlying_type_t<VkShaderStageFlagBits> {
     Vertex = VK_SHADER_STAGE_VERTEX_BIT,
@@ -29,6 +29,7 @@ namespace gf {
   public:
     using Context = ShaderContext;
 
+    Shader() = default;
     Shader(const std::filesystem::path& filename, ShaderContext context);
     Shader(Span<const uint32_t> memory, ShaderContext context);
     Shader(const Shader&) = delete;

@@ -10,6 +10,7 @@
 #include "Color.h"
 #include "CommandBuffer.h"
 #include "GraphicsApi.h"
+#include "Pipeline.h"
 #include "RenderTarget.h"
 #include "Span.h"
 #include "Window.h"
@@ -17,15 +18,15 @@
 
 namespace gf {
 
-  class GF_GRAPHICS_API Renderer {
+  class GF_GRAPHICS_API BasicRenderer {
   public:
-    Renderer(Window& window);
-    Renderer(const Renderer&) = delete;
-    Renderer(Renderer&& other) noexcept;
-    ~Renderer();
+    BasicRenderer(Window* window);
+    BasicRenderer(const BasicRenderer&) = delete;
+    BasicRenderer(BasicRenderer&& other) noexcept;
+    ~BasicRenderer();
 
-    Renderer& operator=(const Renderer&) = delete;
-    Renderer& operator=(Renderer&& other) noexcept;
+    BasicRenderer& operator=(const BasicRenderer&) = delete;
+    BasicRenderer& operator=(BasicRenderer&& other) noexcept;
 
     std::optional<CommandBuffer> begin_command_buffer();
     void end_command_buffer(CommandBuffer buffer);
@@ -101,8 +102,23 @@ namespace gf {
     };
 
     std::vector<RenderSynchronizationObjects> m_render_synchronization;
-
   };
+
+  class GF_GRAPHICS_API Renderer : public BasicRenderer {
+  public:
+    Renderer(Window* window);
+
+    const Pipeline* simple_pipeline()
+    {
+      return &m_simple_pipeline;
+    }
+
+  private:
+    void build_default_pipelines();
+
+    Pipeline m_simple_pipeline;
+  };
+
 
 }
 

@@ -25,6 +25,7 @@ namespace gf {
 
   class GF_GRAPHICS_API Buffer {
   public:
+    Buffer() = default;
     Buffer(const Buffer&) = delete;
     Buffer(Buffer&& other) noexcept;
     ~Buffer();
@@ -33,7 +34,7 @@ namespace gf {
     Buffer& operator=(Buffer&& other) noexcept;
 
   private:
-    friend class Renderer;
+    friend class BasicRenderer;
     friend class CommandBuffer;
 
     Buffer(VmaAllocator allocator, VkBuffer buffer, VmaAllocation allocation, BufferType type, BufferUsage usage)

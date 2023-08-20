@@ -4,6 +4,7 @@ set_version("0.1.0")
 add_requires("boost")
 add_requires("libsdl", "freetype", "zlib")
 add_requires("fmt", { system = false, configs = { header_only = true }})
+add_requires("glslang", { configs = { binaryonly = true }})
 add_requires("miniaudio 0.11.17")
 add_requires("stb", { system = false })
 add_requires("vk-bootstrap")
@@ -14,6 +15,7 @@ add_requires("vulkan-memory-allocator")
 
 add_rules("mode.asan", "mode.tsan", "mode.ubsan", "mode.coverage", "mode.debug", "mode.releasedbg", "mode.release")
 
+set_policy("build.warning", true)
 set_warnings("allextra")
 set_languages("cxx17")
 
@@ -39,7 +41,10 @@ target("gf2graphics0")
     add_files("library/graphics/*.cc")
     add_includedirs("include", { public = true })
     add_packages("libsdl", "volk", "vulkan-headers", "vulkan-memory-allocator", { public = true })
-    add_packages("vk-bootstrap", "vulkan-validationlayers")
+    add_packages("vk-bootstrap", "vulkan-validationlayers", "glslang")
+--     add_rules("utils.glsl2spv", { outputdir = "$(buildir)/shaders", bin2c = true })
+--     add_files("library/graphics/shaders/*.vert", "library/graphics/shaders/*.frag")
+    add_includedirs("library/graphics/shaders")
     add_deps("gf2core0")
 
 target("gf2network0")
@@ -76,9 +81,10 @@ target("gf2_core_tests")
     if is_plat("linux") then
         add_syslinks("pthread")
     end
+    set_configdir("$(buildir)/config/core_tests")
     set_configvar("GF_TEST_ASSETS_DIRECTORY", "$(projectdir)/tests/assets")
     add_configfiles("tests/config.h.in", {pattern = "@(.-)@"})
-    add_includedirs("$(buildir)")
+    add_includedirs("$(buildir)/config/core_tests")
 
 target("gf2_network_tests")
     set_kind("binary")
@@ -103,6 +109,7 @@ target("gf2_audio_tests")
     if is_plat("linux") then
         add_syslinks("pthread")
     end
+    set_configdir("$(buildir)/config/audio_tests")
     set_configvar("GF_TEST_ASSETS_DIRECTORY", "$(projectdir)/tests/assets")
     add_configfiles("tests/config.h.in", {pattern = "@(.-)@"})
-    add_includedirs("$(buildir)")
+    add_includedirs("$(buildir)/config/audio_tests")

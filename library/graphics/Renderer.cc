@@ -10,7 +10,9 @@
 #include <utility>
 
 #include <SDL2/SDL_vulkan.h>
+
 #include <gf2/Log.h>
+#include <gf2/Vertex.h>
 
 #include <VkBootstrap.h>
 
@@ -48,8 +50,8 @@ namespace gf {
 
   }
 
-  Renderer::Renderer(Window& window)
-  : m_window(window.m_window)
+  BasicRenderer::BasicRenderer(Window* window)
+  : m_window(window->m_window)
   {
     construct_device();
     construct_allocator();
@@ -58,7 +60,7 @@ namespace gf {
     construct_synchronization();
   }
 
-  Renderer::Renderer(Renderer&& other) noexcept
+  BasicRenderer::BasicRenderer(BasicRenderer&& other) noexcept
   : m_window(std::exchange(other.m_window, nullptr))
   // device
   , m_instance(std::exchange(other.m_instance, VK_NULL_HANDLE))
@@ -92,7 +94,7 @@ namespace gf {
     other.m_render_synchronization.clear();
   }
 
-  Renderer::~Renderer()
+  BasicRenderer::~BasicRenderer()
   {
     vkDeviceWaitIdle(m_device);
     destroy_synchronization();
@@ -102,7 +104,7 @@ namespace gf {
     destroy_device();
   }
 
-  Renderer& Renderer::operator=(Renderer&& other) noexcept
+  BasicRenderer& BasicRenderer::operator=(BasicRenderer&& other) noexcept
   {
     std::swap(m_window, other.m_window);
     // device
@@ -140,7 +142,7 @@ namespace gf {
 
   }
 
-  std::optional<CommandBuffer> Renderer::begin_command_buffer()
+  std::optional<CommandBuffer> BasicRenderer::begin_command_buffer()
   {
     const RenderSynchronizationObjects& sync = m_render_synchronization[m_current_frame];
     const VkCommandBuffer& command_buffer = m_command_buffers[m_current_frame];
@@ -185,7 +187,7 @@ namespace gf {
     return CommandBuffer(command_buffer);
   }
 
-  void Renderer::end_command_buffer(CommandBuffer buffer)
+  void BasicRenderer::end_command_buffer(CommandBuffer buffer)
   {
     const VkCommandBuffer& command_buffer = m_command_buffers[m_current_frame];
     assert(buffer.m_command_buffer == command_buffer);
@@ -246,12 +248,12 @@ namespace gf {
     m_current_frame = (m_current_frame + 1) % FramesInFlight;
   }
 
-  RenderTarget Renderer::current_render_target()
+  RenderTarget BasicRenderer::current_render_target()
   {
     return { m_swapchain_image_views[m_current_image], m_extent };
   }
 
-  Buffer Renderer::allocate_buffer(BufferType type, BufferUsage usage, std::size_t size, std::size_t member_size, const void* data)
+  Buffer BasicRenderer::allocate_buffer(BufferType type, BufferUsage usage, std::size_t size, std::size_t member_size, const void* data)
   {
     const std::size_t total_size = size * member_size;
 
@@ -300,18 +302,18 @@ namespace gf {
     return Buffer(m_allocator, buffer, allocation, type, usage);
   }
 
-  void Renderer::recreate_swapchain()
+  void BasicRenderer::recreate_swapchain()
   {
     vkDeviceWaitIdle(m_device);
     construct_swapchain();
   }
 
-  void Renderer::wait_idle()
+  void BasicRenderer::wait_idle()
   {
     vkDeviceWaitIdle(m_device);
   }
 
-  void Renderer::construct_device()
+  void BasicRenderer::construct_device()
   {
     // instance
 
@@ -432,7 +434,7 @@ namespace gf {
     vkGetDeviceQueue(m_device, m_present_queue_index, 0, &m_present_queue);
   }
 
-  void Renderer::destroy_device()
+  void BasicRenderer::destroy_device()
   {
     if (m_device != VK_NULL_HANDLE) {
       vkDestroyDevice(m_device, nullptr);
@@ -452,7 +454,7 @@ namespace gf {
     }
   }
 
-  void Renderer::construct_allocator()
+  void BasicRenderer::construct_allocator()
   {
     VmaVulkanFunctions functions = {};
     functions.vkGetInstanceProcAddr = vkGetInstanceProcAddr;
@@ -471,14 +473,14 @@ namespace gf {
     }
   }
 
-  void Renderer::destroy_allocator()
+  void BasicRenderer::destroy_allocator()
   {
     if (m_allocator != nullptr) {
       vmaDestroyAllocator(m_allocator);
     }
   }
 
-  void Renderer::construct_swapchain()
+  void BasicRenderer::construct_swapchain()
   {
     int width = 0;
     int height = 0;
@@ -537,7 +539,7 @@ namespace gf {
     // Log::info("New swapchain extent: ({}, {}).", m_extent.width, m_extent.height);
   }
 
-  void Renderer::destroy_swapchain()
+  void BasicRenderer::destroy_swapchain()
   {
     for (VkImageView image_view : m_swapchain_image_views) {
       vkDestroyImageView(m_device, image_view, nullptr);
@@ -548,7 +550,7 @@ namespace gf {
     }
   }
 
-  void Renderer::construct_commands()
+  void BasicRenderer::construct_commands()
   {
     VkCommandPoolCreateInfo command_pool_info = {};
     command_pool_info.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
@@ -574,14 +576,14 @@ namespace gf {
     }
   }
 
-  void Renderer::destroy_commands()
+  void BasicRenderer::destroy_commands()
   {
     if (m_command_pool != VK_NULL_HANDLE) {
       vkDestroyCommandPool(m_device, m_command_pool, nullptr);
     }
   }
 
-  void Renderer::construct_synchronization()
+  void BasicRenderer::construct_synchronization()
   {
     m_render_synchronization.resize(FramesInFlight);
 
@@ -610,13 +612,43 @@ namespace gf {
     }
   }
 
-  void Renderer::destroy_synchronization()
+  void BasicRenderer::destroy_synchronization()
   {
     for (const RenderSynchronizationObjects& objects : m_render_synchronization) {
       vkDestroyFence(m_device, objects.render_fence, nullptr);
       vkDestroySemaphore(m_device, objects.render_semaphore, nullptr);
       vkDestroySemaphore(m_device, objects.present_semaphore, nullptr);
     }
+  }
+
+  namespace {
+
+    const uint32_t simple_vert_shader_code[] = {
+      #include "simple.vert.h"
+    };
+
+    const uint32_t simple_frag_shader_code[] = {
+      #include "simple.frag.h"
+    };
+
+  }
+
+  Renderer::Renderer(Window* window)
+  : BasicRenderer(window)
+  {
+    build_default_pipelines();
+  }
+
+  void Renderer::build_default_pipelines()
+  {
+    gf::Shader vertex_shader(gf::span(simple_vert_shader_code), { ShaderStage::Vertex, this });
+    gf::Shader fragment_shader(gf::span(simple_frag_shader_code), { ShaderStage::Fragment, this });
+
+    m_simple_pipeline = PipelineBuilder()
+      .add_shader(&vertex_shader)
+      .add_shader(&fragment_shader)
+      .set_vertex_input(SimpleVertex::compute_input())
+      .build(this);
   }
 
 }

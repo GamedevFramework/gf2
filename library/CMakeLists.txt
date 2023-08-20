@@ -144,6 +144,8 @@ add_library(gf2graphics0
   graphics/RenderTarget.cc
   graphics/Shader.cc
   graphics/Touch.cc
+  graphics/Vertex.cc
+  graphics/VertexInput.cc
   graphics/Vulkan.cc
   graphics/Window.cc
 )
@@ -186,6 +188,14 @@ else()
       vk-bootstrap::vk-bootstrap
   )
 endif()
+
+
+target_include_directories(gf2graphics0
+  PRIVATE
+    "graphics/shaders"
+)
+
+# add_subdirectory(graphics/shaders)
 
 # gf2::network
 

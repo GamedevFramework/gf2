@@ -67,13 +67,13 @@ namespace gf {
     vkCmdSetScissor(m_command_buffer, 0, 1, &device_scissor);
   }
 
-  void CommandBuffer::bind_pipeline(Pipeline* pipeline)
+  void CommandBuffer::bind_pipeline(const Pipeline* pipeline)
   {
     assert(pipeline);
     vkCmdBindPipeline(m_command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->m_pipeline);
   }
 
-  void CommandBuffer::bind_vertex_buffer(Buffer* buffer, std::size_t offset)
+  void CommandBuffer::bind_vertex_buffer(const Buffer* buffer, std::size_t offset)
   {
     assert(buffer);
     VkDeviceSize device_offset = static_cast<VkDeviceSize>(offset);

@@ -11,6 +11,7 @@
 #include <vector>
 
 #include <gf2/Log.h>
+#include <gf2/Renderer.h>
 
 namespace gf {
   /*
