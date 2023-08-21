@@ -46,15 +46,15 @@ else()
 endif()
 
 add_subdirectory(library)
-add_subdirectory(examples)
-add_subdirectory(bin)
-
 add_subdirectory(docs/snippets)
 
 if(BUILD_TESTING)
   enable_testing()
   add_subdirectory(tests)
 endif()
+
+add_subdirectory(bin)
+add_subdirectory(examples)
 
 install(
   DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/gf2"
