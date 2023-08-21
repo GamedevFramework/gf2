@@ -66,6 +66,7 @@ endfunction()
 add_library(gf2core0
   core/AnyGrid.cc
   core/Array2D.cc
+  core/BinaryHeap.cc
   core/Bitmap.cc
   core/Circ.cc
   core/Clock.cc

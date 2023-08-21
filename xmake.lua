@@ -1,7 +1,6 @@
 set_project("gf")
 set_version("0.1.0")
 
-add_requires("boost")
 add_requires("libsdl", "freetype", "zlib")
 add_requires("fmt", { system = false, configs = { header_only = true }})
 add_requires("glslang", { configs = { binaryonly = true }})
@@ -31,7 +30,7 @@ target("gf2core0")
     add_defines("ZLIB_CONST")
     add_files("library/core/*.cc")
     add_includedirs("include", { public = true })
-    add_packages("boost", "freetype", "stb")
+    add_packages("freetype", "stb")
     add_packages("fmt", "zlib", { public = true })
 
 target("gf2graphics0")

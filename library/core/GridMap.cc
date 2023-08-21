@@ -5,7 +5,9 @@
 #include <gf2/GridMap.h>
 // clang-format on
 
-#include <boost/heap/binomial_heap.hpp>
+#include <algorithm>
+
+#include <gf2/BinaryHeap.h>
 
 namespace gf {
   using namespace operators;
@@ -142,7 +144,7 @@ namespace gf {
       return lhs.distance > rhs.distance;
     }
 
-    using DijkstraHeap = boost::heap::binomial_heap<DijkstraHeapData>;
+    using DijkstraHeap = BinaryHeap<DijkstraHeapData>;
 
     struct DijkstraResultData {
       float distance = 0.0f;
@@ -207,8 +209,8 @@ namespace gf {
             result.distance = updated_distance;
             result.previous = data.position;
 
-            assert((*result.handle).position == position);
-            (*result.handle).distance = updated_distance;
+            assert(heap(result.handle).position == position);
+            heap(result.handle).distance = updated_distance;
             heap.increase(result.handle);
           }
         }
