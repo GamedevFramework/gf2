@@ -8,7 +8,19 @@
 
 namespace gf {
 
-  template<typename T, typename Comparator = std::less<T>>
+  namespace details {
+
+    template<typename T>
+    struct less {
+      constexpr bool operator()(const T& lhs, const T& rhs) const
+      {
+        return lhs < rhs;
+      }
+    };
+
+  }
+
+  template<typename T, typename Comparator = details::less<T>>
   class BinaryHeap {
   public:
     using value_compare = Comparator;
