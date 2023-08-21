@@ -78,33 +78,33 @@ namespace gf {
         m_variant);
   }
 
-  RectF AnyGrid::compute_cell_bounds(Vec2I coordinates) const
+  RectF AnyGrid::compute_cell_bounds(Vec2I position) const
   {
     return std::visit([=](auto&& grid) {
       using T = std::decay_t<decltype(grid)>;
       if constexpr (std::is_same_v<T, std::monostate>) {
         return RectF::from_size({ 0.0f, 0.0f });
       } else {
-        return grid.compute_cell_bounds(coordinates);
+        return grid.compute_cell_bounds(position);
       }
     },
         m_variant);
   }
 
-  Vec2I AnyGrid::compute_coordinates(Vec2F position) const
+  Vec2I AnyGrid::compute_position(Vec2F location) const
   {
     return std::visit([=](auto&& grid) {
       using T = std::decay_t<decltype(grid)>;
       if constexpr (std::is_same_v<T, std::monostate>) {
         return Vec2I(0, 0);
       } else {
-        return grid.compute_coordinates(position);
+        return grid.compute_position(location);
       }
     },
         m_variant);
   }
 
-  std::vector<Vec2F> AnyGrid::compute_contour(Vec2I coordinates) const
+  std::vector<Vec2F> AnyGrid::compute_contour(Vec2I position) const
   {
     return std::visit([=](auto&& grid) {
       using T = std::decay_t<decltype(grid)>;
@@ -112,13 +112,13 @@ namespace gf {
         std::vector<Vec2F> empty;
         return empty;
       } else {
-        return grid.compute_contour(coordinates);
+        return grid.compute_contour(position);
       }
     },
         m_variant);
   }
 
-  std::vector<Vec2I> AnyGrid::compute_neighbors(Vec2I coordinates, Flags<CellNeighborQuery> flags) const
+  std::vector<Vec2I> AnyGrid::compute_neighbors(Vec2I position, Flags<CellNeighborQuery> flags) const
   {
     return std::visit([=](auto&& grid) {
       using T = std::decay_t<decltype(grid)>;
@@ -126,20 +126,20 @@ namespace gf {
         std::vector<Vec2I> empty;
         return empty;
       } else {
-        return grid.compute_neighbors(coordinates, flags);
+        return grid.compute_neighbors(position, flags);
       }
     },
         m_variant);
   }
 
-  bool AnyGrid::are_diagonal_neighbors(Vec2I coordinates0, Vec2I coordinates1) const
+  bool AnyGrid::are_diagonal_neighbors(Vec2I position0, Vec2I position1) const
   {
     return std::visit([=](auto&& grid) {
       using T = std::decay_t<decltype(grid)>;
       if constexpr (std::is_same_v<T, std::monostate>) {
         return false;
       } else {
-        return grid.are_diagonal_neighbors(coordinates0, coordinates1);
+        return grid.are_diagonal_neighbors(position0, position1);
       }
     },
         m_variant);

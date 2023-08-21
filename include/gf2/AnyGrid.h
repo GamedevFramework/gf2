@@ -22,11 +22,11 @@ namespace gf {
 
     RectF compute_bounds() const;
     RectI compute_visible_area(RectF local) const;
-    RectF compute_cell_bounds(Vec2I coordinates) const;
-    Vec2I compute_coordinates(Vec2F position) const;
-    std::vector<Vec2F> compute_contour(Vec2I coordinates) const;
-    std::vector<Vec2I> compute_neighbors(Vec2I coordinates, Flags<CellNeighborQuery> flags = None) const;
-    bool are_diagonal_neighbors(Vec2I coordinates0, Vec2I coordinates1) const;
+    RectF compute_cell_bounds(Vec2I position) const;
+    Vec2I compute_position(Vec2F location) const;
+    std::vector<Vec2F> compute_contour(Vec2I position) const;
+    std::vector<Vec2I> compute_neighbors(Vec2I position, Flags<CellNeighborQuery> flags = None) const;
+    bool are_diagonal_neighbors(Vec2I position0, Vec2I position1) const;
 
   private:
     AnyGrid(OrthogonalGrid grid);
