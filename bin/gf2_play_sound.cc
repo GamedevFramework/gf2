@@ -4,7 +4,8 @@
 #include <gf2/AudioManager.h>
 #include <gf2/Sound.h>
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[])
+{
   if (argc != 2) {
     std::cerr << "gf2_play_sound <sound>" << std::endl;
     return 1;

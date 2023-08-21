@@ -11,7 +11,7 @@ TEST(IdTest, FNV) {
   // test vectors from:
   // http://www.isthe.com/chongo/src/fnv/test_fnv.c
 
-  static constexpr FNVTestCase TestVectors[]{
+  static constexpr FNVTestCase TestVectors[] = {
     {      "", UINT64_C(0xcbf29ce484222325)},
     {     "a", UINT64_C(0xaf63dc4c8601ec8c)},
     {     "b", UINT64_C(0xaf63df4c8601f1a5)},

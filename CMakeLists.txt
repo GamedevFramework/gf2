@@ -46,6 +46,7 @@ else()
 endif()
 
 add_subdirectory(library)
+add_subdirectory(examples)
 add_subdirectory(bin)
 
 add_subdirectory(docs/snippets)

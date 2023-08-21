@@ -4,12 +4,13 @@
 
 #include <iostream>
 
-#include <gf2/FontManager.h>
 #include <gf2/Font.h>
+#include <gf2/FontManager.h>
 #include <gf2/Range.h>
 #include <gf2/StringUtils.h>
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[])
+{
   if (argc == 1 || argc > 4) {
     std::cerr << "gf2_glyph_display <font> [char] [size]" << std::endl;
     return 1;

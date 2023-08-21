@@ -20,7 +20,7 @@
 
 namespace gf {
 
-  constexpr std::size_t FramesInFlight = 2;
+  constexpr std::size_t FramesInFlight = 3;
 
   namespace {
     Log::Level to_log_level(VkDebugUtilsMessageSeverityFlagBitsEXT severity)
