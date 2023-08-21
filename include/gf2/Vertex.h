@@ -7,7 +7,6 @@
 #include "Vec2.h"
 #include "VertexInput.h"
 
-
 namespace gf {
 
   struct SimpleVertex {

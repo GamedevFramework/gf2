@@ -11,7 +11,6 @@
 #include <utility>
 
 #include <fmt/std.h>
-
 #include <gf2/Log.h>
 #include <gf2/Renderer.h>
 
@@ -29,7 +28,7 @@ namespace gf {
       }
 
       std::fseek(file, 0, SEEK_END);
-      const std::size_t size = static_cast<std::size_t>(std::ftell(file));
+      auto size = static_cast<std::size_t>(std::ftell(file));
       std::fseek(file, 0, SEEK_SET);
 
       assert(size % sizeof(uint32_t) == 0);

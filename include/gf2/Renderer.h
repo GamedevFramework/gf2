@@ -4,8 +4,6 @@
 #include <optional>
 #include <vector>
 
-#include <vk_mem_alloc.h>
-
 #include "Buffer.h"
 #include "Color.h"
 #include "CommandBuffer.h"
@@ -13,8 +11,10 @@
 #include "Pipeline.h"
 #include "RenderTarget.h"
 #include "Span.h"
-#include "Window.h"
 #include "Vulkan.h"
+#include "Window.h"
+
+#include <vk_mem_alloc.h>
 
 namespace gf {
 
@@ -36,7 +36,8 @@ namespace gf {
     Buffer allocate_buffer(BufferType type, BufferUsage usage, std::size_t size, std::size_t member_size, const void* data);
 
     template<typename T>
-    Buffer allocate_buffer(BufferType type, BufferUsage usage, const T* data, std::size_t size) {
+    Buffer allocate_buffer(BufferType type, BufferUsage usage, const T* data, std::size_t size)
+    {
       return allocate_buffer(type, usage, size, sizeof(T), static_cast<const void*>(data));
     }
 
@@ -118,7 +119,6 @@ namespace gf {
 
     Pipeline m_simple_pipeline;
   };
-
 
 }
 

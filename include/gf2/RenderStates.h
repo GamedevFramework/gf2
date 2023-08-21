@@ -9,6 +9,7 @@
 
 namespace gf {
 
+  // NOLINTNEXTLINE(performance-enum-size)
   enum class PrimitiveTopology : std::underlying_type_t<VkPrimitiveTopology> {
     PointList = VK_PRIMITIVE_TOPOLOGY_POINT_LIST,
     LineList = VK_PRIMITIVE_TOPOLOGY_LINE_LIST,
@@ -23,6 +24,7 @@ namespace gf {
     PatchList = VK_PRIMITIVE_TOPOLOGY_PATCH_LIST,
   };
 
+  // NOLINTNEXTLINE(performance-enum-size)
   enum class BlendFactor : std::underlying_type_t<VkBlendFactor> {
     Zero = VK_BLEND_FACTOR_ZERO,
     One = VK_BLEND_FACTOR_ONE,
@@ -34,6 +36,7 @@ namespace gf {
     OneMinusSrcAlpha = VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA,
     DstAlpha = VK_BLEND_FACTOR_DST_ALPHA,
     OneMinusDstAlpha = VK_BLEND_FACTOR_ONE_MINUS_DST_ALPHA,
+  // NOLINTNEXTLINE(readability-avoid-unconditional-preprocessor-if)
 #if 0
     ConstantColor = VK_BLEND_FACTOR_CONSTANT_COLOR,
     OneMinusConstantColor = VK_BLEND_FACTOR_ONE_MINUS_CONSTANT_COLOR,
@@ -43,6 +46,7 @@ namespace gf {
 #endif
   };
 
+  // NOLINTNEXTLINE(performance-enum-size)
   enum class BlendOp : std::underlying_type_t<VkBlendOp> {
     Add = VK_BLEND_OP_ADD,
     Substract = VK_BLEND_OP_SUBTRACT,

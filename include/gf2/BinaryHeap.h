@@ -4,6 +4,8 @@
 #define GF_BINARY_HEAP_H
 
 #include <cassert>
+
+#include <limits>
 #include <vector>
 
 namespace gf {
@@ -11,7 +13,7 @@ namespace gf {
   namespace details {
 
     template<typename T>
-    struct less {
+    struct LessComparator {
       constexpr bool operator()(const T& lhs, const T& rhs) const
       {
         return lhs < rhs;
@@ -20,7 +22,7 @@ namespace gf {
 
   }
 
-  template<typename T, typename Comparator = details::less<T>>
+  template<typename T, typename Comparator = details::LessComparator<T>>
   class BinaryHeap {
   public:
     using value_compare = Comparator;
@@ -29,11 +31,11 @@ namespace gf {
     using reference = T&;
     using const_reference = const T&;
 
-    struct handle {
-      size_type index;
+    struct Handle {
+      size_type index = std::numeric_limits<size_type>::max();
     };
 
-    using handle_type = handle;
+    using handle_type = Handle;
 
     BinaryHeap() = default;
     BinaryHeap(const Comparator& comparator)
@@ -41,14 +43,14 @@ namespace gf {
     {
     }
 
-    reference operator()(handle h)
+    reference operator()(Handle handle)
     {
-      return m_elements[h.index].element;
+      return m_elements[handle.index].element;
     }
 
-    const_reference operator()(handle h) const
+    const_reference operator()(Handle handle) const
     {
-      return m_elements[h.index].element;
+      return m_elements[handle.index].element;
     }
 
     const_reference top() const
@@ -68,7 +70,7 @@ namespace gf {
       return m_size;
     }
 
-    handle push(const value_type& value)
+    handle_type push(const value_type& value)
     {
       size_type index = 0;
 
@@ -89,7 +91,7 @@ namespace gf {
       return { index };
     }
 
-    handle push(value_type&& value)
+    handle_type push(value_type&& value)
     {
       size_type index = 0;
 
@@ -124,14 +126,14 @@ namespace gf {
       }
     }
 
-    void increase(handle h)
+    void increase(handle_type handle)
     {
-      siftup(m_elements[h.index].heap_index);
+      siftup(m_elements[handle.index].heap_index);
     }
 
-    void decrease(handle h)
+    void decrease(handle_type handle)
     {
-      siftdown(m_elements[h.index].heap_index);
+      siftdown(m_elements[handle.index].heap_index);
     }
 
     void clear()
@@ -238,10 +240,10 @@ namespace gf {
 
     size_type top_child(size_type index)
     {
-      size_type left_child = left_child_index(index);
+      const size_type left_child = left_child_index(index);
       assert(left_child < m_size);
 
-      size_type right_child = right_child_index(index);
+      const size_type right_child = right_child_index(index);
 
       if (right_child >= m_size || !compare(left_child, right_child)) {
         return left_child;
@@ -278,8 +280,6 @@ namespace gf {
     std::vector<ElementIndex> m_elements;
     std::vector<size_type> m_heap;
   };
-
-
 
 }
 

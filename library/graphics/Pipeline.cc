@@ -54,7 +54,7 @@ namespace gf {
 
     std::vector<VkPipelineShaderStageCreateInfo> shader_stages;
 
-    for (auto shader : m_shaders) {
+    for (auto* shader : m_shaders) {
       VkPipelineShaderStageCreateInfo shader_stage_info = {};
       shader_stage_info.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
       shader_stage_info.stage = static_cast<VkShaderStageFlagBits>(shader->m_stage);
@@ -107,7 +107,8 @@ namespace gf {
     vertex_input_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
     vertex_input_create_info.vertexBindingDescriptionCount = static_cast<uint32_t>(vertex_bindings.size());
     vertex_input_create_info.pVertexBindingDescriptions = vertex_bindings.data();
-    vertex_input_create_info.vertexAttributeDescriptionCount = static_cast<uint32_t>(vertex_attributes.size());;
+    vertex_input_create_info.vertexAttributeDescriptionCount = static_cast<uint32_t>(vertex_attributes.size());
+    ;
     vertex_input_create_info.pVertexAttributeDescriptions = vertex_attributes.data();
 
     // input assembly
@@ -170,9 +171,9 @@ namespace gf {
 
     VkPipelineLayoutCreateInfo pipeline_layout_create_info = {};
     pipeline_layout_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-    pipeline_layout_create_info.setLayoutCount = 0; // Optional
-    pipeline_layout_create_info.pSetLayouts = nullptr; // Optional
-    pipeline_layout_create_info.pushConstantRangeCount = 0; // Optional
+    pipeline_layout_create_info.setLayoutCount = 0;            // Optional
+    pipeline_layout_create_info.pSetLayouts = nullptr;         // Optional
+    pipeline_layout_create_info.pushConstantRangeCount = 0;    // Optional
     pipeline_layout_create_info.pPushConstantRanges = nullptr; // Optional
 
     VkPipelineLayout pipeline_layout = VK_NULL_HANDLE;
@@ -206,7 +207,7 @@ namespace gf {
       throw std::runtime_error("failed to create graphics pipeline!");
     }
 
-    return Pipeline(renderer->m_device, pipeline_layout, pipeline);
+    return { renderer->m_device, pipeline_layout, pipeline };
   }
 
 }

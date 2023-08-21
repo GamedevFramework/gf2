@@ -10,7 +10,6 @@
 #include <utility>
 
 #include <SDL2/SDL_vulkan.h>
-
 #include <gf2/Log.h>
 #include <gf2/Vertex.h>
 
@@ -299,7 +298,7 @@ namespace gf {
 
     // TODO: verify that the buffer is on device (if requested) and use staging buffer instead
 
-    return Buffer(m_allocator, buffer, allocation, type, usage);
+    return { m_allocator, buffer, allocation, type, usage };
   }
 
   void BasicRenderer::recreate_swapchain()
@@ -624,11 +623,11 @@ namespace gf {
   namespace {
 
     const uint32_t simple_vert_shader_code[] = {
-      #include "simple.vert.h"
+#include "simple.vert.h"
     };
 
     const uint32_t simple_frag_shader_code[] = {
-      #include "simple.frag.h"
+#include "simple.frag.h"
     };
 
   }
@@ -644,11 +643,13 @@ namespace gf {
     gf::Shader vertex_shader(gf::span(simple_vert_shader_code), { ShaderStage::Vertex, this });
     gf::Shader fragment_shader(gf::span(simple_frag_shader_code), { ShaderStage::Fragment, this });
 
-    m_simple_pipeline = PipelineBuilder()
-      .add_shader(&vertex_shader)
-      .add_shader(&fragment_shader)
-      .set_vertex_input(SimpleVertex::compute_input())
-      .build(this);
+    PipelineBuilder simple_pipeline_builder;
+
+    simple_pipeline_builder.set_vertex_input(SimpleVertex::compute_input())
+        .add_shader(&vertex_shader)
+        .add_shader(&fragment_shader);
+
+    m_simple_pipeline = simple_pipeline_builder.build(this);
   }
 
 }

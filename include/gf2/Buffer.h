@@ -3,19 +3,24 @@
 #ifndef GF_BUFFER_H
 #define GF_BUFFER_H
 
-#include <vk_mem_alloc.h>
+#include <cstdint>
+
+#include <type_traits>
 
 #include "GraphicsApi.h"
 #include "Vulkan.h"
 
+#include <vk_mem_alloc.h>
+
 namespace gf {
 
-  enum class BufferType {
+  enum class BufferType : uint8_t {
     Device,
     Host,
   };
 
-  enum class BufferUsage {
+  // NOLINTNEXTLINE(performance-enum-size)
+  enum class BufferUsage : std::underlying_type_t<VkBufferUsageFlagBits> {
     Upload = VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
     Storage = VK_BUFFER_USAGE_STORAGE_BUFFER_BIT,
     Uniform = VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
@@ -49,8 +54,8 @@ namespace gf {
     VmaAllocator m_allocator = nullptr; // non-owning
     VkBuffer m_buffer = VK_NULL_HANDLE;
     VmaAllocation m_allocation = nullptr;
-    BufferType m_type;
-    BufferUsage m_usage;
+    BufferType m_type = BufferType::Device;
+    BufferUsage m_usage = BufferUsage::Vertex;
   };
 
 }

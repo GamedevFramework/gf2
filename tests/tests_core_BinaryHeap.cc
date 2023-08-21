@@ -31,7 +31,6 @@ TEST(BinaryHeapTest, Top) {
   EXPECT_FALSE(max_heap.empty());
   EXPECT_EQ(max_heap.top(), 5);
 
-
   EXPECT_EQ(min_heap.size(), std::size(values));
   EXPECT_FALSE(min_heap.empty());
   EXPECT_EQ(min_heap.top(), 0);
@@ -39,7 +38,7 @@ TEST(BinaryHeapTest, Top) {
 
 TEST(BinaryHeapTest, Handle) {
   gf::BinaryHeap<int> heap;
-  std::vector<gf::BinaryHeap<int>::handle> handles;
+  std::vector<gf::BinaryHeap<int>::handle_type> handles;
 
   constexpr int values[] = { 4, 0, 1, 5, 2 };
 
@@ -58,7 +57,8 @@ TEST(BinaryHeapTest, Handle) {
 namespace {
 
   struct Node {
-    constexpr Node(int p) : priority(p) {}
+    constexpr Node(int p)
+    : priority(p) { }
 
     int priority;
   };
@@ -72,7 +72,7 @@ namespace {
 
 TEST(BinaryHeapTest, Increase) {
   gf::BinaryHeap<Node> heap;
-  std::vector<gf::BinaryHeap<Node>::handle> handles;
+  std::vector<gf::BinaryHeap<Node>::handle_type> handles;
 
   constexpr int values[] = { 4, 0, 1, 5, 2 };
 
@@ -98,7 +98,7 @@ TEST(BinaryHeapTest, Increase) {
 
 TEST(BinaryHeapTest, Decrease) {
   gf::BinaryHeap<Node> heap;
-  std::vector<gf::BinaryHeap<Node>::handle> handles;
+  std::vector<gf::BinaryHeap<Node>::handle_type> handles;
 
   constexpr int values[] = { 4, 0, 1, 5, 2 };
 

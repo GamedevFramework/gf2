@@ -250,6 +250,7 @@ namespace gf {
     return RectF::from_position_size(base, m_tile_size);
   }
 
+  // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
   Vec2I StaggeredGrid::compute_position_x_axis(bool is_diagonally_split, Vec2I q, Vec2F r) const
   {
     Vec2I position = q;
@@ -267,6 +268,7 @@ namespace gf {
     return position;
   }
 
+  // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
   Vec2I StaggeredGrid::compute_position_y_axis(bool is_diagonally_split, Vec2I q, Vec2F r) const
   {
     Vec2I position = q;
@@ -306,8 +308,10 @@ namespace gf {
     switch (m_axis) {
       case CellAxis::X:
         position = compute_position_x_axis(is_diagonally_split, position, { rx, ry });
+        break;
       case CellAxis::Y:
         position = compute_position_y_axis(is_diagonally_split, position, { rx, ry });
+        break;
     }
 
     return position;
@@ -524,7 +528,6 @@ namespace gf {
       return position;
     }
   }
-
 
   Vec2I HexagonalGrid::compute_position_x_axis(Vec2F location) const
   {

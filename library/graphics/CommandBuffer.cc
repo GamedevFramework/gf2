@@ -76,7 +76,7 @@ namespace gf {
   void CommandBuffer::bind_vertex_buffer(const Buffer* buffer, std::size_t offset)
   {
     assert(buffer);
-    VkDeviceSize device_offset = static_cast<VkDeviceSize>(offset);
+    auto device_offset = static_cast<VkDeviceSize>(offset);
     vkCmdBindVertexBuffers(m_command_buffer, 0, 1, &buffer->m_buffer, &device_offset);
   }
 

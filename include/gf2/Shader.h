@@ -15,6 +15,7 @@
 namespace gf {
   class Renderer;
 
+  // NOLINTNEXTLINE(performance-enum-size)
   enum class ShaderStage : std::underlying_type_t<VkShaderStageFlagBits> {
     Vertex = VK_SHADER_STAGE_VERTEX_BIT,
     Fragment = VK_SHADER_STAGE_FRAGMENT_BIT,
@@ -49,7 +50,7 @@ namespace gf {
 
     void load_code(Span<const uint32_t> code, VkDevice device);
 
-    ShaderStage m_stage;
+    ShaderStage m_stage = ShaderStage::Vertex;
     VkDevice m_device = VK_NULL_HANDLE; // non-owning
     VkShaderModule m_shader_module = VK_NULL_HANDLE;
   };

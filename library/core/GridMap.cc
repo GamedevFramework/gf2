@@ -146,103 +146,130 @@ namespace gf {
 
     using DijkstraHeap = BinaryHeap<DijkstraHeapData>;
 
-    struct DijkstraResultData {
-      float distance = 0.0f;
-      Vec2I previous = {};
-      DijkstraHeap::handle_type handle;
+    struct DijkstraCellData {
+      float distance = std::numeric_limits<float>::infinity();
+      Vec2I previous = vec(-1, -1);
+      DijkstraHeap::handle_type handle = {};
     };
 
-    std::vector<Vec2I> compute_dijkstra(const Array2D<Flags<CellProperty>>& cells, const AnyGrid& grid, Vec2I origin, Vec2I target, float diagonal_cost)
-    {
-      const Vec2I size = cells.size();
-      Flags<CellNeighborQuery> flags = CellNeighborQuery::Valid;
+    using DijkstraData = Array2D<DijkstraCellData>;
 
-      if (diagonal_cost > 0) {
-        flags |= CellNeighborQuery::Diagonal;
+    class DijkstraAlgorithm {
+    public:
+      DijkstraAlgorithm(const Array2D<Flags<CellProperty>>& cells, const AnyGrid& grid)
+      : m_cells(cells)
+      , m_grid(grid)
+      , m_data(cells.size())
+      {
       }
 
-      DijkstraResultData default_result;
-      default_result.distance = std::numeric_limits<float>::infinity();
-      default_result.previous = vec(-1, -1);
+      std::vector<Vec2I> operator()(Vec2I origin, Vec2I target, float diagonal_cost)
+      {
+        Flags<CellNeighborQuery> flags = CellNeighborQuery::Valid;
 
-      Array2D<DijkstraResultData> results(size, default_result);
-      results(origin).distance = 0.0f;
-
-      DijkstraHeap heap;
-
-      for (auto position : cells.position_range()) {
-        const auto cell = cells(position);
-
-        if (!cell.test(CellProperty::Walkable)) {
-          continue;
+        if (diagonal_cost > 0) {
+          flags |= CellNeighborQuery::Diagonal;
         }
 
-        DijkstraHeapData data = {};
-        data.position = position;
-        data.distance = results(position).distance;
+        initialize(origin);
 
-        results(position).handle = heap.push(data);
+        while (!m_heap.empty()) {
+          const DijkstraHeapData data = m_heap.top();
+          m_heap.pop();
+          compute_node(data, diagonal_cost, flags);
+        }
+
+        return compute_route(origin, target);
       }
 
-      while (!heap.empty()) {
-        const DijkstraHeapData data = heap.top();
-        heap.pop();
+    private:
+      void initialize(Vec2I origin)
+      {
+        m_data(origin).distance = 0.0f;
 
-        auto neighbors = grid.compute_neighbors(data.position, flags);
+        for (auto position : m_cells.position_range()) {
+          const auto cell = m_cells(position);
+
+          if (!cell.test(CellProperty::Walkable)) {
+            continue;
+          }
+
+          DijkstraHeapData data = {};
+          data.position = position;
+          data.distance = m_data(position).distance;
+
+          m_data(position).handle = m_heap.push(data);
+        }
+      }
+
+      void compute_node(DijkstraHeapData heap_data, float diagonal_cost, Flags<CellNeighborQuery> flags)
+      {
+        auto neighbors = m_grid.compute_neighbors(heap_data.position, flags);
 
         for (auto position : neighbors) {
-          assert(position != data.position);
+          assert(position != heap_data.position);
 
-          const Flags<CellProperty>& value = cells(position);
+          const Flags<CellProperty>& value = m_cells(position);
 
           if (!value.test(CellProperty::Walkable)) {
             continue;
           }
 
-          const bool is_diagonal = grid.are_diagonal_neighbors(data.position, position);
+          const bool is_diagonal = m_grid.are_diagonal_neighbors(heap_data.position, position);
           assert(diagonal_cost > 0 || !is_diagonal);
 
-          const float updated_distance = results(data.position).distance + (is_diagonal ? diagonal_cost : 1.0f);
+          const float updated_distance = m_data(heap_data.position).distance + (is_diagonal ? diagonal_cost : 1.0f);
 
-          if (updated_distance < results(position).distance) {
-            auto& result = results(position);
-            result.distance = updated_distance;
-            result.previous = data.position;
+          if (updated_distance < m_data(position).distance) {
+            auto& data = m_data(position);
+            data.distance = updated_distance;
+            data.previous = heap_data.position;
 
-            assert(heap(result.handle).position == position);
-            heap(result.handle).distance = updated_distance;
-            heap.increase(result.handle);
+            assert(m_heap(data.handle).position == position);
+            m_heap(data.handle).distance = updated_distance;
+            m_heap.increase(data.handle);
           }
         }
       }
 
-      std::vector<Vec2I> route;
-      Vec2I current = target;
+      std::vector<Vec2I> compute_route(Vec2I origin, Vec2I target) const
+      {
+        std::vector<Vec2I> route;
+        Vec2I current = target;
 
-      while (current != origin) {
-        if (current.x == -1 || current.y == -1) {
-          return {};
+        while (current != origin) {
+          if (current.x == -1 || current.y == -1) {
+            return {};
+          }
+
+          route.push_back(current);
+          current = m_data(current).previous;
         }
 
-        route.push_back(current);
-        current = results(current).previous;
+        route.push_back(origin);
+        std::reverse(route.begin(), route.end());
+
+        assert(!route.empty());
+        return route;
       }
 
-      route.push_back(origin);
-      std::reverse(route.begin(), route.end());
+      const Array2D<Flags<CellProperty>>& m_cells; // NOLINT
+      const AnyGrid& m_grid;                       // NOLINT
 
-      assert(!route.empty());
-
-      return route;
-    }
-
+      DijkstraData m_data;
+      DijkstraHeap m_heap;
+    };
   }
 
   std::vector<Vec2I> GridMap::compute_route(Vec2I origin, Vec2I target, float diagonal_cost, Route algorithm)
   {
     switch (algorithm) {
       case Route::Dijkstra:
-        return compute_dijkstra(m_cells, m_grid, origin, target, diagonal_cost);
+        {
+          DijkstraAlgorithm algorithm(m_cells, m_grid);
+          return algorithm(origin, target, diagonal_cost);
+        }
+
       default:
         break;
     }

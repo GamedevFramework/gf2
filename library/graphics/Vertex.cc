@@ -7,7 +7,8 @@
 
 namespace gf {
 
-  VertexInput SimpleVertex::compute_input() {
+  VertexInput SimpleVertex::compute_input()
+  {
     VertexInput input;
 
     input.bindings.push_back({ 0, sizeof(SimpleVertex) });
@@ -18,7 +19,8 @@ namespace gf {
     return input;
   }
 
-  VertexInput Vertex::compute_input() {
+  VertexInput Vertex::compute_input()
+  {
     VertexInput input;
 
     input.bindings.push_back({ 0, sizeof(Vertex) });

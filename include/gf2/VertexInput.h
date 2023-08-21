@@ -18,6 +18,7 @@ namespace gf {
     std::size_t stride = 0;
   };
 
+  // NOLINTNEXTLINE(performance-enum-size)
   enum class VertexAttributeFormat : std::underlying_type_t<VkFormat> {
     Vec2F = VK_FORMAT_R32G32_SFLOAT,
     Color = VK_FORMAT_R32G32B32A32_SFLOAT,
