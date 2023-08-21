@@ -261,9 +261,9 @@ namespace gf {
     };
   }
 
-  std::vector<Vec2I> GridMap::compute_route(Vec2I origin, Vec2I target, float diagonal_cost, Route algorithm)
+  std::vector<Vec2I> GridMap::compute_route(Vec2I origin, Vec2I target, float diagonal_cost, Route route)
   {
-    switch (algorithm) {
+    switch (route) {
       case Route::Dijkstra:
         {
           DijkstraAlgorithm algorithm(m_cells, m_grid);

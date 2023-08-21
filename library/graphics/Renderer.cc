@@ -186,7 +186,7 @@ namespace gf {
     return CommandBuffer(command_buffer);
   }
 
-  void BasicRenderer::end_command_buffer(CommandBuffer buffer)
+  void BasicRenderer::end_command_buffer([[maybe_unused]] CommandBuffer buffer)
   {
     const VkCommandBuffer& command_buffer = m_command_buffers[m_current_frame];
     assert(buffer.m_command_buffer == command_buffer);
@@ -444,7 +444,6 @@ namespace gf {
     }
 
     if (m_messenger != VK_NULL_HANDLE) {
-      auto vkDestroyDebugUtilsMessengerEXT = reinterpret_cast<PFN_vkDestroyDebugUtilsMessengerEXT>(vkGetInstanceProcAddr(m_instance, "vkDestroyDebugUtilsMessengerEXT")); // NOLINT
       vkDestroyDebugUtilsMessengerEXT(m_instance, m_messenger, nullptr);
     }
 

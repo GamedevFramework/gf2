@@ -35,7 +35,7 @@ namespace gf {
 
       std::vector<uint32_t> result(static_cast<std::size_t>(size) / sizeof(uint32_t));
 
-      const std::size_t size_read = std::fread(result.data(), sizeof(uint32_t), result.size(), file);
+      [[maybe_unused]] const std::size_t size_read = std::fread(result.data(), sizeof(uint32_t), result.size(), file);
       assert(size_read == size);
 
       std::fclose(file);

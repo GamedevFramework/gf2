@@ -21,7 +21,7 @@ set_languages("cxx17")
 if is_plat("windows") then
   add_cxflags("/wd4251") -- Disable warning: class needs to have dll-interface to be used by clients of class blah blah blah
   add_cxflags("/utf-8")
-  add_defines("NOMINMAX")
+  add_defines("NOMINMAX", "_CRT_SECURE_NO_WARNINGS")
 end
 
 target("gf2core0")

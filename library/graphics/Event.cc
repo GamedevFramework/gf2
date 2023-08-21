@@ -280,8 +280,6 @@ namespace gf {
         return *maybe_event;
       }
     }
-
-    assert(false);
   }
 
 } // namespace gf
