@@ -31,18 +31,18 @@ namespace gf {
     std::optional<CommandBuffer> begin_command_buffer();
     void end_command_buffer(CommandBuffer buffer);
 
-    RenderTarget current_render_target();
+    RenderTarget current_render_target() const;
 
-    Buffer allocate_buffer(BufferType type, BufferUsage usage, std::size_t size, std::size_t member_size, const void* data);
+    Buffer allocate_buffer(BufferType type, BufferUsage usage, std::size_t size, std::size_t member_size, const void* data) const;
 
     template<typename T>
-    Buffer allocate_buffer(BufferType type, BufferUsage usage, const T* data, std::size_t size)
+    Buffer allocate_buffer(BufferType type, BufferUsage usage, const T* data, std::size_t size) const
     {
       return allocate_buffer(type, usage, size, sizeof(T), static_cast<const void*>(data));
     }
 
     void recreate_swapchain();
-    void wait_idle();
+    void wait_idle() const;
 
   private:
     friend class Shader;
@@ -109,7 +109,7 @@ namespace gf {
   public:
     Renderer(Window* window);
 
-    const Pipeline* simple_pipeline()
+    const Pipeline* simple_pipeline() const
     {
       return &m_simple_pipeline;
     }

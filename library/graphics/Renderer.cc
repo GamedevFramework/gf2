@@ -247,12 +247,12 @@ namespace gf {
     m_current_frame = (m_current_frame + 1) % FramesInFlight;
   }
 
-  RenderTarget BasicRenderer::current_render_target()
+  RenderTarget BasicRenderer::current_render_target() const
   {
     return { m_swapchain_image_views[m_current_image], m_extent };
   }
 
-  Buffer BasicRenderer::allocate_buffer(BufferType type, BufferUsage usage, std::size_t size, std::size_t member_size, const void* data)
+  Buffer BasicRenderer::allocate_buffer(BufferType type, BufferUsage usage, std::size_t size, std::size_t member_size, const void* data) const
   {
     const std::size_t total_size = size * member_size;
 
@@ -307,7 +307,7 @@ namespace gf {
     construct_swapchain();
   }
 
-  void BasicRenderer::wait_idle()
+  void BasicRenderer::wait_idle() const
   {
     vkDeviceWaitIdle(m_device);
   }
