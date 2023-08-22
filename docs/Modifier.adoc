@@ -6,7 +6,7 @@ include::bits/attributes.adoc[]
 
 A modifier key is a special key that can be used in combinaison with another key.
 
-xref:graphics_devices.adoc[< Back to `graphics` Devices]
+xref:graphics_inputs.adoc[< Back to `graphics` Inputs]
 
 == Description
 

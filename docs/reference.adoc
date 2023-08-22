@@ -23,8 +23,9 @@ xref:index.adoc[< Back to main page]
 == `graphics`
 
 - Initialization (`GraphicsInitializer`)
-- xref:graphics_devices.adoc[Devices] (xref:Scancode.adoc[`Scancode`], xref:Keycode.adoc[`Keycode`], xref:MouseButton.adoc[`MouseButton`])
+- xref:graphics_inputs.adoc[Inputs] (xref:Scancode.adoc[`Scancode`], xref:Keycode.adoc[`Keycode`], xref:MouseButton.adoc[`MouseButton`])
 - xref:graphics_events.adoc[Events] (xref:Event.adoc[`Event`])
+- xref:graphics_low_level.adoc[Low-Level] (`Renderer`, `CommandBuffer`, `Buffer`, `Shader`)
 
 == `network`
 

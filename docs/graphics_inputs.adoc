@@ -1,9 +1,9 @@
-= `graphics` Devices
+= `graphics` Inputs
 v0.1
 include::bits/attributes.adoc[]
 :toc: right
 
-The devices component contains enumerations and types that describe input devices.
+The inputs component contains enumerations and types that describe input devices.
 
 - Keyboard: <<_scancode>>, <<_keycode>>, <<_modifier>> (<<_keyboard>>)
 - Mouse: <<_mouse_button>>

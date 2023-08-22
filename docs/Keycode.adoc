@@ -6,7 +6,7 @@ include::bits/attributes.adoc[]
 
 `Keycode` describes all the logical keyboard buttons.
 
-xref:graphics_devices.adoc[< Back to `graphics` Devices]
+xref:graphics_inputs.adoc[< Back to `graphics` Inputs]
 
 == Description
 

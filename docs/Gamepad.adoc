@@ -5,7 +5,7 @@ include::bits/attributes.adoc[]
 
 `Gamepad` provides useful functions for handling gamepads.
 
-xref:graphics_devices.adoc[< Back to `graphics` Devices]
+xref:graphics_inputs.adoc[< Back to `graphics` Inputs]
 
 == Description
 
