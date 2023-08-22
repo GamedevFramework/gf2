@@ -41,37 +41,37 @@ Compute the local bounds of the grid.
 
 [source]
 ----
-RectF compute_cell_bounds(Vec2I coordinates) const;
+RectF compute_cell_bounds(Vec2I position) const;
 ----
 
-Compute the cell bounds at the given `coordinates`.
+Compute the cell bounds at the given `position`.
 
 === `compute_contour`
 
 [source]
 ----
-std::vector<Vec2F> compute_contour(Vec2I coordinates) const;
+std::vector<Vec2F> compute_contour(Vec2I position) const;
 ----
 
 Compute a set of points that delimit the cell.
 
-=== `compute_coordinates`
+=== `compute_position`
 
 [source]
 ----
-Vec2I compute_coordinates(Vec2F position) const;
+Vec2I compute_position(Vec2F location) const;
 ----
 
-Compute the coordinates of a cell identified by its `position`.
+Compute the position of a cell identified by its `location`.
 
 === `compute_neighbors`
 
 [source]
 ----
-std::vector<Vec2I> compute_neighbors(Vec2I coordinates, Flags<CellNeighborQuery> flags = None) const;
+std::vector<Vec2I> compute_neighbors(Vec2I position, Flags<CellNeighborQuery> flags = None) const;
 ----
 
-Compute the coordinates of the neighbors of a cell at the given `coordinates`.
+Compute the position of the neighbors of a cell at the given `position`.
 
 === `compute_visible_area`
 
@@ -80,4 +80,4 @@ Compute the coordinates of the neighbors of a cell at the given `coordinates`.
 RectI compute_visible_area(RectF local) const;
 ----
 
-Compute the visible area in terms of coordinates.
+Compute the visible area in terms of position.
