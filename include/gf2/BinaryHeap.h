@@ -13,7 +13,7 @@ namespace gf {
   namespace details {
 
     template<typename T>
-    struct LessComparator {
+    struct LessCompare {
       constexpr bool operator()(const T& lhs, const T& rhs) const
       {
         return lhs < rhs;
@@ -22,10 +22,10 @@ namespace gf {
 
   }
 
-  template<typename T, typename Comparator = details::LessComparator<T>>
+  template<typename T, typename Compare = details::LessCompare<T>>
   class BinaryHeap {
   public:
-    using value_compare = Comparator;
+    using value_compare = Compare;
     using value_type = T;
     using size_type = std::size_t;
     using reference = T&;
@@ -38,17 +38,17 @@ namespace gf {
     using handle_type = Handle;
 
     BinaryHeap() = default;
-    BinaryHeap(const Comparator& comparator)
-    : m_comparator(comparator)
+    BinaryHeap(const value_compare& compare)
+    : m_compare(compare)
     {
     }
 
-    reference operator()(Handle handle)
+    reference operator()(handle_type handle)
     {
       return m_elements[handle.index].element;
     }
 
-    const_reference operator()(Handle handle) const
+    const_reference operator()(handle_type handle) const
     {
       return m_elements[handle.index].element;
     }
@@ -193,7 +193,7 @@ namespace gf {
 
     bool compare(size_type index0, size_type index1)
     {
-      return m_comparator(element(index0), element(index1));
+      return m_compare(element(index0), element(index1));
     }
 
     void swap(size_type index0, size_type index1)
@@ -275,7 +275,7 @@ namespace gf {
       return true;
     }
 
-    value_compare m_comparator;
+    value_compare m_compare;
     std::size_t m_size = 0;
     std::vector<ElementIndex> m_elements;
     std::vector<size_type> m_heap;

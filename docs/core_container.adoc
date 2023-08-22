@@ -21,6 +21,18 @@ class Array2D;
 
 An `Array2D<T>` represents a two-dimension array, organized in row-major order. xref:Array2D.adoc[*Read more...*]
 
+[#_binary_heap]
+=== `gf::BinaryHeap<T, Compare>`
+
+[source]
+----
+#include <gf2/BinaryHeap.h>
+template<typename T, typename Compare = std::less<T>>
+class BinaryHeap;
+----
+
+A `BinaryHeap<T, Compare>` is a mutable link:https://en.wikipedia.org/wiki/Binary_heap[binary heap]. xref:BinaryHeap.adoc[*Read more...*]
+
 [#_index_range_type]
 === `gf::IndexRange`
 

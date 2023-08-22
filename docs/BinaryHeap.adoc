@@ -1,0 +1,196 @@
+= `gf::BinaryHeap<T, Compare>` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+A `BinaryHeap<T, Compare>` is a mutable link:https://en.wikipedia.org/wiki/Binary_heap[binary heap].
+
+A link:https://en.wikipedia.org/wiki/Heap_(data_structure)[heap] is a data structure with special properties: the maximum value is always available at the top of the heap. It can be used to implement a link:https://en.wikipedia.org/wiki/Priority_queue[priority queue].
+
+xref:core_container.adoc[< Back to `core` Container]
+
+== Description
+
+[source]
+----
+#include <gf2/BinaryHeap.h>
+template<typename T, typename Compare = std::less<T>>
+class BinaryHeap;
+----
+
+`BinaryHeap<T, Compare>` is a max-heap. It is templated with the type of the data in the heap and with the compare operator. If you want a min-heap, you can change the operator to `std::greater<T>` for example. The compare operator must satisfy link:https://en.cppreference.com/w/cpp/named_req/Compare[`Compare`].
+
+`BinaryHeap<T, Compare>` has roughly the same API than link:https://en.cppreference.com/w/cpp/container/priority_queue[`std::priority_queue`].
+
+== Types
+
+=== `const_reference`
+
+[source]
+----
+using const_reference = const T&;
+----
+
+The type for a constant reference on a value.
+
+See also: <<_reference>>
+
+=== `handle_type`
+
+[source]
+----
+using handle_type = Handle;
+----
+
+The type of handles on elements in the heap.
+
+=== `reference`
+
+[source]
+----
+using reference = T&;
+----
+
+The type for a reference on a value.
+
+See also: <<_const_reference>>
+
+=== `size_type`
+
+[source]
+----
+using size_type = std::size_t;
+----
+
+The type of sizes and indices.
+
+=== `value_compare`
+
+[source]
+----
+using value_compare = Compare;
+----
+
+The type of the compare operator.
+
+=== `value_type`
+
+[source]
+----
+using value_type = T;
+----
+
+The type of the elements in the heap.
+
+== Member functions
+
+=== `BinaryHeap` constructors
+
+[source]
+----
+BinaryHeap() = default; <1>
+BinaryHeap(const value_compare& compare); <2>
+----
+
+<1> Default contructor.
+<2> Constructor with a `compare` operator.
+
+=== `operator()`
+
+[source]
+----
+reference operator()(handle_type handle);
+const_reference operator()(handle_type handle) const;
+----
+
+Get a reference to a value with a handle.
+
+=== `clear`
+
+[source]
+----
+void clear();
+----
+
+Remove all the elements from the heap.
+
+=== `decrease`
+
+[source]
+----
+void decrease(handle_type handle);
+----
+
+Modify the heap to take into account a change in the priority of the value (lower priority).
+
+See also: <<_increase>>
+
+=== `empty`
+
+[source]
+----
+bool empty() const;
+----
+
+Test if the heap is empty.
+
+See also: <<_size>>
+
+=== `increase`
+
+[source]
+----
+void increase(handle_type handle);
+----
+
+Modify the heap to take into account a change in the priority of the value (higher priority).
+
+See also: <<_decrease>>
+
+=== `pop`
+
+[source]
+----
+void pop();
+----
+
+Remove the top element from the heap.
+
+See also: <<_push>>, <<_top>>
+
+=== `push`
+
+[source]
+----
+handle_type push(const value_type& value);
+handle_type push(value_type&& value);
+----
+
+Put an element in the heap. Return a handle to the value in the heap that can be used later for modifying the element.
+
+See also: <<_pop>>
+
+=== `size`
+
+[source]
+----
+size_type size() const
+----
+
+Get the number of elements in the heap.
+
+See also: <<_empty>>
+
+=== `top`
+
+[source]
+----
+const_reference top() const;
+----
+
+Get a reference to the top element of the heap, i.e. the element with the maximum priority regarding compare operator.
+
+See also: <<_pop>>
+
+
+
