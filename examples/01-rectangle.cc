@@ -14,16 +14,24 @@ int main()
 
   gf::GraphicsInitializer graphics;
 
-  gf::Window window("00-triangle | gf2", WindowSize);
+  gf::Window window("01-rectangle | gf2", WindowSize);
   gf::Renderer renderer(&window);
 
   const gf::SimpleVertex vertices[] = {
-    {{ +0.0f, -0.5f },       gf::Rose},
+    {{ +0.5f, -0.5f },       gf::Rose},
     {{ +0.5f, +0.5f }, gf::Chartreuse},
-    {{ -0.5f, +0.5f },      gf::Azure},
+    {{ -0.5f, -0.5f },      gf::Azure},
+    {{ -0.5f, +0.5f },      gf::Yellow},
   };
 
-  gf::Buffer buffer = renderer.allocate_buffer(gf::BufferType::Device, gf::BufferUsage::Vertex, vertices, std::size(vertices));
+  gf::Buffer vertex_buffer = renderer.allocate_buffer(gf::BufferType::Device, gf::BufferUsage::Vertex, vertices, std::size(vertices));
+
+  const uint16_t indices[] = {
+    0, 1, 2, // first triangle
+    2, 1, 3, // second triangle
+  };
+
+  gf::Buffer index_buffer = renderer.allocate_buffer(gf::BufferType::Device, gf::BufferUsage::Index, indices, std::size(indices));
 
   while (!window.closed()) {
     while (auto event = gf::Event::poll()) {
@@ -55,9 +63,10 @@ int main()
       command_buffer.set_scissor(scissor);
 
       command_buffer.bind_pipeline(renderer.simple_pipeline());
-      command_buffer.bind_vertex_buffer(&buffer);
+      command_buffer.bind_vertex_buffer(&vertex_buffer);
+      command_buffer.bind_index_buffer(&index_buffer);
 
-      command_buffer.draw(std::size(vertices));
+      command_buffer.draw_indexed(std::size(indices));
 
       command_buffer.end_rendering();
       renderer.end_command_buffer(command_buffer);

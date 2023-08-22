@@ -80,9 +80,21 @@ namespace gf {
     vkCmdBindVertexBuffers(m_command_buffer, 0, 1, &buffer->m_buffer, &device_offset);
   }
 
+  void CommandBuffer::bind_index_buffer(const Buffer* buffer, std::size_t offset)
+  {
+    assert(buffer);
+    auto device_offset = static_cast<VkDeviceSize>(offset);
+    vkCmdBindIndexBuffer(m_command_buffer, buffer->m_buffer, device_offset, VK_INDEX_TYPE_UINT16);
+  }
+
   void CommandBuffer::draw(std::size_t vertex_count)
   {
     vkCmdDraw(m_command_buffer, static_cast<uint32_t>(vertex_count), 1, 0, 0);
+  }
+
+  void CommandBuffer::draw_indexed(std::size_t index_count)
+  {
+    vkCmdDrawIndexed(m_command_buffer, static_cast<uint32_t>(index_count), 1, 0, 0, 0);
   }
 
 }

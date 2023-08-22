@@ -8,4 +8,8 @@ if has_config("examples") then
         add_files("00-triangle.cc")
         add_deps("gf2graphics0")
 
+    target("01-rectangle")
+        set_kind("binary")
+        add_files("01-rectangle.cc")
+        add_deps("gf2graphics0")
 end

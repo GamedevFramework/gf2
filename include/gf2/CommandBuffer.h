@@ -22,8 +22,10 @@ namespace gf {
 
     void bind_pipeline(const Pipeline* pipeline);
     void bind_vertex_buffer(const Buffer* buffer, std::size_t offset = 0);
+    void bind_index_buffer(const Buffer* buffer, std::size_t offset = 0);
 
     void draw(std::size_t vertex_count);
+    void draw_indexed(std::size_t index_count);
 
   private:
     friend class BasicRenderer;
