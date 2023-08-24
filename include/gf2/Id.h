@@ -38,7 +38,7 @@ namespace gf {
 
   namespace literals {
 
-    constexpr Id operator"" _id(const char* str, std::size_t sz)
+    constexpr Id operator""_id(const char* str, std::size_t sz)
     {
       return gf::hash(str, sz);
     }

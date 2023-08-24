@@ -77,17 +77,17 @@ namespace gf {
 
   namespace literals {
 
-    constexpr Time operator"" _seconds(long double amount)
+    constexpr Time operator""_seconds(long double amount)
     {
       return gf::seconds(static_cast<float>(amount));
     }
 
-    constexpr Time operator"" _milliseconds(unsigned long long int amount)
+    constexpr Time operator""_milliseconds(unsigned long long int amount)
     {
       return gf::milliseconds(static_cast<int32_t>(amount));
     }
 
-    constexpr Time operator"" _microseconds(unsigned long long int amount)
+    constexpr Time operator""_microseconds(unsigned long long int amount)
     {
       return gf::microseconds(static_cast<int64_t>(amount));
     }
