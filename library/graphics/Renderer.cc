@@ -5,8 +5,6 @@
 #include <gf2/Renderer.h>
 // clang-format on
 
-#include <cstring>
-
 #include <utility>
 
 #include <SDL2/SDL_vulkan.h>
@@ -84,13 +82,19 @@ namespace gf {
   , m_current_frame(other.m_current_frame)
   , m_command_pool(std::exchange(other.m_command_pool, VK_NULL_HANDLE))
   , m_command_buffers(std::move(other.m_command_buffers))
+  , m_memops_command_pool(std::exchange(other.m_memops_command_pool, VK_NULL_HANDLE))
+  , m_memops_command_buffer(std::exchange(other.m_memops_command_buffer, VK_NULL_HANDLE))
   // synchronization
   , m_render_synchronization(std::move(other.m_render_synchronization))
+  , m_memops_fence(std::exchange(other.m_memops_fence, VK_NULL_HANDLE))
+  // memory
+  , m_staging_buffers(std::move(other.m_staging_buffers))
   {
     other.m_swapchain_images.clear();
     other.m_swapchain_image_views.clear();
     other.m_command_buffers.clear();
     other.m_render_synchronization.clear();
+    other.m_staging_buffers.clear();
   }
 
   BasicRenderer::~BasicRenderer()
@@ -129,8 +133,13 @@ namespace gf {
     std::swap(m_current_frame, other.m_current_frame);
     std::swap(m_command_pool, other.m_command_pool);
     std::swap(m_command_buffers, other.m_command_buffers);
+    std::swap(m_memops_command_pool, other.m_memops_command_pool);
+    std::swap(m_memops_command_buffer, other.m_memops_command_buffer);
     // synchronization
     std::swap(m_render_synchronization, other.m_render_synchronization);
+    std::swap(m_memops_fence, other.m_memops_fence);
+    // memory
+    std::swap(m_staging_buffers, other.m_staging_buffers);
 
     return *this;
   }
@@ -247,58 +256,60 @@ namespace gf {
     m_current_frame = (m_current_frame + 1) % FramesInFlight;
   }
 
+
+  void BasicRenderer::begin_memory_command_buffer()
+  {
+    vkResetCommandBuffer(m_memops_command_buffer, 0);
+
+    VkCommandBufferBeginInfo begin_info = {};
+    begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+    begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+
+    if (vkBeginCommandBuffer(m_memops_command_buffer, &begin_info) != VK_SUCCESS) {
+      Log::error("Failed to begin recording command buffer.");
+      throw std::runtime_error("Failed to begin recording command buffer.");
+    }
+  }
+
+  void BasicRenderer::end_memory_command_buffer()
+  {
+    if (vkEndCommandBuffer(m_memops_command_buffer) != VK_SUCCESS) {
+      Log::error("Failed to record command buffer.");
+      throw std::runtime_error("Failed to record command buffer.");
+    }
+
+    VkSubmitInfo submit_info = {};
+    submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+    submit_info.commandBufferCount = 1;
+    submit_info.pCommandBuffers = &m_memops_command_buffer;
+
+    if (vkQueueSubmit(m_graphics_queue, 1, &submit_info, m_memops_fence) != VK_SUCCESS) {
+      Log::error("Failed to submit draw command buffer.");
+      throw std::runtime_error("Failed to submit draw command buffer.");
+    }
+
+    vkWaitForFences(m_device, 1, &m_memops_fence, VK_TRUE, UINT64_MAX);
+
+    for (auto buffer : m_staging_buffers) {
+      vmaDestroyBuffer(m_allocator, buffer.m_buffer, buffer.m_allocation);
+    }
+
+    m_staging_buffers.clear();
+  }
+
+  MemoryCommandBuffer BasicRenderer::current_memory_command_buffer()
+  {
+    return { m_memops_command_buffer };
+  }
+
+  void BasicRenderer::defer_release_staging_buffer(StagingBufferReference buffer)
+  {
+    m_staging_buffers.push_back(buffer);
+  }
+
   RenderTarget BasicRenderer::current_render_target() const
   {
     return { m_swapchain_image_views[m_current_image], m_extent };
-  }
-
-  Buffer BasicRenderer::allocate_buffer(BufferType type, BufferUsage usage, std::size_t size, std::size_t member_size, const void* data) const
-  {
-    const std::size_t total_size = size * member_size;
-
-    VkBufferCreateInfo buffer_info = {};
-    buffer_info.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-    buffer_info.size = static_cast<VkDeviceSize>(total_size);
-    buffer_info.usage = static_cast<VkBufferUsageFlagBits>(usage);
-
-    if (type == BufferType::Device) {
-      buffer_info.usage |= VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
-    }
-
-    VmaAllocationCreateInfo allocation_info = {};
-
-    switch (type) {
-      case BufferType::Device:
-        allocation_info.flags = VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT | VMA_ALLOCATION_CREATE_HOST_ACCESS_ALLOW_TRANSFER_INSTEAD_BIT;
-        allocation_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
-        break;
-      case BufferType::Host:
-        allocation_info.flags = VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT;
-        allocation_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_HOST;
-        break;
-    }
-
-    VkBuffer buffer = VK_NULL_HANDLE;
-    VmaAllocation allocation = nullptr;
-
-    if (vmaCreateBuffer(m_allocator, &buffer_info, &allocation_info, &buffer, &allocation, nullptr) != VK_SUCCESS) {
-      Log::error("Failed to allocate buffer.");
-      throw std::runtime_error("Failed to allocate buffer.");
-    }
-
-    void* memory = nullptr;
-
-    if (vmaMapMemory(m_allocator, allocation, &memory) != VK_SUCCESS) {
-      Log::error("Failed to map memory.");
-      throw std::runtime_error("Failed to map memory.");
-    }
-
-    std::memcpy(memory, data, total_size);
-    vmaUnmapMemory(m_allocator, allocation);
-
-    // TODO: verify that the buffer is on device (if requested) and use staging buffer instead
-
-    return { m_allocator, buffer, allocation, type, usage };
   }
 
   void BasicRenderer::recreate_swapchain()
@@ -572,10 +583,29 @@ namespace gf {
       Log::error("Failed to allocate command buffers.");
       throw std::runtime_error("Failed to allocate command buffers.");
     }
+
+    // ---
+
+    if (vkCreateCommandPool(m_device, &command_pool_info, nullptr, &m_memops_command_pool) != VK_SUCCESS) {
+      Log::error("Failed to create command pool.");
+      throw std::runtime_error("Failed to create command pool.");
+    }
+
+    allocate_info.commandPool = m_memops_command_pool;
+    allocate_info.commandBufferCount = 1;
+
+    if (vkAllocateCommandBuffers(m_device, &allocate_info, &m_memops_command_buffer) != VK_SUCCESS) {
+      Log::error("Failed to allocate command buffer.");
+      throw std::runtime_error("Failed to allocate command buffer.");
+    }
   }
 
   void BasicRenderer::destroy_commands()
   {
+    if (m_memops_command_pool != VK_NULL_HANDLE) {
+      vkDestroyCommandPool(m_device, m_memops_command_pool, nullptr);
+    }
+
     if (m_command_pool != VK_NULL_HANDLE) {
       vkDestroyCommandPool(m_device, m_command_pool, nullptr);
     }
@@ -608,10 +638,20 @@ namespace gf {
         throw std::runtime_error("Failed to create render fence.");
       }
     }
+
+    VkFenceCreateInfo transfer_fence_info = {};
+    transfer_fence_info.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+
+    if (vkCreateFence(m_device, &transfer_fence_info, nullptr, &m_memops_fence) != VK_SUCCESS) {
+      Log::error("Failed to create memops fence.");
+      throw std::runtime_error("Failed to create memops fence.");
+    }
   }
 
   void BasicRenderer::destroy_synchronization()
   {
+    vkDestroyFence(m_device, m_memops_fence, nullptr);
+
     for (const RenderSynchronizationObjects& objects : m_render_synchronization) {
       vkDestroyFence(m_device, objects.render_fence, nullptr);
       vkDestroySemaphore(m_device, objects.render_semaphore, nullptr);

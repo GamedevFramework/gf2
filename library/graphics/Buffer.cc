@@ -5,9 +5,32 @@
 #include <gf2/Buffer.h>
 // clang-format on
 
+#include <cstring>
+
+#include <stdexcept>
 #include <utility>
 
+#include <gf2/Log.h>
+#include <gf2/Renderer.h>
+
 namespace gf {
+
+  Buffer::Buffer(BufferType type, BufferUsage usage, std::size_t size, std::size_t member_size, const void* data, Renderer* renderer)
+  : m_allocator(renderer->m_allocator)
+  , m_type(type)
+  , m_usage(usage)
+  {
+    const std::size_t total_size = size * member_size;
+
+    switch (type) {
+      case BufferType::Host:
+        create_host_buffer(usage, total_size, data);
+        break;
+      case BufferType::Device:
+        create_device_buffer(usage, total_size, data, renderer);
+        break;
+    }
+  }
 
   Buffer::Buffer(Buffer&& other) noexcept
   : m_allocator(std::exchange(other.m_allocator, nullptr))
@@ -33,6 +56,92 @@ namespace gf {
     std::swap(m_type, other.m_type);
     std::swap(m_usage, other.m_usage);
     return *this;
+  }
+
+  void Buffer::create_host_buffer(BufferUsage usage, std::size_t total_size, const void* data)
+  {
+    VkBufferCreateInfo buffer_info = {};
+    buffer_info.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+    buffer_info.size = static_cast<VkDeviceSize>(total_size);
+    buffer_info.usage = static_cast<VkBufferUsageFlagBits>(usage);
+    buffer_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+    VmaAllocationCreateInfo allocation_info = {};
+    allocation_info.flags = VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT;
+    allocation_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_HOST;
+
+    if (vmaCreateBuffer(m_allocator, &buffer_info, &allocation_info, &m_buffer, &m_allocation, nullptr) != VK_SUCCESS) {
+      Log::error("Failed to allocate buffer.");
+      throw std::runtime_error("Failed to allocate buffer.");
+    }
+
+    void* memory = nullptr;
+
+    if (vmaMapMemory(m_allocator, m_allocation, &memory) != VK_SUCCESS) {
+      Log::error("Failed to map memory.");
+      throw std::runtime_error("Failed to map memory.");
+    }
+
+    std::memcpy(memory, data, total_size);
+    vmaUnmapMemory(m_allocator, m_allocation);
+  }
+
+  void Buffer::create_device_buffer(BufferUsage usage, std::size_t total_size, const void* data, Renderer* renderer)
+  {
+    // staging buffer
+
+    VkBufferCreateInfo staging_buffer_info = {};
+    staging_buffer_info.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+    staging_buffer_info.size = static_cast<VkDeviceSize>(total_size);
+    staging_buffer_info.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
+    staging_buffer_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+    VmaAllocationCreateInfo staging_allocation_info = {};
+    staging_allocation_info.flags = VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT;
+    staging_allocation_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_HOST;
+
+    VkBuffer staging_buffer = VK_NULL_HANDLE;
+    VmaAllocation staging_allocation = nullptr;
+
+    if (vmaCreateBuffer(m_allocator, &staging_buffer_info, &staging_allocation_info, &staging_buffer, &staging_allocation, nullptr) != VK_SUCCESS) {
+      Log::error("Failed to allocate buffer.");
+      throw std::runtime_error("Failed to allocate buffer.");
+    }
+
+    void* memory = nullptr;
+
+    if (vmaMapMemory(m_allocator, staging_allocation, &memory) != VK_SUCCESS) {
+      Log::error("Failed to map memory.");
+      throw std::runtime_error("Failed to map memory.");
+    }
+
+    std::memcpy(memory, data, total_size);
+    vmaUnmapMemory(m_allocator, staging_allocation);
+
+    // device buffer
+
+    VkBufferCreateInfo buffer_info = {};
+    buffer_info.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+    buffer_info.size = static_cast<VkDeviceSize>(total_size);
+    buffer_info.usage = static_cast<VkBufferUsageFlagBits>(usage) | VK_BUFFER_USAGE_TRANSFER_DST_BIT;
+    buffer_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+    VmaAllocationCreateInfo allocation_info = {};
+    allocation_info.flags = VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT;
+    allocation_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
+
+    if (vmaCreateBuffer(m_allocator, &buffer_info, &allocation_info, &m_buffer, &m_allocation, nullptr) != VK_SUCCESS) {
+      Log::error("Failed to allocate buffer.");
+      throw std::runtime_error("Failed to allocate buffer.");
+    }
+
+    auto command_buffer = renderer->current_memory_command_buffer();
+
+    command_buffer.copy_buffer_to_buffer({ staging_buffer }, { m_buffer }, total_size);
+
+    // destroy staging buffer
+
+    renderer->defer_release_staging_buffer({ staging_buffer, staging_allocation });
   }
 
 }

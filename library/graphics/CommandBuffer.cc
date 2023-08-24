@@ -97,4 +97,17 @@ namespace gf {
     vkCmdDrawIndexed(m_command_buffer, static_cast<uint32_t>(index_count), 1, 0, 0, 0);
   }
 
+  /*
+   * MemoryCommandBuffer
+   */
+
+  void MemoryCommandBuffer::copy_buffer_to_buffer(BufferReference source, BufferReference destination, std::size_t size)
+  {
+    VkBufferCopy copy = {};
+    copy.srcOffset = 0;
+    copy.dstOffset = 0;
+    copy.size = static_cast<VkDeviceSize>(size);
+    vkCmdCopyBuffer(m_command_buffer, source.m_buffer, destination.m_buffer, 1, &copy);
+  }
+
 }

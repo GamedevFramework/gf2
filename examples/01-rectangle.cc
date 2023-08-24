@@ -17,6 +17,8 @@ int main()
   gf::Window window("01-rectangle | gf2", WindowSize);
   gf::Renderer renderer(&window);
 
+  renderer.begin_memory_command_buffer();
+
   const gf::SimpleVertex vertices[] = {
     {{ +0.5f, -0.5f },       gf::Rose},
     {{ +0.5f, +0.5f }, gf::Chartreuse},
@@ -24,14 +26,16 @@ int main()
     {{ -0.5f, +0.5f },      gf::Yellow},
   };
 
-  gf::Buffer vertex_buffer = renderer.allocate_buffer(gf::BufferType::Device, gf::BufferUsage::Vertex, vertices, std::size(vertices));
+  gf::Buffer vertex_buffer(gf::BufferType::Device, gf::BufferUsage::Vertex, vertices, std::size(vertices), &renderer);
 
   const uint16_t indices[] = {
     0, 1, 2, // first triangle
     2, 1, 3, // second triangle
   };
 
-  gf::Buffer index_buffer = renderer.allocate_buffer(gf::BufferType::Device, gf::BufferUsage::Index, indices, std::size(indices));
+  gf::Buffer index_buffer(gf::BufferType::Device, gf::BufferUsage::Index, indices, std::size(indices), &renderer);
+
+  renderer.end_memory_command_buffer();
 
   while (!window.closed()) {
     while (auto event = gf::Event::poll()) {

@@ -17,13 +17,17 @@ int main()
   gf::Window window("00-triangle | gf2", WindowSize);
   gf::Renderer renderer(&window);
 
+  renderer.begin_memory_command_buffer();
+
   const gf::SimpleVertex vertices[] = {
     {{ +0.0f, -0.5f },       gf::Rose},
     {{ +0.5f, +0.5f }, gf::Chartreuse},
     {{ -0.5f, +0.5f },      gf::Azure},
   };
 
-  gf::Buffer buffer = renderer.allocate_buffer(gf::BufferType::Device, gf::BufferUsage::Vertex, vertices, std::size(vertices));
+  gf::Buffer buffer(gf::BufferType::Device, gf::BufferUsage::Vertex, vertices, std::size(vertices), &renderer);
+
+  renderer.end_memory_command_buffer();
 
   while (!window.closed()) {
     while (auto event = gf::Event::poll()) {

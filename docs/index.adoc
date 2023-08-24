@@ -4,6 +4,8 @@ include::bits/attributes.adoc[]
 
 *Gamedev Framework 2* (gf2) is a modern framework to build 2D games in C++17.
 
+gf2 is based on link:https://libsdl.org/[SDL3] and link:https://www.vulkan.org/[Vulkan 1.3] and provides high-level constructions to easily build games.
+
 image::logoex.png[Gamedev Framework 2]
 
 == User Documentation

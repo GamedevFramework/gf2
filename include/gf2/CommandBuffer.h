@@ -35,7 +35,57 @@ namespace gf {
     {
     }
 
-    VkCommandBuffer m_command_buffer;
+    VkCommandBuffer m_command_buffer = VK_NULL_HANDLE; // non-owning
+  };
+
+
+  class BufferReference {
+  public:
+
+  private:
+    friend class MemoryCommandBuffer;
+    friend class Buffer;
+    friend class Texture;
+
+    BufferReference(VkBuffer buffer)
+    : m_buffer(buffer)
+    {
+    }
+
+    VkBuffer m_buffer = VK_NULL_HANDLE;
+  };
+
+  class TextureReference {
+  public:
+
+  private:
+    friend class MemoryCommandBuffer;
+    friend class Texture;
+
+    TextureReference(VkImage image)
+    : m_image(image)
+    {
+    }
+
+    VkImage m_image = VK_NULL_HANDLE;
+  };
+
+
+  class GF_GRAPHICS_API MemoryCommandBuffer {
+  public:
+
+    void copy_buffer_to_buffer(BufferReference source, BufferReference destination, std::size_t size);
+
+  private:
+    friend class MemoryAllocator;
+    friend class BasicRenderer;
+
+    MemoryCommandBuffer(VkCommandBuffer buffer)
+    : m_command_buffer(buffer)
+    {
+    }
+
+    VkCommandBuffer m_command_buffer = VK_NULL_HANDLE; // non-owning
   };
 
 }

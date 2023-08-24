@@ -31,22 +31,21 @@ namespace gf {
     std::optional<CommandBuffer> begin_command_buffer();
     void end_command_buffer(CommandBuffer buffer);
 
+    void begin_memory_command_buffer();
+    void end_memory_command_buffer();
+    MemoryCommandBuffer current_memory_command_buffer();
+    void defer_release_staging_buffer(StagingBufferReference buffer);
+
     RenderTarget current_render_target() const;
-
-    Buffer allocate_buffer(BufferType type, BufferUsage usage, std::size_t size, std::size_t member_size, const void* data) const;
-
-    template<typename T>
-    Buffer allocate_buffer(BufferType type, BufferUsage usage, const T* data, std::size_t size) const
-    {
-      return allocate_buffer(type, usage, size, sizeof(T), static_cast<const void*>(data));
-    }
 
     void recreate_swapchain();
     void wait_idle() const;
 
   private:
-    friend class Shader;
+    friend class Buffer;
     friend class PipelineBuilder;
+    friend class Shader;
+    friend class Texture;
 
     void construct_device();
     void destroy_device();
@@ -94,6 +93,9 @@ namespace gf {
     VkCommandPool m_command_pool = VK_NULL_HANDLE;
     std::vector<VkCommandBuffer> m_command_buffers;
 
+    VkCommandPool m_memops_command_pool = VK_NULL_HANDLE;
+    VkCommandBuffer m_memops_command_buffer = VK_NULL_HANDLE;
+
     // synchronization stuff
 
     struct RenderSynchronizationObjects {
@@ -103,6 +105,12 @@ namespace gf {
     };
 
     std::vector<RenderSynchronizationObjects> m_render_synchronization;
+
+    VkFence m_memops_fence = VK_NULL_HANDLE;
+
+    // memory
+
+    std::vector<StagingBufferReference> m_staging_buffers;
   };
 
   class GF_GRAPHICS_API Renderer : public BasicRenderer {
