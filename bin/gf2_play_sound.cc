@@ -1,3 +1,7 @@
+// SPDX-License-Identifier: Zlib
+// Copyright (c) 2023 Julien Bernard
+#include <cstdlib>
+
 #include <iostream>
 #include <string>
 
@@ -7,8 +11,8 @@
 int main(int argc, char* argv[])
 {
   if (argc != 2) {
-    std::cerr << "gf2_play_sound <sound>" << std::endl;
-    return 1;
+    std::cerr << "gf2_play_sound <sound>\n";
+    return EXIT_FAILURE;
   }
 
   gf::AudioManager audio_manager;
@@ -20,5 +24,5 @@ int main(int argc, char* argv[])
   std::getline(std::cin, s);
 
   sound.stop();
-  return 0;
+  return EXIT_SUCCESS;
 }

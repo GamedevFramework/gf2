@@ -22,6 +22,7 @@ namespace gf {
   : m_device(std::exchange(other.m_device, VK_NULL_HANDLE))
   , m_pipeline_layout(std::exchange(other.m_pipeline_layout, VK_NULL_HANDLE))
   , m_pipeline(std::exchange(other.m_pipeline, VK_NULL_HANDLE))
+  , m_descriptors_layout(std::exchange(other.m_descriptors_layout, VK_NULL_HANDLE))
   {
   }
 
@@ -34,6 +35,10 @@ namespace gf {
     if (m_pipeline_layout != VK_NULL_HANDLE) {
       vkDestroyPipelineLayout(m_device, m_pipeline_layout, nullptr);
     }
+
+    if (m_descriptors_layout != VK_NULL_HANDLE) {
+      vkDestroyDescriptorSetLayout(m_device, m_descriptors_layout, nullptr);
+    }
   }
 
   Pipeline& Pipeline::operator=(Pipeline&& other) noexcept
@@ -41,6 +46,7 @@ namespace gf {
     std::swap(m_device, other.m_device);
     std::swap(m_pipeline_layout, other.m_pipeline_layout);
     std::swap(m_pipeline, other.m_pipeline);
+    std::swap(m_descriptors_layout, other.m_descriptors_layout);
     return *this;
   }
 
@@ -167,14 +173,45 @@ namespace gf {
     color_blending_state_create_info.blendConstants[2] = 0.0f;
     color_blending_state_create_info.blendConstants[3] = 0.0f;
 
+    // descriptor set layout
+
+    VkDescriptorSetLayout ds_layout = VK_NULL_HANDLE;
+    bool has_ds_layout = false;
+
+    if (!m_descriptor_bindings.empty()) {
+      std::vector<VkDescriptorSetLayoutBinding> ds_layout_bindings;
+
+      for (auto descriptor_binding : m_descriptor_bindings) {
+        VkDescriptorSetLayoutBinding ds_layout_binding = {};
+        ds_layout_binding.binding = descriptor_binding.binding;
+        ds_layout_binding.descriptorType = static_cast<VkDescriptorType>(descriptor_binding.type);
+        ds_layout_binding.descriptorCount = 1;
+        ds_layout_binding.stageFlags = static_cast<VkShaderStageFlags>(descriptor_binding.stage);
+
+        ds_layout_bindings.push_back(ds_layout_binding);
+      }
+
+      VkDescriptorSetLayoutCreateInfo ds_layout_info = {};
+      ds_layout_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+      ds_layout_info.bindingCount = static_cast<uint32_t>(ds_layout_bindings.size());
+      ds_layout_info.pBindings = ds_layout_bindings.data();
+
+      if (vkCreateDescriptorSetLayout(renderer->m_device, &ds_layout_info, nullptr, &ds_layout) != VK_SUCCESS) {
+        Log::error("Failed to create descriptor set layout.");
+        throw std::runtime_error("Failed to create descriptor set layout.");
+      }
+
+      has_ds_layout = true;
+    }
+
     // pipeline layout
 
     VkPipelineLayoutCreateInfo pipeline_layout_create_info = {};
     pipeline_layout_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-    pipeline_layout_create_info.setLayoutCount = 0;            // Optional
-    pipeline_layout_create_info.pSetLayouts = nullptr;         // Optional
-    pipeline_layout_create_info.pushConstantRangeCount = 0;    // Optional
-    pipeline_layout_create_info.pPushConstantRanges = nullptr; // Optional
+    pipeline_layout_create_info.setLayoutCount = has_ds_layout ? 1 : 0;
+    pipeline_layout_create_info.pSetLayouts = has_ds_layout ? &ds_layout : nullptr;
+    pipeline_layout_create_info.pushConstantRangeCount = 0;
+    pipeline_layout_create_info.pPushConstantRanges = nullptr;
 
     VkPipelineLayout pipeline_layout = VK_NULL_HANDLE;
 
@@ -207,7 +244,7 @@ namespace gf {
       throw std::runtime_error("failed to create graphics pipeline!");
     }
 
-    return { renderer->m_device, pipeline_layout, pipeline };
+    return { renderer->m_device, pipeline_layout, pipeline, ds_layout };
   }
 
 }

@@ -64,8 +64,9 @@ namespace gf {
   public:
 
   private:
-    friend class Buffer;
     friend class BasicRenderer;
+    friend class Buffer;
+    friend class Texture;
 
     StagingBufferReference(VkBuffer buffer, VmaAllocation allocation)
     : m_buffer(buffer)

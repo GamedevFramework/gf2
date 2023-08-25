@@ -135,6 +135,7 @@ target_include_directories(gf2core0
 add_library(gf2graphics0
   graphics/Buffer.cc
   graphics/CommandBuffer.cc
+  graphics/Descriptor.cc
   graphics/Event.cc
   graphics/Gamepad.cc
   graphics/GraphicsInitializer.cc
@@ -144,6 +145,7 @@ add_library(gf2graphics0
   graphics/Renderer.cc
   graphics/RenderTarget.cc
   graphics/Shader.cc
+  graphics/Texture.cc
   graphics/Touch.cc
   graphics/Vertex.cc
   graphics/VertexInput.cc

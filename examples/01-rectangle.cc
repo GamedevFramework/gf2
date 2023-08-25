@@ -12,7 +12,7 @@ int main()
 {
   constexpr gf::Vec2I WindowSize = gf::vec(1600, 900);
 
-  gf::GraphicsInitializer graphics;
+  const gf::GraphicsInitializer graphics;
 
   gf::Window window("01-rectangle | gf2", WindowSize);
   gf::Renderer renderer(&window);
@@ -23,23 +23,25 @@ int main()
     {{ +0.5f, -0.5f },       gf::Rose},
     {{ +0.5f, +0.5f }, gf::Chartreuse},
     {{ -0.5f, -0.5f },      gf::Azure},
-    {{ -0.5f, +0.5f },      gf::Yellow},
+    {{ -0.5f, +0.5f },     gf::Yellow},
   };
 
-  gf::Buffer vertex_buffer(gf::BufferType::Device, gf::BufferUsage::Vertex, vertices, std::size(vertices), &renderer);
+  const gf::Buffer vertex_buffer(gf::BufferType::Device, gf::BufferUsage::Vertex, std::begin(vertices), std::size(vertices), &renderer);
 
+  // clang-format off
   const uint16_t indices[] = {
     0, 1, 2, // first triangle
     2, 1, 3, // second triangle
   };
+  // clang-format on
 
-  gf::Buffer index_buffer(gf::BufferType::Device, gf::BufferUsage::Index, indices, std::size(indices), &renderer);
+  const gf::Buffer index_buffer(gf::BufferType::Device, gf::BufferUsage::Index, std::begin(indices), std::size(indices), &renderer);
 
   renderer.end_memory_command_buffer();
 
   while (!window.closed()) {
     while (auto event = gf::Event::poll()) {
-      switch (event->type) {
+      switch (event->type) { // NOLINT(bugprone-unchecked-optional-access)
         case gf::EventType::Quit:
           window.close();
           break;

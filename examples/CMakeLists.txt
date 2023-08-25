@@ -1,3 +1,6 @@
+set(GF_EXAMPLE_ASSETS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/assets")
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h @ONLY)
+
 # 00-triangle
 
 add_executable(00-triangle
@@ -18,4 +21,20 @@ add_executable(01-rectangle
 target_link_libraries(01-rectangle
   PRIVATE
     gf2graphics0
+)
+
+# 02-texture
+
+add_executable(02-texture
+  02-texture.cc
+)
+
+target_link_libraries(02-texture
+  PRIVATE
+    gf2graphics0
+)
+
+target_include_directories(02-texture
+  PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
 )

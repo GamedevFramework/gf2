@@ -5,6 +5,7 @@
 
 #include <type_traits>
 
+#include "Descriptor.h"
 #include "GraphicsApi.h"
 #include "RenderStates.h"
 #include "Shader.h"
@@ -27,17 +28,20 @@ namespace gf {
   private:
     friend class PipelineBuilder;
     friend class CommandBuffer;
+    friend class BasicRenderer;
 
-    Pipeline(VkDevice device, VkPipelineLayout pipeline_layout, VkPipeline pipeline)
+    Pipeline(VkDevice device, VkPipelineLayout pipeline_layout, VkPipeline pipeline, VkDescriptorSetLayout descriptors_layout)
     : m_device(device)
     , m_pipeline_layout(pipeline_layout)
     , m_pipeline(pipeline)
+    , m_descriptors_layout(descriptors_layout)
     {
     }
 
     VkDevice m_device = VK_NULL_HANDLE; // non-owning
     VkPipelineLayout m_pipeline_layout = VK_NULL_HANDLE;
     VkPipeline m_pipeline = VK_NULL_HANDLE;
+    VkDescriptorSetLayout m_descriptors_layout = VK_NULL_HANDLE;
   };
 
   class GF_GRAPHICS_API PipelineBuilder {
@@ -68,6 +72,12 @@ namespace gf {
       return *this;
     }
 
+    PipelineBuilder& add_descriptor_binding(DescriptorBinding descriptor_binding)
+    {
+      m_descriptor_bindings.push_back(descriptor_binding);
+      return *this;
+    }
+
     Pipeline build(Renderer* renderer);
 
   private:
@@ -77,6 +87,7 @@ namespace gf {
     Blend m_blend = AlphaBlending;
     VertexInput m_vertex_input;
     std::vector<Shader*> m_shaders;
+    std::vector<DescriptorBinding> m_descriptor_bindings;
   };
 
 }

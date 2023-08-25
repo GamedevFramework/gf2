@@ -7,6 +7,7 @@
 #include "Buffer.h"
 #include "Color.h"
 #include "CommandBuffer.h"
+#include "Descriptor.h"
 #include "GraphicsApi.h"
 #include "Pipeline.h"
 #include "RenderTarget.h"
@@ -36,6 +37,7 @@ namespace gf {
     MemoryCommandBuffer current_memory_command_buffer();
     void defer_release_staging_buffer(StagingBufferReference buffer);
 
+    Descriptor allocate_descriptor_for_pipeline(const Pipeline* pipeline) const;
     RenderTarget current_render_target() const;
 
     void recreate_swapchain();
@@ -57,6 +59,8 @@ namespace gf {
     void destroy_commands();
     void construct_synchronization();
     void destroy_synchronization();
+    void construct_descriptors();
+    void destroy_descriptors();
 
     SDL_Window* m_window = nullptr; // non-owning
 
@@ -108,9 +112,13 @@ namespace gf {
 
     VkFence m_memops_fence = VK_NULL_HANDLE;
 
-    // memory
+    // memory stuff
 
     std::vector<StagingBufferReference> m_staging_buffers;
+
+    // descriptor set stuff
+
+    std::vector<VkDescriptorPool> m_descriptor_pools;
   };
 
   class GF_GRAPHICS_API Renderer : public BasicRenderer {
@@ -122,10 +130,16 @@ namespace gf {
       return &m_simple_pipeline;
     }
 
+    const Pipeline* default_pipeline() const
+    {
+      return &m_default_pipeline;
+    }
+
   private:
     void build_default_pipelines();
 
     Pipeline m_simple_pipeline;
+    Pipeline m_default_pipeline;
   };
 
 }

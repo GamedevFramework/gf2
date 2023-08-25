@@ -6,20 +6,14 @@
 #include <cstdint>
 
 #include <filesystem>
-#include <type_traits>
 
 #include "GraphicsApi.h"
+#include "ShaderStage.h"
 #include "Span.h"
 #include "Vulkan.h"
 
 namespace gf {
   class Renderer;
-
-  // NOLINTNEXTLINE(performance-enum-size)
-  enum class ShaderStage : std::underlying_type_t<VkShaderStageFlagBits> {
-    Vertex = VK_SHADER_STAGE_VERTEX_BIT,
-    Fragment = VK_SHADER_STAGE_FRAGMENT_BIT,
-  };
 
   struct GF_GRAPHICS_API ShaderContext {
     ShaderStage stage;

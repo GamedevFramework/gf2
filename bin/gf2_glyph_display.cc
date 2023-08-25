@@ -1,8 +1,11 @@
+// SPDX-License-Identifier: Zlib
+// Copyright (c) 2023 Julien Bernard
 #include <cassert>
 #include <cstdlib>
 #include <cstring>
 
 #include <iostream>
+#include <string>
 
 #include <gf2/Font.h>
 #include <gf2/FontManager.h>
@@ -12,8 +15,8 @@
 int main(int argc, char* argv[])
 {
   if (argc == 1 || argc > 4) {
-    std::cerr << "gf2_glyph_display <font> [char] [size]" << std::endl;
-    return 1;
+    std::cerr << "gf2_glyph_display <font> [char] [size]\n";
+    return EXIT_FAILURE;
   }
 
   gf::FontManager font_manager;
@@ -42,20 +45,19 @@ int main(int argc, char* argv[])
   const auto glyph = font.create_glyph(c, character_size);
   const auto size = glyph.bitmap.size();
 
-  constexpr char Gray[] = " .:-=+*#%@";
-  const auto GrayLength = std::strlen(Gray);
+  constexpr std::string_view Gray = " .:-=+*#%@";
 
   for (auto position : gf::position_range(size)) {
     auto gray = glyph.bitmap(position);
-    std::size_t index = static_cast<std::size_t>(static_cast<double>(gray) / 256.0 * GrayLength);
+    const std::size_t index = gray * Gray.size() / 256;
 
-    assert(index < GrayLength);
-    std::cout << Gray[index];
+    assert(index < Gray.size());
+    std::cout << Gray[index]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
 
     if (position.x + 1 == size.w) {
       std::cout << '\n';
     }
   }
 
-  return 0;
+  return EXIT_SUCCESS;
 }

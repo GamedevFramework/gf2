@@ -61,7 +61,7 @@ namespace gf {
     bool visible(Vec2I position) const;
     bool explored(Vec2I position) const;
 
-    std::vector<Vec2I> compute_route(Vec2I origin, Vec2I target, float diagonal_cost = Sqrt2, Route algorithm = Route::AStar);
+    std::vector<Vec2I> compute_route(Vec2I origin, Vec2I target, float diagonal_cost = Sqrt2, Route route = Route::AStar);
 
   private:
     GridMap(Vec2I size, AnyGrid grid);

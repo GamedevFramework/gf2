@@ -10,16 +10,16 @@
 namespace gf {
 
   struct SimpleVertex {
-    Vec2F location;
-    Color color;
+    Vec2F location = { 0.0f, 0.0f };
+    Color color = White;
 
     static VertexInput compute_input();
   };
 
   struct Vertex {
-    Vec2F location;
-    Vec2F tex_coords;
-    Color color;
+    Vec2F location = { 0.0f, 0.0f };
+    Vec2F tex_coords = { 0.0f, 0.0f };
+    Color color = White;
 
     static VertexInput compute_input();
   };

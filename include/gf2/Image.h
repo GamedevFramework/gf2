@@ -40,6 +40,7 @@ namespace gf {
 
     Image sub_image(RectI area) const;
 
+    std::size_t raw_size() const;
     const uint8_t* raw_pixels() const;
 
   private:

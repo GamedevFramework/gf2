@@ -55,6 +55,7 @@ namespace gf {
     construct_swapchain();
     construct_commands();
     construct_synchronization();
+    construct_descriptors();
   }
 
   BasicRenderer::BasicRenderer(BasicRenderer&& other) noexcept
@@ -89,17 +90,21 @@ namespace gf {
   , m_memops_fence(std::exchange(other.m_memops_fence, VK_NULL_HANDLE))
   // memory
   , m_staging_buffers(std::move(other.m_staging_buffers))
+  // descriptors
+  , m_descriptor_pools(std::move(other.m_descriptor_pools))
   {
     other.m_swapchain_images.clear();
     other.m_swapchain_image_views.clear();
     other.m_command_buffers.clear();
     other.m_render_synchronization.clear();
     other.m_staging_buffers.clear();
+    other.m_descriptor_pools.clear();
   }
 
   BasicRenderer::~BasicRenderer()
   {
     vkDeviceWaitIdle(m_device);
+    destroy_descriptors();
     destroy_synchronization();
     destroy_commands();
     destroy_swapchain();
@@ -140,6 +145,8 @@ namespace gf {
     std::swap(m_memops_fence, other.m_memops_fence);
     // memory
     std::swap(m_staging_buffers, other.m_staging_buffers);
+    // descriptors
+    std::swap(m_descriptor_pools, other.m_descriptor_pools);
 
     return *this;
   }
@@ -156,6 +163,8 @@ namespace gf {
     const VkCommandBuffer& command_buffer = m_command_buffers[m_current_frame];
 
     vkWaitForFences(m_device, 1, &sync.render_fence, VK_TRUE, UINT64_MAX);
+
+    vkResetDescriptorPool(m_device, m_descriptor_pools[m_current_frame], 0);
 
     const VkResult result = vkAcquireNextImageKHR(m_device, m_swapchain, UINT64_MAX, sync.render_semaphore, VK_NULL_HANDLE, &m_current_image);
 
@@ -256,7 +265,6 @@ namespace gf {
     m_current_frame = (m_current_frame + 1) % FramesInFlight;
   }
 
-
   void BasicRenderer::begin_memory_command_buffer()
   {
     vkResetCommandBuffer(m_memops_command_buffer, 0);
@@ -305,6 +313,26 @@ namespace gf {
   void BasicRenderer::defer_release_staging_buffer(StagingBufferReference buffer)
   {
     m_staging_buffers.push_back(buffer);
+  }
+
+  Descriptor BasicRenderer::allocate_descriptor_for_pipeline(const Pipeline* pipeline) const
+  {
+    VkDescriptorPool descriptor_pool = m_descriptor_pools[m_current_frame];
+
+    VkDescriptorSetAllocateInfo descriptor_set_allocate_info = {};
+    descriptor_set_allocate_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+    descriptor_set_allocate_info.descriptorPool = descriptor_pool;
+    descriptor_set_allocate_info.descriptorSetCount = 1;
+    descriptor_set_allocate_info.pSetLayouts = &pipeline->m_descriptors_layout;
+
+    VkDescriptorSet descriptor_set = VK_NULL_HANDLE;
+
+    if (vkAllocateDescriptorSets(m_device, &descriptor_set_allocate_info, &descriptor_set) != VK_SUCCESS) {
+      Log::error("Failed to submit draw command buffer.");
+      throw std::runtime_error("Failed to allocate descriptor set.");
+    }
+
+    return { m_device, descriptor_set };
   }
 
   RenderTarget BasicRenderer::current_render_target() const
@@ -659,6 +687,35 @@ namespace gf {
     }
   }
 
+  void BasicRenderer::construct_descriptors()
+  {
+    m_descriptor_pools.resize(FramesInFlight);
+
+    VkDescriptorPoolSize pool_sizes[] = {
+      {VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 64},
+    };
+
+    VkDescriptorPoolCreateInfo descriptor_pool_info = {};
+    descriptor_pool_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+    descriptor_pool_info.poolSizeCount = static_cast<uint32_t>(std::size(pool_sizes));
+    descriptor_pool_info.pPoolSizes = std::begin(pool_sizes);
+    descriptor_pool_info.maxSets = 64;
+
+    for (std::size_t i = 0; i < FramesInFlight; ++i) {
+      if (vkCreateDescriptorPool(m_device, &descriptor_pool_info, nullptr, &m_descriptor_pools[i]) != VK_SUCCESS) {
+        Log::error("Failed to create descriptor pool.");
+        throw std::runtime_error("Failed to create descriptor pool.");
+      }
+    }
+  }
+
+  void BasicRenderer::destroy_descriptors()
+  {
+    for (VkDescriptorPool descriptor_pool : m_descriptor_pools) {
+      vkDestroyDescriptorPool(m_device, descriptor_pool, nullptr);
+    }
+  }
+
   namespace {
 
     const uint32_t simple_vert_shader_code[] = {
@@ -667,6 +724,14 @@ namespace gf {
 
     const uint32_t simple_frag_shader_code[] = {
 #include "simple.frag.h"
+    };
+
+    const uint32_t default_vert_shader_code[] = {
+#include "default.vert.h"
+    };
+
+    const uint32_t default_frag_shader_code[] = {
+#include "default.frag.h"
     };
 
   }
@@ -679,16 +744,32 @@ namespace gf {
 
   void Renderer::build_default_pipelines()
   {
-    gf::Shader vertex_shader(gf::span(simple_vert_shader_code), { ShaderStage::Vertex, this });
-    gf::Shader fragment_shader(gf::span(simple_frag_shader_code), { ShaderStage::Fragment, this });
+    // simple pipeline
+
+    gf::Shader simple_vertex_shader(gf::span(simple_vert_shader_code), { ShaderStage::Vertex, this });
+    gf::Shader simple_fragment_shader(gf::span(simple_frag_shader_code), { ShaderStage::Fragment, this });
 
     PipelineBuilder simple_pipeline_builder;
 
     simple_pipeline_builder.set_vertex_input(SimpleVertex::compute_input())
-        .add_shader(&vertex_shader)
-        .add_shader(&fragment_shader);
+        .add_shader(&simple_vertex_shader)
+        .add_shader(&simple_fragment_shader);
 
     m_simple_pipeline = simple_pipeline_builder.build(this);
+
+    // default pipeline
+
+    gf::Shader default_vertex_shader(gf::span(default_vert_shader_code), { ShaderStage::Vertex, this });
+    gf::Shader default_fragment_shader(gf::span(default_frag_shader_code), { ShaderStage::Fragment, this });
+
+    PipelineBuilder default_pipeline_builder;
+
+    default_pipeline_builder.set_vertex_input(Vertex::compute_input())
+        .add_shader(&default_vertex_shader)
+        .add_shader(&default_fragment_shader)
+        .add_descriptor_binding({ 0, DescriptorType::Sampler, ShaderStage::Fragment });
+
+    m_default_pipeline = default_pipeline_builder.build(this);
   }
 
 }

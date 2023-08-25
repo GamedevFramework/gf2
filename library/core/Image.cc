@@ -249,6 +249,11 @@ namespace gf {
     return image;
   }
 
+  std::size_t Image::raw_size() const
+  {
+    return static_cast<std::size_t>(m_size.w) * static_cast<std::size_t>(m_size.h) * 4;
+  }
+
   const uint8_t* Image::raw_pixels() const
   {
     if (m_pixels.empty()) {
