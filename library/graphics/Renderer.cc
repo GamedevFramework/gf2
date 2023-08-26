@@ -183,6 +183,7 @@ namespace gf {
 
     VkCommandBufferBeginInfo begin_info = {};
     begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+    begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
 
     if (vkBeginCommandBuffer(command_buffer, &begin_info) != VK_SUCCESS) {
       Log::error("Failed to begin recording command buffer.");
@@ -414,6 +415,9 @@ namespace gf {
     //
     // physical_device_selector.set_required_features_13(features_13);
 
+    // physical_device_selector.prefer_gpu_device_type(vkb::PreferredDeviceType::cpu)
+    //     .allow_any_gpu_device_type(false);
+
     auto maybe_physical_device = physical_device_selector.select();
 
     if (!maybe_physical_device) {
@@ -423,6 +427,8 @@ namespace gf {
 
     const vkb::PhysicalDevice physical_device = maybe_physical_device.value();
     m_physical_device = physical_device.physical_device;
+
+    Log::debug("Running on: {}", physical_device.properties.deviceName);
 
     // device
 
@@ -470,6 +476,8 @@ namespace gf {
 
     m_present_queue_index = maybe_present_queue_index.value();
     vkGetDeviceQueue(m_device, m_present_queue_index, 0, &m_present_queue);
+
+    Log::debug("Queue indices: graphics {}, present {}", m_graphics_queue_index, m_present_queue_index);
   }
 
   void BasicRenderer::destroy_device()
@@ -523,6 +531,11 @@ namespace gf {
     int height = 0;
     SDL_Vulkan_GetDrawableSize(m_window, &width, &height);
 
+    if (width == 0 || height == 0) {
+      // handle minimization
+      return;
+    }
+
     vkb::SwapchainBuilder swapchain_builder(m_physical_device, m_device, m_surface, m_graphics_queue_index, m_present_queue_index);
 
     swapchain_builder.set_old_swapchain(m_swapchain)
@@ -550,6 +563,9 @@ namespace gf {
     m_image_count = swapchain.image_count;
     m_format = swapchain.image_format;
     m_extent = swapchain.extent;
+
+    Log::debug("Swapchain image count: {}", m_image_count);
+    Log::debug("Swapchain extent: {}x{}", m_extent.width, m_extent.height);
 
     // images
 
