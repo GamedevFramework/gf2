@@ -4,6 +4,7 @@
 #define GF_STRING_UTILS_H
 
 #include <cassert>
+#include <cstdint>
 
 #include <string>
 #include <vector>
