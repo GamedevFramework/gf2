@@ -268,6 +268,7 @@ namespace gf {
 
   void BasicRenderer::begin_memory_command_buffer()
   {
+    vkResetFences(m_device, 1, &m_memops_fence);
     vkResetCommandBuffer(m_memops_command_buffer, 0);
 
     VkCommandBufferBeginInfo begin_info = {};
@@ -564,7 +565,14 @@ namespace gf {
     m_format = swapchain.image_format;
     m_extent = swapchain.extent;
 
-    Log::debug("Swapchain image count: {}", m_image_count);
+    VkSurfaceCapabilitiesKHR capabilities = {};
+
+    if (vkGetPhysicalDeviceSurfaceCapabilitiesKHR(m_physical_device, m_surface, &capabilities) != VK_SUCCESS) {
+      Log::error("Failed to get surface capabilities.");
+      throw std::runtime_error("Failed to get surface capabilities.");
+    }
+
+    Log::debug("Swapchain image count: {} (min requested: {}, min: {}, max: {})", m_image_count, swapchain.requested_min_image_count, capabilities.minImageCount, capabilities.maxImageCount);
     Log::debug("Swapchain extent: {}x{}", m_extent.width, m_extent.height);
 
     // images

@@ -6,6 +6,7 @@
 // clang-format on
 
 #include <algorithm>
+#include <array>
 #include <iterator>
 #include <utility>
 #include <vector>
@@ -72,7 +73,7 @@ namespace gf {
 
     // dynamic state
 
-    std::vector<VkDynamicState> dynamic_states = {
+    std::array<VkDynamicState, 2> dynamic_states = {
       VK_DYNAMIC_STATE_VIEWPORT,
       VK_DYNAMIC_STATE_SCISSOR
     };
@@ -112,10 +113,9 @@ namespace gf {
     VkPipelineVertexInputStateCreateInfo vertex_input_create_info = {};
     vertex_input_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
     vertex_input_create_info.vertexBindingDescriptionCount = static_cast<uint32_t>(vertex_bindings.size());
-    vertex_input_create_info.pVertexBindingDescriptions = vertex_bindings.data();
+    vertex_input_create_info.pVertexBindingDescriptions = vertex_bindings.empty() ? nullptr : vertex_bindings.data();
     vertex_input_create_info.vertexAttributeDescriptionCount = static_cast<uint32_t>(vertex_attributes.size());
-    ;
-    vertex_input_create_info.pVertexAttributeDescriptions = vertex_attributes.data();
+    vertex_input_create_info.pVertexAttributeDescriptions = vertex_attributes.empty() ? nullptr : vertex_attributes.data();
 
     // input assembly
 
@@ -139,8 +139,8 @@ namespace gf {
     rasterizer_state_create_info.rasterizerDiscardEnable = VK_FALSE;
     rasterizer_state_create_info.polygonMode = VK_POLYGON_MODE_FILL;
     rasterizer_state_create_info.lineWidth = 1.0f;
-    rasterizer_state_create_info.cullMode = VK_CULL_MODE_BACK_BIT;
-    rasterizer_state_create_info.frontFace = VK_FRONT_FACE_CLOCKWISE;
+    rasterizer_state_create_info.cullMode = VK_CULL_MODE_NONE;
+    rasterizer_state_create_info.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
     rasterizer_state_create_info.depthBiasEnable = VK_FALSE;
 
     // multisampling
@@ -149,6 +149,10 @@ namespace gf {
     multisampling_state_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
     multisampling_state_create_info.sampleShadingEnable = VK_FALSE;
     multisampling_state_create_info.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
+    multisampling_state_create_info.minSampleShading = 1.0f;
+    multisampling_state_create_info.pSampleMask = nullptr;
+    multisampling_state_create_info.alphaToCoverageEnable = VK_FALSE;
+    multisampling_state_create_info.alphaToOneEnable = VK_FALSE;
 
     // color blending
 
@@ -220,10 +224,21 @@ namespace gf {
       throw std::runtime_error("Failed to create pipeline layout.");
     }
 
+    // pipeline rendering
+
+    VkFormat color_attachement_format = renderer->m_format;
+
+    VkPipelineRenderingCreateInfo pipeline_rendering_create_info = {};
+    pipeline_rendering_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_RENDERING_CREATE_INFO;
+    pipeline_rendering_create_info.colorAttachmentCount = 1;
+    pipeline_rendering_create_info.pColorAttachmentFormats = &color_attachement_format;
+
     // pipeline
 
     VkGraphicsPipelineCreateInfo pipeline_create_info = {};
     pipeline_create_info.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
+    pipeline_create_info.pNext = &pipeline_rendering_create_info;
+
     pipeline_create_info.stageCount = static_cast<uint32_t>(shader_stages.size());
     pipeline_create_info.pStages = shader_stages.data();
 
@@ -241,7 +256,8 @@ namespace gf {
     VkPipeline pipeline = VK_NULL_HANDLE;
 
     if (vkCreateGraphicsPipelines(renderer->m_device, VK_NULL_HANDLE, 1, &pipeline_create_info, nullptr, &pipeline) != VK_SUCCESS) {
-      throw std::runtime_error("failed to create graphics pipeline!");
+      Log::error("Failed to create pipeline.");
+      throw std::runtime_error("Failed to create pipeline.");
     }
 
     return { renderer->m_device, pipeline_layout, pipeline, ds_layout };
