@@ -55,7 +55,4 @@ jobs:
         run: xmake --yes
 
       - name: Test gf2
-        run: |
-          xmake run gf2_core_tests
-          xmake run gf2_network_tests
-          xmake run gf2_audio_tests
+        run: xmake run --group=Tests
