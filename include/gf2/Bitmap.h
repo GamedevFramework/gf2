@@ -25,7 +25,9 @@ namespace gf {
     PositionRange position_range() const;
 
     uint8_t operator()(Vec2I position) const;
-    const uint8_t* raw_pixels() const;
+
+    std::size_t raw_size() const;
+    const uint8_t* raw_data() const;
 
   private:
     std::ptrdiff_t offset_from_position(Vec2I position) const;

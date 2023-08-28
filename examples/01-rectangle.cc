@@ -4,6 +4,7 @@
 
 #include <gf2/Event.h>
 #include <gf2/GraphicsInitializer.h>
+#include <gf2/Mat3.h>
 #include <gf2/Renderer.h>
 #include <gf2/Vertex.h>
 #include <gf2/Window.h>
@@ -39,6 +40,8 @@ int main()
 
   renderer.end_memory_command_buffer();
 
+  const gf::Mat3F identity = gf::Identity3F;
+
   while (!window.closed()) {
     while (auto event = gf::Event::poll()) {
       switch (event->type) { // NOLINT(bugprone-unchecked-optional-access)
@@ -68,7 +71,12 @@ int main()
       const gf::RectI scissor = gf::RectI::from_size(target.extent());
       command_buffer.set_scissor(scissor);
 
-      command_buffer.bind_pipeline(renderer.simple_pipeline());
+      const auto* pipeline = renderer.simple_pipeline();
+
+      command_buffer.bind_pipeline(pipeline);
+
+      command_buffer.push_constant(pipeline, gf::ShaderStage::Vertex, &identity);
+
       command_buffer.bind_vertex_buffer(&vertex_buffer);
       command_buffer.bind_index_buffer(&index_buffer);
 

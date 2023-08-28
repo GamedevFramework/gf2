@@ -179,43 +179,56 @@ namespace gf {
 
     // descriptor set layout
 
-    VkDescriptorSetLayout ds_layout = VK_NULL_HANDLE;
-    bool has_ds_layout = false;
+    VkDescriptorSetLayout descriptor_set_layout = VK_NULL_HANDLE;
+    bool has_descriptor_set_layout = false;
 
     if (!m_descriptor_bindings.empty()) {
-      std::vector<VkDescriptorSetLayoutBinding> ds_layout_bindings;
+      std::vector<VkDescriptorSetLayoutBinding> descriptor_set_layour_bindings;
 
       for (auto descriptor_binding : m_descriptor_bindings) {
-        VkDescriptorSetLayoutBinding ds_layout_binding = {};
-        ds_layout_binding.binding = descriptor_binding.binding;
-        ds_layout_binding.descriptorType = static_cast<VkDescriptorType>(descriptor_binding.type);
-        ds_layout_binding.descriptorCount = 1;
-        ds_layout_binding.stageFlags = static_cast<VkShaderStageFlags>(descriptor_binding.stage);
+        VkDescriptorSetLayoutBinding descriptor_set_layour_binding = {};
+        descriptor_set_layour_binding.binding = descriptor_binding.binding;
+        descriptor_set_layour_binding.descriptorType = static_cast<VkDescriptorType>(descriptor_binding.type);
+        descriptor_set_layour_binding.descriptorCount = 1;
+        descriptor_set_layour_binding.stageFlags = static_cast<VkShaderStageFlags>(descriptor_binding.stage);
 
-        ds_layout_bindings.push_back(ds_layout_binding);
+        descriptor_set_layour_bindings.push_back(descriptor_set_layour_binding);
       }
 
-      VkDescriptorSetLayoutCreateInfo ds_layout_info = {};
-      ds_layout_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-      ds_layout_info.bindingCount = static_cast<uint32_t>(ds_layout_bindings.size());
-      ds_layout_info.pBindings = ds_layout_bindings.data();
+      VkDescriptorSetLayoutCreateInfo descriptor_set_layout_info = {};
+      descriptor_set_layout_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+      descriptor_set_layout_info.bindingCount = static_cast<uint32_t>(descriptor_set_layour_bindings.size());
+      descriptor_set_layout_info.pBindings = descriptor_set_layour_bindings.data();
 
-      if (vkCreateDescriptorSetLayout(renderer->m_device, &ds_layout_info, nullptr, &ds_layout) != VK_SUCCESS) {
+      if (vkCreateDescriptorSetLayout(renderer->m_device, &descriptor_set_layout_info, nullptr, &descriptor_set_layout) != VK_SUCCESS) {
         Log::error("Failed to create descriptor set layout.");
         throw std::runtime_error("Failed to create descriptor set layout.");
       }
 
-      has_ds_layout = true;
+      has_descriptor_set_layout = true;
+    }
+
+    // push constant
+
+    VkPushConstantRange push_constant_range = {};
+    bool has_push_constant = false;
+
+    if (m_push_constant.size > 0) {
+      push_constant_range.stageFlags = static_cast<VkShaderStageFlags>(m_push_constant.stage);
+      push_constant_range.offset = 0;
+      push_constant_range.size = static_cast<uint32_t>(m_push_constant.size);
+
+      has_push_constant = true;
     }
 
     // pipeline layout
 
     VkPipelineLayoutCreateInfo pipeline_layout_create_info = {};
     pipeline_layout_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-    pipeline_layout_create_info.setLayoutCount = has_ds_layout ? 1 : 0;
-    pipeline_layout_create_info.pSetLayouts = has_ds_layout ? &ds_layout : nullptr;
-    pipeline_layout_create_info.pushConstantRangeCount = 0;
-    pipeline_layout_create_info.pPushConstantRanges = nullptr;
+    pipeline_layout_create_info.setLayoutCount = has_descriptor_set_layout ? 1 : 0;
+    pipeline_layout_create_info.pSetLayouts = has_descriptor_set_layout ? &descriptor_set_layout : nullptr;
+    pipeline_layout_create_info.pushConstantRangeCount = has_push_constant ? 1 : 0;
+    pipeline_layout_create_info.pPushConstantRanges = has_push_constant ? &push_constant_range : nullptr;
 
     VkPipelineLayout pipeline_layout = VK_NULL_HANDLE;
 
@@ -226,7 +239,7 @@ namespace gf {
 
     // pipeline rendering
 
-    VkFormat color_attachement_format = renderer->m_format;
+    const VkFormat color_attachement_format = renderer->m_format;
 
     VkPipelineRenderingCreateInfo pipeline_rendering_create_info = {};
     pipeline_rendering_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_RENDERING_CREATE_INFO;
@@ -260,7 +273,7 @@ namespace gf {
       throw std::runtime_error("Failed to create pipeline.");
     }
 
-    return { renderer->m_device, pipeline_layout, pipeline, ds_layout };
+    return { renderer->m_device, pipeline_layout, pipeline, descriptor_set_layout };
   }
 
 }

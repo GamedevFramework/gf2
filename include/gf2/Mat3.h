@@ -25,11 +25,6 @@ namespace gf {
       assert(0 <= col && col < 3);
       return m[row][col]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     }
-
-    const T* data() const
-    {
-      return &m[0][0];
-    }
   };
 
   template<typename T>
@@ -53,6 +48,10 @@ namespace gf {
   }
 
   using Mat3F = Mat3<float>;
+
+  inline constexpr Mat3F Identity3F = {
+    {{ 1.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }}
+  };
 
   GF_CORE_API Vec2F transform_point(const Mat3F& mat, Vec2F vec);
   GF_CORE_API Vec2F transform_vector(const Mat3F& mat, Vec2F vec);

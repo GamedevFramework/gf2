@@ -9,6 +9,8 @@
 
 #include <SDL2/SDL_vulkan.h>
 #include <gf2/Log.h>
+#include <gf2/Mat3.h>
+#include <gf2/ShaderData.h>
 #include <gf2/Vertex.h>
 
 #include <VkBootstrap.h>
@@ -776,6 +778,7 @@ namespace gf {
     PipelineBuilder simple_pipeline_builder;
 
     simple_pipeline_builder.set_vertex_input(SimpleVertex::compute_input())
+        .set_push_constant_parameters(ShaderStage::Vertex, sizeof(ShaderDataType<Mat3F>))
         .add_shader(&simple_vertex_shader)
         .add_shader(&simple_fragment_shader);
 
@@ -789,6 +792,7 @@ namespace gf {
     PipelineBuilder default_pipeline_builder;
 
     default_pipeline_builder.set_vertex_input(Vertex::compute_input())
+        .set_push_constant_parameters(ShaderStage::Vertex, sizeof(ShaderDataType<Mat3F>))
         .add_shader(&default_vertex_shader)
         .add_shader(&default_fragment_shader)
         .add_descriptor_binding({ 0, DescriptorType::Sampler, ShaderStage::Fragment });

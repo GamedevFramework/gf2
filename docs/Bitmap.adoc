@@ -44,14 +44,36 @@ uint8_t operator()(Vec2I position) const;
 
 Get the gray level at `position`.
 
-=== `raw_pixels`
+=== `position_range`
 
 [source]
 ----
-const uint8_t* raw_pixels() const;
+PositionRange position_range() const;
 ----
 
-Get the raw pixels of the bitmap.
+Get a position range to iterate on the valid positions in the bitmap.
+
+=== `raw_data`
+
+[source]
+----
+const uint8_t* raw_data() const;
+----
+
+Get the raw data of the bitmap.
+
+See also: <<_raw_size>>
+
+=== `raw_size`
+
+[source]
+----
+std::size_t raw_size() const;
+----
+
+Get the raw size of the bitmap.
+
+See also: <<_raw_data>>, <<_size>>
 
 === `size`
 
@@ -61,3 +83,5 @@ Vec2I size() const;
 ----
 
 Get the size of the bitmap.
+
+See also: <<_raw_size>>

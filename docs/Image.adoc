@@ -52,6 +52,15 @@ Get the color at `position`.
 
 See also: <<_put_pixel>>
 
+=== `position_range`
+
+[source]
+----
+PositionRange position_range() const;
+----
+
+Get a position range to iterate on the valid positions in the image.
+
 === `put_pixel`
 
 [source]
@@ -63,14 +72,27 @@ Change the color at `position`.
 
 See also: <<_operator_index>>
 
-=== `raw_pixels`
+=== `raw_data`
 
 [source]
 ----
-const uint8_t* raw_pixels() const;
+const uint8_t* raw_data() const;
 ----
 
-Get the raw pixels of the image.
+Get the raw data of the image.
+
+See also: <<_raw_size>>
+
+=== `raw_size`
+
+[source]
+----
+std::size_t raw_size() const;
+----
+
+Get the raw size of the image.
+
+See also: <<_raw_data>>, <<_size>>
 
 === `save_to_file`
 
@@ -89,6 +111,8 @@ Vec2I size() const;
 ----
 
 Get the size of the image.
+
+See also: <<_raw_size>>
 
 === `sub_image`
 

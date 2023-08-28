@@ -78,6 +78,13 @@ namespace gf {
       return *this;
     }
 
+    PipelineBuilder& set_push_constant_parameters(ShaderStage stage, std::size_t size)
+    {
+      m_push_constant.stage = stage;
+      m_push_constant.size = size;
+      return *this;
+    }
+
     Pipeline build(Renderer* renderer);
 
   private:
@@ -88,6 +95,10 @@ namespace gf {
     VertexInput m_vertex_input;
     std::vector<Shader*> m_shaders;
     std::vector<DescriptorBinding> m_descriptor_bindings;
+    struct {
+      ShaderStage stage = ShaderStage::Vertex;
+      std::size_t size = 0;
+    } m_push_constant;
   };
 
 }

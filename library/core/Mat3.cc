@@ -7,6 +7,8 @@
 
 namespace gf {
 
+  static_assert(sizeof(Mat3F) == 9 * sizeof(float), "Size mismatch");
+
   Vec2F transform_point(const Mat3F& mat, Vec2F vec)
   {
     Vec2F result;

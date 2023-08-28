@@ -17,7 +17,6 @@ if has_config("examples") then
         add_files("01-rectangle.cc")
         add_deps("gf2graphics0")
 
-
     target("02-texture")
         set_kind("binary")
         add_files("02-texture.cc")

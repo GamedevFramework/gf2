@@ -31,6 +31,8 @@ namespace gf {
   private:
     friend class Descriptor;
 
+    void upload_data(Vec2I image_size, std::size_t raw_size, const void* raw_data, VkFormat format, Renderer* renderer);
+
     VmaAllocator m_allocator = nullptr; // non-owning
     VkImage m_image = VK_NULL_HANDLE;
     VmaAllocation m_allocation = nullptr;

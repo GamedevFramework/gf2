@@ -4,6 +4,7 @@
 
 #include <gf2/Event.h>
 #include <gf2/GraphicsInitializer.h>
+#include <gf2/Mat3.h>
 #include <gf2/Renderer.h>
 #include <gf2/Texture.h>
 #include <gf2/Vertex.h>
@@ -47,6 +48,8 @@ int main()
 
   renderer.end_memory_command_buffer();
 
+  const gf::Mat3F identity = gf::Identity3F;
+
   while (!window.closed()) {
     while (auto event = gf::Event::poll()) {
       switch (event->type) { // NOLINT(bugprone-unchecked-optional-access)
@@ -83,6 +86,8 @@ int main()
       auto descriptor = renderer.allocate_descriptor_for_pipeline(pipeline);
       descriptor.write(0, texture);
       command_buffer.bind_descriptor(pipeline, descriptor);
+
+      command_buffer.push_constant(pipeline, gf::ShaderStage::Vertex, &identity);
 
       command_buffer.bind_vertex_buffer(&vertex_buffer);
       command_buffer.bind_index_buffer(&index_buffer);

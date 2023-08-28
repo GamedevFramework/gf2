@@ -69,7 +69,12 @@ namespace gf {
     return m_pixels[offset_from_position(position)];
   }
 
-  const uint8_t* Bitmap::raw_pixels() const
+  std::size_t Bitmap::raw_size() const
+  {
+    return static_cast<std::size_t>(m_size.w) * static_cast<std::size_t>(m_size.h);
+  }
+
+  const uint8_t* Bitmap::raw_data() const
   {
     if (m_pixels.empty()) {
       return nullptr;

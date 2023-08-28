@@ -82,6 +82,7 @@ add_library(gf2core0
   core/Log.cc
   core/Math.cc
   core/Mat3.cc
+  core/Mat4.cc
   core/Move.cc
   core/Orientation.cc
   core/Random.cc
@@ -145,6 +146,7 @@ add_library(gf2graphics0
   graphics/Renderer.cc
   graphics/RenderTarget.cc
   graphics/Shader.cc
+  graphics/ShaderData.cc
   graphics/Texture.cc
   graphics/Touch.cc
   graphics/Vertex.cc

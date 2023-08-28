@@ -254,7 +254,7 @@ namespace gf {
     return static_cast<std::size_t>(m_size.w) * static_cast<std::size_t>(m_size.h) * 4;
   }
 
-  const uint8_t* Image::raw_pixels() const
+  const uint8_t* Image::raw_data() const
   {
     if (m_pixels.empty()) {
       return nullptr;

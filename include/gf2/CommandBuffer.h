@@ -3,11 +3,14 @@
 
 #include <cstdint>
 
+#include <type_traits>
+
 #include "Color.h"
 #include "Descriptor.h"
 #include "GraphicsApi.h"
 #include "Rect.h"
 #include "RenderTarget.h"
+#include "ShaderData.h"
 #include "Vec2.h"
 #include "Vulkan.h"
 
@@ -29,6 +32,19 @@ namespace gf {
     void bind_index_buffer(const Buffer* buffer, std::size_t offset = 0) const;
 
     void bind_descriptor(const Pipeline* pipeline, Descriptor descriptor) const;
+
+    void push_constant(const Pipeline* pipeline, ShaderStage stage, std::size_t size, const void* data) const;
+
+    template<typename T>
+    void push_constant(const Pipeline* pipeline, ShaderStage stage, const T* data) const
+    {
+      if constexpr (std::is_same_v<T, ShaderDataType<T>>) {
+        push_constant(pipeline, stage, sizeof(T), data);
+      } else {
+        const ShaderDataType<T> shader_data(*data);
+        push_constant(pipeline, stage, sizeof(shader_data), &shader_data);
+      }
+    }
 
     void draw(std::size_t vertex_count) const;
     void draw_indexed(std::size_t index_count) const;
@@ -76,8 +92,9 @@ namespace gf {
   };
 
   enum class LayoutTransition : uint8_t {
-    UploadReady,
-    ShaderReady,
+    Undefined,
+    Upload,
+    Shader,
   };
 
   class GF_GRAPHICS_API MemoryCommandBuffer {
@@ -86,7 +103,7 @@ namespace gf {
     void copy_buffer_to_buffer(BufferReference source, BufferReference destination, std::size_t size);
     void copy_buffer_to_texture(BufferReference source, TextureReference destination, Vec2I size);
 
-    void texture_layout_transition(TextureReference texture, LayoutTransition transition);
+    void texture_layout_transition(TextureReference texture, LayoutTransition from, LayoutTransition to);
 
   private:
     friend class MemoryAllocator;
