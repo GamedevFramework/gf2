@@ -6,10 +6,11 @@
 #include "Mat3.h"
 #include "Rect.h"
 #include "Vec2.h"
+#include "CoreApi.h"
 
 namespace gf {
 
-  struct Transform {
+  struct GF_CORE_API Transform {
     constexpr Transform(Vec2F position = gf::vec(0.0f, 0.0f), Vec2F origin = gf::vec(0.0f, 0.0f), float rotation = 0.0f)
     : position(position)
     , origin(origin)
