@@ -23,4 +23,9 @@ if has_config("examples") then
         add_deps("gf2graphics0")
         add_includedirs("$(buildir)/config/examples")
 
+    target("03-camera")
+        set_kind("binary")
+        add_files("03-camera.cc")
+        add_deps("gf2graphics0")
+        add_includedirs("$(buildir)/config/examples")
 end
