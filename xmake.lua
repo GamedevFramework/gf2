@@ -17,6 +17,7 @@ add_rules("mode.asan", "mode.tsan", "mode.ubsan", "mode.coverage", "mode.debug",
 set_policy("build.warning", true)
 set_warnings("allextra")
 set_languages("cxx17")
+set_symbols("hidden")
 
 if is_plat("windows") then
   add_cxflags("/wd4251") -- Disable warning: class needs to have dll-interface to be used by clients of class blah blah blah
