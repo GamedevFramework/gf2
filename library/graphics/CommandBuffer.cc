@@ -12,7 +12,11 @@
 
 namespace gf {
 
-  void CommandBuffer::begin_rendering(RenderTarget target, Color clear_color) const
+  /*
+   * CommandBuffer
+   */
+
+  RenderCommandBuffer CommandBuffer::begin_rendering(RenderTarget target, Color clear_color) const
   {
     VkRenderingAttachmentInfo color_attachment = {};
     color_attachment.sType = VK_STRUCTURE_TYPE_RENDERING_ATTACHMENT_INFO;
@@ -37,14 +41,21 @@ namespace gf {
     rendering_info.pStencilAttachment = nullptr;
 
     vkCmdBeginRendering(m_command_buffer, &rendering_info);
+
+    return { m_command_buffer };
   }
 
-  void CommandBuffer::end_rendering() const
+  void CommandBuffer::end_rendering(RenderCommandBuffer buffer) const
   {
+    assert(buffer.m_command_buffer == m_command_buffer);
     vkCmdEndRendering(m_command_buffer);
   }
 
-  void CommandBuffer::set_viewport(RectF viewport) const
+  /*
+   * RenderCommandBuffer
+   */
+
+  void RenderCommandBuffer::set_viewport(RectF viewport) const
   {
     VkViewport device_viewport;
     device_viewport.x = viewport.offset.x;
@@ -57,7 +68,7 @@ namespace gf {
     vkCmdSetViewport(m_command_buffer, 0, 1, &device_viewport);
   }
 
-  void CommandBuffer::set_scissor(RectI scissor) const
+  void RenderCommandBuffer::set_scissor(RectI scissor) const
   {
     VkRect2D device_scissor;
     device_scissor.offset.x = scissor.offset.x;
@@ -67,45 +78,45 @@ namespace gf {
     vkCmdSetScissor(m_command_buffer, 0, 1, &device_scissor);
   }
 
-  void CommandBuffer::bind_pipeline(const Pipeline* pipeline) const
+  void RenderCommandBuffer::bind_pipeline(const Pipeline* pipeline) const
   {
     assert(pipeline);
     vkCmdBindPipeline(m_command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->m_pipeline);
   }
 
-  void CommandBuffer::bind_vertex_buffer(const Buffer* buffer, std::size_t offset) const
+  void RenderCommandBuffer::bind_vertex_buffer(const Buffer* buffer, std::size_t offset) const
   {
     assert(buffer);
     auto device_offset = static_cast<VkDeviceSize>(offset);
     vkCmdBindVertexBuffers(m_command_buffer, 0, 1, &buffer->m_buffer, &device_offset);
   }
 
-  void CommandBuffer::bind_index_buffer(const Buffer* buffer, std::size_t offset) const
+  void RenderCommandBuffer::bind_index_buffer(const Buffer* buffer, std::size_t offset) const
   {
     assert(buffer);
     auto device_offset = static_cast<VkDeviceSize>(offset);
     vkCmdBindIndexBuffer(m_command_buffer, buffer->m_buffer, device_offset, VK_INDEX_TYPE_UINT16);
   }
 
-  void CommandBuffer::bind_descriptor(const Pipeline* pipeline, Descriptor descriptor) const
+  void RenderCommandBuffer::bind_descriptor(const Pipeline* pipeline, Descriptor descriptor) const
   {
     assert(pipeline);
     vkCmdBindDescriptorSets(m_command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->m_pipeline_layout, 0, 1, &descriptor.m_descriptor, 0, nullptr);
   }
 
-  void CommandBuffer::push_constant(const Pipeline* pipeline, ShaderStage stage, std::size_t size, const void* data) const
+  void RenderCommandBuffer::push_constant(const Pipeline* pipeline, ShaderStage stage, std::size_t size, const void* data) const
   {
     assert(pipeline);
     assert(size % 4 == 0);
     vkCmdPushConstants(m_command_buffer, pipeline->m_pipeline_layout, static_cast<VkShaderStageFlags>(stage), 0, static_cast<uint32_t>(size), data);
   }
 
-  void CommandBuffer::draw(std::size_t vertex_count) const
+  void RenderCommandBuffer::draw(std::size_t vertex_count) const
   {
     vkCmdDraw(m_command_buffer, static_cast<uint32_t>(vertex_count), 1, 0, 0);
   }
 
-  void CommandBuffer::draw_indexed(std::size_t index_count) const
+  void RenderCommandBuffer::draw_indexed(std::size_t index_count) const
   {
     vkCmdDrawIndexed(m_command_buffer, static_cast<uint32_t>(index_count), 1, 0, 0, 0);
   }

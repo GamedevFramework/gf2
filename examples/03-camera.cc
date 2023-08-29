@@ -86,33 +86,33 @@ int main()
       const gf::Mat3F view_matrix = camera.compute_view_matrix();
 
       auto command_buffer = *maybe_command_buffer;
-      command_buffer.begin_rendering(target);
+      auto render_command_buffer = command_buffer.begin_rendering(target);
 
       const gf::RectF viewport = gf::RectF::from_size(target.extent());
-      command_buffer.set_viewport(viewport);
+      render_command_buffer.set_viewport(viewport);
 
       const gf::RectI scissor = gf::RectI::from_size(target.extent());
-      command_buffer.set_scissor(scissor);
+      render_command_buffer.set_scissor(scissor);
 
       const auto* pipeline = renderer.default_pipeline();
 
-      command_buffer.bind_pipeline(pipeline);
+      render_command_buffer.bind_pipeline(pipeline);
 
       auto descriptor = renderer.allocate_descriptor_for_pipeline(pipeline);
       descriptor.write(0, texture);
-      command_buffer.bind_descriptor(pipeline, descriptor);
+      render_command_buffer.bind_descriptor(pipeline, descriptor);
 
       const gf::Mat3F model_matrix = transform.compute_matrix(bounds);
       const gf::Mat3F mv = view_matrix * model_matrix;
 
-      command_buffer.push_constant(pipeline, gf::ShaderStage::Vertex, &mv);
+      render_command_buffer.push_constant(pipeline, gf::ShaderStage::Vertex, &mv);
 
-      command_buffer.bind_vertex_buffer(&vertex_buffer);
-      command_buffer.bind_index_buffer(&index_buffer);
+      render_command_buffer.bind_vertex_buffer(&vertex_buffer);
+      render_command_buffer.bind_index_buffer(&index_buffer);
 
-      command_buffer.draw_indexed(std::size(indices));
+      render_command_buffer.draw_indexed(std::size(indices));
 
-      command_buffer.end_rendering();
+      command_buffer.end_rendering(render_command_buffer);
       renderer.end_command_buffer(command_buffer);
     }
   }

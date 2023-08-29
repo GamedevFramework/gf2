@@ -18,11 +18,8 @@ namespace gf {
   class Buffer;
   class Pipeline;
 
-  class GF_GRAPHICS_API CommandBuffer {
+  class GF_GRAPHICS_API RenderCommandBuffer {
   public:
-
-    void begin_rendering(RenderTarget target, Color clear_color = Black) const;
-    void end_rendering() const;
 
     void set_viewport(RectF viewport) const;
     void set_scissor(RectI scissor) const;
@@ -48,6 +45,24 @@ namespace gf {
 
     void draw(std::size_t vertex_count) const;
     void draw_indexed(std::size_t index_count) const;
+
+  private:
+    friend class CommandBuffer;
+
+    RenderCommandBuffer(VkCommandBuffer buffer)
+    : m_command_buffer(buffer)
+    {
+    }
+
+    VkCommandBuffer m_command_buffer = VK_NULL_HANDLE; // non-owning
+  };
+
+  class GF_GRAPHICS_API CommandBuffer {
+  public:
+
+    RenderCommandBuffer begin_rendering(RenderTarget target, Color clear_color = Black) const;
+    void end_rendering(RenderCommandBuffer buffer) const;
+
 
   private:
     friend class BasicRenderer;

@@ -48,7 +48,7 @@ namespace gf {
     Buffer& operator=(Buffer&& other) noexcept;
 
   private:
-    friend class CommandBuffer;
+    friend class RenderCommandBuffer;
 
     void create_host_buffer(BufferUsage usage, std::size_t total_size, const void* data);
     void create_device_buffer(BufferUsage usage, std::size_t total_size, const void* data, Renderer* renderer);

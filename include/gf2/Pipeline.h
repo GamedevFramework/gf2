@@ -27,7 +27,7 @@ namespace gf {
 
   private:
     friend class PipelineBuilder;
-    friend class CommandBuffer;
+    friend class RenderCommandBuffer;
     friend class BasicRenderer;
 
     Pipeline(VkDevice device, VkPipelineLayout pipeline_layout, VkPipeline pipeline, VkDescriptorSetLayout descriptors_layout)

@@ -30,7 +30,7 @@ namespace gf {
 
   private:
     friend class BasicRenderer;
-    friend class CommandBuffer;
+    friend class RenderCommandBuffer;
 
     Descriptor(VkDevice device, VkDescriptorSet descriptor)
     : m_device(device)
