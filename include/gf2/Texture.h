@@ -17,6 +17,7 @@ namespace gf {
 
   class GF_GRAPHICS_API Texture {
   public:
+    Texture() = default;
     Texture(const std::filesystem::path& filename, Renderer* renderer);
     Texture(const Image& image, Renderer* renderer);
     Texture(const Bitmap& bitmap, Renderer* renderer);
@@ -28,11 +29,17 @@ namespace gf {
     Texture& operator=(const Texture&) = delete;
     Texture& operator=(Texture&& other) noexcept;
 
+    Vec2I size() const
+    {
+      return m_image_size;
+    }
+
   private:
     friend class Descriptor;
 
-    void upload_data(Vec2I image_size, std::size_t raw_size, const void* raw_data, VkFormat format, Renderer* renderer);
+    void upload_data(std::size_t raw_size, const void* raw_data, VkFormat format, Renderer* renderer);
 
+    Vec2I m_image_size = { 0, 0 };
     VmaAllocator m_allocator = nullptr; // non-owning
     VkImage m_image = VK_NULL_HANDLE;
     VmaAllocation m_allocation = nullptr;

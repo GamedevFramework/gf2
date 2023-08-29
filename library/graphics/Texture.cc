@@ -20,27 +20,28 @@ namespace gf {
   }
 
   Texture::Texture(const Image& image, Renderer* renderer)
-  : m_allocator(renderer->m_allocator)
+  : m_image_size(image.size())
+  , m_allocator(renderer->m_allocator)
   {
-    auto image_size = image.size();
     auto raw_size = image.raw_size();
     const auto* raw_data = image.raw_data();
 
-    upload_data(image_size, raw_size, raw_data, VK_FORMAT_R8G8B8A8_SRGB, renderer);
+    upload_data(raw_size, raw_data, VK_FORMAT_R8G8B8A8_SRGB, renderer);
   }
 
   Texture::Texture(const Bitmap& bitmap, Renderer* renderer)
-  : m_allocator(renderer->m_allocator)
+  : m_image_size(bitmap.size())
+  , m_allocator(renderer->m_allocator)
   {
-    auto image_size = bitmap.size();
     auto raw_size = bitmap.raw_size();
     const auto* raw_data = bitmap.raw_data();
 
-    upload_data(image_size, raw_size, raw_data, VK_FORMAT_R8_UNORM, renderer);
+    upload_data(raw_size, raw_data, VK_FORMAT_R8_UNORM, renderer);
   }
 
   Texture::Texture(Texture&& other) noexcept
-  : m_allocator(std::exchange(other.m_allocator, nullptr))
+  : m_image_size(other.m_image_size)
+  , m_allocator(std::exchange(other.m_allocator, nullptr))
   , m_image(std::exchange(other.m_image, VK_NULL_HANDLE))
   , m_allocation(std::exchange(other.m_allocation, nullptr))
   , m_image_view(std::exchange(other.m_image_view, VK_NULL_HANDLE))
@@ -69,6 +70,7 @@ namespace gf {
 
   Texture& Texture::operator=(Texture&& other) noexcept
   {
+    std::swap(m_image_size, other.m_image_size);
     std::swap(m_allocator, other.m_allocator);
     std::swap(m_image, other.m_image);
     std::swap(m_allocation, other.m_allocation);
@@ -77,7 +79,7 @@ namespace gf {
     return *this;
   }
 
-  void Texture::upload_data(Vec2I image_size, std::size_t raw_size, const void* raw_data, VkFormat format, Renderer* renderer)
+  void Texture::upload_data(std::size_t raw_size, const void* raw_data, VkFormat format, Renderer* renderer)
   {
     // staging buffer
 
@@ -114,8 +116,8 @@ namespace gf {
     VkImageCreateInfo image_info = {};
     image_info.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
     image_info.imageType = VK_IMAGE_TYPE_2D;
-    image_info.extent.width = static_cast<uint32_t>(image_size.w);
-    image_info.extent.height = static_cast<uint32_t>(image_size.h);
+    image_info.extent.width = static_cast<uint32_t>(m_image_size.w);
+    image_info.extent.height = static_cast<uint32_t>(m_image_size.h);
     image_info.extent.depth = 1;
     image_info.mipLevels = 1;
     image_info.arrayLayers = 1;
@@ -138,7 +140,7 @@ namespace gf {
     auto command_buffer = renderer->current_memory_command_buffer();
 
     command_buffer.texture_layout_transition({ m_image }, LayoutTransition::Undefined, LayoutTransition::Upload);
-    command_buffer.copy_buffer_to_texture({ staging_buffer }, { m_image }, image_size);
+    command_buffer.copy_buffer_to_texture({ staging_buffer }, { m_image }, m_image_size);
     command_buffer.texture_layout_transition({ m_image }, LayoutTransition::Upload, LayoutTransition::Shader);
 
     VmaAllocatorInfo info;
