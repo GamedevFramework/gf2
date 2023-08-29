@@ -3,6 +3,8 @@
 #ifndef GF_CAMERA_H
 #define GF_CAMERA_H
 
+#include <cstdint>
+
 #include "CoreApi.h"
 #include "Mat3.h"
 #include "Rect.h"
@@ -10,7 +12,7 @@
 
 namespace gf {
 
-  enum class CameraType {
+  enum class CameraType : uint8_t {
     Extend,
     Fill,
     Fit,
@@ -25,8 +27,10 @@ namespace gf {
     Vec2F expected_size = { 2.0f, 2.0f };
     Vec2F computed_size = { 2.0f, 2.0f };
     float rotation = 0.0f;
+    // clang-format off
     RectF expected_viewport = {{ 0.0f, 0.0f }, { 1.0f, 1.0f }};
     RectF computed_viewport = {{ 0.0f, 0.0f }, { 1.0f, 1.0f }};
+    // clang-format on
 
     Camera() = default;
 
@@ -35,9 +39,6 @@ namespace gf {
     , center(center)
     , expected_size(size)
     , computed_size(size)
-    , rotation(0.0f)
-    , expected_viewport({{ 0.0f, 0.0f }, { 1.0f, 1.0f }})
-    , computed_viewport({{ 0.0f, 0.0f }, { 1.0f, 1.0f }})
     {
     }
 
@@ -49,4 +50,3 @@ namespace gf {
 }
 
 #endif // GF_CAMERA_H
-

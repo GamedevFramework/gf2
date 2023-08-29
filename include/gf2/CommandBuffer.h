@@ -63,7 +63,6 @@ namespace gf {
     RenderCommandBuffer begin_rendering(RenderTarget target, Color clear_color = Black) const;
     void end_rendering(RenderCommandBuffer buffer) const;
 
-
   private:
     friend class BasicRenderer;
 

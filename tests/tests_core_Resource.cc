@@ -409,4 +409,3 @@ TEST(ResourceTest, BundleCompositeContext) {
   EXPECT_FALSE(registry_for_composite.loaded("foo"));
   EXPECT_FALSE(registry_for_single.loaded("sub/foo"));
 }
-

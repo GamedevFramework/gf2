@@ -3,10 +3,10 @@
 #ifndef GF_TRANSFORM_H
 #define GF_TRANSFORM_H
 
+#include "CoreApi.h"
 #include "Mat3.h"
 #include "Rect.h"
 #include "Vec2.h"
-#include "CoreApi.h"
 
 namespace gf {
 

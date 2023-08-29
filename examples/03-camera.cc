@@ -28,7 +28,7 @@ int main()
 
   renderer.begin_memory_command_buffer();
 
-  gf::RectF bounds = gf::RectF::from_size({ 1920.0f, 1080.0f });
+  const gf::RectF bounds = gf::RectF::from_size({ 1920.0f, 1080.0f });
 
   const gf::Vertex vertices[] = {
     {bounds.position_at(gf::Orientation::NorthEast), { 1.0f, 0.0f }},

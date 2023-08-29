@@ -30,7 +30,7 @@ namespace gf {
   template<typename T>
   inline Mat3<T> operator*(const Mat3<T>& lhs, const Mat3<T>& rhs)
   {
-    Mat3<T> result;
+    Mat3<T> result = {};
 
     for (int col = 0; col < 3; ++col) {
       for (int row = 0; row < 3; ++row) {
