@@ -402,6 +402,12 @@ namespace gf {
     return dot(vec, axis) / square_length(axis) * axis;
   }
 
+  template<typename T>
+  constexpr bool almost_equals(Vec2<T> a, Vec2<T> b, T abs_error = std::numeric_limits<T>::epsilon(), T rel_error = std::numeric_limits<T>::epsilon())
+  {
+    return almost_equals(a.x, b.x, abs_error, rel_error) && almost_equals(a.y, b.y, abs_error, rel_error);
+  }
+
   template<typename Archive, typename T>
   inline Archive& operator|(Archive& ar, Vec2<T>& vec)
   {

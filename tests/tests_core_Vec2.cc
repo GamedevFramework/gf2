@@ -259,7 +259,7 @@ TEST(Vec2Test, NaturalDistance) {
 TEST(Vec2Test, Normalize) {
   gf::Vec2F vec0(5.0f, 5.0f);
 
-  EXPECT_EQ(gf::normalize(vec0), gf::vec(gf::InvSqrt2, gf::InvSqrt2));
+  EXPECT_TRUE(gf::almost_equals(gf::normalize(vec0), gf::vec(gf::InvSqrt2, gf::InvSqrt2)));
 }
 
 TEST(Vec2Test, ProjX) {
