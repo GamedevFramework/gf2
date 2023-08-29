@@ -16,10 +16,16 @@
 namespace gf {
   namespace details {
     template<typename T, typename = std::void_t<>>
-    inline constexpr bool HasBundle = false;
+    inline constexpr bool HasStaticBundle = false;
 
     template<typename T>
-    inline constexpr bool HasBundle<T, std::void_t<decltype(std::declval<T>().bundle())>> = true;
+    inline constexpr bool HasStaticBundle<T, std::void_t<decltype(T::bundle(std::declval<std::filesystem::path>()))>> = true;
+
+    template<typename T, typename = std::void_t<>>
+    inline constexpr bool HasStaticBundleWithContext = false;
+
+    template<typename T>
+    inline constexpr bool HasStaticBundleWithContext<T, std::void_t<decltype(T::bundle(std::declval<std::filesystem::path>(), std::declval<ResourceContext<T>>()))>> = true;
   } // namespace details
 
   class GF_CORE_API ResourceBundle {
@@ -54,22 +60,21 @@ namespace gf {
       switch (action) {
         case Action::Load:
           {
-            [[maybe_unused]] T& ref = manager.load<T>(path);
-
-            if constexpr (details::HasBundle<T>) {
-              ref.bundle().load_from(manager);
+            if constexpr (details::HasStaticBundle<T>) {
+              T::bundle(path).load_from(manager);
             }
+
+            manager.load<T>(path);
           }
           break;
 
         case Action::Unload:
           {
-            if constexpr (details::HasBundle<T>) {
-              T& ref = manager.get<T>(path);
-              ref.bundle().unload_from(manager);
-            }
-
             manager.unload<T>(path);
+
+            if constexpr (details::HasStaticBundle<T>) {
+              T::bundle(path).unload_from(manager);
+            }
           }
           break;
       }
@@ -83,22 +88,21 @@ namespace gf {
       switch (action) {
         case Action::Load:
           {
-            [[maybe_unused]] T& ref = manager.load<T>(path, context);
-
-            if constexpr (details::HasBundle<T>) {
-              ref.bundle().load_from(manager);
+            if constexpr (details::HasStaticBundleWithContext<T>) {
+              T::bundle(path, context).load_from(manager);
             }
+
+            manager.load<T>(path, context);
           }
           break;
 
         case Action::Unload:
           {
-            if constexpr (details::HasBundle<T>) {
-              T& ref = manager.get<T>(path);
-              ref.bundle().unload_from(manager);
-            }
-
             manager.unload<T>(path);
+
+            if constexpr (details::HasStaticBundleWithContext<T>) {
+              T::bundle(path, context).unload_from(manager);
+            }
           }
           break;
       }

@@ -35,10 +35,10 @@ namespace {
     {
     }
 
-    gf::ResourceBundle bundle()
+    static gf::ResourceBundle bundle(const std::filesystem::path& filename)
     {
-      gf::ResourceBundle bundle([](gf::ResourceBundle& bundle, auto manager, auto action) {
-        bundle.handle<DummyResource>("bar", manager, action);
+      gf::ResourceBundle bundle([filename](gf::ResourceBundle& bundle, auto manager, auto action) {
+        bundle.handle<DummyResource>("sub" / filename, manager, action);
       });
       return bundle;
     }
@@ -46,11 +46,28 @@ namespace {
 
   struct DummyContextResource {
     struct Context {
-      bool dummy;
+      bool dummy = true;
     };
 
     DummyContextResource(const std::filesystem::path&, const Context&)
     {
+    }
+  };
+
+  struct DummyCompositeContextResource {
+    using Context = gf::ResourceManager*;
+
+    DummyCompositeContextResource(const std::filesystem::path& filename, gf::ResourceManager* manager)
+    {
+      manager->get<DummyResource>("sub" / filename);
+    }
+
+    static gf::ResourceBundle bundle(const std::filesystem::path& filename, gf::ResourceManager*)
+    {
+      gf::ResourceBundle bundle([filename](gf::ResourceBundle& bundle, auto manager, auto action) {
+        bundle.handle<DummyResource>("sub" / filename, manager, action);
+      });
+      return bundle;
     }
   };
 
@@ -333,12 +350,12 @@ TEST(ResourceTest, BundleComposite) {
   bundle.load_from(manager);
 
   EXPECT_TRUE(registry_for_composite.loaded("foo"));
-  EXPECT_TRUE(registry_for_single.loaded("bar"));
+  EXPECT_TRUE(registry_for_single.loaded("sub/foo"));
 
   bundle.unload_from(manager);
 
   EXPECT_FALSE(registry_for_composite.loaded("foo"));
-  EXPECT_FALSE(registry_for_single.loaded("bar"));
+  EXPECT_FALSE(registry_for_single.loaded("sub/foo"));
 
 }
 
@@ -365,3 +382,31 @@ TEST(ResourceTest, BundleContext) {
 
   EXPECT_FALSE(registry.loaded("foo"));
 }
+
+TEST(ResourceTest, BundleCompositeContext) {
+  gf::ResourceRegistry<DummyCompositeContextResource> registry_for_composite;
+  gf::ResourceRegistry<DummyResource> registry_for_single;
+
+  DummyLoader loader;
+  registry_for_composite.add_loader(gf::loader_for<DummyCompositeContextResource>(loader));
+  registry_for_single.add_loader(gf::loader_for<DummyResource>(loader));
+
+  gf::ResourceManager manager;
+  manager.add_registry(&registry_for_composite);
+  manager.add_registry(&registry_for_single);
+
+  gf::ResourceBundle bundle([](gf::ResourceBundle& bundle, auto manager, auto action) {
+    bundle.handle<DummyCompositeContextResource>("foo", &manager, manager, action);
+  });
+
+  bundle.load_from(manager);
+
+  EXPECT_TRUE(registry_for_composite.loaded("foo"));
+  EXPECT_TRUE(registry_for_single.loaded("sub/foo"));
+
+  bundle.unload_from(manager);
+
+  EXPECT_FALSE(registry_for_composite.loaded("foo"));
+  EXPECT_FALSE(registry_for_single.loaded("sub/foo"));
+}
+
