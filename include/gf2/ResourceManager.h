@@ -31,46 +31,46 @@ namespace gf {
     }
 
     template<typename T>
-    T& get(const std::filesystem::path& path)
+    T* get(const std::filesystem::path& path)
     {
-      ResourceRegistry<T>& registry = search_registry<T>();
-      return registry.get(path);
+      ResourceRegistry<T>* registry = search_registry<T>();
+      return registry->get(path);
     }
 
     template<typename T>
-    T& acquire(const std::filesystem::path& path, const ResourceContext<T>& context = {})
+    T* acquire(const std::filesystem::path& path, const ResourceContext<T>& context = {})
     {
-      ResourceRegistry<T>& registry = search_registry<T>();
+      ResourceRegistry<T>* registry = search_registry<T>();
 
-      if (registry.loaded(path)) {
-        return registry.get(path);
+      if (registry->loaded(path)) {
+        return registry->get(path);
       }
 
-      return registry.load(path, context);
+      return registry->load(path, context);
     }
 
     template<typename T>
-    T& load(const std::filesystem::path& path, const ResourceContext<T>& context = {})
+    T* load(const std::filesystem::path& path, const ResourceContext<T>& context = {})
     {
-      ResourceRegistry<T>& registry = search_registry<T>();
-      return registry.load(path, context);
+      ResourceRegistry<T>* registry = search_registry<T>();
+      return registry->load(path, context);
     }
 
     template<typename T>
     void unload(const std::filesystem::path& path)
     {
-      ResourceRegistry<T>& registry = search_registry<T>();
-      registry.unload(path);
+      ResourceRegistry<T>* registry = search_registry<T>();
+      registry->unload(path);
     }
 
   private:
     template<typename T>
-    ResourceRegistry<T>& search_registry()
+    ResourceRegistry<T>* search_registry()
     {
       if (auto resources_iterator = m_resources.find(std::type_index(typeid(T))); resources_iterator != m_resources.end()) {
         auto& [type_index, any_registry] = *resources_iterator;
         assert(any_registry.type() == typeid(ResourceRegistry<T>*));
-        return *std::any_cast<ResourceRegistry<T>*>(any_registry);
+        return std::any_cast<ResourceRegistry<T>*>(any_registry);
       }
 
       Log::error("No registry for this type of resource.");

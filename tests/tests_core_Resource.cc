@@ -259,7 +259,7 @@ TEST(ResourceTest, MemoryLoader) {
 
   auto reference = registry.load("foo");
 
-  EXPECT_EQ(reference.x, raw_resource);
+  EXPECT_EQ(reference->x, raw_resource);
 }
 
 TEST(ResourceTest, BundleEmpty) {

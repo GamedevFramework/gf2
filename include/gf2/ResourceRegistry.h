@@ -26,24 +26,24 @@ namespace gf {
       return m_cache.find(path) != m_cache.end();
     }
 
-    T& get(const std::filesystem::path& path)
+    T* get(const std::filesystem::path& path)
     {
       if (auto cache_iterator = m_cache.find(path); cache_iterator != m_cache.end()) {
         auto& [_, counted] = *cache_iterator;
         // no ref increase
-        return *counted.pointer;
+        return counted.pointer.get();
       }
 
       Log::error("Resource not already loaded: '{}'", path.string());
       throw std::runtime_error("Resource not already loaded");
     }
 
-    T& load(const std::filesystem::path& path, const ResourceContext<T>& context = {})
+    T* load(const std::filesystem::path& path, const ResourceContext<T>& context = {})
     {
       if (auto cache_iterator = m_cache.find(path); cache_iterator != m_cache.end()) {
         auto& [_, counted] = *cache_iterator;
         ++counted.count;
-        return *counted.pointer;
+        return counted.pointer.get();
       }
 
       for (auto& loader : m_loaders) {
@@ -67,7 +67,7 @@ namespace gf {
         }
 
         auto& [_, counted] = *iterator;
-        return *counted.pointer;
+        return counted.pointer.get();
       }
 
       Log::error("Resource not loaded: '{}'", path.string());
