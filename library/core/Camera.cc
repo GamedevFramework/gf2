@@ -132,10 +132,10 @@ namespace gf {
   RectI Camera::compute_viewport(Vec2I framebuffer_size) const
   {
     RectI viewport;
-    viewport.offset.x = static_cast<int>(std::lround(framebuffer_size.w * computed_viewport.offset.x));
-    viewport.offset.y = static_cast<int>(std::lround(framebuffer_size.h * computed_viewport.offset.y));
-    viewport.extent.w = static_cast<int>(std::lround(framebuffer_size.w * computed_viewport.extent.w));
-    viewport.extent.h = static_cast<int>(std::lround(framebuffer_size.h * computed_viewport.extent.h));
+    viewport.offset.x = static_cast<int>(std::lround(static_cast<float>(framebuffer_size.w) * computed_viewport.offset.x));
+    viewport.offset.y = static_cast<int>(std::lround(static_cast<float>(framebuffer_size.h) * computed_viewport.offset.y));
+    viewport.extent.w = static_cast<int>(std::lround(static_cast<float>(framebuffer_size.w) * computed_viewport.extent.w));
+    viewport.extent.h = static_cast<int>(std::lround(static_cast<float>(framebuffer_size.h) * computed_viewport.extent.h));
     return viewport;
   }
 
