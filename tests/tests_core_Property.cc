@@ -35,7 +35,7 @@ TEST(PropertyTest, BoolConstructor) {
 }
 
 TEST(PropertyTest, IntConstructor) {
-  gf::Property property(3);
+  gf::Property property(INT64_C(3));
 
   EXPECT_FALSE(property.is_bool());
   EXPECT_TRUE(property.is_int());
@@ -123,7 +123,7 @@ TEST(PropertyTest, ColorConstructor) {
 
 TEST(PropertyTest, ClassConstructor) {
   gf::PropertyMap property_map;
-  property_map.add_property("key", 42);
+  property_map.add_property("key", INT64_C(42));
 
   gf::Property property(property_map);
 
@@ -150,7 +150,7 @@ TEST(PropertyMapTest, DefaultConstructor) {
 TEST(PropertyMapTest, Key) {
   gf::PropertyMap property_map;
 
-  property_map.add_property("number", 42);
+  property_map.add_property("number", INT64_C(42));
   property_map.add_property("color", gf::Blue);
 
   EXPECT_NO_THROW({
@@ -170,7 +170,7 @@ TEST(PropertyMapTest, Key) {
 
 TEST(PropertyMapTest, Path) {
   gf::PropertyMap foo_property_map;
-  foo_property_map.add_property("number", 42);
+  foo_property_map.add_property("number", INT64_C(42));
 
   gf::PropertyMap property_map;
   property_map.add_property("foo", std::move(foo_property_map));
