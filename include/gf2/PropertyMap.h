@@ -21,7 +21,7 @@ namespace gf {
     const Property& operator()(std::string_view path) const;
 
   private:
-    friend bool operator==(const PropertyMap& lhs, const PropertyMap& rhs);
+    friend GF_CORE_API bool operator==(const PropertyMap& lhs, const PropertyMap& rhs);
 
     std::map<std::string, Property, std::less<void>> m_properties;
   };

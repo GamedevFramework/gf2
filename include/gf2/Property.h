@@ -108,7 +108,7 @@ namespace gf {
     }
 
   private:
-    friend bool operator==(const Property& lhs, const Property& rhs);
+    friend inline bool operator==(const Property& lhs, const Property& rhs);
 
     template<typename T>
     bool is() const
