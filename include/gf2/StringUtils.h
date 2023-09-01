@@ -17,9 +17,22 @@ namespace gf {
 
   GF_CORE_API std::string escape_string(std::string_view text);
 
-  GF_CORE_API std::vector<std::string_view> split_in_paragraphs(std::string_view text);
-  GF_CORE_API std::vector<std::string_view> split_in_words(std::string_view text);
-  GF_CORE_API std::vector<std::string_view> split_path(std::string_view path_like);
+  GF_CORE_API std::vector<std::string_view> split_string(std::string_view string, std::string_view delimiters);
+
+  inline std::vector<std::string_view> split_in_paragraphs(std::string_view text)
+  {
+    return split_string(text, "\n");
+  }
+
+  inline std::vector<std::string_view> split_in_words(std::string_view text)
+  {
+    return split_string(text, " \t");
+  }
+
+  inline std::vector<std::string_view> split_path(std::string_view path_like)
+  {
+    return split_string(path_like, "/");
+  }
 
   class GF_CORE_API CodepointRange {
   public:

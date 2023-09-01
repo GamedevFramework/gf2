@@ -98,50 +98,36 @@ namespace gf {
     {
       return std::any_of(delimiters.begin(), delimiters.end(), [c](char d) { return c == d; });
     }
+  }
 
-    std::vector<std::string_view> split(std::string_view str, std::string_view delimiters)
-    {
-      const std::size_t size = str.size();
-      std::size_t i = 0;
-      std::vector<std::string_view> result;
+  std::vector<std::string_view> split_string(std::string_view string, std::string_view delimiters)
+  {
+    const std::size_t size = string.size();
+    std::size_t i = 0;
+    std::vector<std::string_view> result;
 
-      while (i < size) {
-        while (i < size && is_delimiter(str[i], delimiters)) {
-          ++i;
-        }
-
-        if (i == size) {
-          break;
-        }
-
-        const char* start = str.data() + i;
-        size_t length = 0;
-
-        while (i < size && !is_delimiter(str[i], delimiters)) {
-          ++i;
-          ++length;
-        }
-
-        result.emplace_back(start, length);
+    while (i < size) {
+      while (i < size && is_delimiter(string[i], delimiters)) {
+        ++i;
       }
 
-      return result;
+      if (i == size) {
+        break;
+      }
+
+      const char* start = string.data() + i;
+      size_t length = 0;
+
+      while (i < size && !is_delimiter(string[i], delimiters)) {
+        ++i;
+        ++length;
+      }
+
+      result.emplace_back(start, length);
     }
+
+    return result;
   }
 
-  std::vector<std::string_view> split_in_paragraphs(std::string_view str)
-  {
-    return split(str, "\n");
-  }
-
-  std::vector<std::string_view> split_in_words(std::string_view str)
-  {
-    return split(str, " \t");
-  }
-
-  std::vector<std::string_view> split_path(std::string_view path_like)
-  {
-    return split(path_like, "/");
-  }
 
 }
