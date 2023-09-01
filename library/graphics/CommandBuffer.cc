@@ -45,7 +45,7 @@ namespace gf {
     return { m_command_buffer };
   }
 
-  void CommandBuffer::end_rendering(RenderCommandBuffer buffer) const
+  void CommandBuffer::end_rendering([[maybe_unused]] RenderCommandBuffer buffer) const
   {
     assert(buffer.m_command_buffer == m_command_buffer);
     vkCmdEndRendering(m_command_buffer);

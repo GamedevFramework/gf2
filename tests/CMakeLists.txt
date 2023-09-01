@@ -15,6 +15,7 @@ add_executable(gf2_core_tests
   tests_core_Id.cc
   tests_core_Math.cc
   tests_core_Move.cc
+  tests_core_Property.cc
   tests_core_Range.cc
   tests_core_Rect.cc
   tests_core_Resource.cc

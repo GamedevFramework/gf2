@@ -35,7 +35,7 @@ namespace gf {
       while (digits > 0) {
         const char adigit = static_cast<char>((digits % 10) + '0');
 
-        if (curpow == 0 && result.length() > 0) {
+        if (curpow == 0 && !result.empty()) {
           result += '.';
           result += adigit;
         } else {
@@ -137,6 +137,11 @@ namespace gf {
   std::vector<std::string_view> split_in_words(std::string_view str)
   {
     return split(str, " \t");
+  }
+
+  std::vector<std::string_view> split_path(std::string_view path_like)
+  {
+    return split(path_like, "/");
   }
 
 }
