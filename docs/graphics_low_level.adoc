@@ -9,6 +9,8 @@ Generally, users don't need to use these classes directly. They are used in more
 
 xref:reference.adoc[< Back to reference]
 
+See also: xref:article_vulkan.adoc[Rendering with Vulkan]
+
 == Variables
 
 === `gf::AlphaBlending`

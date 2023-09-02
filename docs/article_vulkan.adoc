@@ -1,0 +1,40 @@
+= Rendering with Vulkan
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+This article describes how Vulkan is used in gf2.
+
+xref:graphics_low_level.adoc[< Back to `graphics` Low-Level]
+
+== Vulkan
+
+link:https://www.vulkan.org/[Vulkan] is a low-level cross-platform graphics API. gf2 uses *Vulkan 1.3* that was released on 25th January 2022. More precisely, gf2 takes advantage of link:https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VK_KHR_dynamic_rendering.html[`VK_KHR_dynamic_rendering`], an extension that simplifies the rendering code and is recommanded by the main GPU providers.
+
+=== volk
+
+link:https://github.com/zeux/volk[volk] is "a meta-loader for Vulkan".
+
+gf2 uses volk to load the Vulkan entrypoints dynamically. This is hidden from the gf2 interface.
+
+=== vk-bootstrap
+
+link:https://github.com/charles-lunarg/vk-bootstrap/[`vk-bootstrap`] is "a utility library that jump starts initialization of Vulkan".
+
+gf2 uses `vk-bootstrap` to initialize some of the basic structures on Vulkan: `VkInstance`, `VkPhysicalDevice`, `VkDevice` and `VkSwapchain`. This is hidden from the gf2 interface.
+
+See also: link:https://github.com/charles-lunarg/vk-bootstrap/blob/master/docs/getting_started.md[documentation of `vk-bootstrap`]
+
+=== Vulkan Memory Allocator
+
+link:https://gpuopen.com/vulkan-memory-allocator/[Vulkan Memory Allocator (VMA)] "provides a simple and easy to integrate API to help you allocate memory for Vulkan buffer and image storage".
+
+gf2 uses VMA to allocate memory for `VkBuffer` and `VkImage` instances. This library is a public dependency of gf2.
+
+See also: link:https://gpuopen-librariesandsdks.github.io/VulkanMemoryAllocator/html/[documentation of Vulkan Memory Allocator]
+
+== Architecture
+
+=== `gf::Renderer`
+
+

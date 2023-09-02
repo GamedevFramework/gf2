@@ -3,7 +3,7 @@ v0.1
 include::bits/attributes.adoc[]
 :toc: right
 
-`Transform` contains all the information to compute an link:https://en.wikipedia.org/wiki/Transformation_matrix#Affine_transformations[affine transformation matrix].
+A transform object contains data about an entity's location, rotation and scale.
 
 xref:core_coordinates.adoc[< Back to `core` Coordinates]
 
@@ -19,17 +19,20 @@ Each entity has a *reference point* that defines the origin of the different bas
 
 Then, the entity will be scaled with a factor of `scale`, rotated with an angle of `rotation` and translated with a vector of `location`.
 
+At the end, `Transform` contains all the information to compute an link:https://en.wikipedia.org/wiki/Transformation_matrix#Affine_transformations[affine transformation matrix].
+
+
 .Data members for `gf::Transform`
 [cols="1,1,2"]
 |===
 | Name | Type | Description
 
 | `location`
-| `Vec2F`
+| xref:Vec2.adoc[`Vec2F`]
 | The location of the reference point of the entity.
 
 | `origin`
-| `Vec2F`
+| xref:Vec2.adoc[`Vec2F`]
 | The relative origin of the reference point of the entity.
 
 | `rotation`
@@ -37,7 +40,7 @@ Then, the entity will be scaled with a factor of `scale`, rotated with an angle 
 | The rotation of the entity around the reference point.
 
 | `scale`
-| `Vec2F`
+| xref:Vec2.adoc[`Vec2F`]
 | The scale of the entity from the reference point.
 |===
 

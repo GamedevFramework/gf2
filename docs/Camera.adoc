@@ -1,0 +1,84 @@
+= `gf::Camera` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+A camera defines a rectangular area of the world that is visible on the screen.
+
+xref:core_coordinates.adoc[< Back to `core` Coordinates]
+
+== Description
+
+[source]
+----
+#include <gf2/Camera.h>
+class Camera;
+----
+
+A camera is defined by its center, its size and its rotation. In addition, the camera type defines the policy for adapting the view when the rendering target changes its size.
+
+At the end, `Camera` contains all the information to compute a view matrix.
+
+.Data members for `gf::Camera`
+[cols="1,1,2"]
+|===
+| Name | Type | Description
+
+| `type`
+| xref:core_coordinates.adoc#_camera_type[`CameraType`]
+| The type of camera.
+
+| `center`
+| xref:Vec2.adoc[`Vec2F`]
+| The center of the camera view.
+
+| `size`
+| xref:Vec2.adoc[`Vec2F`]
+| The size of the camera view.
+
+| `rotation`
+| `float`
+| The rotation of the camera view.
+
+| `viewport`
+| xref:Rect.adoc[`RectF`]
+| The viewport of the camera.
+|===
+
+== Member functions
+
+=== `Camera` constructors
+
+[source]
+----
+constexpr Camera(CameraType type, Vec2F center, Vec2F size)
+----
+
+Create a camera.
+
+=== `compute_view_matrix`
+
+[source]
+----
+Mat3F compute_view_matrix() const;
+----
+
+Computes the view matrix associated with the camera.
+
+=== `compute_viewport`
+
+[source]
+----
+RectI compute_viewport(Vec2I target_size) const;
+----
+
+Computes the actual viewport from the rendering target size.
+
+=== `update`
+
+[source]
+----
+void update(Vec2I target_size);
+----
+
+Update the camera settings when the target size changes.

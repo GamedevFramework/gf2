@@ -9,10 +9,54 @@ xref:reference.adoc[< Back to reference]
 
 == Types
 
+[#_camera]
 === `gf::Camera`
 
+[source]
+----
+#include <gf2/Camera.h>
+class Camera;
+----
+
+A camera defines a rectangular area of the world that is visible on the screen. xref:Camera.adoc[*Read more...*]
+
+[#_camera_type]
 === `gf::CameraType`
 
+[source]
+----
+#include <gf2/Camera.h>
+enum class CameraType : uint8_t;
+----
+
+The type of camera.
+
+.Enumerators for `gf::CameraType`
+[cols="2,3"]
+|===
+
+| `gf::CameraType::Extend`
+| A camera that extend the view in the window
+
+| `gf::CameraType::Fill`
+| A camera that fills the window
+
+| `gf::CameraType::Fit`
+| A camera that fits the window
+
+| `gf::CameraType::Locked`
+| A camera that is locked in the window
+
+| `gf::CameraType::Stretch`
+| A camera that stretches the world
+
+| `gf::CameraType::Window`
+| A camera that follows the window's size
+|===
+
+
+
+[#_transform]
 === `gf::Transform`
 
 [source]
@@ -21,4 +65,4 @@ xref:reference.adoc[< Back to reference]
 struct Transform;
 ----
 
-`Transform` contains all the information to compute an link:https://en.wikipedia.org/wiki/Transformation_matrix#Affine_transformations[affine transformation matrix]. xref:Transform.adoc[*Read more...*]
+A transform object contains data about an entity's location, rotation and scale. xref:Transform.adoc[*Read more...*]

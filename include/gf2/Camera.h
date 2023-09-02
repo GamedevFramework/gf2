@@ -17,8 +17,8 @@ namespace gf {
     Fill,
     Fit,
     Locked,
-    Screen,
     Stretch,
+    Window,
   };
 
   class GF_CORE_API Camera {
@@ -41,8 +41,8 @@ namespace gf {
     {
     }
 
-    void update(Vec2I framebuffer_size);
-    RectI compute_viewport(Vec2I framebuffer_size) const;
+    void update(Vec2I target_size);
+    RectI compute_viewport(Vec2I target_size) const;
     Mat3F compute_view_matrix() const;
 
   private:
