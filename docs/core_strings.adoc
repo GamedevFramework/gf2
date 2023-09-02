@@ -59,13 +59,14 @@ std::string nice_num(float num, float precision);
 
 Create a string representation of a floating point number `num` with `precision`. It is based on link:https://mail.python.org/pipermail/python-list/1999-October/005748.html[Python niceNum].
 
+
 [#_split_in_paragraphs]
 === `gf::split_in_paragraphs`
 
 [source]
 ----
 #include <gf2/StringUtils.h>
-std::vector<std::string_view> split_in_paragraphs(std::string_view text);
+inline std::vector<std::string_view> split_in_paragraphs(std::string_view text);
 ----
 
 Split a string in multiples paragraphs. The paragraphs are separated by `'\n'`.
@@ -78,9 +79,31 @@ See also: <<_split_in_words>>
 [source]
 ----
 #include <gf2/StringUtils.h>
-std::vector<std::string_view> split_in_words(std::string_view text);
+inline std::vector<std::string_view> split_in_words(std::string_view text);
 ----
 
 Split a string in multiples words. The words are separated by `' '` (space) or `'\t'` (tabulation).
 
 See also: <<_split_in_paragraphs>>
+
+[#_split_path]
+=== `gf::split_path`
+
+[source]
+----
+#include <gf2/StringUtils.h>
+inline std::vector<std::string_view> split_path(std::string_view path_like);
+----
+
+Split a path-like string in multiple items. The items are separated by `'/'`.
+
+[#_split_string]
+=== `gf::split_string`
+
+[source]
+----
+#include <gf2/StringUtils.h>
+std::vector<std::string_view> split_string(std::string_view string, std::string_view delimiters);
+----
+
+Split a `string` in multiple elements separated by `delimiters`.

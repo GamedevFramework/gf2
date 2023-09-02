@@ -58,7 +58,7 @@ int main()
   camera.size = gf::vec(200.0f, 200.0f);
 
   gf::Transform transform;
-  transform.position = gf::vec(1000.0f, 1000.0f);
+  transform.location = gf::vec(1000.0f, 1000.0f);
   transform.origin = gf::vec(0.5f, 0.5f);
   transform.scale = gf::vec(0.1f, 0.1f);
 

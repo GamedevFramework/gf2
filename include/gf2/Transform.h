@@ -11,14 +11,14 @@
 namespace gf {
 
   struct GF_CORE_API Transform {
-    constexpr Transform(Vec2F position = gf::vec(0.0f, 0.0f), Vec2F origin = gf::vec(0.0f, 0.0f), float rotation = 0.0f)
-    : position(position)
+    constexpr Transform(Vec2F location = gf::vec(0.0f, 0.0f), Vec2F origin = gf::vec(0.0f, 0.0f), float rotation = 0.0f)
+    : location(location)
     , origin(origin)
     , rotation(rotation)
     {
     }
 
-    Vec2F position = gf::vec(0.0f, 0.0f);
+    Vec2F location = gf::vec(0.0f, 0.0f);
     Vec2F origin = gf::vec(0.0f, 0.0f);
     float rotation = 0.0f;
     Vec2F scale = gf::vec(1.0f, 1.0f);

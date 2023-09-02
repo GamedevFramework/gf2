@@ -8,24 +8,28 @@ xref:index.adoc[< Back to main page]
 
 == `core`
 
-- xref:core_utilities.adoc[Utilities] (xref:Log.adoc[`Log`], xref:Random.adoc[`Random`], xref:Clock.adoc[`Clock`], xref:Time.adoc[`Time`])
-- xref:core_vocabulary.adoc[Vocabulary] (xref:Result.adoc[`Result<T,E>`], xref:Flags.adoc[`Flags<E>`], xref:Id.adoc[`Id`])
-- xref:core_math.adoc[Math] (xref:Vec2.adoc[`Vec2<T>`], xref:Vec3.adoc[`Vec3<T>`], xref:core_vec.adoc[vector-related types and functions], xref:Rect.adoc[`Rect<T>`], xref:Circ.adoc[`Circ<T>`])
-- xref:core_color.adoc[Color] (xref:Color.adoc[`Color`], xref:Image.adoc[`Image`], xref:Bitmap.adoc[`Bitmap`])
-- xref:core_container.adoc[Container] (xref:Array2D.adoc[`Array2D<T>`], xref:Span.adoc[`Span<T>`], xref:BinaryHeap.adoc[`BinaryHeap<T, Compare>`])
-- xref:core_strings.adoc[Strings] (xref:CodepointRange.adoc[`CodepointRange`])
-- xref:core_streams.adoc[Streams] (xref:InputStream.adoc[`InputStream`], xref:OutputStream.adoc[`OutputStream`])
-- xref:core_resources.adoc[Resources] (xref:ResourceManager.adoc[`ResourceManager`], xref:ResourceBundle.adoc[`ResourceBundle`])
-- xref:core_fonts.adoc[Fonts] (xref:Font.adoc[`Font`], xref:FontManager.adoc[`FontManager`])
-- xref:core_serialization.adoc[Serialization] (xref:Serializer.adoc[`Serializer`], xref:Deserializer.adoc[`Deserializer`])
-- xref:core_grids.adoc[Grids] (xref:AnyGrid.adoc[`AnyGrid`], `GridMap`)
+* Basics
+** xref:core_utilities.adoc[Utilities] (xref:Log.adoc[`Log`], xref:Random.adoc[`Random`], xref:Clock.adoc[`Clock`], xref:Time.adoc[`Time`])
+** xref:core_vocabulary.adoc[Vocabulary] (xref:Result.adoc[`Result<T,E>`], xref:Flags.adoc[`Flags<E>`], xref:Id.adoc[`Id`])
+** xref:core_math.adoc[Math] (xref:Vec2.adoc[`Vec2<T>`], xref:Vec3.adoc[`Vec3<T>`], xref:core_vec.adoc[vector-related types and functions], xref:Rect.adoc[`Rect<T>`], xref:Circ.adoc[`Circ<T>`])
+** xref:core_color.adoc[Color] (xref:Color.adoc[`Color`], xref:Image.adoc[`Image`], xref:Bitmap.adoc[`Bitmap`])
+** xref:core_container.adoc[Container] (xref:Array2D.adoc[`Array2D<T>`], xref:Span.adoc[`Span<T>`], xref:BinaryHeap.adoc[`BinaryHeap<T, Compare>`])
+** xref:core_strings.adoc[Strings] (xref:CodepointRange.adoc[`CodepointRange`])
+** xref:core_streams.adoc[Streams] (xref:InputStream.adoc[`InputStream`], xref:OutputStream.adoc[`OutputStream`])
+** xref:core_fonts.adoc[Fonts] (xref:Font.adoc[`Font`], xref:FontManager.adoc[`FontManager`])
+* Game Toolkit
+** xref:core_resources.adoc[Resources] (xref:ResourceManager.adoc[`ResourceManager`], xref:ResourceBundle.adoc[`ResourceBundle`])
+** xref:core_serialization.adoc[Serialization] (xref:Serializer.adoc[`Serializer`], xref:Deserializer.adoc[`Deserializer`])
+** xref:core_grids.adoc[Grids] (xref:AnyGrid.adoc[`AnyGrid`], `GridMap`)
+** xref:core_coordinates.adoc[Coordinates] (xref:Transform.adoc[`Transform`], `Camera`)
+** xref:core_data.adoc[Data] (`TiledMapData`, `AnimationData`)
 
 == `graphics`
 
 - Initialization (`GraphicsInitializer`)
 - xref:graphics_inputs.adoc[Inputs] (xref:Scancode.adoc[`Scancode`], xref:Keycode.adoc[`Keycode`], xref:MouseButton.adoc[`MouseButton`])
 - xref:graphics_events.adoc[Events] (xref:Event.adoc[`Event`])
-- xref:graphics_low_level.adoc[Low-Level] (`Renderer`, `CommandBuffer`, `Buffer`, `Shader`)
+- xref:graphics_low_level.adoc[Low-Level] (`Renderer`, `Texture`, `CommandBuffer`, `Buffer`, `Shader`)
 
 == `network`
 

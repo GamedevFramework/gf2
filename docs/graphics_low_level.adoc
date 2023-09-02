@@ -11,49 +11,73 @@ xref:reference.adoc[< Back to reference]
 
 == Variables
 
-=== `AlphaBlending`
+=== `gf::AlphaBlending`
 
 == Types
 
-=== `Blend`
+=== `gf::Blend`
 
-=== `BlendFactor`
+=== `gf::BlendFactor`
 
-=== `BlendOp`
+=== `gf::BlendOp`
 
-=== `Buffer`
+=== `gf::Buffer`
 
-=== `BufferType`
+=== `gf::BufferReference`
 
-=== `BufferUsage`
+=== `gf::BufferType`
 
-=== `CommandBuffer`
+=== `gf::BufferUsage`
 
-=== `PrimitiveTopology`
+=== `gf::CommandBuffer`
 
-=== `Pipeline`
+=== `gf::Descriptor`
 
-=== `PipelineBuilder`
+=== `gf::DescriptorType`
 
-=== `Renderer`
+=== `gf::DescriptorBinding`
 
-=== `RenderTarget`
+=== `gf::LayoutTransition`
 
-=== `ShaderContext`
+=== `gf::MemoryCommandBuffer`
 
-=== `ShaderStage`
+=== `gf::PrimitiveTopology`
 
-=== `Shader`
+=== `gf::Pipeline`
 
-=== `SimpleVertex`
+=== `gf::PipelineBuilder`
 
-=== `Vertex`
+=== `gf::RenderCommandBuffer`
 
-=== `VertexAttribute`
+=== `gf::Renderer`
 
-=== `VertexAttributeFormat`
+=== `gf::RenderTarget`
 
-=== `VertexBinding`
+=== `gf::ShaderContext`
 
-=== `VertexInput`
+=== `gf::ShaderStage`
+
+=== `gf::Shader`
+
+=== `gf::ShaderContext`
+
+=== `gf::ShaderStage`
+
+=== `gf::SimpleVertex`
+
+=== `gf::StagingBufferReference`
+
+=== `gf::Texture`
+
+=== `gf::TextureReference`
+
+=== `gf::Vertex`
+
+=== `gf::VertexAttribute`
+
+=== `gf::VertexAttributeFormat`
+
+=== `gf::VertexBinding`
+
+=== `gf::VertexInput`
 

@@ -1,0 +1,62 @@
+= `gf::Transform` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`Transform` contains all the information to compute an link:https://en.wikipedia.org/wiki/Transformation_matrix#Affine_transformations[affine transformation matrix].
+
+xref:core_coordinates.adoc[< Back to `core` Coordinates]
+
+== Description
+
+[source]
+----
+#include <gf2/Transform.h>
+struct Transform;
+----
+
+Each entity has a *reference point* that defines the origin of the different basic transformations. This point is defined by `origin`, the relative position of the reference point in the bouding box of the entity. If the reference point is at the center of the entity, the origin is stem:[(0.5, 0.5)].
+
+Then, the entity will be scaled with a factor of `scale`, rotated with an angle of `rotation` and translated with a vector of `location`.
+
+.Data members for `gf::Transform`
+[cols="1,1,2"]
+|===
+| Name | Type | Description
+
+| `location`
+| `Vec2F`
+| The location of the reference point of the entity.
+
+| `origin`
+| `Vec2F`
+| The relative origin of the reference point of the entity.
+
+| `rotation`
+| `float`
+| The rotation of the entity around the reference point.
+
+| `scale`
+| `Vec2F`
+| The scale of the entity from the reference point.
+|===
+
+== Member functions
+
+=== `Transform` constructors
+
+[source]
+----
+constexpr Transform(Vec2F location = gf::vec(0.0f, 0.0f), Vec2F origin = gf::vec(0.0f, 0.0f), float rotation = 0.0f);
+----
+
+Create a transform.
+
+=== `compute_matrix`
+
+[source]
+----
+Mat3F compute_matrix(RectF bounds) const;
+----
+
+Compute the model matrix from the bouding box of the entity.

@@ -1,0 +1,16 @@
+= `core` Data
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The data component provides classes for loading various type of data related to graphics objects.
+
+xref:reference.adoc[< Back to reference]
+
+== Types
+
+=== `gf::AnimationFrameData`
+
+=== `gf::AnimationData`
+
+=== `gf::TiledMapData`

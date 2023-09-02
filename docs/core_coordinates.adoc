@@ -1,0 +1,24 @@
+= `core` Coordinates
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The coordinates component provides types to manipulate coordinates in 2D.
+
+xref:reference.adoc[< Back to reference]
+
+== Types
+
+=== `gf::Camera`
+
+=== `gf::CameraType`
+
+=== `gf::Transform`
+
+[source]
+----
+#include <gf2/Transform.h>
+struct Transform;
+----
+
+`Transform` contains all the information to compute an link:https://en.wikipedia.org/wiki/Transformation_matrix#Affine_transformations[affine transformation matrix]. xref:Transform.adoc[*Read more...*]
