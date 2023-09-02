@@ -21,15 +21,14 @@ namespace gf {
     Stretch,
   };
 
-  struct GF_CORE_API Camera {
+  class GF_CORE_API Camera {
+  public:
     CameraType type = CameraType::Screen;
     Vec2F center = { 0.0f, 0.0f };
-    Vec2F expected_size = { 2.0f, 2.0f };
-    Vec2F computed_size = { 2.0f, 2.0f };
+    Vec2F size = { 2.0f, 2.0f };
     float rotation = 0.0f;
     // clang-format off
-    RectF expected_viewport = {{ 0.0f, 0.0f }, { 1.0f, 1.0f }};
-    RectF computed_viewport = {{ 0.0f, 0.0f }, { 1.0f, 1.0f }};
+    RectF viewport = {{ 0.0f, 0.0f }, { 1.0f, 1.0f }};
     // clang-format on
 
     Camera() = default;
@@ -37,14 +36,20 @@ namespace gf {
     constexpr Camera(CameraType type, Vec2F center, Vec2F size)
     : type(type)
     , center(center)
-    , expected_size(size)
-    , computed_size(size)
+    , size(size)
+    , m_computed_size(size)
     {
     }
 
     void update(Vec2I framebuffer_size);
     RectI compute_viewport(Vec2I framebuffer_size) const;
     Mat3F compute_view_matrix() const;
+
+  private:
+    Vec2F m_computed_size = { 2.0f, 2.0f };
+    // clang-format off
+    RectF m_computed_viewport = {{ 0.0f, 0.0f }, { 1.0f, 1.0f }};
+    // clang-format on
   };
 
 }

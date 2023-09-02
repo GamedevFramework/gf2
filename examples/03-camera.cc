@@ -55,7 +55,7 @@ int main()
   gf::Camera camera;
   camera.type = gf::CameraType::Extend;
   camera.center = gf::vec(1000.0f, 1000.0f);
-  camera.expected_size = gf::vec(200.0f, 200.0f);
+  camera.size = gf::vec(200.0f, 200.0f);
 
   gf::Transform transform;
   transform.position = gf::vec(1000.0f, 1000.0f);

@@ -11,115 +11,107 @@ namespace gf {
 
   void Camera::update(Vec2I framebuffer_size)
   {
-    computed_size = expected_size;
-    computed_viewport = expected_viewport;
+    m_computed_size = size;
+    m_computed_viewport = viewport;
 
     switch (type) {
       case CameraType::Extend:
         {
-          const float world_ratio = expected_size.w / expected_size.h;
+          const float world_ratio = size.w / size.h;
 
-          const Vec2F viewport_size = framebuffer_size * expected_viewport.extent;
+          const Vec2F viewport_size = framebuffer_size * viewport.extent;
           const float framebuffer_ratio = viewport_size.w / viewport_size.h;
-
-          Vec2F size = expected_size;
 
           if (framebuffer_ratio < world_ratio) {
             const float ratio = framebuffer_ratio / world_ratio;
-            size.y /= ratio;
+            m_computed_size.y /= ratio;
           } else {
             const float ratio = world_ratio / framebuffer_ratio;
-            size.x /= ratio;
+            m_computed_size.x /= ratio;
           }
 
-          computed_size = size;
           break;
         }
       case CameraType::Fill:
         {
-          const float world_ratio = expected_size.w / expected_size.h;
+          const float world_ratio = size.w / size.h;
 
-          const Vec2F viewport_size = framebuffer_size * expected_viewport.extent;
+          const Vec2F viewport_size = framebuffer_size * viewport.extent;
           const float framebuffer_ratio = viewport_size.w / viewport_size.h;
-
-          Vec2F size = expected_size;
 
           if (framebuffer_ratio < world_ratio) {
             const float ratio = framebuffer_ratio / world_ratio;
-            size.x *= ratio;
+            m_computed_size.x *= ratio;
           } else {
             const float ratio = world_ratio / framebuffer_ratio;
-            size.y *= ratio;
+            m_computed_size.y *= ratio;
           }
 
-          computed_size = size;
           break;
         }
       case CameraType::Fit:
         {
-          const float world_ratio = expected_size.w / expected_size.h;
+          const float world_ratio = size.w / size.h;
 
-          const Vec2F viewport_size = framebuffer_size * expected_viewport.extent;
+          const Vec2F viewport_size = framebuffer_size * viewport.extent;
           const float framebuffer_ratio = viewport_size.w / viewport_size.h;
 
-          RectF viewport;
+          RectF basic_viewport;
 
           if (framebuffer_ratio < world_ratio) {
             const float ratio = framebuffer_ratio / world_ratio;
 
-            viewport.offset.x = 0.0f;
-            viewport.extent.w = 1.0f;
+            basic_viewport.offset.x = 0.0f;
+            basic_viewport.extent.w = 1.0f;
 
-            viewport.offset.y = (1.0f - ratio) / 2.0f;
-            viewport.extent.h = ratio;
+            basic_viewport.offset.y = (1.0f - ratio) / 2.0f;
+            basic_viewport.extent.h = ratio;
           } else {
             const float ratio = world_ratio / framebuffer_ratio;
 
-            viewport.offset.y = 0.0f;
-            viewport.extent.h = 1.0f;
+            basic_viewport.offset.y = 0.0f;
+            basic_viewport.extent.h = 1.0f;
 
-            viewport.offset.x = (1.0f - ratio) / 2.0f;
-            viewport.extent.w = ratio;
+            basic_viewport.offset.x = (1.0f - ratio) / 2.0f;
+            basic_viewport.extent.w = ratio;
           }
 
-          computed_viewport.offset = viewport.offset * expected_viewport.extent + expected_viewport.offset;
-          computed_viewport.extent = viewport.extent * expected_viewport.extent;
+          m_computed_viewport.offset = basic_viewport.offset * viewport.extent + viewport.offset;
+          m_computed_viewport.extent = basic_viewport.extent * viewport.extent;
           break;
         }
       case CameraType::Locked:
         {
-          Vec2F size = expected_size;
-          const Vec2F viewport_size = framebuffer_size * expected_viewport.extent;
+          const Vec2F viewport_size = framebuffer_size * viewport.extent;
 
-          RectF viewport;
+          RectF basic_viewport;
 
-          if (size.w > viewport_size.w) {
-            viewport.offset.x = 0.0f;
-            viewport.extent.w = 1.0f;
-            size.w = viewport_size.w;
+          if (m_computed_size.w > viewport_size.w) {
+            basic_viewport.offset.x = 0.0f;
+            basic_viewport.extent.w = 1.0f;
+            m_computed_size.w = viewport_size.w;
           } else {
-            viewport.extent.w = size.w / viewport_size.w;
-            viewport.offset.x = (1.0f - size.w) / 2.0f;
+            basic_viewport.extent.w = m_computed_size.w / viewport_size.w;
+            basic_viewport.offset.x = (1.0f - m_computed_size.w) / 2.0f;
           }
 
-          if (size.h > viewport_size.h) {
-            viewport.offset.y = 0.0f;
-            viewport.extent.h = 1.0f;
-            size.h = viewport_size.h;
+          if (m_computed_size.h > viewport_size.h) {
+            basic_viewport.offset.y = 0.0f;
+            basic_viewport.extent.h = 1.0f;
+            m_computed_size.h = viewport_size.h;
           } else {
-            viewport.extent.h = size.h / viewport_size.h;
-            viewport.offset.y = (1.0f - size.h) / 2.0f;
+            basic_viewport.extent.h = m_computed_size.h / viewport_size.h;
+            basic_viewport.offset.y = (1.0f - m_computed_size.h) / 2.0f;
           }
 
-          computed_size = size;
-          computed_viewport = viewport;
+          m_computed_viewport = basic_viewport;
           break;
         }
       case CameraType::Screen:
         {
-          const Vec2F viewport_size = framebuffer_size * expected_viewport.extent;
+          const Vec2F viewport_size = framebuffer_size * viewport.extent;
 
-          computed_size = viewport_size;
+          m_computed_size = viewport_size;
           center = viewport_size / 2.0f;
           break;
         }
@@ -131,18 +123,18 @@ namespace gf {
 
   RectI Camera::compute_viewport(Vec2I framebuffer_size) const
   {
-    RectI viewport;
-    viewport.offset.x = static_cast<int>(std::lround(static_cast<float>(framebuffer_size.w) * computed_viewport.offset.x));
-    viewport.offset.y = static_cast<int>(std::lround(static_cast<float>(framebuffer_size.h) * computed_viewport.offset.y));
-    viewport.extent.w = static_cast<int>(std::lround(static_cast<float>(framebuffer_size.w) * computed_viewport.extent.w));
-    viewport.extent.h = static_cast<int>(std::lround(static_cast<float>(framebuffer_size.h) * computed_viewport.extent.h));
-    return viewport;
+    RectI actual_viewport;
+    actual_viewport.offset.x = static_cast<int>(std::lround(static_cast<float>(framebuffer_size.w) * m_computed_viewport.offset.x));
+    actual_viewport.offset.y = static_cast<int>(std::lround(static_cast<float>(framebuffer_size.h) * m_computed_viewport.offset.y));
+    actual_viewport.extent.w = static_cast<int>(std::lround(static_cast<float>(framebuffer_size.w) * m_computed_viewport.extent.w));
+    actual_viewport.extent.h = static_cast<int>(std::lround(static_cast<float>(framebuffer_size.h) * m_computed_viewport.extent.h));
+    return actual_viewport;
   }
 
   Mat3F Camera::compute_view_matrix() const
   {
-    const float sx = 2.0f / computed_size.w;
-    const float sy = 2.0f / computed_size.h;
+    const float sx = 2.0f / m_computed_size.w;
+    const float sy = 2.0f / m_computed_size.h;
     const float cos_v = std::cos(rotation);
     const float sin_v = std::sin(rotation);
     const float tx = center.x;
