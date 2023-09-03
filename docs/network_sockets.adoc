@@ -9,7 +9,7 @@ xref:reference.adoc[< Back to reference]
 
 == Types
 
-[#_socket]
+[#socket]
 === `gf::Socket`
 
 [source]
@@ -20,7 +20,7 @@ class Socket;
 
 `Socket` implements a link:https://en.wikipedia.org/wiki/Network_socket[network socket]. xref:Socket.adoc[*Read more...*]
 
-[#_socket_address]
+[#socket_address]
 === `gf::SocketAddress`
 
 [source]
@@ -31,7 +31,7 @@ class SocketAddress;
 
 `SocketAddress` implements a link:https://en.wikipedia.org/wiki/IP_address[network address]. xref:SocketAddress.adoc[*Read more...*]
 
-[#_socket_address_format]
+[#socket_address_format]
 === `gf::SocketAddressFormat`
 
 [source]
@@ -54,9 +54,9 @@ A socket address format used to transform a socket address to a string.
 | Use a numeric form for the address
 |===
 
-See also: <<_socket_address>>
+See also: <<socket_address>>
 
-[#_socket_family]
+[#socket_family]
 === `gf::SocketFamily`
 
 [source]
@@ -82,9 +82,9 @@ A socket family indicates the type of socket. The family can be specified explic
 | IPv6 (link:https://en.wikipedia.org/wiki/IPv6[Internet Protocol version 6])
 |===
 
-See also: <<_socket_address>>
+See also: <<socket_address>>
 
-[#_socket_result]
+[#socket_result]
 === `gf::SocketResult`
 
 [source]
@@ -95,9 +95,9 @@ using SocketResult = Result<std::size_t, SocketStatus>;
 
 The result of a socket operation: either a size of the data that was sent or received, or a status of the connection.
 
-See also: <<_socket_status>>
+See also: <<socket_status>>
 
-[#_socket_selector]
+[#socket_selector]
 === `gf::SocketSelector`
 
 [source]
@@ -108,7 +108,7 @@ class SocketSelector;
 
 `SocketSelector` can wait for one or more sockets to become ready to use. xref:SocketSelector.adoc[*Read more...*]
 
-[#_socket_selector_status]
+[#socket_selector_status]
 === `gf::SocketSelectorStatus`
 
 [source]
@@ -134,9 +134,9 @@ The status of the selector.
 | An error occurred.
 |===
 
-See also: <<_socket_selector>>
+See also: <<socket_selector>>
 
-[#_socket_status]
+[#socket_status]
 === `gf::SocketStatus`
 
 [source]
@@ -162,9 +162,9 @@ The status of a socket operation in case it did not send any data.
 | An error occurred.
 |===
 
-See also: <<_socket_result>>
+See also: <<socket_result>>
 
-[#_tcp_listener]
+[#tcp_listener]
 === `gf::TcpListener`
 
 [source]
@@ -175,7 +175,7 @@ class TcpListener : public Socket;
 
 A listener in the link:https://en.wikipedia.org/wiki/Transmission_Control_Protocol[Transmission Control Protocol (TCP)]. xref:TcpListener.adoc[*Read more...*]
 
-[#_tcp_socket]
+[#tcp_socket]
 === `gf::TcpSocket`
 
 [source]
@@ -186,7 +186,7 @@ class TcpSocket : public Socket;
 
 A socket for the link:https://en.wikipedia.org/wiki/Transmission_Control_Protocol[Transmission Control Protocol (TCP)]. xref:TcpSocket.adoc[*Read more...*]
 
-[#_udp_socket]
+[#udp_socket]
 === `gf::UdpSocket`
 
 [source]

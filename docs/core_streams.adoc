@@ -7,8 +7,8 @@ The streams component provides several tools for input et ouput.
 
 The base classes for all inputs and outputs are in `<gf2/Stream.h>`:
 
-- <<_input_stream>>
-- <<_output_stream>>
+- <<input_stream>>
+- <<output_stream>>
 
 The various implementations of streams are in `<gf2/Streams.h>` (with a final `s`).
 
@@ -16,7 +16,7 @@ xref:reference.adoc[< Back to reference]
 
 == Types
 
-[#_buffer_input_stream]
+[#buffer_input_stream]
 === `gf::BufferInputStream`
 
 [source]
@@ -27,9 +27,9 @@ class BufferInputStream : public InputStream;
 
 `BufferInputStream` is an input stream based on a dynamic size buffer. xref:BufferInputStream.adoc[*Read more...*]
 
-See also: <<_buffer_output_stream>>
+See also: <<buffer_output_stream>>
 
-[#_buffer_output_stream]
+[#buffer_output_stream]
 === `gf::BufferOutputStream`
 
 [source]
@@ -40,9 +40,9 @@ class BufferOutputStream : public OutputStream;
 
 `BufferOutputStream` is an output stream based on dynamic size buffer. xref:BufferOutputStream.adoc[*Read more...*]
 
-See also: <<_buffer_input_stream>>
+See also: <<buffer_input_stream>>
 
-[#_compressed_input_stream]
+[#compressed_input_stream]
 === `gf::CompressedInputStream`
 
 [source]
@@ -53,9 +53,9 @@ class CompressedInputStream : public InputStream;
 
 `CompressedInputStream` is an input stream based on another compressed stream. xref:CompressedInputStream.adoc[*Read more...*]
 
-See also: <<_compressed_output_stream>>
+See also: <<compressed_output_stream>>
 
-[#_compressed_output_stream]
+[#compressed_output_stream]
 === `gf::CompressedOutputStream`
 
 [source]
@@ -66,9 +66,9 @@ class CompresedOutputStream : public OutputStream;
 
 `CompressedOutputStream` is an output stream based on a another compressed stream. xref:CompressedOutputStream.adoc[*Read more...*]
 
-See also: <<_compressed_input_stream>>
+See also: <<compressed_input_stream>>
 
-[#_file_input_stream]
+[#file_input_stream]
 === `gf::FileInputStream`
 
 [source]
@@ -79,9 +79,9 @@ class FileInputStream : public InputStream;
 
 `FileInputStream` is an input stream based on a file. xref:FileInputStream.adoc[*Read more...*]
 
-See also: <<_file_output_stream>>
+See also: <<file_output_stream>>
 
-[#_file_output_stream]
+[#file_output_stream]
 === `gf::FileOutputStream`
 
 [source]
@@ -92,9 +92,9 @@ class FileOutputStream : public OutputStream;
 
 `FileOutputStream` is an output stream based on a file. xref:FileOutputStream.adoc[*Read more...*]
 
-See also: <<_file_input_stream>>
+See also: <<file_input_stream>>
 
-[#_input_stream]
+[#input_stream]
 === `gf::InputStream`
 
 [source]
@@ -105,9 +105,9 @@ class InputStream;
 
 `InputStream` is the base class for all input streams. xref:InputStream.adoc[*Read more...*]
 
-See also: <<_output_stream>>
+See also: <<output_stream>>
 
-[#_memory_input_stream]
+[#memory_input_stream]
 === `gf::MemoryInputStream`
 
 [source]
@@ -118,9 +118,9 @@ class MemoryInputStream : public InputStream;
 
 `MemoryInputStream` is an input stream based on a fixed-size memory. xref:MemoryInputStream.adoc[*Read more...*]
 
-See also: <<_memory_output_stream>>
+See also: <<memory_output_stream>>
 
-[#_memory_output_stream]
+[#memory_output_stream]
 === `gf::MemoryOutputStream`
 
 [source]
@@ -131,9 +131,9 @@ class MemoryOutputStream : public OutputStream;
 
 `MemoryOutputStream` is an output stream based on a fixed-size memory. xref:MemoryOutputStream.adoc[*Read more...*]
 
-See also: <<_memory_input_stream>>
+See also: <<memory_input_stream>>
 
-[#_output_stream]
+[#output_stream]
 === `gf::OutputStream`
 
 [source]
@@ -144,4 +144,4 @@ class OutputStream;
 
 `OutputStream` is the base class for all output streams. xref:OutputStream.adoc[*Read more...*]
 
-See also: <<_input_stream>>
+See also: <<input_stream>>

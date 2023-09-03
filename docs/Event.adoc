@@ -33,51 +33,51 @@ See also: xref:EventType.adoc[`EventType`]
 | Name | Type | Tags
 
 | `window`
-| xref:graphics_events.adoc#_window_event[`WindowEvent`]
+| xref:graphics_events.adoc#window_event[`WindowEvent`]
 | `gf::EventType::WindowShown`, `gf::EventType::WindowHidden`, `gf::EventType::WindowExposed`, `gf::EventType::WindowMinimized`, `gf::EventType::WindowMaximized`, `gf::EventType::WindowRestored`, `gf::EventType::WindowClosed`, `gf::EventType::MouseFocusGained`, `gf::EventType::MouseFocusLost`, `gf::EventType::KeyboardFocusGained`, `gf::EventType::KeyboardFocusLost`
 
 | `resize`
-| xref:graphics_events.adoc#_resize_event[`ResizeEvent`]
+| xref:graphics_events.adoc#resize_event[`ResizeEvent`]
 | `gf::EventType::Resized`
 
 | `key`
-| xref:graphics_events.adoc#_key_event[`KeyEvent`]
+| xref:graphics_events.adoc#key_event[`KeyEvent`]
 | `gf::EventType::KeyPressed`, `gf::EventType::KeyRepeated`, `gf::EventType::KeyReleased`
 
 | `text`
-| xref:graphics_events.adoc#_text_event[`TextEvent`]
+| xref:graphics_events.adoc#text_event[`TextEvent`]
 | `gf::EventType::TextEntered`
 
 | `mouse_button`
-| xref:graphics_events.adoc#_mouse_button_event[`MouseButtonEvent`]
+| xref:graphics_events.adoc#mouse_button_event[`MouseButtonEvent`]
 | `gf::EventType::MouseButtonPressed`, `gf::EventType::MouseButtonReleased`
 
 | `mouse_motion`
-| xref:graphics_events.adoc#_mouse_motion_event[`MouseMotionEvent`]
+| xref:graphics_events.adoc#mouse_motion_event[`MouseMotionEvent`]
 | `gf::EventType::MouseMoved`
 
 | `mouse_wheel`
-| xref:graphics_events.adoc#_mouse_wheel_event[`MouseWheelEvent`]
+| xref:graphics_events.adoc#mouse_wheel_event[`MouseWheelEvent`]
 | `gf::EventType::MouseWheelScrolled`
 
 | `gamepad_axis`
-| xref:graphics_events.adoc#_gamepad_axis_event[`GamepadAxisEvent`]
+| xref:graphics_events.adoc#gamepad_axis_event[`GamepadAxisEvent`]
 | `gf::EventType::GamepadAxisMoved`
 
 | `gamepad_button`
-| xref:graphics_events.adoc#_gamepad_button_event[`GamepadButtonEvent`]
+| xref:graphics_events.adoc#gamepad_button_event[`GamepadButtonEvent`]
 | `gf::EventType::GamepadButtonPressed`, `gf::EventType::GamepadButtonReleased`
 
 | `gamepad_connection`
-| xref:graphics_events.adoc#_gamepad_connection_event[`GamepadConnectionEvent`]
+| xref:graphics_events.adoc#gamepad_connection_event[`GamepadConnectionEvent`]
 | `gf::EventType::GamepadConnected`
 
 | `gamepad_disconnection`
-| xref:graphics_events.adoc#_gamepad_disconnection_event[`GamepadDisconnectionEvent`]
+| xref:graphics_events.adoc#gamepad_disconnection_event[`GamepadDisconnectionEvent`]
 | `gf::EventType::GamepadDisconnected`
 
 | `touch`
-| xref:graphics_events.adoc#_touch_event[`TouchEvent`]
+| xref:graphics_events.adoc#touch_event[`TouchEvent`]
 | `gf::EventType::TouchBegan`, `gf::EventType::TouchMoved`, `gf::EventType::TouchEnded`
 |===
 

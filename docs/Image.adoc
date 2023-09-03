@@ -40,7 +40,7 @@ Image(InputStream& stream); <6>
 <5> Constructor from a file located at `filename`.
 <6> Constructor from an xref:InputStream.adoc[`InputStream`].
 
-[#_operator_index]
+[#operator_index]
 === `operator()`
 
 [source]
@@ -50,7 +50,7 @@ Color operator()(Vec2I position) const;
 
 Get the color at `position`.
 
-See also: <<_put_pixel>>
+See also: <<put_pixel>>
 
 === `position_range`
 
@@ -70,7 +70,7 @@ void put_pixel(Vec2I position, Color color);
 
 Change the color at `position`.
 
-See also: <<_operator_index>>
+See also: <<operator_index>>
 
 === `raw_data`
 
@@ -81,7 +81,7 @@ const uint8_t* raw_data() const;
 
 Get the raw data of the image.
 
-See also: <<_raw_size>>
+See also: <<raw_size>>
 
 === `raw_size`
 
@@ -92,7 +92,7 @@ std::size_t raw_size() const;
 
 Get the raw size of the image.
 
-See also: <<_raw_data>>, <<_size>>
+See also: <<raw_data>>, <<size>>
 
 === `save_to_file`
 
@@ -112,7 +112,7 @@ Vec2I size() const;
 
 Get the size of the image.
 
-See also: <<_raw_size>>
+See also: <<raw_size>>
 
 === `sub_image`
 

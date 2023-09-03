@@ -228,7 +228,7 @@ constexpr Vec3<T>& operator/=(Vec3<T>& lhs, U rhs); <2>
 
 == Functions
 
-[#_vec3]
+[#vec3]
 === `gf::vec`
 
 [source]

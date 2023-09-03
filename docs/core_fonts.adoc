@@ -9,7 +9,7 @@ xref:reference.adoc[< Back to reference]
 
 == Types
 
-[#_font]
+[#font]
 === `gf::Font`
 
 [source]
@@ -20,7 +20,7 @@ class Font;
 
 `Font` represents a link:https://en.wikipedia.org/wiki/Font[font], i.e. a set of glyph with the same weight and style. xref:Font.adoc[*Read more...*]
 
-[#_font_glyph]
+[#font_glyph]
 === `gf::FontGlyph`
 
 [source]
@@ -50,7 +50,7 @@ struct FontGlyph;
 |===
 
 
-[#_font_manager]
+[#font_manager]
 === `gf::FontManager`
 
 [source]

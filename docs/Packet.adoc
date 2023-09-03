@@ -15,7 +15,7 @@ xref:network_utilities.adoc[< Back to `network` Utilities]
 class Packet;
 ----
 
-A `Packet` is a sequence of bytes that comes from the serialization of a structure. The structure must have a static member `type` of type xref:Id.adoc[`Id`] that identifies the structure. To transform a structure in a sequence of bytes, you must use <<_set>>, and then use this sequence of bytes in a network communication (for example). To transform a sequence of bytes that may come from a network communication into a structure, you must use <<_as>>.
+A `Packet` is a sequence of bytes that comes from the serialization of a structure. The structure must have a static member `type` of type xref:Id.adoc[`Id`] that identifies the structure. To transform a structure in a sequence of bytes, you must use <<set>>, and then use this sequence of bytes in a network communication (for example). To transform a sequence of bytes that may come from a network communication into a structure, you must use <<as>>.
 
 == Member functions
 
@@ -30,7 +30,7 @@ T as();
 
 Deserialize the underlying bytes into an object.
 
-See also: <<_set>>
+See also: <<set>>
 
 === `as_span`
 
@@ -61,7 +61,7 @@ void set(const T& data);
 
 Serialize the object into a sequence of bytes.
 
-See also: <<_as>>
+See also: <<as>>
 
 === `type`
 

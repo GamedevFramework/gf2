@@ -9,50 +9,50 @@ xref:symbols.adoc[< Back to symbols]
 
 == A
 
-- xref:core_math.adoc#_absdiff[`gf::absdiff`] function
-- xref:core_math.adoc#_almost_equals[`gf::almost_equals`] function
-- xref:core_vec.adoc#_angle[`gf::angle`] function
-- xref:core_vec.adoc#_angle_to[`gf::angle_to`] function
+- xref:core_math.adoc#absdiff[`gf::absdiff`] function
+- xref:core_math.adoc#almost_equals[`gf::almost_equals`] function
+- xref:core_vec.adoc#angle[`gf::angle`] function
+- xref:core_vec.adoc#angle_to[`gf::angle_to`] function
 
 == B
 
 == C
 
-- xref:core_vec.adoc#_chebyshev_distance[`gf::chebyshev_distance`] function
-- xref:core_vec.adoc#_chebyshev_length[`gf::chebyshev_length`] function
-- xref:core_math.adoc#_clamp[`gf::clamp`] function
-- xref:core_math.adoc#_cosine_step[`gf::cosine_step`] function
-- xref:core_vec.adoc#_cross2[`gf::cross`] function (`Vec2<T>`)
-- xref:core_vec.adoc#_cross3[`gf::cross`] function (`Vec3<T>`)
-- xref:core_math.adoc#_cube[`gf::cube`] function
-- xref:core_math.adoc#_cubic_step[`gf::cubic_step`] function
+- xref:core_vec.adoc#chebyshev_distance[`gf::chebyshev_distance`] function
+- xref:core_vec.adoc#chebyshev_length[`gf::chebyshev_length`] function
+- xref:core_math.adoc#clamp[`gf::clamp`] function
+- xref:core_math.adoc#cosine_step[`gf::cosine_step`] function
+- xref:core_vec.adoc#cross2[`gf::cross`] function (`Vec2<T>`)
+- xref:core_vec.adoc#cross3[`gf::cross`] function (`Vec3<T>`)
+- xref:core_math.adoc#cube[`gf::cube`] function
+- xref:core_math.adoc#cubic_step[`gf::cubic_step`] function
 
 == D
 
-- xref:core_color.adoc#_darker[`gf::darker`] function
-- xref:core_math.adoc#_degrees_to_radians[`gf::degrees_to_radians`] function
-- xref:core_vec.adoc#_dirx[`gf::dirx`] function
-- xref:core_vec.adoc#_diry[`gf::diry`] function
-- xref:core_vec.adoc#_diry[`gf::dirz`] function
-- xref:core_vec.adoc#_dot[`gf::dot`] function
+- xref:core_color.adoc#darker[`gf::darker`] function
+- xref:core_math.adoc#degrees_to_radians[`gf::degrees_to_radians`] function
+- xref:core_vec.adoc#dirx[`gf::dirx`] function
+- xref:core_vec.adoc#diry[`gf::diry`] function
+- xref:core_vec.adoc#diry[`gf::dirz`] function
+- xref:core_vec.adoc#dot[`gf::dot`] function
 
 == E
 
-- xref:core_vec.adoc#_euclidean_distance[`gf::euclidean_distance`] function
-- xref:core_vec.adoc#_euclidean_length[`gf::euclidean_length`] function
+- xref:core_vec.adoc#euclidean_distance[`gf::euclidean_distance`] function
+- xref:core_vec.adoc#euclidean_length[`gf::euclidean_length`] function
 
 == F
 
 == G
 
-- xref:core_color.adoc#_gray1[`gf::gray`] function
+- xref:core_color.adoc#gray1[`gf::gray`] function
 
 == H
 
 == I
 
-- xref:core_container.adoc#_index_range_function[`gf::index_range`] function
-- xref:core_vec.adoc#_inverse_triple_product[`gf::inverse_triple_product`] function
+- xref:core_container.adoc#index_range_function[`gf::index_range`] function
+- xref:core_vec.adoc#inverse_triple_product[`gf::inverse_triple_product`] function
 
 
 == J
@@ -61,63 +61,63 @@ xref:symbols.adoc[< Back to symbols]
 
 == L
 
-- xref:core_math.adoc#_lerp[`gf::lerp`] function
-- xref:core_color.adoc#_lighter[`gf::lighter`] function
-- xref:core_math.adoc#_linear_step[`gf::linear_step`] function
+- xref:core_math.adoc#lerp[`gf::lerp`] function
+- xref:core_color.adoc#lighter[`gf::lighter`] function
+- xref:core_math.adoc#linear_step[`gf::linear_step`] function
 
 == M
 
-- xref:core_vec.adoc#_manhattan_distance[`gf::manhattan_distance`] function
-- xref:core_vec.adoc#_manhattan_length[`gf::manhattan_length`] function
+- xref:core_vec.adoc#manhattan_distance[`gf::manhattan_distance`] function
+- xref:core_vec.adoc#manhattan_length[`gf::manhattan_length`] function
 
 == N
 
-- xref:core_vec.adoc#_natural_distance[`gf::natural_distance`] function
-- xref:core_vec.adoc#_natural_length[`gf::natural_length`] function
-- xref:core_vec.adoc#_normalize[`gf::normalize`] function
+- xref:core_vec.adoc#natural_distance[`gf::natural_distance`] function
+- xref:core_vec.adoc#natural_length[`gf::natural_length`] function
+- xref:core_vec.adoc#normalize[`gf::normalize`] function
 
 == O
 
-- xref:core_color.adoc#_opaque[`gf::opaque`] function
+- xref:core_color.adoc#opaque[`gf::opaque`] function
 
 == P
 
-- xref:core_vec.adoc#_perp[`gf::perp`] function
-- xref:core_container.adoc#_position_range_function[`gf::position_range`] function
-- xref:core_vec.adoc#_project_onto[`gf::project_onto`] function
-- xref:core_vec.adoc#_projx[`gf::projx`] function
-- xref:core_vec.adoc#_projy[`gf::projy`] function
-- xref:core_vec.adoc#_projz[`gf::projz`] function
+- xref:core_vec.adoc#perp[`gf::perp`] function
+- xref:core_container.adoc#position_range_function[`gf::position_range`] function
+- xref:core_vec.adoc#project_onto[`gf::project_onto`] function
+- xref:core_vec.adoc#projx[`gf::projx`] function
+- xref:core_vec.adoc#projy[`gf::projy`] function
+- xref:core_vec.adoc#projz[`gf::projz`] function
 
 == Q
 
-- xref:core_math.adoc#_quintic_step[`gf::quintic_step`] function
+- xref:core_math.adoc#quintic_step[`gf::quintic_step`] function
 
 == R
 
-- xref:core_math.adoc#_radians_to_degrees[`gf::radians_to_degrees`] function
-- xref:core_container.adoc#_range_function[`gf::range`] function
+- xref:core_math.adoc#radians_to_degrees[`gf::radians_to_degrees`] function
+- xref:core_container.adoc#range_function[`gf::range`] function
 
 
 == S
 
-- xref:core_math.adoc#_sign[`gf::sign`] function
-- xref:core_math.adoc#_square[`gf::square`] function
-- xref:core_vec.adoc#_square_distance[`gf::square_distance`] function
-- xref:core_vec.adoc#_square_length[`gf::square_length`] function
+- xref:core_math.adoc#sign[`gf::sign`] function
+- xref:core_math.adoc#square[`gf::square`] function
+- xref:core_vec.adoc#square_distance[`gf::square_distance`] function
+- xref:core_vec.adoc#square_length[`gf::square_length`] function
 
 == T
 
-- xref:core_vec.adoc#_triple_product[`gf::triple_product`] function
+- xref:core_vec.adoc#triple_product[`gf::triple_product`] function
 
 == U
 
-- xref:core_vec.adoc#_unit[`gf::unit`] function
+- xref:core_vec.adoc#unit[`gf::unit`] function
 
 == V
 
-- xref:Vec2.adoc#_vec2[`gf::vec`] function (`Vec2<T>`)
-- xref:Vec3.adoc#_vec3[`gf::vec`] function (`Vec3<T>`)
+- xref:Vec2.adoc#vec2[`gf::vec`] function (`Vec2<T>`)
+- xref:Vec3.adoc#vec3[`gf::vec`] function (`Vec3<T>`)
 
 == W
 

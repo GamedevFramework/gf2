@@ -26,7 +26,7 @@ AudioCone cone() const;
 
 Get the cone for directional attenuation.
 
-See also: <<_set_cone>>
+See also: <<set_cone>>
 
 === `direction`
 
@@ -37,7 +37,7 @@ Vec3F direction() const;
 
 Get the direction of the listener in 3D.
 
-See also: <<_set_direction>>
+See also: <<set_direction>>
 
 === `enabled`
 
@@ -48,7 +48,7 @@ bool enabled() const;
 
 Check if the listener is enabled.
 
-See also: <<_set_enabled>>
+See also: <<set_enabled>>
 
 === `position`
 
@@ -59,7 +59,7 @@ Vec3F position() const;
 
 Get the position of the listener in 3D.
 
-See also: <<_set_position>>
+See also: <<set_position>>
 
 === `set_cone`
 
@@ -70,7 +70,7 @@ void set_cone(AudioCone cone);
 
 Set the cone for directional attenuation.
 
-See also: <<_cone>>
+See also: <<cone>>
 
 === `set_direction`
 
@@ -81,7 +81,7 @@ void set_direction(Vec3F direction);
 
 Set the direction of the listener in 3D.
 
-See also: <<_direction>>
+See also: <<direction>>
 
 === `set_enabled`
 
@@ -92,7 +92,7 @@ void set_enabled(bool enabled);
 
 Enable or disable the listener.
 
-See also: <<_enabled>>
+See also: <<enabled>>
 
 === `set_position`
 
@@ -103,7 +103,7 @@ void set_position(Vec3F position);
 
 Set the position of the listener in 3D.
 
-See also: <<_position>>
+See also: <<position>>
 
 === `set_velocity`
 
@@ -114,7 +114,7 @@ void set_velocity(Vec3F velocity);
 
 Set the velocity of the listener in 3D.
 
-See also: <<_velocity>>
+See also: <<velocity>>
 
 === `set_world_up`
 
@@ -125,7 +125,7 @@ void set_world_up(Vec3F direction);
 
 Set the up vector of the listener in 3D.
 
-See also: <<_world_up>>
+See also: <<world_up>>
 
 === `velocity`
 
@@ -136,7 +136,7 @@ Vec3F velocity() const;
 
 Get the velocity of the listener in 3D.
 
-See also: <<_set_velocity>>
+See also: <<set_velocity>>
 
 === `world_up`
 
@@ -147,4 +147,4 @@ Vec3F world_up() const;
 
 Get the up vector of the listener in 3D.
 
-See also: <<_set_world_up>>
+See also: <<set_world_up>>

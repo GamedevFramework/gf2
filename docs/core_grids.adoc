@@ -18,7 +18,7 @@ See also: xref:article_grids_howto.adoc[`Grids How To`]
 
 == Types
 
-[#_any_grid]
+[#any_grid]
 === `gf::AnyGrid`
 
 [source]
@@ -29,10 +29,10 @@ class AnyGrid;
 
 `AnyGrid` can contain any type of grid. xref:AnyGrid.adoc[*Read more...*]
 
-See also: <<_hexagonal_grid>>, <<_isometric_grid>>, <<_orthogonal_grid>>, <<_staggered_grid>>
+See also: <<hexagonal_grid>>, <<isometric_grid>>, <<orthogonal_grid>>, <<staggered_grid>>
 
 
-[#_cells_axis]
+[#cells_axis]
 === `gf::CellAxis`
 
 [source]
@@ -56,7 +56,7 @@ The axis that is shifted in staggered and hexagonal maps.
 |===
 
 
-[#_cell_flip]
+[#cell_flip]
 === `gf::CellFlip`
 
 [source]
@@ -88,7 +88,7 @@ The way a cell may be flipped. `CellFlip` can be used with xref:Flags.adoc[`Flag
 | The cell is rotated by 120°
 |===
 
-[#_cells_index]
+[#cells_index]
 === `gf::CellIndex`
 
 [source]
@@ -112,7 +112,7 @@ The indices that are shifted along the shifted axis.
 |===
 
 
-[#_cells_neighbor_query]
+[#cells_neighbor_query]
 === `gf::CellNeighborQuery`
 
 [source]
@@ -136,7 +136,7 @@ The specification of the query when asking for neighborhood. `CellNeighborQuery`
 |===
 
 
-[#_grid_orientation]
+[#grid_orientation]
 === `gf::GridOrientation`
 
 [source]
@@ -168,7 +168,7 @@ The orientation of the grid.
 |===
 
 
-[#_hexagonal_grid]
+[#hexagonal_grid]
 === `gf::HexagonalGrid`
 
 [source]
@@ -179,7 +179,7 @@ class HexagonalGrid;
 
 An hexagonal grid is a grid with hexagonal cells organized in a rectangle. xref:HexagonalGrid.adoc[*Read more...*]
 
-[#_isometric_grid]
+[#isometric_grid]
 === `gf::IsometricGrid`
 
 [source]
@@ -190,7 +190,7 @@ class IsometricGrid;
 
 An isometric grid is a grid with rhombus cells organized in a rhombus. xref:IsometricGrid.adoc[*Read more...*]
 
-[#_orthogonal_grid]
+[#orthogonal_grid]
 === `gf::OrthogonalGrid`
 
 [source]
@@ -201,7 +201,7 @@ class OrthogonalGrid;
 
 An orthogonal grid is a grid with rectangle cells organized in a rectangle. xref:OrthogonalGrid.adoc[*Read more...*]
 
-[#_staggered_grid]
+[#staggered_grid]
 === `gf::StaggeredGrid`
 
 [source]

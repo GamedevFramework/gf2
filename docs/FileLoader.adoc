@@ -17,7 +17,7 @@ class FileLoader;
 
 `FileLoader` can take a set of base directories for searching files. The directories are searched in the same order as their insertion in the loader.
 
-`FileLoader` provides a generic loader, so you should use xref:core_resources.adoc#_loader_for[`loader_for`] in order to use it with xref:ResourceRegistry.adoc[`ResourceRegistry`].
+`FileLoader` provides a generic loader, so you should use xref:core_resources.adoc#loader_for[`loader_for`] in order to use it with xref:ResourceRegistry.adoc[`ResourceRegistry`].
 
 == Member Functions
 

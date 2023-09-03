@@ -15,7 +15,7 @@ xref:core_resources.adoc[< Back to `core` Resources]
 class ResourceBundle;
 ----
 
-A resource bundle is built around a user-provided callback that can be called to load or unload a set of resources. When called, the callback can use <<_handle>> to give the list of resources to be loaded or unloaded dynamically.
+A resource bundle is built around a user-provided callback that can be called to load or unload a set of resources. When called, the callback can use <<handle>> to give the list of resources to be loaded or unloaded dynamically.
 
 See also: xref:ResourceManager.adoc[`ResourceManager`]
 
@@ -28,7 +28,7 @@ See also: xref:ResourceManager.adoc[`ResourceManager`]
 enum class Action : uint8_t;
 ----
 
-The action to be taken in the <<_handle>> function.
+The action to be taken in the <<handle>> function.
 
 .Enumerators for `gf::ResourceBundle::Action`
 [cols="1,1"]
@@ -54,7 +54,7 @@ ResourceBundle(F&& callback); <2>
 ----
 
 <1> Default constructor.
-<2> Constructor with a callback. See <<_set_callback>>.
+<2> Constructor with a callback. See <<set_callback>>.
 
 === `handle`
 
@@ -91,7 +91,7 @@ void load_from(ResourceManager& manager);
 
 Load all the resources of the bundle. Actually call the callback with the load action.
 
-See also: <<_unload_from>>
+See also: <<unload_from>>
 
 === `set_callback`
 
@@ -101,9 +101,9 @@ template<typename F>
 void set_callback(F&& callback);
 ----
 
-Set the callback for the bundle. The callback must have the following signature: `void(ResourceBundle&, ResourceManager&, ResourceBundleAction)`. The manager and the action can be passed to <<_handle>>.
+Set the callback for the bundle. The callback must have the following signature: `void(ResourceBundle&, ResourceManager&, ResourceBundleAction)`. The manager and the action can be passed to <<handle>>.
 
-See also: <<_handle>>
+See also: <<handle>>
 
 === `unload_from`
 
@@ -114,4 +114,4 @@ void unload_from(ResourceManager& manager);
 
 Unload all the resources of the bundle. Actually call the callback with the unload action.
 
-See also: <<_load_from>>
+See also: <<load_from>>

@@ -58,7 +58,7 @@ SocketResult send_bytes(Span<const uint8_t> buffer);
 
 Send a whole buffer to the socket. This function ensures the whole buffer is sent unless an error occurs.
 
-See also: <<_recv_bytes>>
+See also: <<recv_bytes>>
 
 === `send_packet`
 
@@ -69,7 +69,7 @@ SocketResult send_packet(const Packet& packet);
 
 Send a packet to the socket.
 
-See also: <<_recv_packet>>
+See also: <<recv_packet>>
 
 === `send_raw_bytes`
 
@@ -80,7 +80,7 @@ SocketResult send_raw_bytes(Span<const uint8_t> buffer);
 
 Send some bytes over to the socket.
 
-See also: <<_recv_raw_bytes>>
+See also: <<recv_raw_bytes>>
 
 === `recv_bytes`
 
@@ -91,7 +91,7 @@ SocketResult recv_bytes(Span<uint8_t> buffer);
 
 Receive a whole buffer from the socket. This function ensures the whole buffer is received unless an error occurs.
 
-See also: <<_send_bytes>>
+See also: <<send_bytes>>
 
 === `recv_packet`
 
@@ -102,7 +102,7 @@ SocketResult recv_packet(Packet& packet);
 
 Receive a packet from the socket.
 
-See also: <<_send_packet>>
+See also: <<send_packet>>
 
 === `recv_raw_bytes`
 
@@ -113,7 +113,7 @@ SocketResult recv_raw_bytes(Span<uint8_t> buffer);
 
 Receive some bytes from the socket.
 
-See also: <<_send_raw_bytes>>
+See also: <<send_raw_bytes>>
 
 === `remote_address`
 

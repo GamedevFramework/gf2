@@ -21,7 +21,7 @@ See also: xref:FileOutputStream.adoc[`FileOutputStream`]
 
 == Member Functions
 
-[#_constructors]
+[#constructors]
 === `FileInputStream` contructors
 
 [source]

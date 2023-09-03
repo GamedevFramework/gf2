@@ -46,7 +46,7 @@ std::string hostname(SocketAddressFormat format = SocketAddressFormat::Unrestric
 
 Get the hostname associated to the address with the given `format`.
 
-See also: <<_service>>
+See also: <<service>>
 
 === `service`
 
@@ -57,4 +57,4 @@ std::string service(SocketAddressFormat format = SocketAddressFormat::Unrestrict
 
 Get the service associated to the address with the given `format`.
 
-See also: <<_hostname>>
+See also: <<hostname>>

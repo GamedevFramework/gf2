@@ -122,7 +122,7 @@ constexpr Rect grow_by(T value) const noexcept;
 
 Grow the rectangle and return the result.
 
-See also: <<_shrink_by>>
+See also: <<shrink_by>>
 
 === `intersection`
 
@@ -133,7 +133,7 @@ constexpr std::optional<Rect> intersection(Rect other) const noexcept;
 
 Compute the intersection of two rectangles, if it exists.
 
-See also <<_intersects>>
+See also <<intersects>>
 
 === `intersects`
 
@@ -144,7 +144,7 @@ constexpr bool intersects(Rect other) const noexcept;
 
 Check if two rectangles intersect.
 
-See also: <<_intersection>>
+See also: <<intersection>>
 
 === `max`
 
@@ -191,7 +191,7 @@ constexpr Rect shrink_by(T value) const noexcept;
 
 Shrink the rectangle and return the result.
 
-See also: <<_grow_by>>
+See also: <<grow_by>>
 
 === `size`
 

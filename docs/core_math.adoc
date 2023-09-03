@@ -9,7 +9,7 @@ xref:reference.adoc[< Back to reference]
 
 == Variables
 
-[#_epsilon]
+[#epsilon]
 === `gf::Epsilon`
 
 [source]
@@ -20,7 +20,7 @@ constexpr float Epsilon;
 
 The link:https://en.wikipedia.org/wiki/Machine_epsilon[machine epsilon].
 
-[#_inv_sqrt2]
+[#inv_sqrt2]
 === `gf::InvSqrt2`
 
 [source]
@@ -31,9 +31,9 @@ constexpr float InvSqrt2;
 
 The stem:[\frac{1}{\sqrt{2}}] constant.
 
-See also: <<_sqrt2>>
+See also: <<sqrt2>>
 
-[#_inv_sqrt3]
+[#inv_sqrt3]
 === `gf::InvSqrt3`
 
 [source]
@@ -44,9 +44,9 @@ constexpr float InvSqrt3;
 
 The stem:[\frac{1}{\sqrt{3}}] constant.
 
-See also: <<_sqrt3>>
+See also: <<sqrt3>>
 
-[#_pi]
+[#pi]
 === `gf::Pi`
 
 [source]
@@ -57,7 +57,7 @@ constexpr float Pi;
 
 The stem:[\pi] constant.
 
-[#_pi2]
+[#pi2]
 === `gf::Pi2`
 
 [source]
@@ -68,7 +68,7 @@ constexpr float Pi2;
 
 The stem:[\frac{\pi}{2}] constant.
 
-[#_pi3]
+[#pi3]
 === `gf::Pi3`
 
 [source]
@@ -79,7 +79,7 @@ constexpr float Pi3;
 
 The stem:[\frac{\pi}{3}] constant.
 
-[#_pi4]
+[#pi4]
 === `gf::Pi4`
 
 [source]
@@ -90,7 +90,7 @@ constexpr float Pi4;
 
 The stem:[\frac{\pi}{4}] constant.
 
-[#_pi6]
+[#pi6]
 === `gf::Pi6`
 
 [source]
@@ -101,7 +101,7 @@ constexpr float Pi6;
 
 The stem:[\frac{\pi}{6}] constant.
 
-[#_sqrt2]
+[#sqrt2]
 === `gf::Sqrt2`
 
 [source]
@@ -112,9 +112,9 @@ constexpr float Sqrt2;
 
 The stem:[\sqrt{2}] constant.
 
-See also: <<_inv_sqrt2>>
+See also: <<inv_sqrt2>>
 
-[#_sqrt3]
+[#sqrt3]
 === `gf::Sqrt3`
 
 [source]
@@ -126,11 +126,11 @@ constexpr float Sqrt3;
 The stem:[\sqrt{3}] constant.
 
 
-See also: <<_inv_sqrt3>>
+See also: <<inv_sqrt3>>
 
 == Types
 
-[#_circ]
+[#circ]
 === `gf::Circ<T>`
 
 [source]
@@ -142,7 +142,7 @@ struct Circ;
 
 A `Circ<T>` represents a circle. xref:Circ.adoc[*Read more...*]
 
-[#_mat3]
+[#mat3]
 === `gf::Mat3<T>`
 
 [source]
@@ -154,7 +154,7 @@ struct Mat3;
 
 A `Mat3<T>` represents affine transformation of 2D vectors (using homogeneous coordinates). xref:Mat3.adoc[*Read mode...*]
 
-[#_rect]
+[#rect]
 === `gf::Rect<T>`
 
 [source]
@@ -166,7 +166,7 @@ struct Rect;
 
 A `Rect<T>` represents an axis-aligned rectangle. xref:Rect.adoc[*Read more...*]
 
-[#_step]
+[#step]
 === `gf::Step<T>`
 
 [source]
@@ -189,9 +189,9 @@ It can be used to smooth a linear interpolation.
 include::snippets/core_math.cc[tag=step]
 ----
 
-See also: <<_linear_step>>, <<_cubic_step>>, <<_quintic_step>>, <<_cosine_step>>
+See also: <<linear_step>>, <<cubic_step>>, <<quintic_step>>, <<cosine_step>>
 
-[#_vec2]
+[#vec2]
 === `gf::Vec2<T>`
 
 [source]
@@ -203,9 +203,9 @@ struct Vec2;
 
 A `Vec2<T>` represents a two-dimension vector. xref:Vec2.adoc[*Read more...*].
 
-See also: <<_vec3>>, xref:core_vec.adoc[vector-related types and functions]
+See also: <<vec3>>, xref:core_vec.adoc[vector-related types and functions]
 
-[#_vec3]
+[#vec3]
 === `gf::Vec3<T>`
 
 [source]
@@ -217,11 +217,11 @@ struct Vec3;
 
 A `Vec3<T>` represents a two-dimension vector. xref:Vec3.adoc[*Read more...*].
 
-See also: <<_vec2>>, xref:core_vec.adoc[vector-related types and functions]
+See also: <<vec2>>, xref:core_vec.adoc[vector-related types and functions]
 
 == Functions
 
-[#_absdiff]
+[#absdiff]
 === `gf::absdiff`
 
 [source]
@@ -237,7 +237,7 @@ This function is defined as:
 \text{absdiff}(a, b) = |a - b|
 ++++
 
-[#_almost_equals]
+[#almost_equals]
 === `gf::almost_equals`
 
 [source]
@@ -249,7 +249,7 @@ constexpr bool almost_equals(T a, T b, T abs_error = ..., T rel_error = ...);
 
 Compare the equality of two floats `a` and `b` considering the `abs_error` the maximum absolute error and `rel_error` the maximum relative error. By default, `abs_error` and `rel_error` are set to the link:https://en.wikipedia.org/wiki/Machine_epsilon[machine epsilon].
 
-[#_clamp]
+[#clamp]
 === `gf::clamp`
 
 [source]
@@ -261,7 +261,7 @@ constexpr T clamp(T val, T lo, T hi);
 
 This function takes a value `val` and returns it if it is in between `lo` and `hi`. If not, the returned value is the nearest value in the range.
 
-[#_cosine_step]
+[#cosine_step]
 === `gf::cosine_step`
 
 [source]
@@ -276,9 +276,9 @@ inline T cosine_step(T t);
 f(t) = (1 - \cos(\pi * t)) * 0.5
 ++++
 
-See also: <<_step>>
+See also: <<step>>
 
-[#_cube]
+[#cube]
 === `gf::cube`
 
 [source]
@@ -290,9 +290,9 @@ constexpr T cube(T val);
 
 For a value stem:[x], the cube value is stem:[x^3].
 
-See also: <<_square>>
+See also: <<square>>
 
-[#_cubic_step]
+[#cubic_step]
 === `gf::cubic_step`
 
 [source]
@@ -314,9 +314,9 @@ Compared to a step, it has the following properties:
 
 This function is also known as link:https://en.wikipedia.org/wiki/Smoothstep[smoothstep].
 
-See also: <<_step>>
+See also: <<step>>
 
-[#_degrees_to_radians]
+[#degrees_to_radians]
 === `gf::degrees_to_radians`
 
 [source]
@@ -328,9 +328,9 @@ constexpr T degrees_to_radians(T degrees);
 
 Convert the angle `degrees` in radians. `T` must be a floating point.
 
-See also: <<_radians_to_degrees>>
+See also: <<radians_to_degrees>>
 
-[#_div_ceil]
+[#div_ceil]
 === `gf::div_ceil`
 
 [source]
@@ -342,9 +342,9 @@ constexpr T div_ceil(T dividend, T divisor);
 
 Compute stem:[\left\lceil\frac{\text{dividend}}{\text{divisor}}\right\rceil]. `dividend` and `divisor` must be integers.
 
-See also: <<_div_floor>>
+See also: <<div_floor>>
 
-[#_div_floor]
+[#div_floor]
 === `gf::div_floor`
 
 [source]
@@ -356,9 +356,9 @@ constexpr T div_floor(T dividend, T divisor);
 
 Compute stem:[\left\lfloor\frac{\text{dividend}}{\text{divisor}}\right\rfloor]. `dividend` and `divisor` must be integers.
 
-See also: <<_div_ceil>>
+See also: <<div_ceil>>
 
-[#_lerp]
+[#lerp]
 === `gf::lerp`
 
 [source]
@@ -371,7 +371,7 @@ constexpr T lerp(T lhs, T rhs, U t);
 This functions returns an interpolated value between two values `lhs` and `rhs` according to a parameter stem:[t]. When stem:[t = 0] then `lhs` is returned, and when stem:[t = 1] then `rhs` is returned.
 
 
-[#_linear_step]
+[#linear_step]
 === `gf::linear_step`
 
 [source]
@@ -386,9 +386,9 @@ constexpr T linear_step(T t);
 f(t) = t
 ++++
 
-See also: <<_step>>
+See also: <<step>>
 
-[#_parity]
+[#parity]
 === `gf::parity`
 
 [source]
@@ -400,7 +400,7 @@ constexpr T parity(T val)
 
 Return stem:[0] if `val` is even and stem:[1] if `val` is odd.
 
-[#_quintic_step]
+[#quintic_step]
 === `gf::quintic_step`
 
 [source]
@@ -424,9 +424,9 @@ Compared to a step, it has the following properties:
 
 This function is also known as link:https://en.wikipedia.org/wiki/Smoothstep#Variations[smootherstep].
 
-See also: <<_step>>
+See also: <<step>>
 
-[#_radians_to_degrees]
+[#radians_to_degrees]
 === `gf::radians_to_degrees`
 
 [source]
@@ -438,9 +438,9 @@ constexpr T radians_to_degrees(T radians);
 
 Convert the angle `radians` in degrees. `T` must be a floating point.
 
-See also: <<_degrees_to_radians>>
+See also: <<degrees_to_radians>>
 
-[#_sign]
+[#sign]
 === `gf::sign`
 
 [source]
@@ -463,7 +463,7 @@ This function is defined as:
 
 See also: link:https://en.wikipedia.org/wiki/Sign_function[Sign function]
 
-[#_square]
+[#square]
 === `gf::square`
 
 [source]
@@ -475,4 +475,4 @@ constexpr T square(T val);
 
 For a value stem:[x], the square value is stem:[x^2].
 
-See also: <<_cube>>
+See also: <<cube>>

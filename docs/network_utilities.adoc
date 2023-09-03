@@ -9,7 +9,7 @@ xref:reference.adoc[< Back to reference]
 
 == Types
 
-[#_packet]
+[#packet]
 === `gf::Packet`
 
 [source]
@@ -20,7 +20,7 @@ class Packet;
 
 `Packet` can ease the serialization of network messages. xref:Packet.adoc[*Read more...*]
 
-[#_queue]
+[#queue]
 === `gf::Queue<T>`
 
 [source]

@@ -33,7 +33,7 @@ using const_reference = const T&;
 
 The type for a constant reference on a value.
 
-See also: <<_reference>>
+See also: <<reference>>
 
 === `handle_type`
 
@@ -53,7 +53,7 @@ using reference = T&;
 
 The type for a reference on a value.
 
-See also: <<_const_reference>>
+See also: <<const_reference>>
 
 === `size_type`
 
@@ -123,7 +123,7 @@ void decrease(handle_type handle);
 
 Modify the heap to take into account a change in the priority of the value (lower priority).
 
-See also: <<_increase>>
+See also: <<increase>>
 
 === `empty`
 
@@ -134,7 +134,7 @@ bool empty() const;
 
 Test if the heap is empty.
 
-See also: <<_size>>
+See also: <<size>>
 
 === `increase`
 
@@ -145,7 +145,7 @@ void increase(handle_type handle);
 
 Modify the heap to take into account a change in the priority of the value (higher priority).
 
-See also: <<_decrease>>
+See also: <<decrease>>
 
 === `pop`
 
@@ -156,7 +156,7 @@ void pop();
 
 Remove the top element from the heap.
 
-See also: <<_push>>, <<_top>>
+See also: <<push>>, <<top>>
 
 === `push`
 
@@ -168,7 +168,7 @@ handle_type push(value_type&& value);
 
 Put an element in the heap. Return a handle to the value in the heap that can be used later for modifying the element.
 
-See also: <<_pop>>
+See also: <<pop>>
 
 === `size`
 
@@ -179,7 +179,7 @@ size_type size() const
 
 Get the number of elements in the heap.
 
-See also: <<_empty>>
+See also: <<empty>>
 
 === `top`
 
@@ -190,7 +190,7 @@ const_reference top() const;
 
 Get a reference to the top element of the heap, i.e. the element with the maximum priority regarding compare operator.
 
-See also: <<_pop>>
+See also: <<pop>>
 
 
 

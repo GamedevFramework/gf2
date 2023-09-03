@@ -232,7 +232,7 @@ constexpr Vec2<T>& operator/=(Vec2<T>& lhs, U rhs); <2>
 
 == Functions
 
-[#_vec2]
+[#vec2]
 === `gf::vec`
 
 [source]

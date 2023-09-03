@@ -68,7 +68,7 @@ constexpr explicit operator bool() const noexcept;
 
 Check if the result is a value.
 
-See also: <<_has_value>>
+See also: <<has_value>>
 
 === `operator\->`
 
@@ -92,7 +92,7 @@ constexpr const T&& operator*() const &&;
 
 Get a reference to the value of the result. The result must hold a value.
 
-See also: <<_value>>
+See also: <<value>>
 
 === `error`
 

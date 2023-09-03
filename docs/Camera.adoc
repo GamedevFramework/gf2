@@ -25,7 +25,7 @@ At the end, `Camera` contains all the information to compute a view matrix.
 | Name | Type | Description
 
 | `type`
-| xref:core_coordinates.adoc#_camera_type[`CameraType`]
+| xref:core_coordinates.adoc#camera_type[`CameraType`]
 | The type of camera.
 
 | `center`

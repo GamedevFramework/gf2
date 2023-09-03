@@ -9,7 +9,7 @@ xref:reference.adoc[< Back to reference]
 
 == Types
 
-[#_array2D]
+[#array2D]
 === `gf::Array2D<T>`
 
 [source]
@@ -21,7 +21,7 @@ class Array2D;
 
 An `Array2D<T>` represents a two-dimension array, organized in row-major order. xref:Array2D.adoc[*Read more...*]
 
-[#_binary_heap]
+[#binary_heap]
 === `gf::BinaryHeap<T, Compare>`
 
 [source]
@@ -33,7 +33,7 @@ class BinaryHeap;
 
 A `BinaryHeap<T, Compare>` is a mutable link:https://en.wikipedia.org/wiki/Binary_heap[binary heap]. xref:BinaryHeap.adoc[*Read more...*]
 
-[#_index_range_type]
+[#index_range_type]
 === `gf::IndexRange`
 
 [source]
@@ -44,9 +44,9 @@ using IndexRange = Range<std::size_t>;
 
 An `IndexRange` is a xref:Range.adoc[`Range<T>`] specialized for `std::size_t` indices.
 
-See also: <<_index_range_function>>
+See also: <<index_range_function>>
 
-[#_position_range_type]
+[#position_range_type]
 === `gf::PositionRange`
 
 [source]
@@ -57,9 +57,9 @@ using PositionRange = Range2D<int>;
 
 A `PositionRange` is a xref:Range2D.adoc[`Range2D<T>`] specialized for `int` indices, used in xref:Array2D.adoc[`Array2D<T>`]
 
-See also: <<_position_range_function>>
+See also: <<position_range_function>>
 
-[#_range_type]
+[#range_type]
 === `gf::Range<T>`
 
 [source]
@@ -71,7 +71,7 @@ struct Range;
 
 A `Range<T>` represents a half-open range of values. xref:Range.adoc[*Read more...*]
 
-See also: <<_range_function>>
+See also: <<range_function>>
 
 === `gf::Range2D<T>`
 
@@ -84,7 +84,7 @@ struct Range2D;
 
 A `Range2D<T>` represents a range accross a 2D area. xref:Range2D.adoc[*Read more...*]
 
-[#_span]
+[#span]
 === `gf::Span<T>`
 
 [source]
@@ -96,9 +96,9 @@ class Span;
 
 A span is a non-owning reference to a contiguous sequence of objects. xref:Span.adoc[*Read more...*]
 
-See also: <<_static_span>>
+See also: <<static_span>>
 
-[#_static_span]
+[#static_span]
 === `gf::StaticSpan<T>`
 
 [source]
@@ -110,11 +110,11 @@ class StaticSpan;
 
 A static span is a non-owning reference to a contiguous sequence of objects whose number is known at compile-time. xref:StaticSpan.adoc[*Read more...*]
 
-See also: <<_span>>
+See also: <<span>>
 
 == Functions
 
-[#_index_range_function]
+[#index_range_function]
 === `gf::index_range`
 
 [source]
@@ -125,9 +125,9 @@ constexpr IndexRange index_range(std::size_t size);
 
 Create an `IndexRange` for a container of size `size`.
 
-See also: <<_index_range_type>>
+See also: <<index_range_type>>
 
-[#_position_range_function]
+[#position_range_function]
 === `gf::position_range`
 
 [source]
@@ -138,9 +138,9 @@ constexpr PositionRange position_range(Vec2I size);
 
 Create a `PositionRange` for a 2D area of size `size`.
 
-See also: <<_position_range_type>>
+See also: <<position_range_type>>
 
-[#_range_function]
+[#range_function]
 === `gf::range`
 
 [source]
@@ -152,4 +152,4 @@ constexpr Range<T> range(T lo, T hi);
 
 Create a range between `lo` (included) and `hi` (excluded).
 
-See also: <<_range_type>>
+See also: <<range_type>>

@@ -32,7 +32,7 @@ Random(uint64_t seed); <2>
 <1> Initialize the engine with default initialization
 <2> Initialize the engine with `seed`
 
-See xref:RandomEngine.adoc#_constructors[`RandomEngine` constructors] for details.
+See xref:RandomEngine.adoc#constructors[`RandomEngine` constructors] for details.
 
 === `compute_angle`
 
@@ -43,7 +43,7 @@ float compute_angle();
 
 Compute an angle in the range stem:[[0, 2\pi\]].
 
-See also: <<_compute_radius>>
+See also: <<compute_radius>>
 
 === `compute_bernoulli`
 
@@ -95,7 +95,7 @@ float compute_radius(float radius_min, float radius_max);
 
 Compute a uniform radius between `radius_min` and `radius_max`.
 
-See also: <<_compute_angle>>
+See also: <<compute_angle>>
 
 === `compute_uniform_float`
 

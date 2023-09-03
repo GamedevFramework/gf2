@@ -21,7 +21,7 @@ See also: xref:MemoryOutputStream.adoc[`MemoryOutputStream`]
 
 == Member Functions
 
-[#_constructors]
+[#constructors]
 === `MemoryInputStream` contructors
 
 [source]

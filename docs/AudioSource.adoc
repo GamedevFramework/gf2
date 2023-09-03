@@ -17,7 +17,7 @@ class AudioSource;
 
 `AudioSource` is the base class of xref:Sound.adoc[`Sound`] and xref:Music.adoc[`Music`].
 
-An audio source may be spatialized. By default, it is not spatialized, you must enable spatialization with <<_set_spatialization_enabled>>.
+An audio source may be spatialized. By default, it is not spatialized, you must enable spatialization with <<set_spatialization_enabled>>.
 
 == Member Functions
 
@@ -30,7 +30,7 @@ AudioCone cone() const;
 
 Get the cone for directional attenuation.
 
-See also: <<_set_cone>>
+See also: <<set_cone>>
 
 === `cursor`
 
@@ -41,7 +41,7 @@ Time cursor();
 
 Return the position of the cursor.
 
-See also: <<_length>>
+See also: <<length>>
 
 === `direction`
 
@@ -52,7 +52,7 @@ Vec3F direction() const;
 
 Get the direction of the source in 3D.
 
-See also: <<_set_direction>>
+See also: <<set_direction>>
 
 === `direction_to_listener`
 
@@ -63,7 +63,7 @@ Vec3F direction_to_listener() const;
 
 Compute the direction to the listener.
 
-See also: <<_listener>>
+See also: <<listener>>
 
 === `directional_attenuation_factor`
 
@@ -74,7 +74,7 @@ float directional_attenuation_factor() const;
 
 Get directional attenuation factor.
 
-See also: <<_set_directional_attenuation_factor>>
+See also: <<set_directional_attenuation_factor>>
 
 === `doppler_factor`
 
@@ -85,7 +85,7 @@ float doppler_factor() const;
 
 Get the doppler factor of the source.
 
-See also: <<_set_doppler_factor>>
+See also: <<set_doppler_factor>>
 
 === `finished`
 
@@ -105,7 +105,7 @@ Time length();
 
 Return the length of the source.
 
-See also: <<_cursor>>
+See also: <<cursor>>
 
 === `listener`
 
@@ -116,7 +116,7 @@ AudioListener listener() const;
 
 Get the listener for this source.
 
-See also: <<_set_listener>>, xref:AudioListener.adoc[`AudioListener`]
+See also: <<set_listener>>, xref:AudioListener.adoc[`AudioListener`]
 
 === `looping`
 
@@ -127,7 +127,7 @@ bool looping() const;
 
 Check whether the source is looping.
 
-See also: <<_set_looping>>
+See also: <<set_looping>>
 
 === `max_distance`
 
@@ -138,7 +138,7 @@ float max_distance() const;
 
 Get the maximum distance for the attenuation calculation.
 
-See also: <<_set_max_distance>>
+See also: <<set_max_distance>>
 
 === `max_gain`
 
@@ -149,7 +149,7 @@ float max_gain() const;
 
 Get the maximum gain to apply from spatialization.
 
-See also: <<_set_max_gain>>
+See also: <<set_max_gain>>
 
 === `min_distance`
 
@@ -160,7 +160,7 @@ float min_distance() const;
 
 Get the minimum distance for the attenuation calculation.
 
-See also: <<_set_min_distance>>
+See also: <<set_min_distance>>
 
 === `min_gain`
 
@@ -171,7 +171,7 @@ float min_gain() const;
 
 Get the minimum gain to apply from spatialization.
 
-See also: <<_set_min_gain>>
+See also: <<set_min_gain>>
 
 === `pan`
 
@@ -182,7 +182,7 @@ float pan() const;
 
 Get the link:https://en.wikipedia.org/wiki/Panning_(audio)[panning] of the source in the range stem:[[-1, +1\]], stem:[-1] meaning full left and stem:[+1] meaning full right.
 
-See also: <<_set_pan>>
+See also: <<set_pan>>
 
 === `pitch`
 
@@ -211,7 +211,7 @@ Vec3F position() const;
 
 Get the position of the source in 3D.
 
-See also: <<_set_position>>
+See also: <<set_position>>
 
 === `positioning`
 
@@ -222,7 +222,7 @@ AudioPositioning positioning() const;
 
 Get the positioning (relative or absolute) of the source.
 
-See also: <<_set_positioning>>
+See also: <<set_positioning>>
 
 === `rolloff`
 
@@ -234,7 +234,7 @@ float rolloff() const;
 // TODO: explain what rolloff is
 Get the value of rolloff.
 
-See also: <<_set_rolloff>>
+See also: <<set_rolloff>>
 
 === `set_cone`
 
@@ -245,7 +245,7 @@ void set_cone(AudioCone cone);
 
 Set the cone for directional attenuation.
 
-See also: <<_cone>>
+See also: <<cone>>
 
 === `set_direction`
 
@@ -256,7 +256,7 @@ void set_direction(Vec3F direction);
 
 Set the direction of the source in 3D.
 
-See also: <<_direction>>
+See also: <<direction>>
 
 === `set_directional_attenuation_factor`
 
@@ -267,7 +267,7 @@ void set_directional_attenuation_factor(float factor);
 
 Set directional attenuation factor.
 
-See also: <<_directional_attenuation_factor>>
+See also: <<directional_attenuation_factor>>
 
 === `set_doppler_factor`
 
@@ -278,7 +278,7 @@ void set_doppler_factor(float factor);
 
 Set the doppler factor of the source.
 
-See also: <<_doppler_factor>>
+See also: <<doppler_factor>>
 
 === `set_fade`
 
@@ -298,7 +298,7 @@ void set_listener(AudioListener listener);
 
 Set the listener for this source.
 
-See also: <<_listener>>, xref:AudioListener.adoc[`AudioListener`]
+See also: <<listener>>, xref:AudioListener.adoc[`AudioListener`]
 
 === `set_looping`
 
@@ -309,7 +309,7 @@ void set_looping(bool looping);
 
 Set whether the source should loop.
 
-See also: <<_looping>>
+See also: <<looping>>
 
 === `set_max_distance`
 
@@ -320,7 +320,7 @@ void set_max_distance(float distance);
 
 Set the maximum distance for the attenuation calculation.
 
-See also: <<_max_distance>>
+See also: <<max_distance>>
 
 === `set_max_gain`
 
@@ -331,7 +331,7 @@ void set_max_gain(float gain);
 
 Set the maximum gain to apply from spatialization.
 
-See also: <<_max_gain>>
+See also: <<max_gain>>
 
 === `set_min_distance`
 
@@ -342,7 +342,7 @@ void set_min_distance(float distance);
 
 Set the minimum distance for the attenuation calculation.
 
-See also: <<_min_distance>>
+See also: <<min_distance>>
 
 === `set_min_gain`
 
@@ -353,7 +353,7 @@ void set_min_gain(float gain);
 
 Set the minimum gain to apply from spatialization.
 
-See also: <<_min_gain>>
+See also: <<min_gain>>
 
 === `set_pan`
 
@@ -364,7 +364,7 @@ void set_pan(float pan);
 
 Set the link:https://en.wikipedia.org/wiki/Panning_(audio)[panning] of the source with `pan` in the range stem:[[-1, +1\]], stem:[-1] meaning full left and stem:[+1] meaning full right.
 
-See also: <<_pan>>
+See also: <<pan>>
 
 === `set_pitch`
 
@@ -375,7 +375,7 @@ void set_pitch(float pitch);
 
 Set the link:https://en.wikipedia.org/wiki/Pitch_(music)[pitch] of the source with `pitch` greater than stem:[0].
 
-See also: <<_pitch>>
+See also: <<pitch>>
 
 === `set_position`
 
@@ -386,7 +386,7 @@ void set_position(Vec3F position);
 
 Set the position of the source in 3D.
 
-See also: <<_position>>
+See also: <<position>>
 
 === `set_positioning`
 
@@ -397,7 +397,7 @@ void set_positioning(AudioPositioning positioning);
 
 Set the positioning (relative or absolute) of the source.
 
-See also: <<_positioning>>
+See also: <<positioning>>
 
 === `set_rolloff`
 
@@ -409,7 +409,7 @@ void set_rolloff(float rolloff);
 // TODO: explain what rolloff is
 Set the value of rolloff.
 
-See also: <<_rolloff>>
+See also: <<rolloff>>
 
 === `set_spatialization_enabled`
 
@@ -420,7 +420,7 @@ void set_spatialization_enabled(bool enabled);
 
 Enable or disable spatialization of the source. By default, spatialization is disabled.
 
-See also: <<_spatialization_enabled>>
+See also: <<spatialization_enabled>>
 
 === `set_start_time`
 
@@ -431,7 +431,7 @@ void set_start_time(Time time);
 
 Set the start time of the soure, where the global time is defined by xref:AudioManager.adoc[`AudioManager`].
 
-See also: <<_set_stop_time>>
+See also: <<set_stop_time>>
 
 === `set_stop_time`
 
@@ -442,7 +442,7 @@ void set_stop_time(Time time);
 
 Set the stop time of the soure, where the global time is defined by xref:AudioManager.adoc[`AudioManager`].
 
-See also: <<_set_start_time>>
+See also: <<set_start_time>>
 
 === `set_velocity`
 
@@ -453,7 +453,7 @@ void set_velocity(Vec3F velocity);
 
 Set the velocity of the source in 3D.
 
-See also: <<_velocity>>
+See also: <<velocity>>
 
 === `set_volume`
 
@@ -464,7 +464,7 @@ void set_volume(float volume);
 
 Set the volume of the source with `volume` in the range stem:[[0, 1\]].
 
-See also: <<_volume>>
+See also: <<volume>>
 
 === `spatialization_enabled`
 
@@ -475,7 +475,7 @@ bool spatialization_enabled() const;
 
 Check if spatialization has been enabled for this source.
 
-See also: <<_set_spatialization_enabled>>
+See also: <<set_spatialization_enabled>>
 
 === `start`
 
@@ -486,7 +486,7 @@ void start();
 
 Start playing the source.
 
-See also: <<_stop>>
+See also: <<stop>>
 
 === `stop`
 
@@ -497,7 +497,7 @@ void stop();
 
 Stop playing the source.
 
-See also: <<_start>>
+See also: <<start>>
 
 === `velocity`
 
@@ -508,7 +508,7 @@ Vec3F velocity() const;
 
 Get the velocity of the source in 3D.
 
-See also: <<_set_velocity>>
+See also: <<set_velocity>>
 
 === `volume`
 
@@ -519,4 +519,4 @@ float volume() const;
 
 Get the volume of the source in the range stem:[[0, 1\]].
 
-See also: <<_set_volume>>
+See also: <<set_volume>>

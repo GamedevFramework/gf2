@@ -17,7 +17,7 @@ class TarballLoader;
 
 `TarballLoader` loads a tarball and can provide the content of any file in the tarball.
 
-`TarballLoader` provides a generic loader, so you should use xref:core_resources.adoc#_loader_for[`loader_for`] in order to use it with xref:ResourceRegistry.adoc[`ResourceRegistry`].
+`TarballLoader` provides a generic loader, so you should use xref:core_resources.adoc#loader_for[`loader_for`] in order to use it with xref:ResourceRegistry.adoc[`ResourceRegistry`].
 
 See also: xref:Tarball.adoc[`Tarball`]
 

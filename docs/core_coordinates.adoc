@@ -9,7 +9,7 @@ xref:reference.adoc[< Back to reference]
 
 == Types
 
-[#_camera]
+[#camera]
 === `gf::Camera`
 
 [source]
@@ -20,7 +20,7 @@ class Camera;
 
 A camera defines a rectangular area of the world that is visible on the screen. xref:Camera.adoc[*Read more...*]
 
-[#_camera_type]
+[#camera_type]
 === `gf::CameraType`
 
 [source]
@@ -56,7 +56,7 @@ The type of camera.
 
 
 
-[#_transform]
+[#transform]
 === `gf::Transform`
 
 [source]

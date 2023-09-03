@@ -9,7 +9,7 @@ xref:reference.adoc[< Back to reference]
 
 == Variables
 
-[#_all]
+[#all]
 === `gf::All`
 
 [source]
@@ -20,9 +20,9 @@ constexpr AllType All;
 
 Constant to represent "all".
 
-See also: <<_all_type>>
+See also: <<all_type>>
 
-[#_any]
+[#any]
 === `gf::Any`
 
 [source]
@@ -33,9 +33,9 @@ constexpr AnyType Any;
 
 Constant to represent "any".
 
-See also: <<_any_type>>
+See also: <<any_type>>
 
-[#_none]
+[#none]
 === `gf::None`
 
 [source]
@@ -46,9 +46,9 @@ constexpr NoneType None;
 
 Constant to represent "none".
 
-See also: <<_none_type>>
+See also: <<none_type>>
 
-[#_zero]
+[#zero]
 === `gf::Zero`
 
 [source]
@@ -59,11 +59,11 @@ constexpr ZeroType Zero;
 
 Constant to represent "zero".
 
-See also: <<_zero_type>>
+See also: <<zero_type>>
 
 == Types
 
-[#_all_type]
+[#all_type]
 === `gf::AllType`
 
 [source]
@@ -74,9 +74,9 @@ struct AllType;
 
 Semantic type to represente "all".
 
-See also: <<_all>>
+See also: <<all>>
 
-[#_any_type]
+[#any_type]
 === `gf::AnyType`
 
 [source]
@@ -87,9 +87,9 @@ struct AnyType;
 
 Semantic type to represente "any".
 
-See also: <<_any>>
+See also: <<any>>
 
-[#_error_type]
+[#error_type]
 === `gf::Error<E>`
 
 [source]
@@ -101,9 +101,9 @@ struct Error;
 
 An `Error<E>` is a simple wrapper around an error type `E`.
 
-See also: <<_error>>, <<_result>>
+See also: <<error>>, <<result>>
 
-[#_flags]
+[#flags]
 === `gf::Flags<E>`
 
 [source]
@@ -115,7 +115,7 @@ class Flags;
 
 A `Flags<E>` stores a bit field relying on an enumeration `E`. xref:Flags.adoc[*Read more...*]
 
-[#_id]
+[#id]
 === `gf::Id`
 
 [source]
@@ -126,7 +126,7 @@ enum class Id : uint64_t;
 
 `Id` represents a generic identifier. xref:Id.adoc[*Read more...*]
 
-[#_none_type]
+[#none_type]
 === `gf::NoneType`
 
 [source]
@@ -137,9 +137,9 @@ struct NoneType;
 
 Semantic type to represente "none".
 
-See also: <<_none>>
+See also: <<none>>
 
-[#_result]
+[#result]
 === `gf::Result<T,E>`
 
 [source]
@@ -151,7 +151,7 @@ class Result;
 
 A `Result<T,E>` represents either a valid value of type `T` or an error of type `E`. xref:Result.adoc[*Read more...*]
 
-[#_zero_type]
+[#zero_type]
 === `gf::ZeroType`
 
 [source]
@@ -162,7 +162,7 @@ struct ZeroType;
 
 Semantic type to represente "zero".
 
-See also: <<_zero>>
+See also: <<zero>>
 
 == Functions
 
@@ -176,4 +176,4 @@ Error<E> error(E&& e);
 
 Create an error wrapper with a value of type `E`.
 
-See also: <<_error_type>>
+See also: <<error_type>>

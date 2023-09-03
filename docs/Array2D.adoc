@@ -64,7 +64,7 @@ T* begin() noexcept; <2>
 <1> Get an iterator to the first element of the array.
 <2> Same but the iterator is not `const`.
 
-See also: <<_end>>
+See also: <<end>>
 
 === `empty`
 
@@ -75,7 +75,7 @@ bool empty() const noexcept;
 
 Check if the array is empty. An empty array is an array with stem:[0] elements, i.e. either the number of rows is stem:[0] or the number of columns is stem:[0].
 
-See also: <<_size>>
+See also: <<size>>
 
 === `end`
 
@@ -88,7 +88,7 @@ T* end() noexcept; <2>
 <1> Get an iterator past the last element of the array.
 <2> Same but the iterator is not `const`.
 
-See also: <<_begin>>
+See also: <<begin>>
 
 === `index_range`
 
@@ -99,7 +99,7 @@ IndexRange index_range() const noexcept;
 
 Get the 1D index range of the array.
 
-See also: <<_position_range>>
+See also: <<position_range>>
 
 === `position_range`
 
@@ -110,7 +110,7 @@ PositionRange position_range() const noexcept;
 
 Get the 2D index range of the array.
 
-See also: <<_index_range>>
+See also: <<index_range>>
 
 === `raw_data`
 
@@ -139,7 +139,7 @@ Vec2I size() const noexcept;
 
 Get the size of the array.
 
-See also: <<_empty>>
+See also: <<empty>>
 
 === `valid`
 

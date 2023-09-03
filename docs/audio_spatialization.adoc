@@ -9,7 +9,7 @@ xref:reference.adoc[< Back to reference]
 
 == Types
 
-[#_audio_cone]
+[#audio_cone]
 === `gf::AudioCone`
 
 [source]
@@ -36,7 +36,7 @@ struct AudioCone;
 | The outer gain of the cone.
 |===
 
-[#_audio_listener]
+[#audio_listener]
 === `gf::AudioListener`
 
 [source]

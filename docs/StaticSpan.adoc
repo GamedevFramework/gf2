@@ -55,7 +55,7 @@ constexpr T* begin() noexcept; <2>
 <1> Get an iterator to the first element of the span.
 <2> Same but the iterator is not `const`.
 
-See also: <<_end>>
+See also: <<end>>
 
 === `data`
 
@@ -88,7 +88,7 @@ constexpr T* end() noexcept; <2>
 <1> Get an iterator past the last element of the span.
 <2> Same but the iterator is not `const`.
 
-See also: <<_begin>>
+See also: <<begin>>
 
 === `first`
 

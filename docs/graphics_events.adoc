@@ -7,14 +7,14 @@ The events component contains enumerations and types that describe input events.
 
 There are two levels to access input events:
 
-- the low level with raw input events (<<_event>>)
+- the low level with raw input events (<<event>>)
 - the high level with actions and controls
 
 xref:reference.adoc[< Back to reference]
 
 == Types
 
-[#_event]
+[#event]
 === `gf::Event`
 
 [source]
@@ -25,7 +25,7 @@ struct Event;
 
 `Event` is a tagged union to describe system events. xref:Event.adoc[*Read more...*]
 
-[#_event_type]
+[#event_type]
 === `gf::EventType`
 
 [source]
@@ -36,7 +36,7 @@ enum EventType : uint32_t;
 
 `EventType` describes all system events that can occur. xref:EventType.adoc[*Read more...*]
 
-[#_gamepad_axis_event]
+[#gamepad_axis_event]
 === `gf::GamepadAxisEvent`
 
 [source]
@@ -65,7 +65,7 @@ struct GamepadAxisEvent;
 | Value of the axis
 |===
 
-[#_gamepad_button_event]
+[#gamepad_button_event]
 === `gf::GamepadButtonEvent`
 
 [source]
@@ -94,7 +94,7 @@ struct GamepadButtonEvent;
 | Status of the gamepad button
 |===
 
-[#_gamepad_connection_event]
+[#gamepad_connection_event]
 === `gf::GamepadConnectionEvent`
 
 [source]
@@ -115,7 +115,7 @@ struct GamepadConnectionEvent;
 | Hardware id of the gamepad
 |===
 
-[#_gamepad_disconnection_event]
+[#gamepad_disconnection_event]
 === `gf::GamepadDisconnectionEvent`
 
 [source]
@@ -136,7 +136,7 @@ struct GamepadDisconnectionEvent;
 | Id of the gamepad
 |===
 
-[#_key_event]
+[#key_event]
 === `gf::KeyEvent`
 
 [source]
@@ -177,7 +177,7 @@ struct KeyEvent;
 | Status of the key
 |===
 
-[#_mouse_button_event]
+[#mouse_button_event]
 === `gf::MouseButtonEvent`
 
 [source]
@@ -218,7 +218,7 @@ struct MouseButtonEvent;
 | Status of the mouse button
 |===
 
-[#_mouse_motion_event]
+[#mouse_motion_event]
 === `gf::MouseMotionEvent`
 
 [source]
@@ -251,7 +251,7 @@ struct MouseMotionEvent;
 | Motion of the mouse cursor
 |===
 
-[#_mouse_wheel_event]
+[#mouse_wheel_event]
 === `gf::MouseWheelEvent`
 
 [source]
@@ -280,7 +280,7 @@ struct MouseWheelEvent;
 | Offset of the mouse wheel
 |===
 
-[#_resize_event]
+[#resize_event]
 === `gf::ResizeEvent`
 
 [source]
@@ -305,7 +305,7 @@ struct ResizeEvent;
 | New size of the window
 |===
 
-[#_text_event]
+[#text_event]
 === `gf::TextEvent`
 
 [source]
@@ -330,7 +330,7 @@ struct TextEvent;
 | UTF-8 text that was entered
 |===
 
-[#_touch_event]
+[#touch_event]
 === `gf::TouchEvent`
 
 [source]
@@ -371,7 +371,7 @@ struct TouchEvent;
 | Pressure in the range stem:[[0, 1\]]
 |===
 
-[#_window_event]
+[#window_event]
 === `gf::WindowEvent`
 
 [source]

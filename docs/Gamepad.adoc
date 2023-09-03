@@ -56,7 +56,7 @@ void close(GamepadId id);
 
 Close a gamepad. Generally, this function is called after a `GamepadDisconnected` event.
 
-See also: <<_open>>
+See also: <<open>>
 
 === `gamepad_name`
 
@@ -76,4 +76,4 @@ GamepadId open(GamepadHwId hwid);
 
 Open a gamepad. Generally, this function is called after a `GamepadConnected` event.
 
-See also: <<_close>>
+See also: <<close>>

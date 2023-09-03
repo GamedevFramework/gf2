@@ -42,7 +42,7 @@ enum class Mode : uint8_t;
 
 == Member Functions
 
-[#_constructors]
+[#constructors]
 === `FileOutputStream` contructors
 
 [source]

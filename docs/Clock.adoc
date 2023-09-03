@@ -47,7 +47,7 @@ The clock starts automaticaaly after begin constructed.
 Time elapsed_time() const;
 ----
 
-Get the elapsed time since the last call to <<_restart>> (or the construction of the instance if <<_restart>> has not been called).
+Get the elapsed time since the last call to <<restart>> (or the construction of the instance if <<restart>> has not been called).
 
 === `restart`
 

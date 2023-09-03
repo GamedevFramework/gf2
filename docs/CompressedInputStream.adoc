@@ -23,7 +23,7 @@ See also: xref:CompressedOutputStream.adoc[`CompressedOutputStream`]
 
 == Member Functions
 
-[#_constructors]
+[#constructors]
 === `CompressedInputStream` contructors
 
 [source]

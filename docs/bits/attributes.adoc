@@ -1,4 +1,6 @@
 :homepage: https://gamedevframework.github.io/
+:idprefix:
+:idseparator: -
 :stem: latexmath
 :source-highlighter: rouge
 :source-language: c++

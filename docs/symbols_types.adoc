@@ -19,8 +19,8 @@ xref:symbols.adoc[< Back to symbols]
 
 == D
 
-- xref:core_vec.adoc#_distance2[`gf::Distance2<T>`] type
-- xref:core_vec.adoc#_distance3[`gf::Distance3<T>`] type
+- xref:core_vec.adoc#distance2[`gf::Distance2<T>`] type
+- xref:core_vec.adoc#distance3[`gf::Distance3<T>`] type
 
 == E
 
@@ -34,7 +34,7 @@ xref:symbols.adoc[< Back to symbols]
 
 == I
 
-- xref:core_container.adoc#_index_range_type[`gf::IndexRange`] type
+- xref:core_container.adoc#index_range_type[`gf::IndexRange`] type
 
 == J
 
@@ -53,7 +53,7 @@ xref:symbols.adoc[< Back to symbols]
 
 == P
 
-- xref:core_container.adoc#_position_range_type[`gf::PositionRange`] type
+- xref:core_container.adoc#position_range_type[`gf::PositionRange`] type
 
 == Q
 
@@ -67,7 +67,7 @@ xref:symbols.adoc[< Back to symbols]
 
 - xref:Span.adoc[`gf::Span<T>`] type
 - xref:StaticSpan.adoc[`gf::StaticSpan<T>`] type
-- xref:core_math.adoc#_step[`gf::Step`] type
+- xref:core_math.adoc#step[`gf::Step`] type
 
 == T
 

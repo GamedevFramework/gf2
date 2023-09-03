@@ -63,7 +63,7 @@ void set_blocking();
 
 Set the socket in blocking mode
 
-See also: <<_set_non_blocking>>
+See also: <<set_non_blocking>>
 
 === `set_non_blocking`
 
@@ -74,4 +74,4 @@ void set_non_blocking();
 
 Set the socket in non-blocking mode
 
-See also: <<_set_blocking>>
+See also: <<set_blocking>>

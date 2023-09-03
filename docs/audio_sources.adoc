@@ -5,13 +5,13 @@ include::bits/attributes.adoc[]
 
 The sources component contains the different audio sources.
 
-The library provides two audio sources: <<_sound>> and <<_music>>.
+The library provides two audio sources: <<sound>> and <<music>>.
 
 xref:reference.adoc[< Back to reference]
 
 == Types
 
-[#_audio_source]
+[#audio_source]
 === `gf::AudioSource`
 
 [source]
@@ -22,9 +22,9 @@ class AudioSource;
 
 An audio source is able to play audio data. xref:AudioSource.adoc[*Read more...*]
 
-See also: <<_music>>, <<_sound>>
+See also: <<music>>, <<sound>>
 
-[#_music]
+[#music]
 === `gf::Music`
 
 [source]
@@ -35,7 +35,7 @@ class Music : public AudioSource;
 
 A music is a long audio source that should be streamed as necessary. xref:Music.adoc[*Read more...*]
 
-[#_sound]
+[#sound]
 === `gf::Sound`
 
 [source]

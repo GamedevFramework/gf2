@@ -7,11 +7,11 @@ The resources component provides classes for handling resources of any type that
 
 A *resource* is a piece of data that can be loaded and unloaded at runtime, it is identified by a unique relative path. A resource can have a *context*, a structure that is needed to load the resource. For example, to load fonts, you may need a font manager as the context. For a resource of type `T`, the context type is `T::Context`. If it is not possible to change type `T`, you may also provide a specialization of `gf::ResourceContextTraits<T>` with the context type given in `Type`. Finally, the type `ResourceContext<T>` gives the context of type `T` if one has been given, or an empty context type. Having no context or an empty context type is exactly the same from the point of view of other types in this component: it means you do not need to pass a context for the loading of the resource.
 
-Resources can be grouped in a *bundle*. For example, all the resources of a game level may be in the same bundle. A bundle describes the set of resources in a link:https://en.cppreference.com/w/cpp/utility/functional[function object] where it calls a generic function of the bundle that load or unload the resource. A bundle is useful if you want to load a set of resources at the same time, maybe asynchronously, or if you want to optimize the resources that must be loaded at one point. Typically, for two consecutive levels, you may load the bundle of the next level and then unload the bundle of the previous level, so that the resources that are common to both levels will not be unloaded. See <<_resource_bundle>>.
+Resources can be grouped in a *bundle*. For example, all the resources of a game level may be in the same bundle. A bundle describes the set of resources in a link:https://en.cppreference.com/w/cpp/utility/functional[function object] where it calls a generic function of the bundle that load or unload the resource. A bundle is useful if you want to load a set of resources at the same time, maybe asynchronously, or if you want to optimize the resources that must be loaded at one point. Typically, for two consecutive levels, you may load the bundle of the next level and then unload the bundle of the previous level, so that the resources that are common to both levels will not be unloaded. See <<resource_bundle>>.
 
 A *composite resource* is a resource that have references on other resources. Of course, the sub-resources must be loaded before the resource itself. In order to load sub-resources, a type `T` can provide a static member function `T::bundle` with the same parameters as the constructor. This function returns a bundle and is called before the loading of resources of type `T`. As a consequence, a resource of type `T` is guaranteed that its sub-resources have been loaded.
 
-The *resource manager* handles the loading and unloading of all the resources, either standalone resources or bundles. In order to manage resources of type `T`, a *registry* for type `T` must be added to the resource manager. The registry is responsible for all the resources of a single type `T`. It ensures a resource is loaded only once by refcounting its use (through loading and unloading). The registry uses one or several *loaders* that provide the functions needed to actually load the resource from a source: filesystem, memory, tarball... See <<_resource_manager>>.
+The *resource manager* handles the loading and unloading of all the resources, either standalone resources or bundles. In order to manage resources of type `T`, a *registry* for type `T` must be added to the resource manager. The registry is responsible for all the resources of a single type `T`. It ensures a resource is loaded only once by refcounting its use (through loading and unloading). The registry uses one or several *loaders* that provide the functions needed to actually load the resource from a source: filesystem, memory, tarball... See <<resource_manager>>.
 
 xref:reference.adoc[< Back to reference]
 
@@ -19,7 +19,7 @@ See also: xref:core_resource_list.adoc[Resource list].
 
 == Types
 
-[#_file_loader]
+[#file_loader]
 === `gf::FileLoader`
 
 [source]
@@ -30,7 +30,7 @@ class FileLoader;
 
 `FileLoader` is a resource loader for resources in files. xref:FileLoader.adoc[*Read more...*]
 
-[#_memory_loader]
+[#memory_loader]
 === `gf::MemoryLoader`
 
 [source]
@@ -41,7 +41,7 @@ class MemoryLoader;
 
 `MemoryLoader` is a resource loader for resources in memory. xref:MemoryLoader.adoc[*Read more...*]
 
-[#_resource_bundle]
+[#resource_bundle]
 === `gf::ResourceBundle`
 
 [source]
@@ -52,7 +52,7 @@ class ResourceBundle;
 
 `ResourceBundle` manage a set of resources that can be loaded or unloaded. xref:ResourceBundle.adoc[*Read more...*]
 
-[#_resource_context]
+[#resource_context]
 === `gf::ResourceContext`
 
 [source]
@@ -64,7 +64,7 @@ using ResourceContext = typename ResourceContextTraits<T>::Type;
 
 `ResourceContext<T>` determines the type of the context of resource `T`, if any, or provides an empty context.
 
-[#_resource_context_traits]
+[#resource_context_traits]
 === `gf::ResourceContextTraits<T>`
 
 [source]
@@ -76,7 +76,7 @@ struct ResourceContextTraits;
 
 `ResourceContextTraits<T>` provides a `Type` type that identifies the context of resource `T`. It is set to `T::Context` if available. Users can also provide a specialization of this trait in order to provide the type of the context.
 
-[#_resource_loader]
+[#resource_loader]
 === `gf::ResourceLoader<T>`
 
 [source]
@@ -98,9 +98,9 @@ using ResourceLoader = std::function<std::unique_ptr<T>( <2>
 <1> Resource loader for types that do not have any context, or an empty context
 <2> Resource loader for types that have a context.
 
-See also: <<_loader_for>>
+See also: <<loader_for>>
 
-[#_resource_manager]
+[#resource_manager]
 === `gf::ResourceManager`
 
 [source]
@@ -111,7 +111,7 @@ class ResourceManager;
 
 `ResourceManager` uses many registries to give access to all kind of resources. xref:ResourceManager.adoc[*Read more...*]
 
-[#_resource_registry]
+[#resource_registry]
 === `gf::ResourceRegistry<T>`
 
 [source]
@@ -123,7 +123,7 @@ class ResourceRegistry;
 
 `ResourceRegistry<T>` handles one or many resource loaders and ensures each resource is loaded only once. xref:ResourceRegistry.adoc[*Read more...*]
 
-[#_tarball]
+[#tarball]
 === `gf::Tarball`
 
 [source]
@@ -134,7 +134,7 @@ class Tarball;
 
 `Tarball` can load files from a link:https://en.wikipedia.org/wiki/Tar_(computing)[tarball]. xref:Tarball.adoc[*Read more...*]
 
-[#_tarball_loader]
+[#tarball_loader]
 === `gf::TarballLoader`
 
 [source]

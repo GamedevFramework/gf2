@@ -21,7 +21,7 @@ See also: xref:BufferInputStream.adoc[`BufferInputStream`]
 
 == Member Functions
 
-[#_constructors]
+[#constructors]
 === `BufferOutputStream` contructors
 
 [source]

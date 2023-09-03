@@ -34,7 +34,7 @@ void add_socket(const Socket& socket);
 
 Add a socket to the selector.
 
-See also: <<_remove_socket>>
+See also: <<remove_socket>>
 
 === `clear`
 
@@ -54,7 +54,7 @@ bool ready(const Socket& socket);
 
 Tell if the provided socket is ready.
 
-See also: <<_wait>>
+See also: <<wait>>
 
 === `remove_socket`
 
@@ -65,7 +65,7 @@ void remove_socket(const Socket& socket);
 
 Remove a socket from the selector.
 
-See also: <<_add_socket>>
+See also: <<add_socket>>
 
 === `wait`
 
@@ -78,4 +78,4 @@ Wait for an event from the set of sockets.
 
 A duration for a timeout can be provided. In this case, if the duration is negative, it indicates an infinite timeout. If the duration is zero, the call will return immediately. Otherwise, the timeout can occur after the provided duration if no event occurred.
 
-See also: <<_ready>>
+See also: <<ready>>

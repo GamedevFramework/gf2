@@ -34,7 +34,7 @@ Bitmap(Vec2I size, const uint8_t* pixels, ptrdiff_t pitch); <4>
 <3> Constructor from a `size` and a `gray` level.
 <4> Constructor from a `size` and raw pixels with the specified `pitch` between each row.
 
-[#_operator_index]
+[#operator_index]
 === `operator()`
 
 [source]
@@ -62,7 +62,7 @@ const uint8_t* raw_data() const;
 
 Get the raw data of the bitmap.
 
-See also: <<_raw_size>>
+See also: <<raw_size>>
 
 === `raw_size`
 
@@ -73,7 +73,7 @@ std::size_t raw_size() const;
 
 Get the raw size of the bitmap.
 
-See also: <<_raw_data>>, <<_size>>
+See also: <<raw_data>>, <<size>>
 
 === `size`
 
@@ -84,4 +84,4 @@ Vec2I size() const;
 
 Get the size of the bitmap.
 
-See also: <<_raw_size>>
+See also: <<raw_size>>

@@ -49,7 +49,7 @@ T& get(const std::filesystem::path& path);
 
 Return a resource identified by `path` that already has been loaded.
 
-See also: <<_load>>
+See also: <<load>>
 
 === `load`
 
@@ -61,7 +61,7 @@ T& load(const std::filesystem::path& path, const ResourceContext<T>& context = {
 
 Load a resource identified by `path`, and possibly its context, and return this resource.
 
-See also: <<_unload>>, <<_get>>
+See also: <<unload>>, <<get>>
 
 === `unload`
 
@@ -73,4 +73,4 @@ void unload(const std::filesystem::path& path);
 
 Unload the resource identified by `path`.
 
-See also: <<_load>>
+See also: <<load>>

@@ -22,15 +22,15 @@ The following problems are addressed:
 
 === Definition
 
-The shape of a cell in an orthogonal grid is a rectangle that fills the whole tile, as shown in <<_fig_orthogonal_tile>>.
+The shape of a cell in an orthogonal grid is a rectangle that fills the whole tile, as shown in <<fig_orthogonal_tile>>.
 
-[#_fig_orthogonal_tile]
+[#fig_orthogonal_tile]
 .Orthogonal tile
 image::fig/orthogonal_tile.png[Orthogonal tile,400]
 
-There is a single layout for an orthogonal grid, as shown is <<_fig_orthogonal_layout>>. stem:[x] is the column and stem:[y] is the row of the tile.
+There is a single layout for an orthogonal grid, as shown is <<fig_orthogonal_layout>>. stem:[x] is the column and stem:[y] is the row of the tile.
 
-[#_fig_orthogonal_layout]
+[#fig_orthogonal_layout]
 .Orthogonal layout
 image::fig/orthogonal_layout.png[Orthogonal layout,420]
 
@@ -62,9 +62,9 @@ The coordinates stem:[(x, y)] of a cell at position stem:[(P_x, P_y)] is given b
 
 === Neighbors of a Cell
 
-The coordinates of the neighbors of a cell at stem:[(x, y)] are given on <<_fig_orthogonal_neighbors>>.
+The coordinates of the neighbors of a cell at stem:[(x, y)] are given on <<fig_orthogonal_neighbors>>.
 
-[#_fig_orthogonal_neighbors]
+[#fig_orthogonal_neighbors]
 .Orthogonal neighbors
 image::fig/orthogonal_neighbors.png[Orthogonal neighors,400]
 
@@ -73,15 +73,15 @@ image::fig/orthogonal_neighbors.png[Orthogonal neighors,400]
 
 === Definition
 
-The shape of a cell in an isometric grid is a link:https://en.wikipedia.org/wiki/Rhombus[rhombus] whose diagonals are parallel to the bounding box, as shown in <<_fig_isometric_tile>>.
+The shape of a cell in an isometric grid is a link:https://en.wikipedia.org/wiki/Rhombus[rhombus] whose diagonals are parallel to the bounding box, as shown in <<fig_isometric_tile>>.
 
-[#_fig_isometric_tile]
+[#fig_isometric_tile]
 .Isometric tile
 image::fig/isometric_tile.png[Isometric tile,400]
 
-The cells are organised in a rhombus. There is a single layout for an isometric grid, as shown is <<_fig_isometric_layout>>. stem:[x] is the column and stem:[y] is the row of the tile.
+The cells are organised in a rhombus. There is a single layout for an isometric grid, as shown is <<fig_isometric_layout>>. stem:[x] is the column and stem:[y] is the row of the tile.
 
-[#_fig_isometric_layout]
+[#fig_isometric_layout]
 .Isometric layout
 image::fig/isometric_layout.png[Isometric layout,420]
 
@@ -126,9 +126,9 @@ And the final coordinates:
 
 === Neighbors of a Cell
 
-The coordinates of the neighbors of a cell at stem:[(x, y)] are given on <<_fig_isometric_neighbors>>.
+The coordinates of the neighbors of a cell at stem:[(x, y)] are given on <<fig_isometric_neighbors>>.
 
-[#_fig_isometric_neighbors]
+[#fig_isometric_neighbors]
 .Isometric neighbors
 image::fig/isometric_neighbors.png[Isometric neighors,400]
 
@@ -138,9 +138,9 @@ image::fig/isometric_neighbors.png[Isometric neighors,400]
 
 === Definition
 
-The shape of a cell in a staggered grid is a link:https://en.wikipedia.org/wiki/Rhombus[rhombus] whose diagonals are parallel to the bounding box, as shown in <<_fig_staggered_tile>>.
+The shape of a cell in a staggered grid is a link:https://en.wikipedia.org/wiki/Rhombus[rhombus] whose diagonals are parallel to the bounding box, as shown in <<fig_staggered_tile>>.
 
-[#_fig_staggered_tile]
+[#fig_staggered_tile]
 .Staggered tile
 image::fig/staggered_tile.png[Staggered tile,400]
 
@@ -151,24 +151,24 @@ The cells are organised in a rectangle. Contrary to the orthogonal grid, there a
 
 This gives four layouts:
 
-- `x-even` shown on <<_fig_staggered_x_even_layout>>
-- `x-odd` shown on <<_fig_staggered_x_odd_layout>>
-- `y-even` shown on <<_fig_staggered_y_even_layout>>
-- `y-odd` shown on <<_fig_staggered_y_odd_layout>>
+- `x-even` shown on <<fig_staggered_x_even_layout>>
+- `x-odd` shown on <<fig_staggered_x_odd_layout>>
+- `y-even` shown on <<fig_staggered_y_even_layout>>
+- `y-odd` shown on <<fig_staggered_y_odd_layout>>
 
-[#_fig_staggered_x_even_layout]
+[#fig_staggered_x_even_layout]
 .Staggered `x-even` layout
 image::fig/staggered_x_even_layout.png[Staggered x-even layout,245]
 
-[#_fig_staggered_x_odd_layout]
+[#fig_staggered_x_odd_layout]
 .Staggered `x-odd` layout
 image::fig/staggered_x_odd_layout.png[Staggered x-odd layout,245]
 
-[#_fig_staggered_y_even_layout]
+[#fig_staggered_y_even_layout]
 .Staggered `y-even` layout
 image::fig/staggered_y_even_layout.png[Staggered y-even layout,455]
 
-[#_fig_staggered_y_odd_layout]
+[#fig_staggered_y_odd_layout]
 .Staggered `y-odd` layout
 image::fig/staggered_y_odd_layout.png[Staggered y-odd layout,455]
 
@@ -220,15 +220,15 @@ Then, let stem:[q_x = \left\lfloor\frac{P_x}{T_x'}\right\rfloor] and stem:[q_y =
 
 Finally, let stem:[r_x = \frac{P_x - q_x \times T_x'}{T_x'}] and stem:[r_y = \frac{P_y - q_y \times T_y'}{T_y'}]. stem:[r_x] and stem:[r_y] represent the normalized coordinates of point stem:[P] in the orthogonal cell. We have stem:[0 \leq r_x < 1] and stem:[0 \leq r_y < 1]. Each orthogonal cell is divided in two (diagonally or anti-diagonally) with two different staggered cells in each part.
 
-[#_fig_staggered_rx_ry]
+[#fig_staggered_rx_ry]
 .Interpretation of stem:[r_x] and stem:[r_y] with a cell divided diagonally (on the left) or anti-diagonally (on the right)
 image::fig/staggered_rx_ry.png[Interpretation of rx and ry,700]
 
 ==== Coordinates for `x-even`
 
-The situation for `x-even` is shown on <<_fig_staggered_x_even_coordinates>>. In this case, orthogonal cells are divided diagonally when stem:[q_x] and stem:[q_y] have the same parity, and orthogonal cells are divided anti-diagonally when stem:[q_x] and stem:[q_y] have different parities.
+The situation for `x-even` is shown on <<fig_staggered_x_even_coordinates>>. In this case, orthogonal cells are divided diagonally when stem:[q_x] and stem:[q_y] have the same parity, and orthogonal cells are divided anti-diagonally when stem:[q_x] and stem:[q_y] have different parities.
 
-[#_fig_staggered_x_even_coordinates]
+[#fig_staggered_x_even_coordinates]
 .Staggered `x-even` coordinates
 image::fig/staggered_x_even_coordinates.png[Staggered x-even coordinates,400]
 
@@ -244,23 +244,23 @@ For the computation of stem:[y], we observe that when stem:[q_y] is odd, then st
 
 ==== Coordinates for `x-odd`
 
-The situation for `x-odd` is shown on <<_fig_staggered_x_odd_coordinates>>. In this case, orthogonal cells are divided diagonally when stem:[q_x] and stem:[q_y] have different parities, and orthogonal cells are divided anti-diagonally when stem:[q_x] and stem:[q_y] have the same parity.
+The situation for `x-odd` is shown on <<fig_staggered_x_odd_coordinates>>. In this case, orthogonal cells are divided diagonally when stem:[q_x] and stem:[q_y] have different parities, and orthogonal cells are divided anti-diagonally when stem:[q_x] and stem:[q_y] have the same parity.
 
-[#_fig_staggered_x_odd_coordinates]
+[#fig_staggered_x_odd_coordinates]
 .Staggered `x-odd` coordinates
 image::fig/staggered_x_odd_coordinates.png[Staggered x-odd coordinates,400]
 
-With the updated definitions of "diagonally" and "anti-diagonally", we observe that the computations of stem:[x] and stem:[y] are exactly the same as <<_coordinates_for_x_even>>.
+With the updated definitions of "diagonally" and "anti-diagonally", we observe that the computations of stem:[x] and stem:[y] are exactly the same as <<coordinates-for-x-even>>.
 
 ==== Coordinates for `y-even`
 
-The situation for `y-even` is shown on <<_fig_staggered_y_even_coordinates>>. In this case, orthogonal cells are divided diagonally when stem:[q_x] and stem:[q_y] have the same parity, and orthogonal cells are divided anti-diagonally when stem:[q_x] and stem:[q_y] have different parities.
+The situation for `y-even` is shown on <<fig_staggered_y_even_coordinates>>. In this case, orthogonal cells are divided diagonally when stem:[q_x] and stem:[q_y] have the same parity, and orthogonal cells are divided anti-diagonally when stem:[q_x] and stem:[q_y] have different parities.
 
-[#_fig_staggered_y_even_coordinates]
+[#fig_staggered_y_even_coordinates]
 .Staggered `y-even` coordinates
 image::fig/staggered_y_even_coordinates.png[Staggered y-even coordinates,600]
 
-Compared to <<_coordinates_for_x_even>>, the staggered coordinates are inverted, so the reasoning is exactly the same but with inverted coordinates.
+Compared to <<coordinates-for-x-even>>, the staggered coordinates are inverted, so the reasoning is exactly the same but with inverted coordinates.
 
 For the computation of stem:[x], we observe that when stem:[q_x] is odd, then stem:[x = \left\lfloor\frac{q_x - 1}{2}\right\rfloor]. When stem:[q_x] is even, stem:[x] is either stem:[\left\lfloor\frac{q_x}{2}\right\rfloor] or stem:[\left\lfloor\frac{q_x}{2}\right\rfloor - 1]. This second case occurs in the following conditions:
 
@@ -274,38 +274,38 @@ For the computation of stem:[y], we observe that in the column stem:[q_y], stem:
 
 ==== Coordinates for `y-odd`
 
-The situation for `y-odd` is shown on <<_fig_staggered_y_odd_coordinates>>. In this case, orthogonal cells are divided diagonally when stem:[q_x] and stem:[q_y] have different parities, and orthogonal cells are divided anti-diagonally when stem:[q_x] and stem:[q_y] have the same parity.
+The situation for `y-odd` is shown on <<fig_staggered_y_odd_coordinates>>. In this case, orthogonal cells are divided diagonally when stem:[q_x] and stem:[q_y] have different parities, and orthogonal cells are divided anti-diagonally when stem:[q_x] and stem:[q_y] have the same parity.
 
-[#_fig_staggered_y_odd_coordinates]
+[#fig_staggered_y_odd_coordinates]
 .Staggered `y-odd` coordinates
 image::fig/staggered_y_odd_coordinates.png[Staggered y-odd coordinates,600]
 
-With the updated definitions of "diagonally" and "anti-diagonally", we observe that the computations of stem:[x] and stem:[y] are exactly the same as <<_coordinates_for_y_even>>.
+With the updated definitions of "diagonally" and "anti-diagonally", we observe that the computations of stem:[x] and stem:[y] are exactly the same as <<coordinates-for-y-even>>.
 
 
 === Neighbors of a Cell
 
 ==== Neighbors for `x` axis
 
-In this case, the neighbors depends on stem:[\delta_x], defined previously. When stem:[\delta_x = 1] i.e. when stem:[x] has the same parity as the cell index, then the coordinates of the neighbors of a cell at stem:[(x, y)] are given on <<_fig_stagerred_x_1_neighbors>>. When stem:[\delta_x = 0] i.e. when stem:[x] has a different parity from the cell index, then the coordinates of the neighbors of a cell at stem:[(x, y)] are given on <<_fig_stagerred_x_0_neighbors>>.
+In this case, the neighbors depends on stem:[\delta_x], defined previously. When stem:[\delta_x = 1] i.e. when stem:[x] has the same parity as the cell index, then the coordinates of the neighbors of a cell at stem:[(x, y)] are given on <<fig_stagerred_x_1_neighbors>>. When stem:[\delta_x = 0] i.e. when stem:[x] has a different parity from the cell index, then the coordinates of the neighbors of a cell at stem:[(x, y)] are given on <<fig_stagerred_x_0_neighbors>>.
 
-[#_fig_stagerred_x_1_neighbors]
+[#fig_stagerred_x_1_neighbors]
 .Staggered neighbors for `x` axis when stem:[\delta_x = 1]
 image::fig/staggered_x_1_neighbors.png[Staggered neighors,400]
 
-[#_fig_stagerred_x_0_neighbors]
+[#fig_stagerred_x_0_neighbors]
 .Staggered neighbors for `x` axis when stem:[\delta_x = 0]
 image::fig/staggered_x_0_neighbors.png[Staggered neighors,400]
 
 ==== Neighbors for `y` axis
 
-In this case, the neighbors depends on stem:[\delta_y], defined previously. When stem:[\delta_y = 1] i.e. when stem:[y] has the same parity as the cell index, then the coordinates of the neighbors of a cell at stem:[(x, y)] are given on <<_fig_stagerred_y_1_neighbors>>. When stem:[\delta_y = 0] i.e. when stem:[y] has a different parity from the cell index, then the coordinates of the neighbors of a cell at stem:[(x, y)] are given on <<_fig_stagerred_y_0_neighbors>>.
+In this case, the neighbors depends on stem:[\delta_y], defined previously. When stem:[\delta_y = 1] i.e. when stem:[y] has the same parity as the cell index, then the coordinates of the neighbors of a cell at stem:[(x, y)] are given on <<fig_stagerred_y_1_neighbors>>. When stem:[\delta_y = 0] i.e. when stem:[y] has a different parity from the cell index, then the coordinates of the neighbors of a cell at stem:[(x, y)] are given on <<fig_stagerred_y_0_neighbors>>.
 
-[#_fig_stagerred_y_1_neighbors]
+[#fig_stagerred_y_1_neighbors]
 .Staggered neighbors for `y` axis when stem:[\delta_y = 1]
 image::fig/staggered_y_1_neighbors.png[Staggered neighors,400]
 
-[#_fig_stagerred_y_0_neighbors]
+[#fig_stagerred_y_0_neighbors]
 .Staggered neighbors for `y` axis when stem:[\delta_y = 0]
 image::fig/staggered_y_0_neighbors.png[Staggered neighors,400]
 
@@ -317,14 +317,14 @@ For more results on hexagonal grids, see link:https://www.redblobgames.com/grids
 
 The shape of a cell in a hexagonal grid is a link:https://en.wikipedia.org/wiki/Hexagon[hexagon]. In addition to the tile size, the shape is characterized by the "hex side length", noted stem:[\ell]. Depending on the staggered axis (`x` or `y`), the hexagon can take two orientations:
 
-- for `x` axis, the hexagon is flat-top oriented, as shown on <<_fig_hexagonal_x_tile>>.
-- for `y` axis, the hexagon is pointy-top oriented, as shown on <<_fig_hexagonal_y_tile>>.
+- for `x` axis, the hexagon is flat-top oriented, as shown on <<fig_hexagonal_x_tile>>.
+- for `y` axis, the hexagon is pointy-top oriented, as shown on <<fig_hexagonal_y_tile>>.
 
-[#_fig_hexagonal_x_tile]
+[#fig_hexagonal_x_tile]
 .Hexagonal tile for `x` axis (flat top)
 image::fig/hexagonal_x_tile.png[Hexagonal flat-top tile,400]
 
-[#_fig_hexagonal_y_tile]
+[#fig_hexagonal_y_tile]
 .Hexagonal tile for `y` axis (pointy top)
 image::fig/hexagonal_y_tile.png[Hexagonal pointy-top tile,400]
 
@@ -359,24 +359,24 @@ The cells are organised in a rectangle. Like the staggered grid, there are sever
 
 This gives four layouts:
 
-- `x-even` shown on <<_fig_hexagonal_x_even_layout>>
-- `x-odd` shown on <<_fig_hexagonal_x_odd_layout>>
-- `y-even` shown on <<_fig_hexagonal_y_even_layout>>
-- `y-odd` shown on <<_fig_hexagonal_y_odd_layout>>
+- `x-even` shown on <<fig_hexagonal_x_even_layout>>
+- `x-odd` shown on <<fig_hexagonal_x_odd_layout>>
+- `y-even` shown on <<fig_hexagonal_y_even_layout>>
+- `y-odd` shown on <<fig_hexagonal_y_odd_layout>>
 
-[#_fig_hexagonal_x_even_layout]
+[#fig_hexagonal_x_even_layout]
 .Hexagonal `x-even` layout
 image::fig/hexagonal_x_even_layout.png[Hexagonal x-even layout,400]
 
-[#_fig_hexagonal_x_odd_layout]
+[#fig_hexagonal_x_odd_layout]
 .Hexagonal `x-odd` layout
 image::fig/hexagonal_x_odd_layout.png[Hexagonal x-odd layout,400]
 
-[#_fig_hexagonal_y_even_layout]
+[#fig_hexagonal_y_even_layout]
 .Hexagonal `y-even` layout
 image::fig/hexagonal_y_even_layout.png[Hexagonal y-even layout,400]
 
-[#_fig_hexagonal_y_odd_layout]
+[#fig_hexagonal_y_odd_layout]
 .Hexagonal `y-odd` layout
 image::fig/hexagonal_y_odd_layout.png[Hexagonal y-odd layout,400]
 
@@ -438,13 +438,13 @@ Then, let stem:[q_x = \left\lfloor\frac{P_x}{T_x'}\right\rfloor] and stem:[q_y =
 
 Finally, let stem:[r_x = P_x - q_x \times T_x'] and stem:[r_x = P_x - q_x \times T_x']. stem:[r_x] and stem:[r_y] represent the coordinates of point stem:[P] in the orthogonal cell. And let stem:[r_x' = \frac{r_x}{H_x}] and stem:[r_y' = \frac{r_y}{T_y'}]. stem:[r_x'] and stem:[r_y'] represent the normalized coordinates of point stem:[P] in the dashed rectangle at the left of the cell, in case stem:[r_x < H_x].
 
-The situation for `x-even` is shown on <<_fig_hexagonal_x_even_coordinates>> and the situation for `x-odd` is shown on <<_fig_hexagonal_x_odd_coordinates>>.
+The situation for `x-even` is shown on <<fig_hexagonal_x_even_coordinates>> and the situation for `x-odd` is shown on <<fig_hexagonal_x_odd_coordinates>>.
 
-[#_fig_hexagonal_x_even_coordinates]
+[#fig_hexagonal_x_even_coordinates]
 .Hexagonal `x-even` coordinates
 image::fig/hexagonal_x_even_coordinates.png[Hexagonal x-even coordinates,600]
 
-[#_fig_hexagonal_x_odd_coordinates]
+[#fig_hexagonal_x_odd_coordinates]
 .Hexagonal `x-odd` coordinates
 image::fig/hexagonal_x_odd_coordinates.png[Hexagonal x-odd coordinates,600]
 
@@ -468,13 +468,13 @@ Then, let stem:[q_x = \left\lfloor\frac{P_x}{T_x'}\right\rfloor] and stem:[q_y =
 
 Finally, let stem:[r_x = P_x - q_x \times T_x'] and stem:[r_x = P_x - q_x \times T_x']. stem:[r_x] and stem:[r_y] represent the coordinates of point stem:[P] in the orthogonal cell. And let stem:[r_x' = \frac{r_x}{T_x'}] and stem:[r_y' = \frac{r_y}{H_y}]. stem:[r_x'] and stem:[r_y'] represent the normalized coordinates of point stem:[P] in the dashed rectangle at the top of the cell, in case stem:[r_y < H_y].
 
-The situation for `y-even` is shown on <<_fig_hexagonal_y_even_coordinates>> and the situation for `y-odd` is shown on <<_fig_hexagonal_y_odd_coordinates>>.
+The situation for `y-even` is shown on <<fig_hexagonal_y_even_coordinates>> and the situation for `y-odd` is shown on <<fig_hexagonal_y_odd_coordinates>>.
 
-[#_fig_hexagonal_y_even_coordinates]
+[#fig_hexagonal_y_even_coordinates]
 .Hexagonal `y-even` coordinates
 image::fig/hexagonal_y_even_coordinates.png[Hexagonal y-even coordinates,600]
 
-[#_fig_hexagonal_y_odd_coordinates]
+[#fig_hexagonal_y_odd_coordinates]
 .Hexagonal `y-odd` coordinates
 image::fig/hexagonal_y_odd_coordinates.png[Hexagonal y-odd coordinates,600]
 

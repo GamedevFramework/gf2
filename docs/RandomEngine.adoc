@@ -34,7 +34,7 @@ The result type of the engine.
 
 == Member Functions
 
-[#_constructors]
+[#constructors]
 === `RandomEngine` contructors
 
 [source]
@@ -64,7 +64,7 @@ void long_jump();
 
 Advances the generator as if `operator()` had been called stem:[2^{192}] times.
 
-See also: <<_short_jump>>
+See also: <<short_jump>>
 
 === `short_jump`
 
@@ -75,7 +75,7 @@ void short_jump();
 
 Advances the generator as if `operator()` had been called stem:[2^{128}] times.
 
-See also: <<_long_jump>>
+See also: <<long_jump>>
 
 
 == Static Members Functions

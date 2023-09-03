@@ -62,7 +62,7 @@ constexpr int64_t as_microseconds() const;
 
 Return the time as a number of microseconds.
 
-See also: <<_microseconds>>, <<_operator_microseconds>>
+See also: <<microseconds>>, <<operator_microseconds>>
 
 === `as_milliseconds`
 
@@ -73,7 +73,7 @@ constexpr int32_t as_milliseconds() const;
 
 Return the time as a number of milliseconds.
 
-See also: <<_milliseconds>>, <<_operator_milliseconds>>
+See also: <<milliseconds>>, <<operator_milliseconds>>
 
 === `as_seconds`
 
@@ -84,7 +84,7 @@ constexpr float as_seconds() const
 
 Return the time as a number of seconds.
 
-See also: <<_seconds>>, <<_operator_seconds>>
+See also: <<seconds>>, <<operator_seconds>>
 
 == Operators
 
@@ -180,7 +180,7 @@ Compute the substraction and assignment of two times. The result is assigned to 
 
 == User-Defined Literals
 
-[#_operator_microseconds]
+[#operator_microseconds]
 === `gf::literals::_microseconds`
 
 [source]
@@ -198,9 +198,9 @@ This operator is defined in the `gf::literals` namespace.
 include::snippets/core_time.cc[tag=time_us]
 ----
 
-See also: <<_as_microseconds>>
+See also: <<as_microseconds>>
 
-[#_operator_milliseconds]
+[#operator_milliseconds]
 === `gf::literals::_milliseconds`
 
 [source]
@@ -218,9 +218,9 @@ This operator is defined in the `gf::literals` namespace.
 include::snippets/core_time.cc[tag=time_ms]
 ----
 
-See also: <<_as_milliseconds>>
+See also: <<as_milliseconds>>
 
-[#_operator_seconds]
+[#operator_seconds]
 === `gf::literals::_seconds`
 
 [source]
@@ -238,11 +238,11 @@ This operator is defined in the `gf::literals` namespace.
 include::snippets/core_time.cc[tag=time_s]
 ----
 
-See also: <<_as_seconds>>
+See also: <<as_seconds>>
 
 == Functions
 
-[#_microseconds]
+[#microseconds]
 === `gf::microseconds`
 
 [source]
@@ -252,9 +252,9 @@ constexpr Time microseconds(int64_t amount);
 
 Create a time value from a number of microseconds.
 
-See also: <<_as_microseconds>>
+See also: <<as_microseconds>>
 
-[#_milliseconds]
+[#milliseconds]
 === `gf::milliseconds`
 
 [source]
@@ -264,9 +264,9 @@ constexpr Time milliseconds(int32_t amount);
 
 Create a time value from a number of milliseconds.
 
-See also: <<_as_milliseconds>>
+See also: <<as_milliseconds>>
 
-[#_seconds]
+[#seconds]
 === `gf::seconds`
 
 [source]
@@ -276,4 +276,4 @@ constexpr Time seconds(float amount);
 
 Create a time value from a number of seconds.
 
-See also: <<_as_seconds>>
+See also: <<as_seconds>>

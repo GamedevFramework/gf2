@@ -9,37 +9,37 @@ xref:symbols.adoc[< Back to symbols]
 
 == A
 
-- xref:core_color.adoc#_azure[`gf::Azure`] variable
+- xref:core_color.adoc#azure[`gf::Azure`] variable
 
 == B
 
-- xref:core_color.adoc#_black[`gf::Black`] variable
-- xref:core_color.adoc#_blue[`gf::Blue`] variable
+- xref:core_color.adoc#black[`gf::Black`] variable
+- xref:core_color.adoc#blue[`gf::Blue`] variable
 
 == C
 
-- xref:core_color.adoc#_chartreuse[`gf::Chartreuse`] variable
-- xref:core_color.adoc#_cyan[`gf::Cyan`] variable
+- xref:core_color.adoc#chartreuse[`gf::Chartreuse`] variable
+- xref:core_color.adoc#cyan[`gf::Cyan`] variable
 
 == D
 
 == E
 
-- xref:core_math.adoc#_epsilon[`gf::Epsilon`] variable
+- xref:core_math.adoc#epsilon[`gf::Epsilon`] variable
 
 == F
 
 == G
 
-- xref:core_color.adoc#_gray0[`gf::Gray`] variable
-- xref:core_color.adoc#_green[`gf::Green`] variable
+- xref:core_color.adoc#gray0[`gf::Gray`] variable
+- xref:core_color.adoc#green[`gf::Green`] variable
 
 == H
 
 == I
 
-- xref:core_math.adoc#_inv_sqrt2[`gf::InvSqrt2`] variable
-- xref:core_math.adoc#_inv_sqrt3[`gf::InvSqrt3`] variable
+- xref:core_math.adoc#inv_sqrt2[`gf::InvSqrt2`] variable
+- xref:core_math.adoc#inv_sqrt3[`gf::InvSqrt3`] variable
 
 == J
 
@@ -49,33 +49,33 @@ xref:symbols.adoc[< Back to symbols]
 
 == M
 
-- xref:core_color.adoc#_magenta[`gf::Magenta`] variable
+- xref:core_color.adoc#magenta[`gf::Magenta`] variable
 
 == N
 
 == O
 
-- xref:core_color.adoc#_orange[`gf::Orange`] variable
+- xref:core_color.adoc#orange[`gf::Orange`] variable
 
 == P
 
-- xref:core_math.adoc#_pi[`gf::Pi`] variable
-- xref:core_math.adoc#_pi2[`gf::Pi2`] variable
-- xref:core_math.adoc#_pi3[`gf::Pi3`] variable
-- xref:core_math.adoc#_pi6[`gf::Pi6`] variable
+- xref:core_math.adoc#pi[`gf::Pi`] variable
+- xref:core_math.adoc#pi2[`gf::Pi2`] variable
+- xref:core_math.adoc#pi3[`gf::Pi3`] variable
+- xref:core_math.adoc#pi6[`gf::Pi6`] variable
 
 == Q
 
 == R
 
-- xref:core_color.adoc#_red[`gf::Red`] variable
-- xref:core_color.adoc#_rose[`gf::Rose`] variable
+- xref:core_color.adoc#red[`gf::Red`] variable
+- xref:core_color.adoc#rose[`gf::Rose`] variable
 
 == S
 
-- xref:core_color.adoc#_spring[`gf::Spring`] variable
-- xref:core_math.adoc#_sqrt2[`gf::Sqrt2`] variable
-- xref:core_math.adoc#_sqrt3[`gf::Sqrt3`] variable
+- xref:core_color.adoc#spring[`gf::Spring`] variable
+- xref:core_math.adoc#sqrt2[`gf::Sqrt2`] variable
+- xref:core_math.adoc#sqrt3[`gf::Sqrt3`] variable
 
 == T
 
@@ -83,17 +83,17 @@ xref:symbols.adoc[< Back to symbols]
 
 == V
 
-- xref:core_color.adoc#_violet[`gf::Violet`] variable
+- xref:core_color.adoc#violet[`gf::Violet`] variable
 
 == W
 
-- xref:core_color.adoc#_white[`gf::White`] variable
+- xref:core_color.adoc#white[`gf::White`] variable
 
 == X
 
 == Y
 
-- xref:core_color.adoc#_yellow[`gf::Yellow`] variable
+- xref:core_color.adoc#yellow[`gf::Yellow`] variable
 
 == Z
 
