@@ -1,0 +1,45 @@
+= `graphics` Window
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The window component handles the management of a window and all related aspects.
+
+xref:reference.adoc[< Back to reference]
+
+== Types
+
+=== `gf::Window`
+
+[source]
+----
+#include <gf2/Window.h>
+class Window;
+----
+
+A window from the operating system. xref:Window.adoc[*Read more...*]
+
+=== `gf::WindowHints`
+
+[source]
+----
+#include <gf2/Window.h>
+enum class WindowHints : uint8_t;
+----
+
+Window properties at the window creation. `WindowHints` can be used with xref:Flags.adoc[`Flags<E>`].
+
+.Enumerators for `gf::WindowHints`
+[cols="2,3"]
+|===
+| Value | Description
+
+| `gf::WindowHints::Resizable`
+| The window is resizable.
+
+| `gf::WindowHints::Visible`
+| The window is visible.
+
+| `gf::WindowHints::Decorated`
+| The window is decorated.
+|===

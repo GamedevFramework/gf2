@@ -21,7 +21,7 @@ xref:index.adoc[< Back to main page]
 ** xref:core_resources.adoc[Resources] (xref:ResourceManager.adoc[`ResourceManager`], xref:ResourceBundle.adoc[`ResourceBundle`])
 ** xref:core_serialization.adoc[Serialization] (xref:Serializer.adoc[`Serializer`], xref:Deserializer.adoc[`Deserializer`])
 ** xref:core_grids.adoc[Grids] (xref:AnyGrid.adoc[`AnyGrid`], `GridMap`)
-** xref:core_coordinates.adoc[Coordinates] (xref:Transform.adoc[`Transform`], `Camera`)
+** xref:core_coordinates.adoc[Coordinates] (xref:Transform.adoc[`Transform`], xref:Camera.adoc[`Camera`])
 ** xref:core_data.adoc[Data] (`TiledMapData`, `AnimationData`)
 
 == `graphics`
@@ -29,6 +29,7 @@ xref:index.adoc[< Back to main page]
 - Initialization (`GraphicsInitializer`)
 - xref:graphics_inputs.adoc[Inputs] (xref:Scancode.adoc[`Scancode`], xref:Keycode.adoc[`Keycode`], xref:MouseButton.adoc[`MouseButton`])
 - xref:graphics_events.adoc[Events] (xref:Event.adoc[`Event`])
+- xref:graphics_window.adoc[Window] (xref:Window.adoc[`Window`])
 - xref:graphics_low_level.adoc[Low-Level] (`Renderer`, `Texture`, `CommandBuffer`, `Buffer`, `Shader`)
 
 == `network`
