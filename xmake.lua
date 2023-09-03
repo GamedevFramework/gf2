@@ -18,10 +18,10 @@ set_policy("build.warning", true)
 set_warnings("allextra")
 set_languages("cxx17")
 set_symbols("hidden")
+set_encodings("utf-8")
 
 if is_plat("windows") then
   add_cxflags("/wd4251") -- Disable warning: class needs to have dll-interface to be used by clients of class blah blah blah
-  add_cxflags("/utf-8")
   add_defines("NOMINMAX", "_CRT_SECURE_NO_WARNINGS")
 end
 
