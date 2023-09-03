@@ -15,6 +15,12 @@ xref:graphics_window.adoc[< Back to `graphics` Window]
 class Window;
 ----
 
+`Window` provides all the functions to manage the window.
+
+The fullscreen is not a real fullscreen with video mode change. When in fullscreen, the window takes the size of the desktop. The <<toggle_fullscreen>> function can be used to easily pass from fullscreen to windowed or from windowed to fullscreen.
+
+You have to handle the closing of the window explicitly. This means you have to check if the user requested the window to close with <<should_close>>, and if you receive a `Quit` event, you have to request the closing of the window with <<close>>. The window is effectively closed and destroyed in the destructor of the class, not when <<close>> is called.
+
 .Example for `gf::Window`
 [source,indent=0]
 ----

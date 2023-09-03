@@ -4,7 +4,7 @@
 void doc_Window() {
 
   // tag::loop[]
-  gf::Window window("", { 1920, 1080 }, ~gf::WindowHints::Resizable);
+  gf::Window window("Super RPG 3000", { 1920, 1080 }, ~gf::WindowHints::Resizable);
 
   while (!window.should_close()) {
 
