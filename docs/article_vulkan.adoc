@@ -15,7 +15,7 @@ link:https://www.vulkan.org/[Vulkan] is a low-level cross-platform graphics API.
 
 link:https://github.com/zeux/volk[volk] is "a meta-loader for Vulkan".
 
-gf2 uses volk to load the Vulkan entrypoints dynamically. This is hidden from the gf2 interface.
+gf2 uses volk to load the Vulkan entrypoints dynamically. This library is a public dependency of gf2.
 
 === vk-bootstrap
 
