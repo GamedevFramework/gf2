@@ -82,7 +82,7 @@ namespace gf {
     return id;
   }
 
-  bool Window::closed() const
+  bool Window::should_close() const
   {
     return m_should_close;
   }

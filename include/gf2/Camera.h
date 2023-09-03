@@ -23,7 +23,7 @@ namespace gf {
 
   class GF_CORE_API Camera {
   public:
-    CameraType type = CameraType::Screen;
+    CameraType type = CameraType::Window;
     Vec2F center = { 0.0f, 0.0f };
     Vec2F size = { 2.0f, 2.0f };
     float rotation = 0.0f;

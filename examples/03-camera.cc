@@ -62,7 +62,7 @@ int main()
   transform.origin = gf::vec(0.5f, 0.5f);
   transform.scale = gf::vec(0.1f, 0.1f);
 
-  while (!window.closed()) {
+  while (!window.should_close()) {
     while (auto event = gf::Event::poll()) {
       switch (event->type) { // NOLINT(bugprone-unchecked-optional-access)
         case gf::EventType::Quit:

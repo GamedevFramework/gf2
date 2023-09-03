@@ -1,0 +1,340 @@
+= `gf::Window` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+A window from the operating system.
+
+xref:graphics_window.adoc[< Back to `graphics` Window]
+
+== Description
+
+[source]
+----
+#include <gf2/Window.h>
+class Window;
+----
+
+.Example for `gf::Window`
+[source,indent=0]
+----
+include::snippets/graphics_window.cc[tag=loop]
+----
+
+== Member Functions
+
+=== `Window` contructors
+
+[source]
+----
+Window(const std::string& title, Vec2I size, Flags<WindowHints> hints = All);
+----
+
+Create a window with a specified title and a specified size. `hints` can be used to set (or unset) properties of the window at the creation.
+
+=== `close`
+
+[source]
+----
+void close();
+----
+
+Request for closing.
+
+See also: <<should_close>>
+
+
+=== `decorated`
+
+[source]
+----
+bool decorated();
+----
+
+Check if the window is decorated.
+
+See also: <<set_decorated>>
+
+
+=== `fullscreen`
+
+[source]
+----
+bool fullscreen() const;
+----
+
+Check if the window is fullscreen.
+
+See also: <<set_fullscreen>>, <<toggle_fullscreen>>
+
+
+=== `id`
+
+[source]
+----
+uint32_t id();
+----
+
+Return the id of the window. It can be used in event handling to check the originating window.
+
+
+=== `maximize`
+
+[source]
+----
+void maximize();
+----
+
+Maximize the window.
+
+See also: <<maximized>>, <<minimize>>
+
+
+=== `maximized`
+
+[source]
+----
+bool maximized();
+----
+
+Check if the window is maximized.
+
+See also: <<maximize>>, <<minimized>>
+
+
+=== `maximum_size`
+
+[source]
+----
+Vec2I maximum_size();
+----
+
+Get the maximum size of the window.
+
+See also: <<set_maximum_size>>, <<minimum_size>>
+
+
+=== `minimize`
+
+[source]
+----
+void minimize();
+----
+
+Minimize the window.
+
+See also: <<minimized>>, <<maximize>>
+
+
+=== `minimized`
+
+[source]
+----
+bool minimized();
+----
+
+Check if the window is minimized.
+
+See also: <<minimize>>, <<maximized>>
+
+
+=== `minimum_size`
+
+[source]
+----
+Vec2I minimum_size();
+----
+
+Get the minimum size of the window.
+
+See also: <<set_minimum_size>>, <<maximum_size>>
+
+
+=== `position`
+
+[source]
+----
+Vec2I position();
+----
+
+Get the position of the window.
+
+See also: <<set_position>>
+
+
+=== `resizable`
+
+[source]
+----
+bool resizable();
+----
+
+Check if the window is resizable.
+
+See also: <<set_resizable>>
+
+
+=== `set_decorated`
+
+[source]
+----
+void set_decorated(bool decorated = true);
+----
+
+Set the window decorated (or not).
+
+See also: <<decorated>>
+
+
+=== `set_fullscreen`
+
+[source]
+----
+void set_fullscreen(bool fullscreen = true);
+----
+
+Set the window fullscreen.
+
+See also: <<fullscreen>>, <<toggle_fullscreen>>
+
+
+=== `set_maximum_size`
+
+[source]
+----
+void set_maximum_size(Vec2I size);
+----
+
+Set the maximum size of the window.
+
+See also: <<maximum_size>>, <<set_minimum_size>>
+
+
+=== `set_minimum_size`
+
+[source]
+----
+void set_minimum_size(Vec2I size);
+----
+
+Set the minimum size of the window.
+
+See also: <<minimum_size>>, <<set_maximum_size>>
+
+
+=== `set_position`
+
+[source]
+----
+void set_position(Vec2I position);
+----
+
+Set the position of the windows.
+
+See also: <<position>>
+
+
+=== `set_resizable`
+
+[source]
+----
+void set_resizable(bool resizable = true);
+----
+
+Set the window resizable (or not).
+
+See also: <<resizable>>
+
+
+=== `set_size`
+
+[source]
+----
+void set_size(Vec2I size);
+----
+
+Set the size of the window.
+
+See also: <<size>>
+
+
+=== `set_title`
+
+[source]
+----
+void set_title(const std::string& title);
+----
+
+Set the title of the window.
+
+See also: <<title>>
+
+
+=== `set_visible`
+
+[source]
+----
+void set_visible(bool visible = true);
+----
+
+Set the window visible (or not).
+
+See also: <<visible>>
+
+
+=== `should_close`
+
+[source]
+----
+bool should_close() const;
+----
+
+Check if the window was requested to close.
+
+
+=== `size`
+
+[source]
+----
+Vec2I size();
+----
+
+Get the size of the window.
+
+See also: <<set_size>>
+
+
+=== `title`
+
+[source]
+----
+std::string title();
+----
+
+Get the title of the window.
+
+See also: <<set_title>>
+
+
+=== `toggle_fullscreen`
+
+[source]
+----
+void toggle_fullscreen();
+----
+
+Toogle the fullscreen status of the window.
+
+See also: <<fullscreen>>, <<set_fullscreen>>
+
+
+=== `visible`
+
+[source]
+----
+bool visible();
+----
+
+Check if the window is visible.
+
+See also: <<set_visible>>

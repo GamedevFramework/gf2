@@ -32,7 +32,7 @@ int main()
 
   const gf::Mat3F identity = gf::Identity3F;
 
-  while (!window.closed()) {
+  while (!window.should_close()) {
     while (auto event = gf::Event::poll()) {
       switch (event->type) { // NOLINT(bugprone-unchecked-optional-access)
         case gf::EventType::Quit:

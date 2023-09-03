@@ -37,7 +37,7 @@ namespace gf {
 
     uint32_t id();
 
-    bool closed() const;
+    bool should_close() const;
     void close();
 
     void set_title(const std::string& title);

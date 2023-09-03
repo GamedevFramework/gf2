@@ -16,6 +16,7 @@ target_link_libraries(gf2_core_doc
 
 add_library(gf2_graphics_doc
   graphics_event.cc
+  graphics_window.cc
 )
 
 target_link_libraries(gf2_graphics_doc

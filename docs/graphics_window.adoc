@@ -9,6 +9,7 @@ xref:reference.adoc[< Back to reference]
 
 == Types
 
+[#window]
 === `gf::Window`
 
 [source]
@@ -19,6 +20,7 @@ class Window;
 
 A window from the operating system. xref:Window.adoc[*Read more...*]
 
+[#window_hints]
 === `gf::WindowHints`
 
 [source]
