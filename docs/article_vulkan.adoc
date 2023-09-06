@@ -9,7 +9,7 @@ xref:graphics_low_level.adoc[< Back to `graphics` Low-Level]
 
 == Vulkan
 
-link:https://www.vulkan.org/[Vulkan] is a low-level cross-platform graphics API. gf2 uses *Vulkan 1.3* that was released on 25th January 2022. More precisely, gf2 takes advantage of link:https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VK_KHR_dynamic_rendering.html[`VK_KHR_dynamic_rendering`], an extension that simplifies the rendering code and is recommanded by the main GPU providers.
+link:https://www.vulkan.org/[Vulkan] is a low-level cross-platform graphics API. gf2 uses *Vulkan 1.3* that was released on 25th January 2022. More precisely, gf2 takes advantage of link:https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VK_KHR_dynamic_rendering.html[`VK_KHR_dynamic_rendering`] (which has been promoted to Vulkan 1.3), an extension that simplifies the rendering code and is recommanded by the main GPU providers. Older GPU, especially on Windows, may not support Vulkan 1.3.
 
 === volk
 
@@ -37,4 +37,4 @@ See also: link:https://gpuopen-librariesandsdks.github.io/VulkanMemoryAllocator/
 
 === `gf::Renderer`
 
-
+xref:Renderer.adoc[`gf::Renderer`] is the control tower of the low-level graphics stack. It is responsible for initializing everything, handling synchronization, and creating all the other classes.
