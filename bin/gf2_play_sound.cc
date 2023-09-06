@@ -5,8 +5,8 @@
 #include <iostream>
 #include <string>
 
-#include <gf2/AudioManager.h>
-#include <gf2/Sound.h>
+#include <gf2/audio/AudioManager.h>
+#include <gf2/audio/Sound.h>
 
 int main(int argc, char* argv[])
 {

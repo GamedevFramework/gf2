@@ -3,8 +3,9 @@
 #ifndef GF_VERTEX_H
 #define GF_VERTEX_H
 
-#include "Color.h"
-#include "Vec2.h"
+#include <gf2/core/Color.h>
+#include <gf2/core/Vec2.h>
+
 #include "VertexInput.h"
 
 namespace gf {

@@ -3,7 +3,7 @@
 #ifndef GF_AUDIO_API_H
 #define GF_AUDIO_API_H
 
-#include "Portability.h"
+#include <gf2/core/Portability.h>
 
 #ifndef GF_AUDIO_STATIC
 #  ifdef GF_AUDIO_BUILD

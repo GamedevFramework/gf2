@@ -6,11 +6,12 @@
 #include <string>
 #include <tuple>
 
+#include <gf2/core/Span.h>
+#include <gf2/core/Types.h>
+
 #include "NetworkApi.h"
 #include "Socket.h"
 #include "SocketAddress.h"
-#include "Span.h"
-#include "Types.h"
 
 namespace gf {
 

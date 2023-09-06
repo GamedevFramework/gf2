@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-#include <gf2/Tarball.h>
+#include <gf2/core/Tarball.h>
 
 int main(int argc, char* argv[])
 {

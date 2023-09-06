@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/UdpSocket.h>
+#include <gf2/network/UdpSocket.h>
 // clang-format on
 
 #include <cassert>
@@ -18,7 +18,7 @@
 #  include <netdb.h>
 #endif
 
-#include <gf2/Log.h>
+#include <gf2/core/Log.h>
 
 #include "bits/SocketPortability.h"
 

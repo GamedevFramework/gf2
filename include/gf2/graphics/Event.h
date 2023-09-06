@@ -8,12 +8,13 @@
 #include <array>
 #include <optional>
 
+#include <gf2/core/Vec2.h>
+
 #include "Gamepad.h"
 #include "GraphicsApi.h"
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Touch.h"
-#include "Vec2.h"
 
 namespace gf {
 

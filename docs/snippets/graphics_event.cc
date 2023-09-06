@@ -1,4 +1,4 @@
-#include <gf2/Event.h>
+#include <gf2/graphics/Event.h>
 
 void doc_Event() {
 

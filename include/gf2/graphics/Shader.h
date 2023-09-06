@@ -7,9 +7,10 @@
 
 #include <filesystem>
 
+#include <gf2/core/Span.h>
+
 #include "GraphicsApi.h"
 #include "ShaderStage.h"
-#include "Span.h"
 #include "Vulkan.h"
 
 namespace gf {

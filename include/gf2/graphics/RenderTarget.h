@@ -1,8 +1,9 @@
 #ifndef GF_RENDER_TARGET_H
 #define GF_RENDER_TARGET_H
 
+#include <gf2/core/Vec2.h>
+
 #include "GraphicsApi.h"
-#include "Vec2.h"
 #include "Vulkan.h"
 
 namespace gf {

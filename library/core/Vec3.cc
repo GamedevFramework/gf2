@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/Vec3.h>
+#include <gf2/core/Vec3.h>
 // clang-format on
 
 namespace gf {

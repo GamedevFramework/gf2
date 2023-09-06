@@ -2,15 +2,15 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/GraphicsInitializer.h>
+#include <gf2/graphics/GraphicsInitializer.h>
 // clang-format on
 
 #include <atomic>
 
 #include <SDL2/SDL.h>
-#include <gf2/Gamepad.h>
-#include <gf2/Log.h>
-#include <gf2/Vulkan.h>
+#include <gf2/core/Log.h>
+#include <gf2/graphics/Gamepad.h>
+#include <gf2/graphics/Vulkan.h>
 
 namespace gf {
 

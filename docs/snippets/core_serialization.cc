@@ -1,4 +1,4 @@
-#include <gf2/Serialization.h>
+#include <gf2/core/Serialization.h>
 
 #include <string>
 

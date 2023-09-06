@@ -1,4 +1,4 @@
-#include <gf2/Span.h>
+#include <gf2/core/Span.h>
 
 #include "gtest/gtest.h"
 

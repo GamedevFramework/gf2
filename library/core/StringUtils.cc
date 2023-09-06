@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/StringUtils.h>
+#include <gf2/core/StringUtils.h>
 // clang-format on
 
 #include <cmath>

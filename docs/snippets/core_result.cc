@@ -1,7 +1,7 @@
 #include <cmath>
 #include <cerrno>
 
-#include <gf2/Result.h>
+#include <gf2/core/Result.h>
 
 // tag::safe_sqrt[]
 gf::Result<float, int> safe_sqrt(float x) {

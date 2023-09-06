@@ -1,6 +1,6 @@
-#include <gf2/SocketSelector.h>
-#include <gf2/TcpListener.h>
-#include <gf2/TcpSocket.h>
+#include <gf2/network/SocketSelector.h>
+#include <gf2/network/TcpListener.h>
+#include <gf2/network/TcpSocket.h>
 
 void doc_SocketSelector(const std::string& service) {
   // tag::socket_selector[]

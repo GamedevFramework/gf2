@@ -1,6 +1,6 @@
 #include <type_traits>
 
-#include <gf2/BinaryHeap.h>
+#include <gf2/core/BinaryHeap.h>
 
 #include "gtest/gtest.h"
 

@@ -18,11 +18,11 @@
 #  include <poll.h>
 #endif
 
-#include <gf2/Log.h>
-#include <gf2/SocketAddress.h>
-#include <gf2/SocketTypes.h>
-#include <gf2/Span.h>
-#include <gf2/Time.h>
+#include <gf2/core/Log.h>
+#include <gf2/core/Span.h>
+#include <gf2/core/Time.h>
+#include <gf2/network/SocketAddress.h>
+#include <gf2/network/SocketTypes.h>
 
 namespace gf::details {
 

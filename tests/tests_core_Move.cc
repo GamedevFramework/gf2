@@ -1,4 +1,4 @@
-#include <gf2/Move.h>
+#include <gf2/core/Move.h>
 
 #include "gtest/gtest.h"
 

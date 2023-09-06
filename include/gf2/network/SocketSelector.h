@@ -11,10 +11,11 @@
 #  include <poll.h>
 #endif
 
+#include <gf2/core/Time.h>
+
 #include "NetworkApi.h"
 #include "Socket.h"
 #include "SocketTypes.h"
-#include "Time.h"
 
 namespace gf {
 

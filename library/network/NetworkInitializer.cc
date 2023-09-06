@@ -2,14 +2,14 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/NetworkInitializer.h>
+#include <gf2/network/NetworkInitializer.h>
 // clang-format on
 
 #ifdef _WIN32
 #  include <atomic>
 #  include <stdexcept>
 
-#  include <gf2/Log.h>
+#  include <gf2/core/Log.h>
 
 #  include <winsock2.h>
 #endif

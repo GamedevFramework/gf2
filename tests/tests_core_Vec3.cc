@@ -1,6 +1,6 @@
 #include <type_traits>
 
-#include <gf2/Vec3.h>
+#include <gf2/core/Vec3.h>
 
 #include "gtest/gtest.h"
 

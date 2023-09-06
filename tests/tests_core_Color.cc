@@ -1,6 +1,6 @@
 #include <type_traits>
 
-#include <gf2/Color.h>
+#include <gf2/core/Color.h>
 
 #include "gtest/gtest.h"
 

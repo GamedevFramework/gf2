@@ -8,12 +8,13 @@
 
 #include <vector>
 
-#include "Id.h"
+#include <gf2/core/Id.h>
+#include <gf2/core/Serialization.h>
+#include <gf2/core/SerializationOps.h>
+#include <gf2/core/Span.h>
+#include <gf2/core/Streams.h>
+
 #include "NetworkApi.h"
-#include "Serialization.h"
-#include "SerializationOps.h"
-#include "Span.h"
-#include "Streams.h"
 
 namespace gf {
 

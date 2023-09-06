@@ -1,4 +1,4 @@
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 
 void doc_Step() {
   [[maybe_unused]]

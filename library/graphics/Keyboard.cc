@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/Keyboard.h>
+#include <gf2/graphics/Keyboard.h>
 // clang-format on
 
 #include <SDL2/SDL.h>

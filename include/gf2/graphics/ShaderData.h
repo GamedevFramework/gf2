@@ -3,8 +3,8 @@
 #ifndef GF_SHADER_DATA_H
 #define GF_SHADER_DATA_H
 
-#include "Mat3.h"
-#include "Mat4.h"
+#include <gf2/core/Mat3.h>
+#include <gf2/core/Mat4.h>
 
 namespace gf {
 

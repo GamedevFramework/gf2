@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/TcpSocket.h>
+#include <gf2/network/TcpSocket.h>
 // clang-format on
 
 #include <cstring>
@@ -17,8 +17,8 @@
 #  include <netdb.h>
 #endif
 
-#include <gf2/Log.h>
-#include <gf2/Packet.h>
+#include <gf2/core/Log.h>
+#include <gf2/network/Packet.h>
 
 #include "bits/SocketPortability.h"
 

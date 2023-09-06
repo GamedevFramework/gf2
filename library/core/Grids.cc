@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/Grids.h>
+#include <gf2/core/Grids.h>
 // clang-format on
 
 #include <cmath>
@@ -10,8 +10,8 @@
 
 #include <algorithm>
 
-#include <gf2/Math.h>
-#include <gf2/Span.h>
+#include <gf2/core/Math.h>
+#include <gf2/core/Span.h>
 
 namespace gf {
 

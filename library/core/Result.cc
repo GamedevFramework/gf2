@@ -2,5 +2,5 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/Result.h>
+#include <gf2/core/Result.h>
 // clang-format on

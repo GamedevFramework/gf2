@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/Streams.h>
+#include <gf2/core/Streams.h>
 // clang-format on
 
 #include <cassert>
@@ -12,7 +12,7 @@
 #include <string>
 #include <utility>
 
-#include <gf2/Log.h>
+#include <gf2/core/Log.h>
 
 namespace gf {
 

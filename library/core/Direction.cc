@@ -2,14 +2,14 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/Direction.h>
+#include <gf2/core/Direction.h>
 // clang-format on
 
 #include <cassert>
 
 #include <limits>
 
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 
 namespace gf {
 

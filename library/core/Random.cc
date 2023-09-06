@@ -2,12 +2,12 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/Random.h>
+#include <gf2/core/Random.h>
 // clang-format on
 
 #include <cinttypes>
 
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 
 namespace gf {
 

@@ -2,15 +2,15 @@
 // Copyright (c) 2023 Julien Bernard
 #include <array>
 
-#include <gf2/Camera.h>
-#include <gf2/Event.h>
-#include <gf2/GraphicsInitializer.h>
-#include <gf2/Mat3.h>
-#include <gf2/Renderer.h>
-#include <gf2/Texture.h>
-#include <gf2/Transform.h>
-#include <gf2/Vertex.h>
-#include <gf2/Window.h>
+#include <gf2/core/Camera.h>
+#include <gf2/core/Mat3.h>
+#include <gf2/core/Transform.h>
+#include <gf2/graphics/Event.h>
+#include <gf2/graphics/GraphicsInitializer.h>
+#include <gf2/graphics/Renderer.h>
+#include <gf2/graphics/Texture.h>
+#include <gf2/graphics/Vertex.h>
+#include <gf2/graphics/Window.h>
 
 #include "config.h"
 

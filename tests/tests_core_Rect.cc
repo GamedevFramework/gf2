@@ -1,4 +1,4 @@
-#include <gf2/Rect.h>
+#include <gf2/core/Rect.h>
 
 #include "gtest/gtest.h"
 

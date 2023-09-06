@@ -1,4 +1,4 @@
-#include <gf2/Flags.h>
+#include <gf2/core/Flags.h>
 
 #include "gtest/gtest.h"
 

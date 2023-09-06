@@ -5,11 +5,12 @@
 
 #include <string>
 
-#include "Clock.h"
-#include "Flags.h"
+#include <gf2/core/Clock.h>
+#include <gf2/core/Flags.h>
+#include <gf2/core/Time.h>
+#include <gf2/core/Vec2.h>
+
 #include "GraphicsApi.h"
-#include "Time.h"
-#include "Vec2.h"
 
 using SDL_Window = struct SDL_Window;
 

@@ -2,15 +2,15 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/Texture.h>
+#include <gf2/graphics/Texture.h>
 // clang-format on
 
 #include <cassert>
 
 #include <utility>
 
-#include <gf2/Log.h>
-#include <gf2/Renderer.h>
+#include <gf2/core/Log.h>
+#include <gf2/graphics/Renderer.h>
 
 namespace gf {
 

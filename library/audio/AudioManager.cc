@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/AudioManager.h>
+#include <gf2/audio/AudioManager.h>
 // clang-format on
 
 #include <cassert>
@@ -10,7 +10,7 @@
 
 #include <array>
 
-#include <gf2/Log.h>
+#include <gf2/core/Log.h>
 
 // clang-format: off
 #include "bits/AudioBackend.h"

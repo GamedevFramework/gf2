@@ -1,4 +1,4 @@
-#include <gf2/Id.h>
+#include <gf2/core/Id.h>
 
 #include "gtest/gtest.h"
 

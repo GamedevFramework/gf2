@@ -3,7 +3,7 @@
 #ifndef GF_GRAPHICS_API_H
 #define GF_GRAPHICS_API_H
 
-#include "Portability.h"
+#include <gf2/core/Portability.h>
 
 #ifndef GF_GRAPHICS_STATIC
 #  ifdef GF_GRAPHICS_BUILD

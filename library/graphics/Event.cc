@@ -2,14 +2,14 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/Event.h>
+#include <gf2/graphics/Event.h>
 // clang-format on
 
 #include <algorithm>
 #include <tuple>
 
 #include <SDL2/SDL.h>
-#include <gf2/Log.h>
+#include <gf2/core/Log.h>
 
 namespace gf {
 

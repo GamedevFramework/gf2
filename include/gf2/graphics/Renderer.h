@@ -4,14 +4,15 @@
 #include <optional>
 #include <vector>
 
+#include <gf2/core/Color.h>
+#include <gf2/core/Span.h>
+
 #include "Buffer.h"
-#include "Color.h"
 #include "CommandBuffer.h"
 #include "Descriptor.h"
 #include "GraphicsApi.h"
 #include "Pipeline.h"
 #include "RenderTarget.h"
-#include "Span.h"
 #include "Vulkan.h"
 #include "Window.h"
 

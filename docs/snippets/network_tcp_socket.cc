@@ -1,4 +1,4 @@
-#include <gf2/TcpSocket.h>
+#include <gf2/network/TcpSocket.h>
 
 void doc_TcpSocket() {
   // tag::tcp_socket[]

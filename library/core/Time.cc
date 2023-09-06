@@ -2,5 +2,5 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/Time.h>
+#include <gf2/core/Time.h>
 // clang-format on

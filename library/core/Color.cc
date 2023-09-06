@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/Color.h>
+#include <gf2/core/Color.h>
 // clang-format on
 
 #include <cassert>

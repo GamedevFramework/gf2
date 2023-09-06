@@ -2,12 +2,12 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/Socket.h>
+#include <gf2/network/Socket.h>
 // clang-format on
 
 #include <utility>
 
-#include <gf2/Log.h>
+#include <gf2/core/Log.h>
 
 #include "bits/SocketPortability.h"
 

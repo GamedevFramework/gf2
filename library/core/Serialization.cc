@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/Serialization.h>
+#include <gf2/core/Serialization.h>
 // clang-format on
 
 #include <cassert>
@@ -12,7 +12,7 @@
 #include <limits>
 #include <stdexcept>
 
-#include <gf2/Log.h>
+#include <gf2/core/Log.h>
 
 namespace gf {
 

@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/Transform.h>
+#include <gf2/core/Transform.h>
 // clang-format on
 
 #include <cmath>

@@ -7,10 +7,10 @@
 #include <iostream>
 #include <string>
 
-#include <gf2/Font.h>
-#include <gf2/FontManager.h>
-#include <gf2/Range.h>
-#include <gf2/StringUtils.h>
+#include <gf2/core/Font.h>
+#include <gf2/core/FontManager.h>
+#include <gf2/core/Range.h>
+#include <gf2/core/StringUtils.h>
 
 int main(int argc, char* argv[])
 {

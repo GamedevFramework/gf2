@@ -7,10 +7,11 @@
 
 #include <string>
 
+#include <gf2/core/Result.h>
+#include <gf2/core/Span.h>
+
 #include "NetworkApi.h"
-#include "Result.h"
 #include "Socket.h"
-#include "Span.h"
 
 namespace gf {
   class Packet;

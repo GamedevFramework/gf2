@@ -10,8 +10,9 @@
 #  include <winsock2.h>
 #endif
 
+#include <gf2/core/Result.h>
+
 #include "NetworkApi.h"
-#include "Result.h"
 
 namespace gf {
 

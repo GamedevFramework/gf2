@@ -1,7 +1,7 @@
 #include <thread>
 
-#include <gf2/AudioManager.h>
-#include <gf2/Sound.h>
+#include <gf2/audio/AudioManager.h>
+#include <gf2/audio/Sound.h>
 
 #include "config.h"
 

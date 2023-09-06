@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/Pipeline.h>
+#include <gf2/graphics/Pipeline.h>
 // clang-format on
 
 #include <algorithm>
@@ -11,8 +11,8 @@
 #include <utility>
 #include <vector>
 
-#include <gf2/Log.h>
-#include <gf2/Renderer.h>
+#include <gf2/core/Log.h>
+#include <gf2/graphics/Renderer.h>
 
 namespace gf {
   /*

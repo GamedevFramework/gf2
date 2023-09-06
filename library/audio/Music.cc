@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/Music.h>
+#include <gf2/audio/Music.h>
 // clang-format on
 
 #include "bits/AudioBackend.h"

@@ -1,6 +1,6 @@
 #include <type_traits>
 
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 
 #include "gtest/gtest.h"
 

@@ -2,12 +2,12 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/Descriptor.h>
+#include <gf2/graphics/Descriptor.h>
 // clang-format on
 
 #include <utility>
 
-#include <gf2/Texture.h>
+#include <gf2/graphics/Texture.h>
 
 namespace gf {
 

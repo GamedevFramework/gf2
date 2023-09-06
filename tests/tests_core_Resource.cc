@@ -1,9 +1,9 @@
 #include <type_traits>
 
-#include <gf2/ResourceBundle.h>
-#include <gf2/ResourceLoaders.h>
-#include <gf2/ResourceManager.h>
-#include <gf2/ResourceRegistry.h>
+#include <gf2/core/ResourceBundle.h>
+#include <gf2/core/ResourceLoaders.h>
+#include <gf2/core/ResourceManager.h>
+#include <gf2/core/ResourceRegistry.h>
 
 #include "config.h"
 

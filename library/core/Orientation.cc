@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/Orientation.h>
+#include <gf2/core/Orientation.h>
 // clang-format on
 
 #include <cassert>
@@ -10,7 +10,7 @@
 
 #include <limits>
 
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 
 namespace gf {
 

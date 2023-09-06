@@ -1,4 +1,4 @@
-#include <gf2/UdpSocket.h>
+#include <gf2/network/UdpSocket.h>
 
 void doc_UdpSocket() {
   // tag::udp_socket[]

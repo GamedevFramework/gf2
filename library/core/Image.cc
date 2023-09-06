@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/Image.h>
+#include <gf2/core/Image.h>
 // clang-format on
 
 #include <algorithm>
@@ -17,8 +17,8 @@
 #include <stb_image_write.h>
 // clang-format on
 
-#include <gf2/Log.h>
-#include <gf2/Stream.h>
+#include <gf2/core/Log.h>
+#include <gf2/core/Stream.h>
 
 namespace gf {
 

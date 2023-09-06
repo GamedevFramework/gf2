@@ -3,7 +3,7 @@
 #ifndef GF_NETWORK_API_H
 #define GF_NETWORK_API_H
 
-#include "Portability.h"
+#include <gf2/core/Portability.h>
 
 #ifndef GF_NETWORK_STATIC
 #  ifdef GF_NETWORK_BUILD

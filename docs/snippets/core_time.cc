@@ -1,4 +1,4 @@
-#include <gf2/Time.h>
+#include <gf2/core/Time.h>
 
 void doc_Time() {
   // tag::time[]

@@ -1,6 +1,6 @@
 #include <type_traits>
 
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 
 #include "gtest/gtest.h"
 

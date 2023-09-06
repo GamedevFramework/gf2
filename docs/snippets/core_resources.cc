@@ -1,6 +1,6 @@
-#include <gf2/ResourceLoader.h>
-#include <gf2/ResourceRegistry.h>
-#include <gf2/ResourceLoaders.h>
+#include <gf2/core/ResourceLoader.h>
+#include <gf2/core/ResourceRegistry.h>
+#include <gf2/core/ResourceLoaders.h>
 
 struct MyResource {
   MyResource(const std::filesystem::path&)

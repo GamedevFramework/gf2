@@ -3,8 +3,8 @@
 #include <thread>
 #include <vector>
 
-#include <gf2/SerializationOps.h>
-#include <gf2/UdpSocket.h>
+#include <gf2/core/SerializationOps.h>
+#include <gf2/network/UdpSocket.h>
 
 #include "gtest/gtest.h"
 

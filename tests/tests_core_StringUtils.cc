@@ -1,6 +1,6 @@
 #include <iterator>
 
-#include <gf2/StringUtils.h>
+#include <gf2/core/StringUtils.h>
 
 #include "gtest/gtest.h"
 

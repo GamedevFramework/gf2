@@ -2,10 +2,10 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/ResourceLoaders.h>
+#include <gf2/core/ResourceLoaders.h>
 // clang-format on
 
-#include <gf2/Log.h>
+#include <gf2/core/Log.h>
 
 namespace gf {
 

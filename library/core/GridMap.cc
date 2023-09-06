@@ -2,12 +2,12 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/GridMap.h>
+#include <gf2/core/GridMap.h>
 // clang-format on
 
 #include <algorithm>
 
-#include <gf2/BinaryHeap.h>
+#include <gf2/core/BinaryHeap.h>
 
 namespace gf {
   using namespace operators;

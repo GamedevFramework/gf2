@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/Tarball.h>
+#include <gf2/core/Tarball.h>
 // clang-format on
 
 #include <cassert>
@@ -14,7 +14,7 @@
 #include <string_view>
 #include <utility>
 
-#include <gf2/Log.h>
+#include <gf2/core/Log.h>
 
 namespace gf {
 

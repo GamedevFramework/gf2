@@ -5,13 +5,14 @@
 
 #include <type_traits>
 
-#include "Color.h"
+#include <gf2/core/Color.h>
+#include <gf2/core/Rect.h>
+#include <gf2/core/Vec2.h>
+
 #include "Descriptor.h"
 #include "GraphicsApi.h"
-#include "Rect.h"
 #include "RenderTarget.h"
 #include "ShaderData.h"
-#include "Vec2.h"
 #include "Vulkan.h"
 
 namespace gf {

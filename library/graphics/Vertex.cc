@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/Vertex.h>
+#include <gf2/graphics/Vertex.h>
 // clang-format on
 
 namespace gf {

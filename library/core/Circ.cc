@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/Circ.h>
+#include <gf2/core/Circ.h>
 // clang-format on
 
 namespace gf {

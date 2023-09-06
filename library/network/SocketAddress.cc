@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/SocketAddress.h>
+#include <gf2/network/SocketAddress.h>
 // clang-format on
 
 #include <cstring>
@@ -17,7 +17,7 @@
 #  include <netdb.h>
 #endif
 
-#include <gf2/Log.h>
+#include <gf2/core/Log.h>
 
 namespace gf {
 

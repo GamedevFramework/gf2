@@ -2,16 +2,16 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/PropertyMap.h>
+#include <gf2/core/PropertyMap.h>
 // clang-format on
 
 #include <cassert>
 
 #include <stdexcept>
 
-#include <gf2/Log.h>
-#include <gf2/Property.h>
-#include <gf2/StringUtils.h>
+#include <gf2/core/Log.h>
+#include <gf2/core/Property.h>
+#include <gf2/core/StringUtils.h>
 
 namespace gf {
 

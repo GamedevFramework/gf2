@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include <gf2/Id.h>
+#include <gf2/core/Id.h>
 
 // tag::using[]
 using namespace gf::literals; // necessary to use _id

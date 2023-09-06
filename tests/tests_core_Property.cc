@@ -1,5 +1,5 @@
-#include <gf2/Property.h>
-#include <gf2/PropertyMap.h>
+#include <gf2/core/Property.h>
+#include <gf2/core/PropertyMap.h>
 
 #include "gtest/gtest.h"
 

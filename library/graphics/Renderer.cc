@@ -2,16 +2,16 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/Renderer.h>
+#include <gf2/graphics/Renderer.h>
 // clang-format on
 
 #include <utility>
 
 #include <SDL2/SDL_vulkan.h>
-#include <gf2/Log.h>
-#include <gf2/Mat3.h>
-#include <gf2/ShaderData.h>
-#include <gf2/Vertex.h>
+#include <gf2/core/Log.h>
+#include <gf2/core/Mat3.h>
+#include <gf2/graphics/ShaderData.h>
+#include <gf2/graphics/Vertex.h>
 
 #include <VkBootstrap.h>
 

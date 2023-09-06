@@ -5,9 +5,10 @@
 
 #include <filesystem>
 
-#include "Bitmap.h"
+#include <gf2/core/Bitmap.h>
+#include <gf2/core/Image.h>
+
 #include "GraphicsApi.h"
-#include "Image.h"
 #include "Vulkan.h"
 
 #include <vk_mem_alloc.h>

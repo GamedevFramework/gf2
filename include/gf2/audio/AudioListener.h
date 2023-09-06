@@ -5,9 +5,10 @@
 
 #include <cstdint>
 
+#include <gf2/core/Vec3.h>
+
 #include "AudioApi.h"
 #include "AudioSpatialization.h"
-#include "Vec3.h"
 
 using ma_engine = struct ma_engine;
 

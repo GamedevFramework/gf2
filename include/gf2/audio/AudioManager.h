@@ -8,10 +8,11 @@
 #include <memory>
 #include <string>
 
+#include <gf2/core/Time.h>
+#include <gf2/core/Vec3.h>
+
 #include "AudioApi.h"
 #include "AudioListener.h"
-#include "Time.h"
-#include "Vec3.h"
 
 using ma_engine = struct ma_engine;
 

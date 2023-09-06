@@ -1,4 +1,4 @@
-#include <gf2/AudioManager.h>
+#include <gf2/audio/AudioManager.h>
 
 #include "gtest/gtest.h"
 

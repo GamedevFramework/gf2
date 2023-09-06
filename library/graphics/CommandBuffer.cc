@@ -2,13 +2,13 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/CommandBuffer.h>
+#include <gf2/graphics/CommandBuffer.h>
 // clang-format on
 
 #include <cassert>
 
-#include <gf2/Buffer.h>
-#include <gf2/Pipeline.h>
+#include <gf2/graphics/Buffer.h>
+#include <gf2/graphics/Pipeline.h>
 
 namespace gf {
 

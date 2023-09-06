@@ -2,5 +2,5 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/ResourceContext.h>
+#include <gf2/core/ResourceContext.h>
 // clang-format on

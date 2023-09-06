@@ -2,5 +2,5 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/RenderTarget.h>
+#include <gf2/graphics/RenderTarget.h>
 // clang-format on

@@ -4,12 +4,12 @@
 #include <limits>
 #include <numeric>
 
-#include <gf2/Array2D.h>
-#include <gf2/Flags.h>
-#include <gf2/SerializationOps.h>
-#include <gf2/Streams.h>
-#include <gf2/Vec2.h>
-#include <gf2/Vec3.h>
+#include <gf2/core/Array2D.h>
+#include <gf2/core/Flags.h>
+#include <gf2/core/SerializationOps.h>
+#include <gf2/core/Streams.h>
+#include <gf2/core/Vec2.h>
+#include <gf2/core/Vec3.h>
 
 #include "gtest/gtest.h"
 

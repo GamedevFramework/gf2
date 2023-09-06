@@ -5,7 +5,8 @@
 
 #include <cstdint>
 
-#include "Flags.h"
+#include <gf2/core/Flags.h>
+
 #include "GraphicsApi.h"
 
 namespace gf {

@@ -8,11 +8,12 @@
 #include <filesystem>
 #include <memory>
 
+#include <gf2/core/Time.h>
+#include <gf2/core/Vec3.h>
+
 #include "AudioApi.h"
 #include "AudioListener.h"
 #include "AudioSpatialization.h"
-#include "Time.h"
-#include "Vec3.h"
 
 using ma_sound = struct ma_sound;
 

@@ -1,4 +1,4 @@
-#include <gf2/Range.h>
+#include <gf2/core/Range.h>
 
 #include "gtest/gtest.h"
 

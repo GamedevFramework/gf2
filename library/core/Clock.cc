@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/Clock.h>
+#include <gf2/core/Clock.h>
 // clang-format on
 
 namespace gf {

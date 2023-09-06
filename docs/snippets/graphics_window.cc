@@ -1,5 +1,5 @@
-#include <gf2/Window.h>
-#include <gf2/Event.h>
+#include <gf2/graphics/Window.h>
+#include <gf2/graphics/Event.h>
 
 void doc_Window() {
 

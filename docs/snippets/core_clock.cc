@@ -1,4 +1,4 @@
-#include <gf2/Clock.h>
+#include <gf2/core/Clock.h>
 
 void doc_Clock() {
   // tag::clock[]
