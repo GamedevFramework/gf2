@@ -39,6 +39,40 @@ namespace gf {
     upload_data(raw_size, raw_data, VK_FORMAT_R8_UNORM, renderer);
   }
 
+  Texture::Texture(Vec2I size, Renderer* renderer)
+  : m_image_size(size)
+  , m_allocator(renderer->m_allocator)
+  {
+    VkImageCreateInfo image_info = {};
+    image_info.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+    image_info.imageType = VK_IMAGE_TYPE_2D;
+    image_info.extent.width = static_cast<uint32_t>(m_image_size.w);
+    image_info.extent.height = static_cast<uint32_t>(m_image_size.h);
+    image_info.extent.depth = 1;
+    image_info.mipLevels = 1;
+    image_info.arrayLayers = 1;
+    image_info.format = renderer->m_format;
+    image_info.tiling = VK_IMAGE_TILING_OPTIMAL;
+    image_info.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+    image_info.usage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT;
+    image_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+    image_info.samples = VK_SAMPLE_COUNT_1_BIT;
+
+    VmaAllocationCreateInfo allocation_info = {};
+    allocation_info.flags = VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT;
+    allocation_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
+
+    if (vmaCreateImage(m_allocator, &image_info, &allocation_info, &m_image, &m_allocation, nullptr) != VK_SUCCESS) {
+      Log::error("Failed to allocate image.");
+      throw std::runtime_error("Failed to allocate image.");
+    }
+
+    // image view and sampler
+
+    create_image_view_and_sampler(renderer->m_format);
+  }
+
+
   Texture::Texture(Texture&& other) noexcept
   : m_image_size(other.m_image_size)
   , m_allocator(std::exchange(other.m_allocator, nullptr))
@@ -77,6 +111,17 @@ namespace gf {
     std::swap(m_image_view, other.m_image_view);
     std::swap(m_sampler, other.m_sampler);
     return *this;
+  }
+
+  RenderTarget Texture::as_render_target() const
+  {
+    VkExtent2D extent = { static_cast<uint32_t>(m_image_size.w), static_cast<uint32_t>(m_image_size.h) };
+    return { m_image_view, extent };
+  }
+
+  Texture::operator TextureReference() const
+  {
+    return { m_image };
   }
 
   void Texture::upload_data(std::size_t raw_size, const void* raw_data, VkFormat format, Renderer* renderer)
@@ -129,7 +174,6 @@ namespace gf {
     image_info.samples = VK_SAMPLE_COUNT_1_BIT;
 
     VmaAllocationCreateInfo allocation_info = {};
-    allocation_info.flags = VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT;
     allocation_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
 
     if (vmaCreateImage(m_allocator, &image_info, &allocation_info, &m_image, &m_allocation, nullptr) != VK_SUCCESS) {
@@ -139,10 +183,21 @@ namespace gf {
 
     auto command_buffer = renderer->current_memory_command_buffer();
 
-    command_buffer.texture_layout_transition({ m_image }, LayoutTransition::Undefined, LayoutTransition::Upload);
+    command_buffer.texture_layout_transition({ m_image }, Layout::Undefined, Layout::Upload);
     command_buffer.copy_buffer_to_texture({ staging_buffer }, { m_image }, m_image_size);
-    command_buffer.texture_layout_transition({ m_image }, LayoutTransition::Upload, LayoutTransition::Shader);
+    command_buffer.texture_layout_transition({ m_image }, Layout::Upload, Layout::Shader);
 
+    // image view and sampler
+
+    create_image_view_and_sampler(format);
+
+    // destroy staging buffer
+
+    renderer->defer_release_staging_buffer({ staging_buffer, staging_allocation });
+  }
+
+  void Texture::create_image_view_and_sampler(VkFormat format)
+  {
     VmaAllocatorInfo info;
     vmaGetAllocatorInfo(m_allocator, &info);
 
@@ -186,10 +241,6 @@ namespace gf {
       Log::error("Failed to create texture sampler.");
       throw std::runtime_error("Failed to create texture sampler.");
     }
-
-    // destroy staging buffer
-
-    renderer->defer_release_staging_buffer({ staging_buffer, staging_allocation });
   }
 
 }

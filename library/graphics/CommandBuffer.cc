@@ -51,6 +51,16 @@ namespace gf {
     vkCmdEndRendering(m_command_buffer);
   }
 
+  MemoryCommandBuffer CommandBuffer::begin_memory() const
+  {
+    return { m_command_buffer };
+  }
+
+  void CommandBuffer::end_memory(MemoryCommandBuffer buffer) const
+  {
+    assert(buffer.m_command_buffer == m_command_buffer);
+  }
+
   /*
    * RenderCommandBuffer
    */
@@ -152,7 +162,7 @@ namespace gf {
     vkCmdCopyBufferToImage(m_command_buffer, source.m_buffer, destination.m_image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &copy);
   }
 
-  void MemoryCommandBuffer::texture_layout_transition(TextureReference texture, LayoutTransition from, LayoutTransition to)
+  void MemoryCommandBuffer::texture_layout_transition(TextureReference texture, Layout from, Layout to)
   {
     VkPipelineStageFlags src_stage_mask = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
     VkPipelineStageFlags dst_stage_mask = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
@@ -161,38 +171,48 @@ namespace gf {
     barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
 
     switch (from) {
-      case LayoutTransition::Undefined:
+      case Layout::Undefined:
         barrier.srcAccessMask = 0;
         barrier.oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
         src_stage_mask = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
         break;
-      case LayoutTransition::Upload:
+      case Layout::Upload:
         barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
         barrier.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
         src_stage_mask = VK_PIPELINE_STAGE_TRANSFER_BIT;
         break;
-      case LayoutTransition::Shader:
+      case Layout::Shader:
         barrier.srcAccessMask = VK_ACCESS_SHADER_READ_BIT;
         barrier.oldLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
         src_stage_mask = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
         break;
+      case Layout::Target:
+        barrier.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+        barrier.oldLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+        src_stage_mask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        break;
     }
 
     switch (to) {
-      case LayoutTransition::Undefined:
+      case Layout::Undefined:
         barrier.dstAccessMask = 0;
         barrier.newLayout = VK_IMAGE_LAYOUT_UNDEFINED;
         dst_stage_mask = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
         break;
-      case LayoutTransition::Upload:
+      case Layout::Upload:
         barrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
         barrier.newLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
         dst_stage_mask = VK_PIPELINE_STAGE_TRANSFER_BIT;
         break;
-      case LayoutTransition::Shader:
+      case Layout::Shader:
         barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
         barrier.newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
         dst_stage_mask = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+        break;
+      case Layout::Target:
+        barrier.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+        barrier.newLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+        dst_stage_mask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
         break;
     }
 

@@ -9,6 +9,8 @@
 #include <gf2/core/Image.h>
 
 #include "GraphicsApi.h"
+#include "RenderTarget.h"
+#include "TextureReference.h"
 #include "Vulkan.h"
 
 #include <vk_mem_alloc.h>
@@ -22,6 +24,7 @@ namespace gf {
     Texture(const std::filesystem::path& filename, Renderer* renderer);
     Texture(const Image& image, Renderer* renderer);
     Texture(const Bitmap& bitmap, Renderer* renderer);
+    Texture(Vec2I size, Renderer* renderer);
 
     Texture(const Texture&) = delete;
     Texture(Texture&& other) noexcept;
@@ -35,10 +38,16 @@ namespace gf {
       return m_image_size;
     }
 
+    RenderTarget as_render_target() const;
+
+    operator TextureReference() const;
+
+
   private:
     friend class Descriptor;
 
     void upload_data(std::size_t raw_size, const void* raw_data, VkFormat format, Renderer* renderer);
+    void create_image_view_and_sampler(VkFormat format);
 
     Vec2I m_image_size = { 0, 0 };
     VmaAllocator m_allocator = nullptr; // non-owning

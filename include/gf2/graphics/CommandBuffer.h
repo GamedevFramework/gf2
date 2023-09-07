@@ -13,6 +13,7 @@
 #include "GraphicsApi.h"
 #include "RenderTarget.h"
 #include "ShaderData.h"
+#include "TextureReference.h"
 #include "Vulkan.h"
 
 namespace gf {
@@ -58,23 +59,6 @@ namespace gf {
     VkCommandBuffer m_command_buffer = VK_NULL_HANDLE; // non-owning
   };
 
-  class GF_GRAPHICS_API CommandBuffer {
-  public:
-
-    RenderCommandBuffer begin_rendering(RenderTarget target, Color clear_color = Black) const;
-    void end_rendering(RenderCommandBuffer buffer) const;
-
-  private:
-    friend class BasicRenderer;
-
-    CommandBuffer(VkCommandBuffer buffer)
-    : m_command_buffer(buffer)
-    {
-    }
-
-    VkCommandBuffer m_command_buffer = VK_NULL_HANDLE; // non-owning
-  };
-
   class BufferReference {
   public:
 
@@ -91,25 +75,11 @@ namespace gf {
     VkBuffer m_buffer = VK_NULL_HANDLE;
   };
 
-  class TextureReference {
-  public:
-
-  private:
-    friend class MemoryCommandBuffer;
-    friend class Texture;
-
-    TextureReference(VkImage image)
-    : m_image(image)
-    {
-    }
-
-    VkImage m_image = VK_NULL_HANDLE;
-  };
-
-  enum class LayoutTransition : uint8_t {
+  enum class Layout : uint8_t {
     Undefined,
     Upload,
     Shader,
+    Target,
   };
 
   class GF_GRAPHICS_API MemoryCommandBuffer {
@@ -118,13 +88,34 @@ namespace gf {
     void copy_buffer_to_buffer(BufferReference source, BufferReference destination, std::size_t size);
     void copy_buffer_to_texture(BufferReference source, TextureReference destination, Vec2I size);
 
-    void texture_layout_transition(TextureReference texture, LayoutTransition from, LayoutTransition to);
+    void texture_layout_transition(TextureReference texture, Layout from, Layout to);
 
   private:
     friend class MemoryAllocator;
     friend class BasicRenderer;
+    friend class CommandBuffer;
 
     MemoryCommandBuffer(VkCommandBuffer buffer)
+    : m_command_buffer(buffer)
+    {
+    }
+
+    VkCommandBuffer m_command_buffer = VK_NULL_HANDLE; // non-owning
+  };
+
+  class GF_GRAPHICS_API CommandBuffer {
+  public:
+
+    RenderCommandBuffer begin_rendering(RenderTarget target, Color clear_color = Black) const;
+    void end_rendering(RenderCommandBuffer buffer) const;
+
+    MemoryCommandBuffer begin_memory() const;
+    void end_memory(MemoryCommandBuffer buffer) const;
+
+  private:
+    friend class BasicRenderer;
+
+    CommandBuffer(VkCommandBuffer buffer)
     : m_command_buffer(buffer)
     {
     }

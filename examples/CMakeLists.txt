@@ -39,7 +39,7 @@ target_include_directories(02-texture
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-# 02-texture
+# 03-camera
 
 add_executable(03-camera
   03-camera.cc
@@ -51,6 +51,22 @@ target_link_libraries(03-camera
 )
 
 target_include_directories(03-camera
+  PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+# 04-render-texture
+
+add_executable(04-render-texture
+  04-render-texture.cc
+)
+
+target_link_libraries(04-render-texture
+  PRIVATE
+    gf2graphics0
+)
+
+target_include_directories(04-render-texture
   PRIVATE
     ${CMAKE_CURRENT_BINARY_DIR}
 )
