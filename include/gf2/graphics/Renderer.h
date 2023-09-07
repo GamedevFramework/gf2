@@ -136,11 +136,17 @@ namespace gf {
       return &m_default_pipeline;
     }
 
+    const Pipeline* fullscreen_pipeline() const
+    {
+      return &m_fullscreen_pipeline;
+    }
+
   private:
     void build_default_pipelines();
 
     Pipeline m_simple_pipeline;
     Pipeline m_default_pipeline;
+    Pipeline m_fullscreen_pipeline;
   };
 
 }

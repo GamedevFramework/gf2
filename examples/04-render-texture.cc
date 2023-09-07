@@ -52,26 +52,6 @@ int main()
 
   const gf::Texture texture(texture_file, &renderer);
 
-  // buffers for the final rendering
-
-  const gf::Vertex render_vertices[] = {
-    {{ +1.0f, -1.0f }, { 1.0f, 0.0f }},
-    {{ +1.0f, +1.0f }, { 1.0f, 1.0f }},
-    {{ -1.0f, -1.0f }, { 0.0f, 0.0f }},
-    {{ -1.0f, +1.0f }, { 0.0f, 1.0f }},
-  };
-
-  const gf::Buffer render_vertex_buffer(gf::BufferType::Device, gf::BufferUsage::Vertex, std::begin(render_vertices), std::size(render_vertices), &renderer);
-
-  // clang-format off
-  const uint16_t render_indices[] = {
-    0, 1, 2, // first triangle
-    2, 1, 3, // second triangle
-  };
-  // clang-format on
-
-  const gf::Buffer render_index_buffer(gf::BufferType::Device, gf::BufferUsage::Index, std::begin(render_indices), std::size(render_indices), &renderer);
-
   renderer.end_memory_command_buffer();
 
   gf::Camera camera;
@@ -173,7 +153,7 @@ int main()
         const gf::RectI scissor = gf::RectI::from_size(target.extent());
         render_command_buffer.set_scissor(scissor);
 
-        const auto* pipeline = renderer.default_pipeline();
+        const auto* pipeline = renderer.fullscreen_pipeline();
 
         render_command_buffer.bind_pipeline(pipeline);
 
@@ -181,14 +161,7 @@ int main()
         descriptor.write(0, render_texture);
         render_command_buffer.bind_descriptor(pipeline, descriptor);
 
-        const gf::Mat3F mv = gf::Identity3F;
-
-        render_command_buffer.push_constant(pipeline, gf::ShaderStage::Vertex, &mv);
-
-        render_command_buffer.bind_vertex_buffer(&render_vertex_buffer);
-        render_command_buffer.bind_index_buffer(&render_index_buffer);
-
-        render_command_buffer.draw_indexed(std::size(render_indices));
+        render_command_buffer.draw(4);
 
         command_buffer.end_rendering(render_command_buffer);
       }

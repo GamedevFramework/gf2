@@ -760,6 +760,13 @@ namespace gf {
 #include "default.frag.h"
     };
 
+    const uint32_t fullscreen_vert_shader_code[] = {
+#include "fullscreen.vert.h"
+    };
+
+    const uint32_t fullscreen_frag_shader_code[] = {
+#include "fullscreen.frag.h"
+    };
   }
 
   Renderer::Renderer(Window* window)
@@ -798,6 +805,19 @@ namespace gf {
         .add_descriptor_binding({ 0, DescriptorType::Sampler, ShaderStage::Fragment });
 
     m_default_pipeline = default_pipeline_builder.build(this);
+
+    // fullscreen pipeline
+
+    gf::Shader fullscreen_vertex_shader(gf::span(fullscreen_vert_shader_code), { ShaderStage::Vertex, this });
+    gf::Shader fullscreen_fragment_shader(gf::span(fullscreen_frag_shader_code), { ShaderStage::Fragment, this });
+
+    PipelineBuilder fullscreen_pipeline_builder;
+
+    fullscreen_pipeline_builder.add_shader(&fullscreen_vertex_shader)
+        .add_shader(&fullscreen_fragment_shader)
+        .add_descriptor_binding({ 0, DescriptorType::Sampler, ShaderStage::Fragment });
+
+    m_fullscreen_pipeline = fullscreen_pipeline_builder.build(this);
   }
 
 }
