@@ -2,6 +2,7 @@
 #define GF_RENDERER_H
 
 #include <optional>
+#include <type_traits>
 #include <vector>
 
 #include <vk_mem_alloc.h>
@@ -19,6 +20,21 @@
 #include "Window.h"
 
 namespace gf {
+
+  namespace details {
+
+    template<typename T>
+    uint64_t to_debug_handle(T handle)
+    {
+      if constexpr (std::is_pointer_v<T>) {
+        return static_cast<uint64_t>(reinterpret_cast<std::uintptr_t>(handle));
+      } else {
+        static_assert(std::is_integral_v<T>);
+        return static_cast<uint64_t>(handle);
+      }
+    }
+
+  }
 
   class GF_GRAPHICS_API BasicRenderer {
   public:

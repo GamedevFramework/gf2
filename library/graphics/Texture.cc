@@ -113,6 +113,31 @@ namespace gf {
     return *this;
   }
 
+  void Texture::set_debug_name(const std::string& name) const
+  {
+    VmaAllocatorInfo info;
+    vmaGetAllocatorInfo(m_allocator, &info);
+
+    VkDebugUtilsObjectNameInfoEXT name_info = {};
+    name_info.sType = VK_STRUCTURE_TYPE_DEBUG_MARKER_OBJECT_NAME_INFO_EXT;
+    name_info.pObjectName = name.c_str();
+
+    name_info.objectType = VK_OBJECT_TYPE_IMAGE;
+    name_info.objectHandle = details::to_debug_handle(m_image);
+
+    vkSetDebugUtilsObjectNameEXT(info.device, &name_info);
+
+    name_info.objectType = VK_OBJECT_TYPE_IMAGE_VIEW;
+    name_info.objectHandle = details::to_debug_handle(m_image_view);
+
+    vkSetDebugUtilsObjectNameEXT(info.device, &name_info);
+
+    name_info.objectType = VK_OBJECT_TYPE_SAMPLER;
+    name_info.objectHandle = details::to_debug_handle(m_sampler);
+
+    vkSetDebugUtilsObjectNameEXT(info.device, &name_info);
+  }
+
   RenderTarget Texture::as_render_target() const
   {
     const VkExtent2D extent = { static_cast<uint32_t>(m_image_size.w), static_cast<uint32_t>(m_image_size.h) };

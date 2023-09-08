@@ -59,6 +59,20 @@ namespace gf {
     return *this;
   }
 
+  void Buffer::set_debug_name(const std::string& name) const
+  {
+    VmaAllocatorInfo info;
+    vmaGetAllocatorInfo(m_allocator, &info);
+
+    VkDebugUtilsObjectNameInfoEXT name_info = {};
+    name_info.sType = VK_STRUCTURE_TYPE_DEBUG_MARKER_OBJECT_NAME_INFO_EXT;
+    name_info.objectType = VK_OBJECT_TYPE_BUFFER;
+    name_info.objectHandle = details::to_debug_handle(m_buffer);
+    name_info.pObjectName = name.c_str();
+
+    vkSetDebugUtilsObjectNameEXT(info.device, &name_info);
+  }
+
   void Buffer::create_host_buffer(BufferUsage usage, std::size_t total_size, const void* data)
   {
     VkBufferCreateInfo buffer_info = {};

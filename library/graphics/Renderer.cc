@@ -377,6 +377,7 @@ namespace gf {
     instance_builder.set_engine_name("Gamedev Framework 2")
         .require_api_version(1, 3, 0)
         .enable_validation_layers()
+        .enable_extension(VK_EXT_DEBUG_UTILS_EXTENSION_NAME)
         .set_debug_callback(&debug_callback)
         // .add_validation_feature_enable(VK_VALIDATION_FEATURE_ENABLE_BEST_PRACTICES_EXT)
         ;
@@ -791,6 +792,7 @@ namespace gf {
         .add_shader(&simple_fragment_shader);
 
     m_simple_pipeline = simple_pipeline_builder.build(this);
+    m_simple_pipeline.set_debug_name("Simple Pipeline");
 
     // default pipeline
 
@@ -806,6 +808,7 @@ namespace gf {
         .add_descriptor_binding({ 0, DescriptorType::Sampler, ShaderStage::Fragment });
 
     m_default_pipeline = default_pipeline_builder.build(this);
+    m_default_pipeline.set_debug_name("Default Pipeline");
 
     // fullscreen pipeline
 
@@ -819,6 +822,7 @@ namespace gf {
         .add_descriptor_binding({ 0, DescriptorType::Sampler, ShaderStage::Fragment });
 
     m_fullscreen_pipeline = fullscreen_pipeline_builder.build(this);
+    m_fullscreen_pipeline.set_debug_name("Fullscreen Pipeline");
   }
 
 }

@@ -24,7 +24,7 @@ int main()
 
   const gf::GraphicsInitializer graphics;
 
-  gf::Window window("02-texture | gf2", WindowSize);
+  gf::Window window("04-render-texture | gf2", WindowSize);
   gf::Renderer renderer(&window);
 
   renderer.begin_memory_command_buffer();
@@ -41,6 +41,7 @@ int main()
   };
 
   const gf::Buffer vertex_buffer(gf::BufferType::Device, gf::BufferUsage::Vertex, std::begin(vertices), std::size(vertices), &renderer);
+  vertex_buffer.set_debug_name("Game Over Vertex Buffer");
 
   // clang-format off
   const uint16_t indices[] = {
@@ -50,8 +51,10 @@ int main()
   // clang-format on
 
   const gf::Buffer index_buffer(gf::BufferType::Device, gf::BufferUsage::Index, std::begin(indices), std::size(indices), &renderer);
+  index_buffer.set_debug_name("Game Over Index Buffer");
 
   const gf::Texture texture(texture_file, &renderer);
+  texture.set_debug_name("Game Over Texture");
 
   renderer.end_memory_command_buffer();
 
@@ -66,6 +69,7 @@ int main()
   transform.scale = gf::vec(0.1f, 0.1f);
 
   gf::Texture render_texture(WindowSize, &renderer);
+  render_texture.set_debug_name("Render Texture");
 
   while (!window.should_close()) {
     while (auto event = gf::Event::poll()) {

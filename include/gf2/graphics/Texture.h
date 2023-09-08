@@ -4,6 +4,7 @@
 #define GF_TEXTURE_H
 
 #include <filesystem>
+#include <string>
 
 #include <vk_mem_alloc.h>
 
@@ -32,6 +33,8 @@ namespace gf {
 
     Texture& operator=(const Texture&) = delete;
     Texture& operator=(Texture&& other) noexcept;
+
+    void set_debug_name(const std::string& name) const;
 
     Vec2I size() const
     {

@@ -24,7 +24,7 @@ int main()
 
   const gf::GraphicsInitializer graphics;
 
-  gf::Window window("02-texture | gf2", WindowSize);
+  gf::Window window("03-camera | gf2", WindowSize);
   gf::Renderer renderer(&window);
 
   renderer.begin_memory_command_buffer();

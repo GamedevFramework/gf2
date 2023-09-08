@@ -3,6 +3,7 @@
 #ifndef GF_PIPELINE_H
 #define GF_PIPELINE_H
 
+#include <string>
 #include <type_traits>
 
 #include "Descriptor.h"
@@ -24,6 +25,8 @@ namespace gf {
 
     Pipeline& operator=(const Pipeline&) = delete;
     Pipeline& operator=(Pipeline&& other) noexcept;
+
+    void set_debug_name(const std::string& name) const;
 
   private:
     friend class PipelineBuilder;

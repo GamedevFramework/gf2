@@ -5,6 +5,7 @@
 
 #include <cstdint>
 
+#include <string>
 #include <type_traits>
 
 #include <vk_mem_alloc.h>
@@ -46,6 +47,8 @@ namespace gf {
 
     Buffer& operator=(const Buffer&) = delete;
     Buffer& operator=(Buffer&& other) noexcept;
+
+    void set_debug_name(const std::string& name) const;
 
   private:
     friend class RenderCommandBuffer;
