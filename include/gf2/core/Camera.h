@@ -23,6 +23,7 @@ namespace gf {
 
   class GF_CORE_API Camera {
   public:
+    // NOLINTBEGIN(cppcoreguidelines-non-private-member-variables-in-classes)
     CameraType type = CameraType::Window;
     Vec2F center = { 0.0f, 0.0f };
     Vec2F size = { 2.0f, 2.0f };
@@ -30,6 +31,7 @@ namespace gf {
     // clang-format off
     RectF viewport = {{ 0.0f, 0.0f }, { 1.0f, 1.0f }};
     // clang-format on
+    // NOLINTEND(cppcoreguidelines-non-private-member-variables-in-classes)
 
     Camera() = default;
 

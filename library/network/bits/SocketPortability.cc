@@ -9,11 +9,10 @@
 #  include <cerrno>
 #  include <cstring>
 
-#  include <sys/socket.h>
-#  include <sys/types.h>
-
 #  include <fcntl.h>
 #  include <netdb.h>
+#  include <sys/socket.h>
+#  include <sys/types.h>
 #  include <unistd.h>
 #endif
 

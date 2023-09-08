@@ -10,6 +10,7 @@
 #include <utility>
 
 #include <gf2/core/Log.h>
+
 #include <gf2/graphics/Renderer.h>
 
 namespace gf {
@@ -72,7 +73,6 @@ namespace gf {
     create_image_view_and_sampler(renderer->m_format);
   }
 
-
   Texture::Texture(Texture&& other) noexcept
   : m_image_size(other.m_image_size)
   , m_allocator(std::exchange(other.m_allocator, nullptr))
@@ -115,7 +115,7 @@ namespace gf {
 
   RenderTarget Texture::as_render_target() const
   {
-    VkExtent2D extent = { static_cast<uint32_t>(m_image_size.w), static_cast<uint32_t>(m_image_size.h) };
+    const VkExtent2D extent = { static_cast<uint32_t>(m_image_size.w), static_cast<uint32_t>(m_image_size.h) };
     return { m_image_view, extent };
   }
 

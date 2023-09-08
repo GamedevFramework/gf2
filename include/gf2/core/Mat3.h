@@ -50,7 +50,7 @@ namespace gf {
   using Mat3F = Mat3<float>;
 
   inline constexpr Mat3F Identity3F = {
-    {{ 1.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }}
+    { { 1.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, { 0.0f, 0.0f, 1.0f } }
   };
 
   GF_CORE_API Vec2F transform_point(const Mat3F& mat, Vec2F vec);

@@ -7,8 +7,9 @@
 
 #include <cassert>
 
-#include <gf2/audio/AudioManager.h>
 #include <gf2/core/Log.h>
+
+#include <gf2/audio/AudioManager.h>
 
 #include "bits/AudioBackend.h"
 

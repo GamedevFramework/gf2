@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
 #include <gf2/core/Log.h>
+
 #include <gf2/network/NetworkInitializer.h>
 
 #include "gtest/gtest.h"

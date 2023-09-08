@@ -12,6 +12,7 @@
 #include <vector>
 
 #include <gf2/core/Log.h>
+
 #include <gf2/graphics/Renderer.h>
 
 namespace gf {

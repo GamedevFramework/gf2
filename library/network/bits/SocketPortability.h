@@ -12,15 +12,15 @@
 #ifdef _WIN32
 #  include <winsock2.h>
 #else
+#  include <poll.h>
 #  include <sys/socket.h>
 #  include <sys/types.h>
-
-#  include <poll.h>
 #endif
 
 #include <gf2/core/Log.h>
 #include <gf2/core/Span.h>
 #include <gf2/core/Time.h>
+
 #include <gf2/network/SocketAddress.h>
 #include <gf2/network/SocketTypes.h>
 
@@ -114,7 +114,7 @@ namespace gf::details {
   constexpr SizeHeader encode_header(uint64_t size)
   {
     SizeHeader header = {
-      {0, 0, 0, 0, 0, 0, 0, 0}
+      { 0, 0, 0, 0, 0, 0, 0, 0 }
     };
 
     for (int i = 0; i < 8; ++i) {

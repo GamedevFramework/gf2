@@ -6,8 +6,7 @@
 #  define VK_NO_PROTOTYPES
 #endif
 
-#include <vulkan/vulkan.h>
-
 #include <volk.h>
+#include <vulkan/vulkan.h>
 
 #endif // GF_VULKAN_H

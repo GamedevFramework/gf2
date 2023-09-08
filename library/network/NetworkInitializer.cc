@@ -9,9 +9,9 @@
 #  include <atomic>
 #  include <stdexcept>
 
-#  include <gf2/core/Log.h>
-
 #  include <winsock2.h>
+
+#  include <gf2/core/Log.h>
 #endif
 
 namespace gf {

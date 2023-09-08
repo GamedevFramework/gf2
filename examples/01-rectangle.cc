@@ -3,6 +3,7 @@
 #include <array>
 
 #include <gf2/core/Mat3.h>
+
 #include <gf2/graphics/Event.h>
 #include <gf2/graphics/GraphicsInitializer.h>
 #include <gf2/graphics/Renderer.h>
@@ -21,10 +22,10 @@ int main()
   renderer.begin_memory_command_buffer();
 
   const gf::SimpleVertex vertices[] = {
-    {{ +0.5f, -0.5f },       gf::Rose},
-    {{ +0.5f, +0.5f }, gf::Chartreuse},
-    {{ -0.5f, -0.5f },      gf::Azure},
-    {{ -0.5f, +0.5f },     gf::Yellow},
+    { { +0.5f, -0.5f },       gf::Rose },
+    { { +0.5f, +0.5f }, gf::Chartreuse },
+    { { -0.5f, -0.5f },      gf::Azure },
+    { { -0.5f, +0.5f },     gf::Yellow },
   };
 
   const gf::Buffer vertex_buffer(gf::BufferType::Device, gf::BufferUsage::Vertex, std::begin(vertices), std::size(vertices), &renderer);

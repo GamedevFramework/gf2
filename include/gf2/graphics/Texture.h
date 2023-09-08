@@ -5,6 +5,8 @@
 
 #include <filesystem>
 
+#include <vk_mem_alloc.h>
+
 #include <gf2/core/Bitmap.h>
 #include <gf2/core/Image.h>
 
@@ -12,8 +14,6 @@
 #include "RenderTarget.h"
 #include "TextureReference.h"
 #include "Vulkan.h"
-
-#include <vk_mem_alloc.h>
 
 namespace gf {
   class Renderer;
@@ -41,7 +41,6 @@ namespace gf {
     RenderTarget as_render_target() const;
 
     operator TextureReference() const;
-
 
   private:
     friend class Descriptor;

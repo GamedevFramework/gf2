@@ -8,7 +8,9 @@
 #include <atomic>
 
 #include <SDL2/SDL.h>
+
 #include <gf2/core/Log.h>
+
 #include <gf2/graphics/Gamepad.h>
 #include <gf2/graphics/Vulkan.h>
 

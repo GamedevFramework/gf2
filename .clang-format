@@ -20,17 +20,23 @@ FixNamespaceComments: false
 IncludeBlocks: Regroup
 IncludeCategories:
   # c headers
-  - Regex: '<(cassert|ccomplex|cctype|cerrno|cfenv|cfloat|cinttypes|ciso646|climits|clocale|cmath|csetjmp|csignal|cstdalign|cstdarg|cstdbool|cstddef|cstdint|cstdio|cstdlib|cstring|ctgmath|ctime|cuchar|cwchar|cwctype)>'
+  - Regex: '^<(cassert|ccomplex|cctype|cerrno|cfenv|cfloat|cinttypes|ciso646|climits|clocale|cmath|csetjmp|csignal|cstdalign|cstdarg|cstdbool|cstddef|cstdint|cstdio|cstdlib|cstring|ctgmath|ctime|cuchar|cwchar|cwctype)>$'
     Priority: 1
   # c++ headers
-  - Regex: '<[[:alnum:]_]+>'
+  - Regex: '^<(algorithm|any|array|atomic|bitset|charconv|chrono|complex|condition_variable|deque|exception|execution|filesystem|forward_list|fstream|functional|future|initializer_list|iomanip|ios|iosfwd|iostream|istream|iterator|limits|list|locale|map|memory|memory_resource|mutex|new|numeric|optional|ostream|queue|random|ratio|regex|set|shared_mutex|scoped_allocator|sstream|stack|stdexcept|streambuf|string|string_view|system_error|thread|tuple|type_traits|typeindex|typeinfo|unordered_map|unordered_set|utility|valarray|variant|vector)>$'
     Priority: 2
+  # gf2 core headers
+  - Regex: '^<gf2\/core\/'
+    Priority: 4
+  # gf2 other headers
+  - Regex: '^<gf2\/'
+    Priority: 5
   # other headers
-  - Regex: '<[[:alnum:]]+/[[:alnum:]._]+>'
+  - Regex: '^<'
     Priority: 3
   # local headers
-  - Regex: '"[[:alnum:]._]+"'
-    Priority: 4
+  - Regex: '^"[[:alnum:]._]+"'
+    Priority: 6
 IndentAccessModifiers: false
 IndentCaseBlocks: true
 IndentCaseLabels: true

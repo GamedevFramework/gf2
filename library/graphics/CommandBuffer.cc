@@ -25,13 +25,13 @@ namespace gf {
     color_attachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
     color_attachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
     color_attachment.clearValue.color = {
-      {clear_color.r, clear_color.g, clear_color.b, clear_color.a}
+      { clear_color.r, clear_color.g, clear_color.b, clear_color.a }
     };
 
     VkRenderingInfo rendering_info = {};
     rendering_info.sType = VK_STRUCTURE_TYPE_RENDERING_INFO;
     rendering_info.renderArea = {
-      {0, 0},
+      { 0, 0 },
       target.m_extent
     };
     rendering_info.layerCount = 1;
@@ -56,7 +56,7 @@ namespace gf {
     return { m_command_buffer };
   }
 
-  void CommandBuffer::end_memory(MemoryCommandBuffer buffer) const
+  void CommandBuffer::end_memory([[maybe_unused]] MemoryCommandBuffer buffer) const
   {
     assert(buffer.m_command_buffer == m_command_buffer);
   }

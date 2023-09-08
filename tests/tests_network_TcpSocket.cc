@@ -4,6 +4,7 @@
 #include <vector>
 
 #include <gf2/core/SerializationOps.h>
+
 #include <gf2/network/TcpListener.h>
 #include <gf2/network/TcpSocket.h>
 

@@ -8,12 +8,13 @@
 #include <utility>
 
 #include <SDL2/SDL_vulkan.h>
+#include <VkBootstrap.h>
+
 #include <gf2/core/Log.h>
 #include <gf2/core/Mat3.h>
+
 #include <gf2/graphics/ShaderData.h>
 #include <gf2/graphics/Vertex.h>
-
-#include <VkBootstrap.h>
 
 #define VMA_IMPLEMENTATION
 #include <vk_mem_alloc.h>
@@ -718,7 +719,7 @@ namespace gf {
     m_descriptor_pools.resize(FramesInFlight);
 
     VkDescriptorPoolSize pool_sizes[] = {
-      {VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 64},
+      { VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 64 },
     };
 
     VkDescriptorPoolCreateInfo descriptor_pool_info = {};

@@ -129,5 +129,4 @@ namespace gf {
     return result;
   }
 
-
 }

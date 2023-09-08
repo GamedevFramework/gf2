@@ -9,10 +9,10 @@
 #include <array>
 #include <filesystem>
 
+#include <zlib.h>
+
 #include "CoreApi.h"
 #include "Stream.h"
-
-#include <zlib.h>
 
 namespace gf {
 

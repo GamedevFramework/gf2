@@ -12,9 +12,8 @@
 #ifdef _WIN32
 #  include <ws2tcpip.h>
 #else
-#  include <sys/socket.h>
-
 #  include <netdb.h>
+#  include <sys/socket.h>
 #endif
 
 #include <gf2/core/Log.h>

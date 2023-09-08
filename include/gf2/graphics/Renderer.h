@@ -4,6 +4,8 @@
 #include <optional>
 #include <vector>
 
+#include <vk_mem_alloc.h>
+
 #include <gf2/core/Color.h>
 #include <gf2/core/Span.h>
 
@@ -15,8 +17,6 @@
 #include "RenderTarget.h"
 #include "Vulkan.h"
 #include "Window.h"
-
-#include <vk_mem_alloc.h>
 
 namespace gf {
 

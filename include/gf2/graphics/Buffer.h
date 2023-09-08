@@ -7,10 +7,10 @@
 
 #include <type_traits>
 
+#include <vk_mem_alloc.h>
+
 #include "GraphicsApi.h"
 #include "Vulkan.h"
-
-#include <vk_mem_alloc.h>
 
 namespace gf {
   class Renderer;

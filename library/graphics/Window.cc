@@ -9,6 +9,7 @@
 #include <utility>
 
 #include <SDL2/SDL.h>
+
 #include <gf2/core/Log.h>
 
 namespace gf {

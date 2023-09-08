@@ -5,6 +5,7 @@
 #include <gf2/core/Camera.h>
 #include <gf2/core/Mat3.h>
 #include <gf2/core/Transform.h>
+
 #include <gf2/graphics/Event.h>
 #include <gf2/graphics/GraphicsInitializer.h>
 #include <gf2/graphics/Renderer.h>
@@ -33,10 +34,10 @@ int main()
   const gf::RectF bounds = gf::RectF::from_size({ 1920.0f, 1080.0f });
 
   const gf::Vertex vertices[] = {
-    {bounds.position_at(gf::Orientation::NorthEast), { 1.0f, 0.0f }},
-    {bounds.position_at(gf::Orientation::SouthEast), { 1.0f, 1.0f }},
-    {bounds.position_at(gf::Orientation::NorthWest), { 0.0f, 0.0f }},
-    {bounds.position_at(gf::Orientation::SouthWest), { 0.0f, 1.0f }},
+    { bounds.position_at(gf::Orientation::NorthEast), { 1.0f, 0.0f } },
+    { bounds.position_at(gf::Orientation::SouthEast), { 1.0f, 1.0f } },
+    { bounds.position_at(gf::Orientation::NorthWest), { 0.0f, 0.0f } },
+    { bounds.position_at(gf::Orientation::SouthWest), { 0.0f, 1.0f } },
   };
 
   const gf::Buffer vertex_buffer(gf::BufferType::Device, gf::BufferUsage::Vertex, std::begin(vertices), std::size(vertices), &renderer);
@@ -167,7 +168,6 @@ int main()
       }
 
       renderer.end_command_buffer(command_buffer);
-
     }
   }
 

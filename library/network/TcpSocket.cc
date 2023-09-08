@@ -11,13 +11,13 @@
 #  include <winsock2.h>
 #  include <ws2tcpip.h>
 #else
+#  include <netdb.h>
 #  include <sys/socket.h>
 #  include <sys/types.h>
-
-#  include <netdb.h>
 #endif
 
 #include <gf2/core/Log.h>
+
 #include <gf2/network/Packet.h>
 
 #include "bits/SocketPortability.h"
