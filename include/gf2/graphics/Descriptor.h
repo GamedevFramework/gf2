@@ -26,7 +26,7 @@ namespace gf {
   class GF_GRAPHICS_API Descriptor {
   public:
 
-    void write(uint32_t binding, const Texture& texture);
+    void write(uint32_t binding, const Texture* texture);
 
   private:
     friend class BasicRenderer;

@@ -121,7 +121,7 @@ int main()
         render_command_buffer.bind_pipeline(pipeline);
 
         auto descriptor = renderer.allocate_descriptor_for_pipeline(pipeline);
-        descriptor.write(0, texture);
+        descriptor.write(0, &texture);
         render_command_buffer.bind_descriptor(pipeline, descriptor);
 
         const gf::Mat3F model_matrix = transform.compute_matrix(bounds);
@@ -163,7 +163,7 @@ int main()
         render_command_buffer.bind_pipeline(pipeline);
 
         auto descriptor = renderer.allocate_descriptor_for_pipeline(pipeline);
-        descriptor.write(0, render_texture);
+        descriptor.write(0, &render_texture);
         render_command_buffer.bind_descriptor(pipeline, descriptor);
 
         render_command_buffer.draw(4);

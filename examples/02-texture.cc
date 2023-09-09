@@ -85,7 +85,7 @@ int main()
       render_command_buffer.bind_pipeline(pipeline);
 
       auto descriptor = renderer.allocate_descriptor_for_pipeline(pipeline);
-      descriptor.write(0, texture);
+      descriptor.write(0, &texture);
       render_command_buffer.bind_descriptor(pipeline, descriptor);
 
       render_command_buffer.push_constant(pipeline, gf::ShaderStage::Vertex, &identity);

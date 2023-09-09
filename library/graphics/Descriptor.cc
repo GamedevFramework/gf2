@@ -11,11 +11,11 @@
 
 namespace gf {
 
-  void Descriptor::write(uint32_t binding, const Texture& texture)
+  void Descriptor::write(uint32_t binding, const Texture* texture)
   {
     VkDescriptorImageInfo image_info = {};
-    image_info.sampler = texture.m_sampler;
-    image_info.imageView = texture.m_image_view;
+    image_info.sampler = texture->m_sampler;
+    image_info.imageView = texture->m_image_view;
     image_info.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 
     VkWriteDescriptorSet write = {};

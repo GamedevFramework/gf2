@@ -21,6 +21,8 @@ namespace gf {
 
   class GF_GRAPHICS_API Texture {
   public:
+    using Context = Renderer*;
+
     Texture() = default;
     Texture(const std::filesystem::path& filename, Renderer* renderer);
     Texture(const Image& image, Renderer* renderer);
