@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Zlib
+// Copyright (c) 2023 Julien Bernard
 #ifndef GF_TARBALL_H
 #define GF_TARBALL_H
 

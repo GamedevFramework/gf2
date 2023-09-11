@@ -67,6 +67,7 @@ add_library(gf2core0
   core/AnyGrid.cc
   core/Array2D.cc
   core/BinaryHeap.cc
+  core/BinPack.cc
   core/Bitmap.cc
   core/Camera.cc
   core/Circ.cc
