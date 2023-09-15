@@ -55,7 +55,7 @@ namespace gf {
   void Pipeline::set_debug_name(const std::string& name) const
   {
     VkDebugUtilsObjectNameInfoEXT name_info = {};
-    name_info.sType = VK_STRUCTURE_TYPE_DEBUG_MARKER_OBJECT_NAME_INFO_EXT;
+    name_info.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_OBJECT_NAME_INFO_EXT;
     name_info.pObjectName = name.c_str();
 
     name_info.objectType = VK_OBJECT_TYPE_PIPELINE;

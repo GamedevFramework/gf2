@@ -65,7 +65,7 @@ namespace gf {
     vmaGetAllocatorInfo(m_allocator, &info);
 
     VkDebugUtilsObjectNameInfoEXT name_info = {};
-    name_info.sType = VK_STRUCTURE_TYPE_DEBUG_MARKER_OBJECT_NAME_INFO_EXT;
+    name_info.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_OBJECT_NAME_INFO_EXT;
     name_info.objectType = VK_OBJECT_TYPE_BUFFER;
     name_info.objectHandle = details::to_debug_handle(m_buffer);
     name_info.pObjectName = name.c_str();
@@ -142,7 +142,6 @@ namespace gf {
     buffer_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
     VmaAllocationCreateInfo allocation_info = {};
-    allocation_info.flags = VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT;
     allocation_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
 
     if (vmaCreateBuffer(m_allocator, &buffer_info, &allocation_info, &m_buffer, &m_allocation, nullptr) != VK_SUCCESS) {

@@ -119,7 +119,7 @@ namespace gf {
     vmaGetAllocatorInfo(m_allocator, &info);
 
     VkDebugUtilsObjectNameInfoEXT name_info = {};
-    name_info.sType = VK_STRUCTURE_TYPE_DEBUG_MARKER_OBJECT_NAME_INFO_EXT;
+    name_info.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_OBJECT_NAME_INFO_EXT;
     name_info.pObjectName = name.c_str();
 
     name_info.objectType = VK_OBJECT_TYPE_IMAGE;

@@ -163,11 +163,9 @@ namespace gf {
   std::optional<CommandBuffer> BasicRenderer::begin_command_buffer()
   {
     const RenderSynchronizationObjects& sync = m_render_synchronization[m_current_frame];
-    const VkCommandBuffer& command_buffer = m_command_buffers[m_current_frame];
+    VkCommandBuffer command_buffer = m_command_buffers[m_current_frame];
 
     vkWaitForFences(m_device, 1, &sync.render_fence, VK_TRUE, UINT64_MAX);
-
-    vkResetDescriptorPool(m_device, m_descriptor_pools[m_current_frame], 0);
 
     const VkResult result = vkAcquireNextImageKHR(m_device, m_swapchain, UINT64_MAX, sync.render_semaphore, VK_NULL_HANDLE, &m_current_image);
 
@@ -183,6 +181,8 @@ namespace gf {
 
     vkResetFences(m_device, 1, &sync.render_fence);
     vkResetCommandBuffer(command_buffer, 0);
+
+    vkResetDescriptorPool(m_device, m_descriptor_pools[m_current_frame], 0);
 
     VkCommandBufferBeginInfo begin_info = {};
     begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
@@ -210,7 +210,7 @@ namespace gf {
 
   void BasicRenderer::end_command_buffer([[maybe_unused]] CommandBuffer buffer)
   {
-    const VkCommandBuffer& command_buffer = m_command_buffers[m_current_frame];
+    VkCommandBuffer command_buffer = m_command_buffers[m_current_frame];
     assert(buffer.m_command_buffer == command_buffer);
 
     VkImageMemoryBarrier image_memory_barrier = {};
