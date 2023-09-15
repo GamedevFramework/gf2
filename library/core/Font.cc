@@ -136,7 +136,7 @@ namespace gf {
     return face_as<FT_Face>()->style_name;
   }
 
-  FontGlyph Font::create_glyph(char32_t codepoint, unsigned character_size, float outline_thickness)
+  FontGlyph Font::create_glyph(char32_t codepoint, uint32_t character_size, float outline_thickness)
   {
     FontGlyph result = {};
 
@@ -224,7 +224,7 @@ namespace gf {
     return result;
   }
 
-  float Font::compute_kerning(char32_t left, char32_t right, unsigned character_size)
+  float Font::compute_kerning(char32_t left, char32_t right, uint32_t character_size)
   {
     if (left == 0 || right == 0) {
       return 0.0f;
@@ -257,7 +257,7 @@ namespace gf {
     return ft_convert_metrics(kerning.x);
   }
 
-  float Font::compute_line_spacing(unsigned character_size)
+  float Font::compute_line_spacing(uint32_t character_size)
   {
     if (m_face == nullptr) {
       return 0.0f;
@@ -270,7 +270,7 @@ namespace gf {
     return ft_convert_metrics(face_as<FT_Face>()->size->metrics.height);
   }
 
-  bool Font::set_current_character_size(unsigned character_size)
+  bool Font::set_current_character_size(uint32_t character_size)
   {
     if (m_character_size == character_size) {
       return true;

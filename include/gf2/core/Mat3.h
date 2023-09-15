@@ -3,6 +3,8 @@
 #ifndef GF_MAT3_H
 #define GF_MAT3_H
 
+#include <cstdint>
+
 #include "CoreApi.h"
 #include "Vec2.h"
 
@@ -12,14 +14,14 @@ namespace gf {
   struct Mat3 {
     T m[3][3]; // row-major
 
-    const T& operator()(int row, int col) const
+    const T& operator()(int32_t row, int32_t col) const
     {
       assert(0 <= row && row < 3);
       assert(0 <= col && col < 3);
       return m[row][col]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     }
 
-    T& operator()(int row, int col)
+    T& operator()(int32_t row, int32_t col)
     {
       assert(0 <= row && row < 3);
       assert(0 <= col && col < 3);
@@ -32,11 +34,11 @@ namespace gf {
   {
     Mat3<T> result = {};
 
-    for (int col = 0; col < 3; ++col) {
-      for (int row = 0; row < 3; ++row) {
+    for (int32_t col = 0; col < 3; ++col) {
+      for (int32_t row = 0; row < 3; ++row) {
         T sum = T(0);
 
-        for (int k = 0; k < 3; ++k) {
+        for (int32_t k = 0; k < 3; ++k) {
           sum += lhs(row, k) * rhs(k, col);
         }
 

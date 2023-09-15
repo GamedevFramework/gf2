@@ -5,6 +5,7 @@
 
 #include <cassert>
 #include <cstddef>
+#include <cstdint>
 
 #include <type_traits>
 
@@ -63,15 +64,15 @@ namespace gf {
 
   using Vec2F = Vec2<float>;
   using Vec2D = Vec2<double>;
-  using Vec2I = Vec2<int>;
-  using Vec2U = Vec2<unsigned>;
+  using Vec2I = Vec2<int32_t>;
+  using Vec2U = Vec2<uint32_t>;
 
 // MSVC does not like extern template
 #ifndef _MSC_VER
   extern template struct GF_CORE_API Vec2<float>;
   extern template struct GF_CORE_API Vec2<double>;
-  extern template struct GF_CORE_API Vec2<int>;
-  extern template struct GF_CORE_API Vec2<unsigned>;
+  extern template struct GF_CORE_API Vec2<int32_t>;
+  extern template struct GF_CORE_API Vec2<uint32_t>;
 #endif
 
   template<typename T>

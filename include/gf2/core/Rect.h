@@ -3,6 +3,8 @@
 #ifndef GF_RECT_H
 #define GF_RECT_H
 
+#include <cstdint>
+
 #include <optional>
 
 #include "Orientation.h"
@@ -168,8 +170,8 @@ namespace gf {
 
   using RectF = Rect<float>;
   using RectD = Rect<double>;
-  using RectI = Rect<int>;
-  using RectU = Rect<unsigned>;
+  using RectI = Rect<int32_t>;
+  using RectU = Rect<uint32_t>;
 
   template<typename T>
   constexpr bool operator==(Rect<T> lhs, Rect<T> rhs)
@@ -187,8 +189,8 @@ namespace gf {
 #ifndef _MSC_VER
   extern template struct GF_CORE_API Rect<float>;
   extern template struct GF_CORE_API Rect<double>;
-  extern template struct GF_CORE_API Rect<int>;
-  extern template struct GF_CORE_API Rect<unsigned>;
+  extern template struct GF_CORE_API Rect<int32_t>;
+  extern template struct GF_CORE_API Rect<uint32_t>;
 #endif
 
   template<typename Archive, typename T>

@@ -13,14 +13,14 @@ namespace gf {
   struct Mat4 {
     T m[4][4]; // row-major
 
-    const T& operator()(int row, int col) const
+    const T& operator()(int32_t row, int32_t col) const
     {
       assert(0 <= row && row < 4);
       assert(0 <= col && col < 4);
       return m[row][col]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     }
 
-    T& operator()(int row, int col)
+    T& operator()(int32_t row, int32_t col)
     {
       assert(0 <= row && row < 4);
       assert(0 <= col && col < 4);

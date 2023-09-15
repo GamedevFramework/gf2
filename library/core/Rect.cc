@@ -7,8 +7,8 @@ namespace gf {
 #ifndef _MSC_VER
   template struct Rect<float>;
   template struct Rect<double>;
-  template struct Rect<int>;
-  template struct Rect<unsigned>;
+  template struct Rect<int32_t>;
+  template struct Rect<uint32_t>;
 #endif
 
 } // namespace gf

@@ -3,6 +3,8 @@
 #ifndef GF_FONT_H
 #define GF_FONT_H
 
+#include <cstdint>
+
 #include <filesystem>
 #include <type_traits>
 
@@ -36,13 +38,13 @@ namespace gf {
     std::string family_name() const;
     std::string style_name() const;
 
-    FontGlyph create_glyph(char32_t codepoint, unsigned character_size, float outline_thickness = 0.0f);
+    FontGlyph create_glyph(char32_t codepoint, uint32_t character_size, float outline_thickness = 0.0f);
 
-    float compute_kerning(char32_t left, char32_t right, unsigned character_size);
-    float compute_line_spacing(unsigned character_size);
+    float compute_kerning(char32_t left, char32_t right, uint32_t character_size);
+    float compute_line_spacing(uint32_t character_size);
 
   private:
-    bool set_current_character_size(unsigned character_size);
+    bool set_current_character_size(uint32_t character_size);
 
     template<typename T>
     auto face_as()
@@ -58,7 +60,7 @@ namespace gf {
 
     FontManager* m_manager;
     void* m_face = nullptr;
-    unsigned m_character_size = 0;
+    uint32_t m_character_size = 0;
   };
 
 }

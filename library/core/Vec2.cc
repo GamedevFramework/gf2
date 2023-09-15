@@ -10,8 +10,8 @@ namespace gf {
 #ifndef _MSC_VER
   template struct Vec2<float>;
   template struct Vec2<double>;
-  template struct Vec2<int>;
-  template struct Vec2<unsigned>;
+  template struct Vec2<int32_t>;
+  template struct Vec2<uint32_t>;
 #endif
 
 } // namespace gf
