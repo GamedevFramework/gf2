@@ -69,6 +69,7 @@ add_library(gf2core0
   core/BinaryHeap.cc
   core/BinPack.cc
   core/Bitmap.cc
+  core/Blit.cc
   core/Camera.cc
   core/Circ.cc
   core/Clock.cc

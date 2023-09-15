@@ -7,6 +7,8 @@
 
 #include <algorithm>
 
+#include <gf2/core/Blit.h>
+
 namespace gf {
 
   namespace {
@@ -67,6 +69,34 @@ namespace gf {
     }
 
     return m_pixels[offset_from_position(position)];
+  }
+
+  void Bitmap::put_pixel(Vec2I position, uint8_t gray)
+  {
+    if (position.x < 0 || position.x >= m_size.w || position.y < 0 || position.y >= m_size.h) {
+      return;
+    }
+
+    m_pixels[offset_from_position(position)] = gray;
+  }
+
+  void Bitmap::blit(RectI source_region, const Bitmap& source, Vec2I target_offset)
+  {
+
+    auto blit = compute_blit(source_region, source.size(), target_offset, m_size);
+
+    if (blit.source_region.empty()) {
+      return;
+    }
+
+    for (auto offset : gf::position_range(blit.source_region.extent)) {
+      put_pixel(blit.target_offset + offset, source(blit.source_region.offset + offset));
+    }
+  }
+
+  void Bitmap::blit(const Bitmap& source, Vec2I target_offset)
+  {
+    blit(RectI::from_size(source.m_size), source, target_offset);
   }
 
   std::size_t Bitmap::raw_size() const

@@ -10,6 +10,7 @@
 
 #include "CoreApi.h"
 #include "Range.h"
+#include "Rect.h"
 #include "Vec2.h"
 
 namespace gf {
@@ -25,6 +26,10 @@ namespace gf {
     PositionRange position_range() const;
 
     uint8_t operator()(Vec2I position) const;
+    void put_pixel(Vec2I position, uint8_t gray);
+
+    void blit(RectI source_region, const Bitmap& source, Vec2I target_offset);
+    void blit(const Bitmap& source, Vec2I target_offset);
 
     std::size_t raw_size() const;
     const uint8_t* raw_data() const;
