@@ -27,8 +27,6 @@ int main()
   gf::Window window("04-render-texture | gf2", WindowSize);
   gf::Renderer renderer(&window);
 
-  renderer.begin_memory_command_buffer();
-
   // buffers and textures for the primary rendering
 
   const gf::RectF bounds = gf::RectF::from_size({ 1920.0f, 1080.0f });
@@ -55,8 +53,6 @@ int main()
 
   const gf::Texture texture(texture_file, &renderer);
   texture.set_debug_name("Game Over Texture");
-
-  renderer.end_memory_command_buffer();
 
   gf::Camera camera;
   camera.type = gf::CameraType::Extend;

@@ -19,8 +19,6 @@ int main()
   gf::Window window("01-rectangle | gf2", WindowSize);
   gf::Renderer renderer(&window);
 
-  renderer.begin_memory_command_buffer();
-
   const gf::SimpleVertex vertices[] = {
     { { +0.5f, -0.5f },       gf::Rose },
     { { +0.5f, +0.5f }, gf::Chartreuse },
@@ -38,8 +36,6 @@ int main()
   // clang-format on
 
   const gf::Buffer index_buffer(gf::BufferType::Device, gf::BufferUsage::Index, std::begin(indices), std::size(indices), &renderer);
-
-  renderer.end_memory_command_buffer();
 
   const gf::Mat3F identity = gf::Identity3F;
 

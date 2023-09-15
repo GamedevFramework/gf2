@@ -27,8 +27,6 @@ int main()
   gf::Window window("03-camera | gf2", WindowSize);
   gf::Renderer renderer(&window);
 
-  renderer.begin_memory_command_buffer();
-
   const gf::RectF bounds = gf::RectF::from_size({ 1920.0f, 1080.0f });
 
   const gf::Vertex vertices[] = {
@@ -50,8 +48,6 @@ int main()
   const gf::Buffer index_buffer(gf::BufferType::Device, gf::BufferUsage::Index, std::begin(indices), std::size(indices), &renderer);
 
   const gf::Texture texture(texture_file, &renderer);
-
-  renderer.end_memory_command_buffer();
 
   gf::Camera camera;
   camera.type = gf::CameraType::Extend;

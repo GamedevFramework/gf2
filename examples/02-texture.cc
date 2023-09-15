@@ -25,8 +25,6 @@ int main()
   gf::Window window("02-texture | gf2", WindowSize);
   gf::Renderer renderer(&window);
 
-  renderer.begin_memory_command_buffer();
-
   const gf::Vertex vertices[] = {
     { { +0.5f, -0.5f }, { 1.0f, 0.0f } },
     { { +0.5f, +0.5f }, { 1.0f, 1.0f } },
@@ -46,8 +44,6 @@ int main()
   const gf::Buffer index_buffer(gf::BufferType::Device, gf::BufferUsage::Index, std::begin(indices), std::size(indices), &renderer);
 
   const gf::Texture texture(texture_file, &renderer);
-
-  renderer.end_memory_command_buffer();
 
   const gf::Mat3F identity = gf::Identity3F;
 

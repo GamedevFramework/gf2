@@ -49,8 +49,6 @@ namespace gf {
     std::optional<CommandBuffer> begin_command_buffer();
     void end_command_buffer(CommandBuffer buffer);
 
-    void begin_memory_command_buffer();
-    void end_memory_command_buffer();
     MemoryCommandBuffer current_memory_command_buffer();
     void defer_release_staging_buffer(StagingBufferReference buffer);
 
@@ -114,8 +112,10 @@ namespace gf {
     VkCommandPool m_command_pool = VK_NULL_HANDLE;
     std::vector<VkCommandBuffer> m_command_buffers;
 
+    uint32_t m_current_memops = 0;
+
     VkCommandPool m_memops_command_pool = VK_NULL_HANDLE;
-    VkCommandBuffer m_memops_command_buffer = VK_NULL_HANDLE;
+    std::vector<VkCommandBuffer> m_memops_command_buffers;
 
     // synchronization stuff
 
@@ -123,15 +123,14 @@ namespace gf {
       VkSemaphore present_semaphore = VK_NULL_HANDLE;
       VkSemaphore render_semaphore = VK_NULL_HANDLE;
       VkFence render_fence = VK_NULL_HANDLE;
+      VkFence memops_fence = VK_NULL_HANDLE;
     };
 
     std::vector<RenderSynchronizationObjects> m_render_synchronization;
 
-    VkFence m_memops_fence = VK_NULL_HANDLE;
-
     // memory stuff
 
-    std::vector<StagingBufferReference> m_staging_buffers;
+    std::vector<std::vector<StagingBufferReference>> m_staging_buffers;
 
     // descriptor set stuff
 
