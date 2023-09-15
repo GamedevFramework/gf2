@@ -61,8 +61,7 @@ namespace gf {
       } else {
         return grid.compute_bounds();
       }
-    },
-        m_variant);
+    }, m_variant);
   }
 
   RectI AnyGrid::compute_visible_area(RectF local) const
@@ -74,8 +73,7 @@ namespace gf {
       } else {
         return grid.compute_visible_area(local);
       }
-    },
-        m_variant);
+    }, m_variant);
   }
 
   RectF AnyGrid::compute_cell_bounds(Vec2I position) const
@@ -87,8 +85,7 @@ namespace gf {
       } else {
         return grid.compute_cell_bounds(position);
       }
-    },
-        m_variant);
+    }, m_variant);
   }
 
   Vec2I AnyGrid::compute_position(Vec2F location) const
@@ -100,8 +97,7 @@ namespace gf {
       } else {
         return grid.compute_position(location);
       }
-    },
-        m_variant);
+    }, m_variant);
   }
 
   std::vector<Vec2F> AnyGrid::compute_contour(Vec2I position) const
@@ -114,8 +110,7 @@ namespace gf {
       } else {
         return grid.compute_contour(position);
       }
-    },
-        m_variant);
+    }, m_variant);
   }
 
   std::vector<Vec2I> AnyGrid::compute_neighbors(Vec2I position, Flags<CellNeighborQuery> flags) const
@@ -128,8 +123,7 @@ namespace gf {
       } else {
         return grid.compute_neighbors(position, flags);
       }
-    },
-        m_variant);
+    }, m_variant);
   }
 
   bool AnyGrid::are_diagonal_neighbors(Vec2I position0, Vec2I position1) const
@@ -141,8 +135,7 @@ namespace gf {
       } else {
         return grid.are_diagonal_neighbors(position0, position1);
       }
-    },
-        m_variant);
+    }, m_variant);
   }
 
 } // namespace gf

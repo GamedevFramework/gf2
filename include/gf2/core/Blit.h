@@ -4,8 +4,8 @@
 #define GF_BLIT_H
 
 #include "CoreApi.h"
-#include "Vec2.h"
 #include "Rect.h"
+#include "Vec2.h"
 
 namespace gf {
 

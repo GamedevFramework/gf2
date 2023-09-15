@@ -80,7 +80,7 @@ int main()
 
         case gf::EventType::WindowResized:
           renderer.recreate_swapchain();
-          render_texture = gf::Texture(event->resize.size, &renderer);
+          render_texture = gf::Texture(event->resize.size, &renderer); // NOLINT(bugprone-unchecked-optional-access)
           break;
 
         default:

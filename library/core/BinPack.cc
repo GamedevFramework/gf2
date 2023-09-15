@@ -55,7 +55,7 @@ namespace gf {
 
     bool split_heuristic_horizontal(RectI free_rectangle, RectI new_rectangle, BinPackSplit split)
     {
-      Vec2I leftover = free_rectangle.extent - new_rectangle.extent;
+      const Vec2I leftover = free_rectangle.extent - new_rectangle.extent;
 
       switch (split) {
         case BinPackSplit::ShorterLeftoverAxis:
@@ -182,7 +182,7 @@ namespace gf {
 
     std::vector<RectI> rectangles(sizes.size());
 
-    for (std::size_t index : indices) {
+    for (auto index : indices) {
       auto maybe_rectangle = insert(sizes[index], choice, split);
 
       if (!maybe_rectangle) {
@@ -210,7 +210,7 @@ namespace gf {
       }
 
       if (size.w <= current_rectangle.extent.w && size.h <= current_rectangle.extent.h) { // fits
-        int score = choice_heuristic_score(size, current_rectangle, choice);
+        const int score = choice_heuristic_score(size, current_rectangle, choice);
 
         if (score < best_score) {
           best_score = score;
@@ -225,7 +225,7 @@ namespace gf {
 
   void BinPack::split_rectangle(std::size_t index, RectI rectangle, BinPackSplit split)
   {
-    RectI free_rectangle = m_free_rectangles[index];
+    const RectI free_rectangle = m_free_rectangles[index];
 
     RectI bottom;
     bottom.offset.x = free_rectangle.offset.x;
@@ -262,7 +262,7 @@ namespace gf {
       RectI ri = m_free_rectangles[i];
 
       for (std::size_t j = i + 1; j < m_free_rectangles.size(); ++j) {
-        RectI rj = m_free_rectangles[j];
+        const RectI rj = m_free_rectangles[j];
 
         if (ri.extent.w == rj.extent.w && ri.offset.x == rj.offset.x) {
           if (ri.offset.y == rj.offset.y + rj.extent.h) {

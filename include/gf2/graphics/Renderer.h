@@ -27,7 +27,7 @@ namespace gf {
     uint64_t to_debug_handle(T handle)
     {
       if constexpr (std::is_pointer_v<T>) {
-        return static_cast<uint64_t>(reinterpret_cast<std::uintptr_t>(handle));
+        return static_cast<uint64_t>(reinterpret_cast<std::uintptr_t>(handle)); // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
       } else {
         static_assert(std::is_integral_v<T>);
         return static_cast<uint64_t>(handle);
