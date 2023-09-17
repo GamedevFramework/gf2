@@ -15,6 +15,8 @@
 
 namespace gf {
 
+  using namespace operators;
+
   Texture::Texture(const std::filesystem::path& filename, Renderer* renderer)
   : Texture(Image(filename), renderer)
   {
@@ -41,6 +43,11 @@ namespace gf {
   }
 
   Texture::Texture(Vec2I size, Renderer* renderer)
+  : Texture(size, TextureUsage::ColorTarget | TextureUsage::Sampled, Format::Renderer, renderer)
+  {
+  }
+
+  Texture::Texture(Vec2I size, Flags<TextureUsage> usage, Format format, Renderer* renderer)
   : m_image_size(size)
   , m_allocator(renderer->m_allocator)
   {
@@ -52,10 +59,10 @@ namespace gf {
     image_info.extent.depth = 1;
     image_info.mipLevels = 1;
     image_info.arrayLayers = 1;
-    image_info.format = renderer->m_format;
+    image_info.format = format == Format::Renderer ? renderer->m_format : static_cast<VkFormat>(format);
     image_info.tiling = VK_IMAGE_TILING_OPTIMAL;
     image_info.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-    image_info.usage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT;
+    image_info.usage = usage.value();
     image_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
     image_info.samples = VK_SAMPLE_COUNT_1_BIT;
 

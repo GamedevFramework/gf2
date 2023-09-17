@@ -143,6 +143,7 @@ add_library(gf2graphics0
   graphics/CommandBuffer.cc
   graphics/Descriptor.cc
   graphics/Event.cc
+  graphics/Format.cc
   graphics/Gamepad.cc
   graphics/GraphicsInitializer.cc
   graphics/Keyboard.cc

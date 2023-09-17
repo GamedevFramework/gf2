@@ -5,12 +5,15 @@
 
 #include <filesystem>
 #include <string>
+#include <type_traits>
 
 #include <vk_mem_alloc.h>
 
 #include <gf2/core/Bitmap.h>
+#include <gf2/core/Flags.h>
 #include <gf2/core/Image.h>
 
+#include "Format.h"
 #include "GraphicsApi.h"
 #include "RenderTarget.h"
 #include "TextureReference.h"
@@ -18,6 +21,19 @@
 
 namespace gf {
   class Renderer;
+
+  // NOLINTNEXTLINE(performance-enum-size)
+  enum class TextureUsage : std::underlying_type_t<VkImageUsageFlagBits> {
+    TransferSource = VK_IMAGE_USAGE_TRANSFER_SRC_BIT,
+    TransferDestination = VK_IMAGE_USAGE_TRANSFER_DST_BIT,
+    Sampled = VK_IMAGE_USAGE_SAMPLED_BIT,
+    Storage = VK_IMAGE_USAGE_STORAGE_BIT,
+    ColorTarget = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
+  };
+
+  template<>
+  struct EnableBitmaskOperators<TextureUsage> : std::true_type {
+  };
 
   class GF_GRAPHICS_API Texture {
   public:
@@ -28,6 +44,7 @@ namespace gf {
     Texture(const Image& image, Renderer* renderer);
     Texture(const Bitmap& bitmap, Renderer* renderer);
     Texture(Vec2I size, Renderer* renderer);
+    Texture(Vec2I size, Flags<TextureUsage> usage, Format format, Renderer* renderer);
 
     Texture(const Texture&) = delete;
     Texture(Texture&& other) noexcept;

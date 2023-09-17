@@ -9,6 +9,7 @@
 #include <tuple>
 #include <vector>
 
+#include "CoreApi.h"
 #include "Rect.h"
 #include "Vec2.h"
 
@@ -47,7 +48,7 @@ namespace gf {
     SideRatioDesc,
   };
 
-  class BinPack {
+  class GF_CORE_API BinPack {
   public:
     BinPack(Vec2I size);
 

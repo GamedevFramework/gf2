@@ -8,6 +8,7 @@
 #include <type_traits>
 #include <vector>
 
+#include "Format.h"
 #include "GraphicsApi.h"
 #include "Vulkan.h"
 
@@ -18,16 +19,10 @@ namespace gf {
     std::size_t stride = 0;
   };
 
-  // NOLINTNEXTLINE(performance-enum-size)
-  enum class VertexAttributeFormat : std::underlying_type_t<VkFormat> {
-    Vec2F = VK_FORMAT_R32G32_SFLOAT,
-    Color = VK_FORMAT_R32G32B32A32_SFLOAT,
-  };
-
   struct GF_GRAPHICS_API VertexAttribute {
     uint32_t location = 0;
     uint32_t binding = 0;
-    VertexAttributeFormat format = VertexAttributeFormat::Vec2F;
+    Format format = Format::Vec2F;
     std::size_t offset = 0;
   };
 

@@ -19,6 +19,8 @@
 #define VMA_IMPLEMENTATION
 #include <vk_mem_alloc.h>
 
+// #define GF_USE_LLVMPIPE
+
 namespace gf {
 
   constexpr std::size_t FramesInFlight = 3;
@@ -423,16 +425,20 @@ namespace gf {
 
     // physical device
 
+#ifdef GF_USE_LLVMPIPE
+    vkb::PhysicalDeviceSelector physical_device_selector(instance, m_surface);
+
+    physical_device_selector.prefer_gpu_device_type(vkb::PreferredDeviceType::cpu)
+        .allow_any_gpu_device_type(false);
+#else
     const vkb::PhysicalDeviceSelector physical_device_selector(instance, m_surface);
+#endif
 
     // VkPhysicalDeviceVulkan13Features features_13 = {};
     // features_13.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES;
     // features_13.dynamicRendering = VK_TRUE;
     //
     // physical_device_selector.set_required_features_13(features_13);
-
-    // physical_device_selector.prefer_gpu_device_type(vkb::PreferredDeviceType::cpu)
-    //     .allow_any_gpu_device_type(false);
 
     auto maybe_physical_device = physical_device_selector.select();
 
@@ -674,9 +680,6 @@ namespace gf {
     // begin the memory command buffer
 
     assert(m_current_memops == 0);
-
-    // vkResetFences(m_device, 1, &m_render_synchronization[m_current_memops].memops_fence);
-    // vkResetCommandBuffer(m_memops_command_buffers[m_current_memops], 0);
 
     VkCommandBufferBeginInfo begin_info = {};
     begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;

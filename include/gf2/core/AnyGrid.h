@@ -6,6 +6,7 @@
 #include <variant>
 #include <vector>
 
+#include "CoreApi.h"
 #include "Grids.h"
 
 namespace gf {
