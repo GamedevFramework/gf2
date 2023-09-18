@@ -69,14 +69,14 @@ int main()
 
   while (!window.should_close()) {
     while (auto event = gf::Event::poll()) {
-      switch (event->type) { // NOLINT(bugprone-unchecked-optional-access)
+      switch (event->type) {
         case gf::EventType::Quit:
           window.close();
           break;
 
         case gf::EventType::WindowResized:
           renderer.recreate_swapchain();
-          render_texture = gf::Texture(event->resize.size, &renderer); // NOLINT(bugprone-unchecked-optional-access)
+          render_texture = gf::Texture(event->resize.size, &renderer);
           break;
 
         default:

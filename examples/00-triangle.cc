@@ -31,7 +31,7 @@ int main()
 
   while (!window.should_close()) {
     while (auto event = gf::Event::poll()) {
-      switch (event->type) { // NOLINT(bugprone-unchecked-optional-access)
+      switch (event->type) {
         case gf::EventType::Quit:
           window.close();
           break;

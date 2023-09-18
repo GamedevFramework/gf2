@@ -13,6 +13,7 @@
 #include <gf2/core/Flags.h>
 #include <gf2/core/Image.h>
 
+#include "BufferReference.h"
 #include "Format.h"
 #include "GraphicsApi.h"
 #include "RenderTarget.h"
@@ -55,6 +56,9 @@ namespace gf {
 
     void set_debug_name(const std::string& name) const;
 
+    void update(const Image& image, Renderer* renderer);
+    void update(const Bitmap& bitmap, Renderer* renderer);
+
     Vec2I size() const
     {
       return m_image_size;
@@ -67,8 +71,9 @@ namespace gf {
   private:
     friend class Descriptor;
 
-    void upload_data(std::size_t raw_size, const void* raw_data, VkFormat format, Renderer* renderer);
-    void create_image_view_and_sampler(VkFormat format);
+    StagingBufferReference create_staging_buffer(std::size_t raw_size, const void* raw_data);
+    void create_image_view_and_sampler(Format format, Renderer* renderer);
+    void compute_memory_operations(StagingBufferReference staging, Renderer* renderer);
 
     Vec2I m_image_size = { 0, 0 };
     VmaAllocator m_allocator = nullptr; // non-owning
@@ -76,6 +81,8 @@ namespace gf {
     VmaAllocation m_allocation = nullptr;
     VkImageView m_image_view = VK_NULL_HANDLE;
     VkSampler m_sampler = VK_NULL_HANDLE;
+    Flags<TextureUsage> m_usage = None;
+    Format m_format = Format::Undefined;
   };
 
 }

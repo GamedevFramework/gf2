@@ -9,6 +9,7 @@
 #include <gf2/core/Rect.h>
 #include <gf2/core/Vec2.h>
 
+#include "BufferReference.h"
 #include "Descriptor.h"
 #include "GraphicsApi.h"
 #include "RenderTarget.h"
@@ -57,22 +58,6 @@ namespace gf {
     }
 
     VkCommandBuffer m_command_buffer = VK_NULL_HANDLE; // non-owning
-  };
-
-  class BufferReference {
-  public:
-
-  private:
-    friend class MemoryCommandBuffer;
-    friend class Buffer;
-    friend class Texture;
-
-    BufferReference(VkBuffer buffer)
-    : m_buffer(buffer)
-    {
-    }
-
-    VkBuffer m_buffer = VK_NULL_HANDLE;
   };
 
   enum class Layout : uint8_t {

@@ -63,24 +63,6 @@ namespace gf {
     BufferUsage m_usage = BufferUsage::Vertex;
   };
 
-  class StagingBufferReference {
-  public:
-
-  private:
-    friend class BasicRenderer;
-    friend class Buffer;
-    friend class Texture;
-
-    StagingBufferReference(VkBuffer buffer, VmaAllocation allocation)
-    : m_buffer(buffer)
-    , m_allocation(allocation)
-    {
-    }
-
-    VkBuffer m_buffer = VK_NULL_HANDLE;
-    VmaAllocation m_allocation = nullptr;
-  };
-
 }
 
 #endif // GF_BUFFER_H

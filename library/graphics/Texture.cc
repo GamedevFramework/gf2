@@ -23,23 +23,23 @@ namespace gf {
   }
 
   Texture::Texture(const Image& image, Renderer* renderer)
-  : m_image_size(image.size())
-  , m_allocator(renderer->m_allocator)
+  : Texture(image.size(), TextureUsage::TransferDestination | TextureUsage::Sampled, Format::Color8U, renderer)
   {
     auto raw_size = image.raw_size();
     const auto* raw_data = image.raw_data();
 
-    upload_data(raw_size, raw_data, VK_FORMAT_R8G8B8A8_SRGB, renderer);
+    auto staging = create_staging_buffer(raw_size, raw_data);
+    compute_memory_operations(staging, renderer);
   }
 
   Texture::Texture(const Bitmap& bitmap, Renderer* renderer)
-  : m_image_size(bitmap.size())
-  , m_allocator(renderer->m_allocator)
+  : Texture(bitmap.size(), TextureUsage::TransferDestination | TextureUsage::Sampled, Format::Gray8U, renderer)
   {
     auto raw_size = bitmap.raw_size();
     const auto* raw_data = bitmap.raw_data();
 
-    upload_data(raw_size, raw_data, VK_FORMAT_R8_UNORM, renderer);
+    auto staging = create_staging_buffer(raw_size, raw_data);
+    compute_memory_operations(staging, renderer);
   }
 
   Texture::Texture(Vec2I size, Renderer* renderer)
@@ -50,6 +50,8 @@ namespace gf {
   Texture::Texture(Vec2I size, Flags<TextureUsage> usage, Format format, Renderer* renderer)
   : m_image_size(size)
   , m_allocator(renderer->m_allocator)
+  , m_usage(usage)
+  , m_format(format)
   {
     VkImageCreateInfo image_info = {};
     image_info.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
@@ -67,7 +69,7 @@ namespace gf {
     image_info.samples = VK_SAMPLE_COUNT_1_BIT;
 
     VmaAllocationCreateInfo allocation_info = {};
-    allocation_info.flags = VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT;
+    allocation_info.flags = usage.test(TextureUsage::ColorTarget) ? VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT : 0;
     allocation_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
 
     if (vmaCreateImage(m_allocator, &image_info, &allocation_info, &m_image, &m_allocation, nullptr) != VK_SUCCESS) {
@@ -77,7 +79,7 @@ namespace gf {
 
     // image view and sampler
 
-    create_image_view_and_sampler(renderer->m_format);
+    create_image_view_and_sampler(format, renderer);
   }
 
   Texture::Texture(Texture&& other) noexcept
@@ -145,6 +147,32 @@ namespace gf {
     vkSetDebugUtilsObjectNameEXT(info.device, &name_info);
   }
 
+  void Texture::update(const Image& image, Renderer* renderer)
+  {
+    assert(image.size() == m_image_size);
+    assert(m_format == Format::Color8U);
+    assert(m_usage.test(TextureUsage::TransferDestination));
+
+    auto raw_size = image.raw_size();
+    const auto* raw_data = image.raw_data();
+
+    auto staging = create_staging_buffer(raw_size, raw_data);
+    compute_memory_operations(staging, renderer);
+  }
+
+  void Texture::update(const Bitmap& bitmap, Renderer* renderer)
+  {
+    assert(bitmap.size() == m_image_size);
+    assert(m_format == Format::Gray8U);
+    assert(m_usage.test(TextureUsage::TransferDestination));
+
+    auto raw_size = bitmap.raw_size();
+    const auto* raw_data = bitmap.raw_data();
+
+    auto staging = create_staging_buffer(raw_size, raw_data);
+    compute_memory_operations(staging, renderer);
+  }
+
   RenderTarget Texture::as_render_target() const
   {
     const VkExtent2D extent = { static_cast<uint32_t>(m_image_size.w), static_cast<uint32_t>(m_image_size.h) };
@@ -156,10 +184,8 @@ namespace gf {
     return { m_image };
   }
 
-  void Texture::upload_data(std::size_t raw_size, const void* raw_data, VkFormat format, Renderer* renderer)
+  StagingBufferReference Texture::create_staging_buffer(std::size_t raw_size, const void* raw_data)
   {
-    // staging buffer
-
     VkBufferCreateInfo staging_buffer_info = {};
     staging_buffer_info.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
     staging_buffer_info.size = static_cast<VkDeviceSize>(raw_size);
@@ -188,47 +214,10 @@ namespace gf {
     std::memcpy(memory, raw_data, raw_size);
     vmaUnmapMemory(m_allocator, staging_allocation);
 
-    // device image
-
-    VkImageCreateInfo image_info = {};
-    image_info.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
-    image_info.imageType = VK_IMAGE_TYPE_2D;
-    image_info.extent.width = static_cast<uint32_t>(m_image_size.w);
-    image_info.extent.height = static_cast<uint32_t>(m_image_size.h);
-    image_info.extent.depth = 1;
-    image_info.mipLevels = 1;
-    image_info.arrayLayers = 1;
-    image_info.format = format;
-    image_info.tiling = VK_IMAGE_TILING_OPTIMAL;
-    image_info.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-    image_info.usage = VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT;
-    image_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-    image_info.samples = VK_SAMPLE_COUNT_1_BIT;
-
-    VmaAllocationCreateInfo allocation_info = {};
-    allocation_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
-
-    if (vmaCreateImage(m_allocator, &image_info, &allocation_info, &m_image, &m_allocation, nullptr) != VK_SUCCESS) {
-      Log::error("Failed to allocate image.");
-      throw std::runtime_error("Failed to allocate image.");
-    }
-
-    auto command_buffer = renderer->current_memory_command_buffer();
-
-    command_buffer.texture_layout_transition({ m_image }, Layout::Undefined, Layout::Upload);
-    command_buffer.copy_buffer_to_texture({ staging_buffer }, { m_image }, m_image_size);
-    command_buffer.texture_layout_transition({ m_image }, Layout::Upload, Layout::Shader);
-
-    // image view and sampler
-
-    create_image_view_and_sampler(format);
-
-    // destroy staging buffer
-
-    renderer->defer_release_staging_buffer({ staging_buffer, staging_allocation });
+    return { staging_buffer, staging_allocation };
   }
 
-  void Texture::create_image_view_and_sampler(VkFormat format)
+  void Texture::create_image_view_and_sampler(Format format, Renderer* renderer)
   {
     VmaAllocatorInfo info;
     vmaGetAllocatorInfo(m_allocator, &info);
@@ -239,7 +228,7 @@ namespace gf {
     view_info.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
     view_info.image = m_image;
     view_info.viewType = VK_IMAGE_VIEW_TYPE_2D;
-    view_info.format = format;
+    view_info.format = format == Format::Renderer ? renderer->m_format : static_cast<VkFormat>(format);
     view_info.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
     view_info.subresourceRange.baseMipLevel = 0;
     view_info.subresourceRange.levelCount = 1;
@@ -273,6 +262,17 @@ namespace gf {
       Log::error("Failed to create texture sampler.");
       throw std::runtime_error("Failed to create texture sampler.");
     }
+  }
+
+  void Texture::compute_memory_operations(StagingBufferReference staging, Renderer* renderer)
+  {
+    auto command_buffer = renderer->current_memory_command_buffer();
+
+    command_buffer.texture_layout_transition({ m_image }, Layout::Undefined, Layout::Upload);
+    command_buffer.copy_buffer_to_texture({ staging.m_buffer }, { m_image }, m_image_size);
+    command_buffer.texture_layout_transition({ m_image }, Layout::Upload, Layout::Shader);
+
+    renderer->defer_release_staging_buffer(staging);
   }
 
 }
