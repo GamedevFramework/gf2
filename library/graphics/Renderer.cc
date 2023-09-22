@@ -264,8 +264,8 @@ namespace gf {
 
     vkWaitForFences(m_device, 1, &sync.memops_fence, VK_TRUE, UINT64_MAX);
 
-    for (auto buffer : m_staging_buffers[m_current_frame]) {
-      vmaDestroyBuffer(m_allocator, buffer.m_buffer, buffer.m_allocation);
+    for (auto staging_buffer : m_staging_buffers[m_current_frame]) {
+      vmaDestroyBuffer(m_allocator, staging_buffer.m_buffer, staging_buffer.m_allocation);
     }
 
     m_staging_buffers[m_current_frame].clear();
@@ -771,6 +771,7 @@ namespace gf {
 
     VkDescriptorPoolSize pool_sizes[] = {
       { VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 64 },
+      { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 64 },
     };
 
     VkDescriptorPoolCreateInfo descriptor_pool_info = {};

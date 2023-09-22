@@ -112,7 +112,7 @@ int main()
 
         auto render_command_buffer = command_buffer.begin_rendering(target);
 
-        const gf::RectF viewport = gf::RectF::from_size(target.extent());
+        const gf::RectF viewport = camera.compute_viewport(target.extent());
         render_command_buffer.set_viewport(viewport);
 
         const gf::RectI scissor = gf::RectI::from_size(target.extent());

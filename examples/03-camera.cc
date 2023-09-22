@@ -57,7 +57,7 @@ int main()
   camera.update(WindowSize);
   gf::Mat4F view_matrix(camera.compute_view_matrix());
 
-  gf::Buffer camera_buffer(gf::BufferType::Host, gf::BufferUsage::Uniform, &view_matrix, 1, &renderer);
+  gf::Buffer camera_buffer(gf::BufferType::Device, gf::BufferUsage::Uniform, &view_matrix, 1, &renderer);
 
   gf::Transform transform;
   transform.location = gf::vec(1000.0f, 1000.0f);

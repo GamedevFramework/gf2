@@ -121,13 +121,13 @@ namespace gf {
     }
   }
 
-  RectI Camera::compute_viewport(Vec2I target_size) const
+  RectF Camera::compute_viewport(Vec2I target_size) const
   {
-    RectI actual_viewport;
-    actual_viewport.offset.x = static_cast<int>(std::lround(static_cast<float>(target_size.w) * m_computed_viewport.offset.x));
-    actual_viewport.offset.y = static_cast<int>(std::lround(static_cast<float>(target_size.h) * m_computed_viewport.offset.y));
-    actual_viewport.extent.w = static_cast<int>(std::lround(static_cast<float>(target_size.w) * m_computed_viewport.extent.w));
-    actual_viewport.extent.h = static_cast<int>(std::lround(static_cast<float>(target_size.h) * m_computed_viewport.extent.h));
+    RectF actual_viewport;
+    actual_viewport.offset.x = static_cast<float>(target_size.w) * m_computed_viewport.offset.x;
+    actual_viewport.offset.y = static_cast<float>(target_size.h) * m_computed_viewport.offset.y;
+    actual_viewport.extent.w = static_cast<float>(target_size.w) * m_computed_viewport.extent.w;
+    actual_viewport.extent.h = static_cast<float>(target_size.h) * m_computed_viewport.extent.h;
     return actual_viewport;
   }
 

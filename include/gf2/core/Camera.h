@@ -44,7 +44,7 @@ namespace gf {
     }
 
     void update(Vec2I target_size);
-    RectI compute_viewport(Vec2I target_size) const;
+    RectF compute_viewport(Vec2I target_size) const;
     Mat3F compute_view_matrix() const;
 
   private:
