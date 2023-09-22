@@ -49,6 +49,7 @@ namespace gf {
 
     void set_size(Vec2I size);
     Vec2I size();
+    Vec2I surface_size();
 
     void set_minimum_size(Vec2I size);
     Vec2I minimum_size();

@@ -59,6 +59,12 @@ int main()
   camera.center = gf::vec(1000.0f, 1000.0f);
   camera.size = gf::vec(200.0f, 200.0f);
 
+  camera.update(WindowSize);
+  gf::Mat4F view_matrix(camera.compute_view_matrix());
+
+  gf::Buffer camera_buffer(gf::BufferType::Device, gf::BufferUsage::Uniform, &view_matrix, 1, &renderer);
+  camera_buffer.set_debug_name("Camera Buffer");
+
   gf::Transform transform;
   transform.location = gf::vec(1000.0f, 1000.0f);
   transform.origin = gf::vec(0.5f, 0.5f);
@@ -75,8 +81,11 @@ int main()
           break;
 
         case gf::EventType::WindowResized:
-          renderer.recreate_swapchain();
+          renderer.update_surface_size(window.surface_size());
           render_texture = gf::Texture(event->resize.size, &renderer);
+          camera.update(window.surface_size());
+          view_matrix = camera.compute_view_matrix();
+          camera_buffer.update(&view_matrix, 1, &renderer);
           break;
 
         default:
@@ -101,9 +110,6 @@ int main()
       {
         auto target = render_texture.as_render_target();
 
-        camera.update(target.extent());
-        const gf::Mat3F view_matrix = camera.compute_view_matrix();
-
         auto render_command_buffer = command_buffer.begin_rendering(target);
 
         const gf::RectF viewport = gf::RectF::from_size(target.extent());
@@ -116,14 +122,17 @@ int main()
 
         render_command_buffer.bind_pipeline(pipeline);
 
-        auto descriptor = renderer.allocate_descriptor_for_pipeline(pipeline);
-        descriptor.write(0, &texture);
-        render_command_buffer.bind_descriptor(pipeline, descriptor);
+        auto camera_descriptor = renderer.allocate_descriptor_for_layout(renderer.camera_descriptor());
+        camera_descriptor.write(0, &camera_buffer);
+        render_command_buffer.bind_descriptor(pipeline, 0, camera_descriptor);
+
+        auto sampler_descriptor = renderer.allocate_descriptor_for_layout(renderer.sampler_descriptor());
+        sampler_descriptor.write(0, &texture);
+        render_command_buffer.bind_descriptor(pipeline, 1, sampler_descriptor);
 
         const gf::Mat3F model_matrix = transform.compute_matrix(bounds);
-        const gf::Mat3F mv = view_matrix * model_matrix;
 
-        render_command_buffer.push_constant(pipeline, gf::ShaderStage::Vertex, &mv);
+        render_command_buffer.push_constant(pipeline, gf::ShaderStage::Vertex, &model_matrix);
 
         render_command_buffer.bind_vertex_buffer(&vertex_buffer);
         render_command_buffer.bind_index_buffer(&index_buffer);
@@ -158,9 +167,9 @@ int main()
 
         render_command_buffer.bind_pipeline(pipeline);
 
-        auto descriptor = renderer.allocate_descriptor_for_pipeline(pipeline);
-        descriptor.write(0, &render_texture);
-        render_command_buffer.bind_descriptor(pipeline, descriptor);
+        auto sampler_descriptor = renderer.allocate_descriptor_for_layout(renderer.sampler_descriptor());
+        sampler_descriptor.write(0, &render_texture);
+        render_command_buffer.bind_descriptor(pipeline, 0, sampler_descriptor);
 
         render_command_buffer.draw(4);
 

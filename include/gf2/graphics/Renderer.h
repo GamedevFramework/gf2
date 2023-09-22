@@ -7,6 +7,7 @@
 
 #include <vk_mem_alloc.h>
 
+#include <gf2/core/Camera.h>
 #include <gf2/core/Color.h>
 #include <gf2/core/Span.h>
 
@@ -46,20 +47,26 @@ namespace gf {
     BasicRenderer& operator=(const BasicRenderer&) = delete;
     BasicRenderer& operator=(BasicRenderer&& other) noexcept;
 
+    Vec2I surface_size() const;
+
     std::optional<CommandBuffer> begin_command_buffer();
     void end_command_buffer(CommandBuffer buffer);
 
     MemoryCommandBuffer current_memory_command_buffer();
     void defer_release_staging_buffer(StagingBufferReference buffer);
 
-    Descriptor allocate_descriptor_for_pipeline(const Pipeline* pipeline) const;
+    Descriptor allocate_descriptor_for_layout(const DescriptorLayout* layout) const;
     RenderTarget current_render_target() const;
 
-    void recreate_swapchain();
     void wait_idle() const;
+
+  protected:
+    void recreate_swapchain();
+    void recreate_swapchain(Vec2I size);
 
   private:
     friend class Buffer;
+    friend class DescriptorLayout;
     friend class PipelineBuilder;
     friend class Shader;
     friend class Texture;
@@ -68,7 +75,7 @@ namespace gf {
     void destroy_device();
     void construct_allocator();
     void destroy_allocator();
-    void construct_swapchain();
+    void construct_swapchain(Vec2I size);
     void destroy_swapchain();
     void construct_commands();
     void destroy_commands();
@@ -141,6 +148,18 @@ namespace gf {
   public:
     Renderer(Window* window);
 
+    void update_surface_size(Vec2I size);
+
+    const DescriptorLayout* camera_descriptor() const
+    {
+      return &m_camera_descriptor;
+    }
+
+    const DescriptorLayout* sampler_descriptor() const
+    {
+      return &m_sampler_descriptor;
+    }
+
     const Pipeline* simple_pipeline() const
     {
       return &m_simple_pipeline;
@@ -151,6 +170,11 @@ namespace gf {
       return &m_default_pipeline;
     }
 
+    const Pipeline* triangle_strip_pipeline() const
+    {
+      return &m_triangle_strip_pipeline;
+    }
+
     const Pipeline* fullscreen_pipeline() const
     {
       return &m_fullscreen_pipeline;
@@ -159,8 +183,12 @@ namespace gf {
   private:
     void build_default_pipelines();
 
+    DescriptorLayout m_camera_descriptor;
+    DescriptorLayout m_sampler_descriptor;
+
     Pipeline m_simple_pipeline;
     Pipeline m_default_pipeline;
+    Pipeline m_triangle_strip_pipeline;
     Pipeline m_fullscreen_pipeline;
   };
 

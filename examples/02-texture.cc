@@ -46,6 +46,8 @@ int main()
   const gf::Texture texture(texture_file, &renderer);
 
   const gf::Mat3F identity = gf::Identity3F;
+  const gf::Mat4F aligned_identity(identity);
+  const gf::Buffer camera_buffer(gf::BufferType::Device, gf::BufferUsage::Uniform, &aligned_identity, 1, &renderer);
 
   while (!window.should_close()) {
     while (auto event = gf::Event::poll()) {
@@ -55,7 +57,7 @@ int main()
           break;
 
         case gf::EventType::WindowResized:
-          renderer.recreate_swapchain();
+          renderer.update_surface_size(window.surface_size());
           break;
 
         default:
@@ -80,9 +82,13 @@ int main()
 
       render_command_buffer.bind_pipeline(pipeline);
 
-      auto descriptor = renderer.allocate_descriptor_for_pipeline(pipeline);
-      descriptor.write(0, &texture);
-      render_command_buffer.bind_descriptor(pipeline, descriptor);
+      auto sampler_descriptor = renderer.allocate_descriptor_for_layout(renderer.sampler_descriptor());
+      sampler_descriptor.write(0, &texture);
+      render_command_buffer.bind_descriptor(pipeline, 1, sampler_descriptor);
+
+      auto camera_descriptor = renderer.allocate_descriptor_for_layout(renderer.camera_descriptor());
+      camera_descriptor.write(0, &camera_buffer);
+      render_command_buffer.bind_descriptor(pipeline, 0, camera_descriptor);
 
       render_command_buffer.push_constant(pipeline, gf::ShaderStage::Vertex, &identity);
 

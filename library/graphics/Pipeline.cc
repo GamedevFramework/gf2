@@ -24,7 +24,6 @@ namespace gf {
   : m_device(std::exchange(other.m_device, VK_NULL_HANDLE))
   , m_pipeline_layout(std::exchange(other.m_pipeline_layout, VK_NULL_HANDLE))
   , m_pipeline(std::exchange(other.m_pipeline, VK_NULL_HANDLE))
-  , m_descriptors_layout(std::exchange(other.m_descriptors_layout, VK_NULL_HANDLE))
   {
   }
 
@@ -37,10 +36,6 @@ namespace gf {
     if (m_pipeline_layout != VK_NULL_HANDLE) {
       vkDestroyPipelineLayout(m_device, m_pipeline_layout, nullptr);
     }
-
-    if (m_descriptors_layout != VK_NULL_HANDLE) {
-      vkDestroyDescriptorSetLayout(m_device, m_descriptors_layout, nullptr);
-    }
   }
 
   Pipeline& Pipeline::operator=(Pipeline&& other) noexcept
@@ -48,7 +43,6 @@ namespace gf {
     std::swap(m_device, other.m_device);
     std::swap(m_pipeline_layout, other.m_pipeline_layout);
     std::swap(m_pipeline, other.m_pipeline);
-    std::swap(m_descriptors_layout, other.m_descriptors_layout);
     return *this;
   }
 
@@ -197,34 +191,10 @@ namespace gf {
 
     // descriptor set layout
 
-    VkDescriptorSetLayout descriptor_set_layout = VK_NULL_HANDLE;
-    bool has_descriptor_set_layout = false;
-
-    if (!m_descriptor_bindings.empty()) {
-      std::vector<VkDescriptorSetLayoutBinding> descriptor_set_layour_bindings;
-
-      for (auto descriptor_binding : m_descriptor_bindings) {
-        VkDescriptorSetLayoutBinding descriptor_set_layour_binding = {};
-        descriptor_set_layour_binding.binding = descriptor_binding.binding;
-        descriptor_set_layour_binding.descriptorType = static_cast<VkDescriptorType>(descriptor_binding.type);
-        descriptor_set_layour_binding.descriptorCount = 1;
-        descriptor_set_layour_binding.stageFlags = static_cast<VkShaderStageFlags>(descriptor_binding.stage);
-
-        descriptor_set_layour_bindings.push_back(descriptor_set_layour_binding);
-      }
-
-      VkDescriptorSetLayoutCreateInfo descriptor_set_layout_info = {};
-      descriptor_set_layout_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-      descriptor_set_layout_info.bindingCount = static_cast<uint32_t>(descriptor_set_layour_bindings.size());
-      descriptor_set_layout_info.pBindings = descriptor_set_layour_bindings.data();
-
-      if (vkCreateDescriptorSetLayout(renderer->m_device, &descriptor_set_layout_info, nullptr, &descriptor_set_layout) != VK_SUCCESS) {
-        Log::error("Failed to create descriptor set layout.");
-        throw std::runtime_error("Failed to create descriptor set layout.");
-      }
-
-      has_descriptor_set_layout = true;
-    }
+    std::vector<VkDescriptorSetLayout> descriptor_set_layouts;
+    std::transform(m_descriptor_layouts.begin(), m_descriptor_layouts.end(), std::back_inserter(descriptor_set_layouts), [](auto* layout) {
+      return layout->m_layout;
+    });
 
     // push constant
 
@@ -243,8 +213,8 @@ namespace gf {
 
     VkPipelineLayoutCreateInfo pipeline_layout_create_info = {};
     pipeline_layout_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-    pipeline_layout_create_info.setLayoutCount = has_descriptor_set_layout ? 1 : 0;
-    pipeline_layout_create_info.pSetLayouts = has_descriptor_set_layout ? &descriptor_set_layout : nullptr;
+    pipeline_layout_create_info.setLayoutCount = descriptor_set_layouts.empty() ? 0 : static_cast<uint32_t>(descriptor_set_layouts.size());
+    pipeline_layout_create_info.pSetLayouts = descriptor_set_layouts.empty() ? nullptr : descriptor_set_layouts.data();
     pipeline_layout_create_info.pushConstantRangeCount = has_push_constant ? 1 : 0;
     pipeline_layout_create_info.pPushConstantRanges = has_push_constant ? &push_constant_range : nullptr;
 
@@ -291,7 +261,7 @@ namespace gf {
       throw std::runtime_error("Failed to create pipeline.");
     }
 
-    return { renderer->m_device, pipeline_layout, pipeline, descriptor_set_layout };
+    return { renderer->m_device, pipeline_layout, pipeline };
   }
 
 }

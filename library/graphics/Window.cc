@@ -9,6 +9,7 @@
 #include <utility>
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_vulkan.h>
 
 #include <gf2/core/Log.h>
 
@@ -125,7 +126,7 @@ namespace gf {
   void Window::set_size(Vec2I size)
   {
     assert(m_window);
-    SDL_SetWindowSize(m_window, size.x, size.y);
+    SDL_SetWindowSize(m_window, size.w, size.h);
     // TODO: [SDL3] check return
   }
 
@@ -133,8 +134,17 @@ namespace gf {
   {
     assert(m_window);
     Vec2I size = {};
-    SDL_GetWindowSize(m_window, &size.x, &size.y);
+    SDL_GetWindowSize(m_window, &size.w, &size.h);
     // TODO: [SDL3] check return
+    return size;
+  }
+
+  Vec2I Window::surface_size()
+  {
+    assert(m_window);
+    Vec2I size = {};
+    SDL_Vulkan_GetDrawableSize(m_window, &size.w, &size.h);
+    // TODO: [SDL3] use SDL_GetWindowSizeInPixels
     return size;
   }
 

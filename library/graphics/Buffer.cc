@@ -18,6 +18,8 @@ namespace gf {
 
   Buffer::Buffer(BufferType type, BufferUsage usage, std::size_t size, std::size_t member_size, const void* data, Renderer* renderer)
   : m_allocator(renderer->m_allocator)
+  , m_size(size)
+  , m_member_size(member_size)
   , m_type(type)
   , m_usage(usage)
   {
@@ -59,6 +61,23 @@ namespace gf {
     return *this;
   }
 
+  void Buffer::update(std::size_t size, std::size_t member_size, const void* data, Renderer* renderer)
+  {
+    assert(size == m_size);
+    assert(member_size == m_member_size);
+
+    const std::size_t total_size = size * member_size;
+
+    switch (m_type) {
+      case BufferType::Host:
+        update_host_buffer(total_size, data);
+        break;
+      case BufferType::Device:
+        update_device_buffer(total_size, data, renderer);
+        break;
+    }
+  }
+
   void Buffer::set_debug_name(const std::string& name) const
   {
     VmaAllocatorInfo info;
@@ -90,6 +109,30 @@ namespace gf {
       throw std::runtime_error("Failed to allocate buffer.");
     }
 
+    update_host_buffer(total_size, data);
+  }
+
+  void Buffer::create_device_buffer(BufferUsage usage, std::size_t total_size, const void* data, Renderer* renderer)
+  {
+    VkBufferCreateInfo buffer_info = {};
+    buffer_info.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+    buffer_info.size = static_cast<VkDeviceSize>(total_size);
+    buffer_info.usage = static_cast<VkBufferUsageFlagBits>(usage) | VK_BUFFER_USAGE_TRANSFER_DST_BIT;
+    buffer_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+    VmaAllocationCreateInfo allocation_info = {};
+    allocation_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
+
+    if (vmaCreateBuffer(m_allocator, &buffer_info, &allocation_info, &m_buffer, &m_allocation, nullptr) != VK_SUCCESS) {
+      Log::error("Failed to allocate buffer.");
+      throw std::runtime_error("Failed to allocate buffer.");
+    }
+
+    update_device_buffer(total_size, data, renderer);
+  }
+
+  void Buffer::update_host_buffer(std::size_t total_size, const void* data)
+  {
     void* memory = nullptr;
 
     if (vmaMapMemory(m_allocator, m_allocation, &memory) != VK_SUCCESS) {
@@ -101,7 +144,7 @@ namespace gf {
     vmaUnmapMemory(m_allocator, m_allocation);
   }
 
-  void Buffer::create_device_buffer(BufferUsage usage, std::size_t total_size, const void* data, Renderer* renderer)
+  void Buffer::update_device_buffer(std::size_t total_size, const void* data, Renderer* renderer)
   {
     // staging buffer
 
@@ -133,21 +176,7 @@ namespace gf {
     std::memcpy(memory, data, total_size);
     vmaUnmapMemory(m_allocator, staging_allocation);
 
-    // device buffer
-
-    VkBufferCreateInfo buffer_info = {};
-    buffer_info.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-    buffer_info.size = static_cast<VkDeviceSize>(total_size);
-    buffer_info.usage = static_cast<VkBufferUsageFlagBits>(usage) | VK_BUFFER_USAGE_TRANSFER_DST_BIT;
-    buffer_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-
-    VmaAllocationCreateInfo allocation_info = {};
-    allocation_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
-
-    if (vmaCreateBuffer(m_allocator, &buffer_info, &allocation_info, &m_buffer, &m_allocation, nullptr) != VK_SUCCESS) {
-      Log::error("Failed to allocate buffer.");
-      throw std::runtime_error("Failed to allocate buffer.");
-    }
+    // commands
 
     auto command_buffer = renderer->current_memory_command_buffer();
 

@@ -108,10 +108,10 @@ namespace gf {
     vkCmdBindIndexBuffer(m_command_buffer, buffer->m_buffer, device_offset, VK_INDEX_TYPE_UINT16);
   }
 
-  void RenderCommandBuffer::bind_descriptor(const Pipeline* pipeline, Descriptor descriptor) const
+  void RenderCommandBuffer::bind_descriptor(const Pipeline* pipeline, uint32_t set, Descriptor descriptor) const
   {
     assert(pipeline);
-    vkCmdBindDescriptorSets(m_command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->m_pipeline_layout, 0, 1, &descriptor.m_descriptor, 0, nullptr);
+    vkCmdBindDescriptorSets(m_command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->m_pipeline_layout, set, 1, &descriptor.m_descriptor, 0, nullptr);
   }
 
   void RenderCommandBuffer::push_constant(const Pipeline* pipeline, ShaderStage stage, std::size_t size, const void* data) const
@@ -121,14 +121,14 @@ namespace gf {
     vkCmdPushConstants(m_command_buffer, pipeline->m_pipeline_layout, static_cast<VkShaderStageFlags>(stage), 0, static_cast<uint32_t>(size), data);
   }
 
-  void RenderCommandBuffer::draw(std::size_t vertex_count) const
+  void RenderCommandBuffer::draw(std::size_t vertex_count, std::size_t first_vertex) const
   {
-    vkCmdDraw(m_command_buffer, static_cast<uint32_t>(vertex_count), 1, 0, 0);
+    vkCmdDraw(m_command_buffer, static_cast<uint32_t>(vertex_count), 1, static_cast<uint32_t>(first_vertex), 0);
   }
 
-  void RenderCommandBuffer::draw_indexed(std::size_t index_count) const
+  void RenderCommandBuffer::draw_indexed(std::size_t index_count, std::size_t first_index) const
   {
-    vkCmdDrawIndexed(m_command_buffer, static_cast<uint32_t>(index_count), 1, 0, 0, 0);
+    vkCmdDrawIndexed(m_command_buffer, static_cast<uint32_t>(index_count), 1, static_cast<uint32_t>(first_index), 0, 0);
   }
 
   /*

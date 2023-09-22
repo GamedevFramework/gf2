@@ -42,6 +42,10 @@ namespace gf {
 
   using Mat4F = Mat4<float>;
 
+  // inline constexpr Mat4F Identity4F = {
+  //   { { 1.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 1.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0f } }
+  // };
+
 } // namespace gf
 
 #endif // GF_MAT4_H

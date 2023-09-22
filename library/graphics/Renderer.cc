@@ -55,9 +55,12 @@ namespace gf {
   BasicRenderer::BasicRenderer(Window* window)
   : m_window(window->m_window)
   {
+    Vec2I size = {};
+    SDL_Vulkan_GetDrawableSize(m_window, &size.w, &size.h);
+
     construct_device();
     construct_allocator();
-    construct_swapchain();
+    construct_swapchain(size);
     construct_commands();
     construct_synchronization();
     construct_descriptors();
@@ -155,6 +158,11 @@ namespace gf {
     std::swap(m_descriptor_pools, other.m_descriptor_pools);
 
     return *this;
+  }
+
+  Vec2I BasicRenderer::surface_size() const
+  {
+    return { static_cast<int>(m_extent.width), static_cast<int>(m_extent.height) };
   }
 
   namespace {
@@ -333,7 +341,7 @@ namespace gf {
     m_staging_buffers[m_current_memops].push_back(buffer);
   }
 
-  Descriptor BasicRenderer::allocate_descriptor_for_pipeline(const Pipeline* pipeline) const
+  Descriptor BasicRenderer::allocate_descriptor_for_layout(const DescriptorLayout* layout) const
   {
     VkDescriptorPool descriptor_pool = m_descriptor_pools[m_current_frame];
 
@@ -341,7 +349,7 @@ namespace gf {
     descriptor_set_allocate_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
     descriptor_set_allocate_info.descriptorPool = descriptor_pool;
     descriptor_set_allocate_info.descriptorSetCount = 1;
-    descriptor_set_allocate_info.pSetLayouts = &pipeline->m_descriptors_layout;
+    descriptor_set_allocate_info.pSetLayouts = &layout->m_layout;
 
     VkDescriptorSet descriptor_set = VK_NULL_HANDLE;
 
@@ -360,8 +368,15 @@ namespace gf {
 
   void BasicRenderer::recreate_swapchain()
   {
+    Vec2I size = {};
+    SDL_Vulkan_GetDrawableSize(m_window, &size.w, &size.h);
+    recreate_swapchain(size);
+  }
+
+  void BasicRenderer::recreate_swapchain(Vec2I size)
+  {
     vkDeviceWaitIdle(m_device);
-    construct_swapchain();
+    construct_swapchain(size);
   }
 
   void BasicRenderer::wait_idle() const
@@ -547,13 +562,9 @@ namespace gf {
     }
   }
 
-  void BasicRenderer::construct_swapchain()
+  void BasicRenderer::construct_swapchain(Vec2I size)
   {
-    int width = 0;
-    int height = 0;
-    SDL_Vulkan_GetDrawableSize(m_window, &width, &height);
-
-    if (width == 0 || height == 0) {
+    if (size.w == 0 || size.h == 0) {
       // handle minimization
       return;
     }
@@ -561,7 +572,7 @@ namespace gf {
     vkb::SwapchainBuilder swapchain_builder(m_physical_device, m_device, m_surface, m_graphics_queue_index, m_present_queue_index);
 
     swapchain_builder.set_old_swapchain(m_swapchain)
-        .set_desired_extent(static_cast<uint32_t>(width), static_cast<uint32_t>(height))
+        .set_desired_extent(static_cast<uint32_t>(size.w), static_cast<uint32_t>(size.h))
         .use_default_format_selection()
         .use_default_present_mode_selection()
         .use_default_image_usage_flags()
@@ -816,8 +827,29 @@ namespace gf {
     build_default_pipelines();
   }
 
+  void Renderer::update_surface_size(Vec2I size)
+  {
+    recreate_swapchain(size);
+  }
+
   void Renderer::build_default_pipelines()
   {
+    // view matrix descriptor
+
+    DescriptorBinding camera_binding[] = {
+      { 0, DescriptorType::Buffer, ShaderStage::Vertex }
+    };
+
+    m_camera_descriptor = DescriptorLayout(camera_binding, this);
+
+    // sampler descriptor
+
+    DescriptorBinding sampler_binding[] = {
+      { 0, DescriptorType::Sampler, ShaderStage::Fragment }
+    };
+
+    m_sampler_descriptor = DescriptorLayout(sampler_binding, this);
+
     // simple pipeline
 
     gf::Shader simple_vertex_shader(gf::span(simple_vert_shader_code), { ShaderStage::Vertex, this });
@@ -828,7 +860,8 @@ namespace gf {
     simple_pipeline_builder.set_vertex_input(SimpleVertex::compute_input())
         .set_push_constant_parameters(ShaderStage::Vertex, sizeof(ShaderDataType<Mat3F>))
         .add_shader(&simple_vertex_shader)
-        .add_shader(&simple_fragment_shader);
+        .add_shader(&simple_fragment_shader)
+        .add_descriptor_layout(&m_camera_descriptor);
 
     m_simple_pipeline = simple_pipeline_builder.build(this);
     m_simple_pipeline.set_debug_name("Simple Pipeline");
@@ -844,10 +877,18 @@ namespace gf {
         .set_push_constant_parameters(ShaderStage::Vertex, sizeof(ShaderDataType<Mat3F>))
         .add_shader(&default_vertex_shader)
         .add_shader(&default_fragment_shader)
-        .add_descriptor_binding({ 0, DescriptorType::Sampler, ShaderStage::Fragment });
+        .add_descriptor_layout(&m_camera_descriptor)
+        .add_descriptor_layout(&m_sampler_descriptor);
 
     m_default_pipeline = default_pipeline_builder.build(this);
     m_default_pipeline.set_debug_name("Default Pipeline");
+
+    // triangle strip pipeline
+
+    default_pipeline_builder.set_primitive_topology(PrimitiveTopology::TriangleStrip);
+
+    m_triangle_strip_pipeline = default_pipeline_builder.build(this);
+    m_triangle_strip_pipeline.set_debug_name("Triangle Strip Pipeline");
 
     // fullscreen pipeline
 
@@ -858,7 +899,7 @@ namespace gf {
 
     fullscreen_pipeline_builder.add_shader(&fullscreen_vertex_shader)
         .add_shader(&fullscreen_fragment_shader)
-        .add_descriptor_binding({ 0, DescriptorType::Sampler, ShaderStage::Fragment });
+        .add_descriptor_layout(&m_sampler_descriptor);
 
     m_fullscreen_pipeline = fullscreen_pipeline_builder.build(this);
     m_fullscreen_pipeline.set_debug_name("Fullscreen Pipeline");

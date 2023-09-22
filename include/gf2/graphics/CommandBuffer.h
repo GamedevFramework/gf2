@@ -31,7 +31,7 @@ namespace gf {
     void bind_vertex_buffer(const Buffer* buffer, std::size_t offset = 0) const;
     void bind_index_buffer(const Buffer* buffer, std::size_t offset = 0) const;
 
-    void bind_descriptor(const Pipeline* pipeline, Descriptor descriptor) const;
+    void bind_descriptor(const Pipeline* pipeline, uint32_t set, Descriptor descriptor) const;
 
     void push_constant(const Pipeline* pipeline, ShaderStage stage, std::size_t size, const void* data) const;
 
@@ -46,8 +46,8 @@ namespace gf {
       }
     }
 
-    void draw(std::size_t vertex_count) const;
-    void draw_indexed(std::size_t index_count) const;
+    void draw(std::size_t vertex_count, std::size_t first_vertex = 0) const;
+    void draw_indexed(std::size_t index_count, std::size_t first_index = 0) const;
 
   private:
     friend class CommandBuffer;

@@ -3,6 +3,7 @@
 #include <array>
 
 #include <gf2/core/Mat3.h>
+#include <gf2/core/Mat4.h>
 
 #include <gf2/graphics/Event.h>
 #include <gf2/graphics/GraphicsInitializer.h>
@@ -28,6 +29,8 @@ int main()
   const gf::Buffer buffer(gf::BufferType::Device, gf::BufferUsage::Vertex, std::begin(vertices), std::size(vertices), &renderer);
 
   const gf::Mat3F identity = gf::Identity3F;
+  const gf::Mat4F aligned_identity(identity);
+  const gf::Buffer camera_buffer(gf::BufferType::Device, gf::BufferUsage::Uniform, &aligned_identity, 1, &renderer);
 
   while (!window.should_close()) {
     while (auto event = gf::Event::poll()) {
@@ -37,7 +40,7 @@ int main()
           break;
 
         case gf::EventType::WindowResized:
-          renderer.recreate_swapchain();
+          renderer.update_surface_size(window.surface_size());
           break;
 
         default:
@@ -59,6 +62,10 @@ int main()
       render_command_buffer.set_scissor(scissor);
 
       const auto* pipeline = renderer.simple_pipeline();
+
+      auto descriptor = renderer.allocate_descriptor_for_layout(renderer.camera_descriptor());
+      descriptor.write(0, &camera_buffer);
+      render_command_buffer.bind_descriptor(pipeline, 0, descriptor);
 
       render_command_buffer.bind_pipeline(pipeline);
 
