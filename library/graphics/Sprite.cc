@@ -12,7 +12,7 @@
 
 namespace gf {
 
-  Sprite::Sprite(Texture* texture, RectF texture_region, Color color, Renderer* renderer)
+  Sprite::Sprite(const Texture* texture, RectF texture_region, Color color, Renderer* renderer)
   : m_texture(texture)
   {
     const Vec2F size = texture->size() * texture_region.size();
@@ -26,19 +26,28 @@ namespace gf {
     };
 
     m_vertices = Buffer(BufferType::Device, BufferUsage::Vertex, std::begin(vertices), std::size(vertices), renderer);
+
+    // clang-format off
+    const uint16_t indices[] = {
+      0, 1, 2, // first triangle
+      2, 1, 3, // second triangle
+    };
+    // clang-format on
+
+    m_indices = Buffer(BufferType::Device, BufferUsage::Index, std::begin(indices), std::size(indices), renderer);
   }
 
-  Sprite::Sprite(Texture* texture, RectF texture_region, Renderer* renderer)
+  Sprite::Sprite(const Texture* texture, RectF texture_region, Renderer* renderer)
   : Sprite(texture, texture_region, White, renderer)
   {
   }
 
-  Sprite::Sprite(Texture* texture, Renderer* renderer)
+  Sprite::Sprite(const Texture* texture, Renderer* renderer)
   : Sprite(texture, RectF::from_size({ 1.0f, 1.0f }), White, renderer)
   {
   }
 
-  Sprite::Sprite(Texture* texture, const SpriteData& data, Renderer* renderer)
+  Sprite::Sprite(const Texture* texture, const SpriteData& data, Renderer* renderer)
   : Sprite(texture, data.texture_region, data.color, renderer)
   {
   }

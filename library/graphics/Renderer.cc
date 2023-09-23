@@ -813,6 +813,10 @@ namespace gf {
 #include "default.frag.h"
     };
 
+    const uint32_t text_frag_shader_code[] = {
+#include "text.frag.h"
+    };
+
     const uint32_t fullscreen_vert_shader_code[] = {
 #include "fullscreen.vert.h"
     };
@@ -890,6 +894,22 @@ namespace gf {
 
     m_triangle_strip_pipeline = default_pipeline_builder.build(this);
     m_triangle_strip_pipeline.set_debug_name("Triangle Strip Pipeline");
+
+    // text pipeline
+
+    gf::Shader text_fragment_shader(gf::span(text_frag_shader_code), { ShaderStage::Fragment, this });
+
+    PipelineBuilder text_pipeline_builder;
+
+    text_pipeline_builder.set_vertex_input(Vertex::compute_input())
+        .set_push_constant_parameters(ShaderStage::Vertex, sizeof(ShaderDataType<Mat3F>))
+        .add_shader(&default_vertex_shader)
+        .add_shader(&text_fragment_shader)
+        .add_descriptor_layout(&m_camera_descriptor)
+        .add_descriptor_layout(&m_sampler_descriptor);
+
+    m_text_pipeline = text_pipeline_builder.build(this);
+    m_text_pipeline.set_debug_name("Text Pipeline");
 
     // fullscreen pipeline
 

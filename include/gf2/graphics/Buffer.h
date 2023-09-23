@@ -48,6 +48,11 @@ namespace gf {
     Buffer& operator=(const Buffer&) = delete;
     Buffer& operator=(Buffer&& other) noexcept;
 
+    std::size_t count() const
+    {
+      return m_size;
+    }
+
     void update(std::size_t size, std::size_t member_size, const void* data, Renderer* renderer);
 
     template<typename T>

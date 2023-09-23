@@ -175,6 +175,11 @@ namespace gf {
       return &m_triangle_strip_pipeline;
     }
 
+    const Pipeline* text_pipeline() const
+    {
+      return &m_text_pipeline;
+    }
+
     const Pipeline* fullscreen_pipeline() const
     {
       return &m_fullscreen_pipeline;
@@ -189,6 +194,7 @@ namespace gf {
     Pipeline m_simple_pipeline;
     Pipeline m_default_pipeline;
     Pipeline m_triangle_strip_pipeline;
+    Pipeline m_text_pipeline;
     Pipeline m_fullscreen_pipeline;
   };
 

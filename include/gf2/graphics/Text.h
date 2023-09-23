@@ -10,11 +10,12 @@
 
 #include "Buffer.h"
 #include "FontAtlas.h"
+#include "GraphicsApi.h"
 
 namespace gf {
   class Renderer;
 
-  class Text {
+  class GF_GRAPHICS_API Text {
   public:
     Text(FontAtlas* atlas, const TextData& data, Renderer* renderer);
 
@@ -33,6 +34,11 @@ namespace gf {
       return &m_indices;
     }
 
+    std::size_t index_count() const
+    {
+      return m_indices.count();
+    }
+
     bool has_outline() const
     {
       return m_outline_vertices.has_value();
@@ -46,6 +52,11 @@ namespace gf {
     const Buffer* outline_indices() const
     {
       return m_outline_indices.has_value() ? &m_outline_indices.value() : nullptr;
+    }
+
+    std::size_t outline_index_count() const
+    {
+      return m_outline_indices.has_value() ? m_outline_indices.value().count() : 0;
     }
 
     RectF bounds() const

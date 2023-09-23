@@ -9,17 +9,18 @@
 #include <gf2/core/Transform.h>
 
 #include "Buffer.h"
+#include "GraphicsApi.h"
 
 namespace gf {
   class Renderer;
   class Texture;
 
-  class Sprite {
+  class GF_GRAPHICS_API Sprite {
   public:
-    Sprite(Texture* texture, RectF texture_region, Color color, Renderer* renderer);
-    Sprite(Texture* texture, RectF texture_region, Renderer* renderer);
-    Sprite(Texture* texture, Renderer* renderer);
-    Sprite(Texture* texture, const SpriteData& data, Renderer* renderer);
+    Sprite(const Texture* texture, RectF texture_region, Color color, Renderer* renderer);
+    Sprite(const Texture* texture, RectF texture_region, Renderer* renderer);
+    Sprite(const Texture* texture, Renderer* renderer);
+    Sprite(const Texture* texture, const SpriteData& data, Renderer* renderer);
 
     const Texture* texture() const
     {
@@ -31,14 +32,25 @@ namespace gf {
       return &m_vertices;
     }
 
+    const Buffer* indices() const
+    {
+      return &m_indices;
+    }
+
+    std::size_t index_count() const
+    {
+      return m_indices.count();
+    }
+
     RectF bounds() const
     {
       return m_bounds;
     }
 
   private:
-    Texture* m_texture;
+    const Texture* m_texture;
     Buffer m_vertices;
+    Buffer m_indices;
     RectF m_bounds = {};
   };
 

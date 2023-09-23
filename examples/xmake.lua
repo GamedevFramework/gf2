@@ -35,4 +35,15 @@ if has_config("examples") then
         add_deps("gf2graphics0")
         add_includedirs("$(buildir)/config/examples")
 
+    target("05-sprite")
+        set_kind("binary")
+        add_files("05-sprite.cc")
+        add_deps("gf2graphics0")
+        add_includedirs("$(buildir)/config/examples")
+
+    target("06-text")
+        set_kind("binary")
+        add_files("06-text.cc")
+        add_deps("gf2graphics0")
+        add_includedirs("$(buildir)/config/examples")
 end

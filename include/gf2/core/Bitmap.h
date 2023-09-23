@@ -6,6 +6,7 @@
 #include <cstddef>
 #include <cstdint>
 
+#include <filesystem>
 #include <vector>
 
 #include "CoreApi.h"
@@ -33,6 +34,8 @@ namespace gf {
 
     std::size_t raw_size() const;
     const uint8_t* raw_data() const;
+
+    void export_to(const std::filesystem::path& filename) const;
 
   private:
     std::ptrdiff_t offset_from_position(Vec2I position) const;

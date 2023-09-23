@@ -70,3 +70,35 @@ target_include_directories(04-render-texture
   PRIVATE
     ${CMAKE_CURRENT_BINARY_DIR}
 )
+
+# 05-sprite
+
+add_executable(05-sprite
+  05-sprite.cc
+)
+
+target_link_libraries(05-sprite
+  PRIVATE
+    gf2graphics0
+)
+
+target_include_directories(05-sprite
+  PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+# 06-text
+
+add_executable(06-text
+  06-text.cc
+)
+
+target_link_libraries(06-text
+  PRIVATE
+    gf2graphics0
+)
+
+target_include_directories(06-text
+  PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
+)

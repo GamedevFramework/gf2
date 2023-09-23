@@ -39,6 +39,8 @@ namespace gf {
   : m_allocator(std::exchange(other.m_allocator, nullptr))
   , m_buffer(std::exchange(other.m_buffer, VK_NULL_HANDLE))
   , m_allocation(std::exchange(other.m_allocation, nullptr))
+  , m_size(other.m_size)
+  , m_member_size(other.m_member_size)
   , m_type(other.m_type)
   , m_usage(other.m_usage)
   {
@@ -56,6 +58,8 @@ namespace gf {
     std::swap(m_allocator, other.m_allocator);
     std::swap(m_buffer, other.m_buffer);
     std::swap(m_allocation, other.m_allocation);
+    std::swap(m_size, other.m_size);
+    std::swap(m_member_size, other.m_member_size);
     std::swap(m_type, other.m_type);
     std::swap(m_usage, other.m_usage);
     return *this;

@@ -19,8 +19,8 @@ namespace gf {
   FontAtlas::FontAtlas(Font* font, Vec2I size, Renderer* renderer)
   : m_font(font)
   , m_bin_pack(size)
-  , m_bitmap(size)
-  , m_texture(size, TextureUsage::TransferDestination | TextureUsage::Sampled, Format::Color8U, renderer)
+  , m_bitmap(size, 0x00)
+  , m_texture(size, TextureUsage::TransferDestination | TextureUsage::Sampled, Format::Gray8U, renderer)
   {
   }
 
@@ -83,7 +83,7 @@ namespace gf {
     std::vector<const FontGlyph*> glyphs;
 
     for (auto codepoint : new_codepoints) {
-      auto font_glyph = glyph(codepoint, character_size, outline_thickness);
+      const auto& font_glyph = glyph(codepoint, character_size, outline_thickness);
       sizes.push_back(font_glyph.bitmap.size());
       glyphs.push_back(&font_glyph);
     }
@@ -104,6 +104,7 @@ namespace gf {
       auto key = std::make_tuple(new_codepoints[i], character_size, fixed_thickness);
 
       const RectI bounds = rectangles[i];
+      assert(bounds.size() == sizes[i]);
 
       m_bitmap.blit(glyphs[i]->bitmap, bounds.position());
 

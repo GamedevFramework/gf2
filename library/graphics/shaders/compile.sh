@@ -12,5 +12,7 @@ glslc -c --target-env=vulkan1.2 -mfmt=num simple.frag -o simple.frag.h
 glslc -c --target-env=vulkan1.2 -mfmt=num default.vert -o default.vert.h
 glslc -c --target-env=vulkan1.2 -mfmt=num default.frag -o default.frag.h
 
+glslc -c --target-env=vulkan1.2 -mfmt=num text.frag -o text.frag.h
+
 glslc -c --target-env=vulkan1.2 -mfmt=num fullscreen.vert -o fullscreen.vert.h
 glslc -c --target-env=vulkan1.2 -mfmt=num fullscreen.frag -o fullscreen.frag.h

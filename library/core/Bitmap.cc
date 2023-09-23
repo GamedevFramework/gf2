@@ -6,6 +6,7 @@
 // clang-format on
 
 #include <algorithm>
+#include <fstream>
 
 #include <gf2/core/Blit.h>
 
@@ -82,7 +83,6 @@ namespace gf {
 
   void Bitmap::blit(RectI source_region, const Bitmap& source, Vec2I target_offset)
   {
-
     auto blit = compute_blit(source_region, source.size(), target_offset, m_size);
 
     if (blit.source_region.empty()) {
@@ -111,6 +111,16 @@ namespace gf {
     }
 
     return m_pixels.data();
+  }
+
+  void Bitmap::export_to(const std::filesystem::path& filename) const
+  {
+    std::ofstream file(filename);
+    file << "P7\nWIDTH " << m_size.w << "\nHEIGHT " << m_size.h << "\nDEPTH 1\nMAXVAL 255\nTUPLTYPE GRAYSCALE\nENDHDR\n";
+
+    for (const uint8_t value : m_pixels) {
+      file << value;
+    }
   }
 
   std::ptrdiff_t Bitmap::offset_from_position(Vec2I position) const
