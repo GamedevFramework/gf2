@@ -5,6 +5,8 @@
 
 #include <cstdint>
 
+#include "Flags.h"
+
 namespace gf {
 
   enum class GridOrientation : uint8_t {
@@ -33,9 +35,17 @@ namespace gf {
     Rotation120 = 0x08,
   };
 
+  template<>
+  struct EnableBitmaskOperators<CellFlip> : std::true_type {
+  };
+
   enum class CellNeighborQuery : uint8_t {
     Valid = 0x01,
     Diagonal = 0x02,
+  };
+
+  template<>
+  struct EnableBitmaskOperators<CellNeighborQuery> : std::true_type {
   };
 
 } // namespace gf

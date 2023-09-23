@@ -9,6 +9,7 @@
 #include <string>
 
 #include "Color.h"
+#include "CoreApi.h"
 
 namespace gf {
 
@@ -20,7 +21,7 @@ namespace gf {
     Justify,
   };
 
-  struct TextData {
+  struct GF_CORE_API TextData {
     std::string content;
     uint32_t character_size = 0;
     Color color = Black;
@@ -38,7 +39,7 @@ namespace gf {
     return ar | data.content | data.character_size | data.color | data.outline_thickness | data.outline_color | data.alignment | data.paragraph_width | data.line_spacing_factor | data.letter_spacing_factor;
   }
 
-  struct TextResource {
+  struct GF_CORE_API TextResource {
     std::filesystem::path font;
     TextData data;
   };

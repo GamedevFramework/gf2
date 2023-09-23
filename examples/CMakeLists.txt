@@ -102,3 +102,19 @@ target_include_directories(06-text
   PRIVATE
     ${CMAKE_CURRENT_BINARY_DIR}
 )
+
+# 07-animation
+
+add_executable(07-animation
+  07-animation.cc
+)
+
+target_link_libraries(07-animation
+  PRIVATE
+    gf2graphics0
+)
+
+target_include_directories(07-animation
+  PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
+)

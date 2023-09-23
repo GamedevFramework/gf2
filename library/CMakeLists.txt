@@ -64,6 +64,7 @@ endfunction()
 # gf2::core
 
 add_library(gf2core0
+  core/AnimationData.cc
   core/AnyGrid.cc
   core/Array2D.cc
   core/BinaryHeap.cc
@@ -142,6 +143,7 @@ target_include_directories(gf2core0
 # gf2::graphics
 
 add_library(gf2graphics0
+  graphics/AnimatedSprite.cc
   graphics/Buffer.cc
   graphics/CommandBuffer.cc
   graphics/Descriptor.cc

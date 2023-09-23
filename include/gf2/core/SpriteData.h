@@ -6,11 +6,12 @@
 #include <filesystem>
 
 #include "Color.h"
+#include "CoreApi.h"
 #include "Rect.h"
 
 namespace gf {
 
-  struct SpriteData {
+  struct GF_CORE_API SpriteData {
     RectF texture_region = RectF::from_size({ 1.0f, 1.0f });
     Color color = White;
   };
@@ -21,7 +22,7 @@ namespace gf {
     return ar | data.texture_region | data.color;
   }
 
-  struct SpriteResource {
+  struct GF_CORE_API SpriteResource {
     std::filesystem::path texture;
     SpriteData data;
   };
