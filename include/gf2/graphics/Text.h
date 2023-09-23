@@ -1,0 +1,67 @@
+// SPDX-License-Identifier: Zlib
+// Copyright (c) 2023 Julien Bernard
+#ifndef GF_TEXT_H
+#define GF_TEXT_H
+
+#include <optional>
+
+#include <gf2/core/Rect.h>
+#include <gf2/core/TextData.h>
+
+#include "Buffer.h"
+#include "FontAtlas.h"
+
+namespace gf {
+  class Renderer;
+
+  class Text {
+  public:
+    Text(FontAtlas* atlas, const TextData& data, Renderer* renderer);
+
+    const Texture* texture() const
+    {
+      return m_atlas->texture();
+    }
+
+    const Buffer* vertices() const
+    {
+      return &m_vertices;
+    }
+
+    const Buffer* indices() const
+    {
+      return &m_indices;
+    }
+
+    bool has_outline() const
+    {
+      return m_outline_vertices.has_value();
+    }
+
+    const Buffer* outline_vertices() const
+    {
+      return m_outline_vertices.has_value() ? &m_outline_vertices.value() : nullptr;
+    }
+
+    const Buffer* outline_indices() const
+    {
+      return m_outline_indices.has_value() ? &m_outline_indices.value() : nullptr;
+    }
+
+    RectF bounds() const
+    {
+      return m_bounds;
+    }
+
+  private:
+    FontAtlas* m_atlas;
+    Buffer m_vertices;
+    Buffer m_indices;
+    std::optional<Buffer> m_outline_vertices;
+    std::optional<Buffer> m_outline_indices;
+    RectF m_bounds = {};
+  };
+
+}
+
+#endif // GF_TEXT_H

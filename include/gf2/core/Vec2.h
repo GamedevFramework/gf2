@@ -260,6 +260,18 @@ namespace gf {
    */
 
   template<typename T>
+  constexpr Vec2<T> min(Vec2<T> lhs, Vec2<T> rhs)
+  {
+    return { details::min(lhs.x, rhs.x), details::min(lhs.y, rhs.y) };
+  }
+
+  template<typename T>
+  constexpr Vec2<T> max(Vec2<T> lhs, Vec2<T> rhs)
+  {
+    return { details::max(lhs.x, rhs.x), details::min(lhs.y, rhs.y) };
+  }
+
+  template<typename T>
   constexpr T dot(Vec2<T> lhs, Vec2<T> rhs)
   {
     return lhs.x * rhs.x + lhs.y * rhs.y;

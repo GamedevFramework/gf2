@@ -75,6 +75,7 @@ add_library(gf2core0
   core/Clock.cc
   core/Color.cc
   core/Direction.cc
+  core/Fixed.cc
   core/Flags.cc
   core/Font.cc
   core/FontManager.cc
@@ -102,10 +103,12 @@ add_library(gf2core0
   core/Result.cc
   core/Serialization.cc
   core/SerializationOps.cc
+  core/SpriteData.cc
   core/Stream.cc
   core/Streams.cc
   core/StringUtils.cc
   core/Tarball.cc
+  core/TextData.cc
   core/Time.cc
   core/Transform.cc
   core/Vec2.cc
@@ -143,6 +146,7 @@ add_library(gf2graphics0
   graphics/CommandBuffer.cc
   graphics/Descriptor.cc
   graphics/Event.cc
+  graphics/FontAtlas.cc
   graphics/Format.cc
   graphics/Gamepad.cc
   graphics/GraphicsInitializer.cc
@@ -153,6 +157,8 @@ add_library(gf2graphics0
   graphics/RenderTarget.cc
   graphics/Shader.cc
   graphics/ShaderData.cc
+  graphics/Sprite.cc
+  graphics/Text.cc
   graphics/Texture.cc
   graphics/Touch.cc
   graphics/Vertex.cc
