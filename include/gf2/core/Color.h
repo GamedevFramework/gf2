@@ -197,6 +197,9 @@ namespace gf {
   GF_CORE_API Color lighter(Color color, float percent = 0.5f);
   GF_CORE_API Color darker(Color color, float percent = 0.5f);
 
+  GF_CORE_API Color srgb_to_linear(Color color);
+  GF_CORE_API Color linear_to_srgb(Color color);
+
   constexpr Color opaque(float value = 0.5f)
   {
     return { 1.0f, 1.0f, 1.0f, value };

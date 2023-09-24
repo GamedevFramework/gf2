@@ -133,4 +133,26 @@ namespace gf {
     return hsv_to_rgb(hsv);
   }
 
+  namespace {
+    float srgb_to_linear(float c)
+    {
+      return (c < 0.04045f) ? c / 12.92f : std::pow((c + 0.055f) / 1.055f, 2.4f);
+    }
+
+    float linear_to_srgb(float c)
+    {
+      return (c < 0.0031308f) ? 12.92f * c : 1.055f * std::pow(c, 1.f / 2.4f) - 0.055f;
+    }
+  }
+
+  Color srgb_to_linear(Color color)
+  {
+    return { srgb_to_linear(color.r), srgb_to_linear(color.g), srgb_to_linear(color.b), color.a };
+  }
+
+  Color linear_to_srgb(Color color)
+  {
+    return { linear_to_srgb(color.r), linear_to_srgb(color.g), linear_to_srgb(color.b), color.a };
+  }
+
 } // namespace gf

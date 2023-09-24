@@ -38,7 +38,7 @@ int main()
   gf::TextData text_data;
   text_data.content = "Gamedev Framework 2";
   text_data.character_size = 64;
-  text_data.color = gf::darker(gf::Azure, 0.2f);
+  text_data.color = gf::srgb_to_linear(gf::darker(gf::Azure, 0.2f));
 
   const gf::Text text(&font_atlas, text_data, &renderer);
 
@@ -103,6 +103,13 @@ int main()
       const gf::Mat3F model_matrix = transform.compute_matrix(text.bounds());
 
       render_command_buffer.push_constant(pipeline, gf::ShaderStage::Vertex, &model_matrix);
+
+      if (text_data.outline_thickness > 0.0f) {
+        render_command_buffer.bind_vertex_buffer(text.outline_vertices());
+        render_command_buffer.bind_index_buffer(text.outline_indices());
+
+        render_command_buffer.draw_indexed(text.outline_index_count());
+      }
 
       render_command_buffer.bind_vertex_buffer(text.vertices());
       render_command_buffer.bind_index_buffer(text.indices());

@@ -103,7 +103,7 @@ int main()
       auto target = renderer.current_render_target();
 
       auto command_buffer = *maybe_command_buffer;
-      auto render_command_buffer = command_buffer.begin_rendering(target);
+      auto render_command_buffer = command_buffer.begin_rendering(target, gf::Black);
 
       const gf::RectF viewport = gf::RectF::from_size(target.extent());
       render_command_buffer.set_viewport(viewport);
