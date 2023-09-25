@@ -22,7 +22,7 @@ namespace gf {
     Property() = default;
 
     template<typename T, typename = std::enable_if_t<!std::is_same_v<std::remove_cv_t<std::remove_reference_t<T>>, Property>>>
-    Property(T&& value)
+    explicit Property(T&& value)
     : m_value(std::forward<T>(value))
     {
     }
@@ -110,6 +110,9 @@ namespace gf {
   private:
     friend inline bool operator==(const Property& lhs, const Property& rhs);
 
+    template<typename Archive>
+    friend Archive& operator|(Archive& ar, Property& property);
+
     template<typename T>
     bool is() const
     {
@@ -130,6 +133,12 @@ namespace gf {
   inline bool operator==(const Property& lhs, const Property& rhs)
   {
     return lhs.m_value == rhs.m_value; // NOLINT(misc-no-recursion)
+  }
+
+  template<typename Archive>
+  Archive& operator|(Archive& ar, Property& property)
+  {
+    return ar | property.m_value;
   }
 
 }

@@ -15,9 +15,39 @@
 
 namespace gf {
 
-  void PropertyMap::add_property(std::string key, Property value)
+  void PropertyMap::add_property(std::string key, bool value)
   {
-    m_properties.emplace(std::move(key), std::move(value));
+    m_properties.emplace(std::move(key), Property(value));
+  }
+
+  void PropertyMap::add_property(std::string key, int64_t value)
+  {
+    m_properties.emplace(std::move(key), Property(value));
+  }
+
+  void PropertyMap::add_property(std::string key, double value)
+  {
+    m_properties.emplace(std::move(key), Property(value));
+  }
+
+  void PropertyMap::add_property(std::string key, std::string value)
+  {
+    m_properties.emplace(std::move(key), Property(std::move(value)));
+  }
+
+  void PropertyMap::add_property(std::string key, std::filesystem::path value)
+  {
+    m_properties.emplace(std::move(key), Property(std::move(value)));
+  }
+
+  void PropertyMap::add_property(std::string key, Color value)
+  {
+    m_properties.emplace(std::move(key), Property(value));
+  }
+
+  void PropertyMap::add_property(std::string key, PropertyMap value)
+  {
+    m_properties.emplace(std::move(key), Property(std::move(value)));
   }
 
   const Property& PropertyMap::operator()(std::string_view path) const

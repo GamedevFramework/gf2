@@ -230,7 +230,7 @@ namespace gf {
 
   inline constexpr Color Transparent(0.0f, 0.0f, 0.0f, 0.0f);
 
-  template<typename Archive, typename T>
+  template<typename Archive>
   inline Archive& operator|(Archive& ar, Color& color)
   {
     return ar | color.r | color.g | color.b | color.a;

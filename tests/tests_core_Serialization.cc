@@ -5,7 +5,10 @@
 #include <numeric>
 
 #include <gf2/core/Array2D.h>
+#include <gf2/core/Color.h>
 #include <gf2/core/Flags.h>
+#include <gf2/core/Property.h>
+#include <gf2/core/PropertyMap.h>
 #include <gf2/core/SerializationOps.h>
 #include <gf2/core/Streams.h>
 #include <gf2/core/Vec2.h>
@@ -571,6 +574,25 @@ TEST(SerialTest, Map) {
   }
 }
 
+TEST(SerialTest, Variant) {
+  using Variant = std::variant<std::monostate, int, double, std::string>;
+  using namespace std::literals;
+
+  Variant tests[] = {
+    {},
+    42,
+    3.14,
+    "All your base are belong to us"s,
+  };
+
+  Variant out = {};
+
+  for (auto in : tests) {
+    save_and_load(in, out);
+    EXPECT_EQ(in, out);
+  }
+}
+
 namespace {
 
   enum class Bits : uint16_t {
@@ -637,6 +659,28 @@ TEST(SerialTest, Array2D) {
   save_and_load(in1, out1);
 
   EXPECT_EQ(in1, out1);
+}
+
+TEST(SerialTest, PropertyMap) {
+  gf::PropertyMap in;
+  in.add_property("number", INT64_C(42));
+  in.add_property("color", gf::Blue);
+
+  gf::PropertyMap out;
+
+  save_and_load(in, out);
+
+  EXPECT_NO_THROW({
+    auto number = out("number");
+    EXPECT_TRUE(number.is_int());
+    EXPECT_EQ(number.as_int(), 42);
+
+    auto color = out("color");
+    EXPECT_TRUE(color.is_color());
+    EXPECT_EQ(color.as_color(), gf::Blue);
+  });
+
+  EXPECT_EQ(in, out);
 }
 
 // TEST(SerialTest, Path) {

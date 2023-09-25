@@ -7,14 +7,17 @@
 #include <cstring>
 
 #include <array>
+#include <filesystem>
 #include <iterator>
 #include <map>
 #include <memory>
 #include <set>
+#include <stdexcept>
 #include <string>
 #include <type_traits>
 #include <unordered_map>
 #include <unordered_set>
+#include <variant>
 #include <vector>
 
 #include "Array2D.h"
@@ -124,6 +127,11 @@ namespace gf {
   Serializer& operator|(Serializer& ar, const char* str) = delete;
 #endif
 
+  inline Serializer& operator|(Serializer& ar, const std::filesystem::path& path)
+  {
+    return ar | path.string();
+  }
+
   template<typename T, typename E = std::enable_if_t<std::is_enum_v<T>, T>>
   inline Serializer& operator|(Serializer& ar, T data)
   {
@@ -186,8 +194,8 @@ namespace gf {
     return ar | const_cast<K&>(pair.first) | const_cast<V&>(pair.second); // NOLINT
   }
 
-  template<typename K, typename V>
-  inline Serializer& operator|(Serializer& ar, const std::map<K, V>& map)
+  template<typename K, typename V, typename C>
+  inline Serializer& operator|(Serializer& ar, const std::map<K, V, C>& map)
   {
     return details::write_container(ar, map.begin(), map.size());
   }
@@ -196,6 +204,38 @@ namespace gf {
   inline Serializer& operator|(Serializer& ar, const std::unordered_map<K, V>& map)
   {
     return details::write_container(ar, map.begin(), map.size());
+  }
+
+  inline Serializer& operator|(Serializer& ar, const std::monostate&)
+  {
+    return ar;
+  }
+
+  namespace details {
+
+    template<typename T, typename... Types>
+    void variant_serializer(Serializer& ar, const std::variant<Types...>& variant)
+    {
+      ar | const_cast<T&>(std::get<T>(variant));
+    }
+
+  }
+
+  template<typename... Types>
+  inline Serializer& operator|(Serializer& ar, const std::variant<Types...>& variant)
+  {
+    std::size_t index = variant.index();
+    ar.write_raw_size(index);
+
+    using VariantSerializer = void (*)(Serializer& ar, const std::variant<Types...>& variant);
+
+    VariantSerializer serializers[] = {
+      &details::variant_serializer<Types, Types...>...,
+    };
+
+    serializers[index](ar, variant);
+
+    return ar;
   }
 
   namespace details {
@@ -338,6 +378,14 @@ namespace gf {
     return ar;
   }
 
+  inline Deserializer& operator|(Deserializer& ar, std::filesystem::path& path)
+  {
+    std::string str;
+    ar | str;
+    path = std::move(str);
+    return ar;
+  }
+
   template<typename T, typename E = std::enable_if_t<std::is_enum_v<T>, T>>
   inline Deserializer& operator|(Deserializer& ar, T& data)
   {
@@ -415,8 +463,8 @@ namespace gf {
     return ar | pair.first | pair.second;
   }
 
-  template<typename K, typename V>
-  inline Deserializer& operator|(Deserializer& ar, std::map<K, V>& map)
+  template<typename K, typename V, typename C>
+  inline Deserializer& operator|(Deserializer& ar, std::map<K, V, C>& map)
   {
     map.clear();
     return details::read_container<std::pair<K, V>>(ar, details::emplacer(map));
@@ -427,6 +475,43 @@ namespace gf {
   {
     map.clear();
     return details::read_container<std::pair<K, V>>(ar, details::emplacer(map));
+  }
+
+  namespace details {
+
+    template<typename T, typename... Types>
+    std::variant<Types...> variant_deserializer(Deserializer& ar)
+    {
+      T value;
+      ar | value;
+      return value;
+    }
+
+  }
+
+  inline Deserializer& operator|(Deserializer& ar, std::monostate&)
+  {
+    return ar;
+  }
+
+  template<typename... Types>
+  inline Deserializer& operator|(Deserializer& ar, std::variant<Types...>& variant)
+  {
+    std::size_t index = 0;
+    ar.read_raw_size(&index);
+
+    if (index >= sizeof...(Types)) {
+      throw std::out_of_range("Variant index out of range");
+    }
+
+    using VariantDeserializerType = std::variant<Types...> (*)(Deserializer& ar);
+
+    VariantDeserializerType deserializers[] = {
+      &details::variant_deserializer<Types, Types...>...,
+    };
+
+    variant = deserializers[index](ar);
+    return ar;
   }
 
 } // namespace gf
