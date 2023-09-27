@@ -13,6 +13,7 @@
 #include "Color.h"
 #include "CoreApi.h"
 #include "Id.h"
+#include "TypeTraits.h"
 
 namespace gf {
 
@@ -35,7 +36,7 @@ namespace gf {
     friend GF_CORE_API bool operator==(const PropertyMap& lhs, const PropertyMap& rhs);
 
     template<typename Archive>
-    friend Archive& operator|(Archive& ar, PropertyMap& map);
+    friend Archive& operator|(Archive& ar, MaybeConst<PropertyMap, Archive>& map);
 
     std::map<std::string, Property, std::less<void>> m_properties;
   };
@@ -43,7 +44,7 @@ namespace gf {
   GF_CORE_API bool operator==(const PropertyMap& lhs, const PropertyMap& rhs);
 
   template<typename Archive>
-  Archive& operator|(Archive& ar, PropertyMap& map)
+  Archive& operator|(Archive& ar, MaybeConst<PropertyMap, Archive>& map)
   {
     return ar | map.m_properties;
   }

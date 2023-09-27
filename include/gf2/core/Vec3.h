@@ -10,6 +10,7 @@
 
 #include "CoreApi.h"
 #include "Math.h"
+#include "TypeTraits.h"
 
 namespace gf {
 
@@ -363,6 +364,12 @@ namespace gf {
 
   template<typename Archive, typename T>
   inline Archive& operator|(Archive& ar, Vec3<T>& vec)
+  {
+    return ar | vec.x | vec.y | vec.z;
+  }
+
+  template<typename Archive, typename T>
+  inline Archive& operator|(Archive& ar, const Vec3<T>& vec)
   {
     return ar | vec.x | vec.y | vec.z;
   }

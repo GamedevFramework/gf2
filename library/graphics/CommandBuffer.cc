@@ -56,6 +56,7 @@ namespace gf {
     return { m_command_buffer };
   }
 
+  // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
   void CommandBuffer::end_memory([[maybe_unused]] MemoryCommandBuffer buffer) const
   {
     assert(buffer.m_command_buffer == m_command_buffer);

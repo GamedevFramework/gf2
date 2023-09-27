@@ -13,6 +13,8 @@ namespace gf {
 
   class GF_CORE_API Serializer {
   public:
+    template<typename T>
+    using Constness = const T;
 
     Serializer(OutputStream* stream, uint16_t version = 0);
 
@@ -48,6 +50,9 @@ namespace gf {
 
   class GF_CORE_API Deserializer {
   public:
+    template<typename T>
+    using Constness = T;
+
     Deserializer(InputStream* stream);
 
     uint16_t version() const

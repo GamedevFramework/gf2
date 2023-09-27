@@ -25,6 +25,7 @@
 #include "Flags.h"
 #include "Serialization.h"
 #include "Span.h"
+#include "TypeTraits.h"
 
 namespace gf {
 
@@ -33,11 +34,10 @@ namespace gf {
     template<typename Iterator>
     Serializer& write_container(Serializer& ar, Iterator iterator, std::size_t size)
     {
-      using T = std::remove_const_t<std::remove_reference_t<decltype(*iterator)>>;
       ar.write_raw_size(size);
 
       for (std::size_t i = 0; i < size; ++i) {
-        ar | const_cast<T&>(*iterator++); // NOLINT
+        ar | *iterator++;
       }
 
       return ar;
@@ -123,10 +123,6 @@ namespace gf {
     return ar;
   }
 
-#ifndef _MSC_VER
-  Serializer& operator|(Serializer& ar, const char* str) = delete;
-#endif
-
   inline Serializer& operator|(Serializer& ar, const std::filesystem::path& path)
   {
     return ar | path.string();
@@ -152,7 +148,7 @@ namespace gf {
     ar | size.w | size.h;
 
     for (auto& item : array) {
-      ar | const_cast<T&>(item); // NOLINT
+      ar | item;
     }
 
     return ar;
@@ -191,7 +187,7 @@ namespace gf {
   template<typename K, typename V>
   inline Serializer& operator|(Serializer& ar, const std::pair<K, V>& pair)
   {
-    return ar | const_cast<K&>(pair.first) | const_cast<V&>(pair.second); // NOLINT
+    return ar | pair.first | pair.second;
   }
 
   template<typename K, typename V, typename C>
@@ -206,7 +202,7 @@ namespace gf {
     return details::write_container(ar, map.begin(), map.size());
   }
 
-  inline Serializer& operator|(Serializer& ar, const std::monostate&)
+  inline Serializer& operator|(Serializer& ar, const std::monostate& /* unused */)
   {
     return ar;
   }
@@ -216,7 +212,7 @@ namespace gf {
     template<typename T, typename... Types>
     void variant_serializer(Serializer& ar, const std::variant<Types...>& variant)
     {
-      ar | const_cast<T&>(std::get<T>(variant));
+      ar | std::get<T>(variant);
     }
 
   }
@@ -489,7 +485,7 @@ namespace gf {
 
   }
 
-  inline Deserializer& operator|(Deserializer& ar, std::monostate&)
+  inline Deserializer& operator|(Deserializer& ar, std::monostate& /* unused */)
   {
     return ar;
   }

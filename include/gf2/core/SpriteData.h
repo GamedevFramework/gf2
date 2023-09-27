@@ -8,6 +8,7 @@
 #include "Color.h"
 #include "CoreApi.h"
 #include "Rect.h"
+#include "TypeTraits.h"
 
 namespace gf {
 
@@ -17,7 +18,7 @@ namespace gf {
   };
 
   template<typename Archive>
-  inline Archive& operator|(Archive& ar, SpriteData& data)
+  inline Archive& operator|(Archive& ar, MaybeConst<SpriteData, Archive>& data)
   {
     return ar | data.texture_region | data.color;
   }
@@ -28,7 +29,7 @@ namespace gf {
   };
 
   template<typename Archive>
-  inline Archive& operator|(Archive& ar, SpriteResource& resource)
+  inline Archive& operator|(Archive& ar, MaybeConst<SpriteResource, Archive>& resource)
   {
     return ar | resource.texture | resource.data;
   }

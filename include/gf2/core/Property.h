@@ -14,6 +14,7 @@
 #include "CoreApi.h"
 #include "Id.h"
 #include "PropertyMap.h"
+#include "TypeTraits.h"
 
 namespace gf {
 
@@ -111,7 +112,7 @@ namespace gf {
     friend inline bool operator==(const Property& lhs, const Property& rhs);
 
     template<typename Archive>
-    friend Archive& operator|(Archive& ar, Property& property);
+    friend Archive& operator|(Archive& ar, MaybeConst<Property, Archive>& property);
 
     template<typename T>
     bool is() const
@@ -136,7 +137,7 @@ namespace gf {
   }
 
   template<typename Archive>
-  Archive& operator|(Archive& ar, Property& property)
+  Archive& operator|(Archive& ar, MaybeConst<Property, Archive>& property)
   {
     return ar | property.m_value;
   }

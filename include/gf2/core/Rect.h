@@ -9,6 +9,7 @@
 
 #include "Orientation.h"
 #include "Vec2.h"
+#include "TypeTraits.h"
 
 namespace gf {
 
@@ -193,8 +194,8 @@ namespace gf {
   extern template struct GF_CORE_API Rect<uint32_t>;
 #endif
 
-  template<typename Archive, typename T>
-  inline Archive& operator|(Archive& ar, Rect<T>& rectangle)
+  template<typename Archive>
+  inline Archive& operator|(Archive& ar, MaybeConst<RectF, Archive>& rectangle)
   {
     return ar | rectangle.offset | rectangle.extent;
   }

@@ -6,6 +6,7 @@
 #include <cstdint>
 
 #include "CoreApi.h"
+#include "TypeTraits.h"
 
 namespace gf {
 
@@ -231,7 +232,7 @@ namespace gf {
   inline constexpr Color Transparent(0.0f, 0.0f, 0.0f, 0.0f);
 
   template<typename Archive>
-  inline Archive& operator|(Archive& ar, Color& color)
+  inline Archive& operator|(Archive& ar, MaybeConst<Color, Archive>& color)
   {
     return ar | color.r | color.g | color.b | color.a;
   }

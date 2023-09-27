@@ -10,6 +10,7 @@
 
 #include "Color.h"
 #include "CoreApi.h"
+#include "TypeTraits.h"
 
 namespace gf {
 
@@ -34,7 +35,7 @@ namespace gf {
   };
 
   template<typename Archive>
-  Archive& operator|(Archive& ar, TextData& data)
+  Archive& operator|(Archive& ar, MaybeConst<TextData, Archive>& data)
   {
     return ar | data.content | data.character_size | data.color | data.outline_thickness | data.outline_color | data.alignment | data.paragraph_width | data.line_spacing_factor | data.letter_spacing_factor;
   }
@@ -45,7 +46,7 @@ namespace gf {
   };
 
   template<typename Archive>
-  Archive& operator|(Archive& ar, TextResource& resource)
+  Archive& operator|(Archive& ar, MaybeConst<TextResource, Archive>& resource)
   {
     return ar | resource.font | resource.data;
   }

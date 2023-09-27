@@ -11,6 +11,7 @@ add_executable(gf2_core_tests
   ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googletest/src/gtest-all.cc
   tests_core_BinaryHeap.cc
   tests_core_Color.cc
+  tests_core_Data.cc
   tests_core_Flags.cc
   tests_core_Id.cc
   tests_core_Math.cc

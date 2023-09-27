@@ -51,7 +51,7 @@ namespace gf {
       m_type = T::type;
       gf::BufferOutputStream stream(&m_bytes);
       gf::Serializer serializer(&stream);
-      serializer | m_type | const_cast<T&>(data); // NOLINT
+      serializer | m_type | data;
     }
 
     std::size_t size() const

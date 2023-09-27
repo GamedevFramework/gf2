@@ -19,7 +19,7 @@
 namespace {
 
   template<typename T>
-  void save_and_load(T& in, T& out)
+  void save_and_load(const T& in, T& out)
   {
     std::vector<uint8_t> bytes;
 
@@ -333,7 +333,7 @@ TEST(SerialTest, String) {
     EXPECT_EQ(in1, out1);
   }
 
-  char in3[256] = "unique";
+  const char in3[256] = "unique";
   char out3[256]; // same size as above
 
   save_and_load(in3, out3);

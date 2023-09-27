@@ -11,6 +11,7 @@
 
 #include "CoreApi.h"
 #include "Math.h"
+#include "TypeTraits.h"
 
 namespace gf {
 
@@ -421,8 +422,14 @@ namespace gf {
     return almost_equals(a.x, b.x, abs_error, rel_error) && almost_equals(a.y, b.y, abs_error, rel_error);
   }
 
-  template<typename Archive, typename T>
-  inline Archive& operator|(Archive& ar, Vec2<T>& vec)
+  template<typename Archive>
+  inline Archive& operator|(Archive& ar, MaybeConst<Vec2I, Archive>& vec)
+  {
+    return ar | vec.x | vec.y;
+  }
+
+  template<typename Archive>
+  inline Archive& operator|(Archive& ar, MaybeConst<Vec2F, Archive>& vec)
   {
     return ar | vec.x | vec.y;
   }
