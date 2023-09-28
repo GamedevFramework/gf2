@@ -67,10 +67,26 @@ namespace gf {
   extern template struct GF_CORE_API Circ<unsigned>;
 #endif
 
+  namespace details {
+
+    template<typename Archive, typename Self>
+    Archive& handle_circ_serialization(Archive& ar, Self& self)
+    {
+      return ar | self.center | self.radius;
+    }
+
+  }
+
   template<typename Archive, typename T>
   inline Archive& operator|(Archive& ar, Circ<T>& circle)
   {
-    return ar | circle.center | circle.radius;
+    return details::handle_circ_serialization(ar, circle);
+  }
+
+  template<typename Archive, typename T>
+  inline Archive& operator|(Archive& ar, const Circ<T>& circle)
+  {
+    return details::handle_circ_serialization(ar, circle);
   }
 
 } // namespace gf

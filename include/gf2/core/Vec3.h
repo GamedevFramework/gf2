@@ -10,7 +10,6 @@
 
 #include "CoreApi.h"
 #include "Math.h"
-#include "TypeTraits.h"
 
 namespace gf {
 
@@ -362,16 +361,26 @@ namespace gf {
     };
   }
 
+  namespace details {
+
+    template<typename Archive, typename Self>
+    Archive& handle_vec3_serialization(Archive& ar, Self& self)
+    {
+      return ar | self.x | self.y | self.z;
+    }
+
+  }
+
   template<typename Archive, typename T>
   inline Archive& operator|(Archive& ar, Vec3<T>& vec)
   {
-    return ar | vec.x | vec.y | vec.z;
+    return details::handle_vec3_serialization(ar, vec);
   }
 
   template<typename Archive, typename T>
   inline Archive& operator|(Archive& ar, const Vec3<T>& vec)
   {
-    return ar | vec.x | vec.y | vec.z;
+    return details::handle_vec3_serialization(ar, vec);
   }
 
 } // namespace gf

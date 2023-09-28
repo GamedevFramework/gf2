@@ -144,7 +144,7 @@ namespace gf {
   template<typename T>
   inline Serializer& operator|(Serializer& ar, const Array2D<T>& array)
   {
-    const Vec2<int32_t> size = array.size();
+    const Vec2I size = array.size();
     ar | size.w | size.h;
 
     for (auto& item : array) {
@@ -401,7 +401,7 @@ namespace gf {
   template<typename T>
   inline Deserializer& operator|(Deserializer& ar, Array2D<T>& array)
   {
-    Vec2<int32_t> size(0, 0);
+    Vec2I size(0, 0);
     ar | size.w | size.h;
 
     Array2D<T> tmp(size);

@@ -9,7 +9,6 @@
 
 #include "Orientation.h"
 #include "Vec2.h"
-#include "TypeTraits.h"
 
 namespace gf {
 
@@ -194,10 +193,27 @@ namespace gf {
   extern template struct GF_CORE_API Rect<uint32_t>;
 #endif
 
-  template<typename Archive>
-  inline Archive& operator|(Archive& ar, MaybeConst<RectF, Archive>& rectangle)
+
+  namespace details {
+
+    template<typename Archive, typename Self>
+    Archive& handle_rect_serialization(Archive& ar, Self& self)
+    {
+      return ar | self.offset | self.extent;
+    }
+
+  }
+
+  template<typename Archive, typename T>
+  inline Archive& operator|(Archive& ar, Rect<T>& rectangle)
   {
-    return ar | rectangle.offset | rectangle.extent;
+    return details::handle_rect_serialization(ar, rectangle);
+  }
+
+  template<typename Archive, typename T>
+  inline Archive& operator|(Archive& ar, const Rect<T>& rectangle)
+  {
+    return details::handle_rect_serialization(ar, rectangle);
   }
 
 } // namespace gf

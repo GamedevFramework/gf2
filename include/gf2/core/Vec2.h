@@ -422,16 +422,27 @@ namespace gf {
     return almost_equals(a.x, b.x, abs_error, rel_error) && almost_equals(a.y, b.y, abs_error, rel_error);
   }
 
-  template<typename Archive>
-  inline Archive& operator|(Archive& ar, MaybeConst<Vec2I, Archive>& vec)
-  {
-    return ar | vec.x | vec.y;
+
+  namespace details {
+
+    template<typename Archive, typename Self>
+    Archive& handle_vec2_serialization(Archive& ar, Self& self)
+    {
+      return ar | self.x | self.y;
+    }
+
   }
 
-  template<typename Archive>
-  inline Archive& operator|(Archive& ar, MaybeConst<Vec2F, Archive>& vec)
+  template<typename Archive, typename T>
+  inline Archive& operator|(Archive& ar, Vec2<T>& vec)
   {
-    return ar | vec.x | vec.y;
+    return details::handle_vec2_serialization(ar, vec);
+  }
+
+  template<typename Archive, typename T>
+  inline Archive& operator|(Archive& ar, const Vec2<T>& vec)
+  {
+    return details::handle_vec2_serialization(ar, vec);
   }
 
 } // namespace gf
