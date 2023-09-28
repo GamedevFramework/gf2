@@ -1,4 +1,4 @@
-  // SPDX-License-Identifier: Zlib
+// SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
 #ifndef GF_TYPE_TRAITS_H
 #define GF_TYPE_TRAITS_H

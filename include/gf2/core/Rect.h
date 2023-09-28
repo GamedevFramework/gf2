@@ -193,7 +193,6 @@ namespace gf {
   extern template struct GF_CORE_API Rect<uint32_t>;
 #endif
 
-
   namespace details {
 
     template<typename Archive, typename Self>

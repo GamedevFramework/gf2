@@ -422,7 +422,6 @@ namespace gf {
     return almost_equals(a.x, b.x, abs_error, rel_error) && almost_equals(a.y, b.y, abs_error, rel_error);
   }
 
-
   namespace details {
 
     template<typename Archive, typename Self>

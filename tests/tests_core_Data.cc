@@ -1,11 +1,10 @@
+#include <gf2/core/SerializationOps.h>
 #include <gf2/core/SpriteData.h>
+#include <gf2/core/Stream.h>
 #include <gf2/core/TextData.h>
 #include <gf2/core/TiledMapData.h>
 
 #include "gtest/gtest.h"
-
-#include <gf2/core/Stream.h>
-#include <gf2/core/SerializationOps.h>
 
 namespace {
 
@@ -33,7 +32,6 @@ namespace {
     {
       return false;
     }
-
   };
 
   template<typename Data>
@@ -57,10 +55,10 @@ namespace {
     {
       return m_written;
     }
+
   private:
     std::size_t m_written = 0;
   };
-
 
   template<typename Data>
   void serialize(const Data& data)
@@ -105,4 +103,3 @@ TEST(DataTest, TextData) {
   serialize(resource);
   deserialize(resource);
 }
-
