@@ -40,6 +40,11 @@ namespace gf {
     m_properties.emplace(std::move(key), Property(std::move(value)));
   }
 
+  void PropertyMap::add_property(std::string key, Id value)
+  {
+    m_properties.emplace(std::move(key), Property(value));
+  }
+
   void PropertyMap::add_property(std::string key, Color value)
   {
     m_properties.emplace(std::move(key), Property(value));

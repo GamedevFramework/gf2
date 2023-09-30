@@ -11,6 +11,7 @@
 #include <iterator>
 #include <map>
 #include <memory>
+#include <optional>
 #include <set>
 #include <stdexcept>
 #include <string>
@@ -230,6 +231,18 @@ namespace gf {
     };
 
     serializers[index](ar, variant);
+
+    return ar;
+  }
+
+  template<typename T>
+  inline Serializer& operator|(Serializer& ar, const std::optional<T>& optional)
+  {
+    if (optional.has_value()) {
+      ar | true | optional.value();
+    } else {
+      ar | false;
+    }
 
     return ar;
   }
@@ -507,6 +520,23 @@ namespace gf {
     };
 
     variant = deserializers[index](ar);
+    return ar;
+  }
+
+  template<typename T>
+  inline Deserializer& operator|(Deserializer& ar, std::optional<T>& optional)
+  {
+    bool has_value = false;
+    ar | has_value;
+
+    if (has_value) {
+      T value;
+      ar | value;
+      optional = std::move(value);
+    } else {
+      optional = std::nullopt;
+    }
+
     return ar;
   }
 

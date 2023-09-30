@@ -69,13 +69,13 @@ namespace gf {
       return m_data[linearize(position)];
     }
 
-    const T& operator()(std::size_t index) const noexcept
+    const T& operator[](std::size_t index) const noexcept
     {
       assert(index < m_data.size());
       return m_data[index];
     }
 
-    T& operator()(std::size_t index) noexcept
+    T& operator[](std::size_t index) noexcept
     {
       assert(index < m_data.size());
       return m_data[index];
@@ -115,7 +115,7 @@ namespace gf {
     }
 
     for (auto i : lhs.index_range()) {
-      if (lhs(i) != rhs(i)) {
+      if (lhs[i] != rhs[i]) {
         return false;
       }
     }

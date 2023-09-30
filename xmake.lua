@@ -1,7 +1,7 @@
 set_project("gf2")
 set_version("0.1.0")
 
-add_requires("libsdl", "freetype", "zlib")
+add_requires("libsdl", "freetype", "pugixml", "zlib")
 add_requires("fmt", { system = false, configs = { header_only = true }})
 add_requires("glslang", { configs = { binaryonly = true }})
 add_requires("miniaudio 0.11.17")
@@ -32,7 +32,7 @@ target("gf2core0")
     add_files("library/core/*.cc")
     add_headerfiles("include/core/*.h")
     add_includedirs("include", { public = true })
-    add_packages("freetype", "stb")
+    add_packages("freetype", "pugixml", "stb")
     add_packages("fmt", "zlib", { public = true })
 
 target("gf2graphics0")

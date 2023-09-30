@@ -27,10 +27,16 @@ namespace gf {
     void add_property(std::string key, double value);
     void add_property(std::string key, std::string value);
     void add_property(std::string key, std::filesystem::path value);
+    void add_property(std::string key, Id value);
     void add_property(std::string key, Color value);
     void add_property(std::string key, PropertyMap value);
 
     const Property& operator()(std::string_view path) const;
+
+    bool empty() const
+    {
+      return m_properties.empty();
+    }
 
   private:
     friend GF_CORE_API bool operator==(const PropertyMap& lhs, const PropertyMap& rhs);

@@ -6,6 +6,7 @@
 #include <cstdint>
 
 #include <filesystem>
+#include <optional>
 #include <string>
 #include <variant>
 #include <vector>
@@ -21,21 +22,6 @@
 namespace gf {
 
   constexpr uint32_t NoIndex = 0xFFFFFFFF;
-
-  struct TilesetData {
-    uint32_t properties_index = NoIndex;
-    uint32_t texture_index = NoIndex;
-    uint32_t first_gid = 0;
-    Vec2I tile_size = { 0, 0 };
-    int32_t spacing = 0;
-    int32_t margin = 0;
-  };
-
-  template<typename Archive>
-  Archive& operator|(Archive& ar, MaybeConst<TilesetData, Archive>& data)
-  {
-    return ar | data.properties_index | data.texture_index | data.first_gid | data.tile_size | data.spacing | data.margin;
-  }
 
   enum LayerType : uint8_t {
     Tile,
@@ -68,13 +54,13 @@ namespace gf {
 
   struct TileLayerData {
     LayerData layer;
-    Array2D<TileData> cells;
+    Array2D<TileData> tiles;
   };
 
   template<typename Archive>
   Archive& operator|(Archive& ar, MaybeConst<TileLayerData, Archive>& data)
   {
-    return ar | data.layer | data.cells;
+    return ar | data.layer | data.tiles;
   }
 
   enum class ObjectType : uint8_t {
@@ -90,6 +76,7 @@ namespace gf {
     uint32_t properties_index = NoIndex;
     ObjectType type = ObjectType::Point;
     Id id = InvalidId;
+    std::string name;
     Vec2F location = { 0.0f, 0.0f };
     float rotation = 0.0f;
     std::variant<std::monostate, Vec2F, TileData, std::vector<Vec2F>> feature;
@@ -98,7 +85,7 @@ namespace gf {
   template<typename Archive>
   Archive& operator|(Archive& ar, MaybeConst<ObjectData, Archive>& data)
   {
-    return ar | data.properties_index | data.type | data.id | data.location | data.rotation | data.feature;
+    return ar | data.properties_index | data.type | data.id | data.name | data.location | data.rotation | data.feature;
   }
 
   struct ObjectLayerData {
@@ -114,21 +101,71 @@ namespace gf {
 
   struct LayerStructureData {
     LayerType type;
-    std::variant<uint32_t, std::vector<LayerStructureData>> node;
+    uint32_t layer_index;
   };
 
   template<typename Archive>
   Archive& operator|(Archive& ar, MaybeConst<LayerStructureData, Archive>& data)
   {
-    return ar | data.type | data.node;
+    return ar | data.type | data.layer_index;
+  }
+
+  struct GroupLayerData {
+    LayerData layer;
+    std::vector<LayerStructureData> sub_layers;
+  };
+
+  template<typename Archive>
+  Archive& operator|(Archive& ar, MaybeConst<GroupLayerData, Archive>& data)
+  {
+    return ar | data.layer | data.layers;
+  }
+
+  struct TilesetTileData {
+    uint32_t properties_index = NoIndex;
+    int32_t id = 0;
+    std::string type;
+    std::optional<uint32_t> objects = std::nullopt;
+  };
+
+  template<typename Archive>
+  Archive& operator|(Archive& ar, MaybeConst<TilesetTileData, Archive>& data)
+  {
+    return ar | data.properties_index | data.id | data.type | data.objects;
+  }
+
+  struct TilesetData {
+    uint32_t properties_index = NoIndex;
+    uint32_t texture_index = NoIndex;
+    uint32_t first_gid = 0;
+    Vec2I tile_size = { 0, 0 };
+    int32_t spacing = 0;
+    int32_t margin = 0;
+    std::vector<TilesetTileData> tiles;
+  };
+
+  template<typename Archive>
+  Archive& operator|(Archive& ar, MaybeConst<TilesetData, Archive>& data)
+  {
+    return ar | data.properties_index | data.texture_index | data.first_gid | data.tile_size | data.spacing | data.margin | data.tiles;
   }
 
   struct TiledMapData {
+    uint32_t properties_index = NoIndex;
+    GridOrientation orientation = GridOrientation::Orthogonal;
+    CellAxis cell_axis = CellAxis::X;
+    CellIndex cell_index = CellIndex::Odd;
+    int32_t hex_side_length = 0;
+
+    Vec2I map_size = { 0, 0 };
+    Vec2I tile_size = { 0, 0 };
+
     std::vector<PropertyMap> properties;
     std::vector<TilesetData> tilesets;
 
     std::vector<TileLayerData> tile_layers;
     std::vector<ObjectLayerData> object_layers;
+    std::vector<GroupLayerData> group_layers;
 
     std::vector<LayerStructureData> layers;
   };
@@ -136,10 +173,13 @@ namespace gf {
   template<typename Archive>
   Archive& operator|(Archive& ar, MaybeConst<TiledMapData, Archive>& data)
   {
-    return ar | data.properties | data.tilesets | data.tile_layers | data.object_layers | data.layers;
+    return ar | data.properties_index | data.orientation | data.cell_axis | data.cell_index | data.hex_side_length | data.map_size | data.tile_size | data.properties | data.tilesets | data.tile_layers | data.object_layers | data.layers;
   }
 
   struct TiledMapResource {
+    TiledMapResource() = default;
+    TiledMapResource(const std::filesystem::path& filename);
+
     std::vector<std::filesystem::path> textures;
     TiledMapData data;
   };

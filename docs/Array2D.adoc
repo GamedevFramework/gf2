@@ -38,20 +38,27 @@ Array2D(Vec2I size, const T& value); <3>
 <2> Constructor with a `size`. Elements are default constructed.
 <3> Constructor with a `size` and a `value`. Elements are copied from `value`.
 
+=== `operator[]`
+
+[source]
+----
+const T& operator[](std::size_t index) const noexcept; <1>
+T& operator[](std::size_t index) noexcept; <2>
+----
+
+<1> Get the element at a given 1D index.
+<2> Same but the element can be modified.
+
 === `operator()`
 
 [source]
 ----
 const T& operator()(Vec2I position) const noexcept; <1>
 T& operator()(Vec2I position) noexcept; <2>
-const T& operator()(std::size_t index) const noexcept; <3>
-T& operator()(std::size_t index) noexcept; <4>
 ----
 
 <1> Get the element at a given 2D position.
 <2> Same but the element can be modified.
-<3> Get the element at a given 1D index.
-<4> Same but the element can be modified.
 
 === `begin`
 
