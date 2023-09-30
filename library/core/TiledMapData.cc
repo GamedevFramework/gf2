@@ -623,7 +623,7 @@ namespace gf {
       pugi::xml_node image = node.child("image");
       assert(image);
       std::filesystem::path image_path = base_directory / image.attribute("source").as_string();
-      tileset.texture_index = resource.textures.size();
+      tileset.texture_index = static_cast<uint32_t>(resource.textures.size());
       resource.textures.push_back(std::move(image_path));
 
       for (pugi::xml_node tile : node.children("tile")) {

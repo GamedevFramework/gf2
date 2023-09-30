@@ -31,7 +31,8 @@ namespace gf {
       frame.duration = frame_data.duration;
       m_frames.push_back(frame);
 
-      const std::size_t index = vertices.size();
+      assert(vertices.size() < UINT16_MAX);
+      const uint16_t index = static_cast<uint16_t>(vertices.size());
 
       const Vec2F size = m_textures[frame_data.texture_index]->size() * frame_data.texture_region.size();
       const RectF bounds = RectF::from_size(size);
