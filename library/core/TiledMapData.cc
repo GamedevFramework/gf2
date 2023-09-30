@@ -112,7 +112,7 @@ namespace gf {
     T parse_number(std::string_view string)
     {
       T value = {};
-      [[maybe_unused]] auto [ptr, ec] = std::from_chars(string.begin(), string.end(), value);
+      [[maybe_unused]] auto [ptr, ec] = std::from_chars(string.data(), string.data() + string.size(), value);
       assert(ec == std::errc());
       return value;
     }
