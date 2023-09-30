@@ -77,35 +77,42 @@ namespace gf {
         value.erase(value.begin());
       }
 
-      Color color = default_value;
-
       switch (value.size()) {
         case 5:
           value.insert(0, 1, '0');
           [[fallthrough]];
         case 6:
-          color.a = 0xFF;
-          color.r = (convert_hex_char(value[0]) << 4) + convert_hex_char(value[1]);
-          color.g = (convert_hex_char(value[2]) << 4) + convert_hex_char(value[3]);
-          color.b = (convert_hex_char(value[4]) << 4) + convert_hex_char(value[5]);
-          break;
+          {
+            uint32_t rgb = 0;
+
+            for (std::size_t i = 0; i < 6; ++i) {
+              rgb = (rgb << 4) + convert_hex_char(value[i]);
+            }
+
+            return Color(rgb);
+          }
 
         case 7:
           value.insert(0, 1, '0');
           [[fallthrough]];
         case 8:
-          color.a = (convert_hex_char(value[0]) << 4) + convert_hex_char(value[1]);
-          color.r = (convert_hex_char(value[2]) << 4) + convert_hex_char(value[3]);
-          color.g = (convert_hex_char(value[4]) << 4) + convert_hex_char(value[5]);
-          color.b = (convert_hex_char(value[6]) << 4) + convert_hex_char(value[7]);
-          break;
+          {
+            uint8_t alpha = (convert_hex_char(value[0]) << 4) + convert_hex_char(value[1]);
+            uint32_t rgb = 0;
+
+            for (std::size_t i = 2; i < 8; ++i) {
+              rgb = (rgb << 4) + convert_hex_char(value[i]);
+            }
+
+            return Color(rgb, alpha);
+          }
 
         default:
           Log::error("Unknown color format: '{}'.", value);
           break;
       }
 
-      return color;
+      return default_value;
     }
 
     template<typename T>
@@ -440,10 +447,10 @@ namespace gf {
       TileLayerData tile_layer;
       tile_layer.layer = parse_tmx_layer_common(node, resource);
 
-      for (pugi::xml_node node : node.children("data")) {
-        unsupported_node(node, "chunk"); // TODO
-        auto format = parse_data_format(node);
-        auto tiles = parse_tmx_tiles(node, format);
+      for (pugi::xml_node data_node : node.children("data")) {
+        unsupported_node(data_node, "chunk"); // TODO
+        auto format = parse_data_format(data_node);
+        auto tiles = parse_tmx_tiles(data_node, format);
         assert(tiles.size() == static_cast<std::size_t>(resource.data.map_size.w * resource.data.map_size.h));
         tile_layer.tiles = Array2D<TileData>(resource.data.map_size);
 
