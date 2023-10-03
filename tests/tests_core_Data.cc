@@ -1,3 +1,4 @@
+#include <gf2/core/Property.h>
 #include <gf2/core/SerializationOps.h>
 #include <gf2/core/SpriteData.h>
 #include <gf2/core/Stream.h>

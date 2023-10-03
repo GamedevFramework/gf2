@@ -5,7 +5,6 @@
 
 #include <cstdint>
 
-#include <type_traits>
 #include <vector>
 
 #include "Format.h"

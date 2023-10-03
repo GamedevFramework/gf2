@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
-#include <array>
-
 #include <gf2/core/AnimationData.h>
 #include <gf2/core/Camera.h>
 #include <gf2/core/Clock.h>

@@ -7,7 +7,6 @@
 
 #include <cassert>
 
-#include <map>
 #include <string_view>
 #include <vector>
 
@@ -177,7 +176,8 @@ namespace gf {
 
     void compute_vertices(std::vector<Vertex>& vertices, std::vector<uint16_t>& indices, RectF bounds, RectF texture_region, Vec2F position, Color color)
     {
-      const std::size_t index = vertices.size();
+      assert(vertices.size() < UINT16_MAX);
+      auto index = static_cast<uint16_t>(vertices.size());
 
       vertices.push_back({ position + bounds.position_at(Orientation::NorthEast), texture_region.position_at(Orientation::NorthEast), color });
       vertices.push_back({ position + bounds.position_at(Orientation::SouthEast), texture_region.position_at(Orientation::SouthEast), color });
