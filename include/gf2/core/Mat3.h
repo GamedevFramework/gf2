@@ -3,6 +3,7 @@
 #ifndef GF_MAT3_H
 #define GF_MAT3_H
 
+#include <cmath>
 #include <cstdint>
 
 #include "CoreApi.h"
@@ -54,6 +55,65 @@ namespace gf {
   inline constexpr Mat3F Identity3F = {
     { { 1.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, { 0.0f, 0.0f, 1.0f } }
   };
+
+  inline Mat3F translation(Vec2F offset)
+  {
+    // clang-format off
+    return {{
+      { 1.0f, 0.0f, offset.x },
+      { 0.0f, 1.0f, offset.y },
+      { 0.0f, 0.0f, 1.0f }
+    }};
+    // clang-format on
+  }
+
+  inline Mat3F rotation(float angle)
+  {
+    const float cos = std::cos(angle);
+    const float sin = std::sin(angle);
+    // clang-format off
+    return {{
+      {  cos, -sin, 0.0f },
+      {  sin,  cos, 0.0f },
+      { 0.0f, 0.0f, 1.0f } }
+    };
+    // clang-format on
+  }
+
+  inline Mat3F rotation(float angle, Vec2F center)
+  {
+    const float cos = std::cos(angle);
+    const float sin = std::sin(angle);
+    // clang-format off
+    return {{
+      {  cos,- sin, center.x * (1 - cos) + center.y * sin },
+      {  sin,  cos, center.y * (1 - cos) - center.x * sin },
+      { 0.0f, 0.0f, 1.0f }
+    }};
+    // clang-format on
+  }
+
+  inline Mat3F scaling(Vec2F factor)
+  {
+    // clang-format off
+    return {{
+      { factor.x,     0.0f, 0.0f },
+      {     0.0f, factor.y, 0.0f },
+      {     0.0f,     0.0f, 1.0f }
+    }};
+    // clang-format on
+  }
+
+  inline Mat3F scaling(Vec2F factor, Vec2F center)
+  {
+    // clang-format off
+    return {{
+      { factor.x,     0.0f, center.x * (1.0f - factor.x) },
+      {     0.0f, factor.y, center.y * (1.0f - factor.y) },
+      {     0.0f,     0.0f, 1.0f }
+    }};
+    // clang-format on
+  }
 
   GF_CORE_API Vec2F transform_point(const Mat3F& mat, Vec2F vec);
   GF_CORE_API Vec2F transform_vector(const Mat3F& mat, Vec2F vec);
