@@ -16,6 +16,7 @@
 #include <zlib.h>
 
 #include <gf2/core/Log.h>
+#include <gf2/core/Property.h>
 #include <gf2/core/StringUtils.h>
 
 using namespace std::literals;
@@ -32,7 +33,7 @@ namespace gf {
     {
       auto attribute = node.attribute(attribute_name);
 
-      if (attribute) {
+      if (!attribute.empty()) {
         Log::warning("Unsupported attribute '{}' in node '{}'.", attribute_name, node.name());
       }
     }
@@ -41,7 +42,7 @@ namespace gf {
     {
       auto child = node.child(child_name);
 
-      if (child) {
+      if (!child.empty()) {
         Log::warning("Unsupported node '{}' in node '{}'.", child_name, node.name());
       }
     }
@@ -66,7 +67,7 @@ namespace gf {
 
     Color parse_color(pugi::xml_attribute attribute, Color default_value = White)
     {
-      if (!attribute) {
+      if (attribute.empty()) {
         return default_value;
       }
 
@@ -89,7 +90,7 @@ namespace gf {
               rgb = (rgb << 4) + convert_hex_char(value[i]);
             }
 
-            return Color(rgb);
+            return { rgb };
           }
 
         case 7:
@@ -97,14 +98,14 @@ namespace gf {
           [[fallthrough]];
         case 8:
           {
-            uint8_t alpha = (convert_hex_char(value[0]) << 4) + convert_hex_char(value[1]);
+            const uint8_t alpha = (convert_hex_char(value[0]) << 4) + convert_hex_char(value[1]);
             uint32_t rgb = 0;
 
             for (std::size_t i = 2; i < 8; ++i) {
               rgb = (rgb << 4) + convert_hex_char(value[i]);
             }
 
-            return Color(rgb, alpha);
+            return { rgb, alpha };
           }
 
         default:
@@ -128,12 +129,13 @@ namespace gf {
      * properties
      */
 
+    // NOLINTNEXTLINE(misc-no-recursion)
     PropertyMap parse_tmx_raw_properties(const pugi::xml_node node)
     {
       PropertyMap property_map;
 
-      for (pugi::xml_node properties : node.children("properties")) {
-        for (pugi::xml_node property : properties.children("property")) {
+      for (const pugi::xml_node properties : node.children("properties")) {
+        for (const pugi::xml_node property : properties.children("property")) {
           std::string name = property.attribute("name").as_string();
           assert(!name.empty());
 
@@ -141,11 +143,11 @@ namespace gf {
           auto value_attribute = property.attribute("value");
           assert(value_attribute);
 
-          if (type_attribute) {
+          if (!type_attribute.empty()) {
             std::string type = type_attribute.as_string();
 
             if (type == "string") {
-              property_map.add_property(std::move(name), value_attribute.as_string());
+              property_map.add_property(std::move(name), std::string(value_attribute.as_string()));
             } else if (type == "int") {
               property_map.add_property(std::move(name), static_cast<int64_t>(value_attribute.as_int()));
             } else if (type == "float") {
@@ -165,7 +167,7 @@ namespace gf {
             }
 
           } else {
-            property_map.add_property(std::move(name), value_attribute.as_string());
+            property_map.add_property(std::move(name), std::string(value_attribute.as_string()));
           }
         }
       }
@@ -181,7 +183,7 @@ namespace gf {
         return NoIndex;
       }
 
-      uint32_t index = static_cast<uint32_t>(resource.data.properties.size());
+      auto index = static_cast<uint32_t>(resource.data.properties.size());
       resource.data.properties.push_back(std::move(property_map));
       return index;
     }
@@ -204,7 +206,7 @@ namespace gf {
 
     // tile layer
 
-    enum class TmxFormat {
+    enum class TmxFormat : uint8_t {
       Xml,
       Base64,
       Base64_Zlib,
@@ -216,7 +218,7 @@ namespace gf {
     std::vector<uint8_t> parse_data_base64(std::string input)
     {
       input.erase(std::remove_if(input.begin(), input.end(), [](char c) { return c == '\n' || c == ' '; }), input.end());
-      std::size_t len = input.size();
+      const std::size_t len = input.size();
       assert(len % 4 == 0);
       size_t padding = 0;
 
@@ -284,7 +286,7 @@ namespace gf {
     std::vector<uint8_t> parse_data_compressed(std::vector<uint8_t> input)
     {
       std::vector<uint8_t> uncompressed;
-      std::array<uint8_t, 1024> tmp;
+      std::array<uint8_t, 1024> tmp = {};
 
       z_stream stream = {};
       stream.next_in = input.data();
@@ -319,14 +321,14 @@ namespace gf {
     {
       assert(node.name() == "data"sv);
 
-      std::string encoding = node.attribute("encoding").as_string();
+      const std::string encoding = node.attribute("encoding").as_string();
 
       if (encoding == "csv") {
         return TmxFormat::Csv;
       }
 
       if (encoding == "base64") {
-        std::string compression = node.attribute("compression").as_string();
+        const std::string compression = node.attribute("compression").as_string();
 
         if (compression == "zlib") {
           return TmxFormat::Base64_Zlib;
@@ -411,7 +413,7 @@ namespace gf {
             assert(size % 4 == 0);
 
             for (std::size_t i = 0; i < size; i += 4) {
-              uint32_t gid = buffer[i] | (buffer[i + 1] << 8) | (buffer[i + 2] << 16) | (buffer[i + 3] << 24);
+              const uint32_t gid = buffer[i] | (buffer[i + 1] << 8) | (buffer[i + 2] << 16) | (buffer[i + 3] << 24);
               tiles.push_back(parse_gid(gid));
             }
 
@@ -447,7 +449,7 @@ namespace gf {
       TileLayerData tile_layer;
       tile_layer.layer = parse_tmx_layer_common(node, resource);
 
-      for (pugi::xml_node data_node : node.children("data")) {
+      for (const pugi::xml_node data_node : node.children("data")) {
         unsupported_node(data_node, "chunk"); // TODO
         auto format = parse_data_format(data_node);
         auto tiles = parse_tmx_tiles(data_node, format);
@@ -459,7 +461,7 @@ namespace gf {
         }
       }
 
-      LayerStructureData data;
+      LayerStructureData data = {};
       data.type = LayerType::Tile;
       data.layer_index = static_cast<uint32_t>(resource.data.tile_layers.size());
 
@@ -479,7 +481,7 @@ namespace gf {
       for (auto item : items) {
         auto coordinates = split_string(item, ",");
         assert(coordinates.size() == 2);
-        points.push_back({ parse_number<float>(coordinates[0]), parse_number<float>(coordinates[1]) });
+        points.emplace_back(parse_number<float>(coordinates[0]), parse_number<float>(coordinates[1]));
       }
 
       return points;
@@ -504,14 +506,14 @@ namespace gf {
       } else if (const pugi::xml_node polyline = node.child("polyline"); polyline) {
         object.type = ObjectType::Polyline;
         object.feature = parse_points(polyline.attribute("points").as_string());
-      } else if (node.child("text")) {
+      } else if (!node.child("text").empty()) {
         unsupported_node(node, "text");
       } else if (const pugi::xml_attribute gid = node.attribute("gid"); gid) {
         object.type = ObjectType::Tile;
         object.feature = parse_gid(gid.as_uint());
-      } else if (node.child("point")) {
+      } else if (!node.child("point").empty()) {
         object.type = ObjectType::Point;
-      } else if (node.child("ellipse")) {
+      } else if (!node.child("ellipse").empty()) {
         object.type = ObjectType::Ellipse;
         const Vec2F size = { node.attribute("width").as_float(), node.attribute("height").as_float() };
         object.feature = size;
@@ -534,11 +536,11 @@ namespace gf {
       unsupported_attribute(node, "color");
       unsupported_attribute(node, "draworder");
 
-      for (pugi::xml_node object : node.children("object")) {
+      for (const pugi::xml_node object : node.children("object")) {
         object_layer.objects.push_back(parse_tmx_object(object, resource));
       }
 
-      LayerStructureData data;
+      LayerStructureData data = {};
       data.type = LayerType::Object;
       data.layer_index = static_cast<uint32_t>(resource.data.object_layers.size());
 
@@ -549,17 +551,18 @@ namespace gf {
 
     // group layer
 
-    std::vector<LayerStructureData> parse_tmx_layer_structure(const pugi::xml_node node, TiledMapResource& resource);
+    std::vector<LayerStructureData> parse_tmx_layer_structure(pugi::xml_node node, TiledMapResource& resource);
 
+    // NOLINTNEXTLINE(misc-no-recursion)
     LayerStructureData parse_tmx_group_layer(const pugi::xml_node node, TiledMapResource& resource)
     {
       assert(node.name() == "group"sv);
 
-      GroupLayerData group_layer;
+      GroupLayerData group_layer = {};
       group_layer.layer = parse_tmx_layer_common(node, resource);
       group_layer.sub_layers = parse_tmx_layer_structure(node, resource);
 
-      LayerStructureData data;
+      LayerStructureData data = {};
       data.type = LayerType::Group;
       data.layer_index = static_cast<uint32_t>(resource.data.group_layers.size());
 
@@ -568,12 +571,13 @@ namespace gf {
       return data;
     }
 
+    // NOLINTNEXTLINE(misc-no-recursion)
     std::vector<LayerStructureData> parse_tmx_layer_structure(const pugi::xml_node node, TiledMapResource& resource)
     {
       std::vector<LayerStructureData> layers;
 
-      for (pugi::xml_node layer : node.children()) {
-        std::string name = layer.name();
+      for (const pugi::xml_node layer : node.children()) {
+        const std::string name = layer.name();
 
         if (name == "layer") {
           layers.push_back(parse_tmx_tile_layer(node, resource));
@@ -599,9 +603,9 @@ namespace gf {
       tile.id = node.attribute("id").as_int();
       tile.type = node.attribute("type").as_string();
 
-      pugi::xml_node objects = node.child("objectgroup");
+      const pugi::xml_node objects = node.child("objectgroup");
 
-      if (objects) {
+      if (!objects.empty()) {
         tile.objects = parse_tmx_object_layer(objects, resource).layer_index;
       }
 
@@ -620,13 +624,13 @@ namespace gf {
       tileset.spacing = node.attribute("spacing").as_int();
       tileset.margin = node.attribute("margin").as_int();
 
-      pugi::xml_node image = node.child("image");
+      const pugi::xml_node image = node.child("image");
       assert(image);
       std::filesystem::path image_path = base_directory / image.attribute("source").as_string();
       tileset.texture_index = static_cast<uint32_t>(resource.textures.size());
       resource.textures.push_back(std::move(image_path));
 
-      for (pugi::xml_node tile : node.children("tile")) {
+      for (const pugi::xml_node tile : node.children("tile")) {
         tileset.tiles.push_back(parse_tmx_tileset_tile(tile, resource));
       }
 
@@ -645,20 +649,20 @@ namespace gf {
       }
 
       pugi::xml_document doc;
-      pugi::xml_parse_result result = doc.load(tileset_file);
+      const pugi::xml_parse_result result = doc.load(tileset_file);
 
       if (!result) {
         Log::error("Could not load TSX file '{}': {}.", tileset_path, result.description());
         throw std::runtime_error("Could not load TSX file");
       }
 
-      pugi::xml_node node = doc.child("tileset");
+      const pugi::xml_node node = doc.child("tileset");
 
-      if (node.attribute("firstgid")) {
+      if (!node.attribute("firstgid").empty()) {
         Log::warning("Attribute 'firstgid' present in a TSX file: '{}'.", tileset_path);
       }
 
-      if (node.attribute("source")) {
+      if (!node.attribute("source").empty()) {
         Log::warning("Attribute 'source' present in a TSX file: '{}'.", tileset_path);
       }
 
@@ -672,7 +676,7 @@ namespace gf {
       tileset.properties_index = parse_tmx_properties(node, resource);
       tileset.first_gid = node.attribute("firstgid").as_uint();
 
-      std::filesystem::path source = node.attribute("source").as_string();
+      const std::filesystem::path source = node.attribute("source").as_string();
 
       if (!source.empty()) {
         parse_tmx_tileset_from_file(tileset, source, resource, base_directory);
@@ -738,7 +742,7 @@ namespace gf {
 
       unsupported_attribute(node, "backgroundcolor");
 
-      for (pugi::xml_node tileset : node.children("tileset")) {
+      for (const pugi::xml_node tileset : node.children("tileset")) {
         resource.data.tilesets.push_back(parse_tmx_tileset(tileset, resource, base_directory));
       }
 
@@ -746,6 +750,54 @@ namespace gf {
     }
 
   }
+
+  /*
+   * TilesetData
+   */
+
+  Vec2I TilesetData::compute_layout(Vec2I texture_size) const
+  {
+    if (tile_size.w == 0 || tile_size.h == 0) {
+      return { 0, 0 };
+    }
+
+    return (texture_size - 2 * margin + spacing) / (tile_size + spacing);
+  }
+
+  RectF TilesetData::compute_texture_region(uint32_t tile, Vec2I texture_size) const
+  {
+    auto layout = compute_layout(texture_size);
+    return compute_texture_region({ static_cast<int32_t>(tile) % layout.w, static_cast<int32_t>(tile) / layout.w }, texture_size);
+  }
+
+  RectF TilesetData::compute_texture_region(Vec2I position, Vec2I texture_size) const
+  {
+    [[maybe_unused]] auto layout = compute_layout(texture_size);
+    assert(position.x < layout.w);
+    assert(position.y < layout.h);
+    const RectI texture_rectangle = RectI::from_position_size(position * tile_size + position * spacing + margin, tile_size);
+    const Vec2F texture_size_f = texture_size;
+    return RectF::from_position_size(texture_rectangle.offset / texture_size_f, texture_rectangle.extent / texture_size_f);
+  }
+
+  /*
+   * TiledMapData
+   */
+
+  const TilesetData* TiledMapData::tileset_from_gid(uint32_t gid) const noexcept
+  {
+    for (auto it = tilesets.rbegin(); it != tilesets.rend(); ++it) {
+      if (it->first_gid <= gid) {
+        return &(*it);
+      }
+    }
+
+    return nullptr;
+  }
+
+  /*
+   * TiledMapResource
+   */
 
   TiledMapResource::TiledMapResource(const std::filesystem::path& filename)
   {
@@ -757,7 +809,7 @@ namespace gf {
     }
 
     pugi::xml_document doc;
-    pugi::xml_parse_result result = doc.load(file);
+    const pugi::xml_parse_result result = doc.load(file);
 
     if (!result) {
       Log::error("Could not load TMX file '{}': {}.", filename, result.description());

@@ -12,10 +12,11 @@
 #include <vector>
 
 #include "Array2D.h"
+#include "CoreApi.h"
 #include "GridTypes.h"
 #include "Id.h"
-#include "Property.h"
 #include "PropertyMap.h"
+#include "Rect.h"
 #include "TypeTraits.h"
 #include "Vec2.h"
 
@@ -29,7 +30,7 @@ namespace gf {
     Group,
   };
 
-  struct LayerData {
+  struct GF_CORE_API LayerData {
     uint32_t properties_index = NoIndex;
     std::string name;
     Vec2I offset = { 0, 0 };
@@ -41,7 +42,7 @@ namespace gf {
     return ar | data.properties_index | data.name | data.offset;
   }
 
-  struct TileData {
+  struct GF_CORE_API TileData {
     uint32_t gid = 0;
     Flags<CellFlip> flip = None;
   };
@@ -52,7 +53,7 @@ namespace gf {
     return ar | data.gid | data.flip;
   }
 
-  struct TileLayerData {
+  struct GF_CORE_API TileLayerData {
     LayerData layer;
     Array2D<TileData> tiles;
   };
@@ -72,7 +73,7 @@ namespace gf {
     Polyline,
   };
 
-  struct ObjectData {
+  struct GF_CORE_API ObjectData {
     uint32_t properties_index = NoIndex;
     ObjectType type = ObjectType::Point;
     Id id = InvalidId;
@@ -88,7 +89,7 @@ namespace gf {
     return ar | data.properties_index | data.type | data.id | data.name | data.location | data.rotation | data.feature;
   }
 
-  struct ObjectLayerData {
+  struct GF_CORE_API ObjectLayerData {
     LayerData layer;
     std::vector<ObjectData> objects;
   };
@@ -99,7 +100,7 @@ namespace gf {
     return ar | data.layer | data.objects;
   }
 
-  struct LayerStructureData {
+  struct GF_CORE_API LayerStructureData {
     LayerType type;
     uint32_t layer_index;
   };
@@ -110,7 +111,7 @@ namespace gf {
     return ar | data.type | data.layer_index;
   }
 
-  struct GroupLayerData {
+  struct GF_CORE_API GroupLayerData {
     LayerData layer;
     std::vector<LayerStructureData> sub_layers;
   };
@@ -121,7 +122,7 @@ namespace gf {
     return ar | data.layer | data.layers;
   }
 
-  struct TilesetTileData {
+  struct GF_CORE_API TilesetTileData {
     uint32_t properties_index = NoIndex;
     int32_t id = 0;
     std::string type;
@@ -134,7 +135,7 @@ namespace gf {
     return ar | data.properties_index | data.id | data.type | data.objects;
   }
 
-  struct TilesetData {
+  struct GF_CORE_API TilesetData {
     uint32_t properties_index = NoIndex;
     uint32_t texture_index = NoIndex;
     uint32_t first_gid = 0;
@@ -142,6 +143,10 @@ namespace gf {
     int32_t spacing = 0;
     int32_t margin = 0;
     std::vector<TilesetTileData> tiles;
+
+    Vec2I compute_layout(Vec2I texture_size) const;
+    RectF compute_texture_region(uint32_t tile, Vec2I texture_size) const;
+    RectF compute_texture_region(Vec2I position, Vec2I texture_size) const;
   };
 
   template<typename Archive>
@@ -150,9 +155,9 @@ namespace gf {
     return ar | data.properties_index | data.texture_index | data.first_gid | data.tile_size | data.spacing | data.margin | data.tiles;
   }
 
-  struct TiledMapData {
+  struct GF_CORE_API TiledMapData {
     uint32_t properties_index = NoIndex;
-    GridOrientation orientation = GridOrientation::Orthogonal;
+    GridOrientation orientation = GridOrientation::Unknown;
     CellAxis cell_axis = CellAxis::X;
     CellIndex cell_index = CellIndex::Odd;
     int32_t hex_side_length = 0;
@@ -168,6 +173,8 @@ namespace gf {
     std::vector<GroupLayerData> group_layers;
 
     std::vector<LayerStructureData> layers;
+
+    const TilesetData* tileset_from_gid(uint32_t gid) const noexcept;
   };
 
   template<typename Archive>
@@ -176,7 +183,7 @@ namespace gf {
     return ar | data.properties_index | data.orientation | data.cell_axis | data.cell_index | data.hex_side_length | data.map_size | data.tile_size | data.properties | data.tilesets | data.tile_layers | data.object_layers | data.layers;
   }
 
-  struct TiledMapResource {
+  struct GF_CORE_API TiledMapResource {
     TiledMapResource() = default;
     TiledMapResource(const std::filesystem::path& filename);
 
