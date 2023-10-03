@@ -104,12 +104,14 @@ add_library(gf2core0
   core/Result.cc
   core/Serialization.cc
   core/SerializationOps.cc
+  core/ShapeData.cc
   core/SpriteData.cc
   core/Stream.cc
   core/Streams.cc
   core/StringUtils.cc
   core/Tarball.cc
   core/TextData.cc
+  core/TiledMapData.cc
   core/Time.cc
   core/Transform.cc
   core/Vec2.cc
@@ -127,6 +129,7 @@ target_link_libraries(gf2core0
     ZLIB::ZLIB
   PRIVATE
     Freetype::Freetype
+    pugixml
 )
 
 target_compile_definitions(gf2core0
@@ -162,6 +165,7 @@ add_library(gf2graphics0
   graphics/Sprite.cc
   graphics/Text.cc
   graphics/Texture.cc
+  graphics/TiledMap.cc
   graphics/Touch.cc
   graphics/Vertex.cc
   graphics/VertexInput.cc
