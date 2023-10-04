@@ -12,7 +12,7 @@ add_requires("vulkan-headers")
 -- add_requires("vulkan-validationlayers")
 add_requires("vulkan-memory-allocator")
 
-add_rules("mode.asan", "mode.tsan", "mode.ubsan", "mode.coverage", "mode.debug", "mode.releasedbg", "mode.release")
+add_rules("mode.coverage", "mode.debug", "mode.releasedbg", "mode.release")
 
 set_policy("build.warning", true)
 set_warnings("allextra")
