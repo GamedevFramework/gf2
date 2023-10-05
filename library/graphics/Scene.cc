@@ -6,6 +6,7 @@
 // clang-format on
 
 #include <gf2/graphics/RenderRecorder.h>
+
 #include "gf2/core/Camera.h"
 
 namespace gf {

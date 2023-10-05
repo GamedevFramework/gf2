@@ -15,6 +15,7 @@
 
 #include <gf2/graphics/ShaderData.h>
 #include <gf2/graphics/Vertex.h>
+
 #include "gf2/graphics/RenderPipeline.h"
 
 #define VMA_IMPLEMENTATION
@@ -921,8 +922,7 @@ namespace gf {
     default_pipeline_builder.set_vertex_input(Vertex::compute_input())
         .add_shader(&default_vertex_shader)
         .add_shader(&default_fragment_shader)
-        .set_pipeline_layout(&m_default_pipeline_layout)
-        ;
+        .set_pipeline_layout(&m_default_pipeline_layout);
 
     m_default_pipeline = default_pipeline_builder.build(this);
     m_default_pipeline.set_debug_name("Default Pipeline");

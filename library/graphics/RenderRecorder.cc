@@ -25,8 +25,8 @@ namespace gf {
       m_view_matrix_buffers[m_next_view_matrix_index].update(&view_matrix, 1, m_renderer);
     }
 
-    std::vector<RenderObject> objects;
-    m_parts.push_back({ m_next_view_matrix_index, viewport , objects });
+    const std::vector<RenderObject> objects;
+    m_parts.push_back({ m_next_view_matrix_index, viewport, objects });
     ++m_next_view_matrix_index;
   }
 

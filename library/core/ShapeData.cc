@@ -134,7 +134,7 @@ namespace gf {
 
     for (uint32_t i = 0; i < 2 * branches; ++i) {
       const float angle = static_cast<float>(i) * Pi / static_cast<float>(branches) - Pi2;
-      float radius = (i % 2 == 0) ? max_circle.radius : min_radius;
+      const float radius = (i % 2 == 0) ? max_circle.radius : min_radius;
       data.points.push_back(max_circle.center + radius * unit(angle));
     }
 

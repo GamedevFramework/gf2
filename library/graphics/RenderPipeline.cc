@@ -258,7 +258,6 @@ namespace gf {
     color_blending_state_create_info.blendConstants[2] = 0.0f;
     color_blending_state_create_info.blendConstants[3] = 0.0f;
 
-
     // pipeline rendering
 
     const VkFormat color_attachement_format = renderer->m_format;

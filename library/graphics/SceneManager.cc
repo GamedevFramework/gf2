@@ -10,6 +10,7 @@
 #include <gf2/core/Clock.h>
 
 #include <gf2/graphics/Scene.h>
+
 #include "gf2/graphics/RenderObject.h"
 #include "gf2/graphics/RenderRecorder.h"
 
@@ -158,7 +159,6 @@ namespace gf {
         command_buffer.end_rendering(render_command_buffer);
         renderer()->end_command_buffer(command_buffer);
       }
-
     }
 
     renderer()->wait_idle();

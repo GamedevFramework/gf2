@@ -4,6 +4,7 @@
 #define GF_SCENE_RECORDER_H
 
 #include <cstdint>
+
 #include <vector>
 
 #include <gf2/core/Mat4.h>
