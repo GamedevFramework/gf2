@@ -5,6 +5,7 @@
 
 #include <type_traits>
 
+#include "GraphicsApi.h"
 #include "Vulkan.h"
 
 namespace gf {
@@ -55,7 +56,7 @@ namespace gf {
     Max = VK_BLEND_OP_MAX,
   };
 
-  struct Blend {
+  struct GF_GRAPHICS_API Blend {
     BlendFactor color_src;
     BlendFactor color_dst;
     BlendOp color_op;
