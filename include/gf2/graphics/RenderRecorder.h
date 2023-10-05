@@ -21,6 +21,16 @@ namespace gf {
   public:
     RenderRecorder(Renderer* renderer);
 
+#ifdef _MSC_VER
+    // why?
+    RenderRecorder(const RenderRecorder&) = delete;
+    RenderRecorder(RenderRecorder&&) noexcept = default;
+    ~RenderRecorder() = default;
+
+    RenderRecorder& operator=(const RenderRecorder&) = delete;
+    RenderRecorder& operator=(RenderRecorder&&) noexcept = default;
+#endif
+
     void update_view(const Mat4F& view_matrix, const RectF& viewport);
     void record(const RenderObject& object);
 
