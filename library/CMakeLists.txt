@@ -150,6 +150,8 @@ add_library(gf2graphics0
   graphics/Buffer.cc
   graphics/CommandBuffer.cc
   graphics/Descriptor.cc
+  graphics/Entity.cc
+  graphics/EntityContainer.cc
   graphics/Event.cc
   graphics/FontAtlas.cc
   graphics/Format.cc
@@ -157,12 +159,16 @@ add_library(gf2graphics0
   graphics/GraphicsInitializer.cc
   graphics/Keyboard.cc
   graphics/Mouse.cc
-  graphics/Pipeline.cc
   graphics/Renderer.cc
+  graphics/RenderPipeline.cc
+  graphics/RenderRecorder.cc
   graphics/RenderTarget.cc
+  graphics/Scene.cc
+  graphics/SceneManager.cc
   graphics/Shader.cc
   graphics/ShaderData.cc
   graphics/Sprite.cc
+  graphics/SpriteEntity.cc
   graphics/Text.cc
   graphics/Texture.cc
   graphics/TiledMap.cc

@@ -10,6 +10,7 @@
 
 #include "Buffer.h"
 #include "GraphicsApi.h"
+#include "RenderObject.h"
 
 namespace gf {
   class Renderer;
@@ -21,6 +22,8 @@ namespace gf {
     Sprite(const Texture* texture, RectF texture_region, Renderer* renderer);
     Sprite(const Texture* texture, Renderer* renderer);
     Sprite(const Texture* texture, const SpriteData& data, Renderer* renderer);
+
+    RenderGeometry geometry() const;
 
     const Texture* texture() const
     {

@@ -118,3 +118,19 @@ target_include_directories(07-animation
   PRIVATE
     ${CMAKE_CURRENT_BINARY_DIR}
 )
+
+# 10-sprite
+
+add_executable(10-sprite
+  10-sprite.cc
+)
+
+target_link_libraries(10-sprite
+  PRIVATE
+    gf2graphics0
+)
+
+target_include_directories(10-sprite
+  PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
+)

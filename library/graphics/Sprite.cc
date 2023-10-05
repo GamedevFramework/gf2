@@ -52,4 +52,14 @@ namespace gf {
   {
   }
 
+  RenderGeometry Sprite::geometry() const
+  {
+    RenderGeometry geometry = {};
+    geometry.vertices = &m_vertices;
+    geometry.indices = &m_indices;
+    geometry.count = m_indices.count();
+    geometry.texture = m_texture;
+    return geometry;
+  }
+
 }

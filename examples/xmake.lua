@@ -52,4 +52,11 @@ if has_config("examples") then
         add_files("07-animation.cc")
         add_deps("gf2graphics0")
         add_includedirs("$(buildir)/config/examples")
+
+    target("10-sprite")
+        set_kind("binary")
+        add_files("10-sprite.cc")
+        add_deps("gf2graphics0")
+        add_includedirs("$(buildir)/config/examples")
+
 end
