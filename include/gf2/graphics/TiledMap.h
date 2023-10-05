@@ -3,7 +3,6 @@
 #ifndef GF_TILED_MAP_H
 #define GF_TILED_MAP_H
 
-#include <array>
 #include <string_view>
 
 #include <gf2/core/AnyGrid.h>
@@ -14,9 +13,6 @@
 
 #include "Buffer.h"
 #include "GraphicsApi.h"
-#include "Vertex.h"
-
-#include "gf2/core/Mat3.h"
 
 namespace gf {
   class Renderer;
@@ -37,6 +33,15 @@ namespace gf {
   class GF_GRAPHICS_API TiledMap {
   public:
     TiledMap(std::vector<const Texture*> textures, const TiledMapData& data, Renderer* renderer);
+#ifdef _MSC_VER
+    // why?
+    TiledMap(const TiledMap&) = delete;
+    TiledMap(TiledMap&&) noexcept = default;
+    ~TiledMap() = default;
+
+    TiledMap& operator=(const TiledMap&) = delete;
+    TiledMap& operator=(TiledMap&&) noexcept = default;
+#endif
 
     void select_group(Vec2I position, std::string_view path, Flags<TiledMapQuery> query = All);
 
