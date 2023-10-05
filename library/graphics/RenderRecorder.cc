@@ -7,8 +7,6 @@
 
 #include <cassert>
 
-#include <gf2/graphics/Buffer.h>
-
 namespace gf {
 
   RenderRecorder::RenderRecorder(Renderer* renderer)

@@ -10,6 +10,7 @@
 #include <gf2/core/Mat4.h>
 #include <gf2/core/Rect.h>
 
+#include "Buffer.h"
 #include "GraphicsApi.h"
 #include "RenderObject.h"
 
