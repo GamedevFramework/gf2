@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/graphics/Pipeline.h>
+#include <gf2/graphics/RenderPipeline.h>
 // clang-format on
 
 #include <algorithm>
@@ -17,36 +17,110 @@
 
 namespace gf {
   /*
-   * Pipeline
+   * RenderPipelineLayout
    */
 
-  Pipeline::Pipeline(Pipeline&& other) noexcept
+  RenderPipelineLayout::RenderPipelineLayout(RenderPipelineLayout&& other) noexcept
   : m_device(std::exchange(other.m_device, VK_NULL_HANDLE))
   , m_pipeline_layout(std::exchange(other.m_pipeline_layout, VK_NULL_HANDLE))
-  , m_pipeline(std::exchange(other.m_pipeline, VK_NULL_HANDLE))
   {
   }
 
-  Pipeline::~Pipeline()
+  RenderPipelineLayout::~RenderPipelineLayout()
   {
-    if (m_pipeline != VK_NULL_HANDLE) {
-      vkDestroyPipeline(m_device, m_pipeline, nullptr);
-    }
-
     if (m_pipeline_layout != VK_NULL_HANDLE) {
       vkDestroyPipelineLayout(m_device, m_pipeline_layout, nullptr);
     }
   }
 
-  Pipeline& Pipeline::operator=(Pipeline&& other) noexcept
+  RenderPipelineLayout& RenderPipelineLayout::operator=(RenderPipelineLayout&& other) noexcept
   {
     std::swap(m_device, other.m_device);
     std::swap(m_pipeline_layout, other.m_pipeline_layout);
+    return *this;
+  }
+
+  void RenderPipelineLayout::set_debug_name(const std::string& name) const
+  {
+    VkDebugUtilsObjectNameInfoEXT name_info = {};
+    name_info.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_OBJECT_NAME_INFO_EXT;
+    name_info.pObjectName = name.c_str();
+    name_info.objectType = VK_OBJECT_TYPE_PIPELINE_LAYOUT;
+    name_info.objectHandle = details::to_debug_handle(m_pipeline_layout);
+
+    vkSetDebugUtilsObjectNameEXT(m_device, &name_info);
+  }
+
+  /*
+   * RenderPipelineLayoutBuilder
+   */
+
+  RenderPipelineLayout RenderPipelineLayoutBuilder::build(Renderer* renderer)
+  {
+    // descriptor set layout
+
+    std::vector<VkDescriptorSetLayout> descriptor_set_layouts;
+    std::transform(m_descriptor_layouts.begin(), m_descriptor_layouts.end(), std::back_inserter(descriptor_set_layouts), [](auto* layout) {
+      return layout->m_layout;
+    });
+
+    // push constant
+
+    VkPushConstantRange push_constant_range = {};
+    bool has_push_constant = false;
+
+    if (m_push_constant.size > 0) {
+      push_constant_range.stageFlags = static_cast<VkShaderStageFlags>(m_push_constant.stage);
+      push_constant_range.offset = 0;
+      push_constant_range.size = static_cast<uint32_t>(m_push_constant.size);
+
+      has_push_constant = true;
+    }
+
+    // pipeline layout
+
+    VkPipelineLayoutCreateInfo pipeline_layout_create_info = {};
+    pipeline_layout_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+    pipeline_layout_create_info.setLayoutCount = descriptor_set_layouts.empty() ? 0 : static_cast<uint32_t>(descriptor_set_layouts.size());
+    pipeline_layout_create_info.pSetLayouts = descriptor_set_layouts.empty() ? nullptr : descriptor_set_layouts.data();
+    pipeline_layout_create_info.pushConstantRangeCount = has_push_constant ? 1 : 0;
+    pipeline_layout_create_info.pPushConstantRanges = has_push_constant ? &push_constant_range : nullptr;
+
+    VkPipelineLayout pipeline_layout = VK_NULL_HANDLE;
+
+    if (vkCreatePipelineLayout(renderer->m_device, &pipeline_layout_create_info, nullptr, &pipeline_layout) != VK_SUCCESS) {
+      Log::error("Failed to create pipeline layout.");
+      throw std::runtime_error("Failed to create pipeline layout.");
+    }
+
+    return { renderer->m_device, pipeline_layout };
+  }
+
+  /*
+   * RenderPipeline
+   */
+
+  RenderPipeline::RenderPipeline(RenderPipeline&& other) noexcept
+  : m_device(std::exchange(other.m_device, VK_NULL_HANDLE))
+  , m_pipeline(std::exchange(other.m_pipeline, VK_NULL_HANDLE))
+  {
+  }
+
+  RenderPipeline::~RenderPipeline()
+  {
+    if (m_pipeline != VK_NULL_HANDLE) {
+      vkDestroyPipeline(m_device, m_pipeline, nullptr);
+    }
+  }
+
+  RenderPipeline& RenderPipeline::operator=(RenderPipeline&& other) noexcept
+  {
+    std::swap(m_device, other.m_device);
     std::swap(m_pipeline, other.m_pipeline);
     return *this;
   }
 
-  void Pipeline::set_debug_name(const std::string& name) const
+  void RenderPipeline::set_debug_name(const std::string& name) const
   {
     VkDebugUtilsObjectNameInfoEXT name_info = {};
     name_info.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_OBJECT_NAME_INFO_EXT;
@@ -56,18 +130,13 @@ namespace gf {
     name_info.objectHandle = details::to_debug_handle(m_pipeline);
 
     vkSetDebugUtilsObjectNameEXT(m_device, &name_info);
-
-    name_info.objectType = VK_OBJECT_TYPE_PIPELINE_LAYOUT;
-    name_info.objectHandle = details::to_debug_handle(m_pipeline_layout);
-
-    vkSetDebugUtilsObjectNameEXT(m_device, &name_info);
   }
 
   /*
-   * PipelineBuilder
+   * RenderPipelineBuilder
    */
 
-  Pipeline PipelineBuilder::build(Renderer* renderer)
+  RenderPipeline RenderPipelineBuilder::build(Renderer* renderer)
   {
     // shaders
 
@@ -189,41 +258,6 @@ namespace gf {
     color_blending_state_create_info.blendConstants[2] = 0.0f;
     color_blending_state_create_info.blendConstants[3] = 0.0f;
 
-    // descriptor set layout
-
-    std::vector<VkDescriptorSetLayout> descriptor_set_layouts;
-    std::transform(m_descriptor_layouts.begin(), m_descriptor_layouts.end(), std::back_inserter(descriptor_set_layouts), [](auto* layout) {
-      return layout->m_layout;
-    });
-
-    // push constant
-
-    VkPushConstantRange push_constant_range = {};
-    bool has_push_constant = false;
-
-    if (m_push_constant.size > 0) {
-      push_constant_range.stageFlags = static_cast<VkShaderStageFlags>(m_push_constant.stage);
-      push_constant_range.offset = 0;
-      push_constant_range.size = static_cast<uint32_t>(m_push_constant.size);
-
-      has_push_constant = true;
-    }
-
-    // pipeline layout
-
-    VkPipelineLayoutCreateInfo pipeline_layout_create_info = {};
-    pipeline_layout_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-    pipeline_layout_create_info.setLayoutCount = descriptor_set_layouts.empty() ? 0 : static_cast<uint32_t>(descriptor_set_layouts.size());
-    pipeline_layout_create_info.pSetLayouts = descriptor_set_layouts.empty() ? nullptr : descriptor_set_layouts.data();
-    pipeline_layout_create_info.pushConstantRangeCount = has_push_constant ? 1 : 0;
-    pipeline_layout_create_info.pPushConstantRanges = has_push_constant ? &push_constant_range : nullptr;
-
-    VkPipelineLayout pipeline_layout = VK_NULL_HANDLE;
-
-    if (vkCreatePipelineLayout(renderer->m_device, &pipeline_layout_create_info, nullptr, &pipeline_layout) != VK_SUCCESS) {
-      Log::error("Failed to create pipeline layout.");
-      throw std::runtime_error("Failed to create pipeline layout.");
-    }
 
     // pipeline rendering
 
@@ -252,7 +286,7 @@ namespace gf {
     pipeline_create_info.pColorBlendState = &color_blending_state_create_info;
     pipeline_create_info.pDynamicState = &dynamic_state_create_info;
 
-    pipeline_create_info.layout = pipeline_layout;
+    pipeline_create_info.layout = m_pipeline_layout->m_pipeline_layout;
 
     VkPipeline pipeline = VK_NULL_HANDLE;
 
@@ -261,7 +295,7 @@ namespace gf {
       throw std::runtime_error("Failed to create pipeline.");
     }
 
-    return { renderer->m_device, pipeline_layout, pipeline };
+    return { renderer->m_device, pipeline };
   }
 
 }

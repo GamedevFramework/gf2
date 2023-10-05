@@ -15,6 +15,7 @@
 
 #include <gf2/graphics/ShaderData.h>
 #include <gf2/graphics/Vertex.h>
+#include "gf2/graphics/RenderPipeline.h"
 
 #define VMA_IMPLEMENTATION
 #include <vk_mem_alloc.h>
@@ -855,72 +856,89 @@ namespace gf {
 
     m_sampler_descriptor = DescriptorLayout(sampler_binding, this);
 
+    // simple pipeline layout
+
+    RenderPipelineLayoutBuilder simple_pipeline_layout_builder;
+
+    simple_pipeline_layout_builder.set_push_constant_parameters(ShaderStage::Vertex, sizeof(ShaderDataType<Mat3F>))
+        .add_descriptor_layout(&m_camera_descriptor);
+
+    m_simple_pipeline_layout = simple_pipeline_layout_builder.build(this);
+    m_simple_pipeline_layout.set_debug_name("Simple Pipeline Layout");
+
+    // default pipeline layout
+
+    RenderPipelineLayoutBuilder default_pipeline_layout_builder;
+
+    default_pipeline_layout_builder.set_push_constant_parameters(ShaderStage::Vertex, sizeof(ShaderDataType<Mat3F>))
+        .add_descriptor_layout(&m_camera_descriptor)
+        .add_descriptor_layout(&m_sampler_descriptor);
+
+    m_default_pipeline_layout = default_pipeline_layout_builder.build(this);
+    m_default_pipeline_layout.set_debug_name("Default Pipeline Layout");
+
+    // fullscreen pipeline layout
+
+    RenderPipelineLayoutBuilder fullscreen_pipeline_layout_builder;
+    fullscreen_pipeline_layout_builder.add_descriptor_layout(&m_sampler_descriptor);
+    m_fullscreen_pipeline_layout = fullscreen_pipeline_layout_builder.build(this);
+    m_fullscreen_pipeline_layout.set_debug_name("Fullscreen Pipeline Layout");
+
     // simple pipeline
 
-    gf::Shader simple_vertex_shader(gf::span(simple_vert_shader_code), { ShaderStage::Vertex, this });
-    gf::Shader simple_fragment_shader(gf::span(simple_frag_shader_code), { ShaderStage::Fragment, this });
+    Shader simple_vertex_shader(gf::span(simple_vert_shader_code), { ShaderStage::Vertex, this });
+    Shader simple_fragment_shader(gf::span(simple_frag_shader_code), { ShaderStage::Fragment, this });
 
-    PipelineBuilder simple_pipeline_builder;
+    RenderPipelineBuilder simple_pipeline_builder;
 
     simple_pipeline_builder.set_vertex_input(SimpleVertex::compute_input())
-        .set_push_constant_parameters(ShaderStage::Vertex, sizeof(ShaderDataType<Mat3F>))
         .add_shader(&simple_vertex_shader)
         .add_shader(&simple_fragment_shader)
-        .add_descriptor_layout(&m_camera_descriptor);
+        .set_pipeline_layout(&m_simple_pipeline_layout);
 
     m_simple_pipeline = simple_pipeline_builder.build(this);
     m_simple_pipeline.set_debug_name("Simple Pipeline");
 
     // default pipeline
 
-    gf::Shader default_vertex_shader(gf::span(default_vert_shader_code), { ShaderStage::Vertex, this });
-    gf::Shader default_fragment_shader(gf::span(default_frag_shader_code), { ShaderStage::Fragment, this });
+    Shader default_vertex_shader(gf::span(default_vert_shader_code), { ShaderStage::Vertex, this });
+    Shader default_fragment_shader(gf::span(default_frag_shader_code), { ShaderStage::Fragment, this });
 
-    PipelineBuilder default_pipeline_builder;
+    RenderPipelineBuilder default_pipeline_builder;
 
     default_pipeline_builder.set_vertex_input(Vertex::compute_input())
-        .set_push_constant_parameters(ShaderStage::Vertex, sizeof(ShaderDataType<Mat3F>))
         .add_shader(&default_vertex_shader)
         .add_shader(&default_fragment_shader)
-        .add_descriptor_layout(&m_camera_descriptor)
-        .add_descriptor_layout(&m_sampler_descriptor);
+        .set_pipeline_layout(&m_default_pipeline_layout)
+        ;
 
     m_default_pipeline = default_pipeline_builder.build(this);
     m_default_pipeline.set_debug_name("Default Pipeline");
 
-    // triangle strip pipeline
-
-    default_pipeline_builder.set_primitive_topology(PrimitiveTopology::TriangleStrip);
-
-    m_triangle_strip_pipeline = default_pipeline_builder.build(this);
-    m_triangle_strip_pipeline.set_debug_name("Triangle Strip Pipeline");
-
     // text pipeline
 
-    gf::Shader text_fragment_shader(gf::span(text_frag_shader_code), { ShaderStage::Fragment, this });
+    Shader text_fragment_shader(gf::span(text_frag_shader_code), { ShaderStage::Fragment, this });
 
-    PipelineBuilder text_pipeline_builder;
+    RenderPipelineBuilder text_pipeline_builder;
 
     text_pipeline_builder.set_vertex_input(Vertex::compute_input())
-        .set_push_constant_parameters(ShaderStage::Vertex, sizeof(ShaderDataType<Mat3F>))
         .add_shader(&default_vertex_shader)
         .add_shader(&text_fragment_shader)
-        .add_descriptor_layout(&m_camera_descriptor)
-        .add_descriptor_layout(&m_sampler_descriptor);
+        .set_pipeline_layout(&m_default_pipeline_layout);
 
     m_text_pipeline = text_pipeline_builder.build(this);
     m_text_pipeline.set_debug_name("Text Pipeline");
 
     // fullscreen pipeline
 
-    gf::Shader fullscreen_vertex_shader(gf::span(fullscreen_vert_shader_code), { ShaderStage::Vertex, this });
-    gf::Shader fullscreen_fragment_shader(gf::span(fullscreen_frag_shader_code), { ShaderStage::Fragment, this });
+    Shader fullscreen_vertex_shader(gf::span(fullscreen_vert_shader_code), { ShaderStage::Vertex, this });
+    Shader fullscreen_fragment_shader(gf::span(fullscreen_frag_shader_code), { ShaderStage::Fragment, this });
 
-    PipelineBuilder fullscreen_pipeline_builder;
+    RenderPipelineBuilder fullscreen_pipeline_builder;
 
     fullscreen_pipeline_builder.add_shader(&fullscreen_vertex_shader)
         .add_shader(&fullscreen_fragment_shader)
-        .add_descriptor_layout(&m_sampler_descriptor);
+        .set_pipeline_layout(&m_fullscreen_pipeline_layout);
 
     m_fullscreen_pipeline = fullscreen_pipeline_builder.build(this);
     m_fullscreen_pipeline.set_debug_name("Fullscreen Pipeline");

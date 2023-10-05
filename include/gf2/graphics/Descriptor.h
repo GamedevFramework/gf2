@@ -41,7 +41,7 @@ namespace gf {
 
   private:
     friend class BasicRenderer;
-    friend class PipelineBuilder;
+    friend class RenderPipelineLayoutBuilder;
 
     VkDevice m_device = VK_NULL_HANDLE; // non-owning
     VkDescriptorSetLayout m_layout = VK_NULL_HANDLE;

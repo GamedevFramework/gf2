@@ -41,7 +41,7 @@ namespace gf {
     }
 
   private:
-    friend class PipelineBuilder;
+    friend class RenderPipelineBuilder;
 
     void load_code(Span<const uint32_t> code, VkDevice device);
 

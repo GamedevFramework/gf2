@@ -17,7 +17,7 @@
 #include "CommandBuffer.h"
 #include "Descriptor.h"
 #include "GraphicsApi.h"
-#include "Pipeline.h"
+#include "RenderPipeline.h"
 #include "RenderTarget.h"
 #include "Vulkan.h"
 #include "Window.h"
@@ -69,7 +69,8 @@ namespace gf {
   private:
     friend class Buffer;
     friend class DescriptorLayout;
-    friend class PipelineBuilder;
+    friend class RenderPipelineBuilder;
+    friend class RenderPipelineLayoutBuilder;
     friend class Shader;
     friend class Texture;
 
@@ -162,27 +163,37 @@ namespace gf {
       return &m_sampler_descriptor;
     }
 
-    const Pipeline* simple_pipeline() const
+    const RenderPipelineLayout* simple_pipeline_layout() const
+    {
+      return &m_simple_pipeline_layout;
+    }
+
+    const RenderPipelineLayout* default_pipeline_layout() const
+    {
+      return &m_default_pipeline_layout;
+    }
+
+    const RenderPipelineLayout* fullscreen_pipeline_layout() const
+    {
+      return &m_fullscreen_pipeline_layout;
+    }
+
+    const RenderPipeline* simple_pipeline() const
     {
       return &m_simple_pipeline;
     }
 
-    const Pipeline* default_pipeline() const
+    const RenderPipeline* default_pipeline() const
     {
       return &m_default_pipeline;
     }
 
-    const Pipeline* triangle_strip_pipeline() const
-    {
-      return &m_triangle_strip_pipeline;
-    }
-
-    const Pipeline* text_pipeline() const
+    const RenderPipeline* text_pipeline() const
     {
       return &m_text_pipeline;
     }
 
-    const Pipeline* fullscreen_pipeline() const
+    const RenderPipeline* fullscreen_pipeline() const
     {
       return &m_fullscreen_pipeline;
     }
@@ -193,11 +204,14 @@ namespace gf {
     DescriptorLayout m_camera_descriptor;
     DescriptorLayout m_sampler_descriptor;
 
-    Pipeline m_simple_pipeline;
-    Pipeline m_default_pipeline;
-    Pipeline m_triangle_strip_pipeline;
-    Pipeline m_text_pipeline;
-    Pipeline m_fullscreen_pipeline;
+    RenderPipelineLayout m_simple_pipeline_layout;
+    RenderPipelineLayout m_default_pipeline_layout;
+    RenderPipelineLayout m_fullscreen_pipeline_layout;
+
+    RenderPipeline m_simple_pipeline;
+    RenderPipeline m_default_pipeline;
+    RenderPipeline m_text_pipeline;
+    RenderPipeline m_fullscreen_pipeline;
   };
 
 }

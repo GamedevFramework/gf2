@@ -19,7 +19,8 @@
 
 namespace gf {
   class Buffer;
-  class Pipeline;
+  class RenderPipeline;
+  class RenderPipelineLayout;
 
   class GF_GRAPHICS_API RenderCommandBuffer {
   public:
@@ -27,16 +28,16 @@ namespace gf {
     void set_viewport(RectF viewport) const;
     void set_scissor(RectI scissor) const;
 
-    void bind_pipeline(const Pipeline* pipeline) const;
+    void bind_pipeline(const RenderPipeline* pipeline) const;
     void bind_vertex_buffer(const Buffer* buffer, std::size_t offset = 0) const;
     void bind_index_buffer(const Buffer* buffer, std::size_t offset = 0) const;
 
-    void bind_descriptor(const Pipeline* pipeline, uint32_t set, Descriptor descriptor) const;
+    void bind_descriptor(const RenderPipelineLayout* pipeline, uint32_t set, Descriptor descriptor) const;
 
-    void push_constant(const Pipeline* pipeline, ShaderStage stage, std::size_t size, const void* data) const;
+    void push_constant(const RenderPipelineLayout* pipeline, ShaderStage stage, std::size_t size, const void* data) const;
 
     template<typename T>
-    void push_constant(const Pipeline* pipeline, ShaderStage stage, const T* data) const
+    void push_constant(const RenderPipelineLayout* pipeline, ShaderStage stage, const T* data) const
     {
       if constexpr (std::is_same_v<T, ShaderDataType<T>>) {
         push_constant(pipeline, stage, sizeof(T), data);

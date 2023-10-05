@@ -71,14 +71,15 @@ int main()
       render_command_buffer.set_scissor(scissor);
 
       const auto* pipeline = renderer.simple_pipeline();
+      const auto* pipeline_layout = renderer.simple_pipeline_layout();
 
       auto descriptor = renderer.allocate_descriptor_for_layout(renderer.camera_descriptor());
       descriptor.write(0, &camera_buffer);
-      render_command_buffer.bind_descriptor(pipeline, 0, descriptor);
+      render_command_buffer.bind_descriptor(pipeline_layout, 0, descriptor);
 
       render_command_buffer.bind_pipeline(pipeline);
 
-      render_command_buffer.push_constant(pipeline, gf::ShaderStage::Vertex, &identity);
+      render_command_buffer.push_constant(pipeline_layout, gf::ShaderStage::Vertex, &identity);
 
       render_command_buffer.bind_vertex_buffer(&vertex_buffer);
       render_command_buffer.bind_index_buffer(&index_buffer);

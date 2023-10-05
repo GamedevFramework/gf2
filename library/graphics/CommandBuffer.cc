@@ -8,7 +8,7 @@
 #include <cassert>
 
 #include <gf2/graphics/Buffer.h>
-#include <gf2/graphics/Pipeline.h>
+#include <gf2/graphics/RenderPipeline.h>
 
 namespace gf {
 
@@ -89,7 +89,7 @@ namespace gf {
     vkCmdSetScissor(m_command_buffer, 0, 1, &device_scissor);
   }
 
-  void RenderCommandBuffer::bind_pipeline(const Pipeline* pipeline) const
+  void RenderCommandBuffer::bind_pipeline(const RenderPipeline* pipeline) const
   {
     assert(pipeline);
     vkCmdBindPipeline(m_command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->m_pipeline);
@@ -109,13 +109,13 @@ namespace gf {
     vkCmdBindIndexBuffer(m_command_buffer, buffer->m_buffer, device_offset, VK_INDEX_TYPE_UINT16);
   }
 
-  void RenderCommandBuffer::bind_descriptor(const Pipeline* pipeline, uint32_t set, Descriptor descriptor) const
+  void RenderCommandBuffer::bind_descriptor(const RenderPipelineLayout* pipeline, uint32_t set, Descriptor descriptor) const
   {
     assert(pipeline);
     vkCmdBindDescriptorSets(m_command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->m_pipeline_layout, set, 1, &descriptor.m_descriptor, 0, nullptr);
   }
 
-  void RenderCommandBuffer::push_constant(const Pipeline* pipeline, ShaderStage stage, std::size_t size, const void* data) const
+  void RenderCommandBuffer::push_constant(const RenderPipelineLayout* pipeline, ShaderStage stage, std::size_t size, const void* data) const
   {
     assert(pipeline);
     assert(size % 4 == 0);

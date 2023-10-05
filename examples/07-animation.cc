@@ -110,20 +110,21 @@ int main()
       render_command_buffer.set_scissor(scissor);
 
       const auto* pipeline = renderer.default_pipeline();
+      const auto* pipeline_layout = renderer.default_pipeline_layout();
 
       render_command_buffer.bind_pipeline(pipeline);
 
       auto camera_descriptor = renderer.allocate_descriptor_for_layout(renderer.camera_descriptor());
       camera_descriptor.write(0, &camera_buffer);
-      render_command_buffer.bind_descriptor(pipeline, 0, camera_descriptor);
+      render_command_buffer.bind_descriptor(pipeline_layout, 0, camera_descriptor);
 
       auto sampler_descriptor = renderer.allocate_descriptor_for_layout(renderer.sampler_descriptor());
       sampler_descriptor.write(0, sprite.texture());
-      render_command_buffer.bind_descriptor(pipeline, 1, sampler_descriptor);
+      render_command_buffer.bind_descriptor(pipeline_layout, 1, sampler_descriptor);
 
       const gf::Mat3F model_matrix = transform.compute_matrix(sprite.bounds());
 
-      render_command_buffer.push_constant(pipeline, gf::ShaderStage::Vertex, &model_matrix);
+      render_command_buffer.push_constant(pipeline_layout, gf::ShaderStage::Vertex, &model_matrix);
 
       render_command_buffer.bind_vertex_buffer(sprite.vertices());
       render_command_buffer.bind_index_buffer(sprite.indices());
