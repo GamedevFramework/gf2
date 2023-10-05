@@ -87,6 +87,8 @@ namespace gf {
     void construct_descriptors();
     void destroy_descriptors();
 
+    void finish_staging_buffers();
+
     SDL_Window* m_window = nullptr; // non-owning
 
     // device stuff

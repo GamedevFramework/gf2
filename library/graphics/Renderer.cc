@@ -114,6 +114,9 @@ namespace gf {
   BasicRenderer::~BasicRenderer()
   {
     vkDeviceWaitIdle(m_device);
+
+    finish_staging_buffers();
+
     destroy_descriptors();
     destroy_synchronization();
     destroy_commands();
@@ -793,6 +796,15 @@ namespace gf {
   {
     for (VkDescriptorPool descriptor_pool : m_descriptor_pools) {
       vkDestroyDescriptorPool(m_device, descriptor_pool, nullptr);
+    }
+  }
+
+  void BasicRenderer::finish_staging_buffers()
+  {
+    for (auto& staging_buffers : m_staging_buffers) {
+      for (auto staging_buffer : staging_buffers) {
+        vmaDestroyBuffer(m_allocator, staging_buffer.m_buffer, staging_buffer.m_allocation);
+      }
     }
   }
 
