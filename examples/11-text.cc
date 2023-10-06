@@ -17,7 +17,7 @@ int main()
   const std::filesystem::path assets_directory = GF_EXAMPLE_ASSETS_DIRECTORY;
   const std::filesystem::path font_file = assets_directory / "Oxanium-Regular.ttf";
 
-  gf::SingleSceneManager scene_manager("10-sprite | gf2", gf::vec(1600, 900));
+  gf::SingleSceneManager scene_manager("11-text | gf2", gf::vec(1600, 900));
 
   gf::FontManager font_manager;
   gf::Font font(font_file, &font_manager);

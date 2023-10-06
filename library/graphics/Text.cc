@@ -198,7 +198,7 @@ namespace gf {
     RawTextGeometry compute_geometry(const std::vector<Paragraph>& paragraphs, FontAtlas* atlas, const TextData& data)
     {
       RawTextGeometry geometry;
-      Color linear_color = gf::srgb_to_linear(data.color);
+      const Color linear_color = gf::srgb_to_linear(data.color);
 
       const float line_height = atlas->line_spacing(data.character_size) * data.line_spacing_factor;
 
