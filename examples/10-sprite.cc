@@ -16,8 +16,6 @@ int main()
 
   constexpr gf::Vec2I WindowSize = gf::vec(1600, 900);
 
-  const gf::GraphicsInitializer graphics;
-
   gf::SingleSceneManager scene_manager("10-sprite | gf2", WindowSize);
 
   const gf::Texture texture(texture_file, scene_manager.renderer());

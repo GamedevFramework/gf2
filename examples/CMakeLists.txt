@@ -134,3 +134,19 @@ target_include_directories(10-sprite
   PRIVATE
     ${CMAKE_CURRENT_BINARY_DIR}
 )
+
+# 11-text
+
+add_executable(11-text
+  11-text.cc
+)
+
+target_link_libraries(11-text
+  PRIVATE
+    gf2graphics0
+)
+
+target_include_directories(11-text
+  PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
+)

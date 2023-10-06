@@ -159,7 +159,7 @@ namespace gf {
       return paragraphs;
     }
 
-    struct TextGeometry {
+    struct RawTextGeometry {
       std::vector<Vertex> vertices;
       std::vector<uint16_t> indices;
       std::vector<Vertex> outline_vertices;
@@ -195,9 +195,10 @@ namespace gf {
       indices.push_back(index + 3);
     }
 
-    TextGeometry compute_geometry(const std::vector<Paragraph>& paragraphs, FontAtlas* atlas, const TextData& data)
+    RawTextGeometry compute_geometry(const std::vector<Paragraph>& paragraphs, FontAtlas* atlas, const TextData& data)
     {
-      TextGeometry geometry;
+      RawTextGeometry geometry;
+      Color linear_color = gf::srgb_to_linear(data.color);
 
       const float line_height = atlas->line_spacing(data.character_size) * data.line_spacing_factor;
 
@@ -227,7 +228,7 @@ namespace gf {
 
               auto glyph = atlas->glyph(curr_codepoint, data.character_size);
               const RectF texture_region = atlas->texture_region(curr_codepoint, data.character_size);
-              compute_vertices(geometry.vertices, geometry.indices, glyph.bounds, texture_region, position, data.color);
+              compute_vertices(geometry.vertices, geometry.indices, glyph.bounds, texture_region, position, linear_color);
 
               if (data.outline_thickness == 0.0f) {
                 min = gf::min(min, position + glyph.bounds.position_at(Orientation::NorthWest));
@@ -281,6 +282,35 @@ namespace gf {
     }
 
     m_bounds = geometry.bounds;
+  }
+
+  TextGeometry Text::geometry()
+  {
+    TextGeometry geometry;
+
+    RenderGeometry text;
+    text.pipeline = RenderPipelineType::Text;
+    text.texture = m_atlas->texture();
+    text.vertices = &m_vertices;
+    text.indices = &m_indices;
+    text.count = m_indices.count();
+
+    geometry.text = text;
+
+    if (m_outline_vertices.has_value()) {
+      assert(m_outline_indices.has_value());
+
+      RenderGeometry outline;
+      outline.pipeline = RenderPipelineType::Text;
+      outline.texture = m_atlas->texture();
+      outline.vertices = &m_outline_vertices.value();
+      outline.indices = &m_outline_indices.value();
+      outline.count = m_outline_indices.value().count();
+
+      geometry.outline = outline;
+    }
+
+    return geometry;
   }
 
 }

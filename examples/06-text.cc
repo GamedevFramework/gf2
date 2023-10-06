@@ -25,18 +25,18 @@ int main()
   constexpr gf::Vec2I WindowSize = gf::vec(1600, 900);
 
   const gf::GraphicsInitializer graphics;
-  gf::FontManager font_manager;
 
   gf::Window window("06-text | gf2", WindowSize);
   gf::Renderer renderer(&window);
 
+  gf::FontManager font_manager;
   gf::Font font(font_file, &font_manager);
   gf::FontAtlas font_atlas(&font, gf::vec(2048, 2048), &renderer);
 
   gf::TextData text_data;
   text_data.content = "Gamedev Framework 2";
   text_data.character_size = 64;
-  text_data.color = gf::srgb_to_linear(gf::darker(gf::Azure, 0.2f));
+  text_data.color = gf::darker(gf::Azure, 0.2f);
 
   const gf::Text text(&font_atlas, text_data, &renderer);
 

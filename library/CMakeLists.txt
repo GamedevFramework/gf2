@@ -170,6 +170,7 @@ add_library(gf2graphics0
   graphics/Sprite.cc
   graphics/SpriteEntity.cc
   graphics/Text.cc
+  graphics/TextEntity.cc
   graphics/Texture.cc
   graphics/TiledMap.cc
   graphics/Touch.cc

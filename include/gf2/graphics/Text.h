@@ -11,13 +11,21 @@
 #include "Buffer.h"
 #include "FontAtlas.h"
 #include "GraphicsApi.h"
+#include "RenderObject.h"
 
 namespace gf {
   class Renderer;
 
+  struct TextGeometry {
+    RenderGeometry text;
+    std::optional<RenderGeometry> outline;
+  };
+
   class GF_GRAPHICS_API Text {
   public:
     Text(FontAtlas* atlas, const TextData& data, Renderer* renderer);
+
+    TextGeometry geometry();
 
     const Texture* texture() const
     {

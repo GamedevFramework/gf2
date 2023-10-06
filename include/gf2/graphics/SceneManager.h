@@ -11,6 +11,7 @@
 
 #include "CommandBuffer.h"
 #include "GraphicsApi.h"
+#include "GraphicsInitializer.h"
 #include "Renderer.h"
 #include "Window.h"
 
@@ -36,6 +37,7 @@ namespace gf {
     void render_objects(RenderCommandBuffer command_buffer, const RenderRecorder& recorder);
 
   private:
+    GraphicsInitializer m_initializer;
     Window m_window;
     Renderer m_renderer;
   };
