@@ -14,9 +14,7 @@ int main()
   const std::filesystem::path assets_directory = GF_EXAMPLE_ASSETS_DIRECTORY;
   const std::filesystem::path texture_file = assets_directory / "root_company_game_over.jpg";
 
-  constexpr gf::Vec2I WindowSize = gf::vec(1600, 900);
-
-  gf::SingleSceneManager scene_manager("10-sprite | gf2", WindowSize);
+  gf::SingleSceneManager scene_manager("10-sprite | gf2", gf::vec(1600, 900));
 
   const gf::Texture texture(texture_file, scene_manager.renderer());
   gf::SpriteEntity sprite_entity(&texture, scene_manager.renderer());
