@@ -25,7 +25,7 @@ namespace gf {
   public:
     Text(FontAtlas* atlas, const TextData& data, Renderer* renderer);
 
-    TextGeometry geometry();
+    TextGeometry geometry() const;
 
     const Texture* texture() const
     {

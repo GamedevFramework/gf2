@@ -21,12 +21,14 @@ namespace gf {
 
     if (text_geometry.outline.has_value()) {
       RenderObject object = {};
+      object.priority = priority();
       object.geometry = text_geometry.outline.value();
       object.transform = model_matrix;
       recorder.record(object);
     }
 
     RenderObject object = {};
+    object.priority = priority();
     object.geometry = text_geometry.text;
     object.transform = model_matrix;
     recorder.record(object);

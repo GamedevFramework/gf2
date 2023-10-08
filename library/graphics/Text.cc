@@ -284,7 +284,7 @@ namespace gf {
     m_bounds = geometry.bounds;
   }
 
-  TextGeometry Text::geometry()
+  TextGeometry Text::geometry() const
   {
     TextGeometry geometry;
 

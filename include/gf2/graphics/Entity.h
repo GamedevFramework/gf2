@@ -23,6 +23,16 @@ namespace gf {
     virtual void update(Time time);
     virtual void render(RenderRecorder& recorder);
 
+    int32_t priority() const
+    {
+      return m_priority;
+    }
+
+    void set_priority(int32_t priority)
+    {
+      m_priority = priority;
+    }
+
   private:
     int32_t m_priority = 0;
   };
