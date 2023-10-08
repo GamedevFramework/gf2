@@ -90,6 +90,7 @@ add_library(gf2core0
   core/Mat4.cc
   core/Move.cc
   core/Orientation.cc
+  core/Polygon.cc
   core/Property.cc
   core/PropertyMap.cc
   core/Random.cc
