@@ -23,7 +23,23 @@ namespace gf {
   BasicSceneManager::BasicSceneManager(const std::string& title, Vec2I size, Flags<WindowHints> hints)
   : m_window(title, size, hints)
   , m_renderer(&m_window)
+  , m_white(Image({ 1, 1 }, White), &m_renderer)
   {
+  }
+
+  const RenderPipeline* BasicSceneManager::render_pipeline(RenderPipelineType type) const
+  {
+    switch (type) {
+      case RenderPipelineType::Default:
+        return m_renderer.default_pipeline();
+      case RenderPipelineType::Text:
+        return m_renderer.text_pipeline();
+      default:
+        assert(false);
+        break;
+    }
+
+    return nullptr;
   }
 
   void BasicSceneManager::render_objects(RenderCommandBuffer command_buffer, const RenderRecorder& recorder)
@@ -43,28 +59,21 @@ namespace gf {
       const RenderPipeline* last_pipeline = nullptr;
       RenderObject last_object = {};
 
-      for (const auto& object : part.objects) {
+      for (auto object : part.objects) {
         // pipeline
 
         if (last_pipeline == nullptr || object.geometry.pipeline != last_object.geometry.pipeline) {
-          switch (object.geometry.pipeline) {
-            case RenderPipelineType::Default:
-              last_pipeline = m_renderer.default_pipeline();
-              break;
-            case RenderPipelineType::Text:
-              last_pipeline = m_renderer.text_pipeline();
-              break;
-            default:
-              assert(false);
-              break;
-          }
-
+          last_pipeline = render_pipeline(object.geometry.pipeline);
           command_buffer.bind_pipeline(last_pipeline);
         }
 
         // sampler
 
-        if (object.geometry.texture != nullptr && object.geometry.texture != last_object.geometry.texture) {
+        if (object.geometry.texture == nullptr) {
+          object.geometry.texture = &m_white;
+        }
+
+        if (object.geometry.texture != last_object.geometry.texture) {
           auto sampler_descriptor = m_renderer.allocate_descriptor_for_layout(m_renderer.sampler_descriptor());
           sampler_descriptor.write(0, object.geometry.texture);
           command_buffer.bind_descriptor(m_renderer.default_pipeline_layout(), 1, sampler_descriptor);

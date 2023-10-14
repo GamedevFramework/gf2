@@ -65,4 +65,8 @@ if has_config("examples") then
         add_deps("gf2graphics0")
         add_includedirs("$(buildir)/config/examples")
 
+    target("13-shape")
+        set_kind("binary")
+        add_files("13-shape.cc")
+        add_deps("gf2graphics0")
 end

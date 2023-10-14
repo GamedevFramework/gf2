@@ -22,7 +22,7 @@ namespace gf {
 
   class GF_GRAPHICS_API Shape {
   public:
-    Shape(Texture* texture, const ShapeData& data, Renderer* renderer);
+    Shape(const Texture* texture, const ShapeData& data, Renderer* renderer);
 
     ShapeGeometry geometry() const;
 
@@ -32,7 +32,7 @@ namespace gf {
     }
 
   private:
-    Texture* m_texture = nullptr;
+    const Texture* m_texture = nullptr;
     Buffer m_vertices;
     Buffer m_indices;
     std::optional<Buffer> m_outline_vertices;

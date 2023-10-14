@@ -13,6 +13,8 @@
 #include "GraphicsApi.h"
 #include "GraphicsInitializer.h"
 #include "Renderer.h"
+#include "RenderObject.h"
+#include "Texture.h"
 #include "Window.h"
 
 namespace gf {
@@ -34,12 +36,14 @@ namespace gf {
     }
 
   protected:
+    const RenderPipeline* render_pipeline(RenderPipelineType type) const;
     void render_objects(RenderCommandBuffer command_buffer, const RenderRecorder& recorder);
 
   private:
     GraphicsInitializer m_initializer;
     Window m_window;
     Renderer m_renderer;
+    Texture m_white;
   };
 
   class GF_GRAPHICS_API SingleSceneManager : public BasicSceneManager {

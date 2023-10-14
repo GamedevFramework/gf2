@@ -97,6 +97,11 @@ namespace gf {
     {
       return lo <= hi;
     }
+
+    constexpr Range skip(T count) const noexcept
+    {
+      return { details::min(lo + count, hi), hi };
+    }
   };
 
   template<typename T>
@@ -257,7 +262,7 @@ namespace gf {
     using std::end;
     using SentinelType = decltype(end(std::declval<T>()));
 
-    return Enumerate<IteratorType, SentinelType>(begin(iterable), end(iterable));
+    return Enumerate<IteratorType, SentinelType>{ begin(iterable), end(iterable) };
   }
 
 } // namespace gf
