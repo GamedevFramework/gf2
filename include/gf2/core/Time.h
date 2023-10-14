@@ -11,6 +11,8 @@
 #include "CoreApi.h"
 
 namespace gf {
+  class Serializer;
+  class Deserializer;
 
   class GF_CORE_API Time {
   public:
@@ -133,6 +135,10 @@ namespace gf {
   {
     return Time(lhs.as_duration() - rhs.as_duration());
   }
+
+  GF_CORE_API Serializer& operator|(Serializer& archive, Time time);
+  GF_CORE_API Deserializer& operator|(Deserializer& archive, Time& time);
+
 
 } // namespace gf
 

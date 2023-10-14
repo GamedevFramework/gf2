@@ -13,6 +13,7 @@
 #include "Flags.h"
 #include "Rect.h"
 #include "Time.h"
+#include "TypeTraits.h"
 
 namespace gf {
 
@@ -23,7 +24,7 @@ namespace gf {
   };
 
   template<typename Archive>
-  Archive& operator|(Archive& ar, AnimationFrameData& data)
+  Archive& operator|(Archive& ar, MaybeConst<AnimationFrameData, Archive>& data)
   {
     return ar | data.texture_index | data.texture_region | data.duration;
   }
@@ -45,7 +46,7 @@ namespace gf {
   };
 
   template<typename Archive>
-  Archive& operator|(Archive& ar, AnimationData& data)
+  Archive& operator|(Archive& ar, MaybeConst<AnimationData, Archive>& data)
   {
     return ar | data.frames | data.properties | data.color;
   }
@@ -56,7 +57,7 @@ namespace gf {
   };
 
   template<typename Archive>
-  Archive& operator|(Archive& ar, AnimationResource& resource)
+  Archive& operator|(Archive& ar, MaybeConst<AnimationResource, Archive>& resource)
   {
     return ar | resource.textures | resource.data;
   }

@@ -1,3 +1,4 @@
+#include <gf2/core/AnimationData.h>
 #include <gf2/core/Property.h>
 #include <gf2/core/SerializationOps.h>
 #include <gf2/core/SpriteData.h>
@@ -72,13 +73,13 @@ namespace {
 
 }
 
-TEST(DataTest, TiledMapData) {
-  gf::TiledMapData data;
+TEST(DataTest, AnimatedSpriteData) {
+  gf::AnimationData data;
 
   serialize(data);
   deserialize(data);
 
-  gf::TiledMapResource resource;
+  gf::SpriteResource resource;
   serialize(resource);
   deserialize(resource);
 }
@@ -101,6 +102,17 @@ TEST(DataTest, TextData) {
   deserialize(data);
 
   gf::TextResource resource;
+  serialize(resource);
+  deserialize(resource);
+}
+
+TEST(DataTest, TiledMapData) {
+  gf::TiledMapData data;
+
+  serialize(data);
+  deserialize(data);
+
+  gf::TiledMapResource resource;
   serialize(resource);
   deserialize(resource);
 }
