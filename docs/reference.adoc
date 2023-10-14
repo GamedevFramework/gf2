@@ -26,11 +26,17 @@ xref:index.adoc[< Back to main page]
 
 == `graphics`
 
-- Initialization (`GraphicsInitializer`)
-- xref:graphics_inputs.adoc[Inputs] (xref:Scancode.adoc[`Scancode`], xref:Keycode.adoc[`Keycode`], xref:MouseButton.adoc[`MouseButton`])
-- xref:graphics_events.adoc[Events] (xref:Event.adoc[`Event`])
-- xref:graphics_window.adoc[Window] (xref:Window.adoc[`Window`])
-- xref:graphics_low_level.adoc[Low-Level] (`Renderer`, `Texture`, `CommandBuffer`, `Buffer`, `Shader`)
+* Windowing
+** Initialization (`GraphicsInitializer`)
+** xref:graphics_inputs.adoc[Inputs] (xref:Scancode.adoc[`Scancode`], xref:Keycode.adoc[`Keycode`], xref:MouseButton.adoc[`MouseButton`])
+** xref:graphics_events.adoc[Events] (xref:Event.adoc[`Event`])
+** xref:graphics_window.adoc[Window] (xref:Window.adoc[`Window`])
+* Rendering
+** xref:graphics_low_level.adoc[Low-Level] (`CommandBuffer`, `Shader`)
+** Render [`Renderer`, `RenderObject`, `Texture`, `Buffer`]
+** Objects [`Sprite`, `Text`, `AnimatedSprite`]
+* Gaming
+** Scenes [`Entity`, `Scene`, `SceneManager`]
 
 == `network`
 

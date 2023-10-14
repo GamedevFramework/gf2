@@ -151,7 +151,7 @@ namespace gf {
   }
 
   /*
-   * SingleScene
+   * StandardScene
    */
 
   StandardScene::StandardScene()
