@@ -148,6 +148,7 @@ target_include_directories(gf2core0
 
 add_library(gf2graphics0
   graphics/AnimatedSprite.cc
+  graphics/AnimatedSpriteEntity.cc
   graphics/Buffer.cc
   graphics/CommandBuffer.cc
   graphics/Descriptor.cc

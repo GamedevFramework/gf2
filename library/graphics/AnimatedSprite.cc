@@ -99,6 +99,17 @@ namespace gf {
     return !m_properties.test(AnimationProperties::Loop) && m_current_time <= Time() && m_current_frame + 1 >= m_frames.size();
   }
 
+  RenderGeometry AnimatedSprite::geometry() const
+  {
+    RenderGeometry geometry;
+    geometry.vertices = vertices();
+    geometry.indices = indices();
+    geometry.count = index_count();
+    geometry.first = first_index();
+    geometry.texture = texture();
+    return geometry;
+  }
+
   const Texture* AnimatedSprite::texture() const
   {
     if (m_frames.empty()) {

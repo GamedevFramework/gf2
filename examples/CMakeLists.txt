@@ -151,7 +151,21 @@ target_include_directories(11-text
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
+# 12-animation
 
+add_executable(12-animation
+  12-animation.cc
+)
+
+target_link_libraries(12-animation
+  PRIVATE
+    gf2graphics0
+)
+
+target_include_directories(12-animation
+  PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 
 # 13-shape
 

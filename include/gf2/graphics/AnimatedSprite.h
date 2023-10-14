@@ -12,6 +12,7 @@
 
 #include "Buffer.h"
 #include "GraphicsApi.h"
+#include "RenderObject.h"
 
 namespace gf {
   class Texture;
@@ -24,6 +25,8 @@ namespace gf {
     void update(Time time);
     void reset();
     bool finished() const;
+
+    RenderGeometry geometry() const;
 
     const Texture* texture() const;
     const Buffer* vertices() const;

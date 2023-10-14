@@ -65,6 +65,12 @@ if has_config("examples") then
         add_deps("gf2graphics0")
         add_includedirs("$(buildir)/config/examples")
 
+    target("12-animation")
+        set_kind("binary")
+        add_files("12-animation.cc")
+        add_deps("gf2graphics0")
+        add_includedirs("$(buildir)/config/examples")
+
     target("13-shape")
         set_kind("binary")
         add_files("13-shape.cc")
