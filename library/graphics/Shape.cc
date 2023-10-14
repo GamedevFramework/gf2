@@ -12,7 +12,6 @@
 #include <gf2/core/Range.h>
 
 #include <gf2/graphics/Vertex.h>
-#include "gf2/core/Vec2.h"
 
 namespace gf {
 
@@ -24,7 +23,8 @@ namespace gf {
       Vec2F center = {};
     };
 
-    RawInteriorShapeGeometry compute_interior_shape_geometry(const ShapeData& data) {
+    RawInteriorShapeGeometry compute_interior_shape_geometry(const ShapeData& data)
+    {
       assert(data.points.size() > 2);
 
       RawInteriorShapeGeometry geometry;
@@ -67,7 +67,7 @@ namespace gf {
 
       geometry.bounds = RectF::from_min_max(min, max);
 
-      for (auto & vertex : geometry.vertices) {
+      for (auto& vertex : geometry.vertices) {
         Vec2F ratio = (vertex.location - geometry.bounds.position()) / geometry.bounds.size();
         vertex.tex_coords = data.texture_region.position() + data.texture_region.size() * ratio;
       }
@@ -81,7 +81,8 @@ namespace gf {
       RectF bounds = {};
     };
 
-    RawOutlineShapeGeometry compute_outline_shape_geometry(const ShapeData& data, Vec2F center) {
+    RawOutlineShapeGeometry compute_outline_shape_geometry(const ShapeData& data, Vec2F center)
+    {
       RawOutlineShapeGeometry geometry;
 
       for (auto i : gf::index_range(data.points.size())) {

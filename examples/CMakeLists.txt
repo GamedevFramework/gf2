@@ -150,3 +150,16 @@ target_include_directories(11-text
   PRIVATE
     ${CMAKE_CURRENT_BINARY_DIR}
 )
+
+
+
+# 13-shape
+
+add_executable(13-shape
+  13-shape.cc
+)
+
+target_link_libraries(13-shape
+  PRIVATE
+    gf2graphics0
+)

@@ -12,8 +12,8 @@
 #include "CommandBuffer.h"
 #include "GraphicsApi.h"
 #include "GraphicsInitializer.h"
-#include "Renderer.h"
 #include "RenderObject.h"
+#include "Renderer.h"
 #include "Texture.h"
 #include "Window.h"
 

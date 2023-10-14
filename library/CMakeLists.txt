@@ -169,6 +169,7 @@ add_library(gf2graphics0
   graphics/Shader.cc
   graphics/ShaderData.cc
   graphics/Shape.cc
+  graphics/ShapeEntity.cc
   graphics/Sprite.cc
   graphics/SpriteEntity.cc
   graphics/Text.cc

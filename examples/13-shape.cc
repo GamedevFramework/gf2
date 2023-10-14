@@ -7,6 +7,7 @@
 #include <gf2/graphics/GraphicsInitializer.h>
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/SceneManager.h>
+
 #include "gf2/graphics/ShapeEntity.h"
 
 int main()
@@ -14,7 +15,7 @@ int main()
 
   gf::SingleSceneManager scene_manager("13-shape | gf2", gf::vec(1600, 900));
 
-  gf::ShapeData rectangle_data = gf::ShapeData::make_rectangle({ 40.0f, 30.0f });
+  gf::ShapeData rectangle_data = gf::ShapeData::make_rectangle({ 160.0f, 90.0f });
   rectangle_data.color = gf::Azure;
   rectangle_data.outline_thickness = 2.0f;
   rectangle_data.outline_color = gf::darker(gf::Azure);

@@ -269,7 +269,7 @@ namespace gf {
   template<typename T>
   constexpr Vec2<T> max(Vec2<T> lhs, Vec2<T> rhs)
   {
-    return { details::max(lhs.x, rhs.x), details::min(lhs.y, rhs.y) };
+    return { details::max(lhs.x, rhs.x), details::max(lhs.y, rhs.y) };
   }
 
   template<typename T>
