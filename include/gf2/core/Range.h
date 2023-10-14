@@ -201,6 +201,65 @@ namespace gf {
     return { range(0, size.x), range(0, size.y) };
   }
 
+  template<typename IteratorType, typename SentinelType>
+  struct Enumerate {
+    IteratorType begin_iterator;
+    SentinelType end_iterator;
+
+    struct Iterator {
+      size_t index;
+      IteratorType iterator;
+
+      using difference_type = std::ptrdiff_t;
+      using value_type = std::pair<std::size_t, decltype(*std::declval<IteratorType>())>;
+      using iterator_category = std::forward_iterator_tag;
+      using pointer = value_type;
+      using reference = value_type;
+
+      void operator++()
+      {
+        ++index;
+        ++iterator;
+      }
+
+      pointer operator->() const { return std::make_pair(index, *iterator); }
+      reference operator*() const { return std::make_pair(index, *iterator); }
+
+      bool operator!=(const Iterator& other) const { return iterator != other.iterator; }
+      bool operator==(const Iterator& other) const { return iterator == other.iterator; }
+
+      bool operator!=(const SentinelType& other) const { return iterator != other; }
+      bool operator==(const SentinelType& other) const { return iterator == other; }
+    };
+
+    auto begin() { return Iterator{ 0, begin_iterator }; }
+    auto end() { return end_iterator; }
+  };
+
+  template<typename T>
+  constexpr auto enumerate(T& iterable)
+  {
+    using std::begin;
+    using IteratorType = decltype(begin(std::declval<T>()));
+
+    using std::end;
+    using SentinelType = decltype(end(std::declval<T>()));
+
+    return Enumerate<IteratorType, SentinelType>(begin(iterable), end(iterable));
+  }
+
+  template<typename T>
+  constexpr auto enumerate(const T& iterable)
+  {
+    using std::begin;
+    using IteratorType = decltype(begin(std::declval<T>()));
+
+    using std::end;
+    using SentinelType = decltype(end(std::declval<T>()));
+
+    return Enumerate<IteratorType, SentinelType>(begin(iterable), end(iterable));
+  }
+
 } // namespace gf
 
 #endif // GF_RANGE_H
