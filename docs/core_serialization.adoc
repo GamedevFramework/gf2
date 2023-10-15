@@ -69,6 +69,6 @@ Deerializer& operator|(Deserializer& ar, _Type_& value);
 This operator is defined for `Serializer` and `Deserializer` so that it can be made generic to define both serialization and deserialization with a single definition. The library defines this operator for the following types:
 
 - basic types: `bool`, `char`, `double`, `float`, `int8_t`, `int16_t`, `int32_t`, `int64_t`, `uint8_t`, `uint16_t`, `uint32_t`, `uint64_t` , in addition to link:https://en.cppreference.com/w/cpp/language/array[array] and link:https://en.cppreference.com/w/cpp/language/enum[enum]
-- standard types: `std::array`, `std::map`, `std::set`, `std::string`, `std::unorderer_map`, `std::unordered_set`, `std::vector`
-- gf2 types: xref:Array2D.adoc[`Array2D<T>`], xref:Circ.adoc[`Circ<T>`], xref:Color.adoc[`Color`], xref:Flags.adoc[`Flags<E>`], xref:Rect.adoc[`Rect<T>`], xref:Vec2.adoc[`Vec2<T>`], xref:Vec3.adoc[`Vec3<T>`]
+- standard types: `std::array`, `std::map`, `std::pair`, `std::optional`, `std::set`, `std::string`, `std::tuple`, `std::unorderer_map`, `std::unordered_set`, `std::variant`, `std::vector`
+- gf2 types: xref:Array2D.adoc[`Array2D<T>`], xref:Circ.adoc[`Circ<T>`], xref:Color.adoc[`Color`], xref:Flags.adoc[`Flags<E>`], xref:Rect.adoc[`Rect<T>`], xref:Time.adoc[`Time`], xref:Vec2.adoc[`Vec2<T>`], xref:Vec3.adoc[`Vec3<T>`]
 

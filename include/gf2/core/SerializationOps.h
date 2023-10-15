@@ -15,6 +15,7 @@
 #include <set>
 #include <stdexcept>
 #include <string>
+#include <tuple>
 #include <type_traits>
 #include <unordered_map>
 #include <unordered_set>
@@ -22,11 +23,9 @@
 #include <vector>
 
 #include "Array2D.h"
-#include "CoreApi.h"
 #include "Flags.h"
 #include "Serialization.h"
 #include "Span.h"
-#include "TypeTraits.h"
 
 namespace gf {
 
@@ -201,6 +200,13 @@ namespace gf {
   inline Serializer& operator|(Serializer& ar, const std::unordered_map<K, V>& map)
   {
     return details::write_container(ar, map.begin(), map.size());
+  }
+
+  template<typename... Types>
+  inline Serializer& operator|(Serializer& ar, const std::tuple<Types...>& tuple)
+  {
+    std::apply([&ar](auto&&... args) { ((ar | args), ...);  }, tuple);
+    return ar;
   }
 
   inline Serializer& operator|(Serializer& ar, const std::monostate& /* unused */)
@@ -484,6 +490,13 @@ namespace gf {
   {
     map.clear();
     return details::read_container<std::pair<K, V>>(ar, details::emplacer(map));
+  }
+
+  template<typename... Types>
+  inline Deserializer& operator|(Deserializer& ar, std::tuple<Types...>& tuple)
+  {
+    std::apply([&ar](auto&&... args) { ((ar | args), ...);  }, tuple);
+    return ar;
   }
 
   namespace details {

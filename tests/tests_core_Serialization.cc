@@ -73,7 +73,8 @@ TEST(SerialTest, Version) {
 }
 
 TEST(SerialTest, Boolean) {
-  bool in, out;
+  bool in = {};
+  bool out = {};
 
   in = true;
   out = false;
@@ -219,7 +220,7 @@ TEST(SerialTest, Unsigned64) {
 }
 
 TEST(SerialTest, Enum) {
-  enum class Foo {
+  enum class Foo : uint8_t {
     Bar,
     Baz,
     Qux = 42,
@@ -231,7 +232,7 @@ TEST(SerialTest, Enum) {
     Foo::Qux,
   };
 
-  Foo out;
+  Foo out = {};
 
   for (auto in : tests) {
     save_and_load(in, out);
@@ -305,7 +306,7 @@ TEST(SerialTest, Size) {
     0xFFFFFFFFFFFFFFFF,
   };
 
-  SizeWrapper out;
+  SizeWrapper out = {};
 
   for (auto size : tests) {
     SizeWrapper in{ size };
@@ -337,7 +338,7 @@ TEST(SerialTest, String) {
   char out3[256]; // same size as above
 
   save_and_load(in3, out3);
-  EXPECT_TRUE(std::strcmp(in3, out3) == 0);
+  EXPECT_TRUE(std::strcmp(std::begin(in3), std::begin(out3)) == 0);
 }
 
 TEST(SerialTest, Binary) {
@@ -361,7 +362,7 @@ TEST(SerialTest, Binary) {
     { { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09 } }
   };
 
-  std::array<uint8_t, 256> out2;
+  std::array<uint8_t, 256> out2 = {};
 
   for (auto& in2 : tests2) {
     save_and_load(in2, out2);
@@ -409,7 +410,7 @@ TEST(SerialTest, Array) {
     { { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09 } }
   };
 
-  std::array<int32_t, 256> out2;
+  std::array<int32_t, 256> out2 = {};
 
   for (auto& in2 : tests2) {
     save_and_load(in2, out2);
@@ -574,6 +575,17 @@ TEST(SerialTest, Map) {
   }
 }
 
+TEST(SerialTest, Tuple) {
+ using Tuple = std::tuple<int32_t, std::string, double, bool>;
+
+ Tuple in1 = { 42, "foo", 3.14, true };
+ Tuple out1 = {};
+
+ save_and_load(in1, out1);
+
+ EXPECT_EQ(in1, out1);
+}
+
 TEST(SerialTest, Variant) {
   using Variant = std::variant<std::monostate, int, double, std::string>;
   using namespace std::literals;
@@ -587,7 +599,7 @@ TEST(SerialTest, Variant) {
 
   Variant out = {};
 
-  for (auto in : tests) {
+  for (auto&& in : tests) {
     save_and_load(in, out);
     EXPECT_EQ(in, out);
   }
@@ -671,11 +683,11 @@ TEST(SerialTest, PropertyMap) {
   save_and_load(in, out);
 
   EXPECT_NO_THROW({
-    auto number = out("number");
+    auto&& number = out("number");
     EXPECT_TRUE(number.is_int());
     EXPECT_EQ(number.as_int(), 42);
 
-    auto color = out("color");
+    auto&& color = out("color");
     EXPECT_TRUE(color.is_color());
     EXPECT_EQ(color.as_color(), gf::Blue);
   });
