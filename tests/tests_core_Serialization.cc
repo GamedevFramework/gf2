@@ -576,14 +576,14 @@ TEST(SerialTest, Map) {
 }
 
 TEST(SerialTest, Tuple) {
- using Tuple = std::tuple<int32_t, std::string, double, bool>;
+  using Tuple = std::tuple<int32_t, std::string, double, bool>;
 
- Tuple in1 = { 42, "foo", 3.14, true };
- Tuple out1 = {};
+  Tuple in1 = { 42, "foo", 3.14, true };
+  Tuple out1 = {};
 
- save_and_load(in1, out1);
+  save_and_load(in1, out1);
 
- EXPECT_EQ(in1, out1);
+  EXPECT_EQ(in1, out1);
 }
 
 TEST(SerialTest, Variant) {

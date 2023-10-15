@@ -34,7 +34,7 @@ namespace gf {
       void add_quad(uint32_t texture_index, StaticSpan<const Vertex, 4> vertices)
       {
         Geometry& geometry = geometry_map[texture_index];
-        const uint16_t index = geometry.vertices.size();
+        auto index = static_cast<uint16_t>(geometry.vertices.size());
 
         geometry.vertices.insert(geometry.vertices.end(), vertices.begin(), vertices.end());
 

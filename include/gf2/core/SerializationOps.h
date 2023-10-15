@@ -205,7 +205,7 @@ namespace gf {
   template<typename... Types>
   inline Serializer& operator|(Serializer& ar, const std::tuple<Types...>& tuple)
   {
-    std::apply([&ar](auto&&... args) { ((ar | args), ...);  }, tuple);
+    std::apply([&ar](auto&&... args) { ((ar | args), ...); }, tuple);
     return ar;
   }
 
@@ -495,7 +495,7 @@ namespace gf {
   template<typename... Types>
   inline Deserializer& operator|(Deserializer& ar, std::tuple<Types...>& tuple)
   {
-    std::apply([&ar](auto&&... args) { ((ar | args), ...);  }, tuple);
+    std::apply([&ar](auto&&... args) { ((ar | args), ...); }, tuple);
     return ar;
   }
 

@@ -26,7 +26,7 @@ int main()
   gf::TextData text_data;
   text_data.content = "Gamedev Framework 2";
   text_data.character_size = 64;
-  text_data.color = gf::darker(gf::Azure, 0.2);
+  text_data.color = gf::darker(gf::Azure, 0.2f);
   // text_data.outline_color = gf::Gray;
   // text_data.outline_thickness = 2.0f;
 

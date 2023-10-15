@@ -18,10 +18,10 @@ namespace gf {
     int current_sign = 0;
 
     for (std::size_t i = 0; i < size; ++i) {
-      float x = gf::cross(polygon[(i + 1) % size] - polygon[i], polygon[(i + 2) % size] - polygon[(i + 1) % size]);
+      const float x = gf::cross(polygon[(i + 1) % size] - polygon[i], polygon[(i + 2) % size] - polygon[(i + 1) % size]);
 
       if (std::abs(x) > Epsilon) {
-        int sign = gf::sign(x);
+        const int sign = gf::sign(x);
 
         if (current_sign != 0 && sign != current_sign) {
           return false;

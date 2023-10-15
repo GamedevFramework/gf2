@@ -214,12 +214,34 @@ namespace gf {
       Csv,
     };
 
-    // http://en.wikibooks.org/wiki/Algorithm_implementation/Miscellaneous/Base64
-    std::vector<uint8_t> parse_data_base64(std::string input)
+    std::optional<uint8_t> parse_data_base64_byte(char c)
     {
-      input.erase(std::remove_if(input.begin(), input.end(), [](char c) { return c == '\n' || c == ' '; }), input.end());
+      if (c >= 'A' && c <= 'Z') {
+        return c - 'A';
+      }
+
+      if (c >= 'a' && c <= 'z') {
+        return c - 'a' + 26;
+      }
+
+      if (c >= '0' && c <= '9') {
+        return c - '0' + 52;
+      }
+
+      if (c == '+') {
+        return 0x3E;
+      }
+
+      if (c == '/') {
+        return 0x3F;
+      }
+
+      return std::nullopt;
+    }
+
+    std::size_t parse_data_base64_compute_padding(const std::string& input)
+    {
       const std::size_t len = input.size();
-      assert(len % 4 == 0);
       size_t padding = 0;
 
       if (len >= 2) {
@@ -232,6 +254,17 @@ namespace gf {
         }
       }
 
+      return padding;
+    }
+
+    // http://en.wikibooks.org/wiki/Algorithm_implementation/Miscellaneous/Base64
+    std::vector<uint8_t> parse_data_base64(std::string input)
+    {
+      input.erase(std::remove_if(input.begin(), input.end(), [](char c) { return c == '\n' || c == ' '; }), input.end());
+      const std::size_t len = input.size();
+      assert(len % 4 == 0);
+      size_t padding = parse_data_base64_compute_padding(input);
+
       // Setup a vector to hold the result
       std::vector<uint8_t> decoded;
       decoded.reserve(((len / 4) * 3) - padding);
@@ -243,16 +276,8 @@ namespace gf {
           tmp <<= 6;
           char c = input[i];
 
-          if (c >= 'A' && c <= 'Z') {
-            tmp |= c - 'A';
-          } else if (c >= 'a' && c <= 'z') {
-            tmp |= c - 'a' + 26;
-          } else if (c >= '0' && c <= '9') {
-            tmp |= c - '0' + 52;
-          } else if (c == '+') {
-            tmp |= 0x3E;
-          } else if (c == '/') {
-            tmp |= 0x3F;
+          if (auto maybe_byte = parse_data_base64_byte(c); maybe_byte) {
+            tmp |= *maybe_byte;
           } else if (c == '=') { // pad
             switch (len - i) {
               case 1: // One pad character

@@ -68,7 +68,7 @@ namespace gf {
       geometry.bounds = RectF::from_min_max(min, max);
 
       for (auto& vertex : geometry.vertices) {
-        Vec2F ratio = (vertex.location - geometry.bounds.position()) / geometry.bounds.size();
+        const Vec2F ratio = (vertex.location - geometry.bounds.position()) / geometry.bounds.size();
         vertex.tex_coords = data.texture_region.position() + data.texture_region.size() * ratio;
       }
 

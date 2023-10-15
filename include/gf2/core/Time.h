@@ -139,7 +139,6 @@ namespace gf {
   GF_CORE_API Serializer& operator|(Serializer& archive, Time time);
   GF_CORE_API Deserializer& operator|(Deserializer& archive, Time& time);
 
-
 } // namespace gf
 
 #endif // GF_TIME_H
