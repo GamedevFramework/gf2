@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/graphics/AnimatedSpriteEntity.h>
+#include <gf2/graphics/AnimationEntity.h>
 // clang-format on
 
 #include <gf2/graphics/RenderObject.h>
@@ -10,17 +10,17 @@
 
 namespace gf {
 
-  AnimatedSpriteEntity::AnimatedSpriteEntity(std::vector<const Texture*> textures, const AnimationData& data, Renderer* renderer)
+  AnimationEntity::AnimationEntity(std::vector<const Texture*> textures, const AnimationData& data, Renderer* renderer)
   : m_sprite(std::move(textures), data, renderer)
   {
   }
 
-  void AnimatedSpriteEntity::update(Time time)
+  void AnimationEntity::update(Time time)
   {
     m_sprite.update(time);
   }
 
-  void AnimatedSpriteEntity::render(RenderRecorder& recorder)
+  void AnimationEntity::render(RenderRecorder& recorder)
   {
     RenderObject object = {};
     object.priority = priority();

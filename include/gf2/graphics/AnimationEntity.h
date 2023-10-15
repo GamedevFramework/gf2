@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
-#ifndef GF_ANIMATED_SPRITE_ENTITY_H
-#define GF_ANIMATED_SPRITE_ENTITY_H
+#ifndef GF_ANIMATION_ENTITY_H
+#define GF_ANIMATION_ENTITY_H
 
 #include <gf2/core/AnimationData.h>
 #include <gf2/core/Transform.h>
 
-#include "AnimatedSprite.h"
+#include "Animation.h"
 #include "Entity.h"
 #include "GraphicsApi.h"
 #include "Texture.h"
@@ -14,9 +14,9 @@
 namespace gf {
   class Renderer;
 
-  class GF_GRAPHICS_API AnimatedSpriteEntity : public Entity {
+  class GF_GRAPHICS_API AnimationEntity : public Entity {
   public:
-    AnimatedSpriteEntity(std::vector<const Texture*> textures, const AnimationData& data, Renderer* renderer);
+    AnimationEntity(std::vector<const Texture*> textures, const AnimationData& data, Renderer* renderer);
 
     Transform& transform()
     {
@@ -42,10 +42,10 @@ namespace gf {
     }
 
   private:
-    AnimatedSprite m_sprite;
+    Animation m_sprite;
     Transform m_transform;
   };
 
 }
 
-#endif // GF_ANIMATED_SPRITE_ENTITY_H
+#endif // GF_ANIMATION_ENTITY_H

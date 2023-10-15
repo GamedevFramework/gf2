@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/graphics/AnimatedSprite.h>
+#include <gf2/graphics/Animation.h>
 // clang-format on
 
 #include <gf2/graphics/Texture.h>
@@ -16,7 +16,7 @@ namespace gf {
 
   }
 
-  AnimatedSprite::AnimatedSprite(std::vector<const Texture*> textures, const AnimationData& data, Renderer* renderer)
+  Animation::Animation(std::vector<const Texture*> textures, const AnimationData& data, Renderer* renderer)
   : m_textures(std::move(textures))
   , m_properties(data.properties)
   {
@@ -65,7 +65,7 @@ namespace gf {
     reset();
   }
 
-  void AnimatedSprite::update(Time time)
+  void Animation::update(Time time)
   {
     if (m_frames.empty()) {
       return;
@@ -83,7 +83,7 @@ namespace gf {
     }
   }
 
-  void AnimatedSprite::reset()
+  void Animation::reset()
   {
     m_current_frame = 0;
 
@@ -94,12 +94,12 @@ namespace gf {
     }
   }
 
-  bool AnimatedSprite::finished() const
+  bool Animation::finished() const
   {
     return !m_properties.test(AnimationProperties::Loop) && m_current_time <= Time() && m_current_frame + 1 >= m_frames.size();
   }
 
-  RenderGeometry AnimatedSprite::geometry() const
+  RenderGeometry Animation::geometry() const
   {
     RenderGeometry geometry;
     geometry.vertices = vertices();
@@ -110,7 +110,7 @@ namespace gf {
     return geometry;
   }
 
-  const Texture* AnimatedSprite::texture() const
+  const Texture* Animation::texture() const
   {
     if (m_frames.empty()) {
       return nullptr;
@@ -119,7 +119,7 @@ namespace gf {
     return m_textures[m_frames[m_current_frame].texture_index];
   }
 
-  const Buffer* AnimatedSprite::vertices() const
+  const Buffer* Animation::vertices() const
   {
     if (m_frames.empty()) {
       return nullptr;
@@ -128,7 +128,7 @@ namespace gf {
     return &m_vertices;
   }
 
-  const Buffer* AnimatedSprite::indices() const
+  const Buffer* Animation::indices() const
   {
     if (m_frames.empty()) {
       return nullptr;
@@ -138,12 +138,12 @@ namespace gf {
   }
 
   // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
-  std::size_t AnimatedSprite::index_count() const
+  std::size_t Animation::index_count() const
   {
     return IndicesPerAnimationFrame;
   }
 
-  std::size_t AnimatedSprite::first_index() const
+  std::size_t Animation::first_index() const
   {
     return m_current_frame * IndicesPerAnimationFrame;
   }

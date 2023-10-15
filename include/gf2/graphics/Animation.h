@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
-#ifndef GF_ANIMATED_SPRITE_H
-#define GF_ANIMATED_SPRITE_H
+#ifndef GF_ANIMATION_H
+#define GF_ANIMATION_H
 
 #include <vector>
 
@@ -18,9 +18,9 @@ namespace gf {
   class Texture;
   class Renderer;
 
-  class GF_GRAPHICS_API AnimatedSprite {
+  class GF_GRAPHICS_API Animation {
   public:
-    AnimatedSprite(std::vector<const Texture*> textures, const AnimationData& data, Renderer* renderer);
+    Animation(std::vector<const Texture*> textures, const AnimationData& data, Renderer* renderer);
 
     void update(Time time);
     void reset();
@@ -58,4 +58,4 @@ namespace gf {
 
 }
 
-#endif // GF_ANIMATED_SPRITE_H
+#endif // GF_ANIMATION_H

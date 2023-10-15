@@ -4,7 +4,7 @@
 
 #include <gf2/core/AnimationData.h>
 
-#include <gf2/graphics/AnimatedSpriteEntity.h>
+#include <gf2/graphics/AnimationEntity.h>
 #include <gf2/graphics/GraphicsInitializer.h>
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/SceneManager.h>
@@ -45,7 +45,7 @@ int main()
 
   data.add_tileset(7, { 6, 4 }, gf::seconds(1.0f / 25.0f), 4);
 
-  gf::AnimatedSpriteEntity sprite_entity(textures, data, scene_manager.renderer());
+  gf::AnimationEntity sprite_entity(textures, data, scene_manager.renderer());
   sprite_entity.transform().location = gf::vec(1000.0f, 1000.0f);
   sprite_entity.transform().origin = gf::vec(0.5f, 0.5f);
   sprite_entity.transform().scale = gf::vec(0.1f, 0.1f);

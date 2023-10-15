@@ -6,7 +6,7 @@
 #include <gf2/core/Mat3.h>
 #include <gf2/core/Transform.h>
 
-#include <gf2/graphics/AnimatedSprite.h>
+#include <gf2/graphics/Animation.h>
 #include <gf2/graphics/Event.h>
 #include <gf2/graphics/GraphicsInitializer.h>
 #include <gf2/graphics/Renderer.h>
@@ -55,7 +55,7 @@ int main()
 
   data.add_tileset(7, { 6, 4 }, gf::seconds(1.0f / 25.0f), 4);
 
-  gf::AnimatedSprite sprite(textures, data, &renderer);
+  gf::Animation sprite(textures, data, &renderer);
 
   gf::Camera camera;
   camera.type = gf::CameraType::Extend;
