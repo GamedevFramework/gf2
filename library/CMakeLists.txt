@@ -150,6 +150,7 @@ add_library(gf2graphics0
   graphics/Animation.cc
   graphics/AnimationEntity.cc
   graphics/Buffer.cc
+  graphics/Clipboard.cc
   graphics/CommandBuffer.cc
   graphics/Descriptor.cc
   graphics/Entity.cc
