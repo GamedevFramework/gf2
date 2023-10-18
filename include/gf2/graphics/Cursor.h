@@ -1,0 +1,46 @@
+// SPDX-License-Identifier: Zlib
+// Copyright (c) 2023 Julien Bernard
+#ifndef GF_CURSOR_H
+#define GF_CURSOR_H
+
+#include <cstdint>
+
+#include "GraphicsApi.h"
+
+struct SDL_Cursor;
+
+namespace gf {
+
+  enum class CursorType : uint8_t {
+    Arrow,
+    Text,
+    Wait,
+    Cross,
+    ArrowWait,
+    SizeTopLeftBottomRight,
+    SizeBottomLeftTopRight,
+    SizeHorizontal,
+    SizeVertical,
+    SizeAll,
+    NotAllowed,
+    Hand,
+  };
+
+  class GF_GRAPHICS_API Cursor {
+  public:
+    Cursor(CursorType type);
+    Cursor(const Cursor&) = delete;
+    Cursor(Cursor&& other) noexcept;
+    ~Cursor();
+
+    Cursor& operator=(const Cursor&) = delete;
+    Cursor& operator=(Cursor&& other) noexcept;
+
+  private:
+    friend class Window;
+    SDL_Cursor* m_cursor = nullptr;
+  };
+
+}
+
+#endif // GF_CURSOR_H

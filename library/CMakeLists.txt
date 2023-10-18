@@ -152,6 +152,7 @@ add_library(gf2graphics0
   graphics/Buffer.cc
   graphics/Clipboard.cc
   graphics/CommandBuffer.cc
+  graphics/Cursor.cc
   graphics/Descriptor.cc
   graphics/Entity.cc
   graphics/EntityContainer.cc
