@@ -31,7 +31,7 @@ namespace gf {
   class GF_GRAPHICS_API DescriptorLayout {
   public:
     DescriptorLayout() = default;
-    DescriptorLayout(Span<DescriptorBinding> bindings, Renderer* renderer);
+    DescriptorLayout(Span<const DescriptorBinding> bindings, Renderer* renderer);
     DescriptorLayout(const DescriptorLayout&) = delete;
     DescriptorLayout(DescriptorLayout&& other) noexcept;
     ~DescriptorLayout();

@@ -9,12 +9,35 @@
 
 #include <gf2/core/Clock.h>
 
+#include <gf2/graphics/RenderObject.h>
+#include <gf2/graphics/RenderRecorder.h>
 #include <gf2/graphics/Scene.h>
-
-#include "gf2/graphics/RenderObject.h"
-#include "gf2/graphics/RenderRecorder.h"
+#include <gf2/graphics/Vertex.h>
 
 namespace gf {
+
+  namespace {
+
+    const uint32_t default_vert_shader_code[] = {
+#include "default.vert.h"
+    };
+
+    const uint32_t default_frag_shader_code[] = {
+#include "default.frag.h"
+    };
+
+    const uint32_t text_frag_shader_code[] = {
+#include "text.frag.h"
+    };
+
+    const uint32_t fullscreen_vert_shader_code[] = {
+#include "fullscreen.vert.h"
+    };
+
+    const uint32_t fullscreen_frag_shader_code[] = {
+#include "fullscreen.frag.h"
+    };
+  }
 
   /*
    * BasicSceneManager
@@ -25,15 +48,17 @@ namespace gf {
   , m_renderer(&m_window)
   , m_white(Image({ 1, 1 }, White), &m_renderer)
   {
+    m_white.set_debug_name("[gf2] White Default 1x1 Texture");
+    build_default_pipelines();
   }
 
   const RenderPipeline* BasicSceneManager::render_pipeline(RenderPipelineType type) const
   {
     switch (type) {
       case RenderPipelineType::Default:
-        return m_renderer.default_pipeline();
+        return &m_default_pipeline;
       case RenderPipelineType::Text:
-        return m_renderer.text_pipeline();
+        return &m_text_pipeline;
       default:
         assert(false);
         break;
@@ -52,9 +77,9 @@ namespace gf {
       scissor.extent = part.viewport.extent;
       command_buffer.set_scissor(scissor);
 
-      auto camera_descriptor = m_renderer.allocate_descriptor_for_layout(m_renderer.camera_descriptor());
+      auto camera_descriptor = m_renderer.allocate_descriptor_for_layout(&m_camera_descriptor_layout);
       camera_descriptor.write(0, &recorder.m_view_matrix_buffers[part.view_matrix_buffer_index]);
-      command_buffer.bind_descriptor(m_renderer.default_pipeline_layout(), 0, camera_descriptor);
+      command_buffer.bind_descriptor(&m_default_pipeline_layout, 0, camera_descriptor);
 
       const RenderPipeline* last_pipeline = nullptr;
       RenderObject last_object = {};
@@ -74,14 +99,14 @@ namespace gf {
         }
 
         if (object.geometry.texture != last_object.geometry.texture) {
-          auto sampler_descriptor = m_renderer.allocate_descriptor_for_layout(m_renderer.sampler_descriptor());
+          auto sampler_descriptor = m_renderer.allocate_descriptor_for_layout(&m_sampler_descriptor_layout);
           sampler_descriptor.write(0, object.geometry.texture);
-          command_buffer.bind_descriptor(m_renderer.default_pipeline_layout(), 1, sampler_descriptor);
+          command_buffer.bind_descriptor(&m_default_pipeline_layout, 1, sampler_descriptor);
         }
 
         // model matrix
 
-        command_buffer.push_constant(m_renderer.default_pipeline_layout(), gf::ShaderStage::Vertex, &object.transform);
+        command_buffer.push_constant(&m_default_pipeline_layout, gf::ShaderStage::Vertex, &object.transform);
 
         assert(object.geometry.vertices != nullptr);
 
@@ -100,6 +125,86 @@ namespace gf {
         last_object = object;
       }
     }
+  }
+
+  void BasicSceneManager::build_default_pipelines()
+  {
+    // view matrix descriptor
+
+    const DescriptorBinding camera_binding[] = {
+      { 0, DescriptorType::Buffer, ShaderStage::Vertex }
+    };
+
+    m_camera_descriptor_layout = DescriptorLayout(camera_binding, renderer());
+
+    // sampler descriptor
+
+    const DescriptorBinding sampler_binding[] = {
+      { 0, DescriptorType::Sampler, ShaderStage::Fragment }
+    };
+
+    m_sampler_descriptor_layout = DescriptorLayout(sampler_binding, renderer());
+
+    // default pipeline layout
+
+    RenderPipelineLayoutBuilder default_pipeline_layout_builder;
+
+    default_pipeline_layout_builder.set_push_constant_parameters(ShaderStage::Vertex, sizeof(ShaderDataType<Mat3F>))
+        .add_descriptor_layout(&m_camera_descriptor_layout)
+        .add_descriptor_layout(&m_sampler_descriptor_layout);
+
+    m_default_pipeline_layout = default_pipeline_layout_builder.build(renderer());
+    m_default_pipeline_layout.set_debug_name("[gf2] Default Pipeline Layout");
+
+    // fullscreen pipeline layout
+
+    RenderPipelineLayoutBuilder fullscreen_pipeline_layout_builder;
+    fullscreen_pipeline_layout_builder.add_descriptor_layout(&m_sampler_descriptor_layout);
+    m_fullscreen_pipeline_layout = fullscreen_pipeline_layout_builder.build(renderer());
+    m_fullscreen_pipeline_layout.set_debug_name("[gf2] Fullscreen Pipeline Layout");
+
+    // default pipeline
+
+    Shader default_vertex_shader(gf::span(default_vert_shader_code), { ShaderStage::Vertex, renderer() });
+    Shader default_fragment_shader(gf::span(default_frag_shader_code), { ShaderStage::Fragment, renderer() });
+
+    RenderPipelineBuilder default_pipeline_builder;
+
+    default_pipeline_builder.set_vertex_input(Vertex::compute_input())
+        .add_shader(&default_vertex_shader)
+        .add_shader(&default_fragment_shader)
+        .set_pipeline_layout(&m_default_pipeline_layout);
+
+    m_default_pipeline = default_pipeline_builder.build(renderer());
+    m_default_pipeline.set_debug_name("[gf2] Default Pipeline");
+
+    // text pipeline
+
+    Shader text_fragment_shader(gf::span(text_frag_shader_code), { ShaderStage::Fragment, renderer() });
+
+    RenderPipelineBuilder text_pipeline_builder;
+
+    text_pipeline_builder.set_vertex_input(Vertex::compute_input())
+        .add_shader(&default_vertex_shader)
+        .add_shader(&text_fragment_shader)
+        .set_pipeline_layout(&m_default_pipeline_layout);
+
+    m_text_pipeline = text_pipeline_builder.build(renderer());
+    m_text_pipeline.set_debug_name("[gf2] Text Pipeline");
+
+    // fullscreen pipeline
+
+    Shader fullscreen_vertex_shader(gf::span(fullscreen_vert_shader_code), { ShaderStage::Vertex, renderer() });
+    Shader fullscreen_fragment_shader(gf::span(fullscreen_frag_shader_code), { ShaderStage::Fragment, renderer() });
+
+    RenderPipelineBuilder fullscreen_pipeline_builder;
+
+    fullscreen_pipeline_builder.add_shader(&fullscreen_vertex_shader)
+        .add_shader(&fullscreen_fragment_shader)
+        .set_pipeline_layout(&m_fullscreen_pipeline_layout);
+
+    m_fullscreen_pipeline = fullscreen_pipeline_builder.build(renderer());
+    m_fullscreen_pipeline.set_debug_name("[gf2] Fullscreen Pipeline");
   }
 
   /*

@@ -40,10 +40,22 @@ namespace gf {
     void render_objects(RenderCommandBuffer command_buffer, const RenderRecorder& recorder);
 
   private:
+    void build_default_pipelines();
+
     GraphicsInitializer m_initializer;
     Window m_window;
     Renderer m_renderer;
     Texture m_white;
+
+    DescriptorLayout m_camera_descriptor_layout;
+    DescriptorLayout m_sampler_descriptor_layout;
+
+    RenderPipelineLayout m_default_pipeline_layout;
+    RenderPipelineLayout m_fullscreen_pipeline_layout;
+
+    RenderPipeline m_default_pipeline;
+    RenderPipeline m_text_pipeline;
+    RenderPipeline m_fullscreen_pipeline;
   };
 
   class GF_GRAPHICS_API SingleSceneManager : public BasicSceneManager {

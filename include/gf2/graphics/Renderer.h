@@ -155,65 +155,6 @@ namespace gf {
 
     void update_surface_size(Vec2I size);
 
-    const DescriptorLayout* camera_descriptor() const
-    {
-      return &m_camera_descriptor;
-    }
-
-    const DescriptorLayout* sampler_descriptor() const
-    {
-      return &m_sampler_descriptor;
-    }
-
-    const RenderPipelineLayout* simple_pipeline_layout() const
-    {
-      return &m_simple_pipeline_layout;
-    }
-
-    const RenderPipelineLayout* default_pipeline_layout() const
-    {
-      return &m_default_pipeline_layout;
-    }
-
-    const RenderPipelineLayout* fullscreen_pipeline_layout() const
-    {
-      return &m_fullscreen_pipeline_layout;
-    }
-
-    const RenderPipeline* simple_pipeline() const
-    {
-      return &m_simple_pipeline;
-    }
-
-    const RenderPipeline* default_pipeline() const
-    {
-      return &m_default_pipeline;
-    }
-
-    const RenderPipeline* text_pipeline() const
-    {
-      return &m_text_pipeline;
-    }
-
-    const RenderPipeline* fullscreen_pipeline() const
-    {
-      return &m_fullscreen_pipeline;
-    }
-
-  private:
-    void build_default_pipelines();
-
-    DescriptorLayout m_camera_descriptor;
-    DescriptorLayout m_sampler_descriptor;
-
-    RenderPipelineLayout m_simple_pipeline_layout;
-    RenderPipelineLayout m_default_pipeline_layout;
-    RenderPipelineLayout m_fullscreen_pipeline_layout;
-
-    RenderPipeline m_simple_pipeline;
-    RenderPipeline m_default_pipeline;
-    RenderPipeline m_text_pipeline;
-    RenderPipeline m_fullscreen_pipeline;
   };
 
 }

@@ -18,7 +18,7 @@ namespace gf {
    * DescriptorLayout
    */
 
-  DescriptorLayout::DescriptorLayout(Span<DescriptorBinding> bindings, Renderer* renderer)
+  DescriptorLayout::DescriptorLayout(Span<const DescriptorBinding> bindings, Renderer* renderer)
   : m_device(renderer->m_device)
   {
     assert(!bindings.empty());
