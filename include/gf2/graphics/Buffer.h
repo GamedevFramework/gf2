@@ -33,11 +33,11 @@ namespace gf {
   public:
     Buffer() = default;
 
-    Buffer(BufferType type, BufferUsage usage, std::size_t size, std::size_t member_size, const void* data, Renderer* renderer);
+    Buffer(BufferType type, BufferUsage usage, std::size_t count, std::size_t member_size, const void* data, Renderer* renderer);
 
     template<typename T>
-    Buffer(BufferType type, BufferUsage usage, const T* data, std::size_t size, Renderer* renderer)
-    : Buffer(type, usage, size, sizeof(T), static_cast<const void*>(data), renderer)
+    Buffer(BufferType type, BufferUsage usage, const T* data, std::size_t count, Renderer* renderer)
+    : Buffer(type, usage, count, sizeof(T), static_cast<const void*>(data), renderer)
     {
     }
 
@@ -50,15 +50,20 @@ namespace gf {
 
     std::size_t count() const
     {
+      return m_count;
+    }
+
+    std::size_t size() const
+    {
       return m_size;
     }
 
-    void update(std::size_t size, std::size_t member_size, const void* data, Renderer* renderer);
+    void update(std::size_t count, std::size_t member_size, const void* data, Renderer* renderer);
 
     template<typename T>
-    void update(const T* data, std::size_t size, Renderer* renderer)
+    void update(const T* data, std::size_t count, Renderer* renderer)
     {
-      update(size, sizeof(T), static_cast<const void*>(data), renderer);
+      update(count, sizeof(T), static_cast<const void*>(data), renderer);
     }
 
     void set_debug_name(const std::string& name) const;
@@ -76,8 +81,8 @@ namespace gf {
     VmaAllocator m_allocator = nullptr; // non-owning
     VkBuffer m_buffer = VK_NULL_HANDLE;
     VmaAllocation m_allocation = nullptr;
+    std::size_t m_count = 0;
     std::size_t m_size = 0;
-    std::size_t m_member_size = 0;
     BufferType m_type = BufferType::Device;
     BufferUsage m_usage = BufferUsage::Vertex;
   };

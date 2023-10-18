@@ -13,7 +13,8 @@ namespace gf {
   // NOLINTNEXTLINE(performance-enum-size)
   enum class Format : std::underlying_type_t<VkFormat> {
     Undefined = VK_FORMAT_UNDEFINED,
-    Color8U = VK_FORMAT_R8G8B8A8_SRGB,
+    Color8S = VK_FORMAT_R8G8B8A8_SRGB,
+    Color8U = VK_FORMAT_R8G8B8A8_UNORM,
     Color32F = VK_FORMAT_R32G32B32A32_SFLOAT,
     Gray8U = VK_FORMAT_R8_UNORM,
     Vec2F = VK_FORMAT_R32G32_SFLOAT,

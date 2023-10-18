@@ -37,6 +37,27 @@ namespace gf {
     const uint32_t fullscreen_frag_shader_code[] = {
 #include "fullscreen.frag.h"
     };
+
+    struct ImguiVertex {
+      Vec2F pos;
+      Vec2F uv;
+      uint32_t col;
+
+      static VertexInput compute_input()
+      {
+        VertexInput input;
+
+        input.bindings.push_back({ 0, sizeof(ImguiVertex) });
+
+        input.attributes.push_back({ 0, 0, Format::Vec2F, offsetof(ImguiVertex, pos) });
+        input.attributes.push_back({ 1, 0, Format::Vec2F, offsetof(ImguiVertex, uv) });
+        input.attributes.push_back({ 2, 0, Format::Color8U, offsetof(ImguiVertex, col) });
+
+        return input;
+      }
+    };
+
+
   }
 
   /*
@@ -59,6 +80,8 @@ namespace gf {
         return &m_default_pipeline;
       case RenderPipelineType::Text:
         return &m_text_pipeline;
+      case RenderPipelineType::Imgui:
+        return &m_imgui_pipeline;
       default:
         assert(false);
         break;
@@ -205,6 +228,19 @@ namespace gf {
 
     m_fullscreen_pipeline = fullscreen_pipeline_builder.build(renderer());
     m_fullscreen_pipeline.set_debug_name("[gf2] Fullscreen Pipeline");
+
+    // imgui pipeline
+
+    RenderPipelineBuilder imgui_pipeline_builder;
+
+    imgui_pipeline_builder.set_vertex_input(ImguiVertex::compute_input())
+        .add_shader(&default_vertex_shader)
+        .add_shader(&default_fragment_shader)
+        .set_pipeline_layout(&m_default_pipeline_layout);
+
+    m_imgui_pipeline = imgui_pipeline_builder.build(renderer());
+    m_imgui_pipeline.set_debug_name("[gf2] Imgui Pipeline");
+
   }
 
   /*

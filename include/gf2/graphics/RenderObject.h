@@ -15,8 +15,8 @@ namespace gf {
 
   enum class RenderPipelineType : uint8_t {
     Default,
-    Simple,
     Text,
+    Imgui,
   };
 
   struct GF_GRAPHICS_API RenderGeometry {

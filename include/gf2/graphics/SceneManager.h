@@ -56,6 +56,7 @@ namespace gf {
     RenderPipeline m_default_pipeline;
     RenderPipeline m_text_pipeline;
     RenderPipeline m_fullscreen_pipeline;
+    RenderPipeline m_imgui_pipeline;
   };
 
   class GF_GRAPHICS_API SingleSceneManager : public BasicSceneManager {

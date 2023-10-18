@@ -16,21 +16,19 @@
 
 namespace gf {
 
-  Buffer::Buffer(BufferType type, BufferUsage usage, std::size_t size, std::size_t member_size, const void* data, Renderer* renderer)
+  Buffer::Buffer(BufferType type, BufferUsage usage, std::size_t count, std::size_t member_size, const void* data, Renderer* renderer)
   : m_allocator(renderer->m_allocator)
-  , m_size(size)
-  , m_member_size(member_size)
+  , m_count(count)
+  , m_size(count * member_size)
   , m_type(type)
   , m_usage(usage)
   {
-    const std::size_t total_size = size * member_size;
-
     switch (type) {
       case BufferType::Host:
-        create_host_buffer(usage, total_size, data);
+        create_host_buffer(usage, m_size, data);
         break;
       case BufferType::Device:
-        create_device_buffer(usage, total_size, data, renderer);
+        create_device_buffer(usage, m_size, data, renderer);
         break;
     }
   }
@@ -39,8 +37,8 @@ namespace gf {
   : m_allocator(std::exchange(other.m_allocator, nullptr))
   , m_buffer(std::exchange(other.m_buffer, VK_NULL_HANDLE))
   , m_allocation(std::exchange(other.m_allocation, nullptr))
+  , m_count(other.m_count)
   , m_size(other.m_size)
-  , m_member_size(other.m_member_size)
   , m_type(other.m_type)
   , m_usage(other.m_usage)
   {
@@ -58,19 +56,17 @@ namespace gf {
     std::swap(m_allocator, other.m_allocator);
     std::swap(m_buffer, other.m_buffer);
     std::swap(m_allocation, other.m_allocation);
+    std::swap(m_count, other.m_count);
     std::swap(m_size, other.m_size);
-    std::swap(m_member_size, other.m_member_size);
     std::swap(m_type, other.m_type);
     std::swap(m_usage, other.m_usage);
     return *this;
   }
 
-  void Buffer::update(std::size_t size, std::size_t member_size, const void* data, Renderer* renderer)
+  void Buffer::update(std::size_t count, std::size_t member_size, const void* data, Renderer* renderer)
   {
-    assert(size == m_size);
-    assert(member_size == m_member_size);
-
-    const std::size_t total_size = size * member_size;
+    const std::size_t total_size = count * member_size;
+    assert(total_size <= m_size);
 
     switch (m_type) {
       case BufferType::Host:
@@ -80,6 +76,8 @@ namespace gf {
         update_device_buffer(total_size, data, renderer);
         break;
     }
+
+    m_count = count;
   }
 
   void Buffer::set_debug_name(const std::string& name) const

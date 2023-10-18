@@ -23,7 +23,7 @@ namespace gf {
   }
 
   Texture::Texture(const Image& image, Renderer* renderer)
-  : Texture(image.size(), TextureUsage::TransferDestination | TextureUsage::Sampled, Format::Color8U, renderer)
+  : Texture(image.size(), TextureUsage::TransferDestination | TextureUsage::Sampled, Format::Color8S, renderer)
   {
     auto raw_size = image.raw_size();
     const auto* raw_data = image.raw_data();
@@ -150,7 +150,7 @@ namespace gf {
   void Texture::update(const Image& image, Renderer* renderer)
   {
     assert(image.size() == m_image_size);
-    assert(m_format == Format::Color8U);
+    assert(m_format == Format::Color8S);
     assert(m_usage.test(TextureUsage::TransferDestination));
 
     auto raw_size = image.raw_size();
