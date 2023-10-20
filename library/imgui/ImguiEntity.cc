@@ -24,7 +24,7 @@ namespace gf {
 
     // initialize
 
-    m_lists.clear();
+    m_objects.clear();
 
     m_current_buffer = (m_current_buffer + 1) % ImguiFramesInFlight;
     auto& current_vertices = m_vertices[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
@@ -91,25 +91,25 @@ namespace gf {
         if (command->UserCallback != nullptr) {
           command->UserCallback(list, command);
         } else {
-          CommandList list = {};
+          ImguiObject object = {};
 
           // compute scissor
 
           const Vec2F min((command->ClipRect.x - position.x) * scale.x, (command->ClipRect.y - position.y) * scale.y);
           const Vec2F max((command->ClipRect.z - position.x) * scale.x, (command->ClipRect.w - position.y) * scale.y);
-          list.scissor = RectI::from_min_max(min, max);
+          object.scissor = RectI::from_min_max(min, max);
 
           // count, first, offset
 
-          list.count = command->ElemCount;
-          list.first = command->IdxOffset + indices_offset;
-          list.offset = command->VtxOffset + vertices_offset;
+          object.count = command->ElemCount;
+          object.first = command->IdxOffset + indices_offset;
+          object.offset = command->VtxOffset + vertices_offset;
 
           // texture
 
-          list.texture = static_cast<Texture*>(command->TextureId);
+          object.texture = static_cast<Texture*>(command->TextureId);
 
-          m_lists.push_back(list);
+          m_objects.push_back(object);
         }
       }
 
@@ -120,18 +120,18 @@ namespace gf {
 
   void ImguiEntity::render(RenderRecorder& recorder)
   {
-    for (auto& command_list : m_lists) {
-      recorder.update_scissor(command_list.scissor);
+    for (auto& raw_object : m_objects) {
+      recorder.update_scissor(raw_object.scissor);
 
       RenderObject object = {};
-      object.priority = INT32_MAX;
+      object.priority = priority();
       object.geometry.pipeline = RenderPipelineType::Imgui;
       object.geometry.vertices = &m_vertices[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
       object.geometry.indices = &m_indices[m_current_buffer];   // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
-      object.geometry.first = command_list.first;
-      object.geometry.count = command_list.count;
-      object.geometry.offset = command_list.offset;
-      object.geometry.texture = command_list.texture;
+      object.geometry.first = raw_object.first;
+      object.geometry.count = raw_object.count;
+      object.geometry.offset = raw_object.offset;
+      object.geometry.texture = raw_object.texture;
       object.transform = Identity3F;
 
       recorder.record(object);

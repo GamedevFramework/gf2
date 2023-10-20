@@ -42,7 +42,7 @@ namespace gf {
     Buffer m_vertices[ImguiFramesInFlight];
     Buffer m_indices[ImguiFramesInFlight];
 
-    struct CommandList {
+    struct ImguiObject {
       RectI scissor = {};
       std::size_t count = 0;
       std::size_t first = 0;
@@ -50,7 +50,7 @@ namespace gf {
       const Texture* texture = nullptr;
     };
 
-    std::vector<CommandList> m_lists;
+    std::vector<ImguiObject> m_objects;
   };
 
 }
