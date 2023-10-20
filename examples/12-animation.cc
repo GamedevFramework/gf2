@@ -45,16 +45,16 @@ int main()
 
   data.add_tileset(7, { 6, 4 }, gf::seconds(1.0f / 25.0f), 4);
 
-  gf::AnimationEntity sprite_entity(textures, data, scene_manager.renderer());
-  sprite_entity.transform().location = gf::vec(1000.0f, 1000.0f);
-  sprite_entity.transform().origin = gf::vec(0.5f, 0.5f);
-  sprite_entity.transform().scale = gf::vec(0.1f, 0.1f);
+  gf::AnimationEntity animation_entity(textures, data, scene_manager.renderer());
+  animation_entity.transform().location = gf::vec(1000.0f, 1000.0f);
+  animation_entity.transform().origin = gf::vec(0.5f, 0.5f);
+  animation_entity.transform().scale = gf::vec(0.1f, 0.1f);
 
   gf::StandardScene scene;
   scene.set_world_center({ 1000.0f, 1000.0f });
   scene.set_world_size({ 50.0f, 100.0f });
 
-  scene.add_world_entity(&sprite_entity);
+  scene.add_world_entity(&animation_entity);
 
   scene_manager.run(&scene);
 
