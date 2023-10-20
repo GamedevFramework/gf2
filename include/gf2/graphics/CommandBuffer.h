@@ -48,7 +48,7 @@ namespace gf {
     }
 
     void draw(std::size_t vertex_count, std::size_t first_vertex = 0) const;
-    void draw_indexed(std::size_t index_count, std::size_t first_index = 0) const;
+    void draw_indexed(std::size_t index_count, std::size_t first_index = 0, std::ptrdiff_t vertex_offset = 0) const;
 
   private:
     friend class CommandBuffer;

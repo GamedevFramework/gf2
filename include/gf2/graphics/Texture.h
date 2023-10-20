@@ -77,8 +77,8 @@ namespace gf {
 
     Vec2I m_image_size = { 0, 0 };
     VmaAllocator m_allocator = nullptr; // non-owning
-    VkImage m_image = VK_NULL_HANDLE;
     VmaAllocation m_allocation = nullptr;
+    VkImage m_image = VK_NULL_HANDLE;
     VkImageView m_image_view = VK_NULL_HANDLE;
     VkSampler m_sampler = VK_NULL_HANDLE;
     Flags<TextureUsage> m_usage = None;

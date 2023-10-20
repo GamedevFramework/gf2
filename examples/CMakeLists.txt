@@ -59,3 +59,25 @@ target_link_libraries(13-shape
   PRIVATE
     gf2graphics0
 )
+
+
+# 15-imgui
+
+add_executable(15-imgui
+  15-imgui.cc
+  ../library/vendor/imgui/imgui.cpp
+  ../library/vendor/imgui/imgui_demo.cpp
+  ../library/vendor/imgui/imgui_draw.cpp
+  ../library/vendor/imgui/imgui_tables.cpp
+  ../library/vendor/imgui/imgui_widgets.cpp
+)
+
+target_link_libraries(15-imgui
+  PRIVATE
+    gf2imgui0
+)
+
+target_include_directories(15-imgui
+  PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
+)

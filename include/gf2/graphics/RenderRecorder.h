@@ -32,6 +32,7 @@ namespace gf {
 #endif
 
     void update_view(const Mat4F& view_matrix, const RectF& viewport);
+    void update_scissor(const RectI& scissor);
     void record(const RenderObject& object);
 
     void sort();
@@ -40,14 +41,33 @@ namespace gf {
   private:
     friend class BasicSceneManager;
 
-    struct RenderPart {
+    enum class RecordType : uint8_t {
+      View,
+      Scissor,
+      Object,
+    };
+
+    struct Record {
+      RecordType type;
+      std::size_t index;
+    };
+
+    struct ViewRecord {
       uint32_t view_matrix_buffer_index;
       RectF viewport;
-      std::vector<RenderObject> objects;
+    };
+
+    struct ScissorRecord {
+      RectI scissor;
     };
 
     Renderer* m_renderer;
-    std::vector<RenderPart> m_parts;
+
+    std::vector<Record> m_records;
+
+    std::vector<ViewRecord> m_views;
+    std::vector<ScissorRecord> m_scissors;
+    std::vector<RenderObject> m_objects;
 
     uint32_t m_next_view_matrix_index = 0;
     std::vector<Buffer> m_view_matrix_buffers;

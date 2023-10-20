@@ -6,6 +6,7 @@
 // clang-format on
 
 #include <cassert>
+#include <cstddef>
 
 #include <gf2/graphics/Buffer.h>
 #include <gf2/graphics/RenderPipeline.h>
@@ -127,9 +128,9 @@ namespace gf {
     vkCmdDraw(m_command_buffer, static_cast<uint32_t>(vertex_count), 1, static_cast<uint32_t>(first_vertex), 0);
   }
 
-  void RenderCommandBuffer::draw_indexed(std::size_t index_count, std::size_t first_index) const
+  void RenderCommandBuffer::draw_indexed(std::size_t index_count, std::size_t first_index, std::ptrdiff_t vertex_offset) const
   {
-    vkCmdDrawIndexed(m_command_buffer, static_cast<uint32_t>(index_count), 1, static_cast<uint32_t>(first_index), 0, 0);
+    vkCmdDrawIndexed(m_command_buffer, static_cast<uint32_t>(index_count), 1, static_cast<uint32_t>(first_index), static_cast<int32_t>(vertex_offset), 0);
   }
 
   /*

@@ -25,6 +25,7 @@ namespace gf {
     const Buffer* indices = nullptr;
     std::size_t count = 0;
     std::size_t first = 0;
+    std::ptrdiff_t offset = 0;
     const Texture* texture = nullptr;
   };
 

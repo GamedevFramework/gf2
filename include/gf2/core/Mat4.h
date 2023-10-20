@@ -27,7 +27,15 @@ namespace gf {
       return m[row][col]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     }
 
-    Mat4() = default;
+    Mat4()
+    : m{
+      { 1.0f, 0.0f, 0.0f, 0.0f },
+      { 0.0f, 1.0f, 0.0f, 0.0f },
+      { 0.0f, 0.0f, 1.0f, 0.0f },
+      { 0.0f, 0.0f, 0.0f, 1.0f }
+    }
+    {
+    }
 
     Mat4(const Mat3<T>& other)
     : m{
@@ -41,10 +49,6 @@ namespace gf {
   };
 
   using Mat4F = Mat4<float>;
-
-  // inline constexpr Mat4F Identity4F = {
-  //   { { 1.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 1.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0f } }
-  // };
 
 } // namespace gf
 

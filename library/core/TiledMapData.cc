@@ -263,7 +263,7 @@ namespace gf {
       input.erase(std::remove_if(input.begin(), input.end(), [](char c) { return c == '\n' || c == ' '; }), input.end());
       const std::size_t len = input.size();
       assert(len % 4 == 0);
-      size_t padding = parse_data_base64_compute_padding(input);
+      const size_t padding = parse_data_base64_compute_padding(input);
 
       // Setup a vector to hold the result
       std::vector<uint8_t> decoded;

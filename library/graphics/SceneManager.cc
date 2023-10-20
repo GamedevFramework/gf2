@@ -57,7 +57,6 @@ namespace gf {
       }
     };
 
-
   }
 
   /*
@@ -90,64 +89,77 @@ namespace gf {
     return nullptr;
   }
 
-  void BasicSceneManager::render_objects(RenderCommandBuffer command_buffer, const RenderRecorder& recorder)
+  void BasicSceneManager::render_records(RenderCommandBuffer command_buffer, const RenderRecorder& recorder)
   {
-    for (const auto& part : recorder.m_parts) {
-      command_buffer.set_viewport(part.viewport);
+    m_last_pipeline = nullptr;
+    m_last_object = {};
 
-      RectI scissor = {};
-      scissor.offset = part.viewport.offset;
-      scissor.extent = part.viewport.extent;
-      command_buffer.set_scissor(scissor);
+    for (const auto& record : recorder.m_records) {
+      if (record.type == RenderRecorder::RecordType::View) {
+        assert(record.index < recorder.m_views.size());
+        auto view = recorder.m_views[record.index];
 
-      auto camera_descriptor = m_renderer.allocate_descriptor_for_layout(&m_camera_descriptor_layout);
-      camera_descriptor.write(0, &recorder.m_view_matrix_buffers[part.view_matrix_buffer_index]);
-      command_buffer.bind_descriptor(&m_default_pipeline_layout, 0, camera_descriptor);
+        command_buffer.set_viewport(view.viewport);
 
-      const RenderPipeline* last_pipeline = nullptr;
-      RenderObject last_object = {};
+        RectI scissor = {};
+        scissor.offset = view.viewport.offset;
+        scissor.extent = view.viewport.extent;
+        command_buffer.set_scissor(scissor);
 
-      for (auto object : part.objects) {
-        // pipeline
+        auto camera_descriptor = m_renderer.allocate_descriptor_for_layout(&m_camera_descriptor_layout);
+        camera_descriptor.write(0, &recorder.m_view_matrix_buffers[view.view_matrix_buffer_index]);
+        command_buffer.bind_descriptor(&m_default_pipeline_layout, 0, camera_descriptor);
 
-        if (last_pipeline == nullptr || object.geometry.pipeline != last_object.geometry.pipeline) {
-          last_pipeline = render_pipeline(object.geometry.pipeline);
-          command_buffer.bind_pipeline(last_pipeline);
-        }
-
-        // sampler
-
-        if (object.geometry.texture == nullptr) {
-          object.geometry.texture = &m_white;
-        }
-
-        if (object.geometry.texture != last_object.geometry.texture) {
-          auto sampler_descriptor = m_renderer.allocate_descriptor_for_layout(&m_sampler_descriptor_layout);
-          sampler_descriptor.write(0, object.geometry.texture);
-          command_buffer.bind_descriptor(&m_default_pipeline_layout, 1, sampler_descriptor);
-        }
-
-        // model matrix
-
-        command_buffer.push_constant(&m_default_pipeline_layout, gf::ShaderStage::Vertex, &object.transform);
-
-        assert(object.geometry.vertices != nullptr);
-
-        if (object.geometry.vertices != last_object.geometry.vertices) {
-          command_buffer.bind_vertex_buffer(object.geometry.vertices);
-        }
-
-        assert(object.geometry.indices != nullptr);
-
-        if (object.geometry.indices != last_object.geometry.indices) {
-          command_buffer.bind_index_buffer(object.geometry.indices);
-        }
-
-        command_buffer.draw_indexed(object.geometry.count, object.geometry.first);
-
-        last_object = object;
+      } else if (record.type == RenderRecorder::RecordType::Scissor) {
+        assert(record.index < recorder.m_scissors.size());
+        command_buffer.set_scissor(recorder.m_scissors[record.index].scissor);
+      } else if (record.type == RenderRecorder::RecordType::Object) {
+        assert(record.index < recorder.m_objects.size());
+        render_object(command_buffer, recorder.m_objects[record.index]);
       }
     }
+  }
+
+  void BasicSceneManager::render_object(RenderCommandBuffer command_buffer, RenderObject object)
+  {
+    // pipeline
+
+    if (m_last_pipeline == nullptr || object.geometry.pipeline != m_last_object.geometry.pipeline) {
+      m_last_pipeline = render_pipeline(object.geometry.pipeline);
+      command_buffer.bind_pipeline(m_last_pipeline);
+    }
+
+    // sampler
+
+    if (object.geometry.texture == nullptr) {
+      object.geometry.texture = &m_white;
+    }
+
+    if (object.geometry.texture != m_last_object.geometry.texture) {
+      auto sampler_descriptor = m_renderer.allocate_descriptor_for_layout(&m_sampler_descriptor_layout);
+      sampler_descriptor.write(0, object.geometry.texture);
+      command_buffer.bind_descriptor(&m_default_pipeline_layout, 1, sampler_descriptor);
+    }
+
+    // model matrix
+
+    command_buffer.push_constant(&m_default_pipeline_layout, gf::ShaderStage::Vertex, &object.transform);
+
+    assert(object.geometry.vertices != nullptr);
+
+    if (object.geometry.vertices != m_last_object.geometry.vertices) {
+      command_buffer.bind_vertex_buffer(object.geometry.vertices);
+    }
+
+    assert(object.geometry.indices != nullptr);
+
+    if (object.geometry.indices != m_last_object.geometry.indices) {
+      command_buffer.bind_index_buffer(object.geometry.indices);
+    }
+
+    command_buffer.draw_indexed(object.geometry.count, object.geometry.first, object.geometry.offset);
+
+    m_last_object = object;
   }
 
   void BasicSceneManager::build_default_pipelines()
@@ -240,7 +252,6 @@ namespace gf {
 
     m_imgui_pipeline = imgui_pipeline_builder.build(renderer());
     m_imgui_pipeline.set_debug_name("[gf2] Imgui Pipeline");
-
   }
 
   /*
@@ -304,7 +315,7 @@ namespace gf {
         auto target = renderer()->current_render_target();
         auto render_command_buffer = command_buffer.begin_rendering(target, m_scene->clear_color());
 
-        render_objects(render_command_buffer, recorder);
+        render_records(render_command_buffer, recorder);
 
         command_buffer.end_rendering(render_command_buffer);
         renderer()->end_command_buffer(command_buffer);

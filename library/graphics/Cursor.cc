@@ -66,4 +66,18 @@ namespace gf {
     return *this;
   }
 
+  void Cursor::set_mouse_cursor_visible(bool visible)
+  {
+    SDL_ShowCursor(visible ? SDL_ENABLE : SDL_DISABLE);
+  }
+
+  void Cursor::set_mouse_cursor(const Cursor& cursor)
+  {
+    if (cursor.m_cursor == nullptr) {
+      return;
+    }
+
+    SDL_SetCursor(cursor.m_cursor);
+  }
+
 }

@@ -154,7 +154,6 @@ namespace gf {
     Renderer(Window* window);
 
     void update_surface_size(Vec2I size);
-
   };
 
 }

@@ -74,9 +74,11 @@ namespace gf {
     return m_visibility == Visibility::Hidden;
   }
 
-  void Scene::process_event([[maybe_unused]] const Event& event)
+  void Scene::process_event(const Event& event)
   {
-    // TODO
+    if (!do_early_process_event(event)) {
+      do_process_event(event);
+    }
   }
 
   void Scene::update(Time time)
@@ -180,13 +182,13 @@ namespace gf {
     m_hud.entities.add_entity(entity);
   }
 
-  void StandardScene::do_update([[maybe_unused]] Time time)
+  void StandardScene::update_entities(Time time)
   {
     m_world.entities.update(time);
     m_hud.entities.update(time);
   }
 
-  void StandardScene::do_render(RenderRecorder& recorder)
+  void StandardScene::render_entities(RenderRecorder& recorder)
   {
     if (!m_world.entities.empty()) {
       render_part(recorder, m_world);
@@ -195,6 +197,16 @@ namespace gf {
     if (!m_hud.entities.empty()) {
       render_part(recorder, m_hud);
     }
+  }
+
+  void StandardScene::do_update(Time time)
+  {
+    update_entities(time);
+  }
+
+  void StandardScene::do_render(RenderRecorder& recorder)
+  {
+    render_entities(recorder);
   }
 
 }

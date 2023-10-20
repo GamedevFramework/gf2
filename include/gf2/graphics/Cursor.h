@@ -28,6 +28,7 @@ namespace gf {
 
   class GF_GRAPHICS_API Cursor {
   public:
+    Cursor() = default;
     Cursor(CursorType type);
     Cursor(const Cursor&) = delete;
     Cursor(Cursor&& other) noexcept;
@@ -36,8 +37,10 @@ namespace gf {
     Cursor& operator=(const Cursor&) = delete;
     Cursor& operator=(Cursor&& other) noexcept;
 
+    static void set_mouse_cursor_visible(bool visible = true);
+    static void set_mouse_cursor(const Cursor& cursor);
+
   private:
-    friend class Window;
     SDL_Cursor* m_cursor = nullptr;
   };
 

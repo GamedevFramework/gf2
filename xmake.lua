@@ -20,6 +20,10 @@ set_languages("cxx17")
 set_symbols("hidden")
 set_encodings("utf-8")
 
+if is_mode("debug", "check") then
+  set_symbols("debug")
+end
+
 if is_plat("windows") then
   add_cxflags("/wd4251") -- Disable warning: class needs to have dll-interface to be used by clients of class blah blah blah
   add_defines("NOMINMAX", "_CRT_SECURE_NO_WARNINGS")
@@ -74,6 +78,14 @@ target("gf2audio0")
         add_syslinks("dl")
     end
 
+target("gf2imgui0")
+    set_kind("shared")
+    add_defines("GF_IMGUI_BUILD")
+    add_files("library/imgui/*.cc")
+    add_headerfiles("include/imgui/*.h")
+    add_includedirs("include", { public = true })
+    add_includedirs("library/vendor/imgui")
+    add_deps("gf2graphics0")
 
 includes("tests/xmake.lua")
 includes("bin/xmake.lua")

@@ -102,6 +102,10 @@ namespace gf {
     void add_world_entity(Entity* entity);
     void add_hud_entity(Entity* entity);
 
+  protected:
+    void update_entities(Time time);
+    void render_entities(RenderRecorder& recorder);
+
   private:
     void do_update(Time time) override;
     void do_render(RenderRecorder& recorder) override;

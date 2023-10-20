@@ -18,24 +18,33 @@ namespace gf {
   {
     if (m_next_view_matrix_index == m_view_matrix_buffers.size()) {
       Buffer buffer(BufferType::Device, BufferUsage::Uniform, &view_matrix, 1, m_renderer);
+      buffer.set_debug_name("[gf2] View Matrix Buffer #" + std::to_string(m_next_view_matrix_index));
       m_view_matrix_buffers.push_back(std::move(buffer));
     } else {
       m_view_matrix_buffers[m_next_view_matrix_index].update(&view_matrix, 1, m_renderer);
     }
 
-    const std::vector<RenderObject> objects;
-    m_parts.push_back({ m_next_view_matrix_index, viewport, objects });
+    const Record record = { RecordType::View, m_views.size() };
+    m_records.push_back(record);
+
+    m_views.push_back({ m_next_view_matrix_index, viewport });
     ++m_next_view_matrix_index;
+  }
+
+  void RenderRecorder::update_scissor(const RectI& scissor)
+  {
+    const Record record = { RecordType::Scissor, m_scissors.size() };
+    m_records.push_back(record);
+
+    m_scissors.push_back({ scissor });
   }
 
   void RenderRecorder::record(const RenderObject& object)
   {
-    if (m_parts.empty()) {
-      // TODO: warning
-      return;
-    }
+    const Record record = { RecordType::Object, m_objects.size() };
+    m_records.push_back(record);
 
-    m_parts.back().objects.push_back(object);
+    m_objects.push_back(object);
   }
 
   void RenderRecorder::sort()
@@ -45,8 +54,11 @@ namespace gf {
 
   void RenderRecorder::clear()
   {
+    m_records.clear();
+    m_views.clear();
+    m_scissors.clear();
+    m_objects.clear();
     m_next_view_matrix_index = 0;
-    m_parts.clear();
   }
 
 }

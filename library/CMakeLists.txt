@@ -311,6 +311,30 @@ target_include_directories(gf2audio0
     "${Stb_INCLUDE_DIR}"
 )
 
+# gf2::imgui
+
+add_library(gf2imgui0
+  imgui/ImguiEntity.cc
+  imgui/ImguiManager.cc
+)
+
+gf2_handle_library(gf2imgui0
+  EXPORT_NAME
+    "imgui"
+)
+
+target_link_libraries(gf2imgui0
+  PUBLIC
+    gf2graphics0
+)
+
+target_include_directories(gf2imgui0
+  SYSTEM
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
+
 # install
 
 install(

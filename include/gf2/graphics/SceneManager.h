@@ -37,7 +37,8 @@ namespace gf {
 
   protected:
     const RenderPipeline* render_pipeline(RenderPipelineType type) const;
-    void render_objects(RenderCommandBuffer command_buffer, const RenderRecorder& recorder);
+    void render_records(RenderCommandBuffer command_buffer, const RenderRecorder& recorder);
+    void render_object(RenderCommandBuffer command_buffer, RenderObject object);
 
   private:
     void build_default_pipelines();
@@ -57,6 +58,9 @@ namespace gf {
     RenderPipeline m_text_pipeline;
     RenderPipeline m_fullscreen_pipeline;
     RenderPipeline m_imgui_pipeline;
+
+    const RenderPipeline* m_last_pipeline = nullptr;
+    RenderObject m_last_object = {};
   };
 
   class GF_GRAPHICS_API SingleSceneManager : public BasicSceneManager {

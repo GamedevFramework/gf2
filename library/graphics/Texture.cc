@@ -85,8 +85,8 @@ namespace gf {
   Texture::Texture(Texture&& other) noexcept
   : m_image_size(other.m_image_size)
   , m_allocator(std::exchange(other.m_allocator, nullptr))
-  , m_image(std::exchange(other.m_image, VK_NULL_HANDLE))
   , m_allocation(std::exchange(other.m_allocation, nullptr))
+  , m_image(std::exchange(other.m_image, VK_NULL_HANDLE))
   , m_image_view(std::exchange(other.m_image_view, VK_NULL_HANDLE))
   , m_sampler(std::exchange(other.m_sampler, VK_NULL_HANDLE))
   {
@@ -94,7 +94,14 @@ namespace gf {
 
   Texture::~Texture()
   {
-    assert(m_allocator);
+    if (m_allocator == nullptr) {
+      assert(m_allocation == nullptr);
+      assert(m_image == VK_NULL_HANDLE);
+      assert(m_image_view == VK_NULL_HANDLE);
+      assert(m_sampler == VK_NULL_HANDLE);
+      return;
+    }
+
     VmaAllocatorInfo info = {};
     vmaGetAllocatorInfo(m_allocator, &info);
 
@@ -115,8 +122,8 @@ namespace gf {
   {
     std::swap(m_image_size, other.m_image_size);
     std::swap(m_allocator, other.m_allocator);
-    std::swap(m_image, other.m_image);
     std::swap(m_allocation, other.m_allocation);
+    std::swap(m_image, other.m_image);
     std::swap(m_image_view, other.m_image_view);
     std::swap(m_sampler, other.m_sampler);
     return *this;
