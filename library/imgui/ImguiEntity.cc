@@ -11,20 +11,11 @@
 
 #include <imgui.h>
 
-#include <gf2/core/Mat4.h>
-
 #include <gf2/graphics/RenderRecorder.h>
-
-#include "gf2/graphics/RenderPipeline.h"
 
 namespace gf {
 
   static_assert(std::is_same_v<ImDrawIdx, uint16_t>);
-
-  ImguiEntity::ImguiEntity(ImguiManager* manager)
-  : m_manager(manager)
-  {
-  }
 
   void ImguiEntity::set_draw_data(const ImDrawData* data)
   {

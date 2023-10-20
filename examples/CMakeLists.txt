@@ -65,11 +65,6 @@ target_link_libraries(13-shape
 
 add_executable(15-imgui
   15-imgui.cc
-  ../library/vendor/imgui/imgui.cpp
-  ../library/vendor/imgui/imgui_demo.cpp
-  ../library/vendor/imgui/imgui_draw.cpp
-  ../library/vendor/imgui/imgui_tables.cpp
-  ../library/vendor/imgui/imgui_widgets.cpp
 )
 
 target_link_libraries(15-imgui

@@ -1,7 +1,7 @@
 set_project("gf2")
 set_version("0.1.0")
 
-add_requires("libsdl", "freetype", "pugixml", "zlib")
+add_requires("libsdl", "freetype", "imgui", "pugixml", "zlib")
 add_requires("fmt", { system = false, configs = { header_only = true }})
 add_requires("glslang", { configs = { binaryonly = true }})
 add_requires("miniaudio 0.11.17")
@@ -17,11 +17,12 @@ add_rules("mode.check", "mode.coverage", "mode.debug", "mode.releasedbg", "mode.
 set_policy("build.warning", true)
 set_warnings("allextra")
 set_languages("cxx17")
-set_symbols("hidden")
 set_encodings("utf-8")
 
 if is_mode("debug", "check") then
   set_symbols("debug")
+else
+  set_symbols("hidden")
 end
 
 if is_plat("windows") then
@@ -79,12 +80,11 @@ target("gf2audio0")
     end
 
 target("gf2imgui0")
-    set_kind("shared")
-    add_defines("GF_IMGUI_BUILD")
+    set_kind("static")
     add_files("library/imgui/*.cc")
     add_headerfiles("include/imgui/*.h")
     add_includedirs("include", { public = true })
-    add_includedirs("library/vendor/imgui")
+    add_packages("imgui", { public = true })
     add_deps("gf2graphics0")
 
 includes("tests/xmake.lua")

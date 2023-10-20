@@ -21,8 +21,6 @@ namespace gf {
 
   class GF_IMGUI_API ImguiEntity : public Entity {
   public:
-    ImguiEntity(ImguiManager* manager);
-
     Transform& transform()
     {
       return m_transform;
@@ -38,7 +36,6 @@ namespace gf {
     void render(RenderRecorder& recorder) override;
 
   private:
-    ImguiManager* m_manager;
     Transform m_transform;
 
     std::size_t m_current_buffer = 0;

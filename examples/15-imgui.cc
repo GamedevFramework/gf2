@@ -17,7 +17,6 @@ namespace {
   public:
     ImguiScene(gf::BasicSceneManager* scene_manager)
     : m_manager(scene_manager->window(), scene_manager->renderer())
-    , m_entity(&m_manager)
     {
       add_hud_entity(&m_entity);
     }
@@ -65,7 +64,7 @@ int main()
   io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
   io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
   io.IniFilename = nullptr;
-  io.Fonts->AddFontFromFileTTF(font_file.string().c_str(), 24);
+  io.Fonts->AddFontFromFileTTF(font_file.string().c_str(), 20);
 
   ImguiScene scene(&scene_manager);
   scene_manager.run(&scene);

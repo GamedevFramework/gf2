@@ -34,8 +34,6 @@ if has_config("examples") then
     target("15-imgui")
         set_kind("binary")
         add_files("15-imgui.cc")
-        add_includedirs("../library/vendor/imgui/")
-        add_files("../library/vendor/imgui/*.cpp", { warnings = "none" })
         add_deps("gf2imgui0")
         add_includedirs("$(buildir)/config/examples")
 end

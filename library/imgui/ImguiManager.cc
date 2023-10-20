@@ -57,7 +57,6 @@ namespace gf {
 
   ImguiManager::ImguiManager(Window* window, Renderer* renderer)
   {
-    // TODO: verify that an imgui context is present
     ImGuiIO& io = ImGui::GetIO();
 
     io.BackendFlags |= ImGuiBackendFlags_HasGamepad;

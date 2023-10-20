@@ -313,9 +313,14 @@ target_include_directories(gf2audio0
 
 # gf2::imgui
 
-add_library(gf2imgui0
+add_library(gf2imgui0 STATIC
   imgui/ImguiEntity.cc
   imgui/ImguiManager.cc
+  vendor/imgui/imgui.cpp
+  vendor/imgui/imgui_demo.cpp
+  vendor/imgui/imgui_draw.cpp
+  vendor/imgui/imgui_tables.cpp
+  vendor/imgui/imgui_widgets.cpp
 )
 
 gf2_handle_library(gf2imgui0
