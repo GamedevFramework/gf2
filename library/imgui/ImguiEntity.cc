@@ -44,6 +44,14 @@ namespace gf {
       indices.insert(indices.end(), list->IdxBuffer.Data, list->IdxBuffer.Data + list->IdxBuffer.Size);
     }
 
+    for (auto& vertex : vertices) {
+      const ImColor raw_sgrb_color(vertex.col);
+      const Color srgb_color(raw_sgrb_color.Value.x, raw_sgrb_color.Value.y, raw_sgrb_color.Value.z, raw_sgrb_color.Value.w);
+      const Color linear_color = gf::srgb_to_linear(srgb_color);
+      const ImColor raw_linear_color(linear_color.r, linear_color.g, linear_color.b, linear_color.a);
+      vertex.col = raw_linear_color;
+    }
+
     assert(vertices.size() == static_cast<std::size_t>(data->TotalVtxCount));
     assert(indices.size() == static_cast<std::size_t>(data->TotalIdxCount));
 
