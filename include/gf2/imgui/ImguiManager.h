@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
-#ifndef IMGUI_MANAGER_H
-#define IMGUI_MANAGER_H
+#ifndef GF_IMGUI_MANAGER_H
+#define GF_IMGUI_MANAGER_H
 
 #include <gf2/core/Time.h>
 
@@ -38,4 +38,4 @@ namespace gf {
 
 }
 
-#endif // IMGUI_MANAGER_H
+#endif // GF_IMGUI_MANAGER_H

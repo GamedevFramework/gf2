@@ -26,7 +26,7 @@ namespace gf {
 
     m_lists.clear();
 
-    m_current_buffer = 1 - m_current_buffer;
+    m_current_buffer = (m_current_buffer + 1) % ImguiFramesInFlight;
     auto& current_vertices = m_vertices[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     auto& current_indices = m_indices[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
 
@@ -61,6 +61,7 @@ namespace gf {
 
     if (vertices_size > current_vertices.size()) {
       current_vertices = Buffer(BufferType::Host, BufferUsage::Vertex, vertices.data(), vertices.size(), renderer);
+      current_vertices.set_debug_name("[gf2] Imgui Vertex Buffer #" + std::to_string(m_current_buffer));
     } else {
       current_vertices.update(vertices.data(), vertices.size(), renderer);
     }
@@ -69,6 +70,7 @@ namespace gf {
 
     if (indices_size > current_indices.size()) {
       current_indices = Buffer(BufferType::Host, BufferUsage::Index, indices.data(), indices.size(), renderer);
+      current_indices.set_debug_name("[gf2] Imgui Index Buffer #" + std::to_string(m_current_buffer));
     } else {
       current_indices.update(indices.data(), indices.size(), renderer);
     }

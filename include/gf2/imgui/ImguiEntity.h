@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
-#ifndef IMGUI_ENTITY_H
-#define IMGUI_ENTITY_H
+#ifndef GF_IMGUI_ENTITY_H
+#define GF_IMGUI_ENTITY_H
 
 #include <gf2/core/Rect.h>
 #include <gf2/core/Transform.h>
@@ -34,11 +34,13 @@ namespace gf {
     void render(RenderRecorder& recorder) override;
 
   private:
+    static constexpr std::size_t ImguiFramesInFlight = 3;
+
     Transform m_transform;
 
     std::size_t m_current_buffer = 0;
-    Buffer m_vertices[2];
-    Buffer m_indices[2];
+    Buffer m_vertices[ImguiFramesInFlight];
+    Buffer m_indices[ImguiFramesInFlight];
 
     struct CommandList {
       RectI scissor = {};
@@ -53,4 +55,4 @@ namespace gf {
 
 }
 
-#endif // IMGUI_ENTITY_H
+#endif // GF_IMGUI_ENTITY_H

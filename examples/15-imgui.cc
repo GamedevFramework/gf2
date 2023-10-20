@@ -7,6 +7,7 @@
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/SceneManager.h>
 #include <gf2/imgui/ImguiEntity.h>
+#include <gf2/imgui/ImguiInitializer.h>
 #include <gf2/imgui/ImguiManager.h>
 
 #include "config.h"
@@ -57,8 +58,7 @@ int main()
   const std::filesystem::path font_file = assets_directory / "Oxanium-Regular.ttf";
 
   gf::SingleSceneManager scene_manager("15-imgui | gf2", gf::vec(1600, 900));
-
-  ImGui::CreateContext();
+  gf::ImguiInitializer imgui_initializer;
 
   ImGuiIO& io = ImGui::GetIO();
   io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
@@ -69,6 +69,5 @@ int main()
   ImguiScene scene(&scene_manager);
   scene_manager.run(&scene);
 
-  ImGui::DestroyContext();
   return EXIT_SUCCESS;
 }

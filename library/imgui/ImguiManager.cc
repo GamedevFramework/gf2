@@ -61,7 +61,6 @@ namespace gf {
 
     io.BackendFlags |= ImGuiBackendFlags_HasGamepad;
     io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
-    io.BackendFlags |= ImGuiBackendFlags_RendererHasVtxOffset;
 
     io.BackendPlatformName = "imgui_impl_gf2";
 
@@ -78,6 +77,7 @@ namespace gf {
     io.Fonts->GetTexDataAsRGBA32(&pixels, &size.w, &size.h);
     const Image font_image(size, pixels, PixelFormat::Rgba32);
     m_font_texture = Texture(font_image, renderer);
+    m_font_texture.set_debug_name("[gf2] Imgui Font Texture");
     io.Fonts->TexID = static_cast<void*>(&m_font_texture);
 
     io.BackendRendererUserData = static_cast<void*>(renderer);

@@ -49,3 +49,8 @@ xref:index.adoc[< Back to main page]
 - xref:audio_management.adoc[Management] (xref:AudioManager.adoc[`AudioManager`])
 - xref:audio_sources.adoc[Sources] (xref:Sound.adoc[`Sound`], xref:Music.adoc[`Music`])
 - xref:audio_spatialization.adoc[Spatialization] (xref:AudioListener.adoc[`AudioListener`])
+
+== `imgui`
+
+- xref:imgui_initialization.adoc[Initialization] (`ImguiInitializer`)
+- xref:imgui_management.adoc[Management] (`ImguiManager`, `ImguiEntity`)
