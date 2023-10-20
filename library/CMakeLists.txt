@@ -1,6 +1,6 @@
 
 function(gf2_handle_library target)
-  set(options "")
+  set(options STATIC)
   set(value_options EXPORT_NAME)
   set(multi_value_options "")
 
@@ -14,7 +14,7 @@ function(gf2_handle_library target)
       $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
   )
 
-  if(NOT BUILD_SHARED_LIBS)
+  if(NOT BUILD_SHARED_LIBS OR MY_STATIC)
     target_compile_definitions(${target}
       PUBLIC
         GF_${LIBRARY_NAME}_STATIC
@@ -324,6 +324,7 @@ add_library(gf2imgui0 STATIC
 )
 
 gf2_handle_library(gf2imgui0
+  STATIC
   EXPORT_NAME
     "imgui"
 )

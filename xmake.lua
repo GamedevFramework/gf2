@@ -81,6 +81,7 @@ target("gf2audio0")
 
 target("gf2imgui0")
     set_kind("static")
+    add_defines("GF_IMGUI_STATIC", { public = true })
     add_files("library/imgui/*.cc")
     add_headerfiles("include/imgui/*.h")
     add_includedirs("include", { public = true })

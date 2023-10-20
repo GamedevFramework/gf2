@@ -3,17 +3,15 @@
 #ifndef IMGUI_ENTITY_H
 #define IMGUI_ENTITY_H
 
-#include <cstdint>
-
 #include <gf2/core/Rect.h>
 #include <gf2/core/Transform.h>
 #include <gf2/core/Vec2.h>
 
 #include <gf2/graphics/Buffer.h>
 #include <gf2/graphics/Entity.h>
+#include <gf2/graphics/Texture.h>
 
 #include "ImguiApi.h"
-#include "ImguiManager.h"
 
 struct ImDrawData;
 
