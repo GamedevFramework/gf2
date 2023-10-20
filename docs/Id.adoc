@@ -83,7 +83,7 @@ Create an identifier from an integer.
 
 [source]
 ----
-constexpr Id hash(const char *str, std::size_t sz); <1>
+constexpr Id hash(const char* str, std::size_t sz); <1>
 constexpr Id hash(std::string_view str); <2>
 ----
 

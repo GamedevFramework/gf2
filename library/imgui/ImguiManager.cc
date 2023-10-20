@@ -254,19 +254,13 @@ namespace gf {
 
     switch (button) {
       case MouseButton::Left:
-        io.AddMouseButtonEvent(0, pressed);
+        io.AddMouseButtonEvent(ImGuiMouseButton_Left, pressed);
         break;
       case MouseButton::Middle:
-        io.AddMouseButtonEvent(2, pressed);
+        io.AddMouseButtonEvent(ImGuiMouseButton_Middle, pressed);
         break;
       case MouseButton::Right:
-        io.AddMouseButtonEvent(1, pressed);
-        break;
-      case MouseButton::XButton1:
-        io.AddMouseButtonEvent(3, pressed);
-        break;
-      case MouseButton::XButton2:
-        io.AddMouseButtonEvent(4, pressed);
+        io.AddMouseButtonEvent(ImGuiMouseButton_Right, pressed);
         break;
       default:
         // nothing to do
