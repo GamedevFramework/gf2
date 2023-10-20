@@ -8,6 +8,8 @@
 #include <cassert>
 #include <cstddef>
 
+#include <volk.h>
+
 #include <gf2/graphics/Buffer.h>
 #include <gf2/graphics/RenderPipeline.h>
 

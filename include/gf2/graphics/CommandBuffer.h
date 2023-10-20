@@ -5,6 +5,8 @@
 
 #include <type_traits>
 
+#include <vulkan/vulkan.h>
+
 #include <gf2/core/Color.h>
 #include <gf2/core/Rect.h>
 #include <gf2/core/Vec2.h>
@@ -15,7 +17,6 @@
 #include "RenderTarget.h"
 #include "ShaderData.h"
 #include "TextureReference.h"
-#include "Vulkan.h"
 
 namespace gf {
   class Buffer;

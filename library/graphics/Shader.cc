@@ -11,6 +11,7 @@
 #include <utility>
 
 #include <fmt/std.h>
+#include <volk.h>
 
 #include <gf2/core/Log.h>
 

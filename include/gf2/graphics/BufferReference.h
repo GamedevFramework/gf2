@@ -4,13 +4,13 @@
 #define GF_BUFFER_REFERENCE_H
 
 #include <vk_mem_alloc.h>
+#include <vulkan/vulkan.h>
 
 #include "GraphicsApi.h"
-#include "Vulkan.h"
 
 namespace gf {
 
-  class BufferReference {
+  class GF_GRAPHICS_API BufferReference {
   public:
 
   private:
@@ -26,7 +26,7 @@ namespace gf {
     VkBuffer m_buffer = VK_NULL_HANDLE;
   };
 
-  class StagingBufferReference {
+  class GF_GRAPHICS_API StagingBufferReference {
   public:
 
   private:

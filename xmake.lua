@@ -47,8 +47,8 @@ target("gf2graphics0")
     add_files("library/graphics/*.cc")
     add_headerfiles("include/graphics/*.h")
     add_includedirs("include", { public = true })
-    add_packages("vulkan-headers", "volk", "vulkan-memory-allocator", { public = true })
-    add_packages("libsdl", "vk-bootstrap") -- , "vulkan-validationlayers", "glslang"
+    add_packages("vulkan-headers", "vulkan-memory-allocator", { public = true })
+    add_packages("libsdl", "volk", "vk-bootstrap") -- , "vulkan-validationlayers", "glslang"
 --     add_rules("utils.glsl2spv", { outputdir = "$(buildir)/shaders", bin2c = true })
 --     add_files("library/graphics/shaders/*.vert", "library/graphics/shaders/*.frag")
     add_includedirs("library/graphics/shaders")

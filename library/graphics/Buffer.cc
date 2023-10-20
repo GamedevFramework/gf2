@@ -10,6 +10,8 @@
 #include <stdexcept>
 #include <utility>
 
+#include <volk.h>
+
 #include <gf2/core/Log.h>
 
 #include <gf2/graphics/Renderer.h>

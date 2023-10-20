@@ -3,7 +3,7 @@
 #ifndef GF_TEXTURE_REFERENCE_H
 #define GF_TEXTURE_REFERENCE_H
 
-#include "Vulkan.h"
+#include <vulkan/vulkan.h>
 
 namespace gf {
 

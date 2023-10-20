@@ -5,11 +5,12 @@
 
 #include <type_traits>
 
+#include <vulkan/vulkan.h>
+
 #include <gf2/core/Span.h>
 
 #include "GraphicsApi.h"
 #include "ShaderStage.h"
-#include "Vulkan.h"
 
 namespace gf {
   class Buffer;

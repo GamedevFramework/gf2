@@ -8,6 +8,7 @@
 #include <type_traits>
 
 #include <vk_mem_alloc.h>
+#include <vulkan/vulkan.h>
 
 #include <gf2/core/Bitmap.h>
 #include <gf2/core/Flags.h>
@@ -18,7 +19,6 @@
 #include "GraphicsApi.h"
 #include "RenderTarget.h"
 #include "TextureReference.h"
-#include "Vulkan.h"
 
 namespace gf {
   class Renderer;

@@ -58,7 +58,7 @@ int main()
   const std::filesystem::path font_file = assets_directory / "Oxanium-Regular.ttf";
 
   gf::SingleSceneManager scene_manager("15-imgui | gf2", gf::vec(1600, 900));
-  gf::ImguiInitializer imgui_initializer;
+  const gf::ImguiInitializer imgui_initializer;
 
   ImGuiIO& io = ImGui::GetIO();
   io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;

@@ -7,9 +7,10 @@
 
 #include <vector>
 
+#include <vulkan/vulkan.h>
+
 #include "Format.h"
 #include "GraphicsApi.h"
-#include "Vulkan.h"
 
 namespace gf {
 

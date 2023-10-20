@@ -8,6 +8,7 @@
 #include <vector>
 
 #include <vk_mem_alloc.h>
+#include <vulkan/vulkan.h>
 
 #include <gf2/core/Camera.h>
 #include <gf2/core/Color.h>
@@ -19,7 +20,6 @@
 #include "GraphicsApi.h"
 #include "RenderPipeline.h"
 #include "RenderTarget.h"
-#include "Vulkan.h"
 #include "Window.h"
 
 namespace gf {

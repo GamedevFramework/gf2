@@ -9,6 +9,7 @@
 
 #include <SDL2/SDL_vulkan.h>
 #include <VkBootstrap.h>
+#include <volk.h>
 
 #include <gf2/core/Log.h>
 #include <gf2/core/Mat3.h>

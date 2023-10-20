@@ -10,7 +10,6 @@
 #include <gf2/core/Time.h>
 #include <gf2/core/Vec2.h>
 
-#include "Cursor.h"
 #include "GraphicsApi.h"
 
 using SDL_Window = struct SDL_Window;

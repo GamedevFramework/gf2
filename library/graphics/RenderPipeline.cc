@@ -11,6 +11,8 @@
 #include <utility>
 #include <vector>
 
+#include <volk.h>
+
 #include <gf2/core/Log.h>
 
 #include <gf2/graphics/Renderer.h>

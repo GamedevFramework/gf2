@@ -5,12 +5,13 @@
 
 #include <string>
 
+#include <vulkan/vulkan.h>
+
 #include "Descriptor.h"
 #include "GraphicsApi.h"
 #include "RenderStates.h"
 #include "Shader.h"
 #include "VertexInput.h"
-#include "Vulkan.h"
 
 namespace gf {
   class Renderer;

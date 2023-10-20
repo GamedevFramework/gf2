@@ -5,8 +5,9 @@
 
 #include <type_traits>
 
+#include <vulkan/vulkan.h>
+
 #include "GraphicsApi.h"
-#include "Vulkan.h"
 
 namespace gf {
 

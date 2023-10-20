@@ -28,7 +28,7 @@ namespace gf {
 
     m_current_buffer = (m_current_buffer + 1) % ImguiFramesInFlight;
     auto& current_vertices = m_vertices[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
-    auto& current_indices = m_indices[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    auto& current_indices = m_indices[m_current_buffer];   // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
 
     // merge all buffers
 
@@ -127,7 +127,7 @@ namespace gf {
       object.priority = INT32_MAX;
       object.geometry.pipeline = RenderPipelineType::Imgui;
       object.geometry.vertices = &m_vertices[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
-      object.geometry.indices = &m_indices[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+      object.geometry.indices = &m_indices[m_current_buffer];   // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
       object.geometry.first = command_list.first;
       object.geometry.count = command_list.count;
       object.geometry.offset = command_list.offset;
