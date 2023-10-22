@@ -13,7 +13,7 @@ A *composite resource* is a resource that have references on other resources. Of
 
 The *resource manager* handles the loading and unloading of all the resources, either standalone resources or bundles. In order to manage resources of type `T`, a *registry* for type `T` must be added to the resource manager. The registry is responsible for all the resources of a single type `T`. It ensures a resource is loaded only once by refcounting its use (through loading and unloading). The registry uses one or several *loaders* that provide the functions needed to actually load the resource from a source: filesystem, memory, tarball... See <<resource_manager>>.
 
-xref:reference.adoc[< Back to reference]
+xref:reference.adoc#core[< Back to reference]
 
 See also: xref:core_resource_list.adoc[Resource list].
 

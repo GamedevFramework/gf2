@@ -10,7 +10,7 @@ There are two levels to access input events:
 - the low level with raw input events (<<event>>)
 - the high level with actions and controls
 
-xref:reference.adoc[< Back to reference]
+xref:reference.adoc#graphics[< Back to reference]
 
 == Types
 

@@ -27,7 +27,7 @@ The version of the archive may be used to handle the evolution of the archive da
 include::snippets/core_serialization.cc[tag=version]
 ----
 
-xref:reference.adoc[< Back to reference]
+xref:reference.adoc#core[< Back to reference]
 
 == Types
 

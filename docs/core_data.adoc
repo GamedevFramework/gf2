@@ -5,7 +5,7 @@ include::bits/attributes.adoc[]
 
 The data component provides classes for loading various type of data related to graphics objects.
 
-xref:reference.adoc[< Back to reference]
+xref:reference.adoc#core[< Back to reference]
 
 == Types
 

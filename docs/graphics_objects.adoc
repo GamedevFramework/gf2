@@ -1,0 +1,16 @@
+= `graphics` Objects
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The objects component provides various type of graphical objects.
+
+xref:reference.adoc#graphics[< Back to reference]
+
+== Types
+
+=== `gf::Animation`
+
+=== `gf::Sprite`
+
+=== `gf::Text`

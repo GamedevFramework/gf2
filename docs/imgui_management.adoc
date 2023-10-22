@@ -1,0 +1,36 @@
+= `imgui` Management
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The management component provides the main classes for handling link:https://github.com/ocornut/imgui[Dear Imgui].
+
+xref:reference.adoc#imgui[< Back to reference]
+
+== Types
+
+[#imgui_entity]
+=== `gf::ImguiEntity`
+
+[source]
+----
+#include <gf2/imgui/ImguiEntity.h>
+class ImguiEntity : public Entity;
+----
+
+An entity that must be used to render a link:https://github.com/ocornut/imgui[Dear Imgui] frame. xref:ImguiEntity.adoc[*Read more...*]
+
+See also: <<imgui_manager>>
+
+[#imgui_manager]
+=== `gf::ImguiManager`
+
+[source]
+----
+#include <gf2/imgui/ImguiManager.h>
+class ImguiManager;
+----
+
+`ImguiManager` provides a platform and renderer backend for link:https://github.com/ocornut/imgui[Dear Imgui]. xref:ImguiManager.adoc[*Read more...*]
+
+See also: <<imgui_entity>>

@@ -1,0 +1,43 @@
+= `gf::ImguiEntity` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+An entity that must be used to render a link:https://github.com/ocornut/imgui[Dear Imgui] frame.
+
+xref:imgui_management.adoc[< Back to `imgui` Management]
+
+== Description
+
+[source]
+----
+#include <gf2/imgui/ImguiEntity.h>
+class ImguiEntity : public Entity;
+----
+
+*Inherits*: xref:Entity.adoc[`Entity`]
+
+
+== Member function
+
+=== `render`
+
+[source]
+----
+void render(RenderRecorder& recorder) override;
+----
+
+Render a link:https://github.com/ocornut/imgui[Dear Imgui] interface. Data must have been provided with <<set_draw_data>>.
+
+See also: <<set_draw_data>>
+
+=== `set_draw_data`
+
+[source]
+----
+void set_draw_data(const ImDrawData* data);
+----
+
+Give the draw data provided by link:https://github.com/ocornut/imgui[Dear Imgui] to the entity. The entity is drawn when <<render>> is called.
+
+See also: <<render>>

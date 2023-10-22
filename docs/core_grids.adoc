@@ -12,7 +12,7 @@ A grid is a set of cells with a specific organization. As a grid is a two-dimens
 - Staggered grids (rhombus cells organised in a rectangle)
 - Hexagonal grids (hexagon cells organised in a rectangle)
 
-xref:reference.adoc[< Back to reference]
+xref:reference.adoc#core[< Back to reference]
 
 See also: xref:article_grids_howto.adoc[`Grids How To`]
 

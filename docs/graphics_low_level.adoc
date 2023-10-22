@@ -7,7 +7,7 @@ The low-level component provides basic classes for rendering.
 
 Generally, users don't need to use these classes directly. They are used in more high level objects.
 
-xref:reference.adoc[< Back to reference]
+xref:reference.adoc#graphics[< Back to reference]
 
 See also: xref:article_vulkan.adoc[Rendering with Vulkan]
 
@@ -23,14 +23,6 @@ See also: xref:article_vulkan.adoc[Rendering with Vulkan]
 
 === `gf::BlendOp`
 
-=== `gf::Buffer`
-
-=== `gf::BufferReference`
-
-=== `gf::BufferType`
-
-=== `gf::BufferUsage`
-
 === `gf::CommandBuffer`
 
 === `gf::Descriptor`
@@ -45,33 +37,23 @@ See also: xref:article_vulkan.adoc[Rendering with Vulkan]
 
 === `gf::PrimitiveTopology`
 
-=== `gf::Pipeline`
-
-=== `gf::PipelineBuilder`
-
 === `gf::RenderCommandBuffer`
 
 === `gf::Renderer`
 
+=== `gf::RenderPipeline`
+
+=== `gf::RenderPipelineBuilder`
+
 === `gf::RenderTarget`
 
-=== `gf::ShaderContext`
-
-=== `gf::ShaderStage`
-
 === `gf::Shader`
-
-=== `gf::ShaderContext`
 
 === `gf::ShaderStage`
 
 === `gf::SimpleVertex`
 
 === `gf::StagingBufferReference`
-
-=== `gf::Texture`
-
-=== `gf::TextureReference`
 
 === `gf::Vertex`
 

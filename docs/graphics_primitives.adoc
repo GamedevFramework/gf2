@@ -1,0 +1,23 @@
+= `graphics` Primitives
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The primitives component provides mid-level classes that are between high-level components and low-level components.
+
+xref:reference.adoc#graphics[< Back to reference]
+
+== Types
+
+=== `gf::Buffer`
+
+=== `gf::BufferReference`
+
+=== `gf::RenderObject`
+
+=== `gf::Renderer`
+
+=== `gf::Texture`
+
+=== `gf::TextureReference`
+

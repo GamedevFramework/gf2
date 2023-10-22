@@ -1,0 +1,46 @@
+= `gf::ImguiManager` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`ImguiManager` provides a platform and renderer backend for link:https://github.com/ocornut/imgui[Dear Imgui].
+
+xref:imgui_management.adoc[< Back to `imgui` Management]
+
+== Description
+
+[source]
+----
+#include <gf2/imgui/ImguiManager.h>
+class ImguiManager;
+----
+
+
+== Member function
+
+=== `ImguiManager` constructors
+
+[source]
+----
+ImguiManager(Window* window, Renderer* renderer);
+----
+
+Create a manager with a `window` and a `renderer`.
+
+=== `process_event`
+
+[source]
+----
+bool process_event(const Event& event);
+----
+
+Update the link:https://github.com/ocornut/imgui[Dear Imgui] context with `event`. Returns `true` if the event must not be handled by the scene.
+
+=== `update`
+
+[source]
+----
+void update(Time time);
+----
+
+Update the link:https://github.com/ocornut/imgui[Dear Imgui] context withe `time`.

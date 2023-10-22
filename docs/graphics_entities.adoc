@@ -1,0 +1,18 @@
+= `graphics` Entities
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The entities component provides various type of entities.
+
+xref:reference.adoc#graphics[< Back to reference]
+
+== Types
+
+=== `gf::AnimationEntity`
+
+=== `gf::Entity`
+
+=== `gf::SpriteEntity`
+
+=== `gf::TextEntity`

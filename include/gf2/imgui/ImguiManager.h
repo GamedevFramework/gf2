@@ -7,7 +7,6 @@
 
 #include <gf2/graphics/Cursor.h>
 #include <gf2/graphics/Event.h>
-#include <gf2/graphics/RenderPipeline.h>
 #include <gf2/graphics/Renderer.h>
 #include <gf2/graphics/Texture.h>
 #include <gf2/graphics/Window.h>

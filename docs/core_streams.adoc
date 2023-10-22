@@ -12,7 +12,7 @@ The base classes for all inputs and outputs are in `<gf2/Stream.h>`:
 
 The various implementations of streams are in `<gf2/Streams.h>` (with a final `s`).
 
-xref:reference.adoc[< Back to reference]
+xref:reference.adoc#core[< Back to reference]
 
 == Types
 

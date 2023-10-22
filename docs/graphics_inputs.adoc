@@ -11,7 +11,7 @@ The inputs component contains enumerations and types that describe input devices
 
 In addition, <<cursor>> can be used to modify the cursor.
 
-xref:reference.adoc[< Back to reference]
+xref:reference.adoc#graphics[< Back to reference]
 
 == Variables
 

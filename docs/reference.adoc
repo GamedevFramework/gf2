@@ -33,11 +33,11 @@ xref:index.adoc[< Back to main page]
 ** xref:graphics_window.adoc[Window] (xref:Window.adoc[`Window`])
 * Rendering
 ** xref:graphics_low_level.adoc[Low-Level] (`CommandBuffer`, `Shader`)
-** Render (`Renderer`, `RenderObject`, `Texture`, `Buffer`)
-** Objects (`Sprite`, `Text`, `Animation`)
+** xref:graphics_primitives.adoc[Primitives] (`Renderer`, `RenderObject`, `Texture`, `Buffer`)
+** xref:graphics_objects.adoc[Objects] (`Sprite`, `Text`, `Animation`)
 * Gaming
-** Scenes (`Scene`, `SceneManager`)
-** Entities (`Entity`)
+** xref:graphics_scenes.adoc[Scenes] (`Scene`, `SceneManager`)
+** xref:graphics_entities.adoc[Entities] (`Entity`)
 
 == `network`
 

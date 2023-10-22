@@ -5,7 +5,7 @@ include::bits/attributes.adoc[]
 
 The utilities component provides common features for the library.
 
-xref:reference.adoc[< Back to reference]
+xref:reference.adoc#core[< Back to reference]
 
 == Types
 

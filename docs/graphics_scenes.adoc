@@ -1,0 +1,23 @@
+= `graphics` Scenes
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The scenes component provides scenes and scene managers for various type of situations.
+
+xref:reference.adoc#graphics[< Back to reference]
+
+== Types
+
+=== `gf::Buffer`
+
+=== `gf::BufferReference`
+
+=== `gf::RenderObject`
+
+=== `gf::Renderer`
+
+=== `gf::Texture`
+
+=== `gf::TextureReference`
+

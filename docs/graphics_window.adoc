@@ -5,7 +5,7 @@ include::bits/attributes.adoc[]
 
 The window component handles the management of a window and all related aspects.
 
-xref:reference.adoc[< Back to reference]
+xref:reference.adoc#graphics[< Back to reference]
 
 == Types
 

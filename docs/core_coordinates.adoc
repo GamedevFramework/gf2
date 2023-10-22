@@ -5,7 +5,7 @@ include::bits/attributes.adoc[]
 
 The coordinates component provides types to manipulate coordinates in 2D.
 
-xref:reference.adoc[< Back to reference]
+xref:reference.adoc#core[< Back to reference]
 
 == Types
 

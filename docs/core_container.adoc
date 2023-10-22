@@ -5,7 +5,7 @@ include::bits/attributes.adoc[]
 
 The container component contains specialized containers in addition to the link:https://en.cppreference.com/w/cpp/container[standard containers].
 
-xref:reference.adoc[< Back to reference]
+xref:reference.adoc#core[< Back to reference]
 
 == Types
 

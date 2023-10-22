@@ -5,7 +5,7 @@ include::bits/attributes.adoc[]
 
 The math component contains well-known constants, algebra types and usual mathematical functions.
 
-xref:reference.adoc[< Back to reference]
+xref:reference.adoc#core[< Back to reference]
 
 == Variables
 
