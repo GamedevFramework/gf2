@@ -12,7 +12,7 @@ xref:graphics_inputs.adoc[< Back to `graphics` Inputs]
 
 [source]
 ----
-#include <gf2/Keyboard.h>
+#include <gf2/graphics/Keyboard.h>
 enum class Keycode : uint32_t;
 ----
 

@@ -11,7 +11,7 @@ xref:graphics_inputs.adoc[< Back to `graphics` Inputs]
 
 [source]
 ----
-#include <gf2/Cursor.h>
+#include <gf2/graphics/Cursor.h>
 class Cursor;
 ----
 

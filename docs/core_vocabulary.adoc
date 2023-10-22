@@ -14,7 +14,7 @@ xref:reference.adoc#core[< Back to reference]
 
 [source]
 ----
-#include <gf2/Types.h>
+#include <gf2/core/Types.h>
 constexpr AllType All;
 ----
 
@@ -27,7 +27,7 @@ See also: <<all_type>>
 
 [source]
 ----
-#include <gf2/Types.h>
+#include <gf2/core/Types.h>
 constexpr AnyType Any;
 ----
 
@@ -40,7 +40,7 @@ See also: <<any_type>>
 
 [source]
 ----
-#include <gf2/Types.h>
+#include <gf2/core/Types.h>
 constexpr NoneType None;
 ----
 
@@ -53,7 +53,7 @@ See also: <<none_type>>
 
 [source]
 ----
-#include <gf2/Types.h>
+#include <gf2/core/Types.h>
 constexpr ZeroType Zero;
 ----
 
@@ -68,7 +68,7 @@ See also: <<zero_type>>
 
 [source]
 ----
-#include <gf2/Types.h>
+#include <gf2/core/Types.h>
 struct AllType;
 ----
 
@@ -81,7 +81,7 @@ See also: <<all>>
 
 [source]
 ----
-#include <gf2/Types.h>
+#include <gf2/core/Types.h>
 struct AnyType;
 ----
 
@@ -94,7 +94,7 @@ See also: <<any>>
 
 [source]
 ----
-#include <gf2/Result.h>
+#include <gf2/core/Result.h>
 template<typename E>
 struct Error;
 ----
@@ -108,7 +108,7 @@ See also: <<error>>, <<result>>
 
 [source]
 ----
-#include <gf2/Flags.h>
+#include <gf2/core/Flags.h>
 template<typename E>
 class Flags;
 ----
@@ -120,7 +120,7 @@ A `Flags<E>` stores a bit field relying on an enumeration `E`. xref:Flags.adoc[*
 
 [source]
 ----
-#include <gf2/Id.h>
+#include <gf2/core/Id.h>
 enum class Id : uint64_t;
 ----
 
@@ -131,7 +131,7 @@ enum class Id : uint64_t;
 
 [source]
 ----
-#include <gf2/Types.h>
+#include <gf2/core/Types.h>
 struct NoneType;
 ----
 
@@ -144,7 +144,7 @@ See also: <<none>>
 
 [source]
 ----
-#include <gf2/Result.h>
+#include <gf2/core/Result.h>
 template<typename T, typename E>
 class Result;
 ----
@@ -156,7 +156,7 @@ A `Result<T,E>` represents either a valid value of type `T` or an error of type 
 
 [source]
 ----
-#include <gf2/Types.h>
+#include <gf2/core/Types.h>
 struct ZeroType;
 ----
 

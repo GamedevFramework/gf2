@@ -11,7 +11,7 @@ xref:core_coordinates.adoc[< Back to `core` Coordinates]
 
 [source]
 ----
-#include <gf2/Camera.h>
+#include <gf2/core/Camera.h>
 class Camera;
 ----
 

@@ -11,7 +11,7 @@ xref:network_utilities.adoc[< Back to `network` Utilities]
 
 [source]
 ----
-#include <gf/Packet.h>
+#include <gf/network/Packet.h>
 class Packet;
 ----
 

@@ -14,7 +14,7 @@ xref:reference.adoc[< Back to reference]
 
 [source]
 ----
-#include <gf2/Packet.h>
+#include <gf2/network/Packet.h>
 class Packet;
 ----
 
@@ -25,7 +25,7 @@ class Packet;
 
 [source]
 ----
-#include <gf2/Queue.h>
+#include <gf2/network/Queue.h>
 template<typename T>
 class Queue;
 ----

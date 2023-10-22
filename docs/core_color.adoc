@@ -14,7 +14,7 @@ xref:reference.adoc#core[< Back to reference]
 
 [source]
 ----
-#include <gf2/Color.h>
+#include <gf2/core/Color.h>
 constexpr Color Azure;
 ----
 
@@ -25,7 +25,7 @@ The azure predefined color.
 
 [source]
 ----
-#include <gf2/Color.h>
+#include <gf2/core/Color.h>
 constexpr Color Black;
 ----
 
@@ -36,7 +36,7 @@ The black predefined color.
 
 [source]
 ----
-#include <gf2/Color.h>
+#include <gf2/core/Color.h>
 constexpr Color Blue;
 ----
 
@@ -47,7 +47,7 @@ The blue predefined color.
 
 [source]
 ----
-#include <gf2/Color.h>
+#include <gf2/core/Color.h>
 constexpr Color Chartreuse;
 ----
 
@@ -58,7 +58,7 @@ The chartreuse predefined color.
 
 [source]
 ----
-#include <gf2/Color.h>
+#include <gf2/core/Color.h>
 constexpr Color Cyan;
 ----
 
@@ -69,7 +69,7 @@ The cyan predefined color.
 
 [source]
 ----
-#include <gf2/Color.h>
+#include <gf2/core/Color.h>
 constexpr Color Gray;
 ----
 
@@ -80,7 +80,7 @@ The gray predefined color.
 
 [source]
 ----
-#include <gf2/Color.h>
+#include <gf2/core/Color.h>
 constexpr Color Green;
 ----
 
@@ -91,7 +91,7 @@ The green predefined color.
 
 [source]
 ----
-#include <gf2/Color.h>
+#include <gf2/core/Color.h>
 constexpr Color Magenta;
 ----
 
@@ -102,7 +102,7 @@ The magenta predefined color.
 
 [source]
 ----
-#include <gf2/Color.h>
+#include <gf2/core/Color.h>
 constexpr Color Orange;
 ----
 
@@ -113,7 +113,7 @@ The orange predefined color.
 
 [source]
 ----
-#include <gf2/Color.h>
+#include <gf2/core/Color.h>
 constexpr Color Red;
 ----
 
@@ -124,7 +124,7 @@ The red predefined color.
 
 [source]
 ----
-#include <gf2/Color.h>
+#include <gf2/core/Color.h>
 constexpr Color Rose;
 ----
 
@@ -135,7 +135,7 @@ The rose predefined color.
 
 [source]
 ----
-#include <gf2/Color.h>
+#include <gf2/core/Color.h>
 constexpr Color Spring;
 ----
 
@@ -146,7 +146,7 @@ The spring predefined color.
 
 [source]
 ----
-#include <gf2/Color.h>
+#include <gf2/core/Color.h>
 constexpr Color Violet;
 ----
 
@@ -157,7 +157,7 @@ The violet predefined color.
 
 [source]
 ----
-#include <gf2/Color.h>
+#include <gf2/core/Color.h>
 constexpr Color White;
 ----
 
@@ -168,7 +168,7 @@ The white predefined color.
 
 [source]
 ----
-#include <gf2/Color.h>
+#include <gf2/core/Color.h>
 constexpr Color Yellow;
 ----
 
@@ -181,7 +181,7 @@ The yellow predefined color.
 
 [source]
 ----
-#include <gf2/Bitmap.h>
+#include <gf2/core/Bitmap.h>
 class Bitmap;
 ----
 
@@ -192,7 +192,7 @@ A bitmap is a grayscale image with a single 8 bit channel. xref:Bitmap.adoc[*Rea
 
 [source]
 ----
-#include <gf2/Color.h>
+#include <gf2/core/Color.h>
 struct Color;
 ----
 
@@ -203,7 +203,7 @@ A color in the link:https://en.wikipedia.org/wiki/RGB_color_model[RGB color mode
 
 [source]
 ----
-#include <gf2/Image.h>
+#include <gf2/core/Image.h>
 class Image;
 ----
 
@@ -214,7 +214,7 @@ class Image;
 
 [source]
 ----
-#include <gf2/Image.h>
+#include <gf2/core/Image.h>
 enum class PixelFormat : uint8_t;
 ----
 
@@ -241,7 +241,7 @@ See also: <<image>>
 
 [source]
 ----
-#include <gf2/Color.h>
+#include <gf2/core/Color.h>
 Color darker(Color color, float percent = 0.5f)
 ----
 
@@ -260,7 +260,7 @@ include::snippets/core_color.cc[tag=darker]
 
 [source]
 ----
-#include <gf2/Color.h>
+#include <gf2/core/Color.h>
 constexpr Color gray(float value = 0.5f);
 ----
 
@@ -271,7 +271,7 @@ Compute a gray color with `value`.
 
 [source]
 ----
-#include <gf2/Color.h>
+#include <gf2/core/Color.h>
 Color lighter(Color color, float percent = 0.5f);
 ----
 
@@ -290,7 +290,7 @@ include::snippets/core_color.cc[tag=lighter]
 
 [source]
 ----
-#include <gf2/Color.h>
+#include <gf2/core/Color.h>
 constexpr Color opaque(float value = 0.5f);
 ----
 

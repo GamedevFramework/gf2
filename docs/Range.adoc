@@ -11,7 +11,7 @@ xref:core_container.adoc[< Back to `core` Container]
 
 [source]
 ----
-#include <gf/Range.h>
+#include <gf/core/Range.h>
 template<typename T>
 struct Range;
 ----

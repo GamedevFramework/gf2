@@ -23,7 +23,7 @@ See also: xref:article_grids_howto.adoc[`Grids How To`]
 
 [source]
 ----
-#include <gf2/AnyGrid.h>
+#include <gf2/core/AnyGrid.h>
 class AnyGrid;
 ----
 
@@ -37,7 +37,7 @@ See also: <<hexagonal_grid>>, <<isometric_grid>>, <<orthogonal_grid>>, <<stagger
 
 [source]
 ----
-#include <gf2/GridTypes.h>
+#include <gf2/core/GridTypes.h>
 enum class CellAxis : uint8_t;
 ----
 
@@ -61,7 +61,7 @@ The axis that is shifted in staggered and hexagonal maps.
 
 [source]
 ----
-#include <gf2/GridTypes.h>
+#include <gf2/core/GridTypes.h>
 enum class CellFlip : uint8_t;
 ----
 
@@ -93,7 +93,7 @@ The way a cell may be flipped. `CellFlip` can be used with xref:Flags.adoc[`Flag
 
 [source]
 ----
-#include <gf2/GridTypes.h>
+#include <gf2/core/GridTypes.h>
 enum class CellIndex : uint8_t;
 ----
 
@@ -117,7 +117,7 @@ The indices that are shifted along the shifted axis.
 
 [source]
 ----
-#include <gf2/Cells.h>
+#include <gf2/core/Cells.h>
 enum class CellNeighborQuery : uint8_t;
 ----
 
@@ -141,7 +141,7 @@ The specification of the query when asking for neighborhood. `CellNeighborQuery`
 
 [source]
 ----
-#include <gf2/GridTypes.h>
+#include <gf2/core/GridTypes.h>
 enum class GridOrientation : uint8_t;
 ----
 
@@ -173,7 +173,7 @@ The orientation of the grid.
 
 [source]
 ----
-#include <gf2/Grids.h>
+#include <gf2/core/Grids.h>
 class HexagonalGrid;
 ----
 
@@ -184,7 +184,7 @@ An hexagonal grid is a grid with hexagonal cells organized in a rectangle. xref:
 
 [source]
 ----
-#include <gf2/Grids.h>
+#include <gf2/core/Grids.h>
 class IsometricGrid;
 ----
 
@@ -195,7 +195,7 @@ An isometric grid is a grid with rhombus cells organized in a rhombus. xref:Isom
 
 [source]
 ----
-#include <gf2/Grids.h>
+#include <gf2/core/Grids.h>
 class OrthogonalGrid;
 ----
 
@@ -206,7 +206,7 @@ An orthogonal grid is a grid with rectangle cells organized in a rectangle. xref
 
 [source]
 ----
-#include <gf2/Grids.h>
+#include <gf2/core/Grids.h>
 class StaggeredGrid;
 ----
 

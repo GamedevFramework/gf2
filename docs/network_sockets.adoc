@@ -14,7 +14,7 @@ xref:reference.adoc[< Back to reference]
 
 [source]
 ----
-#include <gf2/Socket.h>
+#include <gf2/network/Socket.h>
 class Socket;
 ----
 
@@ -25,7 +25,7 @@ class Socket;
 
 [source]
 ----
-#include <gf2/SocketAddress.h>
+#include <gf2/network/SocketAddress.h>
 class SocketAddress;
 ----
 
@@ -36,7 +36,7 @@ class SocketAddress;
 
 [source]
 ----
-#include <gf2/SocketAddress.h>
+#include <gf2/network/SocketAddress.h>
 enum class SocketAddressFormat : uint8_t;
 ----
 
@@ -61,7 +61,7 @@ See also: <<socket_address>>
 
 [source]
 ----
-#include <gf2/SocketAddress.h>
+#include <gf2/network/SocketAddress.h>
 enum class SocketFamily : int32_t;
 ----
 
@@ -89,7 +89,7 @@ See also: <<socket_address>>
 
 [source]
 ----
-#include <gf2/SocketTypes.h>
+#include <gf2/network/SocketTypes.h>
 using SocketResult = Result<std::size_t, SocketStatus>;
 ----
 
@@ -102,7 +102,7 @@ See also: <<socket_status>>
 
 [source]
 ----
-#include <gf2/SocketSelector.h>
+#include <gf2/network/SocketSelector.h>
 class SocketSelector;
 ----
 
@@ -113,7 +113,7 @@ class SocketSelector;
 
 [source]
 ----
-#include <gf2/SocketTypes.h>
+#include <gf2/network/SocketTypes.h>
 enum class SocketSelectorStatus : uint8_t;
 ----
 
@@ -141,7 +141,7 @@ See also: <<socket_selector>>
 
 [source]
 ----
-#include <gf2/SocketTypes.h>
+#include <gf2/network/SocketTypes.h>
 enum class SocketStatus : uint8_t;
 ----
 
@@ -169,7 +169,7 @@ See also: <<socket_result>>
 
 [source]
 ----
-#include <gf2/TcpListener.h>
+#include <gf2/network/TcpListener.h>
 class TcpListener : public Socket;
 ----
 
@@ -180,7 +180,7 @@ A listener in the link:https://en.wikipedia.org/wiki/Transmission_Control_Protoc
 
 [source]
 ----
-#include <gf2/TcpSocket.h>
+#include <gf2/network/TcpSocket.h>
 class TcpSocket : public Socket;
 ----
 
@@ -191,7 +191,7 @@ A socket for the link:https://en.wikipedia.org/wiki/Transmission_Control_Protoco
 
 [source]
 ----
-#include <gf2/UdpSocket.h>
+#include <gf2/network/UdpSocket.h>
 class UdpSocket : public Socket;
 ----
 

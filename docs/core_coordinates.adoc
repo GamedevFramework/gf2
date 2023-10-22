@@ -14,7 +14,7 @@ xref:reference.adoc#core[< Back to reference]
 
 [source]
 ----
-#include <gf2/Camera.h>
+#include <gf2/core/Camera.h>
 class Camera;
 ----
 
@@ -25,7 +25,7 @@ A camera defines a rectangular area of the world that is visible on the screen. 
 
 [source]
 ----
-#include <gf2/Camera.h>
+#include <gf2/core/Camera.h>
 enum class CameraType : uint8_t;
 ----
 
@@ -61,7 +61,7 @@ The type of camera.
 
 [source]
 ----
-#include <gf2/Transform.h>
+#include <gf2/core/Transform.h>
 struct Transform;
 ----
 

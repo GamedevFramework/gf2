@@ -36,7 +36,7 @@ xref:reference.adoc#core[< Back to reference]
 
 [source]
 ----
-#include <gf2/Serialization.h>
+#include <gf2/core/Serialization.h>
 class Deserializer;
 ----
 
@@ -47,7 +47,7 @@ class Deserializer;
 
 [source]
 ----
-#include <gf2/Serialization.h>
+#include <gf2/core/Serialization.h>
 class Serializer;
 ----
 
@@ -61,7 +61,7 @@ class Serializer;
 
 [source,subs="verbatim,quotes"]
 ----
-#include <gf2/SerializationOps.h>
+#include <gf2/core/SerializationOps.h>
 Serializer& operator|(Serializer& ar, const _Type_& value);
 Deerializer& operator|(Deserializer& ar, _Type_& value);
 ----

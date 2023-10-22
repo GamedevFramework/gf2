@@ -11,7 +11,7 @@ xref:core_math.adoc[< Back to `core` Math]
 
 [source]
 ----
-#include <gf2/Circ.h>
+#include <gf2/core/Circ.h>
 template<typename T>
 struct Circ;
 ----

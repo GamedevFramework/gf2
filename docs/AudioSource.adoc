@@ -11,7 +11,7 @@ xref:audio_sources.adoc[< Back to `audio` Sources]
 
 [source]
 ----
-#include <gf2/AudioSource.h>
+#include <gf2/audio/AudioSource.h>
 class AudioSource;
 ----
 

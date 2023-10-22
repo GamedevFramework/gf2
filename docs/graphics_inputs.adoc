@@ -20,7 +20,7 @@ xref:reference.adoc#graphics[< Back to reference]
 
 [source]
 ----
-#include <gf2/Gamepad.h>
+#include <gf2/graphics/Gamepad.h>
 constexpr GamepadId AnyGamepad;
 ----
 
@@ -33,7 +33,7 @@ This identifier can be used in controls for specifying any gamepad. This is espe
 
 [source]
 ----
-#include <gf2/Gamepad.h>
+#include <gf2/graphics/Gamepad.h>
 constexpr GamepadAxis AnyGamepadAxis;
 ----
 
@@ -46,7 +46,7 @@ See also: <<gamepad_axis>>
 
 [source]
 ----
-#include <gf2/Gamepad.h>
+#include <gf2/graphics/Gamepad.h>
 constexpr GamepadButton AnyGamepadButton;
 ----
 
@@ -59,7 +59,7 @@ See also: <<gamepad_button>>
 
 [source]
 ----
-#include <gf2/Keyboard.h>
+#include <gf2/graphics/Keyboard.h>
 constexpr Keycode AnyKeycode;
 ----
 
@@ -72,7 +72,7 @@ See also: <<keycode>>
 
 [source]
 ----
-#include <gf2/Keyboard.h>
+#include <gf2/graphics/Keyboard.h>
 constexpr Scancode AnyScancode;
 ----
 
@@ -85,7 +85,7 @@ See also: <<scancode>>
 
 [source]
 ----
-#include <gf2/Touch.h>
+#include <gf2/graphics/Touch.h>
 constexpr TouchId MouseTouchId
 ----
 
@@ -98,7 +98,7 @@ See also: <<touch_id>>
 
 [source]
 ----
-#include <gf2/Mouse.h>
+#include <gf2/graphics/Mouse.h>
 constexpr MouseId TouchMouseId;
 ----
 
@@ -113,7 +113,7 @@ See also: <<mouse_id>>
 
 [source]
 ----
-#include <gf2/Cursor.h>
+#include <gf2/graphics/Cursor.h>
 class Cursor;
 ----
 
@@ -124,7 +124,7 @@ class Cursor;
 
 [source]
 ----
-#include <gf2/Cursor.h>
+#include <gf2/graphics/Cursor.h>
 enum class CursorType : uint8_t;
 ----
 
@@ -180,7 +180,7 @@ See also: <<cursor>>
 
 [source]
 ----
-#include <gf2/Touch.h>
+#include <gf2/graphics/Touch.h>
 enum class FingerId : int64_t;
 ----
 
@@ -191,7 +191,7 @@ enum class FingerId : int64_t;
 
 [source]
 ----
-#include <gf2/Gamepad.h>
+#include <gf2/graphics/Gamepad.h>
 class Gamepad;
 ----
 
@@ -202,7 +202,7 @@ class Gamepad;
 
 [source]
 ----
-#include <gf2/Gamepad.h>
+#include <gf2/graphics/Gamepad.h>
 enum class GamepadAxis : int32_t;
 ----
 
@@ -213,7 +213,7 @@ enum class GamepadAxis : int32_t;
 
 [source]
 ----
-#include <gf2/Gamepad.h>
+#include <gf2/graphics/Gamepad.h>
 enum class GamepadAxisDirection : uint32_t;
 ----
 
@@ -240,7 +240,7 @@ See also: <<gamepad_axis>>
 
 [source]
 ----
-#include <gf2/Gamepad.h>
+#include <gf2/graphics/Gamepad.h>
 enum class GamepadButton : int32_t;
 ----
 
@@ -251,7 +251,7 @@ enum class GamepadButton : int32_t;
 
 [source]
 ----
-#include <gf2/Gamepad.h>
+#include <gf2/graphics/Gamepad.h>
 enum class GamepadHwId : int;
 ----
 
@@ -264,7 +264,7 @@ See also: <<gamepad_id>>
 
 [source]
 ----
-#include <gf2/Gamepad.h>
+#include <gf2/graphics/Gamepad.h>
 enum class GamepadId : int32_t;
 ----
 
@@ -277,7 +277,7 @@ See also: <<gamepad_hw_id>>
 
 [source]
 ----
-#include <gf2/Keyboard.h>
+#include <gf2/graphics/Keyboard.h>
 struct Keyboard;
 ----
 
@@ -290,7 +290,7 @@ See also: <<scancode>>, <<keycode>>
 
 [source]
 ----
-#include <gf2/Keyboard.h>
+#include <gf2/graphics/Keyboard.h>
 enum class Keycode : uint32_t;
 ----
 
@@ -303,7 +303,7 @@ See also: <<scancode>>, <<keyboard>>
 
 [source]
 ----
-#include <gf2/Keyboard.h>
+#include <gf2/graphics/Keyboard.h>
 enum class Modifiers : uint32_t;
 ----
 
@@ -314,7 +314,7 @@ A modifier key is a special key that can be used in combinaison with another key
 
 [source]
 ----
-#include <gf2/Mouse.h>
+#include <gf2/graphics/Mouse.h>
 enum class MouseButton : uint32_t;
 ----
 
@@ -325,7 +325,7 @@ enum class MouseButton : uint32_t;
 
 [source]
 ----
-#include <gf2/Mouse.h>
+#include <gf2/graphics/Mouse.h>
 enum class MouseId : uint32_t;
 ----
 
@@ -338,7 +338,7 @@ See also: <<touch_mouse_id>>
 
 [source]
 ----
-#include <gf2/Keyboard.h>
+#include <gf2/graphics/Keyboard.h>
 enum class Scancode : uint32_t;
 ----
 
@@ -351,7 +351,7 @@ See also: <<keycode>>, <<keyboard>>
 
 [source]
 ----
-#include <gf2/Touch.h>
+#include <gf2/graphics/Touch.h>
 enum class TouchId : int64_t;
 ----
 

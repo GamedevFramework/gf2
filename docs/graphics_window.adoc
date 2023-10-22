@@ -14,7 +14,7 @@ xref:reference.adoc#graphics[< Back to reference]
 
 [source]
 ----
-#include <gf2/Window.h>
+#include <gf2/graphics/Window.h>
 class Window;
 ----
 
@@ -25,7 +25,7 @@ A window from the operating system. xref:Window.adoc[*Read more...*]
 
 [source]
 ----
-#include <gf2/Window.h>
+#include <gf2/graphics/Window.h>
 enum class WindowHints : uint8_t;
 ----
 

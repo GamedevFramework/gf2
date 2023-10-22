@@ -11,7 +11,7 @@ xref:core_fonts.adoc[< Back to `core` Fonts]
 
 [source]
 ----
-#include <gf2/Font.h>
+#include <gf2/core/Font.h>
 class Font;
 ----
 

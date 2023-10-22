@@ -11,7 +11,7 @@ xref:core_utilities.adoc[< Back to `core` Utilities]
 
 [source]
 ----
-#include <gf2/Random.h>
+#include <gf2/core/Random.h>
 class Random;
 ----
 

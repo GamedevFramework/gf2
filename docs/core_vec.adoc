@@ -14,7 +14,7 @@ xref:core_math.adoc[< Back to `core` Math]
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 using Distance2 = T (*)(Vec2<T>, Vec2<T>);
 ----
@@ -28,7 +28,7 @@ See also: <<chebyshev_distance>>, <<euclidean_distance>>, <<manhattan_distance>>
 
 [source]
 ----
-#include <gf2/Vec3.h>
+#include <gf2/core/Vec3.h>
 template<typename T>
 using Distance3 = T (*)(Vec3<T>, Vec3<T>);
 ----
@@ -44,7 +44,7 @@ See also: <<chebyshev_distance>>, <<euclidean_distance>>, <<manhattan_distance>>
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 inline T angle(Vec2<T> vec);
 ----
@@ -58,7 +58,7 @@ See also: <<unit>>
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 inline T angle_to(Vec2<T> lhs, Vec2<T> rhs);
 ----
@@ -70,10 +70,10 @@ Return the signed angle between two vectors.
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 constexpr T chebyshev_distance(Vec2<T> lhs, Vec2<T> rhs);
-#include <gf2/Vec3.h>
+#include <gf2/core/Vec3.h>
 template<typename T>
 constexpr T chebyshev_distance(Vec3<T> lhs, Vec3<T> rhs);
 ----
@@ -87,10 +87,10 @@ See also: <<chebyshev_length>>, <<distance2>>, <<distance3>>
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 T chebyshev_length(Vec2<T> vec);
-#include <gf2/Vec3.h>
+#include <gf2/core/Vec3.h>
 template<typename T>
 T chebyshev_length(Vec3<T> vec);
 ----
@@ -111,7 +111,7 @@ See also: <<chebyshev_distance>>
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 constexpr T cross(Vec2<T> lhs, Vec2<T> rhs);
 ----
@@ -129,7 +129,7 @@ The 2D cross product is also known as the perp dot product or wedge product.
 
 [source]
 ----
-#include <gf2/Vec3.h>
+#include <gf2/core/Vec3.h>
 template<typename T>
 constexpr Vec3<T> cross(Vec3<T> lhs, Vec3<T> rhs);
 ----
@@ -146,7 +146,7 @@ where stem:[\theta] is the angle between stem:[\mathbf{a}] and stem:[\mathbf{b}]
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 constexpr Vec2<T> dirx(T length);
 ----
@@ -158,7 +158,7 @@ Return a vector in a x-direction of size `length`.
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 constexpr Vec2<T> diry(T length);
 ----
@@ -170,10 +170,10 @@ Return a vector in a y-direction of size `length`.
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 constexpr T dot(Vec2<T> lhs, Vec2<T> rhs);
-#include <gf2/Vec3.h>
+#include <gf2/core/Vec3.h>
 template<typename T>
 constexpr T dot(Vec3<T> lhs, Vec3<T> rhs);
 ----
@@ -189,10 +189,10 @@ The link:https://en.wikipedia.org/wiki/Dot_product[scalar product] or dot produc
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 inline auto euclidean_distance(Vec2<T> lhs, Vec2<T> rhs);
-#include <gf2/Vec3.h>
+#include <gf2/core/Vec3.h>
 template<typename T>
 inline auto euclidean_distance(Vec3<T> lhs, Vec3<T> rhs);
 ----
@@ -206,10 +206,10 @@ See also: <<euclidean_length>>, <<distance2>>, <<distance3>>
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 inline auto euclidean_length(Vec2<T> vec);
-#include <gf2/Vec3.h>
+#include <gf2/core/Vec3.h>
 template<typename T>
 inline auto euclidean_length(Vec3<T> vec);
 ----
@@ -229,7 +229,7 @@ See also: <<euclidean_distance>>
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 constexpr Vec2<T> inverse_triple_product(Vec2<T> a, Vec2<T> b, Vec2<T> c);
 ----
@@ -249,10 +249,10 @@ See also: <<triple_product>>
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 inline T manhattan_distance(Vec2<T> lhs, Vec2<T> rhs);
-#include <gf2/Vec3.h>
+#include <gf2/core/Vec3.h>
 template<typename T>
 inline T manhattan_distance(Vec3<T> lhs, Vec3<T> rhs);
 ----
@@ -266,10 +266,10 @@ See also: <<manhattan_length>>, <<distance2>>, <<distance3>>
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 inline T manhattan_length(Vec2<T> vec);
-#include <gf2/Vec3.h>
+#include <gf2/core/Vec3.h>
 template<typename T>
 inline T manhattan_length(Vec3<T> vec);
 ----
@@ -289,10 +289,10 @@ See also: <<manhattan_distance>>
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 inline T natural_distance(Vec2<T> lhs, Vec2<T> rhs);
-#include <gf2/Vec3.h>
+#include <gf2/core/Vec3.h>
 template<typename T>
 inline T natural_distance(Vec3<T> lhs, Vec3<T> rhs);
 ----
@@ -306,10 +306,10 @@ See also: <<natural_length>>, <<distance2>>, <<distance3>>
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 inline T natural_length(Vec2<T> vec);
-#include <gf2/Vec3.h>
+#include <gf2/core/Vec3.h>
 template<typename T>
 inline T natural_length(Vec3<T> vec);
 ----
@@ -330,10 +330,10 @@ See also: <<natural_distance>>
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 inline Vec2<T> normalize(Vec2<T> vec);
-#include <gf2/Vec3.h>
+#include <gf2/core/Vec3.h>
 template<typename T>
 inline Vec3<T> normalize(Vec3<T> vec);
 ----
@@ -351,7 +351,7 @@ A normalized vector is also called a link:https://en.wikipedia.org/wiki/Unit_vec
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 constexpr Vec2<T> perp(Vec2<T> vec);
 ----
@@ -367,7 +367,7 @@ The perpendicular vector stem:[\mathbf{u}^{\perp}] of vector stem:[\mathbf{u} = 
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 constexpr Vec2<T> project_onto(Vec2<T> vec, Vec2<T> axis);
 ----
@@ -379,10 +379,10 @@ Return the projection of `vec` on `axis`.
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 constexpr Vec2<T> projx(Vec2<T> vec);
-#include <gf2/Vec3.h>
+#include <gf2/core/Vec3.h>
 template<typename T>
 constexpr Vec3<T> projx(Vec3<T> vec);
 ----
@@ -394,10 +394,10 @@ Return the projection of vector `vec` on the x-axis.
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 constexpr Vec2<T> projy(Vec2<T> vec);
-#include <gf2/Vec3.h>
+#include <gf2/core/Vec3.h>
 template<typename T>
 constexpr Vec3<T> projy(Vec3<T> vec);
 ----
@@ -409,7 +409,7 @@ Return the projection of vector `vec` on the y-axis.
 
 [source]
 ----
-#include <gf2/Vec3.h>
+#include <gf2/core/Vec3.h>
 template<typename T>
 constexpr Vec3<T> projz(Vec3<T> vec);
 ----
@@ -421,10 +421,10 @@ Return the projection of vector `vec` on the z-axis.
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 constexpr T square_distance(Vec2<T> lhs, Vec2<T> rhs);
-#include <gf2/Vec3.h>
+#include <gf2/core/Vec3.h>
 template<typename T>
 constexpr T square_distance(Vec3<T> lhs, Vec3<T> rhs);
 ----
@@ -438,10 +438,10 @@ See also: <<square_length>>, <<distance2>>, <<distance3>>
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 constexpr T square_length(Vec2<T> vec);
-#include <gf2/Vec3.h>
+#include <gf2/core/Vec3.h>
 template<typename T>
 constexpr T square_length(Vec3<T> vec);
 ----
@@ -459,7 +459,7 @@ See also: <<square_distance>>
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 constexpr Vec2<T> triple_product(Vec2<T> a, Vec2<T> b, Vec2<T> c);
 ----
@@ -478,7 +478,7 @@ See also: <<inverse_triple_product>>
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 inline Vec2<T> unit(T angle);
 ----

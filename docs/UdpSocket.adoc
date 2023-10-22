@@ -11,7 +11,7 @@ xref:network_sockets.adoc[< Back to `network` Sockets]
 
 [source]
 ----
-#include <gf/UdpSocket.h>
+#include <gf/network/UdpSocket.h>
 class UdpSocket : public Socket;
 ----
 

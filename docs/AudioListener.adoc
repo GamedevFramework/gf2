@@ -11,7 +11,7 @@ xref:audio_spatialization.adoc[< Back to `audio` Spatialization]
 
 [source]
 ----
-#include <gf2/AudioListener.h>
+#include <gf2/audio/AudioListener.h>
 class AudioListener;
 ----
 

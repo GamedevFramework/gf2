@@ -11,7 +11,7 @@ xref:audio_management.adoc[< Back to `audio` Management]
 
 [source]
 ----
-#include <gf2/AudioManager.h>
+#include <gf2/audio/AudioManager.h>
 class AudioManager;
 ----
 

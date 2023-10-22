@@ -14,7 +14,7 @@ xref:reference.adoc#core[< Back to reference]
 
 [source]
 ----
-#include <gf2/StringUtils.h>
+#include <gf2/core/StringUtils.h>
 class CodepointRange;
 ----
 
@@ -29,7 +29,7 @@ See also: <<codepoints>>
 
 [source]
 ----
-#include <gf2/StringUtils.h>
+#include <gf2/core/StringUtils.h>
 constexpr CodepointRange codepoints(std::string_view string) noexcept
 ----
 
@@ -42,7 +42,7 @@ See also: <<codepoint_range>>
 
 [source]
 ----
-#include <gf2/StringUtils.h>
+#include <gf2/core/StringUtils.h>
 std::string escape_string(std::string_view text);
 ----
 
@@ -53,7 +53,7 @@ Escape a string. This function replaces characters with their escaped equivalent
 
 [source]
 ----
-#include <gf2/StringUtils.h>
+#include <gf2/core/StringUtils.h>
 std::string nice_num(float num, float precision);
 ----
 
@@ -65,7 +65,7 @@ Create a string representation of a floating point number `num` with `precision`
 
 [source]
 ----
-#include <gf2/StringUtils.h>
+#include <gf2/core/StringUtils.h>
 inline std::vector<std::string_view> split_in_paragraphs(std::string_view text);
 ----
 
@@ -78,7 +78,7 @@ See also: <<split_in_words>>
 
 [source]
 ----
-#include <gf2/StringUtils.h>
+#include <gf2/core/StringUtils.h>
 inline std::vector<std::string_view> split_in_words(std::string_view text);
 ----
 
@@ -91,7 +91,7 @@ See also: <<split_in_paragraphs>>
 
 [source]
 ----
-#include <gf2/StringUtils.h>
+#include <gf2/core/StringUtils.h>
 inline std::vector<std::string_view> split_path(std::string_view path_like);
 ----
 
@@ -102,7 +102,7 @@ Split a path-like string in multiple items. The items are separated by `'/'`.
 
 [source]
 ----
-#include <gf2/StringUtils.h>
+#include <gf2/core/StringUtils.h>
 std::vector<std::string_view> split_string(std::string_view string, std::string_view delimiters);
 ----
 

@@ -11,7 +11,7 @@ xref:core_color.adoc[< Back to `core` Color]
 
 [source]
 ----
-#include <gf2/Image.h>
+#include <gf2/core/Image.h>
 class Image;
 ----
 

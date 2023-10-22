@@ -11,7 +11,7 @@ xref:graphics_events.adoc[< Back to `graphics` Events]
 
 [source]
 ----
-#include <gf2/Event.h>
+#include <gf2/graphics/Event.h>
 struct Event;
 ----
 

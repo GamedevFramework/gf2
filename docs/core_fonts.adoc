@@ -14,7 +14,7 @@ xref:reference.adoc#core[< Back to reference]
 
 [source]
 ----
-#include <gf2/Font.h>
+#include <gf2/core/Font.h>
 class Font;
 ----
 
@@ -25,7 +25,7 @@ class Font;
 
 [source]
 ----
-#include <gf2/Font.h>
+#include <gf2/core/Font.h>
 struct FontGlyph;
 ----
 
@@ -55,7 +55,7 @@ struct FontGlyph;
 
 [source]
 ----
-#include <gf2/FontManager.h>
+#include <gf2/core/FontManager.h>
 class FontManager;
 ----
 

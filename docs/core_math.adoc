@@ -14,7 +14,7 @@ xref:reference.adoc#core[< Back to reference]
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 constexpr float Epsilon;
 ----
 
@@ -25,7 +25,7 @@ The link:https://en.wikipedia.org/wiki/Machine_epsilon[machine epsilon].
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 constexpr float InvSqrt2;
 ----
 
@@ -38,7 +38,7 @@ See also: <<sqrt2>>
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 constexpr float InvSqrt3;
 ----
 
@@ -51,7 +51,7 @@ See also: <<sqrt3>>
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 constexpr float Pi;
 ----
 
@@ -62,7 +62,7 @@ The stem:[\pi] constant.
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 constexpr float Pi2;
 ----
 
@@ -73,7 +73,7 @@ The stem:[\frac{\pi}{2}] constant.
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 constexpr float Pi3;
 ----
 
@@ -84,7 +84,7 @@ The stem:[\frac{\pi}{3}] constant.
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 constexpr float Pi4;
 ----
 
@@ -95,7 +95,7 @@ The stem:[\frac{\pi}{4}] constant.
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 constexpr float Pi6;
 ----
 
@@ -106,7 +106,7 @@ The stem:[\frac{\pi}{6}] constant.
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 constexpr float Sqrt2;
 ----
 
@@ -119,7 +119,7 @@ See also: <<inv_sqrt2>>
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 constexpr float Sqrt3;
 ----
 
@@ -135,7 +135,7 @@ See also: <<inv_sqrt3>>
 
 [source]
 ----
-#include <gf2/Circ.h>
+#include <gf2/core/Circ.h>
 template<typename T>
 struct Circ;
 ----
@@ -147,7 +147,7 @@ A `Circ<T>` represents a circle. xref:Circ.adoc[*Read more...*]
 
 [source]
 ----
-#include <gf2/Mat3.h>
+#include <gf2/core/Mat3.h>
 template<typename T>
 struct Mat3;
 ----
@@ -159,7 +159,7 @@ A `Mat3<T>` represents affine transformation of 2D vectors (using homogeneous co
 
 [source]
 ----
-#include <gf2/Rect.h>
+#include <gf2/core/Rect.h>
 template<typename T>
 struct Rect;
 ----
@@ -171,7 +171,7 @@ A `Rect<T>` represents an axis-aligned rectangle. xref:Rect.adoc[*Read more...*]
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 template<typename T>
 using Step = T (*)(T);
 ----
@@ -196,7 +196,7 @@ See also: <<linear_step>>, <<cubic_step>>, <<quintic_step>>, <<cosine_step>>
 
 [source]
 ----
-#include <gf2/Vec2.h>
+#include <gf2/core/Vec2.h>
 template<typename T>
 struct Vec2;
 ----
@@ -210,7 +210,7 @@ See also: <<vec3>>, xref:core_vec.adoc[vector-related types and functions]
 
 [source]
 ----
-#include <gf2/Vec3.h>
+#include <gf2/core/Vec3.h>
 template<typename T>
 struct Vec3;
 ----
@@ -226,7 +226,7 @@ See also: <<vec2>>, xref:core_vec.adoc[vector-related types and functions]
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 template<typename T>
 constexpr T absdiff(T lhs, T rhs);
 ----
@@ -242,7 +242,7 @@ This function is defined as:
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 template<typename T>
 constexpr bool almost_equals(T a, T b, T abs_error = ..., T rel_error = ...);
 ----
@@ -254,7 +254,7 @@ Compare the equality of two floats `a` and `b` considering the `abs_error` the m
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 template<typename T>
 constexpr T clamp(T val, T lo, T hi);
 ----
@@ -266,7 +266,7 @@ This function takes a value `val` and returns it if it is in between `lo` and `h
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 template<typename T>
 inline T cosine_step(T t);
 ----
@@ -283,7 +283,7 @@ See also: <<step>>
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 template<typename T>
 constexpr T cube(T val);
 ----
@@ -297,7 +297,7 @@ See also: <<square>>
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 template<typename T>
 constexpr T cubic_step(T t);
 ----
@@ -321,7 +321,7 @@ See also: <<step>>
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 template<typename T>
 constexpr T degrees_to_radians(T degrees);
 ----
@@ -335,7 +335,7 @@ See also: <<radians_to_degrees>>
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 template<typename T>
 constexpr T div_ceil(T dividend, T divisor);
 ----
@@ -349,7 +349,7 @@ See also: <<div_floor>>
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 template<typename T>
 constexpr T div_floor(T dividend, T divisor);
 ----
@@ -363,7 +363,7 @@ See also: <<div_ceil>>
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 template<typename T, typename U>
 constexpr T lerp(T lhs, T rhs, U t);
 ----
@@ -376,7 +376,7 @@ This functions returns an interpolated value between two values `lhs` and `rhs` 
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 template<typename T>
 constexpr T linear_step(T t);
 ----
@@ -393,7 +393,7 @@ See also: <<step>>
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 template<typename T>
 constexpr T parity(T val)
 ----
@@ -405,7 +405,7 @@ Return stem:[0] if `val` is even and stem:[1] if `val` is odd.
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 template<typename T>
 constexpr T quintic_step(T t);
 ----
@@ -431,7 +431,7 @@ See also: <<step>>
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 template<typename T>
 constexpr T radians_to_degrees(T radians);
 ----
@@ -445,7 +445,7 @@ See also: <<degrees_to_radians>>
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 template<typename T>
 constexpr int sign(T val);
 ----
@@ -468,7 +468,7 @@ See also: link:https://en.wikipedia.org/wiki/Sign_function[Sign function]
 
 [source]
 ----
-#include <gf2/Math.h>
+#include <gf2/core/Math.h>
 template<typename T>
 constexpr T square(T val);
 ----

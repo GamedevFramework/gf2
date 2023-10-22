@@ -11,7 +11,7 @@ xref:core_container.adoc[< Back to `core` Container]
 
 [source]
 ----
-#include <gf/Span.h>
+#include <gf/core/Span.h>
 template<typename T, std::size_t N>
 class StaticSpan;
 ----

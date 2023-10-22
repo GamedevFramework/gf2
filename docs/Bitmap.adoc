@@ -11,7 +11,7 @@ xref:core_color.adoc[< Back to `core` Color]
 
 [source]
 ----
-#include <gf2/Bitmap.h>
+#include <gf2/core/Bitmap.h>
 class Bitmap;
 ----
 

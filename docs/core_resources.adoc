@@ -24,7 +24,7 @@ See also: xref:core_resource_list.adoc[Resource list].
 
 [source]
 ----
-#include <gf2/ResourceLoaders.h>
+#include <gf2/core/ResourceLoaders.h>
 class FileLoader;
 ----
 
@@ -35,7 +35,7 @@ class FileLoader;
 
 [source]
 ----
-#include <gf2/ResourceLoaders.h>
+#include <gf2/core/ResourceLoaders.h>
 class MemoryLoader;
 ----
 
@@ -46,7 +46,7 @@ class MemoryLoader;
 
 [source]
 ----
-#include <gf2/ResourceBundle.h>
+#include <gf2/core/ResourceBundle.h>
 class ResourceBundle;
 ----
 
@@ -57,7 +57,7 @@ class ResourceBundle;
 
 [source]
 ----
-#include <gf2/ResourceContext.h>
+#include <gf2/core/ResourceContext.h>
 template<typename T>
 using ResourceContext = typename ResourceContextTraits<T>::Type;
 ----
@@ -69,7 +69,7 @@ using ResourceContext = typename ResourceContextTraits<T>::Type;
 
 [source]
 ----
-#include <gf2/ResourceContext.h>
+#include <gf2/core/ResourceContext.h>
 template<typename T>
 struct ResourceContextTraits;
 ----
@@ -81,7 +81,7 @@ struct ResourceContextTraits;
 
 [source]
 ----
-#include <gf2/ResourceLoader.h>
+#include <gf2/core/ResourceLoader.h>
 template<typename T>
 using ResourceLoader = std::function<std::unique_ptr<T>( <1>
     const std::filesystem::path&
@@ -105,7 +105,7 @@ See also: <<loader_for>>
 
 [source]
 ----
-#include <gf2/ResourceManager.h>
+#include <gf2/core/ResourceManager.h>
 class ResourceManager;
 ----
 
@@ -116,7 +116,7 @@ class ResourceManager;
 
 [source]
 ----
-#include <gf2/ResourceRegistry.h>
+#include <gf2/core/ResourceRegistry.h>
 template<typename T>
 class ResourceRegistry;
 ----
@@ -128,7 +128,7 @@ class ResourceRegistry;
 
 [source]
 ----
-#include <gf2/Tarball.h>
+#include <gf2/core/Tarball.h>
 class Tarball;
 ----
 
@@ -139,7 +139,7 @@ class Tarball;
 
 [source]
 ----
-#include <gf2/ResourceLoaders.h>
+#include <gf2/core/ResourceLoaders.h>
 class TarballLoader;
 ----
 
@@ -151,7 +151,7 @@ class TarballLoader;
 
 [source]
 ----
-#include <gf2/ResourceLoader.h>
+#include <gf2/core/ResourceLoader.h>
 template<typename T, typename U>
 ResourceLoader<T> loader_for(U& loader);
 ----

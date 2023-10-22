@@ -11,7 +11,7 @@ xref:core_streams.adoc[< Back to `core` Streams]
 
 [source]
 ----
-#include <gf2/Streams.h>
+#include <gf2/core/Streams.h>
 class CompressedInputStream : public InputStream;
 ----
 

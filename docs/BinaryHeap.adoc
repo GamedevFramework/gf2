@@ -13,7 +13,7 @@ xref:core_container.adoc[< Back to `core` Container]
 
 [source]
 ----
-#include <gf2/BinaryHeap.h>
+#include <gf2/core/BinaryHeap.h>
 template<typename T, typename Compare = std::less<T>>
 class BinaryHeap;
 ----

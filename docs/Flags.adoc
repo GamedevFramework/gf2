@@ -11,7 +11,7 @@ xref:core_vocabulary.adoc[< Back to `core` Vocabulary]
 
 [source]
 ----
-#include <gf2/Flags.h>
+#include <gf2/core/Flags.h>
 template<typename E>
 class Flags;
 ----

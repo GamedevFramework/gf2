@@ -11,7 +11,7 @@ xref:network_sockets.adoc[< Back to `network` Sockets]
 
 [source]
 ----
-#include <gf/SocketSelector.h>
+#include <gf/network/SocketSelector.h>
 class SocketSelector;
 ----
 

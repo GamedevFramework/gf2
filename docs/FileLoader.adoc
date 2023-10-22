@@ -11,7 +11,7 @@ xref:core_resources.adoc[< Back to `core` Resources]
 
 [source]
 ----
-#include <gf2/ResourceLoaders.h>
+#include <gf2/core/ResourceLoaders.h>
 class FileLoader;
 ----
 

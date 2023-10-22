@@ -14,7 +14,7 @@ xref:reference.adoc#core[< Back to reference]
 
 [source]
 ----
-#include <gf2/Clock.h>
+#include <gf2/core/Clock.h>
 class Clock;
 ----
 
@@ -27,7 +27,7 @@ See also: <<time>>
 
 [source]
 ----
-#include <gf2/Log.h>
+#include <gf2/core/Log.h>
 class Log;
 ----
 
@@ -38,7 +38,7 @@ Logging functions are used to report some events that have happened in the syste
 
 [source]
 ----
-#include <gf2/Random.h>
+#include <gf2/core/Random.h>
 class Random;
 ----
 
@@ -49,7 +49,7 @@ class Random;
 
 [source]
 ----
-#include <gf2/Random.h>
+#include <gf2/core/Random.h>
 class RandomEngine;
 ----
 
@@ -60,7 +60,7 @@ class RandomEngine;
 
 [source]
 ----
-#include <gf2/Time.h>
+#include <gf2/core/Time.h>
 class Time;
 ----
 

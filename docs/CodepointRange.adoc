@@ -11,7 +11,7 @@ xref:core_strings.adoc[< Back to `core` Strings]
 
 [source]
 ----
-#include <gf2/StringUtils.h>
+#include <gf2/core/StringUtils.h>
 class CodepointRange;
 ----
 

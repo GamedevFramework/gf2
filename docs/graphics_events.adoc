@@ -19,7 +19,7 @@ xref:reference.adoc#graphics[< Back to reference]
 
 [source]
 ----
-#include <gf2/Event.h>
+#include <gf2/graphics/Event.h>
 struct Event;
 ----
 
@@ -30,7 +30,7 @@ struct Event;
 
 [source]
 ----
-#include <gf2/Event.h>
+#include <gf2/graphics/Event.h>
 enum EventType : uint32_t;
 ----
 
@@ -41,7 +41,7 @@ enum EventType : uint32_t;
 
 [source]
 ----
-#include <gf2/Event.h>
+#include <gf2/graphics/Event.h>
 struct GamepadAxisEvent;
 ----
 
@@ -70,7 +70,7 @@ struct GamepadAxisEvent;
 
 [source]
 ----
-#include <gf2/Event.h>
+#include <gf2/graphics/Event.h>
 struct GamepadButtonEvent;
 ----
 
@@ -99,7 +99,7 @@ struct GamepadButtonEvent;
 
 [source]
 ----
-#include <gf2/Event.h>
+#include <gf2/graphics/Event.h>
 struct GamepadConnectionEvent;
 ----
 
@@ -120,7 +120,7 @@ struct GamepadConnectionEvent;
 
 [source]
 ----
-#include <gf2/Event.h>
+#include <gf2/graphics/Event.h>
 struct GamepadDisconnectionEvent;
 ----
 
@@ -141,7 +141,7 @@ struct GamepadDisconnectionEvent;
 
 [source]
 ----
-#include <gf2/Event.h>
+#include <gf2/graphics/Event.h>
 struct KeyEvent;
 ----
 
@@ -182,7 +182,7 @@ struct KeyEvent;
 
 [source]
 ----
-#include <gf2/Event.h>
+#include <gf2/graphics/Event.h>
 struct MouseButtonEvent;
 ----
 
@@ -223,7 +223,7 @@ struct MouseButtonEvent;
 
 [source]
 ----
-#include <gf2/Event.h>
+#include <gf2/graphics/Event.h>
 struct MouseMotionEvent;
 ----
 
@@ -256,7 +256,7 @@ struct MouseMotionEvent;
 
 [source]
 ----
-#include <gf2/Event.h>
+#include <gf2/graphics/Event.h>
 struct MouseWheelEvent;
 ----
 
@@ -285,7 +285,7 @@ struct MouseWheelEvent;
 
 [source]
 ----
-#include <gf2/Event.h>
+#include <gf2/graphics/Event.h>
 struct ResizeEvent;
 ----
 
@@ -310,7 +310,7 @@ struct ResizeEvent;
 
 [source]
 ----
-#include <gf2/Event.h>
+#include <gf2/graphics/Event.h>
 struct TextEvent;
 ----
 
@@ -335,7 +335,7 @@ struct TextEvent;
 
 [source]
 ----
-#include <gf2/Event.h>
+#include <gf2/graphics/Event.h>
 struct TouchEvent;
 ----
 
@@ -376,7 +376,7 @@ struct TouchEvent;
 
 [source]
 ----
-#include <gf2/Event.h>
+#include <gf2/graphics/Event.h>
 struct WindowEvent;
 ----
 
