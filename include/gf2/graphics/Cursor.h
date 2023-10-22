@@ -38,7 +38,7 @@ namespace gf {
     Cursor& operator=(Cursor&& other) noexcept;
 
     static void set_mouse_cursor_visible(bool visible = true);
-    static void set_mouse_cursor(const Cursor& cursor);
+    static void set_mouse_cursor(const Cursor* cursor);
 
   private:
     SDL_Cursor* m_cursor = nullptr;

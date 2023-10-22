@@ -1,0 +1,51 @@
+= `gf::Cursor` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`Cursor` represents a link:https://en.wikipedia.org/wiki/Cursor_(user_interface)[mouse pointer].
+
+xref:graphics_inputs.adoc[< Back to `graphics` Inputs]
+
+== Description
+
+[source]
+----
+#include <gf2/Cursor.h>
+class Cursor;
+----
+
+This class abstracts the operating system resources associated with a native system cursor. After construction, the cursor can be changed with <<set_mouse_cursor>>. The behaviour is undefined if the cursor is destroyed while in use.
+
+== Member Functions
+
+=== `Cursor` constructors
+
+[source]
+----
+Cursor() = default; <1>
+Cursor(CursorType type); <2>
+----
+
+<1> Default constructor, no cursor is created.
+<2> Create a native system cursor.
+
+== Static Member Functions
+
+=== `set_mouse_cursor`
+
+[source]
+----
+void set_mouse_cursor(const Cursor* cursor);
+----
+
+Set the displayed cursor to the provided cursor. The cursor must not be destroyed while in use.
+
+=== `set_mouse_cursor_visible`
+
+[source]
+----
+void set_mouse_cursor_visible(bool visible = true);
+----
+
+Show or hide the mouse cursor. The mouse cursor is visible by default.

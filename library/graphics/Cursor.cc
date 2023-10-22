@@ -71,13 +71,13 @@ namespace gf {
     SDL_ShowCursor(visible ? SDL_ENABLE : SDL_DISABLE);
   }
 
-  void Cursor::set_mouse_cursor(const Cursor& cursor)
+  void Cursor::set_mouse_cursor(const Cursor* cursor)
   {
-    if (cursor.m_cursor == nullptr) {
+    if (cursor == nullptr || cursor->m_cursor == nullptr) {
       return;
     }
 
-    SDL_SetCursor(cursor.m_cursor);
+    SDL_SetCursor(cursor->m_cursor);
   }
 
 }

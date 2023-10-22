@@ -61,6 +61,7 @@ namespace gf {
 
     io.BackendFlags |= ImGuiBackendFlags_HasGamepad;
     io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
+    io.BackendFlags |= ImGuiBackendFlags_RendererHasVtxOffset;
 
     io.BackendPlatformName = "imgui_impl_gf2";
 
@@ -373,7 +374,7 @@ namespace gf {
 
       m_cursor = Cursor(cursor_type);
       Cursor::set_mouse_cursor_visible(true);
-      Cursor::set_mouse_cursor(m_cursor);
+      Cursor::set_mouse_cursor(&m_cursor);
       m_cursor_type = cursor_type;
     }
   }

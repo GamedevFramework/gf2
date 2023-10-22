@@ -9,6 +9,8 @@ The inputs component contains enumerations and types that describe input devices
 - Mouse: <<mouse_button>>
 - Gamepad: <<gamepad_axis>>, <<gamepad_button>> (<<gamepad>>)
 
+In addition, <<cursor>> can be used to modify the cursor.
+
 xref:reference.adoc[< Back to reference]
 
 == Variables
@@ -105,6 +107,73 @@ A touch device that acts like a mouse device.
 See also: <<mouse_id>>
 
 == Types
+
+[#cursor]
+=== `gf::Cursor`
+
+[source]
+----
+#include <gf2/Cursor.h>
+class Cursor;
+----
+
+`Cursor` represents a link:https://en.wikipedia.org/wiki/Cursor_(user_interface)[mouse pointer]. xref:Cursor.adoc[*Read more...*]
+
+[#cursor_type]
+=== `gf::CursorType`
+
+[source]
+----
+#include <gf2/Cursor.h>
+enum class CursorType : uint8_t;
+----
+
+`CursorType` is an enumeration of the native system cursor types.
+
+.Enumerators for `gf::CursorType`
+[cols="1,1"]
+|===
+| Value | Description
+
+| `gf::CursorType::Arrow`
+| Arrow cursor (default).
+
+| `gf::CursorType::ArrowWait`
+| Busy arrow cursor.
+
+| `gf::CursorType::Wait`
+| Busy cursor.
+
+| `gf::CursorType::Text`
+| I-beam, cursor when hovering over a field allowing text entry.
+
+| `gf::CursorType::Hand`
+| Pointing hand cursor.
+
+| `gf::CursorType::SizeHorizontal`
+| Horizontal double arrow cursor.
+
+| `gf::CursorType::Vertical`
+| Vertical double arrow cursor.
+
+| `gf::CursorType::SizeTopLeftBottomRight`
+| Double arrow cursor going from top-left to bottom-right.
+
+| `gf::CursorType::SizeBottomLeftTopRight`
+| Double arrow cursor going from bottom-left to top-right.
+
+| `gf::CursorType::SizeAll`
+| Combination of `SizeHorizontal` and `SizeVertical`.
+
+| `gf::CursorType::Cross`
+| Crosshair cursor.
+
+| `gf::CursorType::NotAllowed`
+| Action not allowed cursor.
+|===
+
+See also: <<cursor>>
+
 
 [#finger_id]
 === `gf::FingerId`
