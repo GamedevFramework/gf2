@@ -63,7 +63,7 @@ namespace gf {
 
   struct GF_GRAPHICS_API ResizeEvent {
     uint32_t window_id;
-    Vec2<int32_t> size;
+    Vec2I size;
   };
 
   struct GF_GRAPHICS_API KeyEvent {
@@ -84,7 +84,7 @@ namespace gf {
     uint32_t window_id;
     MouseId mouse_id;
     MouseButton button;
-    Vec2<int32_t> coordinates;
+    Vec2I coordinates;
     uint8_t clicks;
     bool pressed;
   };
@@ -92,14 +92,14 @@ namespace gf {
   struct GF_GRAPHICS_API MouseMotionEvent {
     uint32_t window_id;
     MouseId mouse_id;
-    Vec2<int32_t> coordinates;
-    Vec2<int32_t> motion;
+    Vec2I coordinates;
+    Vec2I motion;
   };
 
   struct GF_GRAPHICS_API MouseWheelEvent {
     uint32_t window_id;
     MouseId mouse_id;
-    Vec2<int32_t> offset;
+    Vec2I offset;
   };
 
   struct GF_GRAPHICS_API GamepadAxisEvent {
