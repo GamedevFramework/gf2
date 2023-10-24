@@ -16,7 +16,7 @@ xref:reference.adoc[< Back to reference]
 
 [source]
 ----
-#include <gf2/AudioSource.h>
+#include <gf2/audio/AudioSource.h>
 class AudioSource;
 ----
 
@@ -29,7 +29,7 @@ See also: <<music>>, <<sound>>
 
 [source]
 ----
-#include <gf2/Music.h>
+#include <gf2/audio/Music.h>
 class Music : public AudioSource;
 ----
 
@@ -40,7 +40,7 @@ A music is a long audio source that should be streamed as necessary. xref:Music.
 
 [source]
 ----
-#include <gf2/Sound.h>
+#include <gf2/audio/Sound.h>
 class Sound : public AudioSource;
 ----
 

@@ -13,7 +13,7 @@ xref:reference.adoc[< Back to reference]
 
 [source]
 ----
-#include <gf2/AudioManager.h>
+#include <gf2/audio/AudioManager.h>
 class AudioManager;
 ----
 

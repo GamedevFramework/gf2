@@ -14,7 +14,7 @@ xref:reference.adoc[< Back to reference]
 
 [source]
 ----
-#include <gf2/AudioSpatialization.h>
+#include <gf2/audio/AudioSpatialization.h>
 struct AudioCone;
 ----
 
@@ -41,7 +41,7 @@ struct AudioCone;
 
 [source]
 ----
-#include <gf2/AudioListener.h>
+#include <gf2/audio/AudioListener.h>
 class AudioListener;
 ----
 
@@ -51,7 +51,7 @@ An audio listener handles the properties of a listener in the space. xref:AudioL
 
 [source]
 ----
-#include <gf2/AudioSpatialization.h>
+#include <gf2/audio/AudioSpatialization.h>
 enum class AudioPositioning : uint8_t;
 ----
 
