@@ -10,8 +10,8 @@ namespace gf {
 #ifndef _MSC_VER
   template struct Circ<float>;
   template struct Circ<double>;
-  template struct Circ<int>;
-  template struct Circ<unsigned>;
+  template struct Circ<int32_t>;
+  template struct Circ<uint32_t>;
 #endif
 
 } // namespace gf

@@ -22,8 +22,8 @@ Several common typedef are defined:
 
 - `Vec3F` with `float` as `T`
 - `Vec3D` with `double` as `T`
-- `Vec3I` with `int` as `T`
-- `Vec3U` with `unsigned` as `T`
+- `Vec3I` with `int32_t` as `T`
+- `Vec3U` with `uint32_t` as `T`
 
 See also: xref:Vec2.adoc[`Vec2<T>`], xref:core_vec.adoc[vector-related types and functions]
 

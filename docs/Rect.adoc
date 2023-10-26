@@ -27,8 +27,8 @@ A `Rect<T>` uses the usual rules for its boundaries:
 
 - `RectF` with `float` as `T`
 - `RectD` with `double` as `T`
-- `RectI` with `int` as `T`
-- `RectU` with `unsigned` as `T`
+- `RectI` with `int32_t` as `T`
+- `RectU` with `uint32_t` as `T`
 
 == Static Member Functions
 

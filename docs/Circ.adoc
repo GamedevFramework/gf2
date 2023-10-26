@@ -22,8 +22,8 @@ A circle is defined by its center and its radius. It is a very simple class defi
 
 - `CircF` with `float` as `T`
 - `CircD` with `double` as `T`
-- `CircI` with `int` as `T`
-- `CircU` with `unsigned` as `T`
+- `CircI` with `int32_t` as `T`
+- `CircU` with `uint32_t` as `T`
 
 == Static Member Functions
 

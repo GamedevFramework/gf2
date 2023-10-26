@@ -3,6 +3,8 @@
 #ifndef GF_CIRC_H
 #define GF_CIRC_H
 
+#include <cstdint>
+
 #include "CoreApi.h"
 #include "Math.h"
 #include "Vec2.h"
@@ -44,8 +46,8 @@ namespace gf {
 
   using CircF = Circ<float>;
   using CircD = Circ<double>;
-  using CircI = Circ<int>;
-  using CircU = Circ<unsigned>;
+  using CircI = Circ<int32_t>;
+  using CircU = Circ<uint32_t>;
 
   template<typename T>
   constexpr bool operator==(Circ<T> lhs, Circ<T> rhs)
@@ -63,8 +65,8 @@ namespace gf {
 #ifndef _MSC_VER
   extern template struct GF_CORE_API Circ<float>;
   extern template struct GF_CORE_API Circ<double>;
-  extern template struct GF_CORE_API Circ<int>;
-  extern template struct GF_CORE_API Circ<unsigned>;
+  extern template struct GF_CORE_API Circ<int32_t>;
+  extern template struct GF_CORE_API Circ<uint32_t>;
 #endif
 
   namespace details {
