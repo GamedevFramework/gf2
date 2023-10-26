@@ -12,18 +12,19 @@ add_requires("vulkan-headers")
 -- add_requires("vulkan-validationlayers")
 add_requires("vulkan-memory-allocator")
 
-add_rules("mode.check", "mode.coverage", "mode.debug", "mode.releasedbg", "mode.release")
+add_rules("mode.coverage", "mode.debug", "mode.releasedbg", "mode.release")
+
+if is_mode("sanitizers") then
+    set_symbols("debug")
+    set_optimize("none")
+    set_policy("build.sanitizer.address", true)
+    set_policy("build.sanitizer.undefined", true)
+end
 
 set_policy("build.warning", true)
 set_warnings("allextra")
 set_languages("cxx17")
 set_encodings("utf-8")
-
-if is_mode("debug", "check") then
-  set_symbols("debug")
-else
-  set_symbols("hidden")
-end
 
 if is_plat("windows") then
   add_cxflags("/wd4251") -- Disable warning: class needs to have dll-interface to be used by clients of class blah blah blah
