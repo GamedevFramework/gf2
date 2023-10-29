@@ -149,11 +149,14 @@ target_include_directories(gf2core0
 # gf2::graphics
 
 add_library(gf2graphics0
+  graphics/Action.cc
+  graphics/ActionGroup.cc
   graphics/Animation.cc
   graphics/AnimationEntity.cc
   graphics/Buffer.cc
   graphics/Clipboard.cc
   graphics/CommandBuffer.cc
+  graphics/Control.cc
   graphics/Cursor.cc
   graphics/Descriptor.cc
   graphics/Entity.cc

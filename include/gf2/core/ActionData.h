@@ -31,12 +31,12 @@ namespace gf {
     return ar | data.type | data.controls;
   }
 
-  struct GF_CORE_API ActionSetData {
+  struct GF_CORE_API ActionGroupData {
     std::map<Id, ActionData> actions;
   };
 
   template<typename Archive>
-  inline Archive& operator|(Archive& ar, MaybeConst<ActionSetData, Archive>& data)
+  inline Archive& operator|(Archive& ar, MaybeConst<ActionGroupData, Archive>& data)
   {
     return ar | data.actions;
   }

@@ -127,7 +127,7 @@ TEST(DataTest, ControlData) {
 }
 
 TEST(DataTest, ActionData) {
-  gf::ActionSetData data = {};
+  gf::ActionGroupData data = {};
 
   serialize(data);
   deserialize(data);
