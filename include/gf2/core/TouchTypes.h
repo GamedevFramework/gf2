@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
-#ifndef GF_TOUCH_H
-#define GF_TOUCH_H
+#ifndef GF_TOUCH_TYPES_H
+#define GF_TOUCH_TYPES_H
 
 #include <cstdint>
 
@@ -15,4 +15,4 @@ namespace gf {
 
 } // namespace gf
 
-#endif // GF_TOUCH_H
+#endif // GF_TOUCH_TYPES_H

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
-#ifndef GF_MOUSE_H
-#define GF_MOUSE_H
+#ifndef GF_MOUSE_TYPES_H
+#define GF_MOUSE_TYPES_H
 
 #include <cstdint>
 
@@ -24,4 +24,4 @@ namespace gf {
 
 } // namespace gf
 
-#endif // GF_MOUSE_H
+#endif // GF_MOUSE_TYPES_H

@@ -64,6 +64,7 @@ endfunction()
 # gf2::core
 
 add_library(gf2core0
+  core/ActionData.cc
   core/AnimationData.cc
   core/AnyGrid.cc
   core/Array2D.cc
@@ -75,6 +76,7 @@ add_library(gf2core0
   core/Circ.cc
   core/Clock.cc
   core/Color.cc
+  core/ControlData.cc
   core/Direction.cc
   core/Fixed.cc
   core/Flags.cc

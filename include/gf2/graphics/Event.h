@@ -8,13 +8,15 @@
 #include <array>
 #include <optional>
 
+#include <gf2/core/GamepadTypes.h>
+#include <gf2/core/Keycode.h>
+#include <gf2/core/Modifier.h>
+#include <gf2/core/MouseTypes.h>
+#include <gf2/core/Scancode.h>
+#include <gf2/core/TouchTypes.h>
 #include <gf2/core/Vec2.h>
 
-#include "Gamepad.h"
 #include "GraphicsApi.h"
-#include "Keyboard.h"
-#include "Mouse.h"
-#include "Touch.h"
 
 namespace gf {
 
