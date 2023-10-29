@@ -6,10 +6,26 @@
 // clang-format on
 
 namespace gf {
+  ActionGroup::ActionGroup(const ActionGroupData& data)
+  {
+    for (const auto& [id, action] : data.actions) {
+      add_action(id, action);
+    }
+  }
+
+  void ActionGroup::add_action(std::string_view name, const ActionData& data)
+  {
+    m_actions.emplace(gf::hash(name), Action(data));
+  }
+
+  void ActionGroup::add_action(Id id, const ActionData& data)
+  {
+    m_actions.emplace(id, Action(data));
+  }
 
   void ActionGroup::add_action(std::string_view name, Action action)
   {
-    add_action(gf::hash(name), std::move(action));
+    m_actions.emplace(gf::hash(name), std::move(action));
   }
 
   void ActionGroup::add_action(Id id, Action action)

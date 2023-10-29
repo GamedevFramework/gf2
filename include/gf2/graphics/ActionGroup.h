@@ -15,6 +15,11 @@ namespace gf {
 
   class GF_GRAPHICS_API ActionGroup {
   public:
+    ActionGroup() = default;
+    ActionGroup(const ActionGroupData& data);
+
+    void add_action(std::string_view name, const ActionData& data);
+    void add_action(Id id, const ActionData& data);
     void add_action(std::string_view name, Action action);
     void add_action(Id id, Action action);
 
