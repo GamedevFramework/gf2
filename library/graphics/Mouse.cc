@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/graphics/Mouse.h>
+#include <gf2/core/MouseTypes.h>
 // clang-format on
 
 #include <type_traits>

@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/graphics/Touch.h>
+#include <gf2/core/TouchTypes.h>
 // clang-format on
 
 #include <type_traits>
