@@ -7,8 +7,6 @@
 
 #include <cassert>
 
-#include <stdexcept>
-
 #include <gf2/core/Log.h>
 #include <gf2/core/Property.h>
 #include <gf2/core/StringUtils.h>
@@ -60,8 +58,7 @@ namespace gf {
     auto keys = split_path(path);
 
     if (keys.empty()) {
-      Log::error("Failed to get a property, empty path.");
-      throw std::runtime_error("Failed to get a property, empty path.");
+      Log::fatal("Failed to get a property, empty path.");
     }
 
     std::string_view last_key = keys.back();
@@ -76,14 +73,12 @@ namespace gf {
         const auto& [dontcare, property] = *iterator;
 
         if (!property.is_class()) {
-          Log::error("Failed to get a property, property is not a class: {}", key);
-          throw std::runtime_error("Failed to get a property, property is not a class.");
+          Log::fatal("Failed to get a property, property is not a class: {}", key);
         }
 
         current_map = &property.as_class();
       } else {
-        Log::error("Failed to get a property, key does not exist: {}", key);
-        throw std::runtime_error("Failed to get a property, key does not exist.");
+        Log::fatal("Failed to get a property, key does not exist: {}", key);
       }
     }
 
@@ -94,8 +89,7 @@ namespace gf {
       return iterator->second;
     }
 
-    Log::error("Failed to get a property, final key does not exist: {}", last_key);
-    throw std::runtime_error("Failed to get a property, final key does not exist.");
+    Log::fatal("Failed to get a property, final key does not exist: {}", last_key);
   }
 
   // NOLINTNEXTLINE(misc-no-recursion)

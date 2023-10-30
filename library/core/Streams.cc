@@ -8,7 +8,6 @@
 #include <cassert>
 
 #include <algorithm>
-#include <stdexcept>
 #include <string>
 #include <utility>
 
@@ -237,12 +236,12 @@ namespace gf {
 
   void CompressedInputStream::seek([[maybe_unused]] std::ptrdiff_t position)
   {
-    throw std::runtime_error("Not supported");
+    Log::fatal("Not supported");
   }
 
   void CompressedInputStream::skip([[maybe_unused]] std::ptrdiff_t position)
   {
-    throw std::runtime_error("Not supported");
+    Log::fatal("Not supported");
   }
 
   bool CompressedInputStream::finished()

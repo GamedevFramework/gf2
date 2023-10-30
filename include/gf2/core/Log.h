@@ -5,6 +5,7 @@
 
 #include <cstdint>
 #include <cstdlib>
+#include <stdexcept>
 
 #include <fmt/core.h>
 
@@ -55,11 +56,11 @@ namespace gf {
     }
 
     template<typename... T>
-    static void fatal(fmt::format_string<T...> fmt, T&&... args)
+    [[noreturn]] static void fatal(fmt::format_string<T...> fmt, T&&... args)
     {
       auto string = fmt::format(fmt, std::forward<T>(args)...);
       log(Level::Fatal, string);
-      std::abort();
+      throw std::runtime_error(string);
     }
 
     template<typename... T>

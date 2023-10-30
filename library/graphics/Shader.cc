@@ -7,7 +7,6 @@
 
 #include <cstdio>
 
-#include <stdexcept>
 #include <utility>
 
 #include <fmt/std.h>
@@ -26,8 +25,7 @@ namespace gf {
       std::FILE* file = std::fopen(filename.string().c_str(), "rb");
 
       if (file == nullptr) {
-        Log::error("Unknown shader file: {}.", filename);
-        throw std::runtime_error("Unknown shader file: " + filename.string());
+        Log::fatal("Unknown shader file: '{}'.", filename);
       }
 
       std::fseek(file, 0, SEEK_END);
@@ -92,8 +90,7 @@ namespace gf {
     shader_module_create_info.pCode = code.data();
 
     if (vkCreateShaderModule(device, &shader_module_create_info, nullptr, &m_shader_module) != VK_SUCCESS) {
-      Log::error("Failed to create shader module.");
-      throw std::runtime_error("Failed to create shader module.");
+      Log::fatal("Failed to create shader module.");
     }
   }
 

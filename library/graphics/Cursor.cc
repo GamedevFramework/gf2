@@ -43,8 +43,7 @@ namespace gf {
   : m_cursor(SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(type)))
   {
     if (m_cursor == nullptr) {
-      Log::error("Could not load system cursor: {}.", SDL_GetError());
-      throw std::runtime_error("Could not load system cursor.");
+      Log::fatal("Could not load system cursor: {}.", SDL_GetError());
     }
   }
 

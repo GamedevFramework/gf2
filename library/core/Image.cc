@@ -128,8 +128,7 @@ namespace gf {
     uint8_t* pixels = stbi_load(filename.string().c_str(), &m_size.w, &m_size.h, &n, STBI_rgb_alpha);
 
     if (m_size.w == 0 || m_size.h == 0 || pixels == nullptr) {
-      Log::error("Could not load image from file '{}': {}\n", filename.string(), stbi_failure_reason());
-      throw std::runtime_error("Could not load image from file");
+      Log::fatal("Could not load image from file '{}': {}\n", filename.string(), stbi_failure_reason());
     }
 
     m_pixels.resize(compute_image_size(m_size));
@@ -149,8 +148,7 @@ namespace gf {
     uint8_t* pixels = stbi_load_from_callbacks(&callbacks, &stream, &m_size.w, &m_size.h, &n, STBI_rgb_alpha); // NOLINT
 
     if (m_size.w == 0 || m_size.h == 0 || pixels == nullptr) {
-      Log::warning("Could not load image from stream: {}\n", stbi_failure_reason());
-      throw std::runtime_error("Could not load image from stream");
+      Log::fatal("Could not load image from stream: {}\n", stbi_failure_reason());
     }
 
     m_pixels.resize(compute_image_size(m_size));

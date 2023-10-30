@@ -46,8 +46,7 @@ namespace gf {
     FT_Library library = nullptr;
 
     if (auto err = FT_Init_FreeType(&library)) {
-      Log::error("Could not init Freetype library: {}", ft_error_message(err));
-      throw std::runtime_error("Could not init Freetype library");
+      Log::fatal("Could not init Freetype library: {}", ft_error_message(err));
     }
 
     m_library = library;
@@ -55,8 +54,7 @@ namespace gf {
     FT_Stroker stroker = nullptr;
 
     if (auto err = FT_Stroker_New(library, &stroker)) {
-      Log::error("Could not create the stroker: {}", ft_error_message(err));
-      throw std::runtime_error("Could not create the stroker");
+      Log::fatal("Could not create the stroker: {}", ft_error_message(err));
     }
 
     m_stroker = stroker;

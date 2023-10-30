@@ -9,7 +9,6 @@
 #include <charconv>
 #include <fstream>
 #include <optional>
-#include <stdexcept>
 
 #include <fmt/std.h>
 #include <pugixml.hpp>
@@ -669,16 +668,14 @@ namespace gf {
       std::ifstream tileset_file(tileset_path);
 
       if (!tileset_file) {
-        Log::error("Unknown TSX file: '{}'.", tileset_path);
-        throw std::runtime_error("Unknown TSX file");
+        Log::fatal("Unknown TSX file: '{}'.", tileset_path);
       }
 
       pugi::xml_document doc;
       const pugi::xml_parse_result result = doc.load(tileset_file);
 
       if (!result) {
-        Log::error("Could not load TSX file '{}': {}.", tileset_path, result.description());
-        throw std::runtime_error("Could not load TSX file");
+        Log::fatal("Could not load TSX file '{}': {}.", tileset_path, result.description());
       }
 
       const pugi::xml_node node = doc.child("tileset");
@@ -829,16 +826,14 @@ namespace gf {
     std::ifstream file(filename);
 
     if (!file) {
-      Log::error("Unknown TMX file: '{}'.", filename);
-      throw std::runtime_error("Unknown TMX file");
+      Log::fatal("Unknown TMX file: '{}'.", filename);
     }
 
     pugi::xml_document doc;
     const pugi::xml_parse_result result = doc.load(file);
 
     if (!result) {
-      Log::error("Could not load TMX file '{}': {}.", filename, result.description());
-      throw std::runtime_error("Could not load TMX file");
+      Log::fatal("Could not load TMX file '{}': {}.", filename, result.description());
     }
 
     parse_tmx_map(doc.child("map"), *this, filename.parent_path());

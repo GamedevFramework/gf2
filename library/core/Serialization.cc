@@ -6,11 +6,9 @@
 // clang-format on
 
 #include <cassert>
-#include <cinttypes>
 #include <cstring>
 
 #include <limits>
-#include <stdexcept>
 
 #include <gf2/core/Log.h>
 
@@ -277,8 +275,7 @@ namespace gf {
     m_stream->read(magic);
 
     if (magic[0] != Magic[0] || magic[1] != Magic[1]) {
-      Log::error("The stream is not a gf archive.");
-      throw std::runtime_error("The stream is not a gf archive.");
+      Log::fatal("The stream is not a gf archive.");
     }
 
     read_big_endian_16(&m_version);
@@ -384,8 +381,7 @@ namespace gf {
     assert(data != nullptr);
 
     if (m_stream->read(gf::span(reinterpret_cast<uint8_t*>(data), size)) != size) { // NOLINT
-      Log::error("End of stream while reading string.");
-      throw std::runtime_error("End of stream while reading string.");
+      Log::fatal("End of stream while reading string.");
     }
   }
 
@@ -468,7 +464,7 @@ namespace gf {
     uint8_t buf[Size];
 
     if (m_stream->read(buf) != Size) {
-      throw std::runtime_error("End of stream while reading 8 bytes.");
+      Log::fatal("End of stream while reading 8 bytes.");
     }
 
     *data = read_integer<uint64_t>(buf);
@@ -481,7 +477,7 @@ namespace gf {
     uint8_t buf[Size];
 
     if (m_stream->read(buf) != Size) { // Flawfinder: ignore
-      throw std::runtime_error("End of stream while reading 4 bytes.");
+      Log::fatal("End of stream while reading 4 bytes.");
     }
 
     *data = read_integer<uint32_t>(buf);
@@ -494,7 +490,7 @@ namespace gf {
     uint8_t buf[Size];
 
     if (m_stream->read(buf) != Size) {
-      throw std::runtime_error("End of stream while reading 2 bytes.");
+      Log::fatal("End of stream while reading 2 bytes.");
     }
 
     *data = read_integer<uint16_t>(buf);
@@ -504,7 +500,7 @@ namespace gf {
   {
     assert(data != nullptr);
     if (m_stream->read(*data) != 1) {
-      throw std::runtime_error("End of stream while reading 1 byte.");
+      Log::fatal("End of stream while reading 1 byte.");
     }
   }
 

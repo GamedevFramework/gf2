@@ -23,8 +23,7 @@ namespace gf {
   {
     using namespace std::literals;
     if (auto result = ma_engine_init(nullptr, m_engine.get()); result != MA_SUCCESS) {
-      Log::error("Unable to initialize audio engine: {}", ma_result_description(result));
-      throw std::runtime_error("Unable to initialize audio engine: "s + ma_result_description(result));
+      Log::fatal("Unable to initialize audio engine: {}", ma_result_description(result));
     }
   }
 

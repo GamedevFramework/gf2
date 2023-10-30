@@ -7,7 +7,6 @@
 
 #ifdef _WIN32
 #  include <atomic>
-#  include <stdexcept>
 
 #  include <winsock2.h>
 
@@ -28,8 +27,7 @@ namespace gf {
       auto res = ::WSAStartup(MAKEWORD(2, 2), &wsaData);
 
       if (res != 0) {
-        Log::error("Unable to initialize the Winsock2 library.");
-        throw std::runtime_error("Unable to initialize the Winsock2 library.");
+        Log::fatal("Unable to initialize the Winsock2 library.");
       }
     }
   }

@@ -24,8 +24,7 @@ namespace gf {
     assert(manager != nullptr);
 
     if (auto result = ma_sound_init_from_file(manager->engine(), filename.string().c_str(), m_flags, nullptr, nullptr, m_source.get()); result != MA_SUCCESS) {
-      Log::error("Unable to initialize audio source: {}", ma_result_description(result));
-      throw std::runtime_error("Unable to initialize audio source: "s + ma_result_description(result));
+      Log::fatal("Unable to initialize audio source: {}", ma_result_description(result));
     }
   }
 

@@ -7,7 +7,6 @@
 
 #include <cstring>
 
-#include <stdexcept>
 #include <utility>
 
 #include <volk.h>
@@ -109,8 +108,7 @@ namespace gf {
     allocation_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_HOST;
 
     if (vmaCreateBuffer(m_allocator, &buffer_info, &allocation_info, &m_buffer, &m_allocation, nullptr) != VK_SUCCESS) {
-      Log::error("Failed to allocate buffer.");
-      throw std::runtime_error("Failed to allocate buffer.");
+      Log::fatal("Failed to allocate buffer.");
     }
 
     update_host_buffer(total_size, data);
@@ -128,8 +126,7 @@ namespace gf {
     allocation_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
 
     if (vmaCreateBuffer(m_allocator, &buffer_info, &allocation_info, &m_buffer, &m_allocation, nullptr) != VK_SUCCESS) {
-      Log::error("Failed to allocate buffer.");
-      throw std::runtime_error("Failed to allocate buffer.");
+      Log::fatal("Failed to allocate buffer.");
     }
 
     update_device_buffer(total_size, data, renderer);
@@ -140,8 +137,7 @@ namespace gf {
     void* memory = nullptr;
 
     if (vmaMapMemory(m_allocator, m_allocation, &memory) != VK_SUCCESS) {
-      Log::error("Failed to map memory.");
-      throw std::runtime_error("Failed to map memory.");
+      Log::fatal("Failed to map memory.");
     }
 
     std::memcpy(memory, data, total_size);
@@ -166,15 +162,13 @@ namespace gf {
     VmaAllocation staging_allocation = nullptr;
 
     if (vmaCreateBuffer(m_allocator, &staging_buffer_info, &staging_allocation_info, &staging_buffer, &staging_allocation, nullptr) != VK_SUCCESS) {
-      Log::error("Failed to allocate buffer.");
-      throw std::runtime_error("Failed to allocate buffer.");
+      Log::fatal("Failed to allocate buffer.");
     }
 
     void* memory = nullptr;
 
     if (vmaMapMemory(m_allocator, staging_allocation, &memory) != VK_SUCCESS) {
-      Log::error("Failed to map memory.");
-      throw std::runtime_error("Failed to map memory.");
+      Log::fatal("Failed to map memory.");
     }
 
     std::memcpy(memory, data, total_size);

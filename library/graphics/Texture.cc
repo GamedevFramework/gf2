@@ -75,8 +75,7 @@ namespace gf {
     allocation_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
 
     if (vmaCreateImage(m_allocator, &image_info, &allocation_info, &m_image, &m_allocation, nullptr) != VK_SUCCESS) {
-      Log::error("Failed to allocate image.");
-      throw std::runtime_error("Failed to allocate image.");
+      Log::fatal("Failed to allocate image.");
     }
 
     // image view and sampler
@@ -209,15 +208,13 @@ namespace gf {
     VmaAllocation staging_allocation = nullptr;
 
     if (vmaCreateBuffer(m_allocator, &staging_buffer_info, &staging_allocation_info, &staging_buffer, &staging_allocation, nullptr) != VK_SUCCESS) {
-      Log::error("Failed to allocate buffer.");
-      throw std::runtime_error("Failed to allocate buffer.");
+      Log::fatal("Failed to allocate buffer.");
     }
 
     void* memory = nullptr;
 
     if (vmaMapMemory(m_allocator, staging_allocation, &memory) != VK_SUCCESS) {
-      Log::error("Failed to map memory.");
-      throw std::runtime_error("Failed to map memory.");
+      Log::fatal("Failed to map memory.");
     }
 
     std::memcpy(memory, raw_data, raw_size);
@@ -245,8 +242,7 @@ namespace gf {
     view_info.subresourceRange.layerCount = 1;
 
     if (vkCreateImageView(info.device, &view_info, nullptr, &m_image_view) != VK_SUCCESS) {
-      Log::error("Failed to create texture image view.");
-      throw std::runtime_error("Failed to create texture image view.");
+      Log::fatal("Failed to create texture image view.");
     }
 
     // sampler
@@ -268,8 +264,7 @@ namespace gf {
     sampler_info.maxLod = 0.0f;
 
     if (vkCreateSampler(info.device, &sampler_info, nullptr, &m_sampler) != VK_SUCCESS) {
-      Log::error("Failed to create texture sampler.");
-      throw std::runtime_error("Failed to create texture sampler.");
+      Log::fatal("Failed to create texture sampler.");
     }
   }
 

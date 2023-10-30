@@ -43,8 +43,7 @@ namespace gf {
     descriptor_set_layout_info.pBindings = descriptor_set_layout_bindings.data();
 
     if (vkCreateDescriptorSetLayout(m_device, &descriptor_set_layout_info, nullptr, &m_layout) != VK_SUCCESS) {
-      Log::error("Failed to create descriptor set layout.");
-      throw std::runtime_error("Failed to create descriptor set layout.");
+      Log::fatal("Failed to create descriptor set layout.");
     }
   }
 

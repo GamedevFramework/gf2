@@ -5,7 +5,6 @@
 #include <gf2/graphics/Window.h>
 // clang-format on
 
-#include <stdexcept>
 #include <utility>
 
 #include <SDL2/SDL.h>
@@ -45,8 +44,7 @@ namespace gf {
     m_window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, size.w, size.h, flags);
 
     if (m_window == nullptr) {
-      Log::error("Failed to create a window: {}", SDL_GetError());
-      throw std::runtime_error("Failed to create a window.");
+      Log::fatal("Failed to create a window: {}", SDL_GetError());
     }
   }
 

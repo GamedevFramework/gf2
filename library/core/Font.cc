@@ -57,8 +57,7 @@ namespace gf {
     FT_Face face = nullptr;
 
     if (auto err = FT_New_Face(m_manager->library_as<FT_Library>(), filename.string().c_str(), 0, &face)) {
-      Log::error("Could not create the font face '{}': {}\n", filename.string(), FontManager::error_message(err));
-      throw std::runtime_error("Could not create the font face");
+      Log::fatal("Could not create the font face '{}': {}\n", filename.string(), FontManager::error_message(err));
     }
 
     m_face = face;
@@ -87,8 +86,7 @@ namespace gf {
     FT_Face face = nullptr;
 
     if (auto err = FT_Open_Face(m_manager->library_as<FT_Library>(), &args, 0, &face)) {
-      Log::error("Could not create the font face from stream: {}", FontManager::error_message(err));
-      throw std::runtime_error("Could not create the font face from stream");
+      Log::fatal("Could not create the font face from stream: {}", FontManager::error_message(err));
     }
 
     m_face = face;

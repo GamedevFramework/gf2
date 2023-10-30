@@ -193,8 +193,7 @@ namespace gf {
     }
 
     if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
-      Log::error("Failed to acquire swap chain image.");
-      throw std::runtime_error("Failed to acquire swap chain image.");
+      Log::fatal("Failed to acquire swap chain image.");
     }
 
     vkResetFences(m_device, 1, &sync.render_fence);
@@ -204,8 +203,7 @@ namespace gf {
     VkCommandBuffer memops_command_buffer = m_memops_command_buffers[m_current_memops];
 
     if (vkEndCommandBuffer(memops_command_buffer) != VK_SUCCESS) {
-      Log::error("Failed to record command buffer.");
-      throw std::runtime_error("Failed to record command buffer.");
+      Log::fatal("Failed to record command buffer.");
     }
 
     VkSubmitInfo submit_info = {};
@@ -214,8 +212,7 @@ namespace gf {
     submit_info.pCommandBuffers = &memops_command_buffer;
 
     if (vkQueueSubmit(m_graphics_queue, 1, &submit_info, sync.memops_fence) != VK_SUCCESS) {
-      Log::error("Failed to submit draw command buffer.");
-      throw std::runtime_error("Failed to submit draw command buffer.");
+      Log::fatal("Failed to submit draw command buffer.");
     }
 
     // begin next memory command buffer
@@ -231,8 +228,7 @@ namespace gf {
     begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
 
     if (vkBeginCommandBuffer(memops_command_buffer, &begin_info) != VK_SUCCESS) {
-      Log::error("Failed to begin recording command buffer.");
-      throw std::runtime_error("Failed to begin recording command buffer.");
+      Log::fatal("Failed to begin recording command buffer.");
     }
 
     // begin render command buffer
@@ -243,8 +239,7 @@ namespace gf {
     vkResetDescriptorPool(m_device, m_descriptor_pools[m_current_frame], 0);
 
     if (vkBeginCommandBuffer(command_buffer, &begin_info) != VK_SUCCESS) {
-      Log::error("Failed to begin recording command buffer.");
-      throw std::runtime_error("Failed to begin recording command buffer.");
+      Log::fatal("Failed to begin recording command buffer.");
     }
 
     VkImageMemoryBarrier image_memory_barrier = {};
@@ -296,8 +291,7 @@ namespace gf {
     vkCmdPipelineBarrier(command_buffer, VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT, 0, 0, nullptr, 0, nullptr, 1, &image_memory_barrier);
 
     if (vkEndCommandBuffer(command_buffer) != VK_SUCCESS) {
-      Log::error("Failed to record command buffer.");
-      throw std::runtime_error("Failed to record command buffer.");
+      Log::fatal("Failed to record command buffer.");
     }
 
     const VkPipelineStageFlags wait_stage = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
@@ -313,8 +307,7 @@ namespace gf {
     submit_info.pSignalSemaphores = &sync.present_semaphore;
 
     if (vkQueueSubmit(m_graphics_queue, 1, &submit_info, sync.render_fence) != VK_SUCCESS) {
-      Log::error("Failed to submit draw command buffer.");
-      throw std::runtime_error("Failed to submit draw command buffer.");
+      Log::fatal("Failed to submit draw command buffer.");
     }
 
     VkPresentInfoKHR present_info = {};
@@ -330,8 +323,7 @@ namespace gf {
     if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR) {
       recreate_swapchain();
     } else if (result != VK_SUCCESS) {
-      Log::error("Failed to present swap chain image.");
-      throw std::runtime_error("Failed to present swap chain image.");
+      Log::fatal("Failed to present swap chain image.");
     }
 
     m_current_frame = (m_current_frame + 1) % FramesInFlight;
@@ -360,8 +352,7 @@ namespace gf {
     VkDescriptorSet descriptor_set = VK_NULL_HANDLE;
 
     if (vkAllocateDescriptorSets(m_device, &descriptor_set_allocate_info, &descriptor_set) != VK_SUCCESS) {
-      Log::error("Failed to submit draw command buffer.");
-      throw std::runtime_error("Failed to allocate descriptor set.");
+      Log::fatal("Failed to submit draw command buffer.");
     }
 
     return { m_device, descriptor_set };
@@ -397,13 +388,13 @@ namespace gf {
     unsigned int extension_count = 0;
 
     if (SDL_Vulkan_GetInstanceExtensions(m_window, &extension_count, nullptr) == SDL_FALSE) {
-      throw std::runtime_error("Failed to get extensions.");
+      Log::fatal("Failed to get extensions.");
     }
 
     std::vector<const char*> extension_names(extension_count, nullptr);
 
     if (SDL_Vulkan_GetInstanceExtensions(m_window, &extension_count, extension_names.data()) == SDL_FALSE) {
-      throw std::runtime_error("Failed to get extensions.");
+      Log::fatal("Failed to get extensions.");
     }
 
     vkb::InstanceBuilder instance_builder;
@@ -424,8 +415,7 @@ namespace gf {
     auto maybe_instance = instance_builder.build();
 
     if (!maybe_instance) {
-      Log::error("Failed to create instance ({}).", maybe_instance.error().message());
-      throw std::runtime_error("Failed to create instance.");
+      Log::fatal("Failed to create instance ({}).", maybe_instance.error().message());
     }
 
     const vkb::Instance instance = maybe_instance.value();
@@ -440,8 +430,7 @@ namespace gf {
     // surface
 
     if (SDL_Vulkan_CreateSurface(m_window, m_instance, &m_surface) == SDL_FALSE) {
-      Log::error("Failed to create window surface.");
-      throw std::runtime_error("failed to create window surface.");
+      Log::fatal("Failed to create window surface.");
     }
 
     // physical device
@@ -464,8 +453,7 @@ namespace gf {
     auto maybe_physical_device = physical_device_selector.select();
 
     if (!maybe_physical_device) {
-      Log::error("Failed to select physical device ({}).", maybe_physical_device.error().message());
-      throw std::runtime_error("Failed to select physical device.");
+      Log::fatal("Failed to select physical device ({}).", maybe_physical_device.error().message());
     }
 
     const vkb::PhysicalDevice physical_device = maybe_physical_device.value();
@@ -486,8 +474,7 @@ namespace gf {
     auto maybe_device = device_builder.build();
 
     if (!maybe_device) {
-      Log::error("Failed to create device ({}).", maybe_device.error().message());
-      throw std::runtime_error("Failed to create device.");
+      Log::fatal("Failed to create device ({}).", maybe_device.error().message());
     }
 
     const vkb::Device device = maybe_device.value();
@@ -497,8 +484,7 @@ namespace gf {
     auto maybe_graphics_queue_index = device.get_queue_index(vkb::QueueType::graphics);
 
     if (!maybe_graphics_queue_index) {
-      Log::error("Failed to get a graphics queue ({}).", maybe_graphics_queue_index.error().message());
-      throw std::runtime_error("Failed to get a graphics queue.");
+      Log::fatal("Failed to get a graphics queue ({}).", maybe_graphics_queue_index.error().message());
     }
 
     // load vulkan device functions
@@ -513,8 +499,7 @@ namespace gf {
     auto maybe_present_queue_index = device.get_queue_index(vkb::QueueType::present);
 
     if (!maybe_present_queue_index) {
-      Log::error("Failed to get a present queue ({}).", maybe_present_queue_index.error().message());
-      throw std::runtime_error("Failed to get a present queue.");
+      Log::fatal("Failed to get a present queue ({}).", maybe_present_queue_index.error().message());
     }
 
     m_present_queue_index = maybe_present_queue_index.value();
@@ -556,8 +541,7 @@ namespace gf {
     allocator_info.vulkanApiVersion = VK_API_VERSION_1_3;
 
     if (vmaCreateAllocator(&allocator_info, &m_allocator) != VK_SUCCESS) {
-      Log::error("Failed to create an allocator.");
-      throw std::runtime_error("Failed to create an allocator.");
+      Log::fatal("Failed to create an allocator.");
     }
   }
 
@@ -587,8 +571,7 @@ namespace gf {
     auto maybe_swapchain = swapchain_builder.build();
 
     if (!maybe_swapchain) {
-      Log::error("Failed to create a swapchain ({}).", maybe_swapchain.error().message());
-      throw std::runtime_error("Failed to create a swapchain.");
+      Log::fatal("Failed to create a swapchain ({}).", maybe_swapchain.error().message());
     }
 
     vkb::Swapchain swapchain = maybe_swapchain.value();
@@ -606,8 +589,7 @@ namespace gf {
     VkSurfaceCapabilitiesKHR capabilities = {};
 
     if (vkGetPhysicalDeviceSurfaceCapabilitiesKHR(m_physical_device, m_surface, &capabilities) != VK_SUCCESS) {
-      Log::error("Failed to get surface capabilities.");
-      throw std::runtime_error("Failed to get surface capabilities.");
+      Log::fatal("Failed to get surface capabilities.");
     }
 
     Log::debug("Swapchain image count: {} (min requested: {}, min: {}, max: {})", m_image_count, swapchain.requested_min_image_count, capabilities.minImageCount, capabilities.maxImageCount);
@@ -618,8 +600,7 @@ namespace gf {
     auto maybe_images = swapchain.get_images();
 
     if (!maybe_images) {
-      Log::error("Failed to get images ({}).", maybe_images.error().message());
-      throw std::runtime_error("Failed to get images.");
+      Log::fatal("Failed to get images ({}).", maybe_images.error().message());
     }
 
     m_swapchain_images = maybe_images.value();
@@ -629,8 +610,7 @@ namespace gf {
     auto maybe_image_views = swapchain.get_image_views();
 
     if (!maybe_image_views) {
-      Log::error("Failed to get image views ({}).", maybe_image_views.error().message());
-      throw std::runtime_error("Failed to get image views.");
+      Log::fatal("Failed to get image views ({}).", maybe_image_views.error().message());
     }
 
     m_swapchain_image_views = maybe_image_views.value();
@@ -659,8 +639,7 @@ namespace gf {
     command_pool_info.queueFamilyIndex = m_graphics_queue_index;
 
     if (vkCreateCommandPool(m_device, &command_pool_info, nullptr, &m_command_pool) != VK_SUCCESS) {
-      Log::error("Failed to create command pool.");
-      throw std::runtime_error("Failed to create command pool.");
+      Log::fatal("Failed to create command pool.");
     }
 
     m_command_buffers.resize(FramesInFlight);
@@ -672,15 +651,13 @@ namespace gf {
     allocate_info.commandBufferCount = static_cast<uint32_t>(m_command_buffers.size());
 
     if (vkAllocateCommandBuffers(m_device, &allocate_info, m_command_buffers.data()) != VK_SUCCESS) {
-      Log::error("Failed to allocate command buffers.");
-      throw std::runtime_error("Failed to allocate command buffers.");
+      Log::fatal("Failed to allocate command buffers.");
     }
 
     // memory command buffers
 
     if (vkCreateCommandPool(m_device, &command_pool_info, nullptr, &m_memops_command_pool) != VK_SUCCESS) {
-      Log::error("Failed to create command pool.");
-      throw std::runtime_error("Failed to create command pool.");
+      Log::fatal("Failed to create command pool.");
     }
 
     m_memops_command_buffers.resize(FramesInFlight);
@@ -690,8 +667,7 @@ namespace gf {
     ;
 
     if (vkAllocateCommandBuffers(m_device, &allocate_info, m_memops_command_buffers.data()) != VK_SUCCESS) {
-      Log::error("Failed to allocate command buffer.");
-      throw std::runtime_error("Failed to allocate command buffer.");
+      Log::fatal("Failed to allocate command buffer.");
     }
 
     // begin the memory command buffer
@@ -703,8 +679,7 @@ namespace gf {
     begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
 
     if (vkBeginCommandBuffer(m_memops_command_buffers[m_current_memops], &begin_info) != VK_SUCCESS) {
-      Log::error("Failed to begin recording command buffer.");
-      throw std::runtime_error("Failed to begin recording command buffer.");
+      Log::fatal("Failed to begin recording command buffer.");
     }
 
     // staging buffers
@@ -736,27 +711,23 @@ namespace gf {
 
     for (RenderSynchronizationObjects& objects : m_render_synchronization) {
       if (vkCreateSemaphore(m_device, &semaphore_info, nullptr, &objects.present_semaphore) != VK_SUCCESS) {
-        Log::error("Failed to create present semaphore.");
-        throw std::runtime_error("Failed to create present semaphore.");
+        Log::fatal("Failed to create present semaphore.");
       }
 
       if (vkCreateSemaphore(m_device, &semaphore_info, nullptr, &objects.render_semaphore) != VK_SUCCESS) {
-        Log::error("Failed to create render semaphore.");
-        throw std::runtime_error("Failed to create render semaphore.");
+        Log::fatal("Failed to create render semaphore.");
       }
 
       fence_info.flags = VK_FENCE_CREATE_SIGNALED_BIT;
 
       if (vkCreateFence(m_device, &fence_info, nullptr, &objects.render_fence) != VK_SUCCESS) {
-        Log::error("Failed to create render fence.");
-        throw std::runtime_error("Failed to create render fence.");
+        Log::fatal("Failed to create render fence.");
       }
 
       fence_info.flags = 0;
 
       if (vkCreateFence(m_device, &fence_info, nullptr, &objects.memops_fence) != VK_SUCCESS) {
-        Log::error("Failed to create memops fence.");
-        throw std::runtime_error("Failed to create memops fence.");
+        Log::fatal("Failed to create memops fence.");
       }
     }
   }
@@ -788,8 +759,7 @@ namespace gf {
 
     for (std::size_t i = 0; i < FramesInFlight; ++i) {
       if (vkCreateDescriptorPool(m_device, &descriptor_pool_info, nullptr, &m_descriptor_pools[i]) != VK_SUCCESS) {
-        Log::error("Failed to create descriptor pool.");
-        throw std::runtime_error("Failed to create descriptor pool.");
+        Log::fatal("Failed to create descriptor pool.");
       }
     }
   }

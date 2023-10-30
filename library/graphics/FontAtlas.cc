@@ -8,8 +8,8 @@
 #include <cassert>
 
 #include <algorithm>
-#include <stdexcept>
 
+#include <gf2/core/Log.h>
 #include <gf2/core/StringUtils.h>
 
 namespace gf {
@@ -37,7 +37,7 @@ namespace gf {
     auto maybe_rectangle = m_bin_pack.insert(font_glyph.bitmap.size());
 
     if (!maybe_rectangle) {
-      throw std::runtime_error("Unable to insert rectangle in the bin pack.");
+      Log::fatal("Unable to insert rectangle in the bin pack.");
     }
 
     const RectI bounds = *maybe_rectangle;
@@ -94,7 +94,7 @@ namespace gf {
     auto maybe_rectangles = m_bin_pack.insert(sizes);
 
     if (!maybe_rectangles) {
-      throw std::runtime_error("Unable to insert rectangle in the bin pack.");
+      Log::fatal("Unable to insert rectangle in the bin pack.");
     }
 
     auto rectangles = std::move(*maybe_rectangles);

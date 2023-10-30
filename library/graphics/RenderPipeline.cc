@@ -91,8 +91,7 @@ namespace gf {
     VkPipelineLayout pipeline_layout = VK_NULL_HANDLE;
 
     if (vkCreatePipelineLayout(renderer->m_device, &pipeline_layout_create_info, nullptr, &pipeline_layout) != VK_SUCCESS) {
-      Log::error("Failed to create pipeline layout.");
-      throw std::runtime_error("Failed to create pipeline layout.");
+      Log::fatal("Failed to create pipeline layout.");
     }
 
     return { renderer->m_device, pipeline_layout };
@@ -292,8 +291,7 @@ namespace gf {
     VkPipeline pipeline = VK_NULL_HANDLE;
 
     if (vkCreateGraphicsPipelines(renderer->m_device, VK_NULL_HANDLE, 1, &pipeline_create_info, nullptr, &pipeline) != VK_SUCCESS) {
-      Log::error("Failed to create pipeline.");
-      throw std::runtime_error("Failed to create pipeline.");
+      Log::fatal("Failed to create pipeline.");
     }
 
     return { renderer->m_device, pipeline };
