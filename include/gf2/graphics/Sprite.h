@@ -14,6 +14,7 @@
 
 namespace gf {
   class RenderManager;
+  class ResourceManager;
   class Texture;
 
   class GF_GRAPHICS_API Sprite {
@@ -22,6 +23,7 @@ namespace gf {
     Sprite(const Texture* texture, RectF texture_region, RenderManager* render_manager);
     Sprite(const Texture* texture, RenderManager* render_manager);
     Sprite(const Texture* texture, const SpriteData& data, RenderManager* render_manager);
+    Sprite(const SpriteResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
     RenderGeometry geometry() const;
 

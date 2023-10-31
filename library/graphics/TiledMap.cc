@@ -6,17 +6,13 @@
 #include <gf2/graphics/TiledMap.h>
 // clang-format on
 
+#include <gf2/core/ResourceManager.h>
 #include <gf2/core/Span.h>
 #include <gf2/core/TiledMapData.h>
 #include <gf2/core/Transform.h>
 
 #include <gf2/graphics/Texture.h>
 #include <gf2/graphics/Vertex.h>
-
-#include "gf2/core/GridTypes.h"
-#include "gf2/core/Mat3.h"
-#include "gf2/core/Math.h"
-#include "gf2/core/Range.h"
 
 namespace gf {
   namespace {
@@ -81,6 +77,27 @@ namespace gf {
     compute_grid(data);
     compute_tile_layers(data, render_manager);
     compute_object_layers(data, render_manager);
+  }
+
+  namespace {
+
+    std::vector<const Texture*> load_resources(const TiledMapResource& resource, ResourceManager* resource_manager)
+    {
+      std::vector<const Texture*> resources;
+      resources.reserve(resource.textures.size());
+
+      for (const auto& texture : resource.textures) {
+        resources.push_back(resource_manager->get<Texture>(texture));
+      }
+
+      return resources;
+    }
+
+  }
+
+  TiledMap::TiledMap(const TiledMapResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
+  : TiledMap(load_resources(resource, resource_manager), resource.data, render_manager)
+  {
   }
 
   void TiledMap::compute_grid(const TiledMapData& data)

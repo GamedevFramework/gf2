@@ -15,6 +15,11 @@ namespace gf {
   {
   }
 
+  AnimationEntity::AnimationEntity(const AnimationResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
+  : m_sprite(resource, render_manager, resource_manager)
+  {
+  }
+
   void AnimationEntity::update(Time time)
   {
     m_sprite.update(time);

@@ -15,6 +15,7 @@
 
 namespace gf {
   class RenderManager;
+  class ResourceManager;
 
   struct TextGeometry {
     RenderGeometry text;
@@ -24,6 +25,7 @@ namespace gf {
   class GF_GRAPHICS_API Text {
   public:
     Text(FontAtlas* atlas, const TextData& data, RenderManager* render_manager);
+    Text(const TextResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
     TextGeometry geometry() const;
 

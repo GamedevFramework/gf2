@@ -5,6 +5,8 @@
 #include <gf2/graphics/Animation.h>
 // clang-format on
 
+#include <gf2/core/ResourceManager.h>
+
 #include <gf2/graphics/Texture.h>
 #include <gf2/graphics/Vertex.h>
 
@@ -63,6 +65,27 @@ namespace gf {
     m_indices = Buffer(BufferType::Device, BufferUsage::Index, indices.data(), indices.size(), render_manager);
 
     reset();
+  }
+
+  namespace {
+
+    std::vector<const Texture*> load_resources(const AnimationResource& resource, ResourceManager* resource_manager)
+    {
+      std::vector<const Texture*> resources;
+      resources.reserve(resource.textures.size());
+
+      for (const auto& texture : resource.textures) {
+        resources.push_back(resource_manager->get<Texture>(texture));
+      }
+
+      return resources;
+    }
+
+  }
+
+  Animation::Animation(const AnimationResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
+  : Animation(load_resources(resource, resource_manager), resource.data, render_manager)
+  {
   }
 
   void Animation::update(Time time)

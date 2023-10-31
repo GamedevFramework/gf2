@@ -16,6 +16,7 @@ namespace gf {
   class GF_GRAPHICS_API SpriteEntity : public Entity {
   public:
     SpriteEntity(const Texture* texture, RenderManager* render_manager);
+    SpriteEntity(const SpriteResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
     Transform& transform()
     {

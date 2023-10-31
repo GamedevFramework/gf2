@@ -14,6 +14,11 @@ namespace gf {
   {
   }
 
+  TextEntity::TextEntity(const TextResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
+  : m_text(resource, render_manager, resource_manager)
+  {
+  }
+
   void TextEntity::render(RenderRecorder& recorder)
   {
     auto text_geometry = m_text.geometry();

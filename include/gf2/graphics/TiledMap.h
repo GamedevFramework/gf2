@@ -16,9 +16,10 @@
 
 namespace gf {
   class RenderManager;
+  class ResourceManager;
   class Texture;
   struct TiledMapData;
-  struct TileData;
+  struct TiledMapResource;
 
   enum class TiledMapQuery : uint8_t {
     Tile = 0x01,
@@ -33,6 +34,8 @@ namespace gf {
   class GF_GRAPHICS_API TiledMap {
   public:
     TiledMap(std::vector<const Texture*> textures, const TiledMapData& data, RenderManager* render_manager);
+    TiledMap(const TiledMapResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
+
 #ifdef _MSC_VER
     // why?
     TiledMap(const TiledMap&) = delete;

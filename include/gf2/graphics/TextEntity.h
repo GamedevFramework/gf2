@@ -11,10 +11,12 @@
 
 namespace gf {
   class RenderManager;
+  class ResourceManager;
 
   class GF_GRAPHICS_API TextEntity : public Entity {
   public:
     TextEntity(FontAtlas* atlas, const TextData& data, RenderManager* render_manager);
+    TextEntity(const TextResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
     Transform& transform()
     {

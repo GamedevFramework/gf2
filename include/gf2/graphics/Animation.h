@@ -17,10 +17,12 @@
 namespace gf {
   class Texture;
   class RenderManager;
+  class ResourceManager;
 
   class GF_GRAPHICS_API Animation {
   public:
     Animation(std::vector<const Texture*> textures, const AnimationData& data, RenderManager* render_manager);
+    Animation(const AnimationResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
     void update(Time time);
     void reset();

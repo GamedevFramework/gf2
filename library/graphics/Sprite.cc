@@ -5,6 +5,8 @@
 #include <gf2/graphics/Sprite.h>
 // clang-format on
 
+#include <gf2/core/ResourceManager.h>
+
 #include <gf2/graphics/CommandBuffer.h>
 #include <gf2/graphics/RenderManager.h>
 #include <gf2/graphics/Texture.h>
@@ -49,6 +51,11 @@ namespace gf {
 
   Sprite::Sprite(const Texture* texture, const SpriteData& data, RenderManager* render_manager)
   : Sprite(texture, data.texture_region, data.color, render_manager)
+  {
+  }
+
+  Sprite::Sprite(const SpriteResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
+  : Sprite(resource_manager->get<Texture>(resource.texture), resource.data, render_manager)
   {
   }
 

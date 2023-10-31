@@ -15,6 +15,11 @@ namespace gf {
   {
   }
 
+  SpriteEntity::SpriteEntity(const SpriteResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
+  : m_sprite(resource, render_manager, resource_manager)
+  {
+  }
+
   void SpriteEntity::render(RenderRecorder& recorder)
   {
     RenderObject object = {};
