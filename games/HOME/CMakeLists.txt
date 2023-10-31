@@ -5,6 +5,7 @@ add_executable(HOME
   HOME.cc
   bits/GameHub.cc
   bits/ResourceHub.cc
+  bits/WorldScene.cc
 )
 
 target_link_libraries(HOME

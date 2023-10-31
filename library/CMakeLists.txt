@@ -80,7 +80,7 @@ add_library(gf2core0
   core/Direction.cc
   core/Fixed.cc
   core/Flags.cc
-  core/Font.cc
+  core/FontFace.cc
   core/FontManager.cc
   core/GridMap.cc
   core/Grids.cc
@@ -162,8 +162,8 @@ add_library(gf2graphics0
   graphics/Entity.cc
   graphics/EntityContainer.cc
   graphics/Event.cc
+  graphics/Font.cc
   graphics/FontAtlas.cc
-  graphics/FontPack.cc
   graphics/Format.cc
   graphics/Gamepad.cc
   graphics/GraphicsInitializer.cc

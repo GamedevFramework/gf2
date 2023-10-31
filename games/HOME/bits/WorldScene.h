@@ -7,7 +7,7 @@
 #include <gf2/graphics/TextEntity.h>
 
 namespace home {
-  class GameHub;
+  struct GameHub;
 
   class WorldScene : public gf::StandardScene {
   public:
