@@ -6,8 +6,10 @@
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/TextEntity.h>
 
+#include "WorldData.h"
+
 namespace home {
-  struct GameHub;
+  class GameHub;
 
   class WorldScene : public gf::StandardScene {
   public:
@@ -16,6 +18,7 @@ namespace home {
     static gf::ResourceBundle bundle(GameHub* hub);
 
   private:
+    WorldData m_data;
     gf::TextEntity m_title;
   };
 

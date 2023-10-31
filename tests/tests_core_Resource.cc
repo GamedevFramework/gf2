@@ -37,8 +37,8 @@ namespace {
 
     static gf::ResourceBundle bundle(const std::filesystem::path& filename)
     {
-      gf::ResourceBundle bundle([filename](gf::ResourceBundle& bundle, auto manager, auto action) {
-        bundle.handle<DummyResource>("sub" / filename, manager, action);
+      gf::ResourceBundle bundle([filename](gf::ResourceBundle* bundle, auto manager, auto action) {
+        bundle->handle<DummyResource>("sub" / filename, manager, action);
       });
       return bundle;
     }
@@ -64,8 +64,8 @@ namespace {
 
     static gf::ResourceBundle bundle(const std::filesystem::path& filename, gf::ResourceManager*)
     {
-      gf::ResourceBundle bundle([filename](gf::ResourceBundle& bundle, auto manager, auto action) {
-        bundle.handle<DummyResource>("sub" / filename, manager, action);
+      gf::ResourceBundle bundle([filename](gf::ResourceBundle* bundle, auto manager, auto action) {
+        bundle->handle<DummyResource>("sub" / filename, manager, action);
       });
       return bundle;
     }
@@ -267,8 +267,8 @@ TEST(ResourceTest, BundleEmpty) {
 
   gf::ResourceBundle bundle;
 
-  EXPECT_NO_THROW(bundle.load_from(manager));
-  EXPECT_NO_THROW(bundle.unload_from(manager));
+  EXPECT_NO_THROW(bundle.load_from(&manager));
+  EXPECT_NO_THROW(bundle.unload_from(&manager));
 }
 
 TEST(ResourceTest, BundleLoadUnload) {
@@ -280,17 +280,17 @@ TEST(ResourceTest, BundleLoadUnload) {
   gf::ResourceManager manager;
   manager.add_registry(&registry);
 
-  gf::ResourceBundle bundle([](gf::ResourceBundle& bundle, auto manager, auto action) {
-    bundle.handle<DummyResource>("foo", manager, action);
-    bundle.handle<DummyResource>("bar", manager, action);
+  gf::ResourceBundle bundle([](gf::ResourceBundle* bundle, auto manager, auto action) {
+    bundle->handle<DummyResource>("foo", manager, action);
+    bundle->handle<DummyResource>("bar", manager, action);
   });
 
-  bundle.load_from(manager);
+  bundle.load_from(&manager);
 
   EXPECT_TRUE(registry.loaded("foo"));
   EXPECT_TRUE(registry.loaded("bar"));
 
-  bundle.unload_from(manager);
+  bundle.unload_from(&manager);
 
   EXPECT_FALSE(registry.loaded("foo"));
   EXPECT_FALSE(registry.loaded("bar"));
@@ -305,27 +305,27 @@ TEST(ResourceTest, BundleMultiple) {
   gf::ResourceManager manager;
   manager.add_registry(&registry);
 
-  gf::ResourceBundle bundle1([](gf::ResourceBundle& bundle, auto manager, auto action) {
-    bundle.handle<DummyResource>("foo", manager, action);
-    bundle.handle<DummyResource>("bar", manager, action);
+  gf::ResourceBundle bundle1([](gf::ResourceBundle* bundle, auto manager, auto action) {
+    bundle->handle<DummyResource>("foo", manager, action);
+    bundle->handle<DummyResource>("bar", manager, action);
   });
 
-  gf::ResourceBundle bundle2([](gf::ResourceBundle& bundle, auto manager, auto action) {
-    bundle.handle<DummyResource>("foo", manager, action);
+  gf::ResourceBundle bundle2([](gf::ResourceBundle* bundle, auto manager, auto action) {
+    bundle->handle<DummyResource>("foo", manager, action);
   });
 
-  bundle1.load_from(manager);
+  bundle1.load_from(&manager);
 
   EXPECT_TRUE(registry.loaded("foo"));
   EXPECT_TRUE(registry.loaded("bar"));
 
-  bundle2.load_from(manager);
-  bundle1.unload_from(manager);
+  bundle2.load_from(&manager);
+  bundle1.unload_from(&manager);
 
   EXPECT_TRUE(registry.loaded("foo"));
   EXPECT_FALSE(registry.loaded("bar"));
 
-  bundle2.unload_from(manager);
+  bundle2.unload_from(&manager);
 
   EXPECT_FALSE(registry.loaded("foo"));
   EXPECT_FALSE(registry.loaded("bar"));
@@ -343,16 +343,16 @@ TEST(ResourceTest, BundleComposite) {
   manager.add_registry(&registry_for_composite);
   manager.add_registry(&registry_for_single);
 
-  gf::ResourceBundle bundle([](gf::ResourceBundle& bundle, auto manager, auto action) {
-    bundle.handle<DummyCompositeResource>("foo", manager, action);
+  gf::ResourceBundle bundle([](gf::ResourceBundle* bundle, auto manager, auto action) {
+    bundle->handle<DummyCompositeResource>("foo", manager, action);
   });
 
-  bundle.load_from(manager);
+  bundle.load_from(&manager);
 
   EXPECT_TRUE(registry_for_composite.loaded("foo"));
   EXPECT_TRUE(registry_for_single.loaded("sub/foo"));
 
-  bundle.unload_from(manager);
+  bundle.unload_from(&manager);
 
   EXPECT_FALSE(registry_for_composite.loaded("foo"));
   EXPECT_FALSE(registry_for_single.loaded("sub/foo"));
@@ -370,15 +370,15 @@ TEST(ResourceTest, BundleContext) {
 
   DummyContextResource::Context context;
 
-  gf::ResourceBundle bundle([&context](gf::ResourceBundle& bundle, auto manager, auto action) {
-    bundle.handle<DummyContextResource>("foo", context, manager, action);
+  gf::ResourceBundle bundle([&context](gf::ResourceBundle* bundle, auto manager, auto action) {
+    bundle->handle<DummyContextResource>("foo", context, manager, action);
   });
 
-  bundle.load_from(manager);
+  bundle.load_from(&manager);
 
   EXPECT_TRUE(registry.loaded("foo"));
 
-  bundle.unload_from(manager);
+  bundle.unload_from(&manager);
 
   EXPECT_FALSE(registry.loaded("foo"));
 }
@@ -395,16 +395,16 @@ TEST(ResourceTest, BundleCompositeContext) {
   manager.add_registry(&registry_for_composite);
   manager.add_registry(&registry_for_single);
 
-  gf::ResourceBundle bundle([](gf::ResourceBundle& bundle, auto manager, auto action) {
-    bundle.handle<DummyCompositeContextResource>("foo", &manager, manager, action);
+  gf::ResourceBundle bundle([](gf::ResourceBundle* bundle, auto manager, auto action) {
+    bundle->handle<DummyCompositeContextResource>("foo", manager, manager, action);
   });
 
-  bundle.load_from(manager);
+  bundle.load_from(&manager);
 
   EXPECT_TRUE(registry_for_composite.loaded("foo"));
   EXPECT_TRUE(registry_for_single.loaded("sub/foo"));
 
-  bundle.unload_from(manager);
+  bundle.unload_from(&manager);
 
   EXPECT_FALSE(registry_for_composite.loaded("foo"));
   EXPECT_FALSE(registry_for_single.loaded("sub/foo"));

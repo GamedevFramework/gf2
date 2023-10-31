@@ -13,15 +13,37 @@
 
 namespace home {
 
-  struct GameHub : gf::SingleSceneManager {
+  class GameHub : public gf::SingleSceneManager {
+  public:
     GameHub(const std::filesystem::path& asset_directory);
 
-    gf::FontManager font_manager;
-    gf::AudioManager audio_manager;
+    gf::ResourceManager* resource_manager()
+    {
+      return &m_resource_hub.manager;
+    }
 
-    ResourceHub resource_hub;
+    gf::FontManager* font_manager()
+    {
+      return &m_font_manager;
+    }
 
-    std::unique_ptr<WorldScene> world_scene = nullptr;
+    gf::AudioManager* audio_manager()
+    {
+      return &m_audio_manager;
+    }
+
+    WorldScene* world_scene()
+    {
+      return m_world_scene.get();
+    }
+
+  private:
+    gf::FontManager m_font_manager;
+    gf::AudioManager m_audio_manager;
+
+    ResourceHub m_resource_hub;
+
+    std::unique_ptr<WorldScene> m_world_scene = nullptr;
   };
 
 }

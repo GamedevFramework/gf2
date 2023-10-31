@@ -49,11 +49,11 @@ namespace gf {
       m_callback = std::forward<F>(callback);
     }
 
-    void load_from(ResourceManager& manager);
-    void unload_from(ResourceManager& manager);
+    void load_from(ResourceManager* manager);
+    void unload_from(ResourceManager* manager);
 
     template<typename T>
-    void handle(const std::filesystem::path& path, ResourceManager& manager, Action action)
+    void handle(const std::filesystem::path& path, ResourceManager* manager, Action action)
     {
       static_assert(std::is_empty_v<ResourceContext<T>>, "Resource context should be empty.");
 
@@ -64,13 +64,13 @@ namespace gf {
               T::bundle(path).load_from(manager);
             }
 
-            manager.load<T>(path);
+            manager->load<T>(path);
           }
           break;
 
         case Action::Unload:
           {
-            manager.unload<T>(path);
+            manager->unload<T>(path);
 
             if constexpr (details::HasStaticBundle<T>) {
               T::bundle(path).unload_from(manager);
@@ -81,7 +81,7 @@ namespace gf {
     }
 
     template<typename T>
-    void handle(const std::filesystem::path& path, const ResourceContext<T>& context, ResourceManager& manager, Action action)
+    void handle(const std::filesystem::path& path, const ResourceContext<T>& context, ResourceManager* manager, Action action)
     {
       static_assert(!std::is_empty_v<ResourceContext<T>>, "Resource context should be non-empty.");
 
@@ -92,13 +92,13 @@ namespace gf {
               T::bundle(path, context).load_from(manager);
             }
 
-            manager.load<T>(path, context);
+            manager->load<T>(path, context);
           }
           break;
 
         case Action::Unload:
           {
-            manager.unload<T>(path);
+            manager->unload<T>(path);
 
             if constexpr (details::HasStaticBundleWithContext<T>) {
               T::bundle(path, context).unload_from(manager);
@@ -109,7 +109,7 @@ namespace gf {
     }
 
   private:
-    std::function<void(ResourceBundle&, ResourceManager&, Action)> m_callback;
+    std::function<void(ResourceBundle*, ResourceManager*, Action)> m_callback;
   };
 
 } // namespace gf

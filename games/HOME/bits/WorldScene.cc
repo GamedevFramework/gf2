@@ -4,18 +4,8 @@
 
 namespace home {
 
-  namespace {
-    gf::TextData title_text() {
-      gf::TextData data;
-      data.content = "H.O.M.E.";
-      data.character_size = 60;
-      data.color = gf::Color(0x44548E);
-      return data;
-    }
-  }
-
   WorldScene::WorldScene(GameHub* hub)
-  : m_title(hub->resource_hub.manager.get<gf::Font>("Xolonium-Regular.ttf")->atlas(), title_text(), hub->render_manager())
+  : m_title(m_data.title, hub->render_manager(), hub->resource_manager())
   {
     set_clear_color(gf::Color(0xAEF6B8));
     set_world_center({ 0.0f, 0.0f });
@@ -27,8 +17,8 @@ namespace home {
 
   gf::ResourceBundle WorldScene::bundle(GameHub* hub)
   {
-    gf::ResourceBundle bundle([hub](gf::ResourceBundle& bundle, gf::ResourceManager& resources, gf::ResourceBundle::Action action) {
-      bundle.handle<gf::Font>("Xolonium-Regular.ttf", { &hub->font_manager, hub->render_manager() }, resources, action);
+    gf::ResourceBundle bundle([hub](gf::ResourceBundle* bundle, gf::ResourceManager* resources, gf::ResourceBundle::Action action) {
+      bundle->handle<gf::Font>("Xolonium-Regular.ttf", { hub->font_manager(), hub->render_manager() }, resources, action);
     });
     return bundle;
   }
