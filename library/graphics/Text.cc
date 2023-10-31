@@ -13,7 +13,7 @@
 #include <gf2/core/ResourceManager.h>
 #include <gf2/core/StringUtils.h>
 
-#include <gf2/graphics/FontPack.h>
+#include <gf2/graphics/Font.h>
 #include <gf2/graphics/Vertex.h>
 
 namespace gf {
@@ -287,7 +287,7 @@ namespace gf {
   }
 
   Text::Text(const TextResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
-  : Text(resource_manager->get<FontPack>(resource.font)->atlas(), resource.data, render_manager)
+  : Text(resource_manager->get<Font>(resource.font)->atlas(), resource.data, render_manager)
   {
   }
 

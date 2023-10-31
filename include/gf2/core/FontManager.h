@@ -22,7 +22,7 @@ namespace gf {
     std::string backend();
 
   private:
-    friend class Font;
+    friend class FontFace;
 
     template<typename T>
     T library_as()

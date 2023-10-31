@@ -10,7 +10,7 @@
 #include <gf2/core/BinPack.h>
 #include <gf2/core/Bitmap.h>
 #include <gf2/core/Fixed.h>
-#include <gf2/core/Font.h>
+#include <gf2/core/FontFace.h>
 #include <gf2/core/Vec2.h>
 
 #include "GraphicsApi.h"
@@ -21,7 +21,7 @@ namespace gf {
 
   class GF_GRAPHICS_API FontAtlas {
   public:
-    FontAtlas(Font* font, Vec2I size, RenderManager* render_manager);
+    FontAtlas(FontFace* face, Vec2I size, RenderManager* render_manager);
 
     RectF texture_region(char32_t codepoint, uint32_t character_size, float outline_thickness = 0.0f);
     void update_texture_regions_for(std::string_view string, uint32_t character_size, float outline_thickness = 0.0f);
@@ -32,12 +32,12 @@ namespace gf {
 
     float kerning(char32_t left, char32_t right, uint32_t character_size)
     {
-      return m_font->compute_kerning(left, right, character_size);
+      return m_face->compute_kerning(left, right, character_size);
     }
 
     float line_spacing(uint32_t character_size)
     {
-      return m_font->compute_line_spacing(character_size);
+      return m_face->compute_line_spacing(character_size);
     }
 
     const Texture* texture() const
@@ -46,7 +46,7 @@ namespace gf {
     }
 
   private:
-    Font* m_font = nullptr;
+    FontFace* m_face = nullptr;
     BinPack m_bin_pack;
     Bitmap m_bitmap;
     Texture m_texture;

@@ -5,7 +5,7 @@
 #include <gf2/core/ResourceLoaders.h>
 
 #include <gf2/graphics/Texture.h>
-#include <gf2/graphics/FontPack.h>
+#include <gf2/graphics/Font.h>
 
 namespace home {
 
@@ -14,7 +14,7 @@ namespace home {
 
     gf::FileLoader file_loader;
 
-    gf::ResourceRegistry<gf::FontPack> font_registry;
+    gf::ResourceRegistry<gf::Font> font_registry;
     gf::ResourceRegistry<gf::Texture> texture_registry;
 
     gf::ResourceManager manager;

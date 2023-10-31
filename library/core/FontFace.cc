@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/core/Font.h>
+#include <gf2/core/FontFace.h>
 // clang-format on
 
 #include <cassert>
@@ -49,7 +49,7 @@ namespace gf {
 
   }
 
-  Font::Font(const std::filesystem::path& filename, FontManager* manager)
+  FontFace::FontFace(const std::filesystem::path& filename, FontManager* manager)
   : m_manager(manager)
   {
     assert(manager != nullptr);
@@ -63,7 +63,7 @@ namespace gf {
     m_face = face;
   }
 
-  Font::Font(InputStream& stream, FontManager* manager)
+  FontFace::FontFace(InputStream& stream, FontManager* manager)
   : m_manager(manager)
   {
     assert(manager != nullptr);
@@ -92,14 +92,14 @@ namespace gf {
     m_face = face;
   }
 
-  Font::Font(Font&& other) noexcept
+  FontFace::FontFace(FontFace&& other) noexcept
   : m_manager(other.m_manager)
   , m_face(std::exchange(other.m_face, nullptr))
   , m_character_size(std::exchange(other.m_character_size, 0))
   {
   }
 
-  Font::~Font()
+  FontFace::~FontFace()
   {
     if (m_face != nullptr) {
       [[maybe_unused]] auto err = FT_Done_Face(face_as<FT_Face>());
@@ -107,7 +107,7 @@ namespace gf {
     }
   }
 
-  Font& Font::operator=(Font&& other) noexcept
+  FontFace& FontFace::operator=(FontFace&& other) noexcept
   {
     using std::swap;
     swap(m_manager, other.m_manager);
@@ -116,7 +116,7 @@ namespace gf {
     return *this;
   }
 
-  std::string Font::family_name() const
+  std::string FontFace::family_name() const
   {
     if (m_face == nullptr) {
       return "";
@@ -125,7 +125,7 @@ namespace gf {
     return face_as<FT_Face>()->family_name;
   }
 
-  std::string Font::style_name() const
+  std::string FontFace::style_name() const
   {
     if (m_face == nullptr) {
       return "";
@@ -134,7 +134,7 @@ namespace gf {
     return face_as<FT_Face>()->style_name;
   }
 
-  FontGlyph Font::create_glyph(char32_t codepoint, uint32_t character_size, float outline_thickness)
+  FontGlyph FontFace::create_glyph(char32_t codepoint, uint32_t character_size, float outline_thickness)
   {
     FontGlyph result = {};
 
@@ -222,7 +222,7 @@ namespace gf {
     return result;
   }
 
-  float Font::compute_kerning(char32_t left, char32_t right, uint32_t character_size)
+  float FontFace::compute_kerning(char32_t left, char32_t right, uint32_t character_size)
   {
     if (left == 0 || right == 0) {
       return 0.0f;
@@ -255,7 +255,7 @@ namespace gf {
     return ft_convert_metrics(kerning.x);
   }
 
-  float Font::compute_line_spacing(uint32_t character_size)
+  float FontFace::compute_line_spacing(uint32_t character_size)
   {
     if (m_face == nullptr) {
       return 0.0f;
@@ -268,7 +268,7 @@ namespace gf {
     return ft_convert_metrics(face_as<FT_Face>()->size->metrics.height);
   }
 
-  bool Font::set_current_character_size(uint32_t character_size)
+  bool FontFace::set_current_character_size(uint32_t character_size)
   {
     if (m_character_size == character_size) {
       return true;

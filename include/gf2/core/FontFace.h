@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
-#ifndef GF_FONT_H
-#define GF_FONT_H
+#ifndef GF_FONT_FACE_H
+#define GF_FONT_FACE_H
 
 #include <cstdint>
 
@@ -22,18 +22,18 @@ namespace gf {
     Bitmap bitmap;
   };
 
-  class GF_CORE_API Font {
+  class GF_CORE_API FontFace {
   public:
     using Context = FontManager*;
 
-    Font(const std::filesystem::path& filename, FontManager* manager);
-    Font(InputStream& stream, FontManager* manager);
-    Font(const Font&) = delete;
-    Font(Font&& other) noexcept;
-    ~Font();
+    FontFace(const std::filesystem::path& filename, FontManager* manager);
+    FontFace(InputStream& stream, FontManager* manager);
+    FontFace(const FontFace&) = delete;
+    FontFace(FontFace&& other) noexcept;
+    ~FontFace();
 
-    Font& operator=(const Font&) = delete;
-    Font& operator=(Font&& other) noexcept;
+    FontFace& operator=(const FontFace&) = delete;
+    FontFace& operator=(FontFace&& other) noexcept;
 
     std::string family_name() const;
     std::string style_name() const;
@@ -65,4 +65,4 @@ namespace gf {
 
 }
 
-#endif // GF_FONT_H
+#endif // GF_FONT_FACE_H

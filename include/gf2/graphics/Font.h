@@ -1,32 +1,32 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
-#ifndef GF_FONT_PACK_H
-#define GF_FONT_PACK_H
+#ifndef GF_FONT_H
+#define GF_FONT_H
 
 #include <filesystem>
 
-#include <gf2/core/Font.h>
+#include <gf2/core/FontFace.h>
 
 #include "FontAtlas.h"
 #include "GraphicsApi.h"
 
 namespace gf {
 
-  struct GF_GRAPHICS_API FontPackContext {
+  struct GF_GRAPHICS_API FontContext {
     FontManager* font_manager = nullptr;
     RenderManager* render_manager = nullptr;
     Vec2I size = { 2048, 2048 };
   };
 
-  class GF_GRAPHICS_API FontPack {
+  class GF_GRAPHICS_API Font {
   public:
-    using Context = FontPackContext;
+    using Context = FontContext;
 
-    FontPack(const std::filesystem::path& filename, FontPackContext context);
+    Font(const std::filesystem::path& filename, FontContext context);
 
-    Font* font()
+    FontFace* face()
     {
-      return &m_font;
+      return &m_face;
     }
 
     FontAtlas* atlas()
@@ -35,11 +35,11 @@ namespace gf {
     }
 
   private:
-    Font m_font;
+    FontFace m_face;
     FontAtlas m_atlas;
   };
 
 }
 
-#endif // GF_FONT_PACK_H
+#endif // GF_FONT_H
 

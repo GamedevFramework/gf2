@@ -22,8 +22,8 @@ namespace gf {
 
   using namespace operators;
 
-  FontAtlas::FontAtlas(Font* font, Vec2I size, RenderManager* render_manager)
-  : m_font(font)
+  FontAtlas::FontAtlas(FontFace* face, Vec2I size, RenderManager* render_manager)
+  : m_face(face)
   , m_bin_pack(size)
   , m_bitmap(size, 0x00)
   , m_texture(size, TextureUsage::TransferDestination | TextureUsage::Sampled, Format::Gray8U, render_manager)
@@ -129,7 +129,7 @@ namespace gf {
       return iterator->second;
     }
 
-    auto glyph = m_font->create_glyph(codepoint, character_size, outline_thickness);
+    auto glyph = m_face->create_glyph(codepoint, character_size, outline_thickness);
     auto [iterator, inserted] = m_glyph_cache.emplace(key, std::move(glyph));
     assert(inserted);
     return iterator->second;

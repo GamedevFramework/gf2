@@ -1,7 +1,6 @@
 #include "WorldScene.h"
 
 #include "GameHub.h"
-#include "gf2/graphics/FontPack.h"
 
 namespace home {
 
@@ -16,7 +15,7 @@ namespace home {
   }
 
   WorldScene::WorldScene(GameHub* hub)
-  : m_title(hub->resource_hub.manager.get<gf::FontPack>("Xolonium-Regular.ttf")->atlas(), title_text(), hub->render_manager())
+  : m_title(hub->resource_hub.manager.get<gf::Font>("Xolonium-Regular.ttf")->atlas(), title_text(), hub->render_manager())
   {
     set_clear_color(gf::Color(0xAEF6B8));
     set_world_center({ 0.0f, 0.0f });
@@ -29,7 +28,7 @@ namespace home {
   gf::ResourceBundle WorldScene::bundle(GameHub* hub)
   {
     gf::ResourceBundle bundle([hub](gf::ResourceBundle& bundle, gf::ResourceManager& resources, gf::ResourceBundle::Action action) {
-      bundle.handle<gf::FontPack>("Xolonium-Regular.ttf", { &hub->font_manager, hub->render_manager() }, resources, action);
+      bundle.handle<gf::Font>("Xolonium-Regular.ttf", { &hub->font_manager, hub->render_manager() }, resources, action);
     });
     return bundle;
   }

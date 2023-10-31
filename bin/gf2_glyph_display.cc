@@ -5,9 +5,8 @@
 #include <cstring>
 
 #include <iostream>
-#include <string>
 
-#include <gf2/core/Font.h>
+#include <gf2/core/FontFace.h>
 #include <gf2/core/FontManager.h>
 #include <gf2/core/Range.h>
 #include <gf2/core/StringUtils.h>
@@ -20,11 +19,11 @@ int main(int argc, char* argv[])
   }
 
   gf::FontManager font_manager;
-  gf::Font font(argv[1], &font_manager);
+  gf::FontFace font_face(argv[1], &font_manager);
 
   std::cout << "backend: " << font_manager.backend() << '\n';
-  std::cout << "family: " << font.family_name() << '\n';
-  std::cout << "style: " << font.style_name() << '\n';
+  std::cout << "family: " << font_face.family_name() << '\n';
+  std::cout << "style: " << font_face.style_name() << '\n';
 
   char32_t c = U'A';
 
@@ -42,7 +41,7 @@ int main(int argc, char* argv[])
     character_size = static_cast<unsigned>(std::atoi(argv[3]));
   }
 
-  const auto glyph = font.create_glyph(c, character_size);
+  const auto glyph = font_face.create_glyph(c, character_size);
   const auto size = glyph.bitmap.size();
 
   constexpr std::string_view Gray = " .:-=+*#%@";
