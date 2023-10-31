@@ -74,13 +74,13 @@ namespace gf {
 
   }
 
-  TiledMap::TiledMap(std::vector<const Texture*> textures, const TiledMapData& data, Renderer* renderer)
+  TiledMap::TiledMap(std::vector<const Texture*> textures, const TiledMapData& data, RenderManager* render_manager)
   : m_textures(std::move(textures))
   , m_bounds(RectF::from_size(data.map_size * data.tile_size))
   {
     compute_grid(data);
-    compute_tile_layers(data, renderer);
-    compute_object_layers(data, renderer);
+    compute_tile_layers(data, render_manager);
+    compute_object_layers(data, render_manager);
   }
 
   void TiledMap::compute_grid(const TiledMapData& data)
@@ -103,7 +103,7 @@ namespace gf {
     }
   }
 
-  void TiledMap::compute_tile_layers(const TiledMapData& data, Renderer* renderer)
+  void TiledMap::compute_tile_layers(const TiledMapData& data, RenderManager* render_manager)
   {
     const Vec2I chunk_count = { div_ceil(data.map_size.w, ChunkSize), div_ceil(data.map_size.h, ChunkSize) };
 
@@ -156,9 +156,9 @@ namespace gf {
         }
 
         auto vertices = split_geometry.merge_vertices();
-        chunk.vertices = Buffer(BufferType::Device, BufferUsage::Vertex, vertices.data(), vertices.size(), renderer);
+        chunk.vertices = Buffer(BufferType::Device, BufferUsage::Vertex, vertices.data(), vertices.size(), render_manager);
         auto indices = split_geometry.merge_indices();
-        chunk.indices = Buffer(BufferType::Device, BufferUsage::Index, indices.data(), indices.size(), renderer);
+        chunk.indices = Buffer(BufferType::Device, BufferUsage::Index, indices.data(), indices.size(), render_manager);
 
         tile_layer.chunks(base) = std::move(chunk);
       }
@@ -167,7 +167,7 @@ namespace gf {
     }
   }
 
-  void TiledMap::compute_object_layers(const TiledMapData& data, Renderer* renderer)
+  void TiledMap::compute_object_layers(const TiledMapData& data, RenderManager* render_manager)
   {
     for (const auto& object_layer_data : data.object_layers) {
       SplitGeometry split_geometry;
@@ -218,9 +218,9 @@ namespace gf {
       }
 
       auto vertices = split_geometry.merge_vertices();
-      buffers.vertices = Buffer(BufferType::Device, BufferUsage::Vertex, vertices.data(), vertices.size(), renderer);
+      buffers.vertices = Buffer(BufferType::Device, BufferUsage::Vertex, vertices.data(), vertices.size(), render_manager);
       auto indices = split_geometry.merge_indices();
-      buffers.indices = Buffer(BufferType::Device, BufferUsage::Index, indices.data(), indices.size(), renderer);
+      buffers.indices = Buffer(BufferType::Device, BufferUsage::Index, indices.data(), indices.size(), render_manager);
 
       m_object_layers.push_back({ std::move(buffers) });
     }

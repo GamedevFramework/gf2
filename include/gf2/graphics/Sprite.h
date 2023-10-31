@@ -13,15 +13,15 @@
 #include "RenderObject.h"
 
 namespace gf {
-  class Renderer;
+  class RenderManager;
   class Texture;
 
   class GF_GRAPHICS_API Sprite {
   public:
-    Sprite(const Texture* texture, RectF texture_region, Color color, Renderer* renderer);
-    Sprite(const Texture* texture, RectF texture_region, Renderer* renderer);
-    Sprite(const Texture* texture, Renderer* renderer);
-    Sprite(const Texture* texture, const SpriteData& data, Renderer* renderer);
+    Sprite(const Texture* texture, RectF texture_region, Color color, RenderManager* render_manager);
+    Sprite(const Texture* texture, RectF texture_region, RenderManager* render_manager);
+    Sprite(const Texture* texture, RenderManager* render_manager);
+    Sprite(const Texture* texture, const SpriteData& data, RenderManager* render_manager);
 
     RenderGeometry geometry() const;
 

@@ -11,11 +11,11 @@
 #include "Texture.h"
 
 namespace gf {
-  class Renderer;
+  class RenderManager;
 
   class GF_GRAPHICS_API ShapeEntity : public Entity {
   public:
-    ShapeEntity(const Texture* texture, const ShapeData& data, Renderer* renderer);
+    ShapeEntity(const Texture* texture, const ShapeData& data, RenderManager* render_manager);
 
     Transform& transform()
     {

@@ -16,11 +16,11 @@ namespace gf {
 
   using namespace operators;
 
-  FontAtlas::FontAtlas(Font* font, Vec2I size, Renderer* renderer)
+  FontAtlas::FontAtlas(Font* font, Vec2I size, RenderManager* render_manager)
   : m_font(font)
   , m_bin_pack(size)
   , m_bitmap(size, 0x00)
-  , m_texture(size, TextureUsage::TransferDestination | TextureUsage::Sampled, Format::Gray8U, renderer)
+  , m_texture(size, TextureUsage::TransferDestination | TextureUsage::Sampled, Format::Gray8U, render_manager)
   {
   }
 
@@ -129,9 +129,9 @@ namespace gf {
     return iterator->second;
   }
 
-  void FontAtlas::update_texture(Renderer* renderer)
+  void FontAtlas::update_texture(RenderManager* render_manager)
   {
-    m_texture.update(m_bitmap, renderer);
+    m_texture.update(m_bitmap, render_manager);
   }
 
 }

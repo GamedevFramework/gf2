@@ -13,45 +13,45 @@
 
 #include <gf2/core/Log.h>
 
-#include <gf2/graphics/Renderer.h>
+#include <gf2/graphics/RenderManager.h>
 
 namespace gf {
 
   using namespace operators;
 
-  Texture::Texture(const std::filesystem::path& filename, Renderer* renderer)
-  : Texture(Image(filename), renderer)
+  Texture::Texture(const std::filesystem::path& filename, RenderManager* render_manager)
+  : Texture(Image(filename), render_manager)
   {
   }
 
-  Texture::Texture(const Image& image, Renderer* renderer)
-  : Texture(image.size(), TextureUsage::TransferDestination | TextureUsage::Sampled, Format::Color8S, renderer)
+  Texture::Texture(const Image& image, RenderManager* render_manager)
+  : Texture(image.size(), TextureUsage::TransferDestination | TextureUsage::Sampled, Format::Color8S, render_manager)
   {
     auto raw_size = image.raw_size();
     const auto* raw_data = image.raw_data();
 
     auto staging = create_staging_buffer(raw_size, raw_data);
-    compute_memory_operations(staging, renderer);
+    compute_memory_operations(staging, render_manager);
   }
 
-  Texture::Texture(const Bitmap& bitmap, Renderer* renderer)
-  : Texture(bitmap.size(), TextureUsage::TransferDestination | TextureUsage::Sampled, Format::Gray8U, renderer)
+  Texture::Texture(const Bitmap& bitmap, RenderManager* render_manager)
+  : Texture(bitmap.size(), TextureUsage::TransferDestination | TextureUsage::Sampled, Format::Gray8U, render_manager)
   {
     auto raw_size = bitmap.raw_size();
     const auto* raw_data = bitmap.raw_data();
 
     auto staging = create_staging_buffer(raw_size, raw_data);
-    compute_memory_operations(staging, renderer);
+    compute_memory_operations(staging, render_manager);
   }
 
-  Texture::Texture(Vec2I size, Renderer* renderer)
-  : Texture(size, TextureUsage::ColorTarget | TextureUsage::Sampled, Format::Renderer, renderer)
+  Texture::Texture(Vec2I size, RenderManager* render_manager)
+  : Texture(size, TextureUsage::ColorTarget | TextureUsage::Sampled, Format::RenderManager, render_manager)
   {
   }
 
-  Texture::Texture(Vec2I size, Flags<TextureUsage> usage, Format format, Renderer* renderer)
+  Texture::Texture(Vec2I size, Flags<TextureUsage> usage, Format format, RenderManager* render_manager)
   : m_image_size(size)
-  , m_allocator(renderer->m_allocator)
+  , m_allocator(render_manager->m_allocator)
   , m_usage(usage)
   , m_format(format)
   {
@@ -63,7 +63,7 @@ namespace gf {
     image_info.extent.depth = 1;
     image_info.mipLevels = 1;
     image_info.arrayLayers = 1;
-    image_info.format = format == Format::Renderer ? renderer->m_format : static_cast<VkFormat>(format);
+    image_info.format = format == Format::RenderManager ? render_manager->m_format : static_cast<VkFormat>(format);
     image_info.tiling = VK_IMAGE_TILING_OPTIMAL;
     image_info.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
     image_info.usage = usage.value();
@@ -80,7 +80,7 @@ namespace gf {
 
     // image view and sampler
 
-    create_image_view_and_sampler(format, renderer);
+    create_image_view_and_sampler(format, render_manager);
   }
 
   Texture::Texture(Texture&& other) noexcept
@@ -155,7 +155,7 @@ namespace gf {
     vkSetDebugUtilsObjectNameEXT(info.device, &name_info);
   }
 
-  void Texture::update(const Image& image, Renderer* renderer)
+  void Texture::update(const Image& image, RenderManager* render_manager)
   {
     assert(image.size() == m_image_size);
     assert(m_format == Format::Color8S);
@@ -165,10 +165,10 @@ namespace gf {
     const auto* raw_data = image.raw_data();
 
     auto staging = create_staging_buffer(raw_size, raw_data);
-    compute_memory_operations(staging, renderer);
+    compute_memory_operations(staging, render_manager);
   }
 
-  void Texture::update(const Bitmap& bitmap, Renderer* renderer)
+  void Texture::update(const Bitmap& bitmap, RenderManager* render_manager)
   {
     assert(bitmap.size() == m_image_size);
     assert(m_format == Format::Gray8U);
@@ -178,7 +178,7 @@ namespace gf {
     const auto* raw_data = bitmap.raw_data();
 
     auto staging = create_staging_buffer(raw_size, raw_data);
-    compute_memory_operations(staging, renderer);
+    compute_memory_operations(staging, render_manager);
   }
 
   RenderTarget Texture::as_render_target() const
@@ -223,7 +223,7 @@ namespace gf {
     return { staging_buffer, staging_allocation };
   }
 
-  void Texture::create_image_view_and_sampler(Format format, Renderer* renderer)
+  void Texture::create_image_view_and_sampler(Format format, RenderManager* render_manager)
   {
     VmaAllocatorInfo info;
     vmaGetAllocatorInfo(m_allocator, &info);
@@ -234,7 +234,7 @@ namespace gf {
     view_info.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
     view_info.image = m_image;
     view_info.viewType = VK_IMAGE_VIEW_TYPE_2D;
-    view_info.format = format == Format::Renderer ? renderer->m_format : static_cast<VkFormat>(format);
+    view_info.format = format == Format::RenderManager ? render_manager->m_format : static_cast<VkFormat>(format);
     view_info.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
     view_info.subresourceRange.baseMipLevel = 0;
     view_info.subresourceRange.levelCount = 1;
@@ -268,15 +268,15 @@ namespace gf {
     }
   }
 
-  void Texture::compute_memory_operations(StagingBufferReference staging, Renderer* renderer)
+  void Texture::compute_memory_operations(StagingBufferReference staging, RenderManager* render_manager)
   {
-    auto command_buffer = renderer->current_memory_command_buffer();
+    auto command_buffer = render_manager->current_memory_command_buffer();
 
     command_buffer.texture_layout_transition({ m_image }, Layout::Undefined, Layout::Upload);
     command_buffer.copy_buffer_to_texture({ staging.m_buffer }, { m_image }, m_image_size);
     command_buffer.texture_layout_transition({ m_image }, Layout::Upload, Layout::Shader);
 
-    renderer->defer_release_staging_buffer(staging);
+    render_manager->defer_release_staging_buffer(staging);
   }
 
 }

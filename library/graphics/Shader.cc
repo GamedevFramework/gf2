@@ -14,7 +14,7 @@
 
 #include <gf2/core/Log.h>
 
-#include <gf2/graphics/Renderer.h>
+#include <gf2/graphics/RenderManager.h>
 
 namespace gf {
 
@@ -47,7 +47,7 @@ namespace gf {
 
   Shader::Shader(const std::filesystem::path& filename, ShaderContext context)
   : m_stage(context.stage)
-  , m_device(context.renderer->m_device)
+  , m_device(context.render_manager->m_device)
   {
     auto code = load_file(filename);
     load_code(code, m_device);
@@ -55,7 +55,7 @@ namespace gf {
 
   Shader::Shader(Span<const uint32_t> memory, ShaderContext context)
   : m_stage(context.stage)
-  , m_device(context.renderer->m_device)
+  , m_device(context.render_manager->m_device)
   {
     load_code(memory, m_device);
   }

@@ -55,7 +55,7 @@ namespace gf {
 
   }
 
-  ImguiManager::ImguiManager(Window* window, Renderer* renderer)
+  ImguiManager::ImguiManager(Window* window, RenderManager* render_manager)
   {
     ImGuiIO& io = ImGui::GetIO();
 
@@ -77,11 +77,11 @@ namespace gf {
     unsigned char* pixels = nullptr;
     io.Fonts->GetTexDataAsRGBA32(&pixels, &size.w, &size.h);
     const Image font_image(size, pixels, PixelFormat::Rgba32);
-    m_font_texture = Texture(font_image, renderer);
+    m_font_texture = Texture(font_image, render_manager);
     m_font_texture.set_debug_name("[gf2] Imgui Font Texture");
     io.Fonts->TexID = static_cast<void*>(&m_font_texture);
 
-    io.BackendRendererUserData = static_cast<void*>(renderer);
+    io.BackendRendererUserData = static_cast<void*>(render_manager);
   }
 
   bool ImguiManager::process_event(const Event& event)

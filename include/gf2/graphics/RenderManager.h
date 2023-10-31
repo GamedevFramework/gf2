@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
-#ifndef GF_RENDERER_H
-#define GF_RENDERER_H
+#ifndef GF_RENDER_MANAGER_H
+#define GF_RENDER_MANAGER_H
 
 #include <optional>
 #include <type_traits>
@@ -39,16 +39,17 @@ namespace gf {
 
   }
 
-  class GF_GRAPHICS_API BasicRenderer {
+  class GF_GRAPHICS_API RenderManager {
   public:
-    BasicRenderer(Window* window);
-    BasicRenderer(const BasicRenderer&) = delete;
-    BasicRenderer(BasicRenderer&& other) noexcept;
-    ~BasicRenderer();
+    RenderManager(Window* window);
+    RenderManager(const RenderManager&) = delete;
+    RenderManager(RenderManager&& other) noexcept;
+    ~RenderManager();
 
-    BasicRenderer& operator=(const BasicRenderer&) = delete;
-    BasicRenderer& operator=(BasicRenderer&& other) noexcept;
+    RenderManager& operator=(const RenderManager&) = delete;
+    RenderManager& operator=(RenderManager&& other) noexcept;
 
+    void update_surface_size(Vec2I size);
     Vec2I surface_size() const;
 
     std::optional<CommandBuffer> begin_command_buffer();
@@ -149,13 +150,6 @@ namespace gf {
     std::vector<VkDescriptorPool> m_descriptor_pools;
   };
 
-  class GF_GRAPHICS_API Renderer : public BasicRenderer {
-  public:
-    Renderer(Window* window);
-
-    void update_surface_size(Vec2I size);
-  };
-
 }
 
-#endif // GF_RENDERER_H
+#endif // GF_RENDER_MANAGER_H

@@ -19,7 +19,7 @@ int main()
   rectangle_data.outline_thickness = 2.0f;
   rectangle_data.outline_color = gf::darker(gf::Azure);
 
-  gf::ShapeEntity rectangle_entity(nullptr, rectangle_data, scene_manager.renderer());
+  gf::ShapeEntity rectangle_entity(nullptr, rectangle_data, scene_manager.render_manager());
   rectangle_entity.transform().location = gf::vec(1000.0f, 1000.0f);
   rectangle_entity.transform().origin = gf::vec(0.5f, 0.5f);
 

@@ -11,7 +11,7 @@
 
 #include <gf2/core/Log.h>
 
-#include <gf2/graphics/Renderer.h>
+#include <gf2/graphics/RenderManager.h>
 #include <gf2/graphics/Texture.h>
 
 namespace gf {
@@ -20,8 +20,8 @@ namespace gf {
    * DescriptorLayout
    */
 
-  DescriptorLayout::DescriptorLayout(Span<const DescriptorBinding> bindings, Renderer* renderer)
-  : m_device(renderer->m_device)
+  DescriptorLayout::DescriptorLayout(Span<const DescriptorBinding> bindings, RenderManager* render_manager)
+  : m_device(render_manager->m_device)
   {
     assert(!bindings.empty());
 

@@ -15,7 +15,7 @@
 
 #include <gf2/core/Log.h>
 
-#include <gf2/graphics/Renderer.h>
+#include <gf2/graphics/RenderManager.h>
 
 namespace gf {
   /*
@@ -57,7 +57,7 @@ namespace gf {
    * RenderPipelineLayoutBuilder
    */
 
-  RenderPipelineLayout RenderPipelineLayoutBuilder::build(Renderer* renderer)
+  RenderPipelineLayout RenderPipelineLayoutBuilder::build(RenderManager* render_manager)
   {
     // descriptor set layout
 
@@ -90,11 +90,11 @@ namespace gf {
 
     VkPipelineLayout pipeline_layout = VK_NULL_HANDLE;
 
-    if (vkCreatePipelineLayout(renderer->m_device, &pipeline_layout_create_info, nullptr, &pipeline_layout) != VK_SUCCESS) {
+    if (vkCreatePipelineLayout(render_manager->m_device, &pipeline_layout_create_info, nullptr, &pipeline_layout) != VK_SUCCESS) {
       Log::fatal("Failed to create pipeline layout.");
     }
 
-    return { renderer->m_device, pipeline_layout };
+    return { render_manager->m_device, pipeline_layout };
   }
 
   /*
@@ -137,7 +137,7 @@ namespace gf {
    * RenderPipelineBuilder
    */
 
-  RenderPipeline RenderPipelineBuilder::build(Renderer* renderer)
+  RenderPipeline RenderPipelineBuilder::build(RenderManager* render_manager)
   {
     // shaders
 
@@ -261,7 +261,7 @@ namespace gf {
 
     // pipeline rendering
 
-    const VkFormat color_attachement_format = renderer->m_format;
+    const VkFormat color_attachement_format = render_manager->m_format;
 
     VkPipelineRenderingCreateInfo pipeline_rendering_create_info = {};
     pipeline_rendering_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_RENDERING_CREATE_INFO;
@@ -290,11 +290,11 @@ namespace gf {
 
     VkPipeline pipeline = VK_NULL_HANDLE;
 
-    if (vkCreateGraphicsPipelines(renderer->m_device, VK_NULL_HANDLE, 1, &pipeline_create_info, nullptr, &pipeline) != VK_SUCCESS) {
+    if (vkCreateGraphicsPipelines(render_manager->m_device, VK_NULL_HANDLE, 1, &pipeline_create_info, nullptr, &pipeline) != VK_SUCCESS) {
       Log::fatal("Failed to create pipeline.");
     }
 
-    return { renderer->m_device, pipeline };
+    return { render_manager->m_device, pipeline };
   }
 
 }

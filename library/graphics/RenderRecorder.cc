@@ -9,19 +9,19 @@
 
 namespace gf {
 
-  RenderRecorder::RenderRecorder(Renderer* renderer)
-  : m_renderer(renderer)
+  RenderRecorder::RenderRecorder(RenderManager* render_manager)
+  : m_render_manager(render_manager)
   {
   }
 
   void RenderRecorder::update_view(const Mat4F& view_matrix, const RectF& viewport)
   {
     if (m_next_view_matrix_index == m_view_matrix_buffers.size()) {
-      Buffer buffer(BufferType::Device, BufferUsage::Uniform, &view_matrix, 1, m_renderer);
+      Buffer buffer(BufferType::Device, BufferUsage::Uniform, &view_matrix, 1, m_render_manager);
       buffer.set_debug_name("[gf2] View Matrix Buffer #" + std::to_string(m_next_view_matrix_index));
       m_view_matrix_buffers.push_back(std::move(buffer));
     } else {
-      m_view_matrix_buffers[m_next_view_matrix_index].update(&view_matrix, 1, m_renderer);
+      m_view_matrix_buffers[m_next_view_matrix_index].update(&view_matrix, 1, m_render_manager);
     }
 
     const Record record = { RecordType::View, m_views.size() };

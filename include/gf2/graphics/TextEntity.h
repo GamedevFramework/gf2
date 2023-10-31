@@ -10,11 +10,11 @@
 #include "Text.h"
 
 namespace gf {
-  class Renderer;
+  class RenderManager;
 
   class GF_GRAPHICS_API TextEntity : public Entity {
   public:
-    TextEntity(FontAtlas* atlas, const TextData& data, Renderer* renderer);
+    TextEntity(FontAtlas* atlas, const TextData& data, RenderManager* render_manager);
 
     Transform& transform()
     {

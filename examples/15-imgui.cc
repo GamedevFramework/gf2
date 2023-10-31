@@ -17,7 +17,7 @@ namespace {
   class ImguiScene : public gf::StandardScene {
   public:
     ImguiScene(gf::BasicSceneManager* scene_manager)
-    : m_manager(scene_manager->window(), scene_manager->renderer())
+    : m_manager(scene_manager->window(), scene_manager->render_manager())
     {
       add_hud_entity(&m_entity);
     }

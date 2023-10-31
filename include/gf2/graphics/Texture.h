@@ -21,7 +21,7 @@
 #include "TextureReference.h"
 
 namespace gf {
-  class Renderer;
+  class RenderManager;
 
   // NOLINTNEXTLINE(performance-enum-size)
   enum class TextureUsage : std::underlying_type_t<VkImageUsageFlagBits> {
@@ -38,14 +38,14 @@ namespace gf {
 
   class GF_GRAPHICS_API Texture {
   public:
-    using Context = Renderer*;
+    using Context = RenderManager*;
 
     Texture() = default;
-    Texture(const std::filesystem::path& filename, Renderer* renderer);
-    Texture(const Image& image, Renderer* renderer);
-    Texture(const Bitmap& bitmap, Renderer* renderer);
-    Texture(Vec2I size, Renderer* renderer);
-    Texture(Vec2I size, Flags<TextureUsage> usage, Format format, Renderer* renderer);
+    Texture(const std::filesystem::path& filename, RenderManager* render_manager);
+    Texture(const Image& image, RenderManager* render_manager);
+    Texture(const Bitmap& bitmap, RenderManager* render_manager);
+    Texture(Vec2I size, RenderManager* render_manager);
+    Texture(Vec2I size, Flags<TextureUsage> usage, Format format, RenderManager* render_manager);
 
     Texture(const Texture&) = delete;
     Texture(Texture&& other) noexcept;
@@ -56,8 +56,8 @@ namespace gf {
 
     void set_debug_name(const std::string& name) const;
 
-    void update(const Image& image, Renderer* renderer);
-    void update(const Bitmap& bitmap, Renderer* renderer);
+    void update(const Image& image, RenderManager* render_manager);
+    void update(const Bitmap& bitmap, RenderManager* render_manager);
 
     Vec2I size() const
     {
@@ -72,8 +72,8 @@ namespace gf {
     friend class Descriptor;
 
     StagingBufferReference create_staging_buffer(std::size_t raw_size, const void* raw_data);
-    void create_image_view_and_sampler(Format format, Renderer* renderer);
-    void compute_memory_operations(StagingBufferReference staging, Renderer* renderer);
+    void create_image_view_and_sampler(Format format, RenderManager* render_manager);
+    void compute_memory_operations(StagingBufferReference staging, RenderManager* render_manager);
 
     Vec2I m_image_size = { 0, 0 };
     VmaAllocator m_allocator = nullptr; // non-owning

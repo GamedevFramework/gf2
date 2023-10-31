@@ -7,7 +7,7 @@
 
 #include <gf2/graphics/Cursor.h>
 #include <gf2/graphics/Event.h>
-#include <gf2/graphics/Renderer.h>
+#include <gf2/graphics/RenderManager.h>
 #include <gf2/graphics/Texture.h>
 #include <gf2/graphics/Window.h>
 
@@ -17,7 +17,7 @@ namespace gf {
 
   class GF_IMGUI_API ImguiManager {
   public:
-    ImguiManager(Window* window, Renderer* renderer);
+    ImguiManager(Window* window, RenderManager* render_manager);
 
     bool process_event(const Event& event);
     void update(Time time);

@@ -79,7 +79,7 @@ namespace gf {
 
   private:
     friend class MemoryAllocator;
-    friend class BasicRenderer;
+    friend class RenderManager;
     friend class CommandBuffer;
 
     MemoryCommandBuffer(VkCommandBuffer buffer)
@@ -100,7 +100,7 @@ namespace gf {
     void end_memory(MemoryCommandBuffer buffer) const;
 
   private:
-    friend class BasicRenderer;
+    friend class RenderManager;
 
     CommandBuffer(VkCommandBuffer buffer)
     : m_command_buffer(buffer)

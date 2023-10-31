@@ -18,7 +18,7 @@ namespace gf {
     Color32F = VK_FORMAT_R32G32B32A32_SFLOAT,
     Gray8U = VK_FORMAT_R8_UNORM,
     Vec2F = VK_FORMAT_R32G32_SFLOAT,
-    Renderer = std::numeric_limits<std::underlying_type_t<VkFormat>>::max(),
+    RenderManager = std::numeric_limits<std::underlying_type_t<VkFormat>>::max(),
   };
 
 }

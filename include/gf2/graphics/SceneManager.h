@@ -13,7 +13,7 @@
 #include "GraphicsApi.h"
 #include "GraphicsInitializer.h"
 #include "RenderObject.h"
-#include "Renderer.h"
+#include "RenderManager.h"
 #include "Texture.h"
 #include "Window.h"
 
@@ -30,9 +30,9 @@ namespace gf {
       return &m_window;
     }
 
-    Renderer* renderer()
+    RenderManager* render_manager()
     {
-      return &m_renderer;
+      return &m_render_manager;
     }
 
   protected:
@@ -45,7 +45,7 @@ namespace gf {
 
     GraphicsInitializer m_initializer;
     Window m_window;
-    Renderer m_renderer;
+    RenderManager m_render_manager;
     Texture m_white;
 
     DescriptorLayout m_camera_descriptor_layout;

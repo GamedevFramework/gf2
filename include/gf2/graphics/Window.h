@@ -77,7 +77,7 @@ namespace gf {
     bool decorated();
 
   private:
-    friend class BasicRenderer;
+    friend class RenderManager;
 
     SDL_Window* m_window = nullptr;
     bool m_should_close = false;

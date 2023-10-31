@@ -15,11 +15,11 @@
 #include "RenderObject.h"
 
 namespace gf {
-  class Renderer;
+  class RenderManager;
 
   class GF_GRAPHICS_API RenderRecorder {
   public:
-    RenderRecorder(Renderer* renderer);
+    RenderRecorder(RenderManager* render_manager);
 
 #ifdef _MSC_VER
     // why?
@@ -61,7 +61,7 @@ namespace gf {
       RectI scissor;
     };
 
-    Renderer* m_renderer;
+    RenderManager* m_render_manager;
 
     std::vector<Record> m_records;
 

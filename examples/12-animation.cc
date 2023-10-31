@@ -25,14 +25,14 @@ int main()
 
   gf::SingleSceneManager scene_manager("12-animation | gf2", gf::vec(1600, 900));
 
-  const gf::Texture texture0(texture_file0, scene_manager.renderer());
-  const gf::Texture texture1(texture_file1, scene_manager.renderer());
-  const gf::Texture texture2(texture_file2, scene_manager.renderer());
-  const gf::Texture texture3(texture_file3, scene_manager.renderer());
-  const gf::Texture texture4(texture_file4, scene_manager.renderer());
-  const gf::Texture texture5(texture_file5, scene_manager.renderer());
-  const gf::Texture texture6(texture_file6, scene_manager.renderer());
-  const gf::Texture texture7(texture_file7, scene_manager.renderer());
+  const gf::Texture texture0(texture_file0, scene_manager.render_manager());
+  const gf::Texture texture1(texture_file1, scene_manager.render_manager());
+  const gf::Texture texture2(texture_file2, scene_manager.render_manager());
+  const gf::Texture texture3(texture_file3, scene_manager.render_manager());
+  const gf::Texture texture4(texture_file4, scene_manager.render_manager());
+  const gf::Texture texture5(texture_file5, scene_manager.render_manager());
+  const gf::Texture texture6(texture_file6, scene_manager.render_manager());
+  const gf::Texture texture7(texture_file7, scene_manager.render_manager());
 
   const std::vector<const gf::Texture*> textures = { &texture0, &texture1, &texture2, &texture3, &texture4, &texture5, &texture6, &texture7 };
 
@@ -45,7 +45,7 @@ int main()
 
   data.add_tileset(7, { 6, 4 }, gf::seconds(1.0f / 25.0f), 4);
 
-  gf::AnimationEntity animation_entity(textures, data, scene_manager.renderer());
+  gf::AnimationEntity animation_entity(textures, data, scene_manager.render_manager());
   animation_entity.transform().location = gf::vec(1000.0f, 1000.0f);
   animation_entity.transform().origin = gf::vec(0.5f, 0.5f);
   animation_entity.transform().scale = gf::vec(0.1f, 0.1f);

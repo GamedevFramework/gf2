@@ -17,18 +17,18 @@
 #include "Texture.h"
 
 namespace gf {
-  class Renderer;
+  class RenderManager;
 
   class GF_GRAPHICS_API FontAtlas {
   public:
-    FontAtlas(Font* font, Vec2I size, Renderer* renderer);
+    FontAtlas(Font* font, Vec2I size, RenderManager* render_manager);
 
     RectF texture_region(char32_t codepoint, uint32_t character_size, float outline_thickness = 0.0f);
     void update_texture_regions_for(std::string_view string, uint32_t character_size, float outline_thickness = 0.0f);
 
     const FontGlyph& glyph(char32_t codepoint, uint32_t character_size, float outline_thickness = 0.0f);
 
-    void update_texture(Renderer* renderer);
+    void update_texture(RenderManager* render_manager);
 
     float kerning(char32_t left, char32_t right, uint32_t character_size)
     {

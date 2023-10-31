@@ -9,8 +9,8 @@
 
 namespace gf {
 
-  TextEntity::TextEntity(FontAtlas* atlas, const TextData& data, Renderer* renderer)
-  : m_text(atlas, data, renderer)
+  TextEntity::TextEntity(FontAtlas* atlas, const TextData& data, RenderManager* render_manager)
+  : m_text(atlas, data, render_manager)
   {
   }
 

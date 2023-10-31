@@ -163,12 +163,13 @@ add_library(gf2graphics0
   graphics/EntityContainer.cc
   graphics/Event.cc
   graphics/FontAtlas.cc
+  graphics/FontPack.cc
   graphics/Format.cc
   graphics/Gamepad.cc
   graphics/GraphicsInitializer.cc
   graphics/Keyboard.cc
   graphics/Mouse.cc
-  graphics/Renderer.cc
+  graphics/RenderManager.cc
   graphics/RenderPipeline.cc
   graphics/RenderRecorder.cc
   graphics/RenderTarget.cc

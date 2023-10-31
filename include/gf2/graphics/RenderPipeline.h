@@ -14,7 +14,7 @@
 #include "VertexInput.h"
 
 namespace gf {
-  class Renderer;
+  class RenderManager;
 
   class GF_GRAPHICS_API RenderPipelineLayout {
   public:
@@ -59,7 +59,7 @@ namespace gf {
       return *this;
     }
 
-    RenderPipelineLayout build(Renderer* renderer);
+    RenderPipelineLayout build(RenderManager* render_manager);
 
   private:
     std::vector<DescriptorLayout*> m_descriptor_layouts;
@@ -84,7 +84,7 @@ namespace gf {
   private:
     friend class RenderPipelineBuilder;
     friend class RenderCommandBuffer;
-    friend class BasicRenderer;
+    friend class RenderManager;
 
     RenderPipeline(VkDevice device, VkPipeline pipeline)
     : m_device(device)
@@ -130,7 +130,7 @@ namespace gf {
       return *this;
     }
 
-    RenderPipeline build(Renderer* renderer);
+    RenderPipeline build(RenderManager* render_manager);
 
   private:
     friend class RenderPipeline;

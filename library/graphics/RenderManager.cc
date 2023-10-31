@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/graphics/Renderer.h>
+#include <gf2/graphics/RenderManager.h>
 // clang-format on
 
 #include <utility>
@@ -55,7 +55,7 @@ namespace gf {
 
   }
 
-  BasicRenderer::BasicRenderer(Window* window)
+  RenderManager::RenderManager(Window* window)
   : m_window(window->m_window)
   {
     Vec2I size = {};
@@ -69,7 +69,7 @@ namespace gf {
     construct_descriptors();
   }
 
-  BasicRenderer::BasicRenderer(BasicRenderer&& other) noexcept
+  RenderManager::RenderManager(RenderManager&& other) noexcept
   : m_window(std::exchange(other.m_window, nullptr))
   // device
   , m_instance(std::exchange(other.m_instance, VK_NULL_HANDLE))
@@ -113,7 +113,7 @@ namespace gf {
     other.m_descriptor_pools.clear();
   }
 
-  BasicRenderer::~BasicRenderer()
+  RenderManager::~RenderManager()
   {
     vkDeviceWaitIdle(m_device);
 
@@ -127,7 +127,7 @@ namespace gf {
     destroy_device();
   }
 
-  BasicRenderer& BasicRenderer::operator=(BasicRenderer&& other) noexcept
+  RenderManager& RenderManager::operator=(RenderManager&& other) noexcept
   {
     std::swap(m_window, other.m_window);
     // device
@@ -166,7 +166,12 @@ namespace gf {
     return *this;
   }
 
-  Vec2I BasicRenderer::surface_size() const
+  void RenderManager::update_surface_size(Vec2I size)
+  {
+    recreate_swapchain(size);
+  }
+
+  Vec2I RenderManager::surface_size() const
   {
     return { static_cast<int>(m_extent.width), static_cast<int>(m_extent.height) };
   }
@@ -177,7 +182,7 @@ namespace gf {
 
   }
 
-  std::optional<CommandBuffer> BasicRenderer::begin_command_buffer()
+  std::optional<CommandBuffer> RenderManager::begin_command_buffer()
   {
     const RenderSynchronizationObjects& sync = m_render_synchronization[m_current_frame];
     assert(m_current_frame == m_current_memops);
@@ -257,7 +262,7 @@ namespace gf {
     return CommandBuffer(command_buffer);
   }
 
-  void BasicRenderer::end_command_buffer([[maybe_unused]] CommandBuffer buffer)
+  void RenderManager::end_command_buffer([[maybe_unused]] CommandBuffer buffer)
   {
     const RenderSynchronizationObjects& sync = m_render_synchronization[m_current_frame];
 
@@ -329,17 +334,17 @@ namespace gf {
     m_current_frame = (m_current_frame + 1) % FramesInFlight;
   }
 
-  MemoryCommandBuffer BasicRenderer::current_memory_command_buffer()
+  MemoryCommandBuffer RenderManager::current_memory_command_buffer()
   {
     return { m_memops_command_buffers[m_current_memops] };
   }
 
-  void BasicRenderer::defer_release_staging_buffer(StagingBufferReference buffer)
+  void RenderManager::defer_release_staging_buffer(StagingBufferReference buffer)
   {
     m_staging_buffers[m_current_memops].push_back(buffer);
   }
 
-  Descriptor BasicRenderer::allocate_descriptor_for_layout(const DescriptorLayout* layout) const
+  Descriptor RenderManager::allocate_descriptor_for_layout(const DescriptorLayout* layout) const
   {
     VkDescriptorPool descriptor_pool = m_descriptor_pools[m_current_frame];
 
@@ -358,30 +363,30 @@ namespace gf {
     return { m_device, descriptor_set };
   }
 
-  RenderTarget BasicRenderer::current_render_target() const
+  RenderTarget RenderManager::current_render_target() const
   {
     return { m_swapchain_image_views[m_current_image], m_extent };
   }
 
-  void BasicRenderer::recreate_swapchain()
+  void RenderManager::recreate_swapchain()
   {
     Vec2I size = {};
     SDL_Vulkan_GetDrawableSize(m_window, &size.w, &size.h);
     recreate_swapchain(size);
   }
 
-  void BasicRenderer::recreate_swapchain(Vec2I size)
+  void RenderManager::recreate_swapchain(Vec2I size)
   {
     vkDeviceWaitIdle(m_device);
     construct_swapchain(size);
   }
 
-  void BasicRenderer::wait_idle() const
+  void RenderManager::wait_idle() const
   {
     vkDeviceWaitIdle(m_device);
   }
 
-  void BasicRenderer::construct_device()
+  void RenderManager::construct_device()
   {
     // instance
 
@@ -508,7 +513,7 @@ namespace gf {
     Log::debug("Queue indices: graphics {}, present {}", m_graphics_queue_index, m_present_queue_index);
   }
 
-  void BasicRenderer::destroy_device()
+  void RenderManager::destroy_device()
   {
     if (m_device != VK_NULL_HANDLE) {
       vkDestroyDevice(m_device, nullptr);
@@ -527,7 +532,7 @@ namespace gf {
     }
   }
 
-  void BasicRenderer::construct_allocator()
+  void RenderManager::construct_allocator()
   {
     VmaVulkanFunctions functions = {};
     functions.vkGetInstanceProcAddr = vkGetInstanceProcAddr;
@@ -545,14 +550,14 @@ namespace gf {
     }
   }
 
-  void BasicRenderer::destroy_allocator()
+  void RenderManager::destroy_allocator()
   {
     if (m_allocator != nullptr) {
       vmaDestroyAllocator(m_allocator);
     }
   }
 
-  void BasicRenderer::construct_swapchain(Vec2I size)
+  void RenderManager::construct_swapchain(Vec2I size)
   {
     if (size.w == 0 || size.h == 0) {
       // handle minimization
@@ -618,7 +623,7 @@ namespace gf {
     // Log::info("New swapchain extent: ({}, {}).", m_extent.width, m_extent.height);
   }
 
-  void BasicRenderer::destroy_swapchain()
+  void RenderManager::destroy_swapchain()
   {
     for (VkImageView image_view : m_swapchain_image_views) {
       vkDestroyImageView(m_device, image_view, nullptr);
@@ -629,7 +634,7 @@ namespace gf {
     }
   }
 
-  void BasicRenderer::construct_commands()
+  void RenderManager::construct_commands()
   {
     // render command buffers
 
@@ -687,7 +692,7 @@ namespace gf {
     m_staging_buffers.resize(FramesInFlight);
   }
 
-  void BasicRenderer::destroy_commands()
+  void RenderManager::destroy_commands()
   {
     if (m_memops_command_pool != VK_NULL_HANDLE) {
       vkDestroyCommandPool(m_device, m_memops_command_pool, nullptr);
@@ -698,7 +703,7 @@ namespace gf {
     }
   }
 
-  void BasicRenderer::construct_synchronization()
+  void RenderManager::construct_synchronization()
   {
     m_render_synchronization.resize(FramesInFlight);
 
@@ -732,7 +737,7 @@ namespace gf {
     }
   }
 
-  void BasicRenderer::destroy_synchronization()
+  void RenderManager::destroy_synchronization()
   {
     for (const RenderSynchronizationObjects& objects : m_render_synchronization) {
       vkDestroyFence(m_device, objects.memops_fence, nullptr);
@@ -742,7 +747,7 @@ namespace gf {
     }
   }
 
-  void BasicRenderer::construct_descriptors()
+  void RenderManager::construct_descriptors()
   {
     m_descriptor_pools.resize(FramesInFlight);
 
@@ -764,30 +769,20 @@ namespace gf {
     }
   }
 
-  void BasicRenderer::destroy_descriptors()
+  void RenderManager::destroy_descriptors()
   {
     for (VkDescriptorPool descriptor_pool : m_descriptor_pools) {
       vkDestroyDescriptorPool(m_device, descriptor_pool, nullptr);
     }
   }
 
-  void BasicRenderer::finish_staging_buffers()
+  void RenderManager::finish_staging_buffers()
   {
     for (auto& staging_buffers : m_staging_buffers) {
       for (auto staging_buffer : staging_buffers) {
         vmaDestroyBuffer(m_allocator, staging_buffer.m_buffer, staging_buffer.m_allocation);
       }
     }
-  }
-
-  Renderer::Renderer(Window* window)
-  : BasicRenderer(window)
-  {
-  }
-
-  void Renderer::update_surface_size(Vec2I size)
-  {
-    recreate_swapchain(size);
   }
 
 }

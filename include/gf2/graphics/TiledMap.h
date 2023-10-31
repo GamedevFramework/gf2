@@ -15,7 +15,7 @@
 #include "GraphicsApi.h"
 
 namespace gf {
-  class Renderer;
+  class RenderManager;
   class Texture;
   struct TiledMapData;
   struct TileData;
@@ -32,7 +32,7 @@ namespace gf {
 
   class GF_GRAPHICS_API TiledMap {
   public:
-    TiledMap(std::vector<const Texture*> textures, const TiledMapData& data, Renderer* renderer);
+    TiledMap(std::vector<const Texture*> textures, const TiledMapData& data, RenderManager* render_manager);
 #ifdef _MSC_VER
     // why?
     TiledMap(const TiledMap&) = delete;
@@ -47,8 +47,8 @@ namespace gf {
 
   private:
     void compute_grid(const TiledMapData& data);
-    void compute_tile_layers(const TiledMapData& data, Renderer* renderer);
-    void compute_object_layers(const TiledMapData& data, Renderer* renderer);
+    void compute_tile_layers(const TiledMapData& data, RenderManager* render_manager);
+    void compute_object_layers(const TiledMapData& data, RenderManager* render_manager);
 
     struct BufferRange {
       std::size_t texture_index = 0;

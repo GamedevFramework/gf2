@@ -4,7 +4,7 @@
 
 #include <gf2/core/FontManager.h>
 
-#include <gf2/graphics/FontAtlas.h>
+#include <gf2/graphics/FontPack.h>
 #include <gf2/graphics/GraphicsInitializer.h>
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/SceneManager.h>
@@ -20,8 +20,7 @@ int main()
   gf::SingleSceneManager scene_manager("11-text | gf2", gf::vec(1600, 900));
 
   gf::FontManager font_manager;
-  gf::Font font(font_file, &font_manager);
-  gf::FontAtlas font_atlas(&font, gf::vec(2048, 2048), scene_manager.renderer());
+  gf::FontPack font_pack(font_file, { &font_manager, scene_manager.render_manager() });
 
   gf::TextData text_data;
   text_data.content = "Gamedev Framework 2";
@@ -30,7 +29,7 @@ int main()
   // text_data.outline_color = gf::Gray;
   // text_data.outline_thickness = 2.0f;
 
-  gf::TextEntity text_entity(&font_atlas, text_data, scene_manager.renderer());
+  gf::TextEntity text_entity(font_pack.atlas(), text_data, scene_manager.render_manager());
   text_entity.transform().location = gf::vec(1000.0f, 1000.0f);
   text_entity.transform().origin = gf::vec(0.5f, 0.5f);
 

@@ -30,7 +30,7 @@ namespace gf {
   public:
 
   private:
-    friend class BasicRenderer;
+    friend class RenderManager;
     friend class Buffer;
     friend class Texture;
 

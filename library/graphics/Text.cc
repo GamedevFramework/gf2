@@ -257,7 +257,7 @@ namespace gf {
 
   }
 
-  Text::Text(FontAtlas* atlas, const TextData& data, Renderer* renderer)
+  Text::Text(FontAtlas* atlas, const TextData& data, RenderManager* render_manager)
   : m_atlas(atlas)
   {
     assert(atlas);
@@ -267,18 +267,18 @@ namespace gf {
       atlas->update_texture_regions_for(data.content, data.character_size, data.outline_thickness);
     }
 
-    atlas->update_texture(renderer);
+    atlas->update_texture(render_manager);
 
     const float space_width = compute_space_width(atlas, data);
     auto paragraphs = compute_paragraphs(atlas, data, space_width);
     auto geometry = compute_geometry(paragraphs, atlas, data);
 
-    m_vertices = Buffer(BufferType::Device, BufferUsage::Vertex, geometry.vertices.data(), geometry.vertices.size(), renderer);
-    m_indices = Buffer(BufferType::Device, BufferUsage::Index, geometry.indices.data(), geometry.indices.size(), renderer);
+    m_vertices = Buffer(BufferType::Device, BufferUsage::Vertex, geometry.vertices.data(), geometry.vertices.size(), render_manager);
+    m_indices = Buffer(BufferType::Device, BufferUsage::Index, geometry.indices.data(), geometry.indices.size(), render_manager);
 
     if (data.outline_thickness > 0.0f) {
-      m_outline_vertices = Buffer(BufferType::Device, BufferUsage::Vertex, geometry.outline_vertices.data(), geometry.outline_vertices.size(), renderer);
-      m_outline_indices = Buffer(BufferType::Device, BufferUsage::Index, geometry.outline_indices.data(), geometry.outline_indices.size(), renderer);
+      m_outline_vertices = Buffer(BufferType::Device, BufferUsage::Vertex, geometry.outline_vertices.data(), geometry.outline_vertices.size(), render_manager);
+      m_outline_indices = Buffer(BufferType::Device, BufferUsage::Index, geometry.outline_indices.data(), geometry.outline_indices.size(), render_manager);
     }
 
     m_bounds = geometry.bounds;

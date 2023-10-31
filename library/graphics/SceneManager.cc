@@ -66,8 +66,8 @@ namespace gf {
 
   BasicSceneManager::BasicSceneManager(const std::string& title, Vec2I size, Flags<WindowHints> hints)
   : m_window(title, size, hints)
-  , m_renderer(&m_window)
-  , m_white(Image({ 1, 1 }, White), &m_renderer)
+  , m_render_manager(&m_window)
+  , m_white(Image({ 1, 1 }, White), &m_render_manager)
   {
     m_white.set_debug_name("[gf2] White Default 1x1 Texture");
     build_default_pipelines();
@@ -107,7 +107,7 @@ namespace gf {
         scissor.extent = view.viewport.extent;
         command_buffer.set_scissor(scissor);
 
-        auto camera_descriptor = m_renderer.allocate_descriptor_for_layout(&m_camera_descriptor_layout);
+        auto camera_descriptor = m_render_manager.allocate_descriptor_for_layout(&m_camera_descriptor_layout);
         camera_descriptor.write(0, &recorder.m_view_matrix_buffers[view.view_matrix_buffer_index]);
         command_buffer.bind_descriptor(&m_default_pipeline_layout, 0, camera_descriptor);
 
@@ -137,7 +137,7 @@ namespace gf {
     }
 
     if (object.geometry.texture != m_last_object.geometry.texture) {
-      auto sampler_descriptor = m_renderer.allocate_descriptor_for_layout(&m_sampler_descriptor_layout);
+      auto sampler_descriptor = m_render_manager.allocate_descriptor_for_layout(&m_sampler_descriptor_layout);
       sampler_descriptor.write(0, object.geometry.texture);
       command_buffer.bind_descriptor(&m_default_pipeline_layout, 1, sampler_descriptor);
     }
@@ -171,7 +171,7 @@ namespace gf {
       { 0, DescriptorType::Buffer, ShaderStage::Vertex }
     };
 
-    m_camera_descriptor_layout = DescriptorLayout(camera_binding, renderer());
+    m_camera_descriptor_layout = DescriptorLayout(camera_binding, render_manager());
 
     // sampler descriptor
 
@@ -179,7 +179,7 @@ namespace gf {
       { 0, DescriptorType::Sampler, ShaderStage::Fragment }
     };
 
-    m_sampler_descriptor_layout = DescriptorLayout(sampler_binding, renderer());
+    m_sampler_descriptor_layout = DescriptorLayout(sampler_binding, render_manager());
 
     // default pipeline layout
 
@@ -189,20 +189,20 @@ namespace gf {
         .add_descriptor_layout(&m_camera_descriptor_layout)
         .add_descriptor_layout(&m_sampler_descriptor_layout);
 
-    m_default_pipeline_layout = default_pipeline_layout_builder.build(renderer());
+    m_default_pipeline_layout = default_pipeline_layout_builder.build(render_manager());
     m_default_pipeline_layout.set_debug_name("[gf2] Default Pipeline Layout");
 
     // fullscreen pipeline layout
 
     RenderPipelineLayoutBuilder fullscreen_pipeline_layout_builder;
     fullscreen_pipeline_layout_builder.add_descriptor_layout(&m_sampler_descriptor_layout);
-    m_fullscreen_pipeline_layout = fullscreen_pipeline_layout_builder.build(renderer());
+    m_fullscreen_pipeline_layout = fullscreen_pipeline_layout_builder.build(render_manager());
     m_fullscreen_pipeline_layout.set_debug_name("[gf2] Fullscreen Pipeline Layout");
 
     // default pipeline
 
-    Shader default_vertex_shader(gf::span(default_vert_shader_code), { ShaderStage::Vertex, renderer() });
-    Shader default_fragment_shader(gf::span(default_frag_shader_code), { ShaderStage::Fragment, renderer() });
+    Shader default_vertex_shader(gf::span(default_vert_shader_code), { ShaderStage::Vertex, render_manager() });
+    Shader default_fragment_shader(gf::span(default_frag_shader_code), { ShaderStage::Fragment, render_manager() });
 
     RenderPipelineBuilder default_pipeline_builder;
 
@@ -211,12 +211,12 @@ namespace gf {
         .add_shader(&default_fragment_shader)
         .set_pipeline_layout(&m_default_pipeline_layout);
 
-    m_default_pipeline = default_pipeline_builder.build(renderer());
+    m_default_pipeline = default_pipeline_builder.build(render_manager());
     m_default_pipeline.set_debug_name("[gf2] Default Pipeline");
 
     // text pipeline
 
-    Shader text_fragment_shader(gf::span(text_frag_shader_code), { ShaderStage::Fragment, renderer() });
+    Shader text_fragment_shader(gf::span(text_frag_shader_code), { ShaderStage::Fragment, render_manager() });
 
     RenderPipelineBuilder text_pipeline_builder;
 
@@ -225,13 +225,13 @@ namespace gf {
         .add_shader(&text_fragment_shader)
         .set_pipeline_layout(&m_default_pipeline_layout);
 
-    m_text_pipeline = text_pipeline_builder.build(renderer());
+    m_text_pipeline = text_pipeline_builder.build(render_manager());
     m_text_pipeline.set_debug_name("[gf2] Text Pipeline");
 
     // fullscreen pipeline
 
-    Shader fullscreen_vertex_shader(gf::span(fullscreen_vert_shader_code), { ShaderStage::Vertex, renderer() });
-    Shader fullscreen_fragment_shader(gf::span(fullscreen_frag_shader_code), { ShaderStage::Fragment, renderer() });
+    Shader fullscreen_vertex_shader(gf::span(fullscreen_vert_shader_code), { ShaderStage::Vertex, render_manager() });
+    Shader fullscreen_fragment_shader(gf::span(fullscreen_frag_shader_code), { ShaderStage::Fragment, render_manager() });
 
     RenderPipelineBuilder fullscreen_pipeline_builder;
 
@@ -239,7 +239,7 @@ namespace gf {
         .add_shader(&fullscreen_fragment_shader)
         .set_pipeline_layout(&m_fullscreen_pipeline_layout);
 
-    m_fullscreen_pipeline = fullscreen_pipeline_builder.build(renderer());
+    m_fullscreen_pipeline = fullscreen_pipeline_builder.build(render_manager());
     m_fullscreen_pipeline.set_debug_name("[gf2] Fullscreen Pipeline");
 
     // imgui pipeline
@@ -251,7 +251,7 @@ namespace gf {
         .add_shader(&default_fragment_shader)
         .set_pipeline_layout(&m_default_pipeline_layout);
 
-    m_imgui_pipeline = imgui_pipeline_builder.build(renderer());
+    m_imgui_pipeline = imgui_pipeline_builder.build(render_manager());
     m_imgui_pipeline.set_debug_name("[gf2] Imgui Pipeline");
   }
 
@@ -271,7 +271,7 @@ namespace gf {
     }
 
     Clock clock;
-    RenderRecorder recorder(renderer());
+    RenderRecorder recorder(render_manager());
 
     m_scene->update_framebuffer_size(window()->surface_size());
 
@@ -287,7 +287,7 @@ namespace gf {
           case gf::EventType::WindowResized:
             {
               auto surface_size = window()->surface_size();
-              renderer()->update_surface_size(surface_size);
+              render_manager()->update_surface_size(surface_size);
               m_scene->update_framebuffer_size(surface_size);
             }
             break;
@@ -307,23 +307,23 @@ namespace gf {
 
       // render
 
-      if (auto maybe_command_buffer = renderer()->begin_command_buffer(); maybe_command_buffer) {
+      if (auto maybe_command_buffer = render_manager()->begin_command_buffer(); maybe_command_buffer) {
         recorder.clear();
         m_scene->render(recorder);
         recorder.sort();
 
         auto command_buffer = *maybe_command_buffer;
-        auto target = renderer()->current_render_target();
+        auto target = render_manager()->current_render_target();
         auto render_command_buffer = command_buffer.begin_rendering(target, m_scene->clear_color());
 
         render_records(render_command_buffer, recorder);
 
         command_buffer.end_rendering(render_command_buffer);
-        renderer()->end_command_buffer(command_buffer);
+        render_manager()->end_command_buffer(command_buffer);
       }
     }
 
-    renderer()->wait_idle();
+    render_manager()->wait_idle();
     return EXIT_SUCCESS;
   }
 

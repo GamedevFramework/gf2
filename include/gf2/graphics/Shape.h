@@ -12,7 +12,7 @@
 #include "RenderObject.h"
 
 namespace gf {
-  class Renderer;
+  class RenderManager;
   class Texture;
 
   struct ShapeGeometry {
@@ -22,7 +22,7 @@ namespace gf {
 
   class GF_GRAPHICS_API Shape {
   public:
-    Shape(const Texture* texture, const ShapeData& data, Renderer* renderer);
+    Shape(const Texture* texture, const ShapeData& data, RenderManager* render_manager);
 
     ShapeGeometry geometry() const;
 

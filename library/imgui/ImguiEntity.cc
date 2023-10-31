@@ -20,7 +20,7 @@ namespace gf {
   void ImguiEntity::set_draw_data(const ImDrawData* data)
   {
     const ImGuiIO& io = ImGui::GetIO();
-    auto* renderer = static_cast<Renderer*>(io.BackendRendererUserData);
+    auto* render_manager = static_cast<RenderManager*>(io.BackendRendererUserData);
 
     // initialize
 
@@ -60,19 +60,19 @@ namespace gf {
     const std::size_t vertices_size = data->TotalVtxCount * sizeof(ImDrawVert);
 
     if (vertices_size > current_vertices.size()) {
-      current_vertices = Buffer(BufferType::Host, BufferUsage::Vertex, vertices.data(), vertices.size(), renderer);
+      current_vertices = Buffer(BufferType::Host, BufferUsage::Vertex, vertices.data(), vertices.size(), render_manager);
       current_vertices.set_debug_name("[gf2] Imgui Vertex Buffer #" + std::to_string(m_current_buffer));
     } else {
-      current_vertices.update(vertices.data(), vertices.size(), renderer);
+      current_vertices.update(vertices.data(), vertices.size(), render_manager);
     }
 
     const std::size_t indices_size = data->TotalIdxCount * sizeof(ImDrawIdx);
 
     if (indices_size > current_indices.size()) {
-      current_indices = Buffer(BufferType::Host, BufferUsage::Index, indices.data(), indices.size(), renderer);
+      current_indices = Buffer(BufferType::Host, BufferUsage::Index, indices.data(), indices.size(), render_manager);
       current_indices.set_debug_name("[gf2] Imgui Index Buffer #" + std::to_string(m_current_buffer));
     } else {
-      current_indices.update(indices.data(), indices.size(), renderer);
+      current_indices.update(indices.data(), indices.size(), render_manager);
     }
 
     // compute commands

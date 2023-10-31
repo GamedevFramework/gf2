@@ -14,7 +14,7 @@
 #include "RenderObject.h"
 
 namespace gf {
-  class Renderer;
+  class RenderManager;
 
   struct TextGeometry {
     RenderGeometry text;
@@ -23,7 +23,7 @@ namespace gf {
 
   class GF_GRAPHICS_API Text {
   public:
-    Text(FontAtlas* atlas, const TextData& data, Renderer* renderer);
+    Text(FontAtlas* atlas, const TextData& data, RenderManager* render_manager);
 
     TextGeometry geometry() const;
 

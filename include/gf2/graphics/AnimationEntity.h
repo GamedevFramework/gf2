@@ -12,11 +12,11 @@
 #include "Texture.h"
 
 namespace gf {
-  class Renderer;
+  class RenderManager;
 
   class GF_GRAPHICS_API AnimationEntity : public Entity {
   public:
-    AnimationEntity(std::vector<const Texture*> textures, const AnimationData& data, Renderer* renderer);
+    AnimationEntity(std::vector<const Texture*> textures, const AnimationData& data, RenderManager* render_manager);
 
     Transform& transform()
     {

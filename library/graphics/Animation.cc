@@ -16,7 +16,7 @@ namespace gf {
 
   }
 
-  Animation::Animation(std::vector<const Texture*> textures, const AnimationData& data, Renderer* renderer)
+  Animation::Animation(std::vector<const Texture*> textures, const AnimationData& data, RenderManager* render_manager)
   : m_textures(std::move(textures))
   , m_properties(data.properties)
   {
@@ -59,8 +59,8 @@ namespace gf {
       return;
     }
 
-    m_vertices = Buffer(BufferType::Device, BufferUsage::Vertex, vertices.data(), vertices.size(), renderer);
-    m_indices = Buffer(BufferType::Device, BufferUsage::Index, indices.data(), indices.size(), renderer);
+    m_vertices = Buffer(BufferType::Device, BufferUsage::Vertex, vertices.data(), vertices.size(), render_manager);
+    m_indices = Buffer(BufferType::Device, BufferUsage::Index, indices.data(), indices.size(), render_manager);
 
     reset();
   }

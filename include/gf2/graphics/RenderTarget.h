@@ -20,7 +20,7 @@ namespace gf {
     }
 
   private:
-    friend class BasicRenderer;
+    friend class RenderManager;
     friend class CommandBuffer;
     friend class Texture;
 

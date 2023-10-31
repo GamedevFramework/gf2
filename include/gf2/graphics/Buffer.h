@@ -14,7 +14,7 @@
 #include "GraphicsApi.h"
 
 namespace gf {
-  class Renderer;
+  class RenderManager;
 
   enum class BufferType : uint8_t {
     Device,
@@ -33,11 +33,11 @@ namespace gf {
   public:
     Buffer() = default;
 
-    Buffer(BufferType type, BufferUsage usage, std::size_t count, std::size_t member_size, const void* data, Renderer* renderer);
+    Buffer(BufferType type, BufferUsage usage, std::size_t count, std::size_t member_size, const void* data, RenderManager* render_manager);
 
     template<typename T>
-    Buffer(BufferType type, BufferUsage usage, const T* data, std::size_t count, Renderer* renderer)
-    : Buffer(type, usage, count, sizeof(T), static_cast<const void*>(data), renderer)
+    Buffer(BufferType type, BufferUsage usage, const T* data, std::size_t count, RenderManager* render_manager)
+    : Buffer(type, usage, count, sizeof(T), static_cast<const void*>(data), render_manager)
     {
     }
 
@@ -58,12 +58,12 @@ namespace gf {
       return m_size;
     }
 
-    void update(std::size_t count, std::size_t member_size, const void* data, Renderer* renderer);
+    void update(std::size_t count, std::size_t member_size, const void* data, RenderManager* render_manager);
 
     template<typename T>
-    void update(const T* data, std::size_t count, Renderer* renderer)
+    void update(const T* data, std::size_t count, RenderManager* render_manager)
     {
-      update(count, sizeof(T), static_cast<const void*>(data), renderer);
+      update(count, sizeof(T), static_cast<const void*>(data), render_manager);
     }
 
     void set_debug_name(const std::string& name) const;
@@ -73,10 +73,10 @@ namespace gf {
     friend class Descriptor;
 
     void create_host_buffer(BufferUsage usage, std::size_t total_size, const void* data);
-    void create_device_buffer(BufferUsage usage, std::size_t total_size, const void* data, Renderer* renderer);
+    void create_device_buffer(BufferUsage usage, std::size_t total_size, const void* data, RenderManager* render_manager);
 
     void update_host_buffer(std::size_t total_size, const void* data);
-    void update_device_buffer(std::size_t total_size, const void* data, Renderer* renderer);
+    void update_device_buffer(std::size_t total_size, const void* data, RenderManager* render_manager);
 
     VmaAllocator m_allocator = nullptr; // non-owning
     VkBuffer m_buffer = VK_NULL_HANDLE;

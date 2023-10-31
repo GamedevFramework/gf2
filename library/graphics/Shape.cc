@@ -126,18 +126,18 @@ namespace gf {
 
   }
 
-  Shape::Shape(const Texture* texture, const ShapeData& data, Renderer* renderer)
+  Shape::Shape(const Texture* texture, const ShapeData& data, RenderManager* render_manager)
   : m_texture(texture)
   {
     auto raw_interior = compute_interior_shape_geometry(data);
-    m_vertices = Buffer(BufferType::Device, BufferUsage::Vertex, raw_interior.vertices.data(), raw_interior.vertices.size(), renderer);
-    m_indices = Buffer(BufferType::Device, BufferUsage::Index, raw_interior.indices.data(), raw_interior.indices.size(), renderer);
+    m_vertices = Buffer(BufferType::Device, BufferUsage::Vertex, raw_interior.vertices.data(), raw_interior.vertices.size(), render_manager);
+    m_indices = Buffer(BufferType::Device, BufferUsage::Index, raw_interior.indices.data(), raw_interior.indices.size(), render_manager);
     m_bounds = raw_interior.bounds;
 
     if (data.outline_thickness > 0.0f) {
       auto raw_outline = compute_outline_shape_geometry(data, raw_interior.center);
-      m_outline_vertices = Buffer(BufferType::Device, BufferUsage::Vertex, raw_outline.vertices.data(), raw_outline.vertices.size(), renderer);
-      m_outline_indices = Buffer(BufferType::Device, BufferUsage::Index, raw_outline.indices.data(), raw_outline.indices.size(), renderer);
+      m_outline_vertices = Buffer(BufferType::Device, BufferUsage::Vertex, raw_outline.vertices.data(), raw_outline.vertices.size(), render_manager);
+      m_outline_indices = Buffer(BufferType::Device, BufferUsage::Index, raw_outline.indices.data(), raw_outline.indices.size(), render_manager);
     }
   }
 

@@ -10,8 +10,8 @@
 
 namespace gf {
 
-  AnimationEntity::AnimationEntity(std::vector<const Texture*> textures, const AnimationData& data, Renderer* renderer)
-  : m_sprite(std::move(textures), data, renderer)
+  AnimationEntity::AnimationEntity(std::vector<const Texture*> textures, const AnimationData& data, RenderManager* render_manager)
+  : m_sprite(std::move(textures), data, render_manager)
   {
   }
 

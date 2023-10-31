@@ -15,11 +15,11 @@
 #include "ShaderStage.h"
 
 namespace gf {
-  class Renderer;
+  class RenderManager;
 
   struct GF_GRAPHICS_API ShaderContext {
     ShaderStage stage;
-    Renderer* renderer;
+    RenderManager* render_manager;
   };
 
   class GF_GRAPHICS_API Shader {

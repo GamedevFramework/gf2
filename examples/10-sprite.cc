@@ -16,8 +16,8 @@ int main()
 
   gf::SingleSceneManager scene_manager("10-sprite | gf2", gf::vec(1600, 900));
 
-  const gf::Texture texture(texture_file, scene_manager.renderer());
-  gf::SpriteEntity sprite_entity(&texture, scene_manager.renderer());
+  const gf::Texture texture(texture_file, scene_manager.render_manager());
+  gf::SpriteEntity sprite_entity(&texture, scene_manager.render_manager());
   sprite_entity.transform().location = gf::vec(1000.0f, 1000.0f);
   sprite_entity.transform().origin = gf::vec(0.5f, 0.5f);
   sprite_entity.transform().scale = gf::vec(0.1f, 0.1f);
