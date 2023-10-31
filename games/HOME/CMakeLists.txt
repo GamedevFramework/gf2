@@ -1,0 +1,19 @@
+set(GF_HOME_ASSETS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/assets")
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h @ONLY)
+
+add_executable(HOME
+  HOME.cc
+  bits/GameHub.cc
+  bits/ResourceHub.cc
+)
+
+target_link_libraries(HOME
+  PRIVATE
+    gf2audio0
+    gf2graphics0
+)
+
+target_include_directories(HOME
+  PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
+)

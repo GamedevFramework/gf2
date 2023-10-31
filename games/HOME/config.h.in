@@ -1,0 +1,7 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+#define GF_HOME_ASSETS_DIRECTORY R"(@GF_HOME_ASSETS_DIRECTORY@)"
+
+#endif // CONFIG_H

@@ -92,3 +92,5 @@ target("gf2imgui0")
 includes("tests/xmake.lua")
 includes("bin/xmake.lua")
 includes("examples/xmake.lua")
+
+includes("games/HOME/xmake.lua")

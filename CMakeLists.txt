@@ -55,6 +55,7 @@ endif()
 
 add_subdirectory(bin)
 add_subdirectory(examples)
+add_subdirectory(games/HOME)
 
 install(
   DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/gf2"
