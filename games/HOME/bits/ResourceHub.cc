@@ -10,6 +10,7 @@ namespace home {
     texture_registry.add_loader(gf::loader_for<gf::Texture>(file_loader));
 
     manager.add_registry(&texture_registry);
+    manager.add_registry(&font_registry);
   }
 
 }

@@ -1,6 +1,8 @@
 #ifndef HOME_GAME_HUB_H
 #define HOME_GAME_HUB_H
 
+#include <memory>
+
 #include <gf2/core/FontManager.h>
 
 #include <gf2/audio/AudioManager.h>
@@ -19,7 +21,7 @@ namespace home {
 
     ResourceHub resource_hub;
 
-    WorldScene world_scene;
+    std::unique_ptr<WorldScene> world_scene = nullptr;
   };
 
 }

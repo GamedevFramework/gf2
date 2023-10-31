@@ -73,8 +73,7 @@ namespace gf {
         return std::any_cast<ResourceRegistry<T>*>(any_registry);
       }
 
-      Log::error("No registry for this type of resource.");
-      throw std::runtime_error("No registry for this type of resource.");
+      Log::fatal("No registry for this type of resource.");
     }
 
     std::map<std::type_index, std::any> m_resources;

@@ -34,8 +34,7 @@ namespace gf {
         return counted.pointer.get();
       }
 
-      Log::error("Resource not already loaded: '{}'", path.string());
-      throw std::runtime_error("Resource not already loaded");
+      Log::fatal("Resource not already loaded: '{}'", path.string());
     }
 
     T* load(const std::filesystem::path& path, const ResourceContext<T>& context = {})
@@ -62,16 +61,14 @@ namespace gf {
         auto [iterator, inserted] = m_cache.emplace(path, Counted{ std::move(pointer), 1 });
 
         if (!inserted) {
-          Log::error("Resource not inserted in the registry: '{}'", path.string());
-          throw std::runtime_error("Resource not inserted in the registry.");
+          Log::fatal("Resource not inserted in the registry: '{}'", path.string());
         }
 
         auto& [_, counted] = *iterator;
         return counted.pointer.get();
       }
 
-      Log::error("Resource not loaded: '{}'", path.string());
-      throw std::runtime_error("Resource not loaded.");
+      Log::fatal("Resource not loaded: '{}'", path.string());
     }
 
     void unload(const std::filesystem::path& path)
@@ -84,8 +81,7 @@ namespace gf {
           m_cache.erase(cache_iterator);
         }
       } else {
-        Log::error("Resource already unloaded: '{}'", path.string());
-        throw std::runtime_error("Resource already unloaded.");
+        Log::fatal("Resource already unloaded: '{}'", path.string());
       }
     }
 
