@@ -67,7 +67,5 @@ int main()
   io.Fonts->AddFontFromFileTTF(font_file.string().c_str(), 20);
 
   ImguiScene scene(&scene_manager);
-  scene_manager.run(&scene);
-
-  return EXIT_SUCCESS;
+  return scene_manager.run(&scene);
 }

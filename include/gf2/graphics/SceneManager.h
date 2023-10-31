@@ -67,12 +67,12 @@ namespace gf {
   public:
     SingleSceneManager(const std::string& title, Vec2I size, Flags<WindowHints> hints = All);
 
-    void run();
+    int run();
 
-    void run(Scene* scene)
+    int run(Scene* scene)
     {
       set_scene(scene);
-      run();
+      return run();
     }
 
     void set_scene(Scene* scene);
@@ -85,11 +85,11 @@ namespace gf {
   public:
     SceneManager(const std::string& title, Vec2I size, Flags<WindowHints> hints = All);
 
-    void run();
-    void run(Scene* scene)
+    int run();
+    int run(Scene* scene)
     {
       push_scene(scene);
-      run();
+      return run();
     }
 
     void push_scene(Scene* scene);

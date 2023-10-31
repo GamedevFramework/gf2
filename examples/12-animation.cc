@@ -56,7 +56,5 @@ int main()
 
   scene.add_world_entity(&animation_entity);
 
-  scene_manager.run(&scene);
-
-  return EXIT_SUCCESS;
+  return scene_manager.run(&scene);
 }

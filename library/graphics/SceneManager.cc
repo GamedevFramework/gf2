@@ -6,6 +6,7 @@
 // clang-format on
 
 #include <cassert>
+#include <cstdlib>
 
 #include <gf2/core/Clock.h>
 
@@ -263,10 +264,10 @@ namespace gf {
   {
   }
 
-  void SingleSceneManager::run()
+  int SingleSceneManager::run()
   {
     if (m_scene == nullptr) {
-      return;
+      return EXIT_FAILURE;
     }
 
     Clock clock;
@@ -323,6 +324,7 @@ namespace gf {
     }
 
     renderer()->wait_idle();
+    return EXIT_SUCCESS;
   }
 
   void SingleSceneManager::set_scene(Scene* scene)
@@ -346,8 +348,10 @@ namespace gf {
   {
   }
 
-  void SceneManager::run()
+  int SceneManager::run()
   {
+    // TODO
+    return EXIT_SUCCESS;
   }
 
   void SceneManager::push_scene(Scene* scene)

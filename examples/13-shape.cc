@@ -12,7 +12,6 @@
 
 int main()
 {
-
   gf::SingleSceneManager scene_manager("13-shape | gf2", gf::vec(1600, 900));
 
   gf::ShapeData rectangle_data = gf::ShapeData::make_rectangle({ 160.0f, 90.0f });
@@ -30,7 +29,5 @@ int main()
 
   scene.add_world_entity(&rectangle_entity);
 
-  scene_manager.run(&scene);
-
-  return EXIT_SUCCESS;
+  return scene_manager.run(&scene);
 }
