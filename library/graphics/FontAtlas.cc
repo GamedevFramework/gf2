@@ -14,6 +14,12 @@
 
 namespace gf {
 
+  namespace {
+
+    constexpr int FontAtlasPadding = 1;
+
+  }
+
   using namespace operators;
 
   FontAtlas::FontAtlas(Font* font, Vec2I size, RenderManager* render_manager)
@@ -34,19 +40,19 @@ namespace gf {
     }
 
     auto font_glyph = glyph(codepoint, character_size, outline_thickness);
-    auto maybe_rectangle = m_bin_pack.insert(font_glyph.bitmap.size());
+    auto maybe_rectangle = m_bin_pack.insert(font_glyph.bitmap.size() + 2 * FontAtlasPadding);
 
     if (!maybe_rectangle) {
       Log::fatal("Unable to insert rectangle in the bin pack.");
     }
 
     const RectI bounds = *maybe_rectangle;
-    assert(bounds.size() == font_glyph.bitmap.size());
+    assert(bounds.size() == font_glyph.bitmap.size() + 2 * FontAtlasPadding);
 
-    m_bitmap.blit(font_glyph.bitmap, bounds.position());
+    m_bitmap.blit(font_glyph.bitmap, bounds.position() + FontAtlasPadding);
 
     const Vec2F total_size = m_bitmap.size();
-    const RectF texture_region = RectF::from_position_size(Vec2F(bounds.position()) / total_size, Vec2F(bounds.size()) / total_size);
+    const RectF texture_region = RectF::from_position_size(Vec2F(bounds.position() + FontAtlasPadding) / total_size, Vec2F(bounds.size()) / total_size);
     m_atlas.emplace(key, texture_region);
     return texture_region;
   }
@@ -84,7 +90,7 @@ namespace gf {
 
     for (auto codepoint : new_codepoints) {
       const auto& font_glyph = glyph(codepoint, character_size, outline_thickness);
-      sizes.push_back(font_glyph.bitmap.size());
+      sizes.push_back(font_glyph.bitmap.size() + 2 * FontAtlasPadding);
       glyphs.push_back(&font_glyph);
     }
 
@@ -106,10 +112,10 @@ namespace gf {
       const RectI bounds = rectangles[i];
       assert(bounds.size() == sizes[i]);
 
-      m_bitmap.blit(glyphs[i]->bitmap, bounds.position());
+      m_bitmap.blit(glyphs[i]->bitmap, bounds.position() + 2 * FontAtlasPadding);
 
       const Vec2F total_size = m_bitmap.size();
-      const RectF texture_region = RectF::from_position_size(Vec2F(bounds.position()) / total_size, Vec2F(bounds.size()) / total_size);
+      const RectF texture_region = RectF::from_position_size(Vec2F(bounds.position() + FontAtlasPadding) / total_size, Vec2F(bounds.size()) / total_size);
       m_atlas.emplace(key, texture_region);
     }
   }
