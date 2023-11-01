@@ -42,4 +42,3 @@ namespace gf {
 }
 
 #endif // GF_FONT_H
-

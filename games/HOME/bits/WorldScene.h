@@ -13,12 +13,9 @@ namespace home {
 
   class WorldScene : public gf::StandardScene {
   public:
-    WorldScene(GameHub* hub);
-
-    static gf::ResourceBundle bundle(GameHub* hub);
+    WorldScene(GameHub* hub, const WorldData& data);
 
   private:
-    WorldData m_data;
     gf::TextEntity m_title;
   };
 

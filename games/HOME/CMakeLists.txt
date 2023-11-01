@@ -5,6 +5,7 @@ add_executable(HOME
   HOME.cc
   bits/GameHub.cc
   bits/ResourceHub.cc
+  bits/WorldData.cc
   bits/WorldScene.cc
 )
 

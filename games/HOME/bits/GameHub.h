@@ -9,6 +9,7 @@
 #include <gf2/graphics/SceneManager.h>
 
 #include "ResourceHub.h"
+#include "WorldData.h"
 #include "WorldScene.h"
 
 namespace home {
@@ -43,6 +44,7 @@ namespace home {
 
     ResourceHub m_resource_hub;
 
+    WorldData m_world_data;
     std::unique_ptr<WorldScene> m_world_scene = nullptr;
   };
 

@@ -28,13 +28,13 @@ namespace gf {
     inline constexpr bool HasStaticBundleWithContext<T, std::void_t<decltype(T::bundle(std::declval<std::filesystem::path>(), std::declval<ResourceContext<T>>()))>> = true;
   } // namespace details
 
+  enum class ResourceAction : uint8_t {
+    Load,
+    Unload,
+  };
+
   class GF_CORE_API ResourceBundle {
   public:
-    enum class Action : uint8_t {
-      Load,
-      Unload,
-    };
-
     ResourceBundle() = default;
 
     template<typename F, typename = std::enable_if_t<!std::is_same_v<std::remove_cv_t<std::remove_reference_t<F>>, ResourceBundle>>>
@@ -53,12 +53,12 @@ namespace gf {
     void unload_from(ResourceManager* manager);
 
     template<typename T>
-    void handle(const std::filesystem::path& path, ResourceManager* manager, Action action)
+    void handle(const std::filesystem::path& path, ResourceManager* manager, ResourceAction action)
     {
       static_assert(std::is_empty_v<ResourceContext<T>>, "Resource context should be empty.");
 
       switch (action) {
-        case Action::Load:
+        case ResourceAction::Load:
           {
             if constexpr (details::HasStaticBundle<T>) {
               T::bundle(path).load_from(manager);
@@ -68,7 +68,7 @@ namespace gf {
           }
           break;
 
-        case Action::Unload:
+        case ResourceAction::Unload:
           {
             manager->unload<T>(path);
 
@@ -81,12 +81,12 @@ namespace gf {
     }
 
     template<typename T>
-    void handle(const std::filesystem::path& path, const ResourceContext<T>& context, ResourceManager* manager, Action action)
+    void handle(const std::filesystem::path& path, const ResourceContext<T>& context, ResourceManager* manager, ResourceAction action)
     {
       static_assert(!std::is_empty_v<ResourceContext<T>>, "Resource context should be non-empty.");
 
       switch (action) {
-        case Action::Load:
+        case ResourceAction::Load:
           {
             if constexpr (details::HasStaticBundleWithContext<T>) {
               T::bundle(path, context).load_from(manager);
@@ -96,7 +96,7 @@ namespace gf {
           }
           break;
 
-        case Action::Unload:
+        case ResourceAction::Unload:
           {
             manager->unload<T>(path);
 
@@ -109,7 +109,7 @@ namespace gf {
     }
 
   private:
-    std::function<void(ResourceBundle*, ResourceManager*, Action)> m_callback;
+    std::function<void(ResourceBundle*, ResourceManager*, ResourceAction)> m_callback;
   };
 
 } // namespace gf
