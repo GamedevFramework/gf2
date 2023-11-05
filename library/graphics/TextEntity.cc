@@ -22,7 +22,9 @@ namespace gf {
   void TextEntity::render(RenderRecorder& recorder)
   {
     auto geometry = m_text.geometry();
-    auto model_matrix = m_transform.compute_matrix(m_text.bounds());
+    auto transform = m_transform;
+    transform.scale *= m_text.characater_size() / 64.0f;
+    auto model_matrix = transform.compute_matrix(m_text.bounds());
 
     RenderObject object = {};
     object.priority = priority();

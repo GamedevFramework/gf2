@@ -24,10 +24,10 @@ namespace gf {
 
   struct GF_CORE_API TextData {
     std::string content;
-    uint32_t character_size = 0;
+    float character_size = 0;
     Color color = Black;
-    float outline_thickness = 0.0f;
-    Color outline_color = White;
+    // float outline_thickness = 0.0f;
+    // Color outline_color = White;
     Alignment alignment = Alignment::None;
     float paragraph_width = 0.0f;
     float line_spacing_factor = 1.0f;
@@ -37,7 +37,7 @@ namespace gf {
   template<typename Archive>
   Archive& operator|(Archive& ar, MaybeConst<TextData, Archive>& data)
   {
-    return ar | data.content | data.character_size | data.color | data.outline_thickness | data.outline_color | data.alignment | data.paragraph_width | data.line_spacing_factor | data.letter_spacing_factor;
+    return ar | data.content | data.character_size | data.color | data.alignment | data.paragraph_width | data.line_spacing_factor | data.letter_spacing_factor;
   }
 
   struct GF_CORE_API TextResource {

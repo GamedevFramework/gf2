@@ -47,11 +47,15 @@ namespace gf {
       return m_bounds;
     }
 
+    void set_characater_size(float character_size);
+    float characater_size() const;
+
   private:
     FontAtlas* m_atlas;
     Buffer m_vertices;
     Buffer m_indices;
     RectF m_bounds = {};
+    float m_character_size;
   };
 
 }
