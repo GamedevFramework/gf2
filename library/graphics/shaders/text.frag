@@ -7,7 +7,10 @@ layout(location = 1) in vec4 frag_color;
 
 layout(location = 0) out vec4 out_color;
 
+const float width = 0.25 / 8;
+
 void main() {
   vec4 color = texture(u_texture, frag_texcoords);
-  out_color = vec4(frag_color.xyz, frag_color.a * color.r);
+  float alpha = smoothstep(0.5 - width, 0.5 + width, color.r);
+  out_color = vec4(frag_color.xyz, frag_color.a * alpha);
 }

@@ -23,21 +23,21 @@ namespace gf {
   public:
     FontAtlas(FontFace* face, Vec2I size, RenderManager* render_manager);
 
-    RectF texture_region(char32_t codepoint, uint32_t character_size, float outline_thickness = 0.0f);
-    void update_texture_regions_for(std::string_view string, uint32_t character_size, float outline_thickness = 0.0f);
+    RectF texture_region(char32_t codepoint);
+    void update_texture_regions_for(std::string_view string);
 
-    const FontGlyph& glyph(char32_t codepoint, uint32_t character_size, float outline_thickness = 0.0f);
+    const FontGlyph& glyph(char32_t codepoint);
 
     void update_texture(RenderManager* render_manager);
 
-    float kerning(char32_t left, char32_t right, uint32_t character_size)
+    float kerning(char32_t left, char32_t right)
     {
-      return m_face->compute_kerning(left, right, character_size);
+      return m_face->compute_kerning(left, right);
     }
 
-    float line_spacing(uint32_t character_size)
+    float line_spacing()
     {
-      return m_face->compute_line_spacing(character_size);
+      return m_face->compute_line_spacing();
     }
 
     const Texture* texture() const
@@ -51,7 +51,7 @@ namespace gf {
     Bitmap m_bitmap;
     Texture m_texture;
 
-    using AtlasKey = std::tuple<char32_t, uint32_t, Fixed32>;
+    using AtlasKey = char32_t;
 
     std::map<AtlasKey, RectF> m_atlas;
     std::map<AtlasKey, FontGlyph> m_glyph_cache;

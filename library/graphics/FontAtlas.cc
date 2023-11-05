@@ -30,16 +30,15 @@ namespace gf {
   {
   }
 
-  RectF FontAtlas::texture_region(char32_t codepoint, unsigned character_size, float outline_thickness)
+  RectF FontAtlas::texture_region(char32_t codepoint)
   {
-    const Fixed32 fixed_thickness(outline_thickness);
-    auto key = std::make_tuple(codepoint, character_size, fixed_thickness);
+    auto key = codepoint;
 
     if (auto iterator = m_atlas.find(key); iterator != m_atlas.end()) {
       return iterator->second;
     }
 
-    auto font_glyph = glyph(codepoint, character_size, outline_thickness);
+    auto font_glyph = glyph(codepoint);
     auto maybe_rectangle = m_bin_pack.insert(font_glyph.bitmap.size() + 2 * FontAtlasPadding);
 
     if (!maybe_rectangle) {
@@ -57,9 +56,8 @@ namespace gf {
     return texture_region;
   }
 
-  void FontAtlas::update_texture_regions_for(std::string_view string, uint32_t character_size, float outline_thickness)
+  void FontAtlas::update_texture_regions_for(std::string_view string)
   {
-    const Fixed32 fixed_thickness(outline_thickness);
     std::vector<char32_t> new_codepoints;
 
     for (auto codepoint : gf::codepoints(string)) {
@@ -67,7 +65,7 @@ namespace gf {
         continue;
       }
 
-      auto key = std::make_tuple(codepoint, character_size, fixed_thickness);
+      auto key = codepoint;
 
       if (auto it = m_atlas.find(key); it != m_atlas.end()) {
         continue;
@@ -89,7 +87,7 @@ namespace gf {
     std::vector<const FontGlyph*> glyphs;
 
     for (auto codepoint : new_codepoints) {
-      const auto& font_glyph = glyph(codepoint, character_size, outline_thickness);
+      const auto& font_glyph = glyph(codepoint);
       sizes.push_back(font_glyph.bitmap.size() + 2 * FontAtlasPadding);
       glyphs.push_back(&font_glyph);
     }
@@ -107,7 +105,7 @@ namespace gf {
     assert(rectangles.size() == count);
 
     for (std::size_t i = 0; i < count; ++i) {
-      auto key = std::make_tuple(new_codepoints[i], character_size, fixed_thickness);
+      auto key = new_codepoints[i];
 
       const RectI bounds = rectangles[i];
       assert(bounds.size() == sizes[i]);
@@ -120,16 +118,15 @@ namespace gf {
     }
   }
 
-  const FontGlyph& FontAtlas::glyph(char32_t codepoint, uint32_t character_size, float outline_thickness)
+  const FontGlyph& FontAtlas::glyph(char32_t codepoint)
   {
-    const Fixed32 fixed_thickness(outline_thickness);
-    auto key = std::make_tuple(codepoint, character_size, fixed_thickness);
+    auto key = codepoint;
 
     if (auto iterator = m_glyph_cache.find(key); iterator != m_glyph_cache.end()) {
       return iterator->second;
     }
 
-    auto glyph = m_face->create_glyph(codepoint, character_size, outline_thickness);
+    auto glyph = m_face->create_glyph(codepoint);
     auto [iterator, inserted] = m_glyph_cache.emplace(key, std::move(glyph));
     assert(inserted);
     return iterator->second;

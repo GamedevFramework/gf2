@@ -8,8 +8,15 @@
 
 #include <gf2/core/FontFace.h>
 #include <gf2/core/FontManager.h>
+#include <gf2/core/Math.h>
 #include <gf2/core/Range.h>
 #include <gf2/core/StringUtils.h>
+
+static float smoothstep(float edge0, float edge1, float x)
+{
+  x = gf::clamp((x - edge0) / (edge1 - edge0), 0.0f, 1.0f);
+  return gf::quintic_step(x);
+}
 
 int main(int argc, char* argv[])
 {
@@ -35,19 +42,32 @@ int main(int argc, char* argv[])
     }
   }
 
-  unsigned character_size = 32;
-
-  if (argc > 3) {
-    character_size = static_cast<unsigned>(std::atoi(argv[3]));
-  }
-
-  const auto glyph = font_face.create_glyph(c, character_size);
+  const auto glyph = font_face.create_glyph(c);
   const auto size = glyph.bitmap.size();
 
   constexpr std::string_view Gray = " .:-=+*#%@";
 
   for (auto position : gf::position_range(size)) {
     auto gray = glyph.bitmap(position);
+    const std::size_t index = gray * Gray.size() / 256;
+
+    assert(index < Gray.size());
+    std::cout << Gray[index]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+
+    if (position.x + 1 == size.w) {
+      std::cout << '\n';
+    }
+  }
+
+  for (auto position : gf::position_range(size)) {
+    auto gray = glyph.bitmap(position);
+
+    // gray = gray > 128 ? 255 : 0;
+    const float smoothing = 0.05f;
+    const float distance = static_cast<float>(gray) / 255.0f;
+    const float alpha = smoothstep(0.5f - smoothing, 0.5f + smoothing, distance);
+    gray = static_cast<uint8_t>(alpha * 255);
+
     const std::size_t index = gray * Gray.size() / 256;
 
     assert(index < Gray.size());

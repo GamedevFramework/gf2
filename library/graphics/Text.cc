@@ -20,15 +20,15 @@ namespace gf {
 
   namespace {
 
-    float compute_word_width(std::string_view word, FontAtlas* atlas, const TextData& data)
+    float compute_word_width(std::string_view word, FontAtlas* atlas)
     {
       float word_width = 0.0f;
       char32_t prev_codepoint = '\0';
 
       for (const char32_t curr_codepoint : gf::codepoints(word)) {
-        word_width += atlas->kerning(prev_codepoint, curr_codepoint, data.character_size);
+        word_width += atlas->kerning(prev_codepoint, curr_codepoint);
         prev_codepoint = curr_codepoint;
-        word_width += atlas->glyph(curr_codepoint, data.character_size).advance;
+        word_width += atlas->glyph(curr_codepoint).advance;
       }
 
       return word_width;
@@ -52,7 +52,7 @@ namespace gf {
       float line_width = 0.0f;
 
       for (auto word : raw_words) {
-        const float word_width = compute_word_width(word, atlas, data);
+        const float word_width = compute_word_width(word, atlas);
 
         if (!line.words.empty() && line_width + space_width + word_width > data.paragraph_width) {
           auto word_count = line.words.size();
@@ -171,7 +171,7 @@ namespace gf {
 
     float compute_space_width(FontAtlas* atlas, const TextData& data)
     {
-      const float space_width = atlas->glyph(' ', data.character_size).advance;
+      const float space_width = atlas->glyph(' ').advance;
       const float additional_space = (space_width / 3) * (data.letter_spacing_factor - 1.0f); // TODO: investigate!
       return space_width + additional_space;
     }
@@ -202,7 +202,7 @@ namespace gf {
       RawTextGeometry geometry;
       const Color linear_color = gf::srgb_to_linear(data.color);
 
-      const float line_height = atlas->line_spacing(data.character_size) * data.line_spacing_factor;
+      const float line_height = atlas->line_spacing() * data.line_spacing_factor;
 
       Vec2F position = { 0.0f, 0.0f };
       Vec2F min = { std::numeric_limits<float>::max(), std::numeric_limits<float>::max() };
@@ -216,20 +216,11 @@ namespace gf {
             char32_t prev_codepoint = '\0';
 
             for (const char32_t curr_codepoint : gf::codepoints(word)) {
-              position.x += atlas->kerning(prev_codepoint, curr_codepoint, data.character_size);
+              position.x += atlas->kerning(prev_codepoint, curr_codepoint);
               prev_codepoint = curr_codepoint;
 
-              if (data.outline_thickness > 0) {
-                const RectF bounds = atlas->glyph(curr_codepoint, data.character_size, data.outline_thickness).bounds;
-                const RectF texture_region = atlas->texture_region(curr_codepoint, data.character_size, data.outline_thickness);
-                compute_vertices(geometry.outline_vertices, geometry.outline_indices, bounds, texture_region, position, data.outline_color);
-
-                min = gf::min(min, position + bounds.position_at(Orientation::NorthWest));
-                max = gf::max(max, position + bounds.position_at(Orientation::SouthEast));
-              }
-
-              auto glyph = atlas->glyph(curr_codepoint, data.character_size);
-              const RectF texture_region = atlas->texture_region(curr_codepoint, data.character_size);
+              auto glyph = atlas->glyph(curr_codepoint);
+              const RectF texture_region = atlas->texture_region(curr_codepoint);
               compute_vertices(geometry.vertices, geometry.indices, glyph.bounds, texture_region, position, linear_color);
 
               if (data.outline_thickness == 0.0f) {
@@ -263,12 +254,7 @@ namespace gf {
   : m_atlas(atlas)
   {
     assert(atlas);
-    atlas->update_texture_regions_for(data.content, data.character_size);
-
-    if (data.outline_thickness > 0) {
-      atlas->update_texture_regions_for(data.content, data.character_size, data.outline_thickness);
-    }
-
+    atlas->update_texture_regions_for(data.content);
     atlas->update_texture(render_manager);
 
     const float space_width = compute_space_width(atlas, data);
@@ -278,11 +264,6 @@ namespace gf {
     m_vertices = Buffer(BufferType::Device, BufferUsage::Vertex, geometry.vertices.data(), geometry.vertices.size(), render_manager);
     m_indices = Buffer(BufferType::Device, BufferUsage::Index, geometry.indices.data(), geometry.indices.size(), render_manager);
 
-    if (data.outline_thickness > 0.0f) {
-      m_outline_vertices = Buffer(BufferType::Device, BufferUsage::Vertex, geometry.outline_vertices.data(), geometry.outline_vertices.size(), render_manager);
-      m_outline_indices = Buffer(BufferType::Device, BufferUsage::Index, geometry.outline_indices.data(), geometry.outline_indices.size(), render_manager);
-    }
-
     m_bounds = geometry.bounds;
   }
 
@@ -291,31 +272,14 @@ namespace gf {
   {
   }
 
-  TextGeometry Text::geometry() const
+  RenderGeometry Text::geometry() const
   {
-    TextGeometry geometry;
-
-    RenderGeometry text;
-    text.pipeline = RenderPipelineType::Text;
-    text.texture = m_atlas->texture();
-    text.vertices = &m_vertices;
-    text.indices = &m_indices;
-    text.count = m_indices.count();
-
-    geometry.text = text;
-
-    if (m_outline_vertices.has_value()) {
-      assert(m_outline_indices.has_value());
-
-      RenderGeometry outline;
-      outline.pipeline = RenderPipelineType::Text;
-      outline.texture = m_atlas->texture();
-      outline.vertices = &m_outline_vertices.value();
-      outline.indices = &m_outline_indices.value();
-      outline.count = m_outline_indices.value().count();
-
-      geometry.outline = outline;
-    }
+    RenderGeometry geometry;
+    geometry.pipeline = RenderPipelineType::Text;
+    geometry.texture = m_atlas->texture();
+    geometry.vertices = &m_vertices;
+    geometry.indices = &m_indices;
+    geometry.count = m_indices.count();
 
     return geometry;
   }

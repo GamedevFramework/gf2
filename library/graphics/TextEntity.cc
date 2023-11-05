@@ -21,20 +21,12 @@ namespace gf {
 
   void TextEntity::render(RenderRecorder& recorder)
   {
-    auto text_geometry = m_text.geometry();
+    auto geometry = m_text.geometry();
     auto model_matrix = m_transform.compute_matrix(m_text.bounds());
-
-    if (text_geometry.outline.has_value()) {
-      RenderObject object = {};
-      object.priority = priority();
-      object.geometry = text_geometry.outline.value();
-      object.transform = model_matrix;
-      recorder.record(object);
-    }
 
     RenderObject object = {};
     object.priority = priority();
-    object.geometry = text_geometry.text;
+    object.geometry = geometry;
     object.transform = model_matrix;
     recorder.record(object);
   }

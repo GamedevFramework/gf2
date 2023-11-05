@@ -13,6 +13,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include FT_STROKER_H
+#include FT_MODULE_H
 // clang-format on
 
 #include <gf2/core/Log.h>
@@ -58,6 +59,12 @@ namespace gf {
     }
 
     m_stroker = stroker;
+
+    const FT_Int spread = 8; // normally, the default value, but in case.
+
+    if (auto err = FT_Property_Set(library, "bsdf", "spread", &spread)) {
+      Log::warning("Could not set spread: {}", ft_error_message(err));
+    }
   }
 
   FontManager::FontManager(FontManager&& other) noexcept

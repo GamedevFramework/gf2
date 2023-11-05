@@ -23,6 +23,7 @@ namespace gf {
 
   namespace {
 
+    constexpr unsigned FontSize = 64;
     constexpr float Scale = (1 << 6);
 
     float ft_convert_metrics(FT_Pos value)
@@ -61,6 +62,8 @@ namespace gf {
     }
 
     m_face = face;
+
+    set_current_character_size(FontSize);
   }
 
   FontFace::FontFace(InputStream& stream, FontManager* manager)
@@ -90,12 +93,13 @@ namespace gf {
     }
 
     m_face = face;
+
+    set_current_character_size(FontSize);
   }
 
   FontFace::FontFace(FontFace&& other) noexcept
   : m_manager(other.m_manager)
   , m_face(std::exchange(other.m_face, nullptr))
-  , m_character_size(std::exchange(other.m_character_size, 0))
   {
   }
 
@@ -112,7 +116,6 @@ namespace gf {
     using std::swap;
     swap(m_manager, other.m_manager);
     swap(m_face, other.m_face);
-    swap(m_character_size, other.m_character_size);
     return *this;
   }
 
@@ -134,7 +137,7 @@ namespace gf {
     return face_as<FT_Face>()->style_name;
   }
 
-  FontGlyph FontFace::create_glyph(char32_t codepoint, uint32_t character_size, float outline_thickness)
+  FontGlyph FontFace::create_glyph(char32_t codepoint)
   {
     FontGlyph result = {};
 
@@ -142,18 +145,9 @@ namespace gf {
       return result;
     }
 
-    if (!set_current_character_size(character_size)) {
-      return result;
-    }
-
     auto* face = face_as<FT_Face>();
-    FT_Int32 flags = FT_LOAD_TARGET_NORMAL | FT_LOAD_FORCE_AUTOHINT;
 
-    if (outline_thickness > 0) {
-      flags |= FT_LOAD_NO_BITMAP;
-    }
-
-    if (auto err = FT_Load_Char(face, codepoint, flags)) {
+    if (auto err = FT_Load_Char(face, codepoint, FT_LOAD_TARGET_NORMAL)) {
       Log::error("Could not load the glyph: {}", FontManager::error_message(err));
       return result;
     }
@@ -166,17 +160,18 @@ namespace gf {
       return result;
     }
 
-    if (outline_thickness > 0) {
-      assert(glyph->format == FT_GLYPH_FORMAT_OUTLINE);
-
-      auto* stroker = m_manager->stroker_as<FT_Stroker>();
-
-      FT_Stroker_Set(stroker, static_cast<FT_Fixed>(outline_thickness * Scale), FT_STROKER_LINECAP_ROUND, FT_STROKER_LINEJOIN_ROUND, 0);
-      FT_Glyph_Stroke(&glyph, stroker, 0);
-    }
+    /*
+     * BSDF mode (SDF not working very well)
+     */
 
     if (auto err = FT_Glyph_To_Bitmap(&glyph, FT_RENDER_MODE_NORMAL, nullptr, 1)) {
-      Log::error("Could create a bitmap from the glyph: {}", FontManager::error_message(err));
+      Log::error("Could not create a bitmap from the glyph (U+{:X}): {}", static_cast<uint32_t>(codepoint), FontManager::error_message(err));
+      FT_Done_Glyph(glyph);
+      return result;
+    }
+
+    if (auto err = FT_Glyph_To_Bitmap(&glyph, FT_RENDER_MODE_SDF, nullptr, 1)) {
+      Log::error("Could not create a bitmap from the glyph (U+{:X}): {}", static_cast<uint32_t>(codepoint), FontManager::error_message(err));
       FT_Done_Glyph(glyph);
       return result;
     }
@@ -199,20 +194,11 @@ namespace gf {
 
     // bounds
 
-    if (outline_thickness > 0.0f) {
-      // clang-format: off
-      result.bounds = RectF::from_position_size(
-          { static_cast<float>(bglyph->left), -static_cast<float>(bglyph->top) },
-          { static_cast<float>(bglyph->bitmap.width), static_cast<float>(bglyph->bitmap.rows) }
-          // clang-format: on
-      );
-    } else {
-      // clang-format: off
-      result.bounds = RectF::from_position_size(
-          { ft_convert_metrics(slot->metrics.horiBearingX), -ft_convert_metrics(slot->metrics.horiBearingY) },
-          { ft_convert_metrics(slot->metrics.width), ft_convert_metrics(slot->metrics.height) });
-      // clang-format: on
-    }
+    // clang-format: off
+    result.bounds = RectF::from_position_size(
+        { ft_convert_metrics(slot->metrics.horiBearingX), -ft_convert_metrics(slot->metrics.horiBearingY) },
+        { ft_convert_metrics(slot->metrics.width), ft_convert_metrics(slot->metrics.height) });
+    // clang-format: on
 
     // bitmap
 
@@ -222,17 +208,13 @@ namespace gf {
     return result;
   }
 
-  float FontFace::compute_kerning(char32_t left, char32_t right, uint32_t character_size)
+  float FontFace::compute_kerning(char32_t left, char32_t right)
   {
     if (left == 0 || right == 0) {
       return 0.0f;
     }
 
     if (m_face == nullptr) {
-      return 0.0f;
-    }
-
-    if (!set_current_character_size(character_size)) {
       return 0.0f;
     }
 
@@ -255,13 +237,9 @@ namespace gf {
     return ft_convert_metrics(kerning.x);
   }
 
-  float FontFace::compute_line_spacing(uint32_t character_size)
+  float FontFace::compute_line_spacing()
   {
     if (m_face == nullptr) {
-      return 0.0f;
-    }
-
-    if (!set_current_character_size(character_size)) {
       return 0.0f;
     }
 
@@ -270,16 +248,11 @@ namespace gf {
 
   bool FontFace::set_current_character_size(uint32_t character_size)
   {
-    if (m_character_size == character_size) {
-      return true;
-    }
-
     if (auto err = FT_Set_Pixel_Sizes(face_as<FT_Face>(), 0, character_size)) {
       Log::error("Could not change the font size: {}", FontManager::error_message(err));
       return false;
     }
 
-    m_character_size = character_size;
     return true;
   }
 

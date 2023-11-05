@@ -38,10 +38,10 @@ namespace gf {
     std::string family_name() const;
     std::string style_name() const;
 
-    FontGlyph create_glyph(char32_t codepoint, uint32_t character_size, float outline_thickness = 0.0f);
+    FontGlyph create_glyph(char32_t codepoint);
 
-    float compute_kerning(char32_t left, char32_t right, uint32_t character_size);
-    float compute_line_spacing(uint32_t character_size);
+    float compute_kerning(char32_t left, char32_t right);
+    float compute_line_spacing();
 
   private:
     bool set_current_character_size(uint32_t character_size);
@@ -60,7 +60,6 @@ namespace gf {
 
     FontManager* m_manager;
     void* m_face = nullptr;
-    uint32_t m_character_size = 0;
   };
 
 }
