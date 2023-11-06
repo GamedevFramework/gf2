@@ -8,6 +8,8 @@
 #include <cassert>
 #include <cstdlib>
 
+#include <algorithm>
+
 #include <gf2/core/Clock.h>
 
 #include <gf2/graphics/RenderObject.h>
@@ -350,7 +352,70 @@ namespace gf {
 
   int SceneManager::run()
   {
-    // TODO
+    Clock clock;
+    RenderRecorder recorder(render_manager());
+
+    while (!m_curr_scenes.empty() && !window()->should_close()) {
+      std::vector<Scene*> scenes = m_curr_scenes; // make a copy to avoid iterator invalidation
+      m_scenes_changed = false;
+      auto surface_size = window()->surface_size();
+
+      std::for_each(scenes.begin(), scenes.end(), [surface_size](auto* scene) { scene->update_framebuffer_size(surface_size); });
+
+      auto* current_scene = scenes.back();
+      current_scene->show();
+      current_scene->resume();
+
+
+      while (!m_scenes_changed && !window()->should_close()) {
+        // update
+
+        while (auto event = gf::Event::poll()) {
+          switch (event->type) {
+            case gf::EventType::Quit:
+              window()->close();
+              break;
+
+            case gf::EventType::WindowResized:
+              surface_size = window()->surface_size();
+              render_manager()->update_surface_size(surface_size);
+              std::for_each(scenes.begin(), scenes.end(), [surface_size](auto* scene) { scene->update_framebuffer_size(surface_size); });
+              break;
+
+            default:
+              // do nothing
+              break;
+          }
+
+          auto actual_event = *event;
+          std::for_each(scenes.begin(), scenes.end(), [&actual_event](auto* scene) { scene->process_event(actual_event); });
+        }
+
+        // update
+
+        const Time time = clock.restart();
+        std::for_each(scenes.begin(), scenes.end(), [time](auto* scene) { scene->update(time); });
+
+        // render
+
+        if (auto maybe_command_buffer = render_manager()->begin_command_buffer(); maybe_command_buffer) {
+          recorder.clear();
+          std::for_each(scenes.begin(), scenes.end(), [&recorder](auto* scene) { scene->render(recorder); });
+          recorder.sort();
+
+          auto command_buffer = *maybe_command_buffer;
+          auto target = render_manager()->current_render_target();
+          auto render_command_buffer = command_buffer.begin_rendering(target, current_scene->clear_color());
+
+          render_records(render_command_buffer, recorder);
+
+          command_buffer.end_rendering(render_command_buffer);
+          render_manager()->end_command_buffer(command_buffer);
+        }
+      }
+    }
+
+    render_manager()->wait_idle();
     return EXIT_SUCCESS;
   }
 

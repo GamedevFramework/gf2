@@ -18,6 +18,11 @@ namespace gf {
     TextEntity(FontAtlas* atlas, const TextData& data, RenderManager* render_manager);
     TextEntity(const TextResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
+    Text& text()
+    {
+      return m_text;
+    }
+
     Transform& transform()
     {
       return m_transform;

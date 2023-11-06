@@ -16,7 +16,6 @@ namespace home {
     WorldScene(GameHub* hub, const WorldData& data);
 
   private:
-    gf::TextEntity m_title;
   };
 
 }
