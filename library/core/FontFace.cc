@@ -152,43 +152,36 @@ namespace gf {
       return result;
     }
 
-    FT_GlyphSlot slot = face->glyph;
-    FT_Glyph glyph = nullptr;
-
-    if (auto err = FT_Get_Glyph(slot, &glyph)) {
-      Log::error("Could not extract the glyph: {}", FontManager::error_message(err));
-      return result;
-    }
-
     /*
-     * BSDF mode (SDF not working very well)
+     * BSDF mode
      */
 
-    if (auto err = FT_Glyph_To_Bitmap(&glyph, FT_RENDER_MODE_NORMAL, nullptr, 1)) {
+    auto* glyph = face->glyph;
+
+    if (auto err = FT_Render_Glyph(glyph, FT_RENDER_MODE_NORMAL)) {
       Log::error("Could not create a bitmap from the glyph (U+{:X}): {}", static_cast<uint32_t>(codepoint), FontManager::error_message(err));
-      FT_Done_Glyph(glyph);
       return result;
     }
 
-    if (auto err = FT_Glyph_To_Bitmap(&glyph, FT_RENDER_MODE_SDF, nullptr, 1)) {
-      Log::error("Could not create a bitmap from the glyph (U+{:X}): {}", static_cast<uint32_t>(codepoint), FontManager::error_message(err));
-      FT_Done_Glyph(glyph);
-      return result;
+    if (codepoint != U' ') {
+      if (auto err = FT_Render_Glyph(glyph, FT_RENDER_MODE_SDF)) {
+        Log::error("Could not create a bitmap from the glyph (U+{:X}): {}", static_cast<uint32_t>(codepoint), FontManager::error_message(err));
+        return result;
+      }
     }
 
     assert(glyph->format == FT_GLYPH_FORMAT_BITMAP);
-    auto* bglyph = reinterpret_cast<FT_BitmapGlyph>(glyph); // NOLINT
+    auto* bitmap = &glyph->bitmap;
 
     // advance
 
-    result.advance = ft_convert_metrics(slot->metrics.horiAdvance);
+    result.advance = ft_convert_metrics(glyph->metrics.horiAdvance);
 
     // size
 
-    const Vec2I glyph_size(static_cast<int>(bglyph->bitmap.width), static_cast<int>(bglyph->bitmap.rows));
+    const Vec2I glyph_size(static_cast<int>(bitmap->width), static_cast<int>(bitmap->rows));
 
     if (glyph_size.h == 0 || glyph_size.w == 0) {
-      FT_Done_Glyph(glyph);
       return result;
     }
 
@@ -196,15 +189,13 @@ namespace gf {
 
     // clang-format: off
     result.bounds = RectF::from_position_size(
-        { ft_convert_metrics(slot->metrics.horiBearingX), -ft_convert_metrics(slot->metrics.horiBearingY) },
-        { ft_convert_metrics(slot->metrics.width), ft_convert_metrics(slot->metrics.height) });
+        { ft_convert_metrics(glyph->metrics.horiBearingX), -ft_convert_metrics(glyph->metrics.horiBearingY) },
+        { ft_convert_metrics(glyph->metrics.width), ft_convert_metrics(glyph->metrics.height) });
     // clang-format: on
 
     // bitmap
 
-    result.bitmap = Bitmap(glyph_size, bglyph->bitmap.buffer, bglyph->bitmap.pitch);
-
-    FT_Done_Glyph(glyph);
+    result.bitmap = Bitmap(glyph_size, bitmap->buffer, bitmap->pitch);
     return result;
   }
 

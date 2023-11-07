@@ -9,6 +9,7 @@
 
 #include <algorithm>
 
+#include <gf2/core/FontManager.h>
 #include <gf2/core/Log.h>
 #include <gf2/core/StringUtils.h>
 
@@ -50,8 +51,12 @@ namespace gf {
 
     m_bitmap.blit(font_glyph.bitmap, bounds.position() + FontAtlasPadding);
 
+    const Vec2F texture_abs_position = bounds.position() + FontAtlasPadding + FontManager::spread();
+    const Vec2F texture_abs_size = bounds.size() - 2 * FontAtlasPadding - 2 * FontManager::spread();
     const Vec2F total_size = m_bitmap.size();
-    const RectF texture_region = RectF::from_position_size(Vec2F(bounds.position() + FontAtlasPadding) / total_size, Vec2F(bounds.size()) / total_size);
+
+    const RectF texture_region = RectF::from_position_size(texture_abs_position / total_size, texture_abs_size / total_size);
+
     m_atlas.emplace(key, texture_region);
     return texture_region;
   }
@@ -109,11 +114,16 @@ namespace gf {
 
       const RectI bounds = rectangles[i];
       assert(bounds.size() == sizes[i]);
+      assert(bounds.size() == glyphs[i]->bitmap.size() + 2 * FontAtlasPadding);
 
-      m_bitmap.blit(glyphs[i]->bitmap, bounds.position() + 2 * FontAtlasPadding);
+      m_bitmap.blit(glyphs[i]->bitmap, bounds.position() + FontAtlasPadding);
 
+      const Vec2F texture_abs_position = bounds.position() + FontAtlasPadding + FontManager::spread() - 1;
+      const Vec2F texture_abs_size = bounds.size() - 2 * FontAtlasPadding - 2 * (FontManager::spread() - 1);
       const Vec2F total_size = m_bitmap.size();
-      const RectF texture_region = RectF::from_position_size(Vec2F(bounds.position() + FontAtlasPadding) / total_size, Vec2F(bounds.size()) / total_size);
+
+      const RectF texture_region = RectF::from_position_size(texture_abs_position / total_size, texture_abs_size / total_size);
+
       m_atlas.emplace(key, texture_region);
     }
   }

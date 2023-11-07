@@ -3,6 +3,8 @@
 #ifndef GF_FONT_MANAGER_H
 #define GF_FONT_MANAGER_H
 
+#include <cstdint>
+
 #include <string>
 
 #include "CoreApi.h"
@@ -20,6 +22,8 @@ namespace gf {
     FontManager& operator=(FontManager&& other) noexcept;
 
     std::string backend();
+
+    static int32_t spread();
 
   private:
     friend class FontFace;

@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
     auto gray = glyph.bitmap(position);
 
     // gray = gray > 128 ? 255 : 0;
-    const float smoothing = 0.05f;
+    const float smoothing = 0.25f / 8.0f;
     const float distance = static_cast<float>(gray) / 255.0f;
     const float alpha = smoothstep(0.5f - smoothing, 0.5f + smoothing, distance);
     gray = static_cast<uint8_t>(alpha * 255);

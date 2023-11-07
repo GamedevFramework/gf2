@@ -22,6 +22,8 @@ namespace gf {
 
   namespace {
 
+    constexpr int32_t Spread = 8;
+
     const char* ft_error_message(FT_Error error)
     {
       switch (error) {
@@ -60,7 +62,7 @@ namespace gf {
 
     m_stroker = stroker;
 
-    const FT_Int spread = 8; // normally, the default value, but in case.
+    auto spread = static_cast<FT_Int>(Spread);
 
     if (auto err = FT_Property_Set(library, "bsdf", "spread", &spread)) {
       Log::warning("Could not set spread: {}", ft_error_message(err));
@@ -111,6 +113,11 @@ namespace gf {
 
 #undef GF_STRINGIFY
 #undef GF_XSTRINGIFY
+
+  int32_t FontManager::spread()
+  {
+    return Spread;
+  }
 
   const char* FontManager::error_message(int error)
   {
