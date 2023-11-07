@@ -11,26 +11,26 @@
 namespace gf {
 
   AnimationEntity::AnimationEntity(std::vector<const Texture*> textures, const AnimationData& data, RenderManager* render_manager)
-  : m_sprite(std::move(textures), data, render_manager)
+  : m_animation(std::move(textures), data, render_manager)
   {
   }
 
   AnimationEntity::AnimationEntity(const AnimationResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
-  : m_sprite(resource, render_manager, resource_manager)
+  : m_animation(resource, render_manager, resource_manager)
   {
   }
 
   void AnimationEntity::update(Time time)
   {
-    m_sprite.update(time);
+    m_animation.update(time);
   }
 
   void AnimationEntity::render(RenderRecorder& recorder)
   {
     RenderObject object = {};
     object.priority = priority();
-    object.geometry = m_sprite.geometry();
-    object.transform = m_transform.compute_matrix(m_sprite.bounds());
+    object.geometry = m_animation.geometry();
+    object.transform = compute_matrix(m_animation.bounds());
     recorder.record(object);
   }
 

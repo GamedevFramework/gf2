@@ -21,15 +21,13 @@ namespace gf {
 
   void TextEntity::render(RenderRecorder& recorder)
   {
-    auto geometry = m_text.geometry();
-    auto transform = m_transform;
-    transform.scale *= m_text.characater_size() / 64.0f;
-    auto model_matrix = transform.compute_matrix(m_text.bounds());
+    auto text_transform = transform();
+    text_transform.scale *= m_text.characater_size() / 64.0f;
 
     RenderObject object = {};
     object.priority = priority();
-    object.geometry = geometry;
-    object.transform = model_matrix;
+    object.geometry = m_text.geometry();
+    object.transform = text_transform.compute_matrix(m_text.bounds());
     recorder.record(object);
   }
 

@@ -186,6 +186,7 @@ add_library(gf2graphics0
   graphics/Texture.cc
   graphics/TiledMap.cc
   graphics/Touch.cc
+  graphics/TransformableEntity.cc
   graphics/Vertex.cc
   graphics/VertexInput.cc
   graphics/Vulkan.cc

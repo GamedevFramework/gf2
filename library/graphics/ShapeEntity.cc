@@ -18,7 +18,7 @@ namespace gf {
   void ShapeEntity::render(RenderRecorder& recorder)
   {
     auto shape_geometry = m_shape.geometry();
-    auto model_matrix = m_transform.compute_matrix(m_shape.bounds());
+    auto model_matrix = compute_matrix(m_shape.bounds());
 
     if (shape_geometry.outline.has_value()) {
       RenderObject object = {};

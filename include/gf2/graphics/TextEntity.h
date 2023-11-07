@@ -5,15 +5,15 @@
 
 #include <gf2/core/Transform.h>
 
-#include "Entity.h"
 #include "GraphicsApi.h"
 #include "Text.h"
+#include "TransformableEntity.h"
 
 namespace gf {
   class RenderManager;
   class ResourceManager;
 
-  class GF_GRAPHICS_API TextEntity : public Entity {
+  class GF_GRAPHICS_API TextEntity : public TransformableEntity {
   public:
     TextEntity(FontAtlas* atlas, const TextData& data, RenderManager* render_manager);
     TextEntity(const TextResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
@@ -23,21 +23,10 @@ namespace gf {
       return m_text;
     }
 
-    Transform& transform()
-    {
-      return m_transform;
-    }
-
-    const Transform& transform() const
-    {
-      return m_transform;
-    }
-
     void render(RenderRecorder& recorder) override;
 
   private:
     Text m_text;
-    Transform m_transform;
   };
 
 }

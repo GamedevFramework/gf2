@@ -25,7 +25,7 @@ namespace gf {
     RenderObject object = {};
     object.priority = priority();
     object.geometry = m_sprite.geometry();
-    object.transform = m_transform.compute_matrix(m_sprite.bounds());
+    object.transform = compute_matrix(m_sprite.bounds());
     recorder.record(object);
   }
 

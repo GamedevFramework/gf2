@@ -7,44 +7,33 @@
 #include <gf2/core/Transform.h>
 
 #include "Animation.h"
-#include "Entity.h"
 #include "GraphicsApi.h"
 #include "Texture.h"
+#include "TransformableEntity.h"
 
 namespace gf {
   class RenderManager;
 
-  class GF_GRAPHICS_API AnimationEntity : public Entity {
+  class GF_GRAPHICS_API AnimationEntity : public TransformableEntity {
   public:
     AnimationEntity(std::vector<const Texture*> textures, const AnimationData& data, RenderManager* render_manager);
     AnimationEntity(const AnimationResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
-
-    Transform& transform()
-    {
-      return m_transform;
-    }
-
-    const Transform& transform() const
-    {
-      return m_transform;
-    }
 
     void update(Time time) override;
     void render(RenderRecorder& recorder) override;
 
     void reset()
     {
-      m_sprite.reset();
+      m_animation.reset();
     }
 
     bool finished() const
     {
-      return m_sprite.finished();
+      return m_animation.finished();
     }
 
   private:
-    Animation m_sprite;
-    Transform m_transform;
+    Animation m_animation;
   };
 
 }
