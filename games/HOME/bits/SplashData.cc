@@ -10,15 +10,7 @@ namespace home {
 
     // action_group
 
-    gf::ControlData click_control = {};
-    click_control.type = gf::ControlType::MouseButton;
-    click_control.mouse_button.button = gf::AnyMouseButton;
-
-    gf::ActionData click_action;
-    click_action.type = gf::ActionType::Instantaneous;
-    click_action.controls.push_back(click_control);
-
-    action_group.actions.emplace("click"_id, click_action);
+    action_group.actions.emplace("click"_id, gf::ActionData(gf::ActionType::Instantaneous).add_mouse_button_control(gf::AnyMouseButton));
 
     // title_sprite
 

@@ -79,6 +79,38 @@ namespace gf {
   };
 
   struct GF_CORE_API ControlData {
+    ControlData() = default;
+
+    constexpr ControlData(Keycode keycode, Flags<Modifier> modifiers = None)
+    : type(ControlType::Keycode)
+    , keycode({ keycode, modifiers })
+    {
+    }
+
+    constexpr ControlData(Scancode scancode, Flags<Modifier> modifiers = None)
+    : type(ControlType::Scancode)
+    , scancode({ scancode, modifiers })
+    {
+    }
+
+    constexpr ControlData(MouseButton button)
+    : type(ControlType::MouseButton)
+    , mouse_button({ button })
+    {
+    }
+
+    constexpr ControlData(GamepadId gamepad_id, GamepadButton button)
+    : type(ControlType::GamepadButton)
+    , gamepad_button({ gamepad_id, button })
+    {
+    }
+
+    constexpr ControlData(GamepadId gamepad_id, GamepadAxis axis, GamepadAxisDirection direction)
+    : type(ControlType::GamepadAxis)
+    , gamepad_axis({ gamepad_id, axis, direction })
+    {
+    }
+
     ControlType type;
     union {
       KeycodeControlData keycode;

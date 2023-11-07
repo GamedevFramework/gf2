@@ -5,8 +5,8 @@
 
 #include <gf2/core/Transform.h>
 
-#include "GraphicsApi.h"
 #include "Entity.h"
+#include "GraphicsApi.h"
 
 namespace gf {
 

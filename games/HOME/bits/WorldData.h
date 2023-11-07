@@ -12,7 +12,6 @@ namespace home {
     WorldData();
 
     gf::ResourceBundle bundle(GameHub* hub);
-
   };
 
 }

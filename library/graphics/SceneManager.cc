@@ -368,7 +368,6 @@ namespace gf {
       current_scene->show();
       current_scene->resume();
 
-
       while (!m_scenes_changed && !window()->should_close()) {
         // update
 
