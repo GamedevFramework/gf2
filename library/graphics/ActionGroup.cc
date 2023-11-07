@@ -5,6 +5,10 @@
 #include <gf2/graphics/ActionGroup.h>
 // clang-format on
 
+#include <cassert>
+
+#include <gf2/core/Log.h>
+
 namespace gf {
   ActionGroup::ActionGroup(const ActionGroupData& data)
   {
@@ -41,11 +45,12 @@ namespace gf {
   bool ActionGroup::active(Id id) const
   {
     if (auto iterator = m_actions.find(id); iterator != m_actions.end()) {
-      const auto& [id, action] = *iterator;
+      const auto& [actual_id, action] = *iterator;
+      assert(id == actual_id);
       return action.active();
     }
 
-    // TODO: warning?
+    Log::warning("Unknown action id: {:X}.", static_cast<uint64_t>(id));
     return false;
   }
 
