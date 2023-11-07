@@ -7,8 +7,6 @@
 
 #include <gf2/graphics/RenderRecorder.h>
 
-#include "gf2/core/Camera.h"
-
 namespace gf {
 
   /*
@@ -24,7 +22,7 @@ namespace gf {
 
   void Scene::set_clear_color(Color color)
   {
-    m_clear_color = color;
+    m_clear_color = gf::srgb_to_linear(color);
   }
 
   Color Scene::clear_color() const
@@ -79,6 +77,11 @@ namespace gf {
     if (!do_early_process_event(event)) {
       do_process_event(event);
     }
+  }
+
+  void Scene::handle_actions()
+  {
+    do_handle_actions();
   }
 
   void Scene::update(Time time)
@@ -138,6 +141,11 @@ namespace gf {
   }
 
   void Scene::do_process_event([[maybe_unused]] const Event& event)
+  {
+    // do nothing by default
+  }
+
+  void Scene::do_handle_actions()
   {
     // do nothing by default
   }

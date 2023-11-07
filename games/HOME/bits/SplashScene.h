@@ -3,6 +3,7 @@
 
 #include <gf2/core/ResourceBundle.h>
 
+#include <gf2/graphics/ActionGroup.h>
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/SpriteEntity.h>
 #include <gf2/graphics/TextEntity.h>
@@ -17,8 +18,15 @@ namespace home {
     SplashScene(GameHub* hub, const SplashData& data);
 
   private:
-    gf::TextEntity m_title_text;
+    void do_process_event(const gf::Event& event) override;
+    void do_handle_actions() override;
+
+    GameHub* m_hub = nullptr;
+
+    gf::ActionGroup m_action_group;
     gf::SpriteEntity m_title_sprite;
+    gf::TextEntity m_title_text;
+    gf::TextEntity m_click_text;
   };
 
 }

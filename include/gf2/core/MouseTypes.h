@@ -18,9 +18,11 @@ namespace gf {
     Touch2,
   };
 
+  constexpr MouseButton AnyMouseButton = static_cast<MouseButton>(0xFFFFFFFF);
+
   enum class MouseId : uint32_t;
 
-  constexpr MouseId TouchMouseId = MouseId{ 0xFFFFFFFF };
+  constexpr MouseId TouchMouseId = static_cast<MouseId>(0xFFFFFFFF);
 
 } // namespace gf
 

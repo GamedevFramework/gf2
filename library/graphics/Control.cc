@@ -7,6 +7,7 @@
 
 #include "gf2/core/ControlData.h"
 #include "gf2/core/GamepadTypes.h"
+#include "gf2/core/MouseTypes.h"
 
 namespace gf {
 
@@ -84,13 +85,13 @@ namespace gf {
   void Control::process_mouse_button_control(const Event& event, const MouseButtonControlData& data)
   {
     if (event.type == EventType::MouseButtonPressed) {
-      if (event.mouse_button.button == data.button) {
+      if (data.button == AnyMouseButton || event.mouse_button.button == data.button) {
         trigger();
       }
     }
 
     if (event.type == EventType::MouseButtonReleased) {
-      if (event.mouse_button.button == data.button) {
+      if (data.button == AnyMouseButton || event.mouse_button.button == data.button) {
         reset();
       }
     }

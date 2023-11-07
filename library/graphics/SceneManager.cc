@@ -302,6 +302,8 @@ namespace gf {
         m_scene->process_event(*event);
       }
 
+      m_scene->handle_actions();
+
       // update
 
       const Time time = clock.restart();
@@ -390,6 +392,8 @@ namespace gf {
           auto actual_event = *event;
           std::for_each(scenes.begin(), scenes.end(), [&actual_event](auto* scene) { scene->process_event(actual_event); });
         }
+
+        std::for_each(scenes.begin(), scenes.end(), [](auto* scene) { scene->handle_actions(); });
 
         // update
 

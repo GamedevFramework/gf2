@@ -48,6 +48,7 @@ namespace gf {
     bool hidden() const;
 
     void process_event(const Event& event);
+    void handle_actions();
     void update(Time time);
     void render(RenderRecorder& recorder);
 
@@ -69,6 +70,7 @@ namespace gf {
 
     virtual bool do_early_process_event(const Event& event);
     virtual void do_process_event(const Event& event);
+    virtual void do_handle_actions();
     virtual void do_update(Time time);
     virtual void do_render(RenderRecorder& recorder);
 
