@@ -46,9 +46,9 @@ int main()
   data.add_tileset(7, { 6, 4 }, gf::seconds(1.0f / 25.0f), 4);
 
   gf::AnimationEntity animation_entity(textures, data, scene_manager.render_manager());
-  animation_entity.transform().location = gf::vec(1000.0f, 1000.0f);
-  animation_entity.transform().origin = gf::vec(0.5f, 0.5f);
-  animation_entity.transform().scale = gf::vec(0.1f, 0.1f);
+  animation_entity.set_location({ 1000.0f, 1000.0f });
+  animation_entity.set_origin({ 0.5f, 0.5f });
+  animation_entity.set_scale(0.1f);
 
   gf::StandardScene scene;
   scene.set_world_center({ 1000.0f, 1000.0f });

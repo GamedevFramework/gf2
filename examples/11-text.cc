@@ -24,14 +24,14 @@ int main()
 
   gf::TextData text_data;
   text_data.content = "Gamedev Framework 2";
-  text_data.character_size = 32;
+  text_data.character_size = 64;
   text_data.color = gf::darker(gf::Azure, 0.2f);
   // text_data.outline_color = gf::Gray;
   // text_data.outline_thickness = 2.0f;
 
   gf::TextEntity text_entity(font.atlas(), text_data, scene_manager.render_manager());
-  text_entity.transform().location = gf::vec(1000.0f, 1000.0f);
-  text_entity.transform().origin = gf::vec(0.5f, 0.5f);
+  text_entity.set_location({ 1000.0f, 1000.0f });
+  text_entity.set_origin({ 0.5f, 0.5f });
 
   gf::StandardScene scene;
   scene.set_world_center({ 1000.0f, 1000.0f });

@@ -21,12 +21,10 @@ namespace home {
 
     m_title_text.set_location({ 0.0f, 400.0f });
     m_title_text.set_origin({ 0.5f, 0.5f });
-    m_title_text.text().set_characater_size(72.0f);
     add_world_entity(&m_title_text);
 
     m_click_text.set_location({ 0.0f, 500.0f });
     m_click_text.set_origin({ 0.5f, 0.5f });
-    m_click_text.text().set_characater_size(36.0f);
     add_world_entity(&m_click_text);
   }
 

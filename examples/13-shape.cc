@@ -20,8 +20,8 @@ int main()
   rectangle_data.outline_color = gf::darker(gf::Azure);
 
   gf::ShapeEntity rectangle_entity(nullptr, rectangle_data, scene_manager.render_manager());
-  rectangle_entity.transform().location = gf::vec(1000.0f, 1000.0f);
-  rectangle_entity.transform().origin = gf::vec(0.5f, 0.5f);
+  rectangle_entity.set_location({ 1000.0f, 1000.0f });
+  rectangle_entity.set_origin({ 0.5f, 0.5f });
 
   gf::StandardScene scene;
   scene.set_world_center({ 1000.0f, 1000.0f });
