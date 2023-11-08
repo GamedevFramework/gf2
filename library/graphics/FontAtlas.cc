@@ -118,8 +118,8 @@ namespace gf {
 
       m_bitmap.blit(glyphs[i]->bitmap, bounds.position() + FontAtlasPadding);
 
-      const Vec2F texture_abs_position = bounds.position() + FontAtlasPadding + FontManager::spread() - 1;
-      const Vec2F texture_abs_size = bounds.size() - 2 * FontAtlasPadding - 2 * (FontManager::spread() - 1);
+      const Vec2F texture_abs_position = bounds.position() + FontAtlasPadding;
+      const Vec2F texture_abs_size = bounds.size() - 2 * FontAtlasPadding;
       const Vec2F total_size = m_bitmap.size();
 
       const RectF texture_region = RectF::from_position_size(texture_abs_position / total_size, texture_abs_size / total_size);

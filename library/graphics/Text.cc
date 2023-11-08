@@ -10,6 +10,7 @@
 #include <string_view>
 #include <vector>
 
+#include <gf2/core/FontManager.h>
 #include <gf2/core/ResourceManager.h>
 #include <gf2/core/StringUtils.h>
 
@@ -187,6 +188,8 @@ namespace gf {
 
     void compute_vertices(std::vector<Vertex>& vertices, std::vector<uint16_t>& indices, RectF bounds, RectF texture_region, Vec2F position, Color color)
     {
+      bounds = bounds.grow_by(static_cast<float>(FontManager::spread() - 1));
+
       assert(vertices.size() < UINT16_MAX);
       auto index = static_cast<uint16_t>(vertices.size());
 
