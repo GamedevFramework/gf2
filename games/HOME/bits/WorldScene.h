@@ -3,6 +3,8 @@
 
 #include <gf2/core/ResourceBundle.h>
 
+#include <gf2/audio/Sound.h>
+#include <gf2/audio/Music.h>
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/TextEntity.h>
 
@@ -16,6 +18,14 @@ namespace home {
     WorldScene(GameHub* hub, const WorldData& data);
 
   private:
+    gf::Music* main_theme_music = nullptr;
+
+    gf::Sound* jet_engine_sound = nullptr;
+    gf::Sound* mining_sound = nullptr;
+    gf::Sound* o2_filling_sound = nullptr;
+    gf::Sound* breath_low_o2_sound = nullptr;
+    gf::Sound* victory_sound = nullptr;
+    gf::Sound* death_sound = nullptr;
   };
 
 }

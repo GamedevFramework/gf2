@@ -8,9 +8,13 @@ namespace home {
 
     font_registry.add_loader(gf::loader_for<gf::Font>(file_loader));
     texture_registry.add_loader(gf::loader_for<gf::Texture>(file_loader));
+    sound_registry.add_loader(gf::loader_for<gf::Sound>(file_loader));
+    music_registry.add_loader(gf::loader_for<gf::Music>(file_loader));
 
     manager.add_registry(&texture_registry);
     manager.add_registry(&font_registry);
+    manager.add_registry(&sound_registry);
+    manager.add_registry(&music_registry);
   }
 
 }
