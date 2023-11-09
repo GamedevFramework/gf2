@@ -6,11 +6,13 @@
 #include <cstdint>
 
 #include <filesystem>
+#include <map>
 #include <vector>
 
 #include "Color.h"
 #include "CoreApi.h"
 #include "Flags.h"
+#include "Id.h"
 #include "Rect.h"
 #include "Time.h"
 #include "TypeTraits.h"
@@ -58,6 +60,27 @@ namespace gf {
 
   template<typename Archive>
   Archive& operator|(Archive& ar, MaybeConst<AnimationResource, Archive>& resource)
+  {
+    return ar | resource.textures | resource.data;
+  }
+
+  struct GF_CORE_API AnimationGroupData {
+    std::map<Id, AnimationData> animations;
+  };
+
+  template<typename Archive>
+  Archive& operator|(Archive& ar, MaybeConst<AnimationGroupData, Archive>& data)
+  {
+    return ar | data.animations;
+  }
+
+  struct GF_CORE_API AnimationGroupResource {
+    std::vector<std::filesystem::path> textures;
+    AnimationGroupData data;
+  };
+
+  template<typename Archive>
+  Archive& operator|(Archive& ar, MaybeConst<AnimationGroupResource, Archive>& resource)
   {
     return ar | resource.textures | resource.data;
   }
