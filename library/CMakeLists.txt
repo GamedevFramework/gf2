@@ -108,6 +108,7 @@ add_library(gf2core0
   core/Result.cc
   core/Serialization.cc
   core/SerializationOps.cc
+  core/Signal.cc
   core/ShapeData.cc
   core/SpriteData.cc
   core/Stream.cc

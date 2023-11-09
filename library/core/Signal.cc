@@ -2,5 +2,5 @@
 // Copyright (c) 2023 Julien Bernard
 
 // clang-format off: main header
-#include <gf2/core/Array2D.h>
+#include <gf2/core/Signal.h>
 // clang-format on
