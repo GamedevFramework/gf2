@@ -68,6 +68,7 @@ add_library(gf2core0
   core/AnimationData.cc
   core/AnyGrid.cc
   core/Array2D.cc
+  core/AudioSourceData.cc
   core/BinaryHeap.cc
   core/BinPack.cc
   core/Bitmap.cc
