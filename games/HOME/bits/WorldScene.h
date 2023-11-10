@@ -5,6 +5,7 @@
 
 #include <gf2/audio/Sound.h>
 #include <gf2/audio/Music.h>
+#include <gf2/graphics/AnimationEntity.h>
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/TextEntity.h>
 
@@ -26,6 +27,8 @@ namespace home {
     gf::Sound* breath_low_o2_sound = nullptr;
     gf::Sound* victory_sound = nullptr;
     gf::Sound* death_sound = nullptr;
+
+    gf::AnimationGroupEntity m_hero_animations;
   };
 
 }
