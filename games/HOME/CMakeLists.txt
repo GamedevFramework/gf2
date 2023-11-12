@@ -4,6 +4,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DI
 add_executable(HOME
   HOME.cc
   bits/GameHub.cc
+  bits/HeroEntity.cc
   bits/ResourceHub.cc
   bits/SplashData.cc
   bits/SplashScene.cc

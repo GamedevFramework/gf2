@@ -12,10 +12,14 @@
 #include <gf2/core/Range.h>
 #include <gf2/core/StringUtils.h>
 
-static float smoothstep(float edge0, float edge1, float x)
-{
-  x = gf::clamp((x - edge0) / (edge1 - edge0), 0.0f, 1.0f);
-  return gf::quintic_step(x);
+namespace {
+
+  float smoothstep(float edge0, float edge1, float x)
+  {
+    x = gf::clamp((x - edge0) / (edge1 - edge0), 0.0f, 1.0f);
+    return gf::quintic_step(x);
+  }
+
 }
 
 int main(int argc, char* argv[])

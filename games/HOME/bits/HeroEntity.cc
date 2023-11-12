@@ -57,14 +57,13 @@ namespace home {
   void HeroEntity::update(gf::Time time)
   {
     if (m_status == Status::Dying) {
-      m_hero_animations.select("death"_id);
       m_target = location();
       m_velocity = { 0.0f, 0.0f };
 
       // TODO: sound
     } else {
       auto move = m_target - location();
-      float length = gf::euclidean_length(move);
+      const float length = gf::euclidean_length(move);
 
       if (length > time.as_seconds() * HeroVelocity) {
         if (m_activity == Activity::Mining) {
@@ -93,59 +92,9 @@ namespace home {
           m_jet_engine_sound->stop();
         }
       }
-
-      // set the animation
-
-      if (m_activity == Activity::Mining && m_status == Status::Waiting) {
-        switch (m_orientation) {
-          case gf::Orientation::NorthWest:
-            m_hero_animations.select("harvest_north_west"_id);
-            break;
-          case gf::Orientation::NorthEast:
-            m_hero_animations.select("harvest_north_east"_id);
-            break;
-          case gf::Orientation::SouthWest:
-            m_hero_animations.select("harvest_south_west"_id);
-            break;
-          case gf::Orientation::SouthEast:
-            m_hero_animations.select("harvest_south_east"_id);
-            break;
-          default:
-            break;
-        }
-      } else {
-        switch (m_orientation) {
-          case gf::Orientation::NorthWest:
-            m_hero_animations.select(m_status == Status::Moving ? "move_north_west"_id : "pause_north_west"_id);
-            break;
-          case gf::Orientation::North:
-            m_hero_animations.select(m_status == Status::Moving ? "move_north"_id : "pause_north"_id);
-            break;
-          case gf::Orientation::NorthEast:
-            m_hero_animations.select(m_status == Status::Moving ? "move_north_east"_id : "pause_north_east"_id);
-            break;
-          case gf::Orientation::East:
-            m_hero_animations.select(m_status == Status::Moving ? "move_east"_id : "pause_east"_id);
-            break;
-          case gf::Orientation::SouthEast:
-            m_hero_animations.select(m_status == Status::Moving ? "move_south_east"_id : "pause_south_east"_id);
-            break;
-          case gf::Orientation::South:
-            m_hero_animations.select("south"_id);
-            break;
-          case gf::Orientation::SouthWest:
-            m_hero_animations.select(m_status == Status::Moving ? "move_south_west"_id : "pause_south_west"_id);
-            break;
-          case gf::Orientation::West:
-            m_hero_animations.select(m_status == Status::Moving ? "move_west"_id : "pause_west"_id);
-            break;
-          default:
-            assert(false);
-            break;
-        }
-      }
     }
 
+    compute_animation();
     m_hero_animations.update(time);
 
     update_position.emit(location());
@@ -158,6 +107,72 @@ namespace home {
     m_hero_animations.set_transform(transform());
     m_hero_animations.render(recorder);
     m_crosshair.render(recorder);
+  }
+
+  void HeroEntity::compute_animation()
+  {
+    if (m_status == Status::Dying) {
+      m_hero_animations.select("death"_id);
+    } else {
+      if (m_activity == Activity::Mining && m_status == Status::Waiting) {
+        compute_mining_animation();
+      } else {
+        compute_walking_animation();
+      }
+    }
+  }
+
+  void HeroEntity::compute_mining_animation()
+  {
+    switch (m_orientation) {
+      case gf::Orientation::NorthWest:
+        m_hero_animations.select("harvest_north_west"_id);
+        break;
+      case gf::Orientation::NorthEast:
+        m_hero_animations.select("harvest_north_east"_id);
+        break;
+      case gf::Orientation::SouthWest:
+        m_hero_animations.select("harvest_south_west"_id);
+        break;
+      case gf::Orientation::SouthEast:
+        m_hero_animations.select("harvest_south_east"_id);
+        break;
+      default:
+        break;
+    }
+  }
+
+  void HeroEntity::compute_walking_animation()
+  {
+    switch (m_orientation) {
+      case gf::Orientation::NorthWest:
+        m_hero_animations.select(m_status == Status::Moving ? "move_north_west"_id : "pause_north_west"_id);
+        break;
+      case gf::Orientation::North:
+        m_hero_animations.select(m_status == Status::Moving ? "move_north"_id : "pause_north"_id);
+        break;
+      case gf::Orientation::NorthEast:
+        m_hero_animations.select(m_status == Status::Moving ? "move_north_east"_id : "pause_north_east"_id);
+        break;
+      case gf::Orientation::East:
+        m_hero_animations.select(m_status == Status::Moving ? "move_east"_id : "pause_east"_id);
+        break;
+      case gf::Orientation::SouthEast:
+        m_hero_animations.select(m_status == Status::Moving ? "move_south_east"_id : "pause_south_east"_id);
+        break;
+      case gf::Orientation::South:
+        m_hero_animations.select("south"_id);
+        break;
+      case gf::Orientation::SouthWest:
+        m_hero_animations.select(m_status == Status::Moving ? "move_south_west"_id : "pause_south_west"_id);
+        break;
+      case gf::Orientation::West:
+        m_hero_animations.select(m_status == Status::Moving ? "move_west"_id : "pause_west"_id);
+        break;
+      default:
+        assert(false);
+        break;
+    }
   }
 
 }

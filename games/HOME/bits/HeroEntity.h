@@ -28,9 +28,13 @@ namespace home {
     gf::Signal<void(gf::Vec2F)> update_position; // NOLINT
 
   private:
+    void compute_animation();
+    void compute_mining_animation();
+    void compute_walking_animation();
+
     gf::Orientation m_orientation = gf::Orientation::SouthWest;
 
-    enum class Status {
+    enum class Status : uint8_t {
       Waiting,
       Moving,
       Dying,
@@ -38,7 +42,7 @@ namespace home {
 
     Status m_status = Status::Waiting;
 
-    enum class Activity {
+    enum class Activity : uint8_t {
       Walking,
       Mining,
     };

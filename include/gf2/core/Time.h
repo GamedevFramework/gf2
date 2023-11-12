@@ -16,10 +16,7 @@ namespace gf {
 
   class GF_CORE_API Time {
   public:
-    constexpr Time()
-    : m_duration(std::chrono::steady_clock::duration::zero())
-    {
-    }
+    constexpr Time() = default;
 
     constexpr explicit Time(std::chrono::steady_clock::duration duration)
     : m_duration(duration)
@@ -59,7 +56,7 @@ namespace gf {
     }
 
   private:
-    std::chrono::steady_clock::duration m_duration;
+    std::chrono::steady_clock::duration m_duration = std::chrono::steady_clock::duration::zero();
   };
 
   constexpr Time seconds(float amount)
