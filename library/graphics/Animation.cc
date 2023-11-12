@@ -9,6 +9,7 @@
 
 #include <gf2/graphics/Texture.h>
 #include <gf2/graphics/Vertex.h>
+
 #include "gf2/core/Id.h"
 
 namespace gf {
@@ -167,7 +168,6 @@ namespace gf {
     return geometry;
   }
 
-
   /*
    * AnimationGroup
    */
@@ -177,7 +177,7 @@ namespace gf {
   {
     AnimationBuilder builder;
 
-    for (const auto& [ id, animation_data ] : data.animations) {
+    for (const auto& [id, animation_data] : data.animations) {
       AnimationRuntime animation;
       animation.properties = animation_data.properties;
       animation.frames = builder.append_data(m_textures, animation_data);
@@ -278,6 +278,5 @@ namespace gf {
 
     Log::fatal("Unknown selected animation.");
   }
-
 
 }

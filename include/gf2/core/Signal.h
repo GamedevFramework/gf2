@@ -3,8 +3,8 @@
 #ifndef GF_SIGNAL_H
 #define GF_SIGNAL_H
 
-#include <cstdint>
 #include <cassert>
+#include <cstdint>
 
 #include <functional>
 #include <mutex>
@@ -25,7 +25,7 @@ namespace gf {
     SignalId connect(Func&& callback)
     {
       const std::lock_guard<std::mutex> lock(m_mutex);
-      SignalId id = SignalId{m_slots.size()};
+      SignalId id = SignalId{ m_slots.size() };
       m_slots.emplace_back(std::forward<Func>(callback));
       return id;
     }

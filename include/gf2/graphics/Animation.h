@@ -3,8 +3,8 @@
 #ifndef GF_ANIMATION_H
 #define GF_ANIMATION_H
 
-#include <vector>
 #include <string_view>
+#include <vector>
 
 #include <gf2/core/AnimationData.h>
 #include <gf2/core/Flags.h>
@@ -14,13 +14,13 @@
 #include "Buffer.h"
 #include "GraphicsApi.h"
 #include "RenderObject.h"
+
 #include "gf2/core/Id.h"
 
 namespace gf {
   class Texture;
   class RenderManager;
   class ResourceManager;
-
 
   struct GF_GRAPHICS_API AnimationFrameRuntime {
     std::size_t texture_index = 0;
@@ -59,7 +59,6 @@ namespace gf {
     std::size_t m_current_frame = 0;
     Time m_current_time = {};
   };
-
 
   class GF_GRAPHICS_API AnimationGroup {
   public:

@@ -32,7 +32,8 @@ namespace gf {
     Scene& operator=(const Scene&) = delete;
     Scene& operator=(Scene&&) noexcept = default;
 
-    void update_framebuffer_size(Vec2I size);
+    void set_surface_size(Vec2I size);
+    Vec2I surface_size() const;
 
     void set_clear_color(Color color);
     Color clear_color() const;
@@ -90,7 +91,7 @@ namespace gf {
 
     Visibility m_visibility = Visibility::Shown;
 
-    Vec2I m_framebuffer_size = { 1, 1 };
+    Vec2I m_surface_size = { 1, 1 };
     Color m_clear_color = Black;
   };
 
@@ -103,6 +104,9 @@ namespace gf {
 
     void add_world_entity(Entity* entity);
     void add_hud_entity(Entity* entity);
+
+    Vec2F position_to_world_location(Vec2I position);
+    Vec2I world_location_to_position(Vec2F location);
 
   protected:
     void update_entities(Time time);

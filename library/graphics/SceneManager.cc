@@ -275,7 +275,7 @@ namespace gf {
     Clock clock;
     RenderRecorder recorder(render_manager());
 
-    m_scene->update_framebuffer_size(window()->surface_size());
+    m_scene->set_surface_size(window()->surface_size());
 
     while (!window()->should_close()) {
       // update
@@ -290,7 +290,7 @@ namespace gf {
             {
               auto surface_size = window()->surface_size();
               render_manager()->update_surface_size(surface_size);
-              m_scene->update_framebuffer_size(surface_size);
+              m_scene->set_surface_size(surface_size);
             }
             break;
 
@@ -362,7 +362,7 @@ namespace gf {
       m_scenes_changed = false;
       auto surface_size = window()->surface_size();
 
-      std::for_each(scenes.begin(), scenes.end(), [surface_size](auto* scene) { scene->update_framebuffer_size(surface_size); });
+      std::for_each(scenes.begin(), scenes.end(), [surface_size](auto* scene) { scene->set_surface_size(surface_size); });
 
       auto* current_scene = scenes.back();
       current_scene->show();
@@ -380,7 +380,7 @@ namespace gf {
             case gf::EventType::WindowResized:
               surface_size = window()->surface_size();
               render_manager()->update_surface_size(surface_size);
-              std::for_each(scenes.begin(), scenes.end(), [surface_size](auto* scene) { scene->update_framebuffer_size(surface_size); });
+              std::for_each(scenes.begin(), scenes.end(), [surface_size](auto* scene) { scene->set_surface_size(surface_size); });
               break;
 
             default:

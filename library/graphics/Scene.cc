@@ -15,9 +15,14 @@ namespace gf {
 
   Scene::~Scene() = default;
 
-  void Scene::update_framebuffer_size(Vec2I size)
+  void Scene::set_surface_size(Vec2I size)
   {
-    m_framebuffer_size = size;
+    m_surface_size = size;
+  }
+
+  Vec2I Scene::surface_size() const
+  {
+    return m_surface_size;
   }
 
   void Scene::set_clear_color(Color color)
@@ -104,8 +109,8 @@ namespace gf {
 
   void Scene::render_part([[maybe_unused]] RenderRecorder& recorder, [[maybe_unused]] ScenePart& part)
   {
-    part.camera.update(m_framebuffer_size);
-    recorder.update_view(part.camera.compute_view_matrix(), part.camera.compute_viewport(m_framebuffer_size));
+    part.camera.update(m_surface_size);
+    recorder.update_view(part.camera.compute_view_matrix(), part.camera.compute_viewport(m_surface_size));
     part.entities.render(recorder);
   }
 
@@ -188,6 +193,50 @@ namespace gf {
   void StandardScene::add_hud_entity(Entity* entity)
   {
     m_hud.entities.add_entity(entity);
+  }
+
+  Vec2F StandardScene::position_to_world_location(Vec2I position)
+  {
+    const RectF viewport = m_world.camera.compute_viewport(surface_size());
+
+    /* simulate inverse projection transform
+     * i.e. compute normalized device coordinates from screen coordinates
+     *
+     * 0 +---------+     -1 +---------+
+     *   |         |        |         |
+     *   |         | ===>   |         |
+     *   |         |        |         |
+     * h +---------+      1 +---------+
+     *   0         w       -1         1
+     */
+    const Vec2F normalized = 2 * (position - viewport.offset) / viewport.extent - 1;
+
+    /* apply inverse view transform
+     * i.e. compute world coordinates from normalized device coordinates
+     */
+    return transform_point(inverse(m_world.camera.compute_view_matrix()), normalized);
+  }
+
+  Vec2I StandardScene::world_location_to_position(Vec2F location)
+  {
+    const RectF viewport = m_world.camera.compute_viewport(surface_size());
+
+    /* apply view transform
+     * i.e. compute normalized device coordinates from world coordinates
+     */
+    const Vec2F normalized = transform_point(m_world.camera.compute_view_matrix(), location);
+
+    /* simulate projection transform
+     * i.e. compute screen coordinates from normalized device coordinates
+     *
+     * -1 +---------+     0 +---------+
+     *    |         |       |         |
+     *    |         | ===>  |         |
+     *    |         |       |         |
+     *  1 +---------+     h +---------+
+     *   -1         1       0         w
+     */
+    return (1 + normalized) / 2 * viewport.extent + viewport.offset;
   }
 
   void StandardScene::update_entities(Time time)

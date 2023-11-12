@@ -109,7 +109,7 @@ namespace gf {
 
       case EventType::MouseMoved:
         {
-          const Vec2F coordinates = event.mouse_motion.coordinates;
+          const Vec2F coordinates = event.mouse_motion.position;
           io.AddMouseSourceEvent(event.mouse_motion.mouse_id == TouchMouseId ? ImGuiMouseSource_TouchScreen : ImGuiMouseSource_Mouse);
           io.AddMousePosEvent(coordinates.x, coordinates.y);
           return io.WantCaptureMouse;

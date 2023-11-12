@@ -25,6 +25,8 @@ namespace home {
     gf::AudioSourceResource death_sound;
 
     gf::AnimationGroupResource hero_animations;
+
+    gf::SpriteResource crosshair;
   };
 
 }

@@ -131,8 +131,8 @@ namespace gf {
           event.mouse_button.window_id = raw_event.button.windowID;
           event.mouse_button.mouse_id = static_cast<MouseId>(raw_event.button.which);
           event.mouse_button.button = MouseButton{ raw_event.button.button };
-          event.mouse_button.coordinates.x = raw_event.button.x;
-          event.mouse_button.coordinates.y = raw_event.button.y;
+          event.mouse_button.position.x = raw_event.button.x;
+          event.mouse_button.position.y = raw_event.button.y;
           event.mouse_button.clicks = raw_event.button.clicks;
           event.mouse_button.pressed = true;
           break;
@@ -143,8 +143,8 @@ namespace gf {
           event.mouse_button.window_id = raw_event.button.windowID;
           event.mouse_button.mouse_id = static_cast<MouseId>(raw_event.button.which);
           event.mouse_button.button = static_cast<MouseButton>(raw_event.button.button);
-          event.mouse_button.coordinates.x = raw_event.button.x;
-          event.mouse_button.coordinates.y = raw_event.button.y;
+          event.mouse_button.position.x = raw_event.button.x;
+          event.mouse_button.position.y = raw_event.button.y;
           event.mouse_button.clicks = raw_event.button.clicks;
           event.mouse_button.pressed = false;
           break;
@@ -153,8 +153,8 @@ namespace gf {
           event.type = EventType::MouseMoved;
           event.mouse_motion.window_id = raw_event.motion.windowID;
           event.mouse_motion.mouse_id = static_cast<MouseId>(raw_event.motion.which);
-          event.mouse_motion.coordinates.x = raw_event.motion.x;
-          event.mouse_motion.coordinates.y = raw_event.motion.y;
+          event.mouse_motion.position.x = raw_event.motion.x;
+          event.mouse_motion.position.y = raw_event.motion.y;
           event.mouse_motion.motion.x = raw_event.motion.xrel;
           event.mouse_motion.motion.y = raw_event.motion.yrel;
           break;
@@ -205,8 +205,8 @@ namespace gf {
           event.touch.window_id = raw_event.tfinger.windowID;
           event.touch.touch_id = static_cast<TouchId>(raw_event.tfinger.touchId);
           event.touch.finger = static_cast<FingerId>(raw_event.tfinger.fingerId);
-          event.touch.coordinates.x = raw_event.tfinger.x;
-          event.touch.coordinates.y = raw_event.tfinger.y;
+          event.touch.location.x = raw_event.tfinger.x;
+          event.touch.location.y = raw_event.tfinger.y;
           event.touch.motion.x = raw_event.tfinger.dx;
           event.touch.motion.y = raw_event.tfinger.dy;
           event.touch.pressure = raw_event.tfinger.pressure;
@@ -217,8 +217,8 @@ namespace gf {
           event.touch.window_id = raw_event.tfinger.windowID;
           event.touch.touch_id = static_cast<TouchId>(raw_event.tfinger.touchId);
           event.touch.finger = static_cast<FingerId>(raw_event.tfinger.fingerId);
-          event.touch.coordinates.x = raw_event.tfinger.x;
-          event.touch.coordinates.y = raw_event.tfinger.y;
+          event.touch.location.x = raw_event.tfinger.x;
+          event.touch.location.y = raw_event.tfinger.y;
           event.touch.motion.x = raw_event.tfinger.dx;
           event.touch.motion.y = raw_event.tfinger.dy;
           event.touch.pressure = raw_event.tfinger.pressure;
@@ -229,8 +229,8 @@ namespace gf {
           event.touch.window_id = raw_event.tfinger.windowID;
           event.touch.touch_id = static_cast<TouchId>(raw_event.tfinger.touchId);
           event.touch.finger = static_cast<FingerId>(raw_event.tfinger.fingerId);
-          event.touch.coordinates.x = raw_event.tfinger.x;
-          event.touch.coordinates.y = raw_event.tfinger.y;
+          event.touch.location.x = raw_event.tfinger.x;
+          event.touch.location.y = raw_event.tfinger.y;
           event.touch.motion.x = raw_event.tfinger.dx;
           event.touch.motion.y = raw_event.tfinger.dy;
           event.touch.pressure = raw_event.tfinger.pressure;

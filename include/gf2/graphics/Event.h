@@ -86,7 +86,7 @@ namespace gf {
     uint32_t window_id;
     MouseId mouse_id;
     MouseButton button;
-    Vec2I coordinates;
+    Vec2I position;
     uint8_t clicks;
     bool pressed;
   };
@@ -94,7 +94,7 @@ namespace gf {
   struct GF_GRAPHICS_API MouseMotionEvent {
     uint32_t window_id;
     MouseId mouse_id;
-    Vec2I coordinates;
+    Vec2I position;
     Vec2I motion;
   };
 
@@ -128,7 +128,7 @@ namespace gf {
     uint32_t window_id;
     TouchId touch_id;
     FingerId finger;
-    Vec2F coordinates;
+    Vec2F location;
     Vec2F motion;
     float pressure;
   };

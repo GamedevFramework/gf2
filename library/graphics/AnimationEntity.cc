@@ -7,6 +7,7 @@
 
 #include <gf2/graphics/RenderObject.h>
 #include <gf2/graphics/RenderRecorder.h>
+
 #include "gf2/graphics/Animation.h"
 
 namespace gf {

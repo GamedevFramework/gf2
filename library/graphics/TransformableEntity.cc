@@ -56,7 +56,12 @@ namespace gf {
     return m_transform.scale;
   }
 
-  Transform TransformableEntity::transform() const
+  void TransformableEntity::set_transform(const Transform& transform)
+  {
+    m_transform = transform;
+  }
+
+  const Transform& TransformableEntity::transform() const
   {
     return m_transform;
   }

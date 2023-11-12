@@ -27,7 +27,8 @@ namespace gf {
     void set_scale(Vec2F scale);
     Vec2F scale() const;
 
-    Transform transform() const;
+    void set_transform(const Transform& transform);
+    const Transform& transform() const;
 
   protected:
     Mat3F compute_matrix(RectF bounds) const;

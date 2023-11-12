@@ -1,7 +1,6 @@
 #ifndef HOME_GAME_HUB_H
 #define HOME_GAME_HUB_H
 
-#include <algorithm>
 #include <memory>
 
 #include <gf2/core/FontManager.h>

@@ -3,12 +3,12 @@
 
 #include <gf2/core/ResourceBundle.h>
 
-#include <gf2/audio/Sound.h>
 #include <gf2/audio/Music.h>
-#include <gf2/graphics/AnimationEntity.h>
+#include <gf2/audio/Sound.h>
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/TextEntity.h>
 
+#include "HeroEntity.h"
 #include "WorldData.h"
 
 namespace home {
@@ -19,16 +19,17 @@ namespace home {
     WorldScene(GameHub* hub, const WorldData& data);
 
   private:
+    void do_process_event(const gf::Event& event) override;
+
     gf::Music* main_theme_music = nullptr;
 
-    gf::Sound* jet_engine_sound = nullptr;
     gf::Sound* mining_sound = nullptr;
     gf::Sound* o2_filling_sound = nullptr;
     gf::Sound* breath_low_o2_sound = nullptr;
     gf::Sound* victory_sound = nullptr;
     gf::Sound* death_sound = nullptr;
 
-    gf::AnimationGroupEntity m_hero_animations;
+    HeroEntity m_hero_entity;
   };
 
 }

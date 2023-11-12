@@ -1,10 +1,9 @@
 #include "WorldData.h"
 
-#include <gf2/audio/Sound.h>
 #include <gf2/audio/Music.h>
+#include <gf2/audio/Sound.h>
 
 #include "GameHub.h"
-#include "gf2/core/AnimationData.h"
 
 namespace home {
 
@@ -13,6 +12,7 @@ namespace home {
     using namespace gf::literals;
 
     main_theme_music.filename = "sounds/main_theme.ogg";
+    main_theme_music.data.type = gf::AudioSourceType::Music;
     main_theme_music.data.loop = true;
 
     jet_engine_sound.filename = "sounds/jet_engine.ogg";
@@ -53,8 +53,9 @@ namespace home {
 
     for (auto id : animation_ids) {
       animation.frames.clear();
-      animation.add_tileset(0, gf::vec(22, 19), gf::seconds(1.0f / 30.f), 22, animation_index++ * 22);
+      animation.add_tileset(0, gf::vec(22, 19), gf::seconds(1.0f / 30.f), 22, animation_index * 22);
       hero_animations.data.animations.emplace(id, animation);
+      ++animation_index;
     }
 
     animation.properties = gf::None;
@@ -63,6 +64,7 @@ namespace home {
     animation.add_tileset(1, gf::vec(22, 4), gf::seconds(60.0f * 60.0f * 24.0f * 10000.0f), 1, 83);
     hero_animations.data.animations.emplace("death"_id, animation);
 
+    crosshair.texture = "crosshair.png";
   }
 
   gf::ResourceBundle WorldData::bundle(GameHub* hub)
@@ -76,25 +78,26 @@ namespace home {
 
       // textures
 
-      // for (const gf::SpriteResource& resource : {  }) {
-      //   bundle->handle<gf::Texture>(resource.texture, hub->render_manager(), resources, action);
-      // }
-
-      // music
-
-      for (const gf::AudioSourceResource& resource : { main_theme_music }) {
-        bundle->handle<gf::Music>(resource.filename, hub->audio_manager(), resources, action);
+      for (const gf::SpriteResource& resource : { crosshair }) {
+        bundle->handle<gf::Texture>(resource.texture, hub->render_manager(), resources, action);
       }
 
-      // sounds
+      // audio sources
 
-      for (const gf::AudioSourceResource& resource : { jet_engine_sound, mining_sound, o2_filling_sound, breath_low_o2_sound, victory_sound, death_sound }) {
-        bundle->handle<gf::Sound>(resource.filename, hub->audio_manager(), resources, action);
+      for (const gf::AudioSourceResource& resource : { main_theme_music, jet_engine_sound, mining_sound, o2_filling_sound, breath_low_o2_sound, victory_sound, death_sound }) {
+        switch (resource.data.type) {
+          case gf::AudioSourceType::Music:
+            bundle->handle<gf::Music>(resource.filename, hub->audio_manager(), resources, action);
+            break;
+          case gf::AudioSourceType::Sound:
+            bundle->handle<gf::Sound>(resource.filename, hub->audio_manager(), resources, action);
+            break;
+        }
       }
 
       // animation groups
 
-      for (const gf::AnimationGroupResource& resource: { hero_animations }) {
+      for (const gf::AnimationGroupResource& resource : { hero_animations }) {
         for (const auto& texture : resource.textures) {
           bundle->handle<gf::Texture>(texture, hub->render_manager(), resources, action);
         }

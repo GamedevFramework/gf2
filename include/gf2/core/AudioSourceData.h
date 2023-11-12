@@ -3,6 +3,8 @@
 #ifndef GF_AUDIO_SOURCE_DATA_H
 #define GF_AUDIO_SOURCE_DATA_H
 
+#include <cstdint>
+
 #include <filesystem>
 
 #include "CoreApi.h"
@@ -10,15 +12,21 @@
 
 namespace gf {
 
+  enum class AudioSourceType : uint8_t {
+    Sound,
+    Music,
+  };
+
   struct GF_CORE_API AudioSourceData {
-    float volume = 1.0f;
+    AudioSourceType type = AudioSourceType::Sound;
     bool loop = false;
+    float volume = 1.0f;
   };
 
   template<typename Archive>
   inline Archive& operator|(Archive& ar, MaybeConst<AudioSourceData, Archive>& data)
   {
-    return ar | data.volume | data.loop;
+    return ar | data.type | data.volume | data.loop;
   }
 
   struct GF_CORE_API AudioSourceResource {
