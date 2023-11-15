@@ -25,7 +25,7 @@ namespace home {
 
     void set_target(gf::Vec2F target);
 
-    gf::Signal<void(gf::Vec2F)> update_position; // NOLINT
+    gf::Signal<void(gf::Vec2F)> update_location; // NOLINT
 
   private:
     void compute_animation();

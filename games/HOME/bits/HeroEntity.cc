@@ -97,7 +97,7 @@ namespace home {
     compute_animation();
     m_hero_animations.update(time);
 
-    update_position.emit(location());
+    update_location.emit(location());
 
     m_activity = Activity::Walking;
   }
