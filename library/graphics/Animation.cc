@@ -202,6 +202,10 @@ namespace gf {
 
   void AnimationGroup::select(Id animation_id)
   {
+    if (m_current_animation_id == animation_id) {
+      return;
+    }
+
     if (auto iterator = m_animations.find(animation_id); iterator == m_animations.end()) {
       Log::fatal("Unknown selected animation.");
     }
