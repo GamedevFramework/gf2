@@ -1,7 +1,7 @@
 set_project("gf2")
 set_version("0.1.0")
 
-add_requires("libsdl", "freetype", "imgui", "pugixml", "zlib")
+add_requires("libsdl", "freetype", "imgui", "pugixml", "zlib", "chipmunk2d")
 add_requires("fmt", { system = false, configs = { header_only = true }})
 add_requires("glslang", { configs = { binaryonly = true }})
 add_requires("miniaudio 0.11.17")
@@ -79,6 +79,15 @@ target("gf2audio0")
     if is_plat("linux") then
         add_syslinks("dl")
     end
+
+target("gf2physics0")
+    set_kind("shared")
+    add_defines("GF_PHYSICS_BUILD")
+    add_files("library/physics/*.cc")
+    add_headerfiles("include/physics/*.h")
+    add_includedirs("include", { public = true })
+    add_packages("chipmunk2d")
+    add_deps("gf2core0")
 
 target("gf2imgui0")
     set_kind("static")
