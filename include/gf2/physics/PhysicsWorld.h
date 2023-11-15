@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
-#ifndef GF_PHYSICS_SPACE_H
-#define GF_PHYSICS_SPACE_H
+#ifndef GF_PHYSICS_WORLD_H
+#define GF_PHYSICS_WORLD_H
 
 #include "PhysicsHandle.h"
 
@@ -16,9 +16,9 @@ extern "C" {
 
 namespace gf {
 
-  class PhysicsSpace {
+  class PhysicsWorld {
   public:
-    PhysicsSpace();
+    PhysicsWorld();
 
   private:
     details::PhysicsHandle<cpSpace, cpSpaceGetUserData, cpSpaceSetUserData, cpSpaceDestroy> m_space;
@@ -26,4 +26,4 @@ namespace gf {
 
 }
 
-#endif // GF_PHYSICS_SPACE_H
+#endif // GF_PHYSICS_WORLD_H
