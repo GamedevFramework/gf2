@@ -5,11 +5,12 @@
 
 #include <chipmunk/chipmunk.h>
 
+#include "PhysicsApi.h"
 #include "PhysicsHandle.h"
 
 namespace gf {
 
-  class PhysicsShape {
+  class GF_PHYSICS_API PhysicsShape {
   public:
     PhysicsShape() = default;
 

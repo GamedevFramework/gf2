@@ -10,6 +10,7 @@
 
 #include <gf2/core/Vec2.h>
 
+#include "PhysicsApi.h"
 #include "PhysicsHandle.h"
 
 namespace gf {
@@ -24,7 +25,7 @@ namespace gf {
     Static,
   };
 
-  class PhysicsBody {
+  class GF_PHYSICS_API PhysicsBody {
   public:
     static PhysicsBody make_dynamic(float mass, float moment);
     static PhysicsBody make_kinematic();

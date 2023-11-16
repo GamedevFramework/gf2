@@ -5,11 +5,12 @@
 
 #include <chipmunk/chipmunk.h>
 
+#include "PhysicsApi.h"
 #include "PhysicsHandle.h"
 
 namespace gf {
 
-  class PhysicsConstraint {
+  class GF_PHYSICS_API PhysicsConstraint {
   public:
     PhysicsConstraint() = default;
 

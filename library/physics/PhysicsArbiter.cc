@@ -7,4 +7,9 @@
 
 namespace gf {
 
+  PhysicsArbiter::PhysicsArbiter(cpArbiter* arbiter)
+  : m_arbiter(arbiter)
+  {
+  }
+
 }

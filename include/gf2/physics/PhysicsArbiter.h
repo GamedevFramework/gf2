@@ -5,9 +5,11 @@
 
 #include <chipmunk/chipmunk.h>
 
+#include "PhysicsApi.h"
+
 namespace gf {
 
-  class PhysicsArbiter {
+  class GF_PHYSICS_API PhysicsArbiter {
   public:
     PhysicsArbiter(const PhysicsArbiter&) = delete;
     PhysicsArbiter(PhysicsArbiter&&) noexcept = delete;

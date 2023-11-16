@@ -8,9 +8,11 @@
 
 #include <utility>
 
+#include "PhysicsApi.h"
+
 namespace gf::details {
 
-  class PhysicsExistingType {
+  class GF_PHYSICS_API PhysicsExistingType {
   };
 
   constexpr PhysicsExistingType PhysicsExisting = {};

@@ -320,6 +320,29 @@ target_include_directories(gf2audio0
     "${Stb_INCLUDE_DIR}"
 )
 
+# gf2::physics
+
+add_library(gf2physics0
+  physics/PhysicsArbiter.cc
+  physics/PhysicsBody.cc
+  physics/PhysicsConstraint.cc
+  physics/PhysicsHandle.cc
+  physics/PhysicsShape.cc
+  physics/PhysicsWorld.cc
+)
+
+gf2_handle_library(gf2physics0
+  EXPORT_NAME
+    "physics"
+)
+
+target_link_libraries(gf2physics0
+  PUBLIC
+    gf2core0
+  PRIVATE
+    Chipmunk::Chipmunk
+)
+
 # gf2::imgui
 
 add_library(gf2imgui0 STATIC
