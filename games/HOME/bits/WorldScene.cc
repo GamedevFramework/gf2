@@ -21,7 +21,6 @@ namespace home {
     add_world_entity(&m_hero_entity);
 
     m_hero_entity.update_location.connect([this](gf::Vec2F location) { set_world_center(location); });
-
   }
 
   void WorldScene::do_process_event(const gf::Event& event)

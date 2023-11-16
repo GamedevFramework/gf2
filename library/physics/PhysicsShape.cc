@@ -9,10 +9,14 @@
 
 namespace gf {
 
-  PhysicsShape::PhysicsShape()
-  : m_shape(nullptr)
+  PhysicsShape::PhysicsShape(cpShape* shape)
+  : m_shape(shape)
   {
   }
 
+  PhysicsShape::PhysicsShape(details::PhysicsExistingType existing, cpShape* shape)
+  : m_shape(existing, shape)
+  {
+  }
 
 }

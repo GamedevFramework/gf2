@@ -8,9 +8,9 @@
 // NOLINTBEGIN
 struct cpShape;
 extern "C" {
-  void* cpShapeGetUserData(const cpShape *space);
-  void cpShapeSetUserData(cpShape *space, void* value);
-  void cpShapeDestroy(cpShape *space);
+void* cpShapeGetUserData(const cpShape* space);
+void cpShapeSetUserData(cpShape* space, void* value);
+void cpShapeDestroy(cpShape* space);
 }
 // NOLINTEND
 
@@ -18,9 +18,16 @@ namespace gf {
 
   class PhysicsShape {
   public:
-    PhysicsShape();
+    PhysicsShape() = default;
+
+  protected:
+    PhysicsShape(cpShape* shape);
 
   private:
+    friend class PhysicsBody;
+
+    PhysicsShape(details::PhysicsExistingType existing, cpShape* shape);
+
     details::PhysicsHandle<cpShape, cpShapeGetUserData, cpShapeSetUserData, cpShapeDestroy> m_shape;
   };
 

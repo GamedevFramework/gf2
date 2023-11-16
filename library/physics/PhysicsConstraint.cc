@@ -9,10 +9,14 @@
 
 namespace gf {
 
-  PhysicsConstraint::PhysicsConstraint()
-  : m_constraint(nullptr)
+  PhysicsConstraint::PhysicsConstraint(cpConstraint* constraint)
+  : m_constraint(constraint)
   {
   }
 
+  PhysicsConstraint::PhysicsConstraint(details::PhysicsExistingType existing, cpConstraint* constraint)
+  : m_constraint(existing, constraint)
+  {
+  }
 
 }

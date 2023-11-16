@@ -14,6 +14,9 @@ namespace gf {
   {
   }
 
-
+  PhysicsWorld::PhysicsWorld(details::PhysicsExistingType existing, cpSpace* space)
+  : m_space(existing, space)
+  {
+  }
 
 }

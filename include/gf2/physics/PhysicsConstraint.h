@@ -8,9 +8,9 @@
 // NOLINTBEGIN
 struct cpConstraint;
 extern "C" {
-  void* cpConstraintGetUserData(const cpConstraint *space);
-  void cpConstraintSetUserData(cpConstraint *space, void* value);
-  void cpConstraintDestroy(cpConstraint *space);
+void* cpConstraintGetUserData(const cpConstraint* space);
+void cpConstraintSetUserData(cpConstraint* space, void* value);
+void cpConstraintDestroy(cpConstraint* space);
 }
 // NOLINTEND
 
@@ -18,9 +18,16 @@ namespace gf {
 
   class PhysicsConstraint {
   public:
-    PhysicsConstraint();
+    PhysicsConstraint() = default;
+
+  protected:
+    PhysicsConstraint(cpConstraint* constraint);
 
   private:
+    friend class PhysicsBody;
+
+    PhysicsConstraint(details::PhysicsExistingType existing, cpConstraint* constraint);
+
     details::PhysicsHandle<cpConstraint, cpConstraintGetUserData, cpConstraintSetUserData, cpConstraintDestroy> m_constraint;
   };
 

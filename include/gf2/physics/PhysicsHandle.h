@@ -10,16 +10,33 @@
 
 namespace gf::details {
 
-  template<typename T, void*(*UserDataGetter)(const T*), void(*UserDataSetter)(T*,void*), void(*Destructor)(T*)>
+  class PhysicsExistingType {
+  };
+
+  constexpr PhysicsExistingType PhysicsExisting = {};
+
+  template<typename T, void* (*UserDataGetter)(const T*), void (*UserDataSetter)(T*, void*), void (*Destructor)(T*)>
   class PhysicsHandle {
   public:
     using CounterType = std::size_t;
+
+    PhysicsHandle()
+    : m_handle(nullptr)
+    {
+    }
 
     PhysicsHandle(T* handle)
     : m_handle(handle)
     {
       assert(user_data() == nullptr);
       UserDataSetter(m_handle, new CounterType(0));
+      reference();
+    }
+
+    PhysicsHandle([[maybe_unused]] PhysicsExistingType existing, T* handle)
+    : m_handle(handle)
+    {
+      assert(user_data() != nullptr);
       reference();
     }
 
@@ -69,7 +86,7 @@ namespace gf::details {
       return m_handle;
     }
 
-    operator const T*() const
+    operator const T *() const
     {
       return m_handle;
     }

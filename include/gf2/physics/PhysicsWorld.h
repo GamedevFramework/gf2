@@ -8,9 +8,9 @@
 // NOLINTBEGIN
 struct cpSpace;
 extern "C" {
-  void* cpSpaceGetUserData(const cpSpace *space);
-  void cpSpaceSetUserData(cpSpace *space, void* value);
-  void cpSpaceDestroy(cpSpace *space);
+void* cpSpaceGetUserData(const cpSpace* space);
+void cpSpaceSetUserData(cpSpace* space, void* value);
+void cpSpaceDestroy(cpSpace* space);
 }
 // NOLINTEND
 
@@ -21,6 +21,10 @@ namespace gf {
     PhysicsWorld();
 
   private:
+    friend class PhysicsBody;
+
+    PhysicsWorld(details::PhysicsExistingType existing, cpSpace* space);
+
     details::PhysicsHandle<cpSpace, cpSpaceGetUserData, cpSpaceSetUserData, cpSpaceDestroy> m_space;
   };
 
