@@ -86,7 +86,7 @@ target("gf2physics0")
     add_files("library/physics/*.cc")
     add_headerfiles("include/physics/*.h")
     add_includedirs("include", { public = true })
-    add_packages("chipmunk2d")
+    add_packages("chipmunk2d", { public = true })
     add_deps("gf2core0")
 
 target("gf2imgui0")

@@ -3,16 +3,9 @@
 #ifndef GF_PHYSICS_SHAPE_H
 #define GF_PHYSICS_SHAPE_H
 
-#include "PhysicsHandle.h"
+#include <chipmunk/chipmunk.h>
 
-// NOLINTBEGIN
-struct cpShape;
-extern "C" {
-void* cpShapeGetUserData(const cpShape* space);
-void cpShapeSetUserData(cpShape* space, void* value);
-void cpShapeDestroy(cpShape* space);
-}
-// NOLINTEND
+#include "PhysicsHandle.h"
 
 namespace gf {
 

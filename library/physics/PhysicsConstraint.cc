@@ -5,8 +5,6 @@
 #include <gf2/physics/PhysicsConstraint.h>
 // clang-format on
 
-#include <chipmunk/chipmunk.h>
-
 namespace gf {
 
   PhysicsConstraint::PhysicsConstraint(cpConstraint* constraint)

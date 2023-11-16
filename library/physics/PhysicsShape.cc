@@ -5,8 +5,6 @@
 #include <gf2/physics/PhysicsShape.h>
 // clang-format on
 
-#include <chipmunk/chipmunk.h>
-
 namespace gf {
 
   PhysicsShape::PhysicsShape(cpShape* shape)

@@ -3,7 +3,7 @@
 #ifndef GF_PHYSICS_ARBITER_H
 #define GF_PHYSICS_ARBITER_H
 
-struct cpArbiter;
+#include <chipmunk/chipmunk.h>
 
 namespace gf {
 

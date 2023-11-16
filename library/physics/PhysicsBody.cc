@@ -5,20 +5,15 @@
 #include <gf2/physics/PhysicsBody.h>
 // clang-format on
 
-#include <type_traits>
-
-#include <chipmunk/chipmunk.h>
-
 #include <gf2/physics/PhysicsArbiter.h>
 #include <gf2/physics/PhysicsConstraint.h>
 #include <gf2/physics/PhysicsShape.h>
 #include <gf2/physics/PhysicsWorld.h>
 
 namespace gf {
-  static_assert(std::is_same_v<std::underlying_type_t<PhysicsBodyType>, std::underlying_type_t<cpBodyType>>);
-  static_assert(static_cast<unsigned>(PhysicsBodyType::Dynamic) == static_cast<unsigned>(CP_BODY_TYPE_DYNAMIC));
-  static_assert(static_cast<unsigned>(PhysicsBodyType::Kinematic) == static_cast<unsigned>(CP_BODY_TYPE_KINEMATIC));
-  static_assert(static_cast<unsigned>(PhysicsBodyType::Static) == static_cast<unsigned>(CP_BODY_TYPE_STATIC));
+  static_assert(static_cast<cpBodyType>(PhysicsBodyType::Dynamic) == CP_BODY_TYPE_DYNAMIC);
+  static_assert(static_cast<cpBodyType>(PhysicsBodyType::Kinematic) == CP_BODY_TYPE_KINEMATIC);
+  static_assert(static_cast<cpBodyType>(PhysicsBodyType::Static) == CP_BODY_TYPE_STATIC);
 
   PhysicsBody PhysicsBody::make_dynamic(float mass, float moment)
   {

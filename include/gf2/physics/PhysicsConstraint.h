@@ -3,16 +3,9 @@
 #ifndef GF_PHYSICS_CONSTRAINT_H
 #define GF_PHYSICS_CONSTRAINT_H
 
-#include "PhysicsHandle.h"
+#include <chipmunk/chipmunk.h>
 
-// NOLINTBEGIN
-struct cpConstraint;
-extern "C" {
-void* cpConstraintGetUserData(const cpConstraint* space);
-void cpConstraintSetUserData(cpConstraint* space, void* value);
-void cpConstraintDestroy(cpConstraint* space);
-}
-// NOLINTEND
+#include "PhysicsHandle.h"
 
 namespace gf {
 

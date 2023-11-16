@@ -5,8 +5,6 @@
 #include <gf2/physics/PhysicsWorld.h>
 // clang-format on
 
-#include <chipmunk/chipmunk.h>
-
 namespace gf {
 
   PhysicsWorld::PhysicsWorld()

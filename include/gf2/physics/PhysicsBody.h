@@ -4,23 +4,13 @@
 #define GF_PHYSICS_BODY_H
 
 #include <functional>
+#include <type_traits>
+
+#include <chipmunk/chipmunk.h>
 
 #include <gf2/core/Vec2.h>
 
 #include "PhysicsHandle.h"
-
-// NOLINTBEGIN
-struct cpArbiter;
-struct cpBody;
-struct cpConstraint;
-struct cpShape;
-
-extern "C" {
-void* cpBodyGetUserData(const cpBody* space);
-void cpBodySetUserData(cpBody* space, void* value);
-void cpBodyDestroy(cpBody* space);
-}
-// NOLINTEND
 
 namespace gf {
   class PhysicsArbiter;
@@ -28,7 +18,7 @@ namespace gf {
   class PhysicsWorld;
   class PhysicsConstraint;
 
-  enum class PhysicsBodyType : unsigned {
+  enum class PhysicsBodyType : std::underlying_type_t<cpBodyType> {
     Dynamic,
     Kinematic,
     Static,
