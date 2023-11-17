@@ -18,6 +18,7 @@ namespace gf {
     PhysicsShape(cpShape* shape);
 
   private:
+    friend class PhysicsArbiter;
     friend class PhysicsBody;
 
     PhysicsShape(details::PhysicsExistingType existing, cpShape* shape);

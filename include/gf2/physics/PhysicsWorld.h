@@ -15,6 +15,7 @@ namespace gf {
     PhysicsWorld();
 
   private:
+    friend class PhysicsArbiter;
     friend class PhysicsBody;
 
     PhysicsWorld(details::PhysicsExistingType existing, cpSpace* space);

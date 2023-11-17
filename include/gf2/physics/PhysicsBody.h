@@ -89,6 +89,8 @@ namespace gf {
     void each_arbiter(std::function<void(PhysicsBody, PhysicsArbiter)> func);
 
   private:
+    friend class PhysicsArbiter;
+
     static void shape_iterator(cpBody* body, cpShape* shape, void* data);
     static void constraint_iterator(cpBody* body, cpConstraint* constraint, void* data);
     static void arbiter_iterator(cpBody* body, cpArbiter* arbiter, void* data);
