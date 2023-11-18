@@ -90,6 +90,7 @@ namespace gf {
 
   private:
     friend class PhysicsArbiter;
+    friend class PhysicsConstraint;
     friend class PhysicsShape;
     friend class PhysicsWorld;
 

@@ -95,6 +95,7 @@ namespace gf {
   private:
     friend class PhysicsArbiter;
     friend class PhysicsBody;
+    friend class PhysicsConstraint;
     friend class PhysicsShape;
 
     static cpBool collision_begin(cpArbiter* arbiter, cpSpace* space, cpDataPointer user_data);
