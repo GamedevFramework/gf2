@@ -95,22 +95,23 @@ namespace gf {
   private:
     friend class PhysicsArbiter;
     friend class PhysicsBody;
+    friend class PhysicsShape;
 
-    static cpBool collision_begin(cpArbiter *arbiter, cpSpace *space, cpDataPointer user_data);
-    static cpBool collision_pre_solve(cpArbiter *arbiter, cpSpace *space, cpDataPointer user_data);
-    static void collision_post_solve(cpArbiter *arbiter, cpSpace *space, cpDataPointer user_data);
-    static void collision_separate(cpArbiter *arbiter, cpSpace *space, cpDataPointer user_data);
+    static cpBool collision_begin(cpArbiter* arbiter, cpSpace* space, cpDataPointer user_data);
+    static cpBool collision_pre_solve(cpArbiter* arbiter, cpSpace* space, cpDataPointer user_data);
+    static void collision_post_solve(cpArbiter* arbiter, cpSpace* space, cpDataPointer user_data);
+    static void collision_separate(cpArbiter* arbiter, cpSpace* space, cpDataPointer user_data);
 
-    static void body_iterator(cpBody * body, void * data);
-    static void shape_iterator(cpShape * shape, void * data);
-    static void constraint_iterator(cpConstraint *constraint, void *data);
+    static void body_iterator(cpBody* body, void* data);
+    static void shape_iterator(cpShape* shape, void* data);
+    static void constraint_iterator(cpConstraint* constraint, void* data);
 
     static void draw_circle(cpVect center, cpFloat angle, cpFloat radius, cpSpaceDebugColor outline_color, cpSpaceDebugColor fill_color, cpDataPointer data);
     static void draw_segment(cpVect a, cpVect b, cpSpaceDebugColor color, cpDataPointer data);
     static void draw_fat_segment(cpVect a, cpVect b, cpFloat radius, cpSpaceDebugColor outline_color, cpSpaceDebugColor fill_color, cpDataPointer data);
-    static void draw_polygon(int count, const cpVect *vertices, cpFloat radius, cpSpaceDebugColor outline_color, cpSpaceDebugColor fill_color, cpDataPointer data);
+    static void draw_polygon(int count, const cpVect* vertices, cpFloat radius, cpSpaceDebugColor outline_color, cpSpaceDebugColor fill_color, cpDataPointer data);
     static void draw_dot(cpFloat size, cpVect location, cpSpaceDebugColor color, cpDataPointer data);
-    static cpSpaceDebugColor draw_color_for_shape(cpShape *shape, cpDataPointer data);
+    static cpSpaceDebugColor draw_color_for_shape(cpShape* shape, cpDataPointer data);
 
     PhysicsWorld(details::PhysicsExistingType existing, cpSpace* space);
 

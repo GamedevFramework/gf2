@@ -13,6 +13,7 @@
 #include <gf2/physics/PhysicsConstraint.h>
 #include <gf2/physics/PhysicsDebug.h>
 #include <gf2/physics/PhysicsShape.h>
+
 #include "gf2/physics/PhysicsHandle.h"
 
 namespace gf {
@@ -22,8 +23,68 @@ namespace gf {
   {
   }
 
+  namespace {
+    [[maybe_unused]] bool check_is_last(void* user_data)
+    {
+      auto* counter = static_cast<std::size_t*>(user_data);
+      return counter != nullptr && *counter == 1;
+    }
+
+    // shape
+
+    void dispose_shape_post_step(cpSpace* space, void* key, [[maybe_unused]] void* data)
+    {
+      auto* shape = static_cast<cpShape*>(key);
+      assert(check_is_last(cpShapeGetUserData(shape)));
+      cpSpaceRemoveShape(space, shape);
+      cpShapeFree(shape);
+    }
+
+    void dispose_shape_iterator(cpShape* shape, void* data)
+    {
+      auto* space = static_cast<cpSpace*>(data);
+      cpSpaceAddPostStepCallback(space, dispose_shape_post_step, static_cast<void*>(shape), nullptr);
+    }
+
+    // constraint
+
+    void dispose_constraint_post_step(cpSpace* space, void* key, [[maybe_unused]] void* data)
+    {
+      auto* constraint = static_cast<cpConstraint*>(key);
+      assert(check_is_last(cpConstraintGetUserData(constraint)));
+      cpSpaceRemoveConstraint(space, constraint);
+      cpConstraintFree(constraint);
+    }
+
+    void dispose_constraint_iterator(cpConstraint* constraint, void* data)
+    {
+      auto* space = static_cast<cpSpace*>(data);
+      cpSpaceAddPostStepCallback(space, dispose_constraint_post_step, static_cast<void*>(constraint), nullptr);
+    }
+
+    // body
+
+    void dispose_body_post_step(cpSpace* space, void* key, [[maybe_unused]] void* data)
+    {
+      auto* body = static_cast<cpBody*>(key);
+      assert(check_is_last(cpBodyGetUserData(body)));
+      cpSpaceRemoveBody(space, body);
+      cpBodyFree(body);
+    }
+
+    void dispose_body_iterator(cpBody* body, void* data)
+    {
+      auto* space = static_cast<cpSpace*>(data);
+      cpSpaceAddPostStepCallback(space, dispose_body_post_step, static_cast<void*>(body), nullptr);
+    }
+  }
+
   PhysicsWorld::~PhysicsWorld()
   {
+    cpSpace* space = m_space;
+    cpSpaceEachShape(space, dispose_shape_iterator, static_cast<void*>(space));
+    cpSpaceEachConstraint(space, dispose_constraint_iterator, static_cast<void*>(space));
+    cpSpaceEachBody(space, dispose_body_iterator, static_cast<void*>(space));
   }
 
   int PhysicsWorld::iterations() const
@@ -49,7 +110,7 @@ namespace gf {
 
   float PhysicsWorld::damping() const
   {
-    return cpSpaceGetDamping(m_space);
+    return static_cast<float>(cpSpaceGetDamping(m_space));
   }
 
   void PhysicsWorld::set_damping(float damping)
@@ -59,7 +120,7 @@ namespace gf {
 
   float PhysicsWorld::idle_speed_threshold() const
   {
-    return cpSpaceGetIdleSpeedThreshold(m_space);
+    return static_cast<float>(cpSpaceGetIdleSpeedThreshold(m_space));
   }
 
   void PhysicsWorld::set_idle_speed_threshold(float threshold)
@@ -69,7 +130,7 @@ namespace gf {
 
   float PhysicsWorld::sleep_time_threshold() const
   {
-    return cpSpaceGetSleepTimeThreshold(m_space);
+    return static_cast<float>(cpSpaceGetSleepTimeThreshold(m_space));
   }
 
   void PhysicsWorld::set_sleep_time_threshold(float threshold)
@@ -79,7 +140,7 @@ namespace gf {
 
   float PhysicsWorld::collision_slop() const
   {
-    return cpSpaceGetCollisionSlop(m_space);
+    return static_cast<float>(cpSpaceGetCollisionSlop(m_space));
   }
 
   void PhysicsWorld::set_collision_slop(float slop)
@@ -89,7 +150,7 @@ namespace gf {
 
   float PhysicsWorld::collision_bias() const
   {
-    return cpSpaceGetCollisionBias(m_space);
+    return static_cast<float>(cpSpaceGetCollisionBias(m_space));
   }
 
   void PhysicsWorld::set_collision_bias(float bias)
@@ -109,14 +170,13 @@ namespace gf {
 
   float PhysicsWorld::current_time_step() const
   {
-    return cpSpaceGetCurrentTimeStep(m_space);
+    return static_cast<float>(cpSpaceGetCurrentTimeStep(m_space));
   }
 
   bool PhysicsWorld::locked()
   {
     return cpSpaceIsLocked(m_space) == cpTrue;
   }
-
 
   void PhysicsWorld::add_default_collision_handler(PhysicsCollisionHandler* handler)
   {
@@ -252,7 +312,7 @@ namespace gf {
     options.flags = static_cast<cpSpaceDebugDrawFlags>(features.value());
     options.shapeOutlineColor = { 1.0f, 0.0f, 0.0f, 1.0f };
     options.colorForShape = draw_color_for_shape;
-    options.constraintColor = {  0.0f, 1.0f, 0.0f, 1.0f };
+    options.constraintColor = { 0.0f, 1.0f, 0.0f, 1.0f };
     options.collisionPointColor = { 0.0f, 0.0f, 1.0f, 1.0f };
     options.data = debug;
     cpSpaceDebugDraw(m_space, &options);
@@ -263,43 +323,43 @@ namespace gf {
     cpSpaceStep(m_space, time.as_seconds());
   }
 
-  cpBool PhysicsWorld::collision_begin(cpArbiter *arbiter, cpSpace *space, cpDataPointer user_data)
+  cpBool PhysicsWorld::collision_begin(cpArbiter* arbiter, cpSpace* space, cpDataPointer user_data)
   {
     auto* handler = static_cast<PhysicsCollisionHandler*>(user_data);
     return handler->begin(PhysicsArbiter(arbiter), PhysicsWorld(details::PhysicsExisting, space)) ? cpTrue : cpFalse;
   }
 
-  cpBool PhysicsWorld::collision_pre_solve(cpArbiter *arbiter, cpSpace *space, cpDataPointer user_data)
+  cpBool PhysicsWorld::collision_pre_solve(cpArbiter* arbiter, cpSpace* space, cpDataPointer user_data)
   {
     auto* handler = static_cast<PhysicsCollisionHandler*>(user_data);
     return handler->pre_solve(PhysicsArbiter(arbiter), PhysicsWorld(details::PhysicsExisting, space)) ? cpTrue : cpFalse;
   }
 
-  void PhysicsWorld::collision_post_solve(cpArbiter *arbiter, cpSpace *space, cpDataPointer user_data)
+  void PhysicsWorld::collision_post_solve(cpArbiter* arbiter, cpSpace* space, cpDataPointer user_data)
   {
     auto* handler = static_cast<PhysicsCollisionHandler*>(user_data);
     handler->post_solve(PhysicsArbiter(arbiter), PhysicsWorld(details::PhysicsExisting, space));
   }
 
-  void PhysicsWorld::collision_separate(cpArbiter *arbiter, cpSpace *space, cpDataPointer user_data)
+  void PhysicsWorld::collision_separate(cpArbiter* arbiter, cpSpace* space, cpDataPointer user_data)
   {
     auto* handler = static_cast<PhysicsCollisionHandler*>(user_data);
     handler->separate(PhysicsArbiter(arbiter), PhysicsWorld(details::PhysicsExisting, space));
   }
 
-  void PhysicsWorld::body_iterator(cpBody * body, void * data)
+  void PhysicsWorld::body_iterator(cpBody* body, void* data)
   {
     auto* func = static_cast<std::function<void(PhysicsBody)>*>(data);
     (*func)(PhysicsBody(details::PhysicsExisting, body));
   }
 
-  void PhysicsWorld::shape_iterator(cpShape * shape, void * data)
+  void PhysicsWorld::shape_iterator(cpShape* shape, void* data)
   {
     auto* func = static_cast<std::function<void(PhysicsShape)>*>(data);
     (*func)(PhysicsShape(details::PhysicsExisting, shape));
   }
 
-  void PhysicsWorld::constraint_iterator(cpConstraint *constraint, void *data)
+  void PhysicsWorld::constraint_iterator(cpConstraint* constraint, void* data)
   {
     auto* func = static_cast<std::function<void(PhysicsConstraint)>*>(data);
     (*func)(PhysicsConstraint(details::PhysicsExisting, constraint));
@@ -307,7 +367,8 @@ namespace gf {
 
   namespace {
 
-    Color to_color(cpSpaceDebugColor color) {
+    Color to_color(cpSpaceDebugColor color)
+    {
       return { color.r, color.g, color.b, color.a };
     }
 
@@ -331,17 +392,17 @@ namespace gf {
     debug->draw_fat_segment(gf::vec(a.x, a.y), gf::vec(b.x, b.y), static_cast<float>(radius), to_color(outline_color), to_color(fill_color));
   }
 
-  void PhysicsWorld::draw_polygon(int count, const cpVect *vertices, cpFloat radius, cpSpaceDebugColor outline_color, cpSpaceDebugColor fill_color, cpDataPointer data)
+  void PhysicsWorld::draw_polygon(int count, const cpVect* vertices, cpFloat radius, cpSpaceDebugColor outline_color, cpSpaceDebugColor fill_color, cpDataPointer data)
   {
-    std::vector<gf::Vec2F> transformed;
-    transformed.reserve(count);
+    std::vector<gf::Vec2F> new_vertices;
+    new_vertices.reserve(count);
 
     for (int i = 0; i < count; ++i) {
-      transformed.emplace_back(vertices[i].x, vertices[i].y);
+      new_vertices.emplace_back(vertices[i].x, vertices[i].y);
     }
 
     auto* debug = static_cast<PhysicsDebug*>(data);
-    debug->draw_polygon(transformed, static_cast<float>(radius), to_color(outline_color), to_color(fill_color));
+    debug->draw_polygon(new_vertices, static_cast<float>(radius), to_color(outline_color), to_color(fill_color));
   }
 
   void PhysicsWorld::draw_dot(cpFloat size, cpVect location, cpSpaceDebugColor color, cpDataPointer data)
@@ -350,7 +411,7 @@ namespace gf {
     debug->draw_dot(static_cast<float>(size), gf::vec(location.x, location.y), to_color(color));
   }
 
-  cpSpaceDebugColor PhysicsWorld::draw_color_for_shape(cpShape *shape, cpDataPointer data)
+  cpSpaceDebugColor PhysicsWorld::draw_color_for_shape(cpShape* shape, cpDataPointer data)
   {
     auto* debug = static_cast<PhysicsDebug*>(data);
     auto color = debug->color_for_shape(PhysicsShape(details::PhysicsExisting, shape));

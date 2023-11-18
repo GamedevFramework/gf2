@@ -8,7 +8,6 @@
 #include <gf2/physics/PhysicsArbiter.h>
 #include <gf2/physics/PhysicsWorld.h>
 
-
 namespace gf {
 
   bool PhysicsCollisionHandler::begin([[maybe_unused]] PhysicsArbiter arbiter, [[maybe_unused]] PhysicsWorld world) // NOLINT(performance-unnecessary-value-param)

@@ -5,12 +5,12 @@
 
 #include <type_traits>
 
+#include <chipmunk/chipmunk.h>
+
 #include <gf2/core/Color.h>
 #include <gf2/core/Flags.h>
 #include <gf2/core/Span.h>
 #include <gf2/core/Vec2.h>
-
-#include <chipmunk/chipmunk.h>
 
 #include "PhysicsApi.h"
 
