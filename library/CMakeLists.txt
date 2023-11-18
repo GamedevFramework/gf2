@@ -325,7 +325,9 @@ target_include_directories(gf2audio0
 add_library(gf2physics0
   physics/PhysicsArbiter.cc
   physics/PhysicsBody.cc
+  physics/PhysicsCollisionHandler.cc
   physics/PhysicsConstraint.cc
+  physics/PhysicsDebug.cc
   physics/PhysicsHandle.cc
   physics/PhysicsShape.cc
   physics/PhysicsWorld.cc
