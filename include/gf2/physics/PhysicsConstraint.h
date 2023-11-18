@@ -19,6 +19,7 @@ namespace gf {
 
   private:
     friend class PhysicsBody;
+    friend class PhysicsWorld;
 
     PhysicsConstraint(details::PhysicsExistingType existing, cpConstraint* constraint);
 

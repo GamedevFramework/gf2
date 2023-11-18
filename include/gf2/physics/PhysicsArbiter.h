@@ -81,6 +81,7 @@ namespace gf {
 
   private:
     friend class PhysicsBody;
+    friend class PhysicsWorld;
 
     PhysicsArbiter(cpArbiter* arbiter);
 

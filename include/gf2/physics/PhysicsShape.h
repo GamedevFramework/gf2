@@ -20,6 +20,7 @@ namespace gf {
   private:
     friend class PhysicsArbiter;
     friend class PhysicsBody;
+    friend class PhysicsWorld;
 
     PhysicsShape(details::PhysicsExistingType existing, cpShape* shape);
 

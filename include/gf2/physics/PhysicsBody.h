@@ -90,6 +90,7 @@ namespace gf {
 
   private:
     friend class PhysicsArbiter;
+    friend class PhysicsWorld;
 
     static void shape_iterator(cpBody* body, cpShape* shape, void* data);
     static void constraint_iterator(cpBody* body, cpConstraint* constraint, void* data);
