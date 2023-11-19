@@ -19,6 +19,7 @@ namespace gf {
   class PhysicsWorld;
   class PhysicsConstraint;
 
+  // NOLINTNEXTLINE(performance-enum-size)
   enum class PhysicsBodyType : std::underlying_type_t<cpBodyType> {
     Dynamic,
     Kinematic,

@@ -17,6 +17,7 @@
 namespace gf {
   class PhysicsShape;
 
+  // NOLINTNEXTLINE(performance-enum-size)
   enum class PhysicsDebugFeature : std::underlying_type_t<cpSpaceDebugDrawFlags> {
     Shapes = CP_SPACE_DEBUG_DRAW_SHAPES,
     Constraints = CP_SPACE_DEBUG_DRAW_CONSTRAINTS,

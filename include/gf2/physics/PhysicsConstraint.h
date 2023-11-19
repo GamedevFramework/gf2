@@ -3,6 +3,8 @@
 #ifndef GF_PHYSICS_CONSTRAINT_H
 #define GF_PHYSICS_CONSTRAINT_H
 
+#include <cstdint>
+
 #include <chipmunk/chipmunk.h>
 
 #include <gf2/core/Vec2.h>
@@ -14,7 +16,7 @@ namespace gf {
   class PhysicsBody;
   class PhysicsWorld;
 
-  enum class PhysicsConstraintType {
+  enum class PhysicsConstraintType : uint8_t {
     PinJoint,
     SlideJoint,
     PivotJoint,

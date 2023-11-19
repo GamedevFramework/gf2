@@ -17,7 +17,7 @@ namespace gf {
   class PhysicsShape;
   class PhysicsWorld;
 
-  struct PhysicsContactPoint {
+  struct GF_PHYSICS_API PhysicsContactPoint {
     Vec2F point_a;
     Vec2F point_b;
     float distance;

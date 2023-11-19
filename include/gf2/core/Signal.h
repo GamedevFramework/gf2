@@ -25,7 +25,7 @@ namespace gf {
     SignalId connect(Func&& callback)
     {
       const std::lock_guard<std::mutex> lock(m_mutex);
-      SignalId id = SignalId{ m_slots.size() };
+      auto id = SignalId{ m_slots.size() };
       m_slots.emplace_back(std::forward<Func>(callback));
       return id;
     }
