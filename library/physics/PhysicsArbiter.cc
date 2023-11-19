@@ -13,11 +13,6 @@
 
 namespace gf {
 
-  PhysicsArbiter::PhysicsArbiter(cpArbiter* arbiter)
-  : m_arbiter(arbiter)
-  {
-  }
-
   float PhysicsArbiter::restitution() const
   {
     return static_cast<float>(cpArbiterGetRestitution(m_arbiter));
@@ -198,6 +193,11 @@ namespace gf {
   void PhysicsArbiter::call_wildcard_separate_b(PhysicsWorld world)
   {
     cpArbiterCallWildcardSeparateB(m_arbiter, world.m_space);
+  }
+
+  PhysicsArbiter::PhysicsArbiter(cpArbiter* arbiter)
+  : m_arbiter(arbiter)
+  {
   }
 
 }

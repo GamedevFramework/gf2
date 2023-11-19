@@ -85,7 +85,7 @@ namespace gf {
 
     float kinematic_energy() const;
 
-    void each_shape(std::function<void(const PhysicsBody, PhysicsShape)> func);
+    void each_shape(std::function<void(PhysicsBody, PhysicsShape)> func);
     void each_constraint(std::function<void(PhysicsBody, PhysicsConstraint)> func);
     void each_arbiter(std::function<void(PhysicsBody, PhysicsArbiter)> func);
 

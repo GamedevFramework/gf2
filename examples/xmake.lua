@@ -36,4 +36,11 @@ if has_config("examples") then
         add_files("15-imgui.cc")
         add_deps("gf2imgui0")
         add_includedirs("$(buildir)/config/examples")
+
+
+    target("20-physics")
+        set_kind("binary")
+        add_files("20-physics.cc")
+        add_deps("gf2physics0")
+        add_deps("gf2graphics0")
 end

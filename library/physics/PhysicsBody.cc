@@ -213,7 +213,7 @@ namespace gf {
     return static_cast<float>(cpBodyKineticEnergy(m_body));
   }
 
-  void PhysicsBody::each_shape(std::function<void(const PhysicsBody, PhysicsShape)> func)
+  void PhysicsBody::each_shape(std::function<void(PhysicsBody, PhysicsShape)> func)
   {
     cpBodyEachShape(m_body, shape_iterator, &func);
   }

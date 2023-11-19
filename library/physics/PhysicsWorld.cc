@@ -7,14 +7,14 @@
 
 #include <vector>
 
+#include <gf2/core/Log.h>
+
 #include <gf2/physics/PhysicsArbiter.h>
 #include <gf2/physics/PhysicsBody.h>
 #include <gf2/physics/PhysicsCollisionHandler.h>
 #include <gf2/physics/PhysicsConstraint.h>
 #include <gf2/physics/PhysicsDebug.h>
 #include <gf2/physics/PhysicsShape.h>
-
-#include "gf2/physics/PhysicsHandle.h"
 
 namespace gf {
 
@@ -24,9 +24,8 @@ namespace gf {
   }
 
   namespace {
-    [[maybe_unused]] bool check_is_last(void* user_data)
+    [[maybe_unused]] bool check_is_last(const std::size_t* counter)
     {
-      auto* counter = static_cast<std::size_t*>(user_data);
       return counter != nullptr && *counter == 1;
     }
 
@@ -35,7 +34,9 @@ namespace gf {
     void dispose_shape_post_step(cpSpace* space, void* key, [[maybe_unused]] void* data)
     {
       auto* shape = static_cast<cpShape*>(key);
-      assert(check_is_last(cpShapeGetUserData(shape)));
+      auto* user_data = static_cast<std::size_t*>(cpShapeGetUserData(shape));
+      assert(check_is_last(user_data));
+      delete user_data;
       cpSpaceRemoveShape(space, shape);
       cpShapeFree(shape);
     }
@@ -51,7 +52,9 @@ namespace gf {
     void dispose_constraint_post_step(cpSpace* space, void* key, [[maybe_unused]] void* data)
     {
       auto* constraint = static_cast<cpConstraint*>(key);
-      assert(check_is_last(cpConstraintGetUserData(constraint)));
+      auto* user_data = static_cast<std::size_t*>(cpConstraintGetUserData(constraint));
+      assert(check_is_last(user_data));
+      delete user_data;
       cpSpaceRemoveConstraint(space, constraint);
       cpConstraintFree(constraint);
     }
@@ -67,7 +70,9 @@ namespace gf {
     void dispose_body_post_step(cpSpace* space, void* key, [[maybe_unused]] void* data)
     {
       auto* body = static_cast<cpBody*>(key);
-      assert(check_is_last(cpBodyGetUserData(body)));
+      auto* user_data = static_cast<std::size_t*>(cpBodyGetUserData(body));
+      assert(check_is_last(user_data));
+      delete user_data;
       cpSpaceRemoveBody(space, body);
       cpBodyFree(body);
     }
@@ -82,9 +87,16 @@ namespace gf {
   PhysicsWorld::~PhysicsWorld()
   {
     cpSpace* space = m_space;
+
+    if (m_space == nullptr) {
+      return;
+    }
+
     cpSpaceEachShape(space, dispose_shape_iterator, static_cast<void*>(space));
     cpSpaceEachConstraint(space, dispose_constraint_iterator, static_cast<void*>(space));
     cpSpaceEachBody(space, dispose_body_iterator, static_cast<void*>(space));
+
+    Log::debug("Counter: {}", *m_space.user_data());
   }
 
   int PhysicsWorld::iterations() const

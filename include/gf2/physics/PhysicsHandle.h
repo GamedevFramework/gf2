@@ -75,11 +75,7 @@ namespace gf::details {
 
     PhysicsHandle& operator=(PhysicsHandle&& other) noexcept
     {
-      if (this != &other) {
-        unreference();
-        m_handle = std::exchange(other.m_handle, nullptr);
-      }
-
+      std::swap(m_handle, other.m_handle);
       return *this;
     }
 
@@ -95,6 +91,7 @@ namespace gf::details {
 
     CounterType* user_data()
     {
+      assert(m_handle != nullptr);
       return static_cast<CounterType*>(UserDataGetter(m_handle));
     }
 
@@ -113,10 +110,9 @@ namespace gf::details {
 
       if (*counter == 0) {
         delete counter;
+        Destructor(m_handle);
+        m_handle = nullptr;
       }
-
-      Destructor(m_handle);
-      m_handle = nullptr;
     }
 
   private:
