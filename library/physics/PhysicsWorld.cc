@@ -28,20 +28,21 @@ namespace gf {
     {
       auto* shape = static_cast<cpShape*>(key);
       cpSpaceRemoveShape(space, shape);
-      cpShapeFree(shape);
+
+      PhysicsShape::Handle handle(details::PhysicsExisting, shape);
+      auto count = handle.refcount();
+
+      if (count == 1) {
+        cpShapeFree(shape);
+      } else {
+        handle.set_refcount(count - 1);
+      }
     }
 
     void dispose_shape_iterator(cpShape* shape, void* data)
     {
       auto* space = static_cast<cpSpace*>(data);
-      PhysicsShape::Handle handle(details::PhysicsExisting, shape);
-      auto count = handle.refcount();
-
-      if (count == 1) {
-        cpSpaceAddPostStepCallback(space, dispose_shape_post_step, static_cast<void*>(shape), nullptr);
-      } else {
-        handle.set_refcount(count - 1);
-      }
+      cpSpaceAddPostStepCallback(space, dispose_shape_post_step, static_cast<void*>(shape), nullptr);
     }
 
     // constraint
@@ -50,20 +51,21 @@ namespace gf {
     {
       auto* constraint = static_cast<cpConstraint*>(key);
       cpSpaceRemoveConstraint(space, constraint);
-      cpConstraintFree(constraint);
+
+      PhysicsConstraint::Handle handle(details::PhysicsExisting, constraint);
+      auto count = handle.refcount();
+
+      if (count == 1) {
+        cpConstraintFree(constraint);
+      } else {
+        handle.set_refcount(count - 1);
+      }
     }
 
     void dispose_constraint_iterator(cpConstraint* constraint, void* data)
     {
       auto* space = static_cast<cpSpace*>(data);
-      PhysicsConstraint::Handle handle(details::PhysicsExisting, constraint);
-      auto count = handle.refcount();
-
-      if (count == 1) {
-        cpSpaceAddPostStepCallback(space, dispose_constraint_post_step, static_cast<void*>(constraint), nullptr);
-      } else {
-        handle.set_refcount(count - 1);
-      }
+      cpSpaceAddPostStepCallback(space, dispose_constraint_post_step, static_cast<void*>(constraint), nullptr);
     }
 
     // body
@@ -72,20 +74,21 @@ namespace gf {
     {
       auto* body = static_cast<cpBody*>(key);
       cpSpaceRemoveBody(space, body);
-      cpBodyFree(body);
+
+      PhysicsBody::Handle handle(details::PhysicsExisting, body);
+      auto count = handle.refcount();
+
+      if (count == 1) {
+        cpBodyFree(body);
+      } else {
+        handle.set_refcount(count - 1);
+      }
     }
 
     void dispose_body_iterator(cpBody* body, void* data)
     {
       auto* space = static_cast<cpSpace*>(data);
-      PhysicsBody::Handle handle(details::PhysicsExisting, body);
-      auto count = handle.refcount();
-
-      if (count == 1) {
-        cpSpaceAddPostStepCallback(space, dispose_body_post_step, static_cast<void*>(body), nullptr);
-      } else {
-        handle.set_refcount(count - 1);
-      }
+      cpSpaceAddPostStepCallback(space, dispose_body_post_step, static_cast<void*>(body), nullptr);
     }
   }
 
