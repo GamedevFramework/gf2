@@ -101,7 +101,7 @@ namespace {
           gf::PhysicsBody body = gf::PhysicsBody::make_dynamic(1.0f, std::numeric_limits<float>::infinity());
           body.set_location(gf::vec(2 * (x - ImageWidth / 2 + x_jitter), 2 * (y - ImageHeight / 2 + y_jitter)));
 
-          gf::PhysicsShape shape = gf::PhysicsShape::make_circle(body, 0.95f, { 0.0f, 0.0f });
+          gf::PhysicsShape shape = gf::PhysicsShape::make_circle(&body, 0.95f, { 0.0f, 0.0f });
           shape.set_elasticity(0.0f);
           shape.set_friction(0.0f);
 
@@ -114,7 +114,7 @@ namespace {
       body.set_location({ -1000.0f, -10.0f });
       body.set_velocity({ 400.0f, 0.0f });
 
-      gf::PhysicsShape shape = gf::PhysicsShape::make_circle(body, 10.0f, { 0.0f, 0.0f });
+      gf::PhysicsShape shape = gf::PhysicsShape::make_circle(&body, 10.0f, { 0.0f, 0.0f });
       shape.set_elasticity(0.0f);
       shape.set_friction(0.0f);
 

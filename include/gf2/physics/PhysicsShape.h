@@ -31,11 +31,11 @@ namespace gf {
   public:
     PhysicsShape() = default;
 
-    static PhysicsShape make_circle(PhysicsBody body, float radius, Vec2F offset);
-    static PhysicsShape make_segment(PhysicsBody body, Vec2F a, Vec2F b, float radius);
-    static PhysicsShape make_segment(PhysicsBody body, Vec2F a, Vec2F b, float radius, Vec2F prev, Vec2F next);
-    static PhysicsShape make_polygon(PhysicsBody body, Span<const Vec2F> vertices, Mat3F transform, float radius);
-    static PhysicsShape make_box(PhysicsBody body, RectF box, float radius);
+    static PhysicsShape make_circle(PhysicsBody* body, float radius, Vec2F offset);
+    static PhysicsShape make_segment(PhysicsBody* body, Vec2F a, Vec2F b, float radius);
+    static PhysicsShape make_segment(PhysicsBody* body, Vec2F a, Vec2F b, float radius, Vec2F prev, Vec2F next);
+    static PhysicsShape make_polygon(PhysicsBody* body, Span<const Vec2F> vertices, Mat3F transform, float radius);
+    static PhysicsShape make_box(PhysicsBody* body, RectF box, float radius);
 
     PhysicsWorld world() const;
 
@@ -80,7 +80,7 @@ namespace gf {
     PhysicsShape(cpShape* shape);
     PhysicsShape(details::PhysicsExistingType existing, cpShape* shape);
 
-    details::PhysicsHandle<cpShape, cpShapeGetUserData, cpShapeSetUserData, cpShapeDestroy> m_shape;
+    details::PhysicsHandle<cpShape, cpShapeGetUserData, cpShapeSetUserData, cpShapeFree> m_shape;
   };
 
 }

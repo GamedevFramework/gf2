@@ -10,28 +10,26 @@
 #include <gf2/physics/PhysicsBody.h>
 #include <gf2/physics/PhysicsWorld.h>
 
-#include "gf2/physics/PhysicsHandle.h"
-
 namespace gf {
 
-  PhysicsShape PhysicsShape::make_circle(PhysicsBody body, float radius, Vec2F offset)
+  PhysicsShape PhysicsShape::make_circle(PhysicsBody* body, float radius, Vec2F offset)
   {
-    return { cpCircleShapeNew(body.m_body, radius, cpv(offset.x, offset.y)) };
+    return { cpCircleShapeNew(body->m_body, radius, cpv(offset.x, offset.y)) };
   }
 
-  PhysicsShape PhysicsShape::make_segment(PhysicsBody body, Vec2F a, Vec2F b, float radius)
+  PhysicsShape PhysicsShape::make_segment(PhysicsBody* body, Vec2F a, Vec2F b, float radius)
   {
-    return { cpSegmentShapeNew(body.m_body, cpv(a.x, a.y), cpv(b.x, b.y), radius) };
+    return { cpSegmentShapeNew(body->m_body, cpv(a.x, a.y), cpv(b.x, b.y), radius) };
   }
 
-  PhysicsShape PhysicsShape::make_segment(PhysicsBody body, Vec2F a, Vec2F b, float radius, Vec2F prev, Vec2F next)
+  PhysicsShape PhysicsShape::make_segment(PhysicsBody* body, Vec2F a, Vec2F b, float radius, Vec2F prev, Vec2F next)
   {
-    auto* shape = cpSegmentShapeNew(body.m_body, cpv(a.x, a.y), cpv(b.x, b.y), radius);
+    auto* shape = cpSegmentShapeNew(body->m_body, cpv(a.x, a.y), cpv(b.x, b.y), radius);
     cpSegmentShapeSetNeighbors(shape, cpv(prev.x, prev.y), cpv(next.x, next.y));
     return { shape };
   }
 
-  PhysicsShape PhysicsShape::make_polygon(PhysicsBody body, Span<const Vec2F> vertices, Mat3F transform, float radius)
+  PhysicsShape PhysicsShape::make_polygon(PhysicsBody* body, Span<const Vec2F> vertices, Mat3F transform, float radius)
   {
     std::vector<cpVect> new_vertices;
     new_vertices.reserve(vertices.size());
@@ -43,14 +41,14 @@ namespace gf {
     // assert on t(2, *)?
 
     auto new_transform = cpTransformNew(transform(0, 0), transform(1, 0), transform(0, 1), transform(1, 1), transform(0, 2), transform(1, 2));
-    return cpPolyShapeNew(body.m_body, static_cast<int>(new_vertices.size()), new_vertices.data(), new_transform, radius);
+    return cpPolyShapeNew(body->m_body, static_cast<int>(new_vertices.size()), new_vertices.data(), new_transform, radius);
   }
 
-  PhysicsShape PhysicsShape::make_box(PhysicsBody body, RectF box, float radius)
+  PhysicsShape PhysicsShape::make_box(PhysicsBody* body, RectF box, float radius)
   {
     auto min = box.min();
     auto max = box.max();
-    return { cpBoxShapeNew2(body.m_body, cpBBNew(min.x, min.y, max.x, max.y), radius) };
+    return { cpBoxShapeNew2(body->m_body, cpBBNew(min.x, min.y, max.x, max.y), radius) };
   }
 
   PhysicsWorld PhysicsShape::world() const

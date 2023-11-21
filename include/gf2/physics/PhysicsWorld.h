@@ -116,7 +116,7 @@ namespace gf {
 
     PhysicsWorld(details::PhysicsExistingType existing, cpSpace* space);
 
-    details::PhysicsHandle<cpSpace, cpSpaceGetUserData, cpSpaceSetUserData, cpSpaceDestroy> m_space;
+    details::PhysicsHandle<cpSpace, cpSpaceGetUserData, cpSpaceSetUserData, cpSpaceFree> m_space;
   };
 
 }

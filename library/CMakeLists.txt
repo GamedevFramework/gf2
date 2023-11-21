@@ -341,7 +341,6 @@ gf2_handle_library(gf2physics0
 target_link_libraries(gf2physics0
   PUBLIC
     gf2core0
-  PRIVATE
     Chipmunk::Chipmunk
 )
 

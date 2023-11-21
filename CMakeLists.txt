@@ -12,6 +12,10 @@ option(BUILD_TESTING "Build tests" ON)
 
 option(GF_USE_EMBEDDED_LIBS "Build the library with the submodule libraries" ON)
 
+if(UNIX)
+  option(GF_DEV_ENABLE_ASAN "Enable Address Sanitizer" OFF)
+endif()
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 include(GNUInstallDirs)
@@ -46,6 +50,12 @@ else()
   message(STATUS "Using GCC or Clang compiler")
   # assume it's a GNU-like compiler (GCC, clang)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -gdwarf-4")
+endif()
+
+if(UNIX)
+  if(GF_DEV_ENABLE_ASAN)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+  endif()
 endif()
 
 add_subdirectory(library)

@@ -74,7 +74,7 @@ namespace gf {
     PhysicsConstraint(cpConstraint* constraint);
     PhysicsConstraint(details::PhysicsExistingType existing, cpConstraint* constraint);
 
-    details::PhysicsHandle<cpConstraint, cpConstraintGetUserData, cpConstraintSetUserData, cpConstraintDestroy> m_constraint;
+    details::PhysicsHandle<cpConstraint, cpConstraintGetUserData, cpConstraintSetUserData, cpConstraintFree> m_constraint;
   };
 
 }

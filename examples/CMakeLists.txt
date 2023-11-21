@@ -76,3 +76,15 @@ target_include_directories(15-imgui
   PRIVATE
     ${CMAKE_CURRENT_BINARY_DIR}
 )
+
+# 20-physics
+
+add_executable(20-physics
+  20-physics.cc
+)
+
+target_link_libraries(20-physics
+  PRIVATE
+    gf2physics0
+    gf2graphics0
+)

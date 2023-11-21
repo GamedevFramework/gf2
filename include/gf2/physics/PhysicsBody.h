@@ -102,7 +102,7 @@ namespace gf {
     PhysicsBody(cpBody* body);
     PhysicsBody(details::PhysicsExistingType existing, cpBody* body);
 
-    details::PhysicsHandle<cpBody, cpBodyGetUserData, cpBodySetUserData, cpBodyDestroy> m_body;
+    details::PhysicsHandle<cpBody, cpBodyGetUserData, cpBodySetUserData, cpBodyFree> m_body;
   };
 
 }

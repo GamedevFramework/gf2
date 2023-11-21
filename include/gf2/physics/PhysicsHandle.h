@@ -4,7 +4,7 @@
 #define GF_PHYSICS_HANDLE_H
 
 #include <cassert>
-#include <cstddef>
+#include <cstdint>
 
 #include <utility>
 
@@ -20,8 +20,6 @@ namespace gf::details {
   template<typename T, void* (*UserDataGetter)(const T*), void (*UserDataSetter)(T*, void*), void (*Destructor)(T*)>
   class PhysicsHandle {
   public:
-    using CounterType = std::size_t;
-
     PhysicsHandle()
     : m_handle(nullptr)
     {
@@ -30,15 +28,12 @@ namespace gf::details {
     PhysicsHandle(T* handle)
     : m_handle(handle)
     {
-      assert(user_data() == nullptr);
-      UserDataSetter(m_handle, new CounterType(0));
-      reference();
+      set_refcount(1);
     }
 
     PhysicsHandle([[maybe_unused]] PhysicsExistingType existing, T* handle)
     : m_handle(handle)
     {
-      assert(user_data() != nullptr);
       reference();
     }
 
@@ -89,29 +84,34 @@ namespace gf::details {
       return m_handle;
     }
 
-    CounterType* user_data()
+    uintptr_t refcount() const
     {
       assert(m_handle != nullptr);
-      return static_cast<CounterType*>(UserDataGetter(m_handle));
+      return reinterpret_cast<uintptr_t>(UserDataGetter(m_handle)); // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
+    }
+
+    void set_refcount(uintptr_t count) {
+      assert(m_handle != nullptr);
+      UserDataSetter(m_handle, reinterpret_cast<void*>(count)); // NOLINT(performance-no-int-to-ptr,cppcoreguidelines-pro-type-reinterpret-cast)
     }
 
     void reference()
     {
-      auto* counter = user_data();
-      assert(counter != nullptr);
-      ++(*counter);
+      auto count = refcount();
+      ++count;
+      set_refcount(count);
     }
 
     void unreference()
     {
-      auto* counter = user_data();
-      assert(counter != nullptr);
-      --(*counter);
+      auto count = refcount();
+      --count;
 
-      if (*counter == 0) {
-        delete counter;
+      if (count == 0) {
         Destructor(m_handle);
         m_handle = nullptr;
+      } else {
+        set_refcount(count);
       }
     }
 
