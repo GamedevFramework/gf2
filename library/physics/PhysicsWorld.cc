@@ -30,13 +30,7 @@ namespace gf {
       cpSpaceRemoveShape(space, shape);
 
       PhysicsShape::Handle handle(details::PhysicsExisting, shape);
-      auto count = handle.refcount();
-
-      if (count == 1) {
-        cpShapeFree(shape);
-      } else {
-        handle.set_refcount(count - 1);
-      }
+      handle.unreference();
     }
 
     void dispose_shape_iterator(cpShape* shape, void* data)
@@ -53,13 +47,7 @@ namespace gf {
       cpSpaceRemoveConstraint(space, constraint);
 
       PhysicsConstraint::Handle handle(details::PhysicsExisting, constraint);
-      auto count = handle.refcount();
-
-      if (count == 1) {
-        cpConstraintFree(constraint);
-      } else {
-        handle.set_refcount(count - 1);
-      }
+      handle.unreference();
     }
 
     void dispose_constraint_iterator(cpConstraint* constraint, void* data)
@@ -76,13 +64,7 @@ namespace gf {
       cpSpaceRemoveBody(space, body);
 
       PhysicsBody::Handle handle(details::PhysicsExisting, body);
-      auto count = handle.refcount();
-
-      if (count == 1) {
-        cpBodyFree(body);
-      } else {
-        handle.set_refcount(count - 1);
-      }
+      handle.unreference();
     }
 
     void dispose_body_iterator(cpBody* body, void* data)
