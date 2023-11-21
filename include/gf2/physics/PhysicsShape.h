@@ -72,6 +72,8 @@ namespace gf {
     PhysicsShapeFilter shape_filter() const;
     void set_shape_filter(PhysicsShapeFilter filter);
 
+    using Handle = details::PhysicsHandle<cpShape, cpShapeGetUserData, cpShapeSetUserData, cpShapeFree>;
+
   private:
     friend class PhysicsArbiter;
     friend class PhysicsBody;
@@ -80,7 +82,7 @@ namespace gf {
     PhysicsShape(cpShape* shape);
     PhysicsShape(details::PhysicsExistingType existing, cpShape* shape);
 
-    details::PhysicsHandle<cpShape, cpShapeGetUserData, cpShapeSetUserData, cpShapeFree> m_shape;
+    Handle m_shape;
   };
 
 }

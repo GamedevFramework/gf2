@@ -67,6 +67,8 @@ namespace gf {
 
     float impulse();
 
+    using Handle = details::PhysicsHandle<cpConstraint, cpConstraintGetUserData, cpConstraintSetUserData, cpConstraintFree>;
+
   private:
     friend class PhysicsBody;
     friend class PhysicsWorld;
@@ -74,7 +76,7 @@ namespace gf {
     PhysicsConstraint(cpConstraint* constraint);
     PhysicsConstraint(details::PhysicsExistingType existing, cpConstraint* constraint);
 
-    details::PhysicsHandle<cpConstraint, cpConstraintGetUserData, cpConstraintSetUserData, cpConstraintFree> m_constraint;
+    Handle m_constraint;
   };
 
 }

@@ -89,6 +89,8 @@ namespace gf {
     void each_constraint(std::function<void(PhysicsBody, PhysicsConstraint)> func);
     void each_arbiter(std::function<void(PhysicsBody, PhysicsArbiter)> func);
 
+    using Handle = details::PhysicsHandle<cpBody, cpBodyGetUserData, cpBodySetUserData, cpBodyFree>;
+
   private:
     friend class PhysicsArbiter;
     friend class PhysicsConstraint;
@@ -102,7 +104,7 @@ namespace gf {
     PhysicsBody(cpBody* body);
     PhysicsBody(details::PhysicsExistingType existing, cpBody* body);
 
-    details::PhysicsHandle<cpBody, cpBodyGetUserData, cpBodySetUserData, cpBodyFree> m_body;
+    Handle m_body;
   };
 
 }
