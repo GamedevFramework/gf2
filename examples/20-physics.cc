@@ -23,7 +23,7 @@ namespace {
 
   int pixel(int x, int y)
   {
-    return (ImageBitmap[(x >> 3) + y * ImageRowLength] >> (~x & 0x07)) & 1;
+    return (ImageBitmap[(x >> 3) + y * ImageRowLength] >> (~x & 0x07)) & 1; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
   }
 
   class PhysicsEntity : public gf::Entity {
@@ -42,7 +42,7 @@ namespace {
 
     void render(gf::RenderRecorder& recorder) override
     {
-      m_world.each_body([&](gf::PhysicsBody body) {
+      m_world.each_body([&](gf::PhysicsBody body) { // NOLINT(performance-unnecessary-value-param)
         m_ball_entity.set_location(body.location());
         m_ball_entity.render(recorder);
       });
@@ -59,17 +59,22 @@ namespace {
     {
       m_world.use_spatial_hash(2.0, 10000);
 
+      const gf::Vec2I center = gf::vec(ImageWidth, ImageHeight) / 2;
+
       for (int y = 0; y < ImageHeight; ++y) {
         for (int x = 0; x < ImageWidth; ++x) {
           if (pixel(x, y) == 0) {
             continue;
           }
 
-          float x_jitter = random.compute_uniform_float(0.0f, 0.05f);
-          float y_jitter = random.compute_uniform_float(0.0f, 0.05f);
+          const gf::Vec2I position = gf::vec(x, y);
+
+          const float x_jitter = random.compute_uniform_float(0.0f, 0.05f);
+          const float y_jitter = random.compute_uniform_float(0.0f, 0.05f);
+          const gf::Vec2F jitter = gf::vec(x_jitter, y_jitter);
 
           gf::PhysicsBody body = gf::PhysicsBody::make_dynamic(1.0f, std::numeric_limits<float>::infinity());
-          body.set_location(gf::vec(2 * (x - ImageWidth / 2 + x_jitter), 2 * (y - ImageHeight / 2 + y_jitter)));
+          body.set_location(2 * (position - center + jitter));
 
           gf::PhysicsShape shape = gf::PhysicsShape::make_circle(&body, 0.95f, { 0.0f, 0.0f });
           shape.set_elasticity(0.0f);
