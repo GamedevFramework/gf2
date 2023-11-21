@@ -90,7 +90,8 @@ namespace gf::details {
       return reinterpret_cast<uintptr_t>(UserDataGetter(m_handle)); // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
     }
 
-    void set_refcount(uintptr_t count) {
+    void set_refcount(uintptr_t count)
+    {
       assert(m_handle != nullptr);
       UserDataSetter(m_handle, reinterpret_cast<void*>(count)); // NOLINT(performance-no-int-to-ptr,cppcoreguidelines-pro-type-reinterpret-cast)
     }
