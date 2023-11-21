@@ -8,14 +8,17 @@
 
 #include <utility>
 
-#include "PhysicsApi.h"
-
 namespace gf::details {
 
-  class GF_PHYSICS_API PhysicsExistingType {
+  class PhysicsExistingType {
   };
 
   constexpr PhysicsExistingType PhysicsExisting = {};
+
+  class PhysicsNoReferenceType {
+  };
+
+  constexpr PhysicsNoReferenceType PhysicsNoReference = {};
 
   template<typename T, void* (*UserDataGetter)(const T*), void (*UserDataSetter)(T*, void*), void (*Destructor)(T*)>
   class PhysicsHandle {
@@ -35,6 +38,11 @@ namespace gf::details {
     : m_handle(handle)
     {
       reference();
+    }
+
+    PhysicsHandle([[maybe_unused]] PhysicsNoReferenceType no_reference, T* handle)
+    : m_handle(handle)
+    {
     }
 
     PhysicsHandle(const PhysicsHandle& other)

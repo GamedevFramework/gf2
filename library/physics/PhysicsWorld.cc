@@ -29,7 +29,7 @@ namespace gf {
       auto* shape = static_cast<cpShape*>(key);
       cpSpaceRemoveShape(space, shape);
 
-      PhysicsShape::Handle handle(details::PhysicsExisting, shape);
+      PhysicsShape::Handle handle(details::PhysicsNoReference, shape);
       handle.unreference();
     }
 
@@ -46,7 +46,7 @@ namespace gf {
       auto* constraint = static_cast<cpConstraint*>(key);
       cpSpaceRemoveConstraint(space, constraint);
 
-      PhysicsConstraint::Handle handle(details::PhysicsExisting, constraint);
+      PhysicsConstraint::Handle handle(details::PhysicsNoReference, constraint);
       handle.unreference();
     }
 
@@ -63,7 +63,7 @@ namespace gf {
       auto* body = static_cast<cpBody*>(key);
       cpSpaceRemoveBody(space, body);
 
-      PhysicsBody::Handle handle(details::PhysicsExisting, body);
+      PhysicsBody::Handle handle(details::PhysicsNoReference, body);
       handle.unreference();
     }
 
