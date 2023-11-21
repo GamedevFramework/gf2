@@ -105,6 +105,30 @@ namespace gf {
       return m_data[index];
     }
 
+    constexpr const T& front() const noexcept
+    {
+      assert(m_data != nullptr && Size > 0);
+      return m_data[0];
+    }
+
+    constexpr T& front() noexcept
+    {
+      assert(m_data != nullptr && Size > 0);
+      return m_data[0];
+    }
+
+    constexpr const T& back() const noexcept
+    {
+      assert(m_data != nullptr && Size > 0);
+      return m_data[Size - 1];
+    }
+
+    constexpr T& back() noexcept
+    {
+      assert(m_data != nullptr && Size > 0);
+      return m_data[Size - 1];
+    }
+
     template<std::size_t I>
     constexpr const T& get() const noexcept
     {
@@ -299,6 +323,30 @@ namespace gf {
     constexpr T& operator[](std::size_t index)
     {
       return m_data[index];
+    }
+
+    constexpr const T& front() const noexcept
+    {
+      assert(m_data != nullptr && m_size > 0);
+      return m_data[0];
+    }
+
+    constexpr T& front() noexcept
+    {
+      assert(m_data != nullptr && m_size > 0);
+      return m_data[0];
+    }
+
+    constexpr const T& back() const noexcept
+    {
+      assert(m_data != nullptr && m_size > 0);
+      return m_data[m_size - 1];
+    }
+
+    constexpr T& back() noexcept
+    {
+      assert(m_data != nullptr && m_size > 0);
+      return m_data[m_size - 1];
     }
 
     constexpr Span<T> slice(std::size_t b, std::size_t e) const noexcept
