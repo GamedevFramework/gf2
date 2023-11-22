@@ -330,6 +330,7 @@ add_library(gf2physics0
   physics/PhysicsDebug.cc
   physics/PhysicsHandle.cc
   physics/PhysicsShape.cc
+  physics/PhysicsShapeEx.cc
   physics/PhysicsWorld.cc
 )
 

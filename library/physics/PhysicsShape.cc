@@ -180,4 +180,37 @@ namespace gf {
   {
   }
 
+  /*
+   * Moments
+   */
+
+  float compute_moment_for_circle(float mass, float r1, float r2, Vec2F offset)
+  {
+    return static_cast<float>(cpMomentForCircle(mass, r1, r2, cpv(offset.x, offset.y)));
+  }
+
+  float compute_moment_for_segment(float mass, Vec2F a, Vec2F b, float radius)
+  {
+    return static_cast<float>(cpMomentForSegment(mass, cpv(a.x, a.y), cpv(b.x, b.y), radius));
+  }
+
+  float compute_moment_for_polygon(float mass, Span<const Vec2F> vertices, Vec2F offset, float radius)
+  {
+    std::vector<cpVect> new_vertices;
+    new_vertices.reserve(vertices.size());
+
+    for (auto v : vertices) {
+      new_vertices.emplace_back(cpv(v.x, v.y));
+    }
+
+    return static_cast<float>(cpMomentForPoly(mass, static_cast<int>(new_vertices.size()), new_vertices.data(), cpv(offset.x, offset.y), radius));
+  }
+
+  float compute_moment_for_box(float mass, RectF box)
+  {
+    auto min = box.min();
+    auto max = box.max();
+    return static_cast<float>(cpMomentForBox2(mass, cpBBNew(min.x, min.y, max.x, max.y)));
+  }
+
 }

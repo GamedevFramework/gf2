@@ -19,7 +19,10 @@ namespace home {
     WorldScene(GameHub* hub, const WorldData& data);
 
   private:
+    void do_update(gf::Time time) override;
     void do_process_event(const gf::Event& event) override;
+
+    GameHub* m_hub = nullptr;
 
     gf::Music* main_theme_music = nullptr;
 

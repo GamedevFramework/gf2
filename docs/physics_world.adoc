@@ -1,0 +1,21 @@
+= `physics` World
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The world component defines classes for handling physics objects at the higher level.
+
+xref:reference.adoc#physics[< Back to reference]
+
+== Types
+
+[#physics_world]
+=== `gf::PhysicsWorld`
+
+[source]
+----
+#include <gf2/physics/PhysicsWorld.h>
+class PhysicsWorld;
+----
+
+

@@ -85,6 +85,11 @@ namespace gf {
     Handle m_shape;
   };
 
+  GF_PHYSICS_API float compute_moment_for_circle(float m, float r1, float r2, Vec2F offset);
+  GF_PHYSICS_API float compute_moment_for_segment(float m, Vec2F a, Vec2F b, float radius);
+  GF_PHYSICS_API float compute_moment_for_polygon(float m, Span<const Vec2F> vertices, Vec2F offset, float radius);
+  GF_PHYSICS_API float compute_moment_for_box(float m, RectF box);
+
 }
 
 #endif // GF_PHYSICS_SHAPE_H

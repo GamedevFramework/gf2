@@ -83,8 +83,8 @@ namespace gf {
     void each_constraint(std::function<void(PhysicsConstraint)> func);
 
     void reindex_static();
-    void reindex_shape(PhysicsShape shape);
-    void reindex_shapes_for_body(PhysicsBody& body);
+    void reindex_shape(PhysicsShape* shape);
+    void reindex_shapes_for_body(PhysicsBody* body);
 
     void use_spatial_hash(float dim, int count);
 

@@ -16,6 +16,7 @@ target_link_libraries(HOME
   PRIVATE
     gf2audio0
     gf2graphics0
+    gf2physics0
 )
 
 target_include_directories(HOME

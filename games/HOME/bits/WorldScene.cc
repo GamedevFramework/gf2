@@ -6,7 +6,8 @@ namespace home {
   using namespace gf::literals;
 
   WorldScene::WorldScene(GameHub* hub, const WorldData& data)
-  : main_theme_music(hub->resource_manager()->get<gf::Music>(data.main_theme_music.filename))
+  : m_hub(hub)
+  , main_theme_music(hub->resource_manager()->get<gf::Music>(data.main_theme_music.filename))
   , mining_sound(hub->resource_manager()->get<gf::Sound>(data.mining_sound.filename))
   , o2_filling_sound(hub->resource_manager()->get<gf::Sound>(data.o2_filling_sound.filename))
   , breath_low_o2_sound(hub->resource_manager()->get<gf::Sound>(data.breath_low_o2_sound.filename))
@@ -21,6 +22,12 @@ namespace home {
     add_world_entity(&m_hero_entity);
 
     m_hero_entity.update_location.connect([this](gf::Vec2F location) { set_world_center(location); });
+  }
+
+  void WorldScene::do_update(gf::Time time)
+  {
+    m_hub->physics_world()->update(time);
+    update_entities(time);
   }
 
   void WorldScene::do_process_event(const gf::Event& event)

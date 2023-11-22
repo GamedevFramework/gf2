@@ -7,6 +7,7 @@
 
 #include <gf2/audio/AudioManager.h>
 #include <gf2/graphics/SceneManager.h>
+#include <gf2/physics/PhysicsWorld.h>
 
 #include "ResourceHub.h"
 #include "SplashData.h"
@@ -35,6 +36,11 @@ namespace home {
       return &m_audio_manager;
     }
 
+    gf::PhysicsWorld* physics_world()
+    {
+      return &m_physics_world;
+    }
+
     SplashScene* splash_scene()
     {
       return m_splash_scene.get();
@@ -48,6 +54,7 @@ namespace home {
   private:
     gf::FontManager m_font_manager;
     gf::AudioManager m_audio_manager;
+    gf::PhysicsWorld m_physics_world;
 
     ResourceHub m_resource_hub;
 

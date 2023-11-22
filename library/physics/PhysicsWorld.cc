@@ -288,14 +288,14 @@ namespace gf {
     cpSpaceReindexStatic(m_space);
   }
 
-  void PhysicsWorld::reindex_shape(PhysicsShape shape)
+  void PhysicsWorld::reindex_shape(PhysicsShape* shape)
   {
-    cpSpaceReindexShape(m_space, shape.m_shape);
+    cpSpaceReindexShape(m_space, shape->m_shape);
   }
 
-  void PhysicsWorld::reindex_shapes_for_body(PhysicsBody& body)
+  void PhysicsWorld::reindex_shapes_for_body(PhysicsBody* body)
   {
-    cpSpaceReindexShapesForBody(m_space, body.m_body);
+    cpSpaceReindexShapesForBody(m_space, body->m_body);
   }
 
   void PhysicsWorld::use_spatial_hash(float dim, int count)

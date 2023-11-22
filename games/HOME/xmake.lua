@@ -12,6 +12,7 @@ if has_config("games") then
         add_files("HOME.cc")
         add_files("bits/*.cc")
         add_deps("gf2audio0")
+        add_deps("gf2physics0")
         add_deps("gf2graphics0")
         add_includedirs("$(buildir)/config/games/HOME")
 

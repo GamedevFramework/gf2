@@ -8,6 +8,8 @@
 #include <gf2/audio/Sound.h>
 #include <gf2/graphics/AnimationEntity.h>
 #include <gf2/graphics/TransformableEntity.h>
+#include <gf2/physics/PhysicsBody.h>
+#include <gf2/physics/PhysicsShape.h>
 
 #include "WorldData.h"
 
@@ -48,6 +50,9 @@ namespace home {
     };
 
     Activity m_activity = Activity::Walking;
+
+    gf::PhysicsBody m_body;
+    gf::PhysicsShape m_shape;
 
     gf::Vec2F m_target = { 0.0f, 0.0f };
     gf::Vec2F m_velocity = { 0.0f, 0.0f };

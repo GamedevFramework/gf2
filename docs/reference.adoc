@@ -51,6 +51,11 @@ xref:index.adoc[< Back to main page]
 - xref:audio_sources.adoc[Sources] (xref:Sound.adoc[`Sound`], xref:Music.adoc[`Music`])
 - xref:audio_spatialization.adoc[Spatialization] (xref:AudioListener.adoc[`AudioListener`])
 
+== `physics`
+
+- xref:physics_world.adoc[World] (`PhysicsWorld`, `PhysicsCollisionHandler`, `PhysicsDebug`)
+- Objects (`PhysicsBody`, `PhysicsShape`)
+
 == `imgui`
 
 - xref:imgui_initialization.adoc[Initialization] (`ImguiInitializer`)

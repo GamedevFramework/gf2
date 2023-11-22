@@ -2,12 +2,13 @@
 
 #include "GameHub.h"
 
-#include "gf2/core/Orientation.h"
-#include "gf2/core/Vec2.h"
-
 namespace home {
 
   namespace {
+
+    constexpr float HeroMass = 1.0f;
+    constexpr float HeroRadius = 20.0f;
+
     constexpr float HeroVelocity = 200.0f;
 
     gf::Orientation harvest_orientation(float angle)
@@ -33,7 +34,9 @@ namespace home {
   using namespace gf::literals;
 
   HeroEntity::HeroEntity(GameHub* hub, const WorldData& data)
-  : m_hero_animations(data.hero_animations, hub->render_manager(), hub->resource_manager())
+  : m_body(gf::PhysicsBody::make_dynamic(HeroMass, gf::compute_moment_for_circle(HeroMass, 0.0f, HeroRadius, { 0.0f, 0.0f })))
+  , m_shape(gf::PhysicsShape::make_circle(&m_body, HeroRadius, { 0.0f, 0.0f }))
+  , m_hero_animations(data.hero_animations, hub->render_manager(), hub->resource_manager())
   , m_crosshair(data.crosshair, hub->render_manager(), hub->resource_manager())
   , m_jet_engine_sound(hub->resource_manager()->get<gf::Sound>(data.jet_engine_sound.filename))
   {
@@ -41,6 +44,10 @@ namespace home {
     set_origin({ 0.5f, 0.5f });
     set_scale(0.75f);
     m_hero_animations.select("pause_south_east"_id);
+
+    auto* physics_world = hub->physics_world();
+    physics_world->add_body(m_body);
+    physics_world->add_shape(m_shape);
 
     m_crosshair.set_scale({ 0.5f, 0.25f });
     m_crosshair.set_origin({ 0.5f, 0.5f });
@@ -56,6 +63,9 @@ namespace home {
 
   void HeroEntity::update(gf::Time time)
   {
+    set_location(m_body.location());
+    m_velocity = m_body.velocity();
+
     if (m_status == Status::Dying) {
       m_target = location();
       m_velocity = { 0.0f, 0.0f };
@@ -81,8 +91,6 @@ namespace home {
         m_status = Status::Waiting;
       }
 
-      set_location(location() + m_velocity * time.as_seconds()); // TODO: remove when physics ready
-
       if (m_status == Status::Moving) {
         if (!m_jet_engine_sound->playing()) {
           m_jet_engine_sound->start();
@@ -99,14 +107,17 @@ namespace home {
 
     update_location.emit(location());
 
+    m_body.set_location(location());
+    m_body.set_velocity(m_velocity);
+
     m_activity = Activity::Walking;
   }
 
   void HeroEntity::render(gf::RenderRecorder& recorder)
   {
+    m_crosshair.render(recorder);
     m_hero_animations.set_transform(transform());
     m_hero_animations.render(recorder);
-    m_crosshair.render(recorder);
   }
 
   void HeroEntity::compute_animation()
