@@ -33,7 +33,7 @@ namespace gf {
 
     struct AnimationBuilder {
 
-      std::vector<AnimationFrameRuntime> append_data(std::vector<const Texture*> textures, const AnimationData& data)
+      std::vector<AnimationFrameRuntime> append_data(const std::vector<const Texture*>& textures, const AnimationData& data)
       {
         std::vector<AnimationFrameRuntime> frames;
 
@@ -273,7 +273,7 @@ namespace gf {
   const AnimationRuntime* AnimationGroup::current_animation() const
   {
     if (m_current_animation_id == InvalidId) {
-      Log::fatal("No animatin selected.");
+      Log::fatal("No animation selected.");
     }
 
     if (auto iterator = m_animations.find(m_current_animation_id); iterator != m_animations.end()) {
