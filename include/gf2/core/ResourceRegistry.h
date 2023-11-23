@@ -3,7 +3,6 @@
 
 #include <filesystem>
 #include <map>
-#include <stdexcept>
 #include <vector>
 
 #include "Log.h"

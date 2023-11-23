@@ -7,7 +7,6 @@
 
 #include "CoreApi.h"
 #include "ResourceContext.h"
-#include "ResourceLoader.h"
 #include "Span.h"
 #include "Streams.h"
 #include "Tarball.h"

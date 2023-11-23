@@ -7,7 +7,6 @@
 #include <any>
 #include <filesystem>
 #include <map>
-#include <stdexcept>
 #include <typeindex>
 
 #include "CoreApi.h"
