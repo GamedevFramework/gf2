@@ -9,6 +9,7 @@
 #include <gf2/graphics/TextEntity.h>
 
 #include "HeroEntity.h"
+#include "MapEntity.h"
 #include "WorldData.h"
 
 namespace home {
@@ -24,14 +25,15 @@ namespace home {
 
     GameHub* m_hub = nullptr;
 
-    gf::Music* main_theme_music = nullptr;
+    gf::Music* m_main_theme_music = nullptr;
 
-    gf::Sound* mining_sound = nullptr;
-    gf::Sound* o2_filling_sound = nullptr;
-    gf::Sound* breath_low_o2_sound = nullptr;
-    gf::Sound* victory_sound = nullptr;
-    gf::Sound* death_sound = nullptr;
+    gf::Sound* m_mining_sound = nullptr;
+    gf::Sound* m_o2_filling_sound = nullptr;
+    gf::Sound* m_breath_low_o2_sound = nullptr;
+    gf::Sound* m_victory_sound = nullptr;
+    gf::Sound* m_death_sound = nullptr;
 
+    MapEntity m_map_entity;
     HeroEntity m_hero_entity;
   };
 

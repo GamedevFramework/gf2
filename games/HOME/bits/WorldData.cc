@@ -1,5 +1,7 @@
 #include "WorldData.h"
 
+#include <gf2/graphics/TiledMap.h>
+
 #include <gf2/audio/Music.h>
 #include <gf2/audio/Sound.h>
 
@@ -8,6 +10,7 @@
 namespace home {
 
   WorldData::WorldData()
+  : map("map/Map.tmx")
   {
     using namespace gf::literals;
 
@@ -70,6 +73,10 @@ namespace home {
   gf::ResourceBundle WorldData::bundle(GameHub* hub)
   {
     gf::ResourceBundle bundle([hub, this](gf::ResourceBundle* bundle, gf::ResourceManager* resources, gf::ResourceAction action) {
+      // map
+
+      bundle->handle<gf::TiledMap>(map, { hub->render_manager(), resources }, resources, action);
+
       // fonts
 
       // for (const gf::TextResource& resource : {  }) {
@@ -102,6 +109,7 @@ namespace home {
           bundle->handle<gf::Texture>(texture, hub->render_manager(), resources, action);
         }
       }
+
     });
 
     return bundle;

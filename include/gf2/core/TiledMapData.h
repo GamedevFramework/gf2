@@ -187,6 +187,8 @@ namespace gf {
     TiledMapResource() = default;
     TiledMapResource(const std::filesystem::path& filename);
 
+    static std::vector<std::filesystem::path> textures_only(const std::filesystem::path& filename);
+
     std::vector<std::filesystem::path> textures;
     TiledMapData data;
   };

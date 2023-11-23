@@ -3,6 +3,7 @@
 #ifndef GF_TILED_MAP_H
 #define GF_TILED_MAP_H
 
+#include <filesystem>
 #include <string_view>
 
 #include <gf2/core/AnyGrid.h>
@@ -16,6 +17,7 @@
 
 namespace gf {
   class RenderManager;
+  class ResourceBundle;
   class ResourceManager;
   class Texture;
   struct TiledMapData;
@@ -31,10 +33,18 @@ namespace gf {
   struct EnableBitmaskOperators<TiledMapQuery> : std::true_type {
   };
 
+  struct GF_GRAPHICS_API TiledMapContext {
+    RenderManager* render_manager;
+    ResourceManager* resource_manager;
+  };
+
   class GF_GRAPHICS_API TiledMap {
   public:
+    using Context = TiledMapContext;
+
     TiledMap(std::vector<const Texture*> textures, const TiledMapData& data, RenderManager* render_manager);
     TiledMap(const TiledMapResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
+    TiledMap(const std::filesystem::path& filename, TiledMapContext context);
 
 #ifdef _MSC_VER
     // why?
@@ -45,6 +55,8 @@ namespace gf {
     TiledMap& operator=(const TiledMap&) = delete;
     TiledMap& operator=(TiledMap&&) noexcept = default;
 #endif
+
+    static ResourceBundle bundle(const std::filesystem::path& filename, TiledMapContext context);
 
     void select_group(Vec2I position, std::string_view path, Flags<TiledMapQuery> query = All);
 

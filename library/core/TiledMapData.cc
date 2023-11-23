@@ -16,6 +16,7 @@
 
 #include <gf2/core/Log.h>
 #include <gf2/core/Property.h>
+#include <gf2/core/ResourceBundle.h>
 #include <gf2/core/StringUtils.h>
 
 using namespace std::literals;
@@ -838,5 +839,33 @@ namespace gf {
 
     parse_tmx_map(doc.child("map"), *this, filename.parent_path());
   }
+
+  std::vector<std::filesystem::path> TiledMapResource::textures_only(const std::filesystem::path& filename)
+  {
+    std::ifstream file(filename);
+
+    if (!file) {
+      Log::fatal("Unknown TMX file: '{}'.", filename);
+    }
+
+    pugi::xml_document doc;
+    const pugi::xml_parse_result result = doc.load(file);
+
+    if (!result) {
+      Log::fatal("Could not load TMX file '{}': {}.", filename, result.description());
+    }
+
+    TiledMapResource resource;
+
+    auto root_node = doc.child("map");
+    auto base_directory = filename.parent_path();
+
+    for (const pugi::xml_node tileset : root_node.children("tileset")) {
+      parse_tmx_tileset(tileset, resource, base_directory);
+    }
+
+    return std::move(resource.textures);
+  }
+
 
 }

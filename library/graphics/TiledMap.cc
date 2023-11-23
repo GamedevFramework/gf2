@@ -6,6 +6,8 @@
 #include <gf2/graphics/TiledMap.h>
 // clang-format on
 
+#include <gf2/core/Property.h>
+#include <gf2/core/ResourceBundle.h>
 #include <gf2/core/ResourceManager.h>
 #include <gf2/core/Span.h>
 #include <gf2/core/TiledMapData.h>
@@ -98,6 +100,22 @@ namespace gf {
   TiledMap::TiledMap(const TiledMapResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
   : TiledMap(load_resources(resource, resource_manager), resource.data, render_manager)
   {
+  }
+
+  TiledMap::TiledMap(const std::filesystem::path& filename, TiledMapContext context)
+  : TiledMap(TiledMapResource(filename), context.render_manager, context.resource_manager)
+  {
+  }
+
+  ResourceBundle TiledMap::bundle(const std::filesystem::path& filename, TiledMapContext context)
+  {
+    auto textures = TiledMapResource::textures_only(filename);
+
+    return ResourceBundle([textures,context](ResourceBundle* bundle, ResourceManager* manager, ResourceAction action) {
+      for (const auto& texture : textures) {
+        bundle->handle<Texture>(texture, context.render_manager, manager, action);
+      }
+    });
   }
 
   void TiledMap::compute_grid(const TiledMapData& data)

@@ -54,16 +54,16 @@ namespace gf {
 
   std::vector<PhysicsShape> make_polyline_shapes(PhysicsBody* body, Span<const Vec2F> polyline, float radius, PolylineType type)
   {
-    Polyline polyline_ex = { polyline, type };
+    const Polyline polyline_ex = { polyline, type };
 
     std::vector<PhysicsShape> shapes;
 
     for (std::size_t i = 0; i < polyline.size() - 1; ++i) {
-      Vec2F a = polyline[i];
-      Vec2F b = polyline[i + 1];
+      const Vec2F a = polyline[i];
+      const Vec2F b = polyline[i + 1];
 
-      Vec2F prev = polyline_ex.has_prev(i) ? polyline_ex.prev_point(i) : a;
-      Vec2F next = polyline_ex.has_next(i + 1) ? polyline_ex.next_point(i + 1) : b;
+      const Vec2F prev = polyline_ex.has_prev(i) ? polyline_ex.prev_point(i) : a;
+      const Vec2F next = polyline_ex.has_next(i + 1) ? polyline_ex.next_point(i + 1) : b;
 
       shapes.emplace_back(PhysicsShape::make_segment(body, a, b, radius, prev, next));
     }

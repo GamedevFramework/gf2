@@ -8,6 +8,7 @@
 #include <gf2/audio/Sound.h>
 #include <gf2/graphics/Font.h>
 #include <gf2/graphics/Texture.h>
+#include <gf2/graphics/TiledMap.h>
 
 namespace home {
 
@@ -20,6 +21,7 @@ namespace home {
     gf::ResourceRegistry<gf::Texture> texture_registry;
     gf::ResourceRegistry<gf::Sound> sound_registry;
     gf::ResourceRegistry<gf::Music> music_registry;
+    gf::ResourceRegistry<gf::TiledMap> tiled_map_registry;
 
     gf::ResourceManager manager;
   };

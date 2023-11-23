@@ -3,6 +3,7 @@
 #ifndef GF_PHYSICS_SHAPE_EX_H
 #define GF_PHYSICS_SHAPE_EX_H
 
+#include <cstdint>
 #include <vector>
 
 #include <gf2/core/Span.h>
@@ -14,7 +15,7 @@
 namespace gf {
   class PhysicsBody;
 
-  enum class PolylineType {
+  enum class PolylineType : uint8_t {
     Chain,
     Loop,
   };
