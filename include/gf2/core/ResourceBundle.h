@@ -99,7 +99,11 @@ namespace gf {
         case ResourceAction::Load:
           {
             if constexpr (details::HasPrimitive<T>) {
-              handle<typename T::Primitive>(path, context, manager, action);
+              if constexpr (details::HasContext<typename T::Primitive>) {
+                handle<typename T::Primitive>(path, context, manager, action);
+              } else {
+                handle<typename T::Primitive>(path, manager, action);
+              }
             }
 
             [[maybe_unused]] auto* ptr = manager->load<T>(path, context);
@@ -120,7 +124,11 @@ namespace gf {
             manager->unload<T>(path);
 
             if constexpr (details::HasPrimitive<T>) {
-              handle<typename T::Primitive>(path, context, manager, action);
+              if constexpr (details::HasContext<typename T::Primitive>) {
+                handle<typename T::Primitive>(path, context, manager, action);
+              } else {
+                handle<typename T::Primitive>(path, manager, action);
+              }
             }
           }
           break;
