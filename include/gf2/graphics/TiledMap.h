@@ -40,6 +40,7 @@ namespace gf {
 
   class GF_GRAPHICS_API TiledMap {
   public:
+    using Primitive = TiledMapResource;
     using Context = TiledMapContext;
 
     TiledMap(std::vector<const Texture*> textures, const TiledMapData& data, RenderManager* render_manager);

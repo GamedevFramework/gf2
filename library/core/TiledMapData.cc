@@ -605,11 +605,11 @@ namespace gf {
         const std::string name = layer.name();
 
         if (name == "layer") {
-          layers.push_back(parse_tmx_tile_layer(node, resource));
+          layers.push_back(parse_tmx_tile_layer(layer, resource));
         } else if (name == "objectgroup") {
-          layers.push_back(parse_tmx_object_layer(node, resource));
+          layers.push_back(parse_tmx_object_layer(layer, resource));
         } else if (name == "group") {
-          layers.push_back(parse_tmx_group_layer(node, resource));
+          layers.push_back(parse_tmx_group_layer(layer, resource));
         }
       }
 
@@ -839,33 +839,5 @@ namespace gf {
 
     parse_tmx_map(doc.child("map"), *this, filename.parent_path());
   }
-
-  std::vector<std::filesystem::path> TiledMapResource::textures_only(const std::filesystem::path& filename)
-  {
-    std::ifstream file(filename);
-
-    if (!file) {
-      Log::fatal("Unknown TMX file: '{}'.", filename);
-    }
-
-    pugi::xml_document doc;
-    const pugi::xml_parse_result result = doc.load(file);
-
-    if (!result) {
-      Log::fatal("Could not load TMX file '{}': {}.", filename, result.description());
-    }
-
-    TiledMapResource resource;
-
-    auto root_node = doc.child("map");
-    auto base_directory = filename.parent_path();
-
-    for (const pugi::xml_node tileset : root_node.children("tileset")) {
-      parse_tmx_tileset(tileset, resource, base_directory);
-    }
-
-    return std::move(resource.textures);
-  }
-
 
 }

@@ -29,19 +29,16 @@ namespace {
   struct DummyCompositeResource {
 
     DummyCompositeResource([[maybe_unused]] const std::filesystem::path& path)
-    : filename(path)
     {
     }
 
-    gf::ResourceBundle bundle()
+    static gf::ResourceBundle bundle(const std::filesystem::path& path)
     {
-      gf::ResourceBundle bundle([this](gf::ResourceBundle* bundle, auto manager, auto action) {
-        bundle->handle<DummyResource>("sub" / filename, manager, action);
+      gf::ResourceBundle bundle([path](gf::ResourceBundle* bundle, auto manager, auto action) {
+        bundle->handle<DummyResource>("sub" / path, manager, action);
       });
       return bundle;
     }
-
-    std::filesystem::path filename;
   };
 
   struct DummyContextResource {
@@ -189,6 +186,7 @@ TEST(ResourceTest, RegistryGet) {
   [[maybe_unused]] auto* resource0 = registry.load("foo");
   [[maybe_unused]] auto* resource1 = registry.get("foo");
 
+  EXPECT_EQ(resource0, resource1);
   EXPECT_TRUE(registry.loaded("foo"));
 
   registry.unload("foo");

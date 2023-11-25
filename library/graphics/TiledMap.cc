@@ -102,14 +102,24 @@ namespace gf {
   {
   }
 
+  namespace {
+
+    const TiledMapResource& load_resource(const std::filesystem::path& filename, ResourceManager* resource_manager)
+    {
+      auto* resource = resource_manager->get<TiledMapResource>(filename);
+      assert(resource != nullptr);
+      return *resource;
+    }
+  }
+
   TiledMap::TiledMap(const std::filesystem::path& filename, TiledMapContext context)
-  : TiledMap(TiledMapResource(filename), context.render_manager, context.resource_manager)
+  : TiledMap(load_resource(filename, context.resource_manager), context.render_manager, context.resource_manager)
   {
   }
 
   ResourceBundle TiledMap::bundle(const std::filesystem::path& filename, TiledMapContext context)
   {
-    auto textures = TiledMapResource::textures_only(filename);
+    auto textures = load_resource(filename, context.resource_manager).textures;
 
     return ResourceBundle([textures,context](ResourceBundle* bundle, ResourceManager* manager, ResourceAction action) {
       for (const auto& texture : textures) {
@@ -159,9 +169,14 @@ namespace gf {
           position += chunk_rectangle.position();
 
           const TileData tile_data = tile_layer_data.tiles(position);
+
+          if (tile_data.gid == 0) {
+            continue;
+          }
+
           const TilesetData* tileset_data = data.tileset_from_gid(tile_data.gid);
-          const uint32_t gid = tile_data.gid - tileset_data->first_gid;
           assert(tileset_data != nullptr);
+          const uint32_t gid = tile_data.gid - tileset_data->first_gid;
 
           const Texture* texture = m_textures[tileset_data->texture_index];
           const RectF texture_region = tileset_data->compute_texture_region(gid, texture->size());

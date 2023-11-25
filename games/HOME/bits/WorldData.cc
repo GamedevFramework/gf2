@@ -1,5 +1,7 @@
 #include "WorldData.h"
 
+#include <gf2/core/Property.h>
+
 #include <gf2/graphics/TiledMap.h>
 
 #include <gf2/audio/Music.h>

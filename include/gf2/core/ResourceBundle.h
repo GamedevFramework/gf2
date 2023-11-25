@@ -11,8 +11,8 @@
 #include <utility>
 
 #include "CoreApi.h"
+#include "ResourceContext.h"
 #include "ResourceManager.h"
-#include "gf2/core/ResourceContext.h"
 
 namespace gf {
   namespace details {
@@ -26,7 +26,13 @@ namespace gf {
     inline constexpr bool HasBundle = false;
 
     template<typename T>
-    inline constexpr bool HasBundle<T, std::void_t<decltype(std::declval<T>().bundle())>> = true;
+    inline constexpr bool HasBundle<T, std::void_t<decltype(T::bundle(std::declval<std::filesystem::path>()))>> = true;
+
+    template<typename T, typename = std::void_t<>>
+    inline constexpr bool HasBundleWithContext = false;
+
+    template<typename T>
+    inline constexpr bool HasBundleWithContext<T, std::void_t<decltype(T::bundle(std::declval<std::filesystem::path>(), std::declval<ResourceContext<T>>()))>> = true;
   } // namespace details
 
   enum class ResourceAction : uint8_t {
@@ -65,22 +71,21 @@ namespace gf {
               handle<typename T::Primitive>(path, manager, action);
             }
 
-            [[maybe_unused]] auto* ptr = manager->load<T>(path);
-
             if constexpr (details::HasBundle<T>) {
-              ptr->bundle().load_from(manager);
+              T::bundle(path).load_from(manager);
             }
+
+            manager->load<T>(path);
           }
           break;
 
         case ResourceAction::Unload:
           {
-            if constexpr (details::HasBundle<T>) {
-              auto* ptr = manager->get<T>(path);
-              ptr->bundle().unload_from(manager);
-            }
-
             manager->unload<T>(path);
+
+            if constexpr (details::HasBundle<T>) {
+              T::bundle(path).unload_from(manager);
+            }
 
             if constexpr (details::HasPrimitive<T>) {
               handle<typename T::Primitive>(path, manager, action);
@@ -106,22 +111,21 @@ namespace gf {
               }
             }
 
-            [[maybe_unused]] auto* ptr = manager->load<T>(path, context);
-
-            if constexpr (details::HasBundle<T>) {
-              ptr->bundle().load_from(manager);
+            if constexpr (details::HasBundleWithContext<T>) {
+              T::bundle(path, context).load_from(manager);
             }
+
+            manager->load<T>(path, context);
           }
           break;
 
         case ResourceAction::Unload:
           {
-            if constexpr (details::HasBundle<T>) {
-              auto* ptr = manager->get<T>(path);
-              ptr->bundle().unload_from(manager);
-            }
-
             manager->unload<T>(path);
+
+            if constexpr (details::HasBundleWithContext<T>) {
+              T::bundle(path, context).unload_from(manager);
+            }
 
             if constexpr (details::HasPrimitive<T>) {
               if constexpr (details::HasContext<typename T::Primitive>) {

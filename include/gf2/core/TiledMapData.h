@@ -15,6 +15,7 @@
 #include "CoreApi.h"
 #include "GridTypes.h"
 #include "Id.h"
+#include "Property.h"
 #include "PropertyMap.h"
 #include "Rect.h"
 #include "TypeTraits.h"
@@ -186,8 +187,6 @@ namespace gf {
   struct GF_CORE_API TiledMapResource {
     TiledMapResource() = default;
     TiledMapResource(const std::filesystem::path& filename);
-
-    static std::vector<std::filesystem::path> textures_only(const std::filesystem::path& filename);
 
     std::vector<std::filesystem::path> textures;
     TiledMapData data;

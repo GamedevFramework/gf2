@@ -5,6 +5,8 @@
 #include <gf2/core/ResourceLoaders.h>
 // clang-format on
 
+#include <cassert>
+
 #include <gf2/core/Log.h>
 
 namespace gf {
@@ -32,6 +34,8 @@ namespace gf {
 
   std::filesystem::path FileLoader::search(const std::filesystem::path& relative_path)
   {
+    assert(relative_path.is_relative());
+
     for (const std::filesystem::path& base : m_search_directories) {
       std::filesystem::path absolute_path = base / relative_path;
 
