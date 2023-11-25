@@ -12,20 +12,21 @@
 
 #include "CoreApi.h"
 #include "ResourceManager.h"
+#include "gf2/core/ResourceContext.h"
 
 namespace gf {
   namespace details {
     template<typename T, typename = std::void_t<>>
-    inline constexpr bool HasStaticBundle = false;
+    inline constexpr bool HasPrimitive = false;
 
     template<typename T>
-    inline constexpr bool HasStaticBundle<T, std::void_t<decltype(T::bundle(std::declval<std::filesystem::path>()))>> = true;
+    inline constexpr bool HasPrimitive<T, std::void_t<typename T::Primitive>> = true;
 
     template<typename T, typename = std::void_t<>>
-    inline constexpr bool HasStaticBundleWithContext = false;
+    inline constexpr bool HasBundle = false;
 
     template<typename T>
-    inline constexpr bool HasStaticBundleWithContext<T, std::void_t<decltype(T::bundle(std::declval<std::filesystem::path>(), std::declval<ResourceContext<T>>()))>> = true;
+    inline constexpr bool HasBundle<T, std::void_t<decltype(std::declval<T>().bundle())>> = true;
   } // namespace details
 
   enum class ResourceAction : uint8_t {
@@ -60,20 +61,29 @@ namespace gf {
       switch (action) {
         case ResourceAction::Load:
           {
-            if constexpr (details::HasStaticBundle<T>) {
-              T::bundle(path).load_from(manager);
+            if constexpr (details::HasPrimitive<T>) {
+              handle<typename T::Primitive>(path, manager, action);
             }
 
-            manager->load<T>(path);
+            [[maybe_unused]] auto* ptr = manager->load<T>(path);
+
+            if constexpr (details::HasBundle<T>) {
+              ptr->bundle().load_from(manager);
+            }
           }
           break;
 
         case ResourceAction::Unload:
           {
+            if constexpr (details::HasBundle<T>) {
+              auto* ptr = manager->get<T>(path);
+              ptr->bundle().unload_from(manager);
+            }
+
             manager->unload<T>(path);
 
-            if constexpr (details::HasStaticBundle<T>) {
-              T::bundle(path).unload_from(manager);
+            if constexpr (details::HasPrimitive<T>) {
+              handle<typename T::Primitive>(path, manager, action);
             }
           }
           break;
@@ -88,20 +98,29 @@ namespace gf {
       switch (action) {
         case ResourceAction::Load:
           {
-            if constexpr (details::HasStaticBundleWithContext<T>) {
-              T::bundle(path, context).load_from(manager);
+            if constexpr (details::HasPrimitive<T>) {
+              handle<typename T::Primitive>(path, context, manager, action);
             }
 
-            manager->load<T>(path, context);
+            [[maybe_unused]] auto* ptr = manager->load<T>(path, context);
+
+            if constexpr (details::HasBundle<T>) {
+              ptr->bundle().load_from(manager);
+            }
           }
           break;
 
         case ResourceAction::Unload:
           {
+            if constexpr (details::HasBundle<T>) {
+              auto* ptr = manager->get<T>(path);
+              ptr->bundle().unload_from(manager);
+            }
+
             manager->unload<T>(path);
 
-            if constexpr (details::HasStaticBundleWithContext<T>) {
-              T::bundle(path, context).unload_from(manager);
+            if constexpr (details::HasPrimitive<T>) {
+              handle<typename T::Primitive>(path, context, manager, action);
             }
           }
           break;

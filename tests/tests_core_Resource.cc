@@ -5,8 +5,6 @@
 #include <gf2/core/ResourceManager.h>
 #include <gf2/core/ResourceRegistry.h>
 
-#include "config.h"
-
 #include "gtest/gtest.h"
 
 namespace {
@@ -16,32 +14,34 @@ namespace {
     {
     }
 
-    DummyResource(const std::filesystem::path&)
+    DummyResource([[maybe_unused]] const std::filesystem::path& path)
     {
     }
 
     DummyResource(gf::InputStream& input)
-    : x(0)
     {
       input.read(gf::bytes(&x));
     }
 
-    std::size_t x;
+    std::size_t x = 0;
   };
 
   struct DummyCompositeResource {
 
-    DummyCompositeResource(const std::filesystem::path&)
+    DummyCompositeResource([[maybe_unused]] const std::filesystem::path& path)
+    : filename(path)
     {
     }
 
-    static gf::ResourceBundle bundle(const std::filesystem::path& filename)
+    gf::ResourceBundle bundle()
     {
-      gf::ResourceBundle bundle([filename](gf::ResourceBundle* bundle, auto manager, auto action) {
+      gf::ResourceBundle bundle([this](gf::ResourceBundle* bundle, auto manager, auto action) {
         bundle->handle<DummyResource>("sub" / filename, manager, action);
       });
       return bundle;
     }
+
+    std::filesystem::path filename;
   };
 
   struct DummyContextResource {
@@ -49,26 +49,25 @@ namespace {
       bool dummy = true;
     };
 
-    DummyContextResource(const std::filesystem::path&, const Context&)
+    DummyContextResource([[maybe_unused]] const std::filesystem::path& path, [[maybe_unused]] const Context& context)
     {
     }
   };
 
-  struct DummyCompositeContextResource {
-    using Context = gf::ResourceManager*;
-
-    DummyCompositeContextResource(const std::filesystem::path& filename, gf::ResourceManager* manager)
+  struct DummyPrimitive {
+    DummyPrimitive([[maybe_unused]] const std::filesystem::path& path)
     {
-      manager->get<DummyResource>("sub" / filename);
     }
 
-    static gf::ResourceBundle bundle(const std::filesystem::path& filename, gf::ResourceManager*)
+  };
+
+  struct DummyPrimitiveResource {
+    using Primitive = DummyPrimitive;
+
+    DummyPrimitiveResource([[maybe_unused]] const std::filesystem::path& path)
     {
-      gf::ResourceBundle bundle([filename](gf::ResourceBundle* bundle, auto manager, auto action) {
-        bundle->handle<DummyResource>("sub" / filename, manager, action);
-      });
-      return bundle;
     }
+
   };
 
   struct DummyLoader {
@@ -108,7 +107,7 @@ TEST(ResourceTest, RegistryLoadOnce) {
 
   EXPECT_FALSE(registry.loaded("foo"));
 
-  [[maybe_unused]] auto resource = registry.load("foo");
+  [[maybe_unused]] auto* resource = registry.load("foo");
 
   EXPECT_TRUE(registry.loaded("foo"));
 }
@@ -121,8 +120,8 @@ TEST(ResourceTest, RegistryLoadTwice) {
 
   EXPECT_FALSE(registry.loaded("foo"));
 
-  [[maybe_unused]] auto resource0 = registry.load("foo");
-  [[maybe_unused]] auto resource1 = registry.load("foo");
+  [[maybe_unused]] auto* resource0 = registry.load("foo");
+  [[maybe_unused]] auto* resource1 = registry.load("foo");
 
   EXPECT_TRUE(registry.loaded("foo"));
 }
@@ -135,7 +134,7 @@ TEST(ResourceTest, RegistryUnloadOnce) {
 
   EXPECT_FALSE(registry.loaded("foo"));
 
-  [[maybe_unused]] auto resource = registry.load("foo");
+  [[maybe_unused]] auto* resource = registry.load("foo");
 
   EXPECT_TRUE(registry.loaded("foo"));
 
@@ -152,8 +151,8 @@ TEST(ResourceTest, RegistryUnloadTwice) {
 
   EXPECT_FALSE(registry.loaded("foo"));
 
-  [[maybe_unused]] auto resource0 = registry.load("foo");
-  [[maybe_unused]] auto resource1 = registry.load("foo");
+  [[maybe_unused]] auto* resource0 = registry.load("foo");
+  [[maybe_unused]] auto* resource1 = registry.load("foo");
 
   EXPECT_TRUE(registry.loaded("foo"));
 
@@ -174,7 +173,7 @@ TEST(ResourceTest, RegistryInvalidUnload) {
 
   EXPECT_FALSE(registry.loaded("foo"));
 
-  EXPECT_ANY_THROW(registry.unload("foo"));
+  EXPECT_ANY_THROW(registry.unload("foo")); // NOLINT
 
   EXPECT_FALSE(registry.loaded("foo"));
 }
@@ -187,8 +186,8 @@ TEST(ResourceTest, RegistryGet) {
 
   EXPECT_FALSE(registry.loaded("foo"));
 
-  [[maybe_unused]] auto resource0 = registry.load("foo");
-  [[maybe_unused]] auto resource1 = registry.get("foo");
+  [[maybe_unused]] auto* resource0 = registry.load("foo");
+  [[maybe_unused]] auto* resource1 = registry.get("foo");
 
   EXPECT_TRUE(registry.loaded("foo"));
 
@@ -205,8 +204,8 @@ TEST(ResourceTest, RegistryInvalidGet) {
 
   EXPECT_FALSE(registry.loaded("foo"));
 
-  EXPECT_ANY_THROW({
-    [[maybe_unused]] auto resource0 = registry.get("foo");
+  EXPECT_ANY_THROW({ // NOLINT
+    [[maybe_unused]] auto* resource0 = registry.get("foo");
   });
 
   EXPECT_FALSE(registry.loaded("foo"));
@@ -225,16 +224,16 @@ TEST(ResourceTest, ManagerWithRegistry) {
   DummyLoader loader;
   registry.add_loader(gf::loader_for<DummyResource>(loader));
 
-  EXPECT_NO_THROW(manager.load<DummyResource>("foo"));
+  EXPECT_NO_THROW(manager.load<DummyResource>("foo")); // NOLINT
   EXPECT_TRUE(registry.loaded("foo"));
 }
 
 TEST(ResourceTest, ManagerInvalidRegistry) {
   gf::ResourceManager manager;
-  EXPECT_ANY_THROW(manager.get<DummyResource>("unknown"));
+  EXPECT_ANY_THROW(manager.get<DummyResource>("unknown")); // NOLINT
 }
 
-TEST(ResourceTest, ManagerAcquire) {
+TEST(ResourceTest, ManagerAcquire) { // NOLINT
   gf::ResourceRegistry<DummyResource> registry;
 
   gf::ResourceManager manager;
@@ -243,9 +242,9 @@ TEST(ResourceTest, ManagerAcquire) {
   DummyLoader loader;
   registry.add_loader(gf::loader_for<DummyResource>(loader));
 
-  EXPECT_NO_THROW(manager.acquire<DummyResource>("foo"));
-  EXPECT_NO_THROW(manager.acquire<DummyResource>("foo"));
-  EXPECT_NO_THROW(manager.unload<DummyResource>("foo"));
+  EXPECT_NO_THROW(manager.acquire<DummyResource>("foo")); // NOLINT
+  EXPECT_NO_THROW(manager.acquire<DummyResource>("foo")); // NOLINT
+  EXPECT_NO_THROW(manager.unload<DummyResource>("foo")); // NOLINT
 }
 
 TEST(ResourceTest, MemoryLoader) {
@@ -257,18 +256,18 @@ TEST(ResourceTest, MemoryLoader) {
   gf::ResourceRegistry<DummyResource> registry;
   registry.add_loader(gf::loader_for<DummyResource>(loader));
 
-  auto reference = registry.load("foo");
+  auto* reference = registry.load("foo");
 
   EXPECT_EQ(reference->x, raw_resource);
 }
 
-TEST(ResourceTest, BundleEmpty) {
+TEST(ResourceTest, BundleEmpty) { // NOLINT
   gf::ResourceManager manager;
 
   gf::ResourceBundle bundle;
 
-  EXPECT_NO_THROW(bundle.load_from(&manager));
-  EXPECT_NO_THROW(bundle.unload_from(&manager));
+  EXPECT_NO_THROW(bundle.load_from(&manager)); // NOLINT
+  EXPECT_NO_THROW(bundle.unload_from(&manager)); // NOLINT
 }
 
 TEST(ResourceTest, BundleLoadUnload) {
@@ -383,29 +382,29 @@ TEST(ResourceTest, BundleContext) {
   EXPECT_FALSE(registry.loaded("foo"));
 }
 
-TEST(ResourceTest, BundleCompositeContext) {
-  gf::ResourceRegistry<DummyCompositeContextResource> registry_for_composite;
-  gf::ResourceRegistry<DummyResource> registry_for_single;
-
-  DummyLoader loader;
-  registry_for_composite.add_loader(gf::loader_for<DummyCompositeContextResource>(loader));
-  registry_for_single.add_loader(gf::loader_for<DummyResource>(loader));
+TEST(ResourceTest, BundlePrimitive) {
+  gf::ResourceRegistry<DummyPrimitiveResource> registry0;
+  gf::ResourceRegistry<DummyPrimitive> registry1;
 
   gf::ResourceManager manager;
-  manager.add_registry(&registry_for_composite);
-  manager.add_registry(&registry_for_single);
+  manager.add_registry(&registry0);
+  manager.add_registry(&registry1);
+
+  DummyLoader loader;
+  registry0.add_loader(gf::loader_for<DummyPrimitiveResource>(loader));
+  registry1.add_loader(gf::loader_for<DummyPrimitive>(loader));
 
   gf::ResourceBundle bundle([](gf::ResourceBundle* bundle, auto manager, auto action) {
-    bundle->handle<DummyCompositeContextResource>("foo", manager, manager, action);
+    bundle->handle<DummyPrimitiveResource>("foo", manager, action);
   });
 
   bundle.load_from(&manager);
 
-  EXPECT_TRUE(registry_for_composite.loaded("foo"));
-  EXPECT_TRUE(registry_for_single.loaded("sub/foo"));
+  EXPECT_TRUE(registry0.loaded("foo"));
+  EXPECT_TRUE(registry1.loaded("foo"));
 
   bundle.unload_from(&manager);
 
-  EXPECT_FALSE(registry_for_composite.loaded("foo"));
-  EXPECT_FALSE(registry_for_single.loaded("sub/foo"));
+  EXPECT_FALSE(registry0.loaded("foo"));
+  EXPECT_FALSE(registry1.loaded("foo"));
 }
