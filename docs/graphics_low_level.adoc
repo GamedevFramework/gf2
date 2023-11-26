@@ -9,7 +9,7 @@ Generally, users don't need to use these classes directly. They are used in more
 
 xref:reference.adoc#graphics[< Back to reference]
 
-See also: xref:article_vulkan.adoc[Rendering with Vulkan]
+See also: xref:article_vulkan.adoc[Article: Rendering with Vulkan]
 
 == Variables
 

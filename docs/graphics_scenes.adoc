@@ -9,15 +9,16 @@ xref:reference.adoc#graphics[< Back to reference]
 
 == Types
 
-=== `gf::Buffer`
+=== `gf::BasicSceneManager`
 
-=== `gf::BufferReference`
+=== `gf::Scene`
 
-=== `gf::RenderObject`
+=== `gf::SceneManager`
 
-=== `gf::Renderer`
+=== `gf::SceneRank`
 
-=== `gf::Texture`
+=== `gf::SingleSceneManager`
 
-=== `gf::TextureReference`
+=== `gf::StandardScene`
+
 

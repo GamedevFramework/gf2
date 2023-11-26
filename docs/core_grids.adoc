@@ -14,7 +14,7 @@ A grid is a set of cells with a specific organization. As a grid is a two-dimens
 
 xref:reference.adoc#core[< Back to reference]
 
-See also: xref:article_grids_howto.adoc[`Grids How To`]
+See also: xref:article_grids_howto.adoc[Article: Grids How To]
 
 == Types
 

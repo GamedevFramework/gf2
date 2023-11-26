@@ -3,9 +3,13 @@ v0.1
 include::bits/attributes.adoc[]
 :toc: right
 
-This article describes how Vulkan is used in gf2.
+This article describes how Vulkan is used in Gamedev Framework 2.
 
-xref:graphics_low_level.adoc[< Back to `graphics` Low-Level]
+xref:articles.adoc[< Back to Articles]
+
+Gamedev Framework 2 is based on Vulkan. Vulkan is a toolbox that can be used in various ways. This article explains the choices that were made and the different classes that make a little abstraction around Vulkan.
+
+See also: xref:graphics_low_level.adoc[Reference: `graphics` Low-Level]
 
 == Vulkan
 

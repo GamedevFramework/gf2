@@ -5,7 +5,7 @@ include::bits/attributes.adoc[]
 
 This article describes the computations for various types of grids and various types of problems.
 
-xref:core_grids.adoc[< Back to `core` Grids]
+xref:articles.adoc[< Back to Articles]
 
 A grid is a planar map composed of cells of the same shape. As it is planar, each cell can be addressed thanks to two coordinates: stem:[x] and stem:[y]. The meaning of stem:[x] and stem:[y] may vary according to the type of grid. Each cell can be bounded in a tile of size stem:[T_x \times T_y]. Finally, the map has a total size of stem:[M_x \times M_y] cells.
 
@@ -17,6 +17,8 @@ The following problems are addressed:
 - Cell bounds: compute the bounding box of a single cell, the size is always stem:[(T_x, T_y)] so only the position stem:[(B_x, B_y)] is needed
 - Coordinates from position: from a position stem:[P = (P_x, P_y)], compute the corresponding cell coordinates stem:[(x, y)]
 - Neighbors of a cell: compute the coordinates of all the neighbors of a cell of coordinates stem:[(x, y)]
+
+See also: xref:core_grids.adoc[Reference: `core` Grids]
 
 == Orthogonal Grid
 

@@ -1,0 +1,41 @@
+= `physics` Objects
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The objects component defines classes for creating basic physics objects.
+
+xref:reference.adoc#physics[< Back to reference]
+
+== Types
+
+[#physics_body]
+=== `gf::PhysicsBody`
+
+[source]
+----
+#include <gf2/physics/PhysicsBody.h>
+class PhysicsBody;
+----
+
+
+[#physics_constraint]
+=== `gf::PhysicsConstraint`
+
+[source]
+----
+#include <gf2/physics/PhysicsConstraint.h>
+class PhysicsConstraint;
+----
+
+
+[#physics_shape]
+=== `gf::PhysicsShape`
+
+[source]
+----
+#include <gf2/physics/PhysicsShape.h>
+class PhysicsShape;
+----
+
+

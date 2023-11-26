@@ -9,6 +9,45 @@ xref:reference.adoc#physics[< Back to reference]
 
 == Types
 
+[#physics_arbiter]
+=== `gf::PhysicsArbiter`
+
+[source]
+----
+#include <gf2/physics/PhysicsArbiter.h>
+class PhysicsArbiter;
+----
+
+
+[#physics_collision_handler]
+=== `gf::PhysicsCollisionHandler`
+
+[source]
+----
+#include <gf2/physics/PhysicsCollisionHandler.h>
+class PhysicsCollisionHandler;
+----
+
+
+[#physics_debug]
+=== `gf::PhysicsDebug`
+
+[source]
+----
+#include <gf2/physics/PhysicsDebug.h>
+class PhysicsDebug;
+----
+
+[#physics_debug_features]
+=== `gf::PhysicsDebugFeatures`
+
+[source]
+----
+#include <gf2/physics/PhysicsDebug.h>
+enum class PhysicsDebugFeature;
+----
+
+
 [#physics_world]
 === `gf::PhysicsWorld`
 

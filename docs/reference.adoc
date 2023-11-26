@@ -54,7 +54,7 @@ xref:index.adoc[< Back to main page]
 == `physics`
 
 - xref:physics_world.adoc[World] (`PhysicsWorld`, `PhysicsCollisionHandler`, `PhysicsDebug`)
-- Objects (`PhysicsBody`, `PhysicsShape`)
+- xref:physics_objects.adoc[Objects] (`PhysicsBody`, `PhysicsShape`)
 
 == `imgui`
 

@@ -15,6 +15,7 @@ image::logoex.png[Gamedev Framework 2]
 - Tutorials
 - xref:reference.adoc[Reference]
 - xref:symbols.adoc[Symbols] (xref:symbols_types.adoc[Types], xref:symbols_variables.adoc[Variables], xref:symbols_functions.adoc[Functions])
+- xref:articles.adoc[Articles]
 - xref:glossary.adoc[Glossary]
 
 == Dev Documentation
