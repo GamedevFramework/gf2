@@ -4,6 +4,7 @@
 #define GF_PHYSICS_SHAPE_EX_H
 
 #include <cstdint>
+
 #include <vector>
 
 #include <gf2/core/Span.h>

@@ -10,9 +10,11 @@
 #include <gf2/core/ResourceBundle.h>
 #include <gf2/core/ResourceManager.h>
 #include <gf2/core/Span.h>
+#include <gf2/core/StringUtils.h>
 #include <gf2/core/TiledMapData.h>
 #include <gf2/core/Transform.h>
 
+#include <gf2/graphics/RenderRecorder.h>
 #include <gf2/graphics/Texture.h>
 #include <gf2/graphics/Vertex.h>
 
@@ -74,6 +76,7 @@ namespace gf {
 
   TiledMap::TiledMap(std::vector<const Texture*> textures, const TiledMapData& data, RenderManager* render_manager)
   : m_textures(std::move(textures))
+  , m_data(data)
   , m_bounds(RectF::from_size(data.map_size * data.tile_size))
   {
     compute_grid(data);
@@ -121,11 +124,20 @@ namespace gf {
   {
     auto textures = load_resource(filename, context.resource_manager).textures;
 
-    return ResourceBundle([textures,context](ResourceBundle* bundle, ResourceManager* manager, ResourceAction action) {
+    return ResourceBundle([textures, context](ResourceBundle* bundle, ResourceManager* manager, ResourceAction action) {
       for (const auto& texture : textures) {
         bundle->handle<Texture>(texture, context.render_manager, manager, action);
       }
     });
+  }
+
+  std::vector<RenderGeometry> TiledMap::select_geometry(Vec2I position, std::string_view path, Flags<TiledMapQuery> query)
+  {
+    const auto& structure = compute_structure(path);
+
+    std::vector<RenderGeometry> geometries;
+    compute_geometries(position, query, structure, geometries);
+    return geometries;
   }
 
   void TiledMap::compute_grid(const TiledMapData& data)
@@ -181,7 +193,9 @@ namespace gf {
           const Texture* texture = m_textures[tileset_data->texture_index];
           const RectF texture_region = tileset_data->compute_texture_region(gid, texture->size());
 
-          const RectF bounds = m_grid.compute_cell_bounds(position);
+          RectF bounds = m_grid.compute_cell_bounds(position + tile_layer_data.layer.offset);
+          bounds.offset += data.tile_size - tileset_data->tile_size;
+          bounds.extent = tileset_data->tile_size;
 
           Vertex vertices[4] = {
             { bounds.position_at(Orientation::NorthEast), texture_region.position_at(Orientation::NorthEast) },
@@ -245,7 +259,7 @@ namespace gf {
         };
 
         const Vec2F origin = data.orientation == GridOrientation::Isometric ? vec(0.5f, 1.0f) : vec(0.0f, 1.0f);
-        const Transform transform(object_data.location, origin, degrees_to_radians(object_data.rotation));
+        const Transform transform(object_data.location + object_layer_data.layer.offset, origin, degrees_to_radians(object_data.rotation));
         const Mat3F transform_matrix = transform.compute_matrix(bounds);
 
         for (Vertex& vertex : vertices) {
@@ -273,6 +287,93 @@ namespace gf {
       buffers.indices = Buffer(BufferType::Device, BufferUsage::Index, indices.data(), indices.size(), render_manager);
 
       m_object_layers.push_back({ std::move(buffers) });
+    }
+  }
+
+  const std::vector<LayerStructureData>& TiledMap::compute_structure(std::string_view path) const
+  {
+    auto layers = split_path(path);
+    const auto* structure = &m_data.layers;
+
+    for (auto layer : layers) {
+      auto predicate = [this, layer](const LayerStructureData& current) {
+        if (current.type != LayerType::Group) {
+          return false;
+        }
+
+        return m_data.group_layers[current.layer_index].layer.name == layer;
+      };
+
+      if (auto iterator = std::find_if(structure->begin(), structure->end(), predicate); iterator != structure->end()) {
+        structure = &m_data.group_layers[iterator->layer_index].sub_layers;
+      } else {
+        Log::fatal("Unknown layer '{}' in path '{}'", layer, path);
+      }
+    }
+
+    return *structure;
+  }
+
+  // NOLINTNEXTLINE(misc-no-recursion)
+  void TiledMap::compute_geometries(Vec2I position, Flags<TiledMapQuery> query, const std::vector<LayerStructureData>& structure, std::vector<RenderGeometry>& geometries) const
+  {
+    const RectI neighbors = RectI::from_center_size(position / ChunkSize, { 1, 1 });
+
+    for (const auto& layer : structure) {
+      switch (layer.type) {
+        case LayerType::Group:
+          if (query.test(TiledMapQuery::Recursive)) {
+            const std::vector<LayerStructureData>& sub_structure = m_data.group_layers[layer.layer_index].sub_layers;
+            compute_geometries(position, query, sub_structure, geometries);
+          }
+          break;
+
+        case LayerType::Tile:
+          if (query.test(TiledMapQuery::Tile)) {
+            const auto& tile_layer = m_tile_layers[layer.layer_index];
+
+            if (auto maybe_neighbors = neighbors.intersection(RectI::from_size(tile_layer.chunks.size()))) {
+              for (auto xy : gf::position_range(maybe_neighbors->size())) {
+                xy += maybe_neighbors->position();
+                assert(tile_layer.chunks.valid(xy));
+                const auto& chunk = tile_layer.chunks(xy);
+
+                RenderGeometry geometry = {};
+                geometry.pipeline = RenderPipelineType::Default;
+                geometry.vertices = &chunk.vertices;
+                geometry.indices = &chunk.indices;
+
+                for (auto range : chunk.ranges) {
+                  geometry.texture = m_textures[range.texture_index];
+                  geometry.first = range.first;
+                  geometry.count = range.count;
+
+                  geometries.push_back(geometry);
+                }
+              }
+            }
+          }
+          break;
+
+        case LayerType::Object:
+          if (query.test(TiledMapQuery::Object)) {
+            const auto& object_layer = m_object_layers[layer.layer_index];
+
+            RenderGeometry geometry = {};
+            geometry.pipeline = RenderPipelineType::Default;
+            geometry.vertices = &object_layer.buffers.vertices;
+            geometry.indices = &object_layer.buffers.indices;
+
+            for (auto range : object_layer.buffers.ranges) {
+              geometry.texture = m_textures[range.texture_index];
+              geometry.first = range.first;
+              geometry.count = range.count;
+
+              geometries.push_back(geometry);
+            }
+          }
+          break;
+      }
     }
   }
 

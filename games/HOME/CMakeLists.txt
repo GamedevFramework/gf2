@@ -5,6 +5,7 @@ add_executable(HOME
   HOME.cc
   bits/GameHub.cc
   bits/HeroEntity.cc
+  bits/MapEntity.cc
   bits/ResourceHub.cc
   bits/SplashData.cc
   bits/SplashScene.cc

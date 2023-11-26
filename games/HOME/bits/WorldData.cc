@@ -2,10 +2,9 @@
 
 #include <gf2/core/Property.h>
 
-#include <gf2/graphics/TiledMap.h>
-
 #include <gf2/audio/Music.h>
 #include <gf2/audio/Sound.h>
+#include <gf2/graphics/TiledMap.h>
 
 #include "GameHub.h"
 
@@ -111,7 +110,6 @@ namespace home {
           bundle->handle<gf::Texture>(texture, hub->render_manager(), resources, action);
         }
       }
-
     });
 
     return bundle;

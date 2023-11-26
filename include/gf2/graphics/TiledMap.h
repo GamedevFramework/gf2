@@ -5,23 +5,24 @@
 
 #include <filesystem>
 #include <string_view>
+#include <vector>
 
 #include <gf2/core/AnyGrid.h>
 #include <gf2/core/Array2D.h>
 #include <gf2/core/Flags.h>
 #include <gf2/core/Rect.h>
+#include <gf2/core/TiledMapData.h>
 #include <gf2/core/Vec2.h>
 
 #include "Buffer.h"
 #include "GraphicsApi.h"
+#include "RenderObject.h"
 
 namespace gf {
   class RenderManager;
   class ResourceBundle;
   class ResourceManager;
   class Texture;
-  struct TiledMapData;
-  struct TiledMapResource;
 
   enum class TiledMapQuery : uint8_t {
     Tile = 0x01,
@@ -59,12 +60,15 @@ namespace gf {
 
     static ResourceBundle bundle(const std::filesystem::path& filename, TiledMapContext context);
 
-    void select_group(Vec2I position, std::string_view path, Flags<TiledMapQuery> query = All);
+    std::vector<RenderGeometry> select_geometry(Vec2I position, std::string_view path, Flags<TiledMapQuery> query = All);
 
   private:
     void compute_grid(const TiledMapData& data);
     void compute_tile_layers(const TiledMapData& data, RenderManager* render_manager);
     void compute_object_layers(const TiledMapData& data, RenderManager* render_manager);
+
+    const std::vector<LayerStructureData>& compute_structure(std::string_view path) const;
+    void compute_geometries(Vec2I position, Flags<TiledMapQuery> query, const std::vector<LayerStructureData>& structure, std::vector<RenderGeometry>& geometries) const;
 
     struct BufferRange {
       std::size_t texture_index = 0;
@@ -87,6 +91,7 @@ namespace gf {
     };
 
     std::vector<const Texture*> m_textures;
+    TiledMapData m_data;
     RectF m_bounds = RectF::from_size({ 0.0f, 0.0f });
     AnyGrid m_grid;
     std::vector<TileLayer> m_tile_layers;

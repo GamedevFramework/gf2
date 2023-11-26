@@ -46,9 +46,7 @@ namespace gf {
 
         return polyline[i + 1];
       }
-
     };
-
 
   }
 

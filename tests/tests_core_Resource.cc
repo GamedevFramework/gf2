@@ -55,7 +55,6 @@ namespace {
     DummyPrimitive([[maybe_unused]] const std::filesystem::path& path)
     {
     }
-
   };
 
   struct DummyPrimitiveResource {
@@ -64,7 +63,6 @@ namespace {
     DummyPrimitiveResource([[maybe_unused]] const std::filesystem::path& path)
     {
     }
-
   };
 
   struct DummyLoader {
@@ -242,7 +240,7 @@ TEST(ResourceTest, ManagerAcquire) { // NOLINT
 
   EXPECT_NO_THROW(manager.acquire<DummyResource>("foo")); // NOLINT
   EXPECT_NO_THROW(manager.acquire<DummyResource>("foo")); // NOLINT
-  EXPECT_NO_THROW(manager.unload<DummyResource>("foo")); // NOLINT
+  EXPECT_NO_THROW(manager.unload<DummyResource>("foo"));  // NOLINT
 }
 
 TEST(ResourceTest, MemoryLoader) {
@@ -264,7 +262,7 @@ TEST(ResourceTest, BundleEmpty) { // NOLINT
 
   gf::ResourceBundle bundle;
 
-  EXPECT_NO_THROW(bundle.load_from(&manager)); // NOLINT
+  EXPECT_NO_THROW(bundle.load_from(&manager));   // NOLINT
   EXPECT_NO_THROW(bundle.unload_from(&manager)); // NOLINT
 }
 

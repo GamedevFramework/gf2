@@ -2,6 +2,7 @@
 #define HOME_MAP_ENTITY_H
 
 #include <gf2/core/TiledMapData.h>
+
 #include <gf2/graphics/Entity.h>
 #include <gf2/graphics/TiledMap.h>
 
@@ -13,6 +14,8 @@ namespace home {
   class MapEntity : public gf::Entity {
   public:
     MapEntity(GameHub* hub, const WorldData& data);
+
+    void render(gf::RenderRecorder& recorder) override;
 
   private:
     gf::TiledMap* m_map;
