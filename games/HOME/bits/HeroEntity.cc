@@ -11,6 +11,8 @@ namespace home {
 
     constexpr float HeroVelocity = 200.0f;
 
+    constexpr gf::Vec2F HeroInitialLocation = { 45.0f * 128.0f, 42.0f * 64.0f };
+
     gf::Orientation harvest_orientation(float angle)
     {
       assert(-gf::Pi <= angle && angle <= gf::Pi);
@@ -36,6 +38,7 @@ namespace home {
   HeroEntity::HeroEntity(GameHub* hub, const WorldData& data)
   : m_body(gf::PhysicsBody::make_dynamic(HeroMass, gf::compute_moment_for_circle(HeroMass, 0.0f, HeroRadius, { 0.0f, 0.0f })))
   , m_shape(gf::PhysicsShape::make_circle(&m_body, HeroRadius, { 0.0f, 0.0f }))
+  , m_target(HeroInitialLocation)
   , m_hero_animations(data.hero_animations, hub->render_manager(), hub->resource_manager())
   , m_crosshair(data.crosshair, hub->render_manager(), hub->resource_manager())
   , m_jet_engine_sound(hub->resource_manager()->get<gf::Sound>(data.jet_engine_sound.filename))
@@ -48,6 +51,7 @@ namespace home {
     auto* physics_world = hub->physics_world();
     physics_world->add_body(m_body);
     physics_world->add_shape(m_shape);
+    m_body.set_location(HeroInitialLocation);
 
     m_crosshair.set_scale({ 0.5f, 0.25f });
     m_crosshair.set_origin({ 0.5f, 0.5f });

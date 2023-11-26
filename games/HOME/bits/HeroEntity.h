@@ -34,7 +34,7 @@ namespace home {
     void compute_mining_animation();
     void compute_walking_animation();
 
-    gf::Orientation m_orientation = gf::Orientation::SouthWest;
+    gf::Orientation m_orientation = gf::Orientation::SouthEast;
 
     enum class Status : uint8_t {
       Waiting,
