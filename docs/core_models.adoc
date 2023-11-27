@@ -1,0 +1,42 @@
+= `core` Models
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The models component provides base classes that are meant to store world models or physics models.
+
+A **model** is a class that is updated at each frame. It can derive from <<model>>. Models can be grouped together in a <<model_container>> to ease their update.
+
+xref:reference.adoc#core[< Back to reference]
+
+== Types
+
+[#fixed_timestep_model]
+=== `gf::FixedTimestepModel`
+
+[source]
+----
+#include <gf2/core/Models.h>
+class FixedTimestepModel : public Model;
+----
+
+
+[#model]
+=== `gf::Model`
+
+[source]
+----
+#include <gf2/core/Model.h>
+class Model;
+----
+
+
+[#model_container]
+=== `gf::ModelContainer`
+
+[source]
+----
+#include <gf2/core/ModelContainer.h>
+class ModelContainer;
+----
+

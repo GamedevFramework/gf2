@@ -185,6 +185,11 @@ namespace gf {
     m_world.camera.size = size;
   }
 
+  void StandardScene::add_model(Model* model)
+  {
+    m_models.add_model(model);
+  }
+
   void StandardScene::add_world_entity(Entity* entity)
   {
     m_world.entities.add_entity(entity);
@@ -241,6 +246,7 @@ namespace gf {
 
   void StandardScene::update_entities(Time time)
   {
+    m_models.update(time);
     m_world.entities.update(time);
     m_hud.entities.update(time);
   }

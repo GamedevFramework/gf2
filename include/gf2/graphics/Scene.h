@@ -7,6 +7,7 @@
 
 #include <gf2/core/Camera.h>
 #include <gf2/core/Color.h>
+#include <gf2/core/ModelContainer.h>
 #include <gf2/core/Time.h>
 
 #include "EntityContainer.h"
@@ -102,6 +103,8 @@ namespace gf {
     void set_world_center(Vec2F center);
     void set_world_size(Vec2F size);
 
+    void add_model(Model* model);
+
     void add_world_entity(Entity* entity);
     void add_hud_entity(Entity* entity);
 
@@ -116,6 +119,7 @@ namespace gf {
     void do_update(Time time) override;
     void do_render(RenderRecorder& recorder) override;
 
+    ModelContainer m_models;
     ScenePart m_world;
     ScenePart m_hud;
   };

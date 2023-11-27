@@ -91,6 +91,9 @@ add_library(gf2core0
   core/Math.cc
   core/Mat3.cc
   core/Mat4.cc
+  core/Model.cc
+  core/ModelContainer.cc
+  core/Models.cc
   core/Move.cc
   core/Orientation.cc
   core/Polygon.cc

@@ -7,6 +7,7 @@
 
 #include <chipmunk/chipmunk.h>
 
+#include <gf2/core/Model.h>
 #include <gf2/core/Time.h>
 #include <gf2/core/Vec2.h>
 
@@ -20,14 +21,14 @@ namespace gf {
   class PhysicsConstraint;
   class PhysicsShape;
 
-  class GF_PHYSICS_API PhysicsWorld {
+  class GF_PHYSICS_API PhysicsWorld : public Model {
   public:
     PhysicsWorld();
-    PhysicsWorld(const PhysicsWorld&) = default;
+    PhysicsWorld(const PhysicsWorld&) = delete;
     PhysicsWorld(PhysicsWorld&&) noexcept = default;
-    ~PhysicsWorld();
+    ~PhysicsWorld() override;
 
-    PhysicsWorld& operator=(const PhysicsWorld&) = default;
+    PhysicsWorld& operator=(const PhysicsWorld&) = delete;
     PhysicsWorld& operator=(PhysicsWorld&&) noexcept = default;
 
     int iterations() const;
@@ -90,7 +91,7 @@ namespace gf {
 
     void debug_draw(PhysicsDebug* debug, Flags<PhysicsDebugFeature> features = All);
 
-    void update(Time time);
+    void update(Time time) override;
 
   private:
     friend class PhysicsArbiter;
