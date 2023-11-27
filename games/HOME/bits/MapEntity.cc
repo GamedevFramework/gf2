@@ -14,9 +14,15 @@ namespace home {
   {
   }
 
+  void MapEntity::set_hero_location(gf::Vec2F location)
+  {
+    m_location = location;
+  }
+
   void MapEntity::render(gf::RenderRecorder& recorder)
   {
-    auto geometries = m_map->select_geometry({ 0, 0 }, "");
+    auto position = m_map->compute_position(m_location);
+    auto geometries = m_map->select_geometry(position, "");
 
     for (auto& geometry : geometries) {
       gf::RenderObject object = {};
@@ -26,4 +32,5 @@ namespace home {
       recorder.record(object);
     }
   }
+
 }

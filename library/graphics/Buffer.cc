@@ -24,6 +24,10 @@ namespace gf {
   , m_type(type)
   , m_usage(usage)
   {
+    if (m_count == 0) {
+      return;
+    }
+
     switch (type) {
       case BufferType::Host:
         create_host_buffer(usage, m_size, data);
@@ -68,6 +72,11 @@ namespace gf {
   {
     const std::size_t total_size = count * member_size;
     assert(total_size <= m_size);
+    m_count = count;
+
+    if (count == 0) {
+      return;
+    }
 
     switch (m_type) {
       case BufferType::Host:
@@ -78,7 +87,6 @@ namespace gf {
         break;
     }
 
-    m_count = count;
   }
 
   void Buffer::set_debug_name(const std::string& name) const
@@ -108,7 +116,7 @@ namespace gf {
     allocation_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_HOST;
 
     if (vmaCreateBuffer(m_allocator, &buffer_info, &allocation_info, &m_buffer, &m_allocation, nullptr) != VK_SUCCESS) {
-      Log::fatal("Failed to allocate buffer.");
+      Log::fatal("Failed to allocate buffer (total size: {}).", total_size);
     }
 
     update_host_buffer(total_size, data);
@@ -126,7 +134,7 @@ namespace gf {
     allocation_info.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
 
     if (vmaCreateBuffer(m_allocator, &buffer_info, &allocation_info, &m_buffer, &m_allocation, nullptr) != VK_SUCCESS) {
-      Log::fatal("Failed to allocate buffer.");
+      Log::fatal("Failed to allocate buffer (total size: {}).", total_size);
     }
 
     update_device_buffer(total_size, data, render_manager);

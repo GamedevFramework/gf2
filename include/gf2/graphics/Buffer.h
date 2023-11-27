@@ -58,6 +58,11 @@ namespace gf {
       return m_size;
     }
 
+    bool empty() const
+    {
+      return m_count == 0;
+    }
+
     void update(std::size_t count, std::size_t member_size, const void* data, RenderManager* render_manager);
 
     template<typename T>

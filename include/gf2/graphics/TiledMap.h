@@ -61,6 +61,7 @@ namespace gf {
     static ResourceBundle bundle(const std::filesystem::path& filename, TiledMapContext context);
 
     std::vector<RenderGeometry> select_geometry(Vec2I position, std::string_view path, Flags<TiledMapQuery> query = All);
+    Vec2I compute_position(Vec2F location) const;
 
   private:
     void compute_grid(const TiledMapData& data);
@@ -68,7 +69,6 @@ namespace gf {
     void compute_object_layers(const TiledMapData& data, RenderManager* render_manager);
 
     const std::vector<LayerStructureData>& compute_structure(std::string_view path) const;
-    void compute_geometries(Vec2I position, Flags<TiledMapQuery> query, const std::vector<LayerStructureData>& structure, std::vector<RenderGeometry>& geometries) const;
 
     struct BufferRange {
       std::size_t texture_index = 0;
@@ -89,6 +89,10 @@ namespace gf {
     struct ObjectLayer {
       LayerBuffers buffers;
     };
+
+    void compute_geometries(Vec2I position, Flags<TiledMapQuery> query, const std::vector<LayerStructureData>& structure, std::vector<RenderGeometry>& geometries) const;
+    void compute_tile_geometry(Vec2I position, const TileLayer& tile_layer, std::vector<RenderGeometry>& geometries) const;
+    void compute_object_geometry(const ObjectLayer& object_layer, std::vector<RenderGeometry>& geometries) const;
 
     std::vector<const Texture*> m_textures;
     TiledMapData m_data;

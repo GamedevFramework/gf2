@@ -140,6 +140,11 @@ namespace gf {
     return geometries;
   }
 
+  Vec2I TiledMap::compute_position(Vec2F location) const
+  {
+    return m_grid.compute_position(location);
+  }
+
   void TiledMap::compute_grid(const TiledMapData& data)
   {
     switch (data.orientation) {
@@ -317,8 +322,6 @@ namespace gf {
   // NOLINTNEXTLINE(misc-no-recursion)
   void TiledMap::compute_geometries(Vec2I position, Flags<TiledMapQuery> query, const std::vector<LayerStructureData>& structure, std::vector<RenderGeometry>& geometries) const
   {
-    const RectI neighbors = RectI::from_center_size(position / ChunkSize, { 1, 1 });
-
     for (const auto& layer : structure) {
       switch (layer.type) {
         case LayerType::Group:
@@ -330,50 +333,62 @@ namespace gf {
 
         case LayerType::Tile:
           if (query.test(TiledMapQuery::Tile)) {
-            const auto& tile_layer = m_tile_layers[layer.layer_index];
-
-            if (auto maybe_neighbors = neighbors.intersection(RectI::from_size(tile_layer.chunks.size()))) {
-              for (auto xy : gf::position_range(maybe_neighbors->size())) {
-                xy += maybe_neighbors->position();
-                assert(tile_layer.chunks.valid(xy));
-                const auto& chunk = tile_layer.chunks(xy);
-
-                RenderGeometry geometry = {};
-                geometry.pipeline = RenderPipelineType::Default;
-                geometry.vertices = &chunk.vertices;
-                geometry.indices = &chunk.indices;
-
-                for (auto range : chunk.ranges) {
-                  geometry.texture = m_textures[range.texture_index];
-                  geometry.first = range.first;
-                  geometry.count = range.count;
-
-                  geometries.push_back(geometry);
-                }
-              }
-            }
+            compute_tile_geometry(position, m_tile_layers[layer.layer_index], geometries);
           }
           break;
 
         case LayerType::Object:
           if (query.test(TiledMapQuery::Object)) {
-            const auto& object_layer = m_object_layers[layer.layer_index];
-
-            RenderGeometry geometry = {};
-            geometry.pipeline = RenderPipelineType::Default;
-            geometry.vertices = &object_layer.buffers.vertices;
-            geometry.indices = &object_layer.buffers.indices;
-
-            for (auto range : object_layer.buffers.ranges) {
-              geometry.texture = m_textures[range.texture_index];
-              geometry.first = range.first;
-              geometry.count = range.count;
-
-              geometries.push_back(geometry);
-            }
+            compute_object_geometry(m_object_layers[layer.layer_index], geometries);
           }
           break;
       }
+    }
+  }
+
+  void TiledMap::compute_tile_geometry(Vec2I position, const TileLayer& tile_layer, std::vector<RenderGeometry>& geometries) const
+  {
+    const RectI neighbors = RectI::from_center_size(position / ChunkSize, { 3, 3 });
+
+    if (auto maybe_neighbors = neighbors.intersection(RectI::from_size(tile_layer.chunks.size()))) {
+      for (auto xy : gf::position_range(maybe_neighbors->size())) {
+        xy += maybe_neighbors->position();
+        assert(tile_layer.chunks.valid(xy));
+        const auto& chunk = tile_layer.chunks(xy);
+
+        if (chunk.vertices.empty() || chunk.indices.empty()) {
+          continue;
+        }
+
+        RenderGeometry geometry = {};
+        geometry.pipeline = RenderPipelineType::Default;
+        geometry.vertices = &chunk.vertices;
+        geometry.indices = &chunk.indices;
+
+        for (auto range : chunk.ranges) {
+          geometry.texture = m_textures[range.texture_index];
+          geometry.first = range.first;
+          geometry.count = range.count;
+
+          geometries.push_back(geometry);
+        }
+      }
+    }
+  }
+
+  void TiledMap::compute_object_geometry(const ObjectLayer& object_layer, std::vector<RenderGeometry>& geometries) const
+  {
+    RenderGeometry geometry = {};
+    geometry.pipeline = RenderPipelineType::Default;
+    geometry.vertices = &object_layer.buffers.vertices;
+    geometry.indices = &object_layer.buffers.indices;
+
+    for (auto range : object_layer.buffers.ranges) {
+      geometry.texture = m_textures[range.texture_index];
+      geometry.first = range.first;
+      geometry.count = range.count;
+
+      geometries.push_back(geometry);
     }
   }
 
