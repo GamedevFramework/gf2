@@ -4,7 +4,7 @@
 
 **Gamedev Framework 2** (gf2) is a modern framework to build 2D games in C++17. It is based on [SDL 3](https://libsdl.org/) and [Vulkan 1.3](https://www.vulkan.org/) and provides high-level constructions to easily build games.
 
-> [!WARNING]
+> [!CAUTION]
 > This project is in **alpha stage**. The API is not stabilized and may change during the development.
 > You can use [Gamedev Framework 1](https://github.com/GamedevFramework/gf).
 

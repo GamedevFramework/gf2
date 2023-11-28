@@ -5,5 +5,7 @@ include::bits/attributes.adoc[]
 
 Here are various articles about the development of Gamedev Framework 2. They may be of interest for people who want to know how Gamedev Framework works.
 
+xref:index.adoc[< Back to main page]
+
 - xref:article_grids_howto.adoc[Grids HowTo]
 - xref:article_vulkan.adoc[Rendering with Vulkan]

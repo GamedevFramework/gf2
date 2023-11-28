@@ -6,6 +6,8 @@ include::bits/attributes.adoc[]
 
 gf2 is based on link:https://libsdl.org/[SDL3] and link:https://www.vulkan.org/[Vulkan 1.3] and provides high-level constructions to easily build games.
 
+CAUTION: This project is in **alpha stage**. The API is not stabilized and may change during the development. You can use [Gamedev Framework 1](https://github.com/GamedevFramework/gf).
+
 image::logoex.png[Gamedev Framework 2]
 
 == User Documentation
