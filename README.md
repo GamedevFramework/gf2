@@ -23,7 +23,7 @@ int main()
 
   const gf::Texture texture("logo.png", scene_manager.render_manager());
   gf::SpriteEntity sprite_entity(&texture, scene_manager.render_manager());
-  sprite_entity.set_location({ 1000.0f, 1000.0f });
+  sprite_entity.set_location({ 100.0f, 100.0f });
   sprite_entity.set_origin({ 0.5f, 0.5f });
   sprite_entity.set_scale(0.1f);
 
