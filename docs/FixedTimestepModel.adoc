@@ -1,0 +1,31 @@
+= `gf::FixedTimestepModel` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`FixedTimestepModel` is a model that enforces a fixed timestep on another model.
+
+xref:core_models.adoc[< Back to `core` Models]
+
+== Description
+
+[source]
+----
+#include <gf2/core/Models.h>
+class FixedTimestepModel;
+----
+
+*Inherits*: xref:Model.adoc[`Model`]
+
+`FixedTimestepModel` takes another model that needs a fixed timestep and provides it even if the original timestep is not fixed. This may be useful for physics model, for example.
+
+== Member Functions
+
+=== `FixedTimestepModel` constructors
+
+[source]
+----
+FixedTimestepModel(Model* model, Time timestep = gf::seconds(1 / 60.0f));
+----
+
+Create a fixed timestep model thanks to `model`.

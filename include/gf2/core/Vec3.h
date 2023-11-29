@@ -4,7 +4,6 @@
 #define GF_VEC3_H
 
 #include <cassert>
-#include <cstddef>
 #include <cstdint>
 
 #include <type_traits>

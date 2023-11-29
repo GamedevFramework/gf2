@@ -1,0 +1,42 @@
+= `gf::ModelContainer` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`ModelContainer` is a collection of models.
+
+xref:core_models.adoc[< Back to `core` Models]
+
+== Description
+
+[source]
+----
+#include <gf2/core/ModelContainer.h>
+class ModelContainer;
+----
+
+`ModelContainer` represents a collection of models that are updated automatically.
+
+The model container is *not* responsible for the memory of the models. The models must be allocated by the user and not deleted while they are handled by the model container.
+
+Generally, you only need one model container in your game. You create it at the beginning of the game and put all your models in it. Then you can call <<update>> in your game loop.
+
+== Member Functions
+
+=== `add_model`
+
+[source]
+----
+void add_model(Model* model);
+----
+
+Add a model to the collection. The model must not be deleted while it is handled by the model container.
+
+=== `update`
+
+[source]
+----
+void update(Time time);
+----
+
+Update the models.

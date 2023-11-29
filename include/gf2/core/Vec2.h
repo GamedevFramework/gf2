@@ -4,14 +4,12 @@
 #define GF_VEC2_H
 
 #include <cassert>
-#include <cstddef>
 #include <cstdint>
 
 #include <type_traits>
 
 #include "CoreApi.h"
 #include "Math.h"
-#include "TypeTraits.h"
 
 namespace gf {
 

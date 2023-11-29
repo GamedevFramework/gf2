@@ -20,6 +20,7 @@ xref:reference.adoc#core[< Back to reference]
 class FixedTimestepModel : public Model;
 ----
 
+`FixedTimestepModel` is a model that enforces a fixed timestep on another model. xref:FixedTimestepModel.adoc[*Read more...*]
 
 [#model]
 === `gf::Model`
@@ -30,6 +31,9 @@ class FixedTimestepModel : public Model;
 class Model;
 ----
 
+`Model` represents a game object that is updated but not rendered. xref:Model.adoc[*Read more...*]
+
+See also: <<model_container>>
 
 [#model_container]
 === `gf::ModelContainer`
@@ -40,3 +44,6 @@ class Model;
 class ModelContainer;
 ----
 
+`ModelContainer` is a collection of models. xref:ModelContainer.adoc[*Read more...*]
+
+See also: <<model>>

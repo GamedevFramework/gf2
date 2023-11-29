@@ -20,7 +20,7 @@ xref:index.adoc[< Back to main page]
 * Game Toolkit
 ** xref:core_resources.adoc[Resources] (xref:ResourceManager.adoc[`ResourceManager`], xref:ResourceBundle.adoc[`ResourceBundle`])
 ** xref:core_serialization.adoc[Serialization] (xref:Serializer.adoc[`Serializer`], xref:Deserializer.adoc[`Deserializer`])
-** xref:core_models.adoc[Models] (`Model`, `ModelContainer`)
+** xref:core_models.adoc[Models] (xref:Model.adoc[`Model`], xref:ModelContainer.adoc[`ModelContainer`])
 ** xref:core_grids.adoc[Grids] (xref:AnyGrid.adoc[`AnyGrid`], `GridMap`)
 ** xref:core_coordinates.adoc[Coordinates] (xref:Transform.adoc[`Transform`], xref:Camera.adoc[`Camera`])
 ** xref:core_data.adoc[Data] (`TiledMapData`, `AnimationData`)
