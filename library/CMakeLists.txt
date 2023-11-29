@@ -171,6 +171,7 @@ add_library(gf2graphics0
   graphics/FontAtlas.cc
   graphics/Format.cc
   graphics/Gamepad.cc
+  graphics/GamePaths.cc
   graphics/GraphicsInitializer.cc
   graphics/Keyboard.cc
   graphics/Mouse.cc
