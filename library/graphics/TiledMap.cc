@@ -198,8 +198,9 @@ namespace gf {
           const Texture* texture = m_textures[tileset_data->texture_index];
           const RectF texture_region = tileset_data->compute_texture_region(gid, texture->size());
 
-          RectF bounds = m_grid.compute_cell_bounds(position + tile_layer_data.layer.offset);
-          bounds.offset += data.tile_size - tileset_data->tile_size;
+          RectF bounds = m_grid.compute_cell_bounds(position);
+          bounds.offset.y += static_cast<float>(data.tile_size.h - tileset_data->tile_size.h);
+          bounds.offset += tile_layer_data.layer.offset;
           bounds.extent = tileset_data->tile_size;
 
           Vertex vertices[4] = {
