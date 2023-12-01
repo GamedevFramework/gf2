@@ -85,7 +85,8 @@ namespace {
     }
 
   private:
-    void do_process_event(const gf::Event& event) override {
+    void do_process_event(const gf::Event& event) override
+    {
       m_zoom.set_surface_size(surface_size());
       m_zoom.process_event(event);
     }
@@ -103,7 +104,8 @@ namespace {
 
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[])
+{
   if (argc == 1) {
     std::cout << "Usage: gf2_tmx_display <file>\n";
     return EXIT_FAILURE;

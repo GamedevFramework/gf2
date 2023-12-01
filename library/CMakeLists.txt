@@ -197,6 +197,7 @@ add_library(gf2graphics0
   graphics/VertexInput.cc
   graphics/Vulkan.cc
   graphics/Window.cc
+  graphics/Zoom.cc
 )
 
 gf2_handle_library(gf2graphics0

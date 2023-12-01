@@ -31,7 +31,6 @@ namespace gf {
     State m_state;
   };
 
-
 };
 
 #endif // GF_ZOOM_H

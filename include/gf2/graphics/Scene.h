@@ -120,7 +120,6 @@ namespace gf {
       return &m_world.camera;
     }
 
-
   private:
     void do_update(Time time) override;
     void do_render(RenderRecorder& recorder) override;

@@ -71,7 +71,6 @@ namespace gf {
     }
 
   private:
-    void compute_grid(const TiledMapData& data);
     void compute_tile_layers(const TiledMapData& data, RenderManager* render_manager);
     void compute_object_layers(const TiledMapData& data, RenderManager* render_manager);
 
@@ -103,7 +102,6 @@ namespace gf {
 
     std::vector<const Texture*> m_textures;
     TiledMapData m_data;
-    RectF m_bounds = RectF::from_size({ 0.0f, 0.0f });
     AnyGrid m_grid;
     std::vector<TileLayer> m_tile_layers;
     std::vector<ObjectLayer> m_object_layers;

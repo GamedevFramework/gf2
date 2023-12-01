@@ -21,6 +21,17 @@ target_link_libraries(gf2_glyph_display
     gf2core0
 )
 
+# gf2_tmx_display
+
+add_executable(gf2_tmx_display
+  gf2_tmx_display.cc
+)
+
+target_link_libraries(gf2_tmx_display
+  PRIVATE
+    gf2graphics0
+)
+
 # gf2_play_sound
 
 add_executable(gf2_play_sound

@@ -72,12 +72,47 @@ namespace gf {
       }
     };
 
+    AnyGrid compute_grid(const TiledMapData& data)
+    {
+      switch (data.orientation) {
+        case GridOrientation::Orthogonal:
+          return AnyGrid::make_orthogonal(data.map_size, data.tile_size);
+        case GridOrientation::Isometric:
+          return AnyGrid::make_isometric(data.map_size, data.tile_size);
+        case GridOrientation::Staggered:
+          return AnyGrid::make_staggered(data.map_size, data.tile_size, data.cell_axis, data.cell_index);
+        case GridOrientation::Hexagonal:
+          return AnyGrid::make_hexagonal(data.map_size, data.tile_size, static_cast<float>(data.hex_side_length), data.cell_axis, data.cell_index);
+        default:
+          break;
+      }
+
+      return {};
+    }
+
+    void flip_vertices(StaticSpan<Vertex, 4> vertices, Flags<CellFlip> flip)
+    {
+      if (flip.test(CellFlip::Diagonally)) {
+        std::swap(vertices[0].tex_coords, vertices[3].tex_coords);
+      }
+
+      if (flip.test(CellFlip::Horizontally)) {
+        std::swap(vertices[0].tex_coords, vertices[2].tex_coords);
+        std::swap(vertices[1].tex_coords, vertices[3].tex_coords);
+      }
+
+      if (flip.test(CellFlip::Vertically)) {
+        std::swap(vertices[0].tex_coords, vertices[1].tex_coords);
+        std::swap(vertices[2].tex_coords, vertices[3].tex_coords);
+      }
+    }
+
   }
 
   TiledMap::TiledMap(std::vector<const Texture*> textures, const TiledMapData& data, RenderManager* render_manager)
   : m_textures(std::move(textures))
   , m_data(data)
-  , m_bounds(RectF::from_size(data.map_size * data.tile_size))
+  , m_grid(compute_grid(data))
   {
     compute_grid(data);
     compute_tile_layers(data, render_manager);
@@ -161,26 +196,6 @@ namespace gf {
     return m_grid.compute_position(location);
   }
 
-  void TiledMap::compute_grid(const TiledMapData& data)
-  {
-    switch (data.orientation) {
-      case GridOrientation::Orthogonal:
-        m_grid = AnyGrid::make_orthogonal(data.map_size, data.tile_size);
-        break;
-      case GridOrientation::Isometric:
-        m_grid = AnyGrid::make_isometric(data.map_size, data.tile_size);
-        break;
-      case GridOrientation::Staggered:
-        m_grid = AnyGrid::make_staggered(data.map_size, data.tile_size, data.cell_axis, data.cell_index);
-        break;
-      case GridOrientation::Hexagonal:
-        m_grid = AnyGrid::make_hexagonal(data.map_size, data.tile_size, static_cast<float>(data.hex_side_length), data.cell_axis, data.cell_index);
-        break;
-      default:
-        break;
-    }
-  }
-
   // useful documentation: http://eishiya.com/articles/tiled/#rendering-maps
   void TiledMap::compute_tile_layers(const TiledMapData& data, RenderManager* render_manager)
   {
@@ -226,6 +241,8 @@ namespace gf {
             { bounds.position_at(Orientation::NorthWest), texture_region.position_at(Orientation::NorthWest) },
             { bounds.position_at(Orientation::SouthWest), texture_region.position_at(Orientation::SouthWest) }
           };
+
+          flip_vertices(vertices, tile_data.flip);
 
           split_geometry.add_quad(tileset_data->texture_index, vertices);
         }

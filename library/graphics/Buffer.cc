@@ -86,7 +86,6 @@ namespace gf {
         update_device_buffer(total_size, data, render_manager);
         break;
     }
-
   }
 
   void Buffer::set_debug_name(const std::string& name) const

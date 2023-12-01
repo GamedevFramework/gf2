@@ -55,7 +55,6 @@ namespace gf {
       default:
         break;
     }
-
   }
 
 }
