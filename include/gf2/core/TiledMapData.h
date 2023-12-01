@@ -141,6 +141,7 @@ namespace gf {
     uint32_t texture_index = NoIndex;
     uint32_t first_gid = 0;
     Vec2I tile_size = { 0, 0 };
+    Vec2I offset = { 0, 0 };
     int32_t spacing = 0;
     int32_t margin = 0;
     std::vector<TilesetTileData> tiles;
