@@ -202,46 +202,12 @@ namespace gf {
 
   Vec2F StandardScene::position_to_world_location(Vec2I position)
   {
-    const RectF viewport = m_world.camera.compute_viewport(surface_size());
-
-    /* simulate inverse projection transform
-     * i.e. compute normalized device coordinates from screen coordinates
-     *
-     * 0 +---------+     -1 +---------+
-     *   |         |        |         |
-     *   |         | ===>   |         |
-     *   |         |        |         |
-     * h +---------+      1 +---------+
-     *   0         w       -1         1
-     */
-    const Vec2F normalized = 2 * (position - viewport.offset) / viewport.extent - 1;
-
-    /* apply inverse view transform
-     * i.e. compute world coordinates from normalized device coordinates
-     */
-    return transform_point(inverse(m_world.camera.compute_view_matrix()), normalized);
+    return m_world.camera.position_to_location(position, surface_size());
   }
 
   Vec2I StandardScene::world_location_to_position(Vec2F location)
   {
-    const RectF viewport = m_world.camera.compute_viewport(surface_size());
-
-    /* apply view transform
-     * i.e. compute normalized device coordinates from world coordinates
-     */
-    const Vec2F normalized = transform_point(m_world.camera.compute_view_matrix(), location);
-
-    /* simulate projection transform
-     * i.e. compute screen coordinates from normalized device coordinates
-     *
-     * -1 +---------+     0 +---------+
-     *    |         |       |         |
-     *    |         | ===>  |         |
-     *    |         |       |         |
-     *  1 +---------+     h +---------+
-     *   -1         1       0         w
-     */
-    return (1 + normalized) / 2 * viewport.extent + viewport.offset;
+    return m_world.camera.location_to_position(location, surface_size());
   }
 
   void StandardScene::update_entities(Time time)

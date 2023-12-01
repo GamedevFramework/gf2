@@ -18,4 +18,9 @@ if has_config("binaries") then
         add_files("gf2_tarball_listfiles.cc")
         add_deps("gf2core0")
 
+    target("gf2_tmx_display")
+        set_kind("binary")
+        add_files("gf2_tmx_display.cc")
+        add_deps("gf2graphics0")
+
 end

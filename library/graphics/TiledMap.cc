@@ -136,7 +136,23 @@ namespace gf {
     const auto& structure = compute_structure(path);
 
     std::vector<RenderGeometry> geometries;
-    compute_geometries(position, query, structure, geometries);
+    const RectI neighbors = RectI::from_center_size(position / ChunkSize, { 3, 3 });
+    compute_geometries(neighbors, query, structure, geometries);
+    return geometries;
+  }
+
+  std::vector<RenderGeometry> TiledMap::select_geometry(std::string_view path, Flags<TiledMapQuery> query)
+  {
+    const auto& structure = compute_structure(path);
+
+    RectI neighbors = RectI::from_size({ 1, 1 });
+
+    if (!m_tile_layers.empty()) {
+      neighbors = RectI::from_size(m_tile_layers.front().chunks.size());
+    }
+
+    std::vector<RenderGeometry> geometries;
+    compute_geometries(neighbors, query, structure, geometries);
     return geometries;
   }
 
@@ -165,6 +181,7 @@ namespace gf {
     }
   }
 
+  // useful documentation: http://eishiya.com/articles/tiled/#rendering-maps
   void TiledMap::compute_tile_layers(const TiledMapData& data, RenderManager* render_manager)
   {
     const Vec2I chunk_count = { div_ceil(data.map_size.w, ChunkSize), div_ceil(data.map_size.h, ChunkSize) };
@@ -321,20 +338,20 @@ namespace gf {
   }
 
   // NOLINTNEXTLINE(misc-no-recursion)
-  void TiledMap::compute_geometries(Vec2I position, Flags<TiledMapQuery> query, const std::vector<LayerStructureData>& structure, std::vector<RenderGeometry>& geometries) const
+  void TiledMap::compute_geometries(RectI view, Flags<TiledMapQuery> query, const std::vector<LayerStructureData>& structure, std::vector<RenderGeometry>& geometries) const
   {
     for (const auto& layer : structure) {
       switch (layer.type) {
         case LayerType::Group:
           if (query.test(TiledMapQuery::Recursive)) {
             const std::vector<LayerStructureData>& sub_structure = m_data.group_layers[layer.layer_index].sub_layers;
-            compute_geometries(position, query, sub_structure, geometries);
+            compute_geometries(view, query, sub_structure, geometries);
           }
           break;
 
         case LayerType::Tile:
           if (query.test(TiledMapQuery::Tile)) {
-            compute_tile_geometry(position, m_tile_layers[layer.layer_index], geometries);
+            compute_tile_geometry(view, m_tile_layers[layer.layer_index], geometries);
           }
           break;
 
@@ -347,13 +364,11 @@ namespace gf {
     }
   }
 
-  void TiledMap::compute_tile_geometry(Vec2I position, const TileLayer& tile_layer, std::vector<RenderGeometry>& geometries) const
+  void TiledMap::compute_tile_geometry(RectI view, const TileLayer& tile_layer, std::vector<RenderGeometry>& geometries) const
   {
-    const RectI neighbors = RectI::from_center_size(position / ChunkSize, { 3, 3 });
-
-    if (auto maybe_neighbors = neighbors.intersection(RectI::from_size(tile_layer.chunks.size()))) {
-      for (auto xy : gf::position_range(maybe_neighbors->size())) {
-        xy += maybe_neighbors->position();
+    if (auto maybe_view = view.intersection(RectI::from_size(tile_layer.chunks.size()))) {
+      for (auto xy : gf::position_range(maybe_view->size())) {
+        xy += maybe_view->position();
         assert(tile_layer.chunks.valid(xy));
         const auto& chunk = tile_layer.chunks(xy);
 

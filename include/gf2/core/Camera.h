@@ -43,9 +43,17 @@ namespace gf {
     {
     }
 
+    void move(Vec2F offset);
+    void rotate(float angle);
+    void zoom(float factor);
+    void zoom(float factor, Vec2F fixed);
+
     void update(Vec2I target_size);
     RectF compute_viewport(Vec2I target_size) const;
     Mat3F compute_view_matrix() const;
+
+    Vec2F position_to_location(Vec2I position, Vec2I target_size) const;
+    Vec2I location_to_position(Vec2F location, Vec2I target_size) const;
 
   private:
     Vec2F m_computed_size = { 2.0f, 2.0f };

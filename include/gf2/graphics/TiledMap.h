@@ -61,7 +61,14 @@ namespace gf {
     static ResourceBundle bundle(const std::filesystem::path& filename, TiledMapContext context);
 
     std::vector<RenderGeometry> select_geometry(Vec2I position, std::string_view path, Flags<TiledMapQuery> query = All);
+    std::vector<RenderGeometry> select_geometry(std::string_view path, Flags<TiledMapQuery> query = All);
+
     Vec2I compute_position(Vec2F location) const;
+
+    const AnyGrid& grid() const
+    {
+      return m_grid;
+    }
 
   private:
     void compute_grid(const TiledMapData& data);
@@ -90,8 +97,8 @@ namespace gf {
       LayerBuffers buffers;
     };
 
-    void compute_geometries(Vec2I position, Flags<TiledMapQuery> query, const std::vector<LayerStructureData>& structure, std::vector<RenderGeometry>& geometries) const;
-    void compute_tile_geometry(Vec2I position, const TileLayer& tile_layer, std::vector<RenderGeometry>& geometries) const;
+    void compute_geometries(RectI view, Flags<TiledMapQuery> query, const std::vector<LayerStructureData>& structure, std::vector<RenderGeometry>& geometries) const;
+    void compute_tile_geometry(RectI view, const TileLayer& tile_layer, std::vector<RenderGeometry>& geometries) const;
     void compute_object_geometry(const ObjectLayer& object_layer, std::vector<RenderGeometry>& geometries) const;
 
     std::vector<const Texture*> m_textures;

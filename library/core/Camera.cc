@@ -9,6 +9,27 @@
 
 namespace gf {
 
+  void Camera::move(Vec2F offset)
+  {
+    center += offset;
+  }
+
+  void Camera::rotate(float angle)
+  {
+    rotation += angle;
+  }
+
+  void Camera::zoom(float factor)
+  {
+    size *= factor;
+  }
+
+  void Camera::zoom(float factor, Vec2F fixed)
+  {
+    center += (fixed - center) * (1 - factor);
+    size *= factor;
+  }
+
   void Camera::update(Vec2I target_size)
   {
     m_computed_size = size;
@@ -147,6 +168,50 @@ namespace gf {
     mat(2, 0) = 0.0f;        mat(2, 1) = 0.0f;       mat(2, 2) = 1.0f;
     // clang-format on
     return mat;
+  }
+
+  Vec2F Camera::position_to_location(Vec2I position, Vec2I target_size) const
+  {
+    const RectF actual_viewport = compute_viewport(target_size);
+
+    /* simulate inverse projection transform
+     * i.e. compute normalized device coordinates from screen coordinates
+     *
+     * 0 +---------+     -1 +---------+
+     *   |         |        |         |
+     *   |         | ===>   |         |
+     *   |         |        |         |
+     * h +---------+      1 +---------+
+     *   0         w       -1         1
+     */
+    const Vec2F normalized = 2 * (position - actual_viewport.offset) / actual_viewport.extent - 1;
+
+    /* apply inverse view transform
+     * i.e. compute world coordinates from normalized device coordinates
+     */
+    return transform_point(inverse(compute_view_matrix()), normalized);
+  }
+
+  Vec2I Camera::location_to_position(Vec2F location, Vec2I target_size) const
+  {
+    const RectF actual_viewport = compute_viewport(target_size);
+
+    /* apply view transform
+     * i.e. compute normalized device coordinates from world coordinates
+     */
+    const Vec2F normalized = transform_point(compute_view_matrix(), location);
+
+    /* simulate projection transform
+     * i.e. compute screen coordinates from normalized device coordinates
+     *
+     * -1 +---------+     0 +---------+
+     *    |         |       |         |
+     *    |         | ===>  |         |
+     *    |         |       |         |
+     *  1 +---------+     h +---------+
+     *   -1         1       0         w
+     */
+    return (1 + normalized) / 2 * actual_viewport.extent + actual_viewport.offset;
   }
 
 }

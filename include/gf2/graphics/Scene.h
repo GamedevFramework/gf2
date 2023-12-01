@@ -115,6 +115,12 @@ namespace gf {
     void update_entities(Time time);
     void render_entities(RenderRecorder& recorder);
 
+    Camera* world_camera()
+    {
+      return &m_world.camera;
+    }
+
+
   private:
     void do_update(Time time) override;
     void do_render(RenderRecorder& recorder) override;

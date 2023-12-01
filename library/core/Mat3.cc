@@ -39,7 +39,7 @@ namespace gf {
     result(2, 2) = mat(0, 0) * mat(1, 1) - mat(1, 0) * mat(0, 1);
 
     const float det = mat(0, 0) * result(0, 0) + mat(0, 1) * result(1, 0) + mat(0, 2) * result(2, 0);
-    assert(std::abs(det) > std::numeric_limits<float>::epsilon());
+    assert(std::abs(det) != 0.0f);
 
     for (int col = 0; col < 3; ++col) {
       for (int row = 0; row < 3; ++row) {
