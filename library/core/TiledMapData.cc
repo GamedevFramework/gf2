@@ -5,6 +5,7 @@
 #include <gf2/core/TiledMapData.h>
 // clang-format on
 
+#include <algorithm>
 #include <array>
 #include <charconv>
 #include <fstream>
@@ -14,6 +15,7 @@
 #include <pugixml.hpp>
 #include <zlib.h>
 
+#include <gf2/core/Blit.h>
 #include <gf2/core/Log.h>
 #include <gf2/core/Property.h>
 #include <gf2/core/ResourceBundle.h>
@@ -371,7 +373,7 @@ namespace gf {
 
     std::vector<uint8_t> parse_data_buffer(const pugi::xml_node node, TmxFormat format)
     {
-      assert(node.name() == "data"sv);
+      assert(node.name() == "data"sv || node.name() == "chunk"sv);
 
       std::vector<uint8_t> data;
 
@@ -470,20 +472,43 @@ namespace gf {
     LayerStructureData parse_tmx_tile_layer(const pugi::xml_node node, TiledMapResource& resource)
     {
       assert(node.name() == "layer"sv);
+      assert(resource.data.map_size.w == node.attribute("width").as_int());
+      assert(resource.data.map_size.h == node.attribute("height").as_int());
 
       TileLayerData tile_layer;
       tile_layer.layer = parse_tmx_layer_common(node, resource);
 
       for (const pugi::xml_node data_node : node.children("data")) {
-        unsupported_node(data_node, "chunk"); // TODO
-        auto format = parse_data_format(data_node);
-        auto tiles = parse_tmx_tiles(data_node, format);
-        assert(tiles.size() == static_cast<std::size_t>(resource.data.map_size.w * resource.data.map_size.h));
         tile_layer.tiles = Array2D<TileData>(resource.data.map_size);
 
-        for (std::size_t i = 0; i < tiles.size(); ++i) {
-          tile_layer.tiles[i] = tiles[i];
+        auto format = parse_data_format(data_node);
+        auto range = data_node.children("chunk");
+
+        if (std::distance(range.begin(), range.end()) > 0) {
+          for (const pugi::xml_node chunk_node : range) {
+            Vec2I chunk_position = {};
+            chunk_position.x = chunk_node.attribute("x").as_int();
+            chunk_position.y = chunk_node.attribute("y").as_int();
+
+            Vec2I chunk_size = {};
+            chunk_size.w = chunk_node.attribute("width").as_int();
+            chunk_size.h = chunk_node.attribute("height").as_int();
+
+            auto blit = compute_blit(RectI::from_size(chunk_size), chunk_size, chunk_position, tile_layer.tiles.size());
+            auto tiles = parse_tmx_tiles(chunk_node, format);
+
+            for (auto offset : gf::position_range(blit.source_region.size())) {
+              const std::size_t index = offset.y * chunk_size.w + offset.x;
+              const Vec2I position = blit.target_offset + offset;
+              tile_layer.tiles(position) = tiles[index];
+            }
+          }
+        } else {
+          auto tiles = parse_tmx_tiles(data_node, format);
+          assert(tiles.size() == static_cast<std::size_t>(resource.data.map_size.w * resource.data.map_size.h));
+          std::copy(tiles.begin(), tiles.end(), tile_layer.tiles.begin());
         }
+
       }
 
       LayerStructureData data = {};
