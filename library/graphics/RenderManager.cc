@@ -452,12 +452,6 @@ namespace gf {
     const vkb::PhysicalDeviceSelector physical_device_selector(instance, m_surface);
 #endif
 
-    // VkPhysicalDeviceVulkan13Features features_13 = {};
-    // features_13.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES;
-    // features_13.dynamicRendering = VK_TRUE;
-    //
-    // physical_device_selector.set_required_features_13(features_13);
-
     auto maybe_physical_device = physical_device_selector.select();
 
     if (!maybe_physical_device) {
