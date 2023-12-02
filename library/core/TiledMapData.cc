@@ -690,7 +690,6 @@ namespace gf {
         tileset.tiles.push_back(parse_tmx_tileset_tile(tile, resource));
       }
 
-      unsupported_node(node, "tileoffset");
       unsupported_node(node, "wangsets");
     }
 
