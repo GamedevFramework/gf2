@@ -407,6 +407,9 @@ namespace gf {
     instance_builder.set_engine_name("Gamedev Framework 2")
         .require_api_version(1, 3, 0)
         .enable_validation_layers()
+#ifdef __linux__
+        .enable_layer("VK_LAYER_MESA_overlay")
+#endif
         .enable_extension(VK_EXT_DEBUG_UTILS_EXTENSION_NAME)
         .set_debug_callback(&debug_callback)
         // .add_validation_feature_enable(VK_VALIDATION_FEATURE_ENABLE_BEST_PRACTICES_EXT)
