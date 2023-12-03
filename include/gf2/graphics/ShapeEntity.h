@@ -3,8 +3,6 @@
 #ifndef GF_SHAPE_ENTITY_H
 #define GF_SHAPE_ENTITY_H
 
-#include <gf2/core/Transform.h>
-
 #include "GraphicsApi.h"
 #include "Shape.h"
 #include "Texture.h"

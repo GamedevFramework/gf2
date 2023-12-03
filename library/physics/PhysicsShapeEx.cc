@@ -9,50 +9,9 @@
 
 namespace gf {
 
-  namespace {
-
-    struct PolylineEx {
-      PolylineType type = PolylineType::Chain;
-      Span<const Vec2F> points;
-
-      bool has_prev(std::size_t i) const
-      {
-        return i > 0 || type == PolylineType::Loop;
-      }
-
-      Vec2F prev_point(std::size_t i) const
-      {
-        assert(has_prev(i));
-
-        if (i == 0) {
-          return points.back();
-        }
-
-        return points[i - 1];
-      }
-
-      bool has_next(std::size_t i) const
-      {
-        return i < points.size() - 1 || type == PolylineType::Loop;
-      }
-
-      Vec2F next_point(std::size_t i) const
-      {
-        assert(has_next(i));
-
-        if (i == points.size() - 1) {
-          return points.front();
-        }
-
-        return points[i + 1];
-      }
-    };
-
-  }
-
   std::vector<PhysicsShape> make_polyline_shapes(PhysicsBody* body, Span<const Vec2F> polyline, float radius, PolylineType type)
   {
-    const PolylineEx polyline_ex = { type, polyline };
+    const PolylineView polyline_view = { type, polyline };
 
     std::vector<PhysicsShape> shapes;
 
@@ -60,8 +19,8 @@ namespace gf {
       const Vec2F a = polyline[i];
       const Vec2F b = polyline[i + 1];
 
-      const Vec2F prev = polyline_ex.has_prev(i) ? polyline_ex.prev_point(i) : a;
-      const Vec2F next = polyline_ex.has_next(i + 1) ? polyline_ex.next_point(i + 1) : b;
+      const Vec2F prev = polyline_view.has_prev(i) ? polyline_view.prev_point(i) : a;
+      const Vec2F next = polyline_view.has_next(i + 1) ? polyline_view.next_point(i + 1) : b;
 
       shapes.emplace_back(PhysicsShape::make_segment(body, a, b, radius, prev, next));
     }

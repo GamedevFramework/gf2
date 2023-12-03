@@ -30,6 +30,10 @@ if has_config("examples") then
         add_files("13-shape.cc")
         add_deps("gf2graphics0")
 
+    target("14-curve")
+        set_kind("binary")
+        add_files("14-curve.cc")
+        add_deps("gf2graphics0")
 
     target("15-imgui")
         set_kind("binary")

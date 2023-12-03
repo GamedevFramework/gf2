@@ -7,8 +7,8 @@
 #include <gf2/graphics/GraphicsInitializer.h>
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/SceneManager.h>
+#include <gf2/graphics/ShapeEntity.h>
 
-#include "gf2/graphics/ShapeEntity.h"
 
 int main()
 {

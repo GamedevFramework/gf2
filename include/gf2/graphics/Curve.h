@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
-#ifndef GF_SHAPE_H
-#define GF_SHAPE_H
+#ifndef GF_CURVE_H
+#define GF_CURVE_H
 
 #include <optional>
 
+#include <gf2/core/CurveData.h>
 #include <gf2/core/Rect.h>
-#include <gf2/core/ShapeData.h>
 
 #include "Buffer.h"
 #include "GraphicsApi.h"
@@ -16,16 +16,16 @@ namespace gf {
   class RenderManager;
   class Texture;
 
-  struct GF_GRAPHICS_API ShapeGeometry {
-    RenderGeometry shape;
+  struct GF_GRAPHICS_API CurveGeometry {
+    RenderGeometry curve;
     std::optional<RenderGeometry> outline;
   };
 
-  class GF_GRAPHICS_API Shape {
+  class GF_GRAPHICS_API Curve {
   public:
-    Shape(const Texture* texture, const ShapeData& data, RenderManager* render_manager);
+    Curve(const CurveData& data, RenderManager* render_manager);
 
-    ShapeGeometry geometry() const;
+    CurveGeometry geometry() const;
 
     RectF bounds() const
     {
@@ -33,7 +33,6 @@ namespace gf {
     }
 
   private:
-    const Texture* m_texture = nullptr;
     Buffer m_vertices;
     Buffer m_indices;
     std::optional<Buffer> m_outline_vertices;
@@ -43,4 +42,4 @@ namespace gf {
 
 }
 
-#endif // GF_SHAPE_H
+#endif // GF_CURVE_H

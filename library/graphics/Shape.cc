@@ -78,7 +78,6 @@ namespace gf {
     struct RawOutlineShapeGeometry {
       std::vector<Vertex> vertices;
       std::vector<uint16_t> indices;
-      RectF bounds = {};
     };
 
     RawOutlineShapeGeometry compute_outline_shape_geometry(const ShapeData& data, Vec2F center)
@@ -157,7 +156,6 @@ namespace gf {
       assert(m_outline_indices.has_value());
 
       RenderGeometry outline;
-      outline.pipeline = RenderPipelineType::Text;
       outline.texture = nullptr;
       outline.vertices = &m_outline_vertices.value();
       outline.indices = &m_outline_indices.value();

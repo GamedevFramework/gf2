@@ -45,6 +45,8 @@ namespace gf {
     static CurveData make_cattmull_rom_spline(Span<const Vec2F> points, PolylineType type = PolylineType::Chain, CattmullRomType spline_type = CattmullRomType::Centripetal, uint32_t point_count = 30);
 
     std::vector<Vec2F> points;
+    PolylineType type = PolylineType::Chain;
+    float thickness = 1.0f;
     Color color = Black;
     float outline_thickness = 0.0f;
     Color outline_color = White;
@@ -53,7 +55,7 @@ namespace gf {
   template<typename Archive>
   inline Archive& operator|(Archive& ar, MaybeConst<CurveData, Archive>& data)
   {
-    return ar | data.points | data.color | data.outline_thickness | data.outline_color;
+    return ar | data.points | data.type | data.thickness | data.color | data.outline_thickness | data.outline_color;
   }
 
 }
