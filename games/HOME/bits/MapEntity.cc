@@ -10,7 +10,8 @@
 namespace home {
 
   MapEntity::MapEntity(GameHub* hub, const WorldData& data)
-  : m_map(hub->resource_manager()->get<gf::TiledMap>(data.map))
+  : m_map_resource(hub->resource_manager()->get<gf::TiledMapResource>(data.map))
+  , m_map(hub->resource_manager()->get<gf::TiledMap>(data.map))
   {
   }
 

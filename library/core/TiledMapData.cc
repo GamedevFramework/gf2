@@ -508,7 +508,6 @@ namespace gf {
           assert(tiles.size() == static_cast<std::size_t>(resource.data.map_size.w * resource.data.map_size.h));
           std::copy(tiles.begin(), tiles.end(), tile_layer.tiles.begin());
         }
-
       }
 
       LayerStructureData data = {};

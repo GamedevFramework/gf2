@@ -11,9 +11,9 @@ namespace gf {
 
   namespace {
 
-    struct Polyline {
-      Span<const Vec2F> polyline;
+    struct PolylineEx {
       PolylineType type = PolylineType::Chain;
+      Span<const Vec2F> points;
 
       bool has_prev(std::size_t i) const
       {
@@ -25,26 +25,26 @@ namespace gf {
         assert(has_prev(i));
 
         if (i == 0) {
-          return polyline.back();
+          return points.back();
         }
 
-        return polyline[i - 1];
+        return points[i - 1];
       }
 
       bool has_next(std::size_t i) const
       {
-        return i < polyline.size() - 1 || type == PolylineType::Loop;
+        return i < points.size() - 1 || type == PolylineType::Loop;
       }
 
       Vec2F next_point(std::size_t i) const
       {
         assert(has_next(i));
 
-        if (i == polyline.size() - 1) {
-          return polyline.front();
+        if (i == points.size() - 1) {
+          return points.front();
         }
 
-        return polyline[i + 1];
+        return points[i + 1];
       }
     };
 
@@ -52,7 +52,7 @@ namespace gf {
 
   std::vector<PhysicsShape> make_polyline_shapes(PhysicsBody* body, Span<const Vec2F> polyline, float radius, PolylineType type)
   {
-    const Polyline polyline_ex = { polyline, type };
+    const PolylineEx polyline_ex = { type, polyline };
 
     std::vector<PhysicsShape> shapes;
 
@@ -67,6 +67,11 @@ namespace gf {
     }
 
     return shapes;
+  }
+
+  std::vector<PhysicsShape> make_polyline_shapes(PhysicsBody* body, const Polyline& polyline, float radius)
+  {
+    return make_polyline_shapes(body, polyline.points, radius, polyline.type);
   }
 
 }

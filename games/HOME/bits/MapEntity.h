@@ -20,7 +20,8 @@ namespace home {
     void render(gf::RenderRecorder& recorder) override;
 
   private:
-    gf::TiledMap* m_map;
+    gf::TiledMapResource* m_map_resource = nullptr;
+    gf::TiledMap* m_map = nullptr;
     gf::Vec2F m_location = { 0.0f, 0.0f };
   };
 
