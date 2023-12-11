@@ -10,6 +10,7 @@
 
 #include "HeroEntity.h"
 #include "MapEntity.h"
+#include "PhysicsDebug.h"
 #include "WorldData.h"
 
 namespace home {
@@ -20,6 +21,7 @@ namespace home {
     WorldScene(GameHub* hub, const WorldData& data);
 
   private:
+    void do_update(gf::Time time) override;
     void do_process_event(const gf::Event& event) override;
 
     GameHub* m_hub = nullptr;
@@ -34,6 +36,8 @@ namespace home {
 
     MapEntity m_map_entity;
     HeroEntity m_hero_entity;
+
+    PhysicsDebug m_physics_debug;
   };
 
 }

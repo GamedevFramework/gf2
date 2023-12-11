@@ -141,4 +141,11 @@ namespace gf {
     return data;
   }
 
+  ShapeData ShapeData::make_polygon(Span<const Vec2F> contour)
+  {
+    ShapeData data = {};
+    data.points.assign(contour.begin(), contour.end());
+    return data;
+  }
+
 }

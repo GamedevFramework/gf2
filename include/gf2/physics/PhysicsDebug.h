@@ -30,6 +30,7 @@ namespace gf {
 
   class GF_PHYSICS_API PhysicsDebug {
   public:
+    PhysicsDebug() = default;
     PhysicsDebug(const PhysicsDebug&) = default;
     PhysicsDebug(PhysicsDebug&&) noexcept = default;
     virtual ~PhysicsDebug() = default;

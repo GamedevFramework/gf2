@@ -12,6 +12,7 @@
 #include "Color.h"
 #include "CoreApi.h"
 #include "Rect.h"
+#include "Span.h"
 #include "TypeTraits.h"
 #include "Vec2.h"
 
@@ -30,6 +31,7 @@ namespace gf {
     static ShapeData make_pie(CircF circle, float from_angle, float to_angle, uint32_t point_count = 32);
     static ShapeData make_star(float max_radius, float min_radius, uint32_t branches);
     static ShapeData make_star(CircF max_circle, float min_radius, uint32_t branches);
+    static ShapeData make_polygon(Span<const Vec2F> contour);
 
     std::vector<Vec2F> points;
     Color color = Black;

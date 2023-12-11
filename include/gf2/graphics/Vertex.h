@@ -6,18 +6,19 @@
 #include <gf2/core/Color.h>
 #include <gf2/core/Vec2.h>
 
+#include "GraphicsApi.h"
 #include "VertexInput.h"
 
 namespace gf {
 
-  struct SimpleVertex {
+  struct GF_GRAPHICS_API SimpleVertex {
     Vec2F location = { 0.0f, 0.0f };
     Color color = White;
 
     static VertexInput compute_input();
   };
 
-  struct Vertex {
+  struct GF_GRAPHICS_API Vertex {
     Vec2F location = { 0.0f, 0.0f };
     Vec2F tex_coords = { 0.0f, 0.0f };
     Color color = White;

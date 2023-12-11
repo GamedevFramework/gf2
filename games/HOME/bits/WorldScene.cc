@@ -15,6 +15,7 @@ namespace home {
   , m_death_sound(hub->resource_manager()->get<gf::Sound>(data.death_sound.filename))
   , m_map_entity(hub, data)
   , m_hero_entity(hub, data)
+  , m_physics_debug(hub->render_manager())
   {
     set_clear_color(gf::Color(0xAEF6B8));
     set_world_center({ 0.0f, 0.0f });
@@ -25,8 +26,18 @@ namespace home {
     add_world_entity(&m_map_entity);
     add_world_entity(&m_hero_entity);
 
+    add_world_entity(m_physics_debug.entity());
+
     m_hero_entity.update_location.connect([this](gf::Vec2F location) { set_world_center(location); });
     m_hero_entity.update_location.connect([this](gf::Vec2F location) { m_map_entity.set_hero_location(location); });
+  }
+
+  void WorldScene::do_update(gf::Time time)
+  {
+    update_entities(time);
+    m_physics_debug.start_debug();
+    m_hub->physics_world()->debug_draw(&m_physics_debug);
+    m_physics_debug.stop_debug();
   }
 
   void WorldScene::do_process_event(const gf::Event& event)
@@ -37,5 +48,7 @@ namespace home {
       m_hero_entity.set_target(target);
     }
   }
+
+
 
 }
