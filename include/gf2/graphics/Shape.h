@@ -41,6 +41,22 @@ namespace gf {
     RectF m_bounds = {};
   };
 
+  class GF_GRAPHICS_API ShapeGroup {
+  public:
+    ShapeGroup() = default;
+    ShapeGroup(const ShapeGroupData& data, RenderManager* render_manager);
+
+    void update(const ShapeGroupData& data, RenderManager* render_manager);
+
+    RenderGeometry geometry() const;
+
+  private:
+    static constexpr std::size_t FramesInFlight = 3;
+    std::size_t m_current_buffer = 0;
+    Buffer m_vertices[FramesInFlight];
+    Buffer m_indices[FramesInFlight];
+  };
+
 }
 
 #endif // GF_SHAPE_H

@@ -8,6 +8,9 @@
 #include <cassert>
 #include <cstdint>
 
+#include <algorithm>
+#include <iterator>
+
 #include <gf2/core/Polygon.h>
 #include <gf2/core/Range.h>
 
@@ -123,6 +126,20 @@ namespace gf {
       return geometry;
     }
 
+    struct RawShapeGeometry {
+      std::vector<Vertex> vertices;
+      std::vector<uint16_t> indices;
+
+      template<typename T>
+      void merge_with(const T& other) {
+        const std::size_t offset = vertices.size();
+        vertices.insert(vertices.end(), other.vertices.begin(), other.vertices.end());
+        std::transform(other.indices.begin(), other.indices.end(), std::back_inserter(indices), [offset](uint16_t index) {
+          return index + offset;
+        });
+      }
+    };
+
   }
 
   Shape::Shape(const Texture* texture, const ShapeData& data, RenderManager* render_manager)
@@ -164,6 +181,57 @@ namespace gf {
       geometry.outline = outline;
     }
 
+    return geometry;
+  }
+
+  /*
+   * ShapeGroup
+   */
+
+  ShapeGroup::ShapeGroup(const ShapeGroupData& data, RenderManager* render_manager)
+  {
+    update(data, render_manager);
+  }
+
+  void ShapeGroup::update(const ShapeGroupData& data, RenderManager* render_manager)
+  {
+    RawShapeGeometry geometry;
+
+    for (const auto& shape : data.shapes) {
+      auto raw_interior = compute_interior_shape_geometry(shape);
+      geometry.merge_with(raw_interior);
+
+      if (shape.outline_thickness > 0.0f) {
+        auto raw_outline = compute_outline_shape_geometry(shape, raw_interior.center);
+        geometry.merge_with(raw_outline);
+      }
+    }
+
+    m_current_buffer = (m_current_buffer + 1) % FramesInFlight;
+    auto& current_vertices = m_vertices[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    auto& current_indices = m_indices[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+
+    if (geometry.vertices.size() > current_vertices.size()) {
+      current_vertices = Buffer(BufferType::Host, BufferUsage::Vertex, geometry.vertices.data(), geometry.vertices.size(), render_manager);
+      current_vertices.set_debug_name("[gf2] Shape Group Vertex Buffer #" + std::to_string(m_current_buffer));
+    } else {
+      current_vertices.update(geometry.vertices.data(), geometry.vertices.size(), render_manager);
+    }
+
+    if (geometry.indices.size() > current_indices.size()) {
+      current_indices = Buffer(BufferType::Host, BufferUsage::Index, geometry.indices.data(), geometry.indices.size(), render_manager);
+      current_indices.set_debug_name("[gf2] Shape Group Index Buffer #" + std::to_string(m_current_buffer));
+    } else {
+      current_indices.update(geometry.indices.data(), geometry.indices.size(), render_manager);
+    }
+  }
+
+  RenderGeometry ShapeGroup::geometry() const
+  {
+    RenderGeometry geometry;
+    geometry.vertices = &m_vertices[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    geometry.indices = &m_indices[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    geometry.count = m_indices[m_current_buffer].count(); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     return geometry;
   }
 

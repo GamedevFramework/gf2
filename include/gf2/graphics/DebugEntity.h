@@ -3,8 +3,6 @@
 #ifndef GF_DEBUG_ENTITY_H
 #define GF_DEBUG_ENTITY_H
 
-#include <vector>
-
 #include <gf2/core/Color.h>
 #include <gf2/core/Span.h>
 #include <gf2/core/Vec2.h>
@@ -13,7 +11,6 @@
 #include "Entity.h"
 #include "GraphicsApi.h"
 #include "Shape.h"
-#include "Vertex.h"
 
 namespace gf {
   class RenderManager;
@@ -34,16 +31,12 @@ namespace gf {
     void render(RenderRecorder& recorder) override;
 
   private:
-    static constexpr std::size_t DebugFramesInFlight = 3;
-
     RenderManager* m_render_manager = nullptr;
 
-    std::vector<Vertex> m_raw_vertices;
-    std::vector<uint16_t> m_raw_indices;
-
-    std::size_t m_current_buffer = 0;
-    Buffer m_vertices[DebugFramesInFlight];
-    Buffer m_indices[DebugFramesInFlight];
+    ShapeGroupData m_shape_group_data;
+    ShapeGroup m_shape_group;
+    CurveGroupData m_curve_group_data;
+    CurveGroup m_curve_group;
   };
 
 }

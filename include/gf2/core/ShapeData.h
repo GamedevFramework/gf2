@@ -57,6 +57,16 @@ namespace gf {
     return ar | resource.texture | resource.data;
   }
 
+  struct GF_CORE_API ShapeGroupData {
+    std::vector<ShapeData> shapes;
+  };
+
+  template<typename Archive>
+  inline Archive& operator|(Archive& ar, MaybeConst<ShapeGroupData, Archive>& data)
+  {
+    return ar | data.shapes;
+  }
+
 }
 
 #endif // GF_SHAPE_DATA_H

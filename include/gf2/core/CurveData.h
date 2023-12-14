@@ -58,6 +58,16 @@ namespace gf {
     return ar | data.points | data.type | data.thickness | data.color | data.outline_thickness | data.outline_color;
   }
 
+  struct GF_CORE_API CurveGroupData {
+    std::vector<CurveData> curves;
+  };
+
+  template<typename Archive>
+  inline Archive& operator|(Archive& ar, MaybeConst<CurveGroupData, Archive>& data)
+  {
+    return ar | data.curves;
+  }
+
 }
 
 #endif // GF_CURVE_DATA_H
