@@ -35,9 +35,9 @@ namespace gf {
     cpBodyActivate(m_body);
   }
 
-  void PhysicsBody::activate_static(PhysicsShape filter)
+  void PhysicsBody::activate_static(PhysicsShape* filter)
   {
-    cpBodyActivateStatic(m_body, filter.m_shape);
+    cpBodyActivateStatic(m_body, filter->m_shape);
   }
 
   void PhysicsBody::sleep()
@@ -45,9 +45,9 @@ namespace gf {
     cpBodySleep(m_body);
   }
 
-  void PhysicsBody::sleep_with_group(PhysicsBody group)
+  void PhysicsBody::sleep_with_group(PhysicsBody* group)
   {
-    cpBodySleepWithGroup(m_body, group.m_body);
+    cpBodySleepWithGroup(m_body, group->m_body);
   }
 
   bool PhysicsBody::sleeping() const

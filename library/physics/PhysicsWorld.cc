@@ -249,19 +249,19 @@ namespace gf {
     cpSpaceRemoveConstraint(m_space, constraint.m_constraint);
   }
 
-  bool PhysicsWorld::contains_shape(PhysicsShape shape)
+  bool PhysicsWorld::contains_shape(PhysicsShape* shape)
   {
-    return cpSpaceContainsShape(m_space, shape.m_shape) == cpTrue;
+    return cpSpaceContainsShape(m_space, shape->m_shape) == cpTrue;
   }
 
-  bool PhysicsWorld::contains_body(PhysicsBody body)
+  bool PhysicsWorld::contains_body(PhysicsBody* body)
   {
-    return cpSpaceContainsBody(m_space, body.m_body) == cpTrue;
+    return cpSpaceContainsBody(m_space, body->m_body) == cpTrue;
   }
 
-  bool PhysicsWorld::contains_constraint(PhysicsConstraint constraint)
+  bool PhysicsWorld::contains_constraint(PhysicsConstraint* constraint)
   {
-    return cpSpaceContainsConstraint(m_space, constraint.m_constraint) == cpTrue;
+    return cpSpaceContainsConstraint(m_space, constraint->m_constraint) == cpTrue;
   }
 
   // TODO: post-step callback

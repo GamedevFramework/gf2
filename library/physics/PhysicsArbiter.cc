@@ -155,44 +155,44 @@ namespace gf {
     return static_cast<float>(cpArbiterGetDepth(m_arbiter, i));
   }
 
-  bool PhysicsArbiter::call_wildcard_begin_a(PhysicsWorld world)
+  bool PhysicsArbiter::call_wildcard_begin_a(PhysicsWorld* world)
   {
-    return cpArbiterCallWildcardBeginA(m_arbiter, world.m_space) == cpTrue;
+    return cpArbiterCallWildcardBeginA(m_arbiter, world->m_space) == cpTrue;
   }
 
-  bool PhysicsArbiter::call_wildcard_begin_b(PhysicsWorld world)
+  bool PhysicsArbiter::call_wildcard_begin_b(PhysicsWorld* world)
   {
-    return cpArbiterCallWildcardBeginB(m_arbiter, world.m_space) == cpTrue;
+    return cpArbiterCallWildcardBeginB(m_arbiter, world->m_space) == cpTrue;
   }
 
-  bool PhysicsArbiter::call_wildcard_pre_solve_a(PhysicsWorld world)
+  bool PhysicsArbiter::call_wildcard_pre_solve_a(PhysicsWorld* world)
   {
-    return cpArbiterCallWildcardPreSolveA(m_arbiter, world.m_space) == cpTrue;
+    return cpArbiterCallWildcardPreSolveA(m_arbiter, world->m_space) == cpTrue;
   }
 
-  bool PhysicsArbiter::call_wildcard_pre_solve_b(PhysicsWorld world)
+  bool PhysicsArbiter::call_wildcard_pre_solve_b(PhysicsWorld* world)
   {
-    return cpArbiterCallWildcardPreSolveB(m_arbiter, world.m_space) == cpTrue;
+    return cpArbiterCallWildcardPreSolveB(m_arbiter, world->m_space) == cpTrue;
   }
 
-  void PhysicsArbiter::call_wildcard_post_solve_a(PhysicsWorld world)
+  void PhysicsArbiter::call_wildcard_post_solve_a(PhysicsWorld* world)
   {
-    cpArbiterCallWildcardPostSolveA(m_arbiter, world.m_space);
+    cpArbiterCallWildcardPostSolveA(m_arbiter, world->m_space);
   }
 
-  void PhysicsArbiter::call_wildcard_post_solve_b(PhysicsWorld world)
+  void PhysicsArbiter::call_wildcard_post_solve_b(PhysicsWorld* world)
   {
-    cpArbiterCallWildcardPostSolveB(m_arbiter, world.m_space);
+    cpArbiterCallWildcardPostSolveB(m_arbiter, world->m_space);
   }
 
-  void PhysicsArbiter::call_wildcard_separate_a(PhysicsWorld world)
+  void PhysicsArbiter::call_wildcard_separate_a(PhysicsWorld* world)
   {
-    cpArbiterCallWildcardSeparateA(m_arbiter, world.m_space);
+    cpArbiterCallWildcardSeparateA(m_arbiter, world->m_space);
   }
 
-  void PhysicsArbiter::call_wildcard_separate_b(PhysicsWorld world)
+  void PhysicsArbiter::call_wildcard_separate_b(PhysicsWorld* world)
   {
-    cpArbiterCallWildcardSeparateB(m_arbiter, world.m_space);
+    cpArbiterCallWildcardSeparateB(m_arbiter, world->m_space);
   }
 
   PhysicsArbiter::PhysicsArbiter(cpArbiter* arbiter)

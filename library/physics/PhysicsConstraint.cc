@@ -12,59 +12,59 @@
 
 namespace gf {
 
-  PhysicsConstraint PhysicsConstraint::make_pin_joint(PhysicsBody body_a, PhysicsBody body_b, Vec2F anchor_a, Vec2F anchor_b)
+  PhysicsConstraint PhysicsConstraint::make_pin_joint(PhysicsBody* body_a, PhysicsBody* body_b, Vec2F anchor_a, Vec2F anchor_b)
   {
-    return { cpPinJointNew(body_a.m_body, body_b.m_body, cpv(anchor_a.x, anchor_a.y), cpv(anchor_b.x, anchor_b.y)) };
+    return { cpPinJointNew(body_a->m_body, body_b->m_body, cpv(anchor_a.x, anchor_a.y), cpv(anchor_b.x, anchor_b.y)) };
   }
 
-  PhysicsConstraint PhysicsConstraint::make_slide_joint(PhysicsBody body_a, PhysicsBody body_b, Vec2F anchor_a, Vec2F anchor_b, float min, float max)
+  PhysicsConstraint PhysicsConstraint::make_slide_joint(PhysicsBody* body_a, PhysicsBody* body_b, Vec2F anchor_a, Vec2F anchor_b, float min, float max)
   {
-    return { cpSlideJointNew(body_a.m_body, body_b.m_body, cpv(anchor_a.x, anchor_a.y), cpv(anchor_b.x, anchor_b.y), min, max) };
+    return { cpSlideJointNew(body_a->m_body, body_b->m_body, cpv(anchor_a.x, anchor_a.y), cpv(anchor_b.x, anchor_b.y), min, max) };
   }
 
-  PhysicsConstraint PhysicsConstraint::make_pivot_joint(PhysicsBody body_a, PhysicsBody body_b, Vec2F pivot)
+  PhysicsConstraint PhysicsConstraint::make_pivot_joint(PhysicsBody* body_a, PhysicsBody* body_b, Vec2F pivot)
   {
-    return { cpPivotJointNew(body_a.m_body, body_b.m_body, cpv(pivot.x, pivot.y)) };
+    return { cpPivotJointNew(body_a->m_body, body_b->m_body, cpv(pivot.x, pivot.y)) };
   }
 
-  PhysicsConstraint PhysicsConstraint::make_pivot_joint(PhysicsBody body_a, PhysicsBody body_b, Vec2F anchor_a, Vec2F anchor_b)
+  PhysicsConstraint PhysicsConstraint::make_pivot_joint(PhysicsBody* body_a, PhysicsBody* body_b, Vec2F anchor_a, Vec2F anchor_b)
   {
-    return { cpPivotJointNew2(body_a.m_body, body_b.m_body, cpv(anchor_a.x, anchor_a.y), cpv(anchor_b.x, anchor_b.y)) };
+    return { cpPivotJointNew2(body_a->m_body, body_b->m_body, cpv(anchor_a.x, anchor_a.y), cpv(anchor_b.x, anchor_b.y)) };
   }
 
-  PhysicsConstraint PhysicsConstraint::make_groove_joint(PhysicsBody body_a, PhysicsBody body_b, Vec2F groove_a, Vec2F groove_b, Vec2F anchor_b)
+  PhysicsConstraint PhysicsConstraint::make_groove_joint(PhysicsBody* body_a, PhysicsBody* body_b, Vec2F groove_a, Vec2F groove_b, Vec2F anchor_b)
   {
-    return { cpGrooveJointNew(body_a.m_body, body_b.m_body, cpv(groove_a.x, groove_a.y), cpv(groove_b.x, groove_b.y), cpv(anchor_b.x, anchor_b.y)) };
+    return { cpGrooveJointNew(body_a->m_body, body_b->m_body, cpv(groove_a.x, groove_a.y), cpv(groove_b.x, groove_b.y), cpv(anchor_b.x, anchor_b.y)) };
   }
 
-  PhysicsConstraint PhysicsConstraint::make_damped_spring(PhysicsBody body_a, PhysicsBody body_b, Vec2F anchor_a, Vec2F anchor_b, float rest_length, float stiffness, float damping)
+  PhysicsConstraint PhysicsConstraint::make_damped_spring(PhysicsBody* body_a, PhysicsBody* body_b, Vec2F anchor_a, Vec2F anchor_b, float rest_length, float stiffness, float damping)
   {
-    return { cpDampedSpringNew(body_a.m_body, body_b.m_body, cpv(anchor_a.x, anchor_a.y), cpv(anchor_b.x, anchor_b.y), rest_length, stiffness, damping) };
+    return { cpDampedSpringNew(body_a->m_body, body_b->m_body, cpv(anchor_a.x, anchor_a.y), cpv(anchor_b.x, anchor_b.y), rest_length, stiffness, damping) };
   }
 
-  PhysicsConstraint PhysicsConstraint::make_damped_rotary_spring(PhysicsBody body_a, PhysicsBody body_b, float rest_angle, float stiffness, float damping)
+  PhysicsConstraint PhysicsConstraint::make_damped_rotary_spring(PhysicsBody* body_a, PhysicsBody* body_b, float rest_angle, float stiffness, float damping)
   {
-    return { cpDampedRotarySpringNew(body_a.m_body, body_b.m_body, rest_angle, stiffness, damping) };
+    return { cpDampedRotarySpringNew(body_a->m_body, body_b->m_body, rest_angle, stiffness, damping) };
   }
 
-  PhysicsConstraint PhysicsConstraint::make_rotary_limit_joint(PhysicsBody body_a, PhysicsBody body_b, float min, float max)
+  PhysicsConstraint PhysicsConstraint::make_rotary_limit_joint(PhysicsBody* body_a, PhysicsBody* body_b, float min, float max)
   {
-    return { cpRotaryLimitJointNew(body_a.m_body, body_b.m_body, min, max) };
+    return { cpRotaryLimitJointNew(body_a->m_body, body_b->m_body, min, max) };
   }
 
-  PhysicsConstraint PhysicsConstraint::make_ratchet_joint(PhysicsBody body_a, PhysicsBody body_b, float phase, float ratchet)
+  PhysicsConstraint PhysicsConstraint::make_ratchet_joint(PhysicsBody* body_a, PhysicsBody* body_b, float phase, float ratchet)
   {
-    return { cpRatchetJointNew(body_a.m_body, body_b.m_body, phase, ratchet) };
+    return { cpRatchetJointNew(body_a->m_body, body_b->m_body, phase, ratchet) };
   }
 
-  PhysicsConstraint PhysicsConstraint::make_gear_joint(PhysicsBody body_a, PhysicsBody body_b, float phase, float ratio)
+  PhysicsConstraint PhysicsConstraint::make_gear_joint(PhysicsBody* body_a, PhysicsBody* body_b, float phase, float ratio)
   {
-    return { cpGearJointNew(body_a.m_body, body_b.m_body, phase, ratio) };
+    return { cpGearJointNew(body_a->m_body, body_b->m_body, phase, ratio) };
   }
 
-  PhysicsConstraint PhysicsConstraint::make_simple_motor(PhysicsBody body_a, PhysicsBody body_b, float rate)
+  PhysicsConstraint PhysicsConstraint::make_simple_motor(PhysicsBody* body_a, PhysicsBody* body_b, float rate)
   {
-    return { cpSimpleMotorNew(body_a.m_body, body_b.m_body, rate) };
+    return { cpSimpleMotorNew(body_a->m_body, body_b->m_body, rate) };
   }
 
   PhysicsConstraintType PhysicsConstraint::type() const

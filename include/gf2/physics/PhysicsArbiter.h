@@ -67,17 +67,17 @@ namespace gf {
     Vec2F point_b(int i) const;
     float depth(int i) const;
 
-    bool call_wildcard_begin_a(PhysicsWorld world);
-    bool call_wildcard_begin_b(PhysicsWorld world);
+    bool call_wildcard_begin_a(PhysicsWorld* world);
+    bool call_wildcard_begin_b(PhysicsWorld* world);
 
-    bool call_wildcard_pre_solve_a(PhysicsWorld world);
-    bool call_wildcard_pre_solve_b(PhysicsWorld world);
+    bool call_wildcard_pre_solve_a(PhysicsWorld* world);
+    bool call_wildcard_pre_solve_b(PhysicsWorld* world);
 
-    void call_wildcard_post_solve_a(PhysicsWorld world);
-    void call_wildcard_post_solve_b(PhysicsWorld world);
+    void call_wildcard_post_solve_a(PhysicsWorld* world);
+    void call_wildcard_post_solve_b(PhysicsWorld* world);
 
-    void call_wildcard_separate_a(PhysicsWorld world);
-    void call_wildcard_separate_b(PhysicsWorld world);
+    void call_wildcard_separate_a(PhysicsWorld* world);
+    void call_wildcard_separate_b(PhysicsWorld* world);
 
   private:
     friend class PhysicsBody;

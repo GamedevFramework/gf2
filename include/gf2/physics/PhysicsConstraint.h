@@ -33,17 +33,17 @@ namespace gf {
   public:
     PhysicsConstraint() = default;
 
-    static PhysicsConstraint make_pin_joint(PhysicsBody body_a, PhysicsBody body_b, Vec2F anchor_a, Vec2F anchor_b);
-    static PhysicsConstraint make_slide_joint(PhysicsBody body_a, PhysicsBody body_b, Vec2F anchor_a, Vec2F anchor_b, float min, float max);
-    static PhysicsConstraint make_pivot_joint(PhysicsBody body_a, PhysicsBody body_b, Vec2F pivot);
-    static PhysicsConstraint make_pivot_joint(PhysicsBody body_a, PhysicsBody body_b, Vec2F anchor_a, Vec2F anchor_b);
-    static PhysicsConstraint make_groove_joint(PhysicsBody body_a, PhysicsBody body_b, Vec2F groove_a, Vec2F groove_b, Vec2F anchor_b);
-    static PhysicsConstraint make_damped_spring(PhysicsBody body_a, PhysicsBody body_b, Vec2F anchor_a, Vec2F anchor_b, float rest_length, float stiffness, float damping);
-    static PhysicsConstraint make_damped_rotary_spring(PhysicsBody body_a, PhysicsBody body_b, float rest_angle, float stiffness, float damping);
-    static PhysicsConstraint make_rotary_limit_joint(PhysicsBody body_a, PhysicsBody body_b, float min, float max);
-    static PhysicsConstraint make_ratchet_joint(PhysicsBody body_a, PhysicsBody body_b, float phase, float ratchet);
-    static PhysicsConstraint make_gear_joint(PhysicsBody body_a, PhysicsBody body_b, float phase, float ratio);
-    static PhysicsConstraint make_simple_motor(PhysicsBody body_a, PhysicsBody body_b, float rate);
+    static PhysicsConstraint make_pin_joint(PhysicsBody* body_a, PhysicsBody* body_b, Vec2F anchor_a, Vec2F anchor_b);
+    static PhysicsConstraint make_slide_joint(PhysicsBody* body_a, PhysicsBody* body_b, Vec2F anchor_a, Vec2F anchor_b, float min, float max);
+    static PhysicsConstraint make_pivot_joint(PhysicsBody* body_a, PhysicsBody* body_b, Vec2F pivot);
+    static PhysicsConstraint make_pivot_joint(PhysicsBody* body_a, PhysicsBody* body_b, Vec2F anchor_a, Vec2F anchor_b);
+    static PhysicsConstraint make_groove_joint(PhysicsBody* body_a, PhysicsBody* body_b, Vec2F groove_a, Vec2F groove_b, Vec2F anchor_b);
+    static PhysicsConstraint make_damped_spring(PhysicsBody* body_a, PhysicsBody* body_b, Vec2F anchor_a, Vec2F anchor_b, float rest_length, float stiffness, float damping);
+    static PhysicsConstraint make_damped_rotary_spring(PhysicsBody* body_a, PhysicsBody* body_b, float rest_angle, float stiffness, float damping);
+    static PhysicsConstraint make_rotary_limit_joint(PhysicsBody* body_a, PhysicsBody* body_b, float min, float max);
+    static PhysicsConstraint make_ratchet_joint(PhysicsBody* body_a, PhysicsBody* body_b, float phase, float ratchet);
+    static PhysicsConstraint make_gear_joint(PhysicsBody* body_a, PhysicsBody* body_b, float phase, float ratio);
+    static PhysicsConstraint make_simple_motor(PhysicsBody* body_a, PhysicsBody* body_b, float rate);
 
     PhysicsConstraintType type() const;
 

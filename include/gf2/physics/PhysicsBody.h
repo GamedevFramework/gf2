@@ -33,10 +33,10 @@ namespace gf {
     static PhysicsBody make_static();
 
     void activate();
-    void activate_static(PhysicsShape filter);
+    void activate_static(PhysicsShape* filter);
 
     void sleep();
-    void sleep_with_group(PhysicsBody group);
+    void sleep_with_group(PhysicsBody* group);
     bool sleeping() const;
 
     PhysicsBodyType type();

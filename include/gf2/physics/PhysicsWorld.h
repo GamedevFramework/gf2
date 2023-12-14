@@ -71,9 +71,9 @@ namespace gf {
     void remove_body(PhysicsBody body);
     void remove_constraint(PhysicsConstraint constraint);
 
-    bool contains_shape(PhysicsShape shape);
-    bool contains_body(PhysicsBody body);
-    bool contains_constraint(PhysicsConstraint constraint);
+    bool contains_shape(PhysicsShape* shape);
+    bool contains_body(PhysicsBody* body);
+    bool contains_constraint(PhysicsConstraint* constraint);
 
     // TODO: post-step callback
 
