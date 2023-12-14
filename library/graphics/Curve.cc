@@ -10,10 +10,10 @@
 #include <algorithm>
 #include <iterator>
 
+#include <gf2/core/Polyline.h>
 #include <gf2/core/Range.h>
 
 #include <gf2/graphics/Vertex.h>
-#include "gf2/core/Polyline.h"
 
 namespace gf {
 
