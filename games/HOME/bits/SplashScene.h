@@ -18,10 +18,13 @@ namespace home {
     SplashScene(GameHub* hub, const SplashData& data);
 
   private:
+    void do_update(gf::Time time) override;
     void do_process_event(const gf::Event& event) override;
     void do_handle_actions() override;
 
     GameHub* m_hub = nullptr;
+
+    bool m_world_loaded = false;
 
     gf::ActionGroup m_action_group;
     gf::SpriteEntity m_title_sprite;

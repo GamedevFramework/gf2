@@ -25,7 +25,14 @@ namespace home {
 
     m_click_text.set_location({ 0.0f, 500.0f });
     m_click_text.set_origin({ 0.5f, 0.5f });
-    add_world_entity(&m_click_text);
+  }
+
+  void SplashScene::do_update([[maybe_unused]] gf::Time time)
+  {
+    if (!m_world_loaded && m_hub->is_world_loaded()) {
+      m_world_loaded = true;
+      add_world_entity(&m_click_text);
+    }
   }
 
   void SplashScene::do_process_event(const gf::Event& event)
@@ -37,7 +44,7 @@ namespace home {
   {
     using namespace gf::literals;
 
-    if (m_action_group.active("click"_id)) {
+    if (m_world_loaded && m_action_group.active("click"_id)) {
       m_hub->replace_scene(m_hub->world_scene());
     }
 

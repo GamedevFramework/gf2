@@ -2,6 +2,7 @@
 #define HOME_GAME_HUB_H
 
 #include <memory>
+#include <future>
 
 #include <gf2/core/FontManager.h>
 
@@ -40,6 +41,8 @@ namespace home {
       return m_splash_scene.get();
     }
 
+    bool is_world_loaded();
+
     WorldScene* world_scene()
     {
       return m_world_scene.get();
@@ -54,6 +57,7 @@ namespace home {
     SplashData m_splash_data;
     std::unique_ptr<SplashScene> m_splash_scene = nullptr;
 
+    std::future<bool> m_world_loaded;
     WorldData m_world_data;
     std::unique_ptr<WorldScene> m_world_scene = nullptr;
   };
