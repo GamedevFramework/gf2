@@ -32,10 +32,9 @@ namespace gf {
     {
       assert(data.points.size() >= 2);
 
-      auto compute_vertex = [color](Vec2F location) -> Vertex { return {
-                                                                  location, { 0.0f, 0.0f },
-                                                                   color
- }; };
+      auto compute_vertex = [color](Vec2F location) -> Vertex {
+        return { location, { 0.0f, 0.0f }, color };
+      };
 
       // first point
 
@@ -137,7 +136,7 @@ namespace gf {
         const std::size_t offset = vertices.size();
         vertices.insert(vertices.end(), other.vertices.begin(), other.vertices.end());
         std::transform(other.indices.begin(), other.indices.end(), std::back_inserter(indices), [offset](uint16_t index) {
-          return index + offset;
+          return static_cast<uint16_t>(index + offset);
         });
       }
     };
