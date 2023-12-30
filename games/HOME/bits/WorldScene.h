@@ -7,10 +7,11 @@
 #include <gf2/audio/Sound.h>
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/TextEntity.h>
+#include <gf2/physics/PhysicsWorld.h>
 
 #include "HeroEntity.h"
 #include "MapEntity.h"
-#include "PhysicsDebug.h"
+#include "PhysicsRuntime.h"
 #include "WorldData.h"
 
 namespace home {
@@ -19,6 +20,11 @@ namespace home {
   class WorldScene : public gf::StandardScene {
   public:
     WorldScene(GameHub* hub, const WorldData& data);
+
+    gf::PhysicsWorld* physics_world()
+    {
+      return &m_physics_world;
+    }
 
   private:
     void do_update(gf::Time time) override;
@@ -34,10 +40,11 @@ namespace home {
     gf::Sound* m_victory_sound = nullptr;
     gf::Sound* m_death_sound = nullptr;
 
+    gf::PhysicsWorld m_physics_world;
+    PhysicsRuntime m_physics_debug;
+
     MapEntity m_map_entity;
     HeroEntity m_hero_entity;
-
-    PhysicsDebug m_physics_debug;
   };
 
 }

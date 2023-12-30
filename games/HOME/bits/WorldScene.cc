@@ -13,15 +13,15 @@ namespace home {
   , m_breath_low_o2_sound(hub->resource_manager()->get<gf::Sound>(data.breath_low_o2_sound.filename))
   , m_victory_sound(hub->resource_manager()->get<gf::Sound>(data.victory_sound.filename))
   , m_death_sound(hub->resource_manager()->get<gf::Sound>(data.death_sound.filename))
-  , m_map_entity(hub, data)
-  , m_hero_entity(hub, data)
   , m_physics_debug(hub->render_manager())
+  , m_map_entity(hub, data)
+  , m_hero_entity(hub, data, &m_physics_world)
   {
     set_clear_color(gf::Color(0xAEF6B8));
     set_world_center({ 0.0f, 0.0f });
     set_world_size({ 800.0f, 800.0f });
 
-    add_model(m_hub->physics_world());
+    add_model(&m_physics_world);
 
     add_world_entity(&m_map_entity);
     add_world_entity(&m_hero_entity);
@@ -36,7 +36,7 @@ namespace home {
   {
     update_entities(time);
     m_physics_debug.start_debug();
-    m_hub->physics_world()->debug_draw(&m_physics_debug);
+    m_physics_world.debug_draw(&m_physics_debug);
     m_physics_debug.stop_debug();
   }
 

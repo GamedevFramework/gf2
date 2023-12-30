@@ -35,7 +35,7 @@ namespace home {
 
   using namespace gf::literals;
 
-  HeroEntity::HeroEntity(GameHub* hub, const WorldData& data)
+  HeroEntity::HeroEntity(GameHub* hub, const WorldData& data, gf::PhysicsWorld* physics_world)
   : m_body(gf::PhysicsBody::make_dynamic(HeroMass, gf::compute_moment_for_circle(HeroMass, 0.0f, HeroRadius, { 0.0f, 0.0f })))
   , m_shape(gf::PhysicsShape::make_circle(&m_body, HeroRadius, { 0.0f, 0.0f }))
   , m_target(HeroInitialLocation)
@@ -48,7 +48,6 @@ namespace home {
     set_scale(0.75f);
     m_hero_animations.select("pause_south_east"_id);
 
-    auto* physics_world = hub->physics_world();
     physics_world->add_body(m_body);
     physics_world->add_shape(m_shape);
     m_body.set_location(HeroInitialLocation);

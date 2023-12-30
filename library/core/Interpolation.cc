@@ -18,7 +18,7 @@ namespace gf {
 
   Vec2F cubic_bezier_interpolation(Vec2F p0, Vec2F p1, Vec2F p2, Vec2F p3, float t)
   {
-    assert(0 <= t && t <= 1);
+    assert(0.0f <= t && t <= 1.0f);
     // clang-format off
     return p0 * (1 - t) * (1 - t) * (1 - t)
          + p1 * (1 - t) * (1 - t) * t * 3.0f

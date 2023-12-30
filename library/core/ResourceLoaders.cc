@@ -24,7 +24,7 @@ namespace gf {
     }
 
     if (!std::filesystem::is_directory(directory)) {
-      Log::info("Directory not found: '{}'", directory.string());
+      Log::warning("Directory not found: '{}'", directory.string());
       return;
     }
 

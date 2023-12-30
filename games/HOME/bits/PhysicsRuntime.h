@@ -1,5 +1,5 @@
-#ifndef HOME_PHYSICS_DEBUG_H
-#define HOME_PHYSICS_DEBUG_H
+#ifndef HOME_PHYSICS_RUNTIME_H
+#define HOME_PHYSICS_RUNTIME_H
 
 #include <gf2/graphics/DebugEntity.h>
 
@@ -7,9 +7,9 @@
 
 namespace home {
 
-  class PhysicsDebug : public gf::PhysicsDebug {
+  class PhysicsRuntime : public gf::PhysicsDebug {
   public:
-    PhysicsDebug(gf::RenderManager* render_manager);
+    PhysicsRuntime(gf::RenderManager* render_manager);
 
     void start_debug();
     void stop_debug();
@@ -31,4 +31,4 @@ namespace home {
 
 }
 
-#endif // HOME_PHYSICS_DEBUG_H
+#endif // HOME_PHYSICS_RUNTIME_H

@@ -20,7 +20,7 @@ namespace home {
 
   class HeroEntity : public gf::TransformableEntity {
   public:
-    HeroEntity(GameHub* hub, const WorldData& data);
+    HeroEntity(GameHub* hub, const WorldData& data, gf::PhysicsWorld* physics_world);
 
     void update(gf::Time time) override;
     void render(gf::RenderRecorder& recorder) override;
