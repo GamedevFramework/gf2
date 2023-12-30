@@ -45,7 +45,7 @@ namespace gf {
       // start a new polyline
       Polyline polyline;
 
-      Vec2I first_point = iterator->front();
+      const Vec2I first_point = iterator->front();
       polyline.points.emplace_back(first_point);
 
       Vec2I current_point = iterator->back();

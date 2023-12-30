@@ -11,7 +11,6 @@ namespace gf {
   : m_camera(camera)
   , m_mouse_position(0, 0)
   , m_surface_size(0, 0)
-  , m_state(State::Stationary)
   {
   }
 

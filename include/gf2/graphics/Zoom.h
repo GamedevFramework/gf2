@@ -3,6 +3,8 @@
 #ifndef GF_ZOOM_H
 #define GF_ZOOM_H
 
+#include <cstdint>
+
 #include <gf2/core/Camera.h>
 
 #include "Event.h"
@@ -23,12 +25,12 @@ namespace gf {
     Vec2I m_mouse_position;
     Vec2I m_surface_size;
 
-    enum class State {
+    enum class State : uint8_t {
       Stationary,
       Moving,
     };
 
-    State m_state;
+    State m_state = State::Stationary;
   };
 
 };

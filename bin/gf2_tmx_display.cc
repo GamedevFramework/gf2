@@ -111,8 +111,12 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  gf::SingleSceneManager scene_manager("gf2_tmx_display", ViewSize);
-  TmxScene scene(argv[1], scene_manager.render_manager());
+  try {
+    gf::SingleSceneManager scene_manager("gf2_tmx_display", ViewSize);
+    TmxScene scene(argv[1], scene_manager.render_manager());
 
-  return scene_manager.run(&scene);
+    return scene_manager.run(&scene);
+  } catch (...) {
+    return EXIT_FAILURE;
+  }
 }

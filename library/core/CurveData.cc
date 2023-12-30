@@ -35,7 +35,7 @@ namespace gf {
     const Vec2F p0 = points.back();
 
     for (uint32_t i = 1; i < point_count; ++i) {
-      float t = static_cast<float>(i) / static_cast<float>(point_count - 1);
+      const float t = static_cast<float>(i) / static_cast<float>(point_count - 1);
       points.emplace_back(quadratic_bezier_interpolation(p0, p1, p2, t));
     }
 
@@ -50,7 +50,7 @@ namespace gf {
     const Vec2F p0 = points.back();
 
     for (uint32_t i = 1; i < point_count; ++i) {
-      float t = static_cast<float>(i) / static_cast<float>(point_count - 1);
+      const float t = static_cast<float>(i) / static_cast<float>(point_count - 1);
       points.emplace_back(cubic_bezier_interpolation(p0, p1, p2, p3, t));
     }
 
@@ -112,7 +112,7 @@ namespace gf {
     CurveData data;
 
     for (uint32_t i = 1; i < point_count; ++i) {
-      float t = static_cast<float>(i) / static_cast<float>(point_count - 1);
+      const float t = static_cast<float>(i) / static_cast<float>(point_count - 1);
       data.points.emplace_back(quadratic_bezier_interpolation(p0, p1, p2, t));
     }
 
@@ -125,7 +125,7 @@ namespace gf {
     CurveData data;
 
     for (uint32_t i = 1; i < point_count; ++i) {
-      float t = static_cast<float>(i) / static_cast<float>(point_count - 1);
+      const float t = static_cast<float>(i) / static_cast<float>(point_count - 1);
       data.points.emplace_back(cubic_bezier_interpolation(p0, p1, p2, p3, t));
     }
 
@@ -138,7 +138,7 @@ namespace gf {
     const PolylineView polyline_view = { type, points };
 
     auto size = points.size();
-    const Vec2F prev_extension_point = 2 * points[0] - points[1]; // == p_0 - (p_1 - p_0);
+    const Vec2F prev_extension_point = 2 * points[0] - points[1];               // == p_0 - (p_1 - p_0);
     const Vec2F next_extension_point = 2 * points[size - 1] - points[size - 2]; // = p_{n-1} - (p_{n-2} - p_{n-1})
 
     CurveData data;
@@ -149,13 +149,13 @@ namespace gf {
       const Vec2F p2 = points[i + 1];
       const Vec2F p3 = polyline_view.has_next(i + 1) ? polyline_view.next_point(i + 1) : next_extension_point;
 
-      float t0 = 0.0f;
-      float t1 = t0 + cattmull_rom_time_difference(p0, p1, spline_type);
-      float t2 = t1 + cattmull_rom_time_difference(p1, p2, spline_type);
-      float t3 = t2 + cattmull_rom_time_difference(p2, p3, spline_type);
+      const float t0 = 0.0f;
+      const float t1 = t0 + cattmull_rom_time_difference(p0, p1, spline_type);
+      const float t2 = t1 + cattmull_rom_time_difference(p1, p2, spline_type);
+      const float t3 = t2 + cattmull_rom_time_difference(p2, p3, spline_type);
 
       for (uint32_t j = 0; j < point_count; ++j) {
-        float t = t1 + (t2 - t1) * static_cast<float>(j) / static_cast<float>(point_count);
+        const float t = t1 + (t2 - t1) * static_cast<float>(j) / static_cast<float>(point_count);
         data.points.emplace_back(cattmull_rom_interpolation(p0, t0, p1, t1, p2, t2, p3, t3, t));
       }
     }

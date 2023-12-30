@@ -671,7 +671,7 @@ namespace gf {
       tileset.tile_size.w = node.attribute("tilewidth").as_int();
       tileset.tile_size.h = node.attribute("tileheight").as_int();
 
-      if (pugi::xml_node offset = node.child("tileoffset"); offset != nullptr) {
+      if (const pugi::xml_node offset = node.child("tileoffset"); offset != nullptr) {
         tileset.offset.x = offset.attribute("x").as_int();
         tileset.offset.y = offset.attribute("y").as_int();
       }

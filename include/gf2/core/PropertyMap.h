@@ -19,6 +19,7 @@ namespace gf {
 
   class Property;
 
+  // NOLINTNEXTLINE(misc-no-recursion)
   class GF_CORE_API PropertyMap {
   public:
 

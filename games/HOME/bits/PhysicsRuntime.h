@@ -2,7 +2,6 @@
 #define HOME_PHYSICS_RUNTIME_H
 
 #include <gf2/graphics/DebugEntity.h>
-
 #include <gf2/physics/PhysicsDebug.h>
 
 namespace home {

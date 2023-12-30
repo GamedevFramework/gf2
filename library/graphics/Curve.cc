@@ -20,10 +20,10 @@ namespace gf {
   namespace {
     Vec2F compute_normal(Vec2F prev, Vec2F curr, Vec2F next)
     {
-      Vec2F normal_prev = normalize(perp(curr - prev));
-      Vec2F normal_next = normalize(perp(next - curr));
+      const Vec2F normal_prev = normalize(perp(curr - prev));
+      const Vec2F normal_next = normalize(perp(next - curr));
 
-      float factor = 1.0f + dot(normal_prev, normal_next);
+      const float factor = 1.0f + dot(normal_prev, normal_next);
       return (normal_prev + normal_next) / factor;
     }
 
@@ -32,7 +32,10 @@ namespace gf {
     {
       assert(data.points.size() >= 2);
 
-      auto compute_vertex = [color](Vec2F location) -> Vertex { return { location, { 0.0f, 0.0f }, color }; };
+      auto compute_vertex = [color](Vec2F location) -> Vertex { return {
+                                                                  location, { 0.0f, 0.0f },
+                                                                   color
+ }; };
 
       // first point
 
@@ -129,7 +132,8 @@ namespace gf {
       std::vector<uint16_t> indices;
 
       template<typename T>
-      void merge_with(const T& other) {
+      void merge_with(const T& other)
+      {
         const std::size_t offset = vertices.size();
         vertices.insert(vertices.end(), other.vertices.begin(), other.vertices.end());
         std::transform(other.indices.begin(), other.indices.end(), std::back_inserter(indices), [offset](uint16_t index) {
@@ -210,7 +214,7 @@ namespace gf {
 
     m_current_buffer = (m_current_buffer + 1) % FramesInFlight;
     auto& current_vertices = m_vertices[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
-    auto& current_indices = m_indices[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    auto& current_indices = m_indices[m_current_buffer];   // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
 
     if (geometry.vertices.size() > current_vertices.size()) {
       current_vertices = Buffer(BufferType::Host, BufferUsage::Vertex, geometry.vertices.data(), geometry.vertices.size(), render_manager);
@@ -230,8 +234,8 @@ namespace gf {
   RenderGeometry CurveGroup::geometry() const
   {
     RenderGeometry geometry;
-    geometry.vertices = &m_vertices[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
-    geometry.indices = &m_indices[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    geometry.vertices = &m_vertices[m_current_buffer];    // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    geometry.indices = &m_indices[m_current_buffer];      // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     geometry.count = m_indices[m_current_buffer].count(); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     return geometry;
   }

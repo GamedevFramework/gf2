@@ -131,7 +131,8 @@ namespace gf {
       std::vector<uint16_t> indices;
 
       template<typename T>
-      void merge_with(const T& other) {
+      void merge_with(const T& other)
+      {
         const std::size_t offset = vertices.size();
         vertices.insert(vertices.end(), other.vertices.begin(), other.vertices.end());
         std::transform(other.indices.begin(), other.indices.end(), std::back_inserter(indices), [offset](uint16_t index) {
@@ -209,7 +210,7 @@ namespace gf {
 
     m_current_buffer = (m_current_buffer + 1) % FramesInFlight;
     auto& current_vertices = m_vertices[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
-    auto& current_indices = m_indices[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    auto& current_indices = m_indices[m_current_buffer];   // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
 
     if (geometry.vertices.size() > current_vertices.size()) {
       current_vertices = Buffer(BufferType::Host, BufferUsage::Vertex, geometry.vertices.data(), geometry.vertices.size(), render_manager);
@@ -229,8 +230,8 @@ namespace gf {
   RenderGeometry ShapeGroup::geometry() const
   {
     RenderGeometry geometry;
-    geometry.vertices = &m_vertices[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
-    geometry.indices = &m_indices[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    geometry.vertices = &m_vertices[m_current_buffer];    // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    geometry.indices = &m_indices[m_current_buffer];      // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     geometry.count = m_indices[m_current_buffer].count(); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     return geometry;
   }

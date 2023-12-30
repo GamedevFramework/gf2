@@ -30,7 +30,7 @@ namespace gf {
         while (base_path.has_relative_path()) {
           const std::filesystem::path relative_path = std::filesystem::relative(path, base_path);
 
-          if (try_loaded(path)) {
+          if (try_loaded(relative_path)) {
             return true;
           }
 

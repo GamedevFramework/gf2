@@ -18,6 +18,7 @@
 
 namespace gf {
 
+  // NOLINTNEXTLINE(misc-no-recursion)
   class GF_CORE_API Property {
   public:
     Property() = default;

@@ -9,7 +9,6 @@
 #include <gf2/graphics/SceneManager.h>
 #include <gf2/graphics/ShapeEntity.h>
 
-
 int main()
 {
   gf::SingleSceneManager scene_manager("13-shape | gf2", gf::vec(1600, 900));

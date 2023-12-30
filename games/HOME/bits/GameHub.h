@@ -1,8 +1,8 @@
 #ifndef HOME_GAME_HUB_H
 #define HOME_GAME_HUB_H
 
-#include <memory>
 #include <future>
+#include <memory>
 
 #include <gf2/core/FontManager.h>
 
