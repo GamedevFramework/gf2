@@ -1,0 +1,63 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        configurations:
+        - { name: Windows,  runner: windows-latest, shell: pwsh, plat: windows, arch: x86,    mode: debug       }
+        - { name: Windows,  runner: windows-latest, shell: pwsh, plat: windows, arch: x86,    mode: release     }
+        - { name: Windows,  runner: windows-latest, shell: pwsh, plat: windows, arch: x64,    mode: debug       }
+        - { name: Windows,  runner: windows-latest, shell: pwsh, plat: windows, arch: x64,    mode: release     }
+        - { name: Linux,    runner: ubuntu-latets,  shell: bash, plat: linux,   arch: x86_64, mode: debug       }
+        - { name: Linux,    runner: ubuntu-latets,  shell: bash, plat: linux,   arch: x86_64, mode: release     }
+        - { name: Linux,    runner: ubuntu-latets,  shell: bash, plat: linux,   arch: x86_64, mode: sanitizers  }
+
+    defaults:
+      run:
+        shell: ${{ matrix.configurations.shell }}
+
+    name: ${{ matrix.configurations.name }} ${{ matrix.configurations.arch }} (${{ matrix.configurations.mode }})
+    runs-on: ${{ matrix.configurations.runner }}
+    steps:
+      - name: Checkout gf2
+        uses: actions/checkout@v4
+
+      - name: Configure xmake environment
+        run: echo "XMAKE_GLOBALDIR=${{ runner.workspace }}/xmake" >> $GITHUB_ENV
+
+      - name: Setup xmake
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: latest
+          actions-cache-folder: '.xmake-cache'
+          actions-cache-key: ${{ matrix.configurations.name }}-${{ matrix.configurations.arch }}
+
+      - name: Update xmake repository
+        run: xmake repo --update
+
+      - name: Retrieve dependencies hash
+        id: deps_hash
+        run: echo "hash=$(xmake l utils.ci.packageskey)" >> $GITHUB_OUTPUT
+
+      - name: Retrieve cached dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.XMAKE_GLOBALDIR }}/.xmake/packages
+          key: ${{ matrix.configurations.plat }}-${{ matrix.configurations.arch }}-${{ matrix.configurations.mode }}-${{ steps.deps_hash.outputs.hash }}
+
+      - name: Install gf2 dependencies
+        run: xmake config --plat=${{ matrix.configurations.plat }} --arch=${{ matrix.configurations.arch }} --mode=${{ matrix.configurations.mode }} --yes
+
+      - name: Build gf2
+        run: xmake --yes
+
+      - name: Test gf2
+        run: xmake run --group=Tests
