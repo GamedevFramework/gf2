@@ -32,15 +32,15 @@ namespace gf {
    * OrthogonalGrid
    */
 
-  OrthogonalGrid::OrthogonalGrid(Vec2I layer_size, Vec2F tile_size)
+  OrthogonalGrid::OrthogonalGrid(Vec2I layer_size, Vec2I tile_size)
   : m_layer_size(layer_size)
   , m_tile_size(tile_size)
   {
   }
 
-  RectF OrthogonalGrid::compute_bounds() const
+  RectI OrthogonalGrid::compute_bounds() const
   {
-    return RectF::from_size(m_layer_size * m_tile_size);
+    return RectI::from_size(m_layer_size * m_tile_size);
   }
 
   RectI OrthogonalGrid::compute_visible_area(RectF local) const
@@ -48,21 +48,22 @@ namespace gf {
     return RectI::from_min_max(local.min() / m_tile_size, local.max() / m_tile_size);
   }
 
-  RectF OrthogonalGrid::compute_cell_bounds(Vec2I position) const
+  RectI OrthogonalGrid::compute_cell_bounds(Vec2I position) const
   {
-    return RectF::from_position_size(position * m_tile_size, m_tile_size);
+    return RectI::from_position_size(position * m_tile_size, m_tile_size);
   }
 
   Vec2I OrthogonalGrid::compute_position(Vec2F location) const
   {
-    return floorvec(location.x / m_tile_size.w, location.y / m_tile_size.h);
+    location /= m_tile_size;
+    return floorvec(location.x, location.y);
   }
 
-  std::vector<Vec2F> OrthogonalGrid::compute_contour(Vec2I position) const
+  std::vector<Vec2I> OrthogonalGrid::compute_contour(Vec2I position) const
   {
-    const RectF bounds = compute_cell_bounds(position);
+    const RectI bounds = compute_cell_bounds(position);
 
-    std::vector<Vec2F> contour;
+    std::vector<Vec2I> contour;
     contour.push_back(bounds.position_at(Orientation::NorthWest));
     contour.push_back(bounds.position_at(Orientation::NorthEast));
     contour.push_back(bounds.position_at(Orientation::SouthEast));
@@ -109,15 +110,15 @@ namespace gf {
    * IsometricGrid
    */
 
-  IsometricGrid::IsometricGrid(Vec2I layer_size, Vec2F tile_size)
+  IsometricGrid::IsometricGrid(Vec2I layer_size, Vec2I tile_size)
   : m_layer_size(layer_size)
   , m_tile_size(tile_size)
   {
   }
 
-  RectF IsometricGrid::compute_bounds() const
+  RectI IsometricGrid::compute_bounds() const
   {
-    return RectF::from_size((m_layer_size.w + m_layer_size.h) * m_tile_size / 2.0f);
+    return RectI::from_size((m_layer_size.w + m_layer_size.h) * m_tile_size / 2);
   }
 
   RectI IsometricGrid::compute_visible_area(RectF local) const
@@ -129,24 +130,24 @@ namespace gf {
     return RectI::from_min_max({ north_west.x, north_east.y }, { south_east.x, south_west.y });
   }
 
-  RectF IsometricGrid::compute_cell_bounds(Vec2I position) const
+  RectI IsometricGrid::compute_cell_bounds(Vec2I position) const
   {
     const Vec2I transformed = { position.x - position.y + m_layer_size.h - 1, position.x + position.y };
-    return RectF::from_position_size(transformed * m_tile_size / 2.0f, m_tile_size);
+    return RectI::from_position_size(transformed * m_tile_size / 2, m_tile_size);
   }
 
   Vec2I IsometricGrid::compute_position(Vec2F location) const
   {
-    location.x -= static_cast<float>(m_layer_size.h) * m_tile_size.w / 2.0f;
+    location.x -= static_cast<float>(m_layer_size.h * m_tile_size.w) / 2.0f;
     const Vec2F transformed = location / (m_tile_size / 2.0f);
     return floorvec((transformed.x + transformed.y) / 2.0f, (transformed.y - transformed.x) / 2.0f);
   }
 
-  std::vector<Vec2F> IsometricGrid::compute_contour(Vec2I position) const
+  std::vector<Vec2I> IsometricGrid::compute_contour(Vec2I position) const
   {
-    const RectF bounds = compute_cell_bounds(position);
+    const RectI bounds = compute_cell_bounds(position);
 
-    std::vector<Vec2F> contour;
+    std::vector<Vec2I> contour;
     contour.push_back(bounds.position_at(Orientation::North));
     contour.push_back(bounds.position_at(Orientation::East));
     contour.push_back(bounds.position_at(Orientation::South));
@@ -193,7 +194,7 @@ namespace gf {
    * StaggeredGrid
    */
 
-  StaggeredGrid::StaggeredGrid(Vec2I layer_size, Vec2F tile_size, CellAxis axis, CellIndex index)
+  StaggeredGrid::StaggeredGrid(Vec2I layer_size, Vec2I tile_size, CellAxis axis, CellIndex index)
   : m_layer_size(layer_size)
   , m_tile_size(tile_size)
   , m_axis(axis)
@@ -201,24 +202,24 @@ namespace gf {
   {
   }
 
-  RectF StaggeredGrid::compute_bounds() const
+  RectI StaggeredGrid::compute_bounds() const
   {
-    Vec2F base = m_layer_size * m_tile_size;
+    Vec2I base = m_layer_size * m_tile_size;
 
     switch (m_axis) {
       case CellAxis::X:
-        base.x /= 2.0f;
-        base.x += m_tile_size.w / 2.0f;
-        base.y += m_tile_size.h / 2.0f;
+        base.x /= 2;
+        base.x += m_tile_size.w / 2;
+        base.y += m_tile_size.h / 2;
         break;
       case CellAxis::Y:
-        base.y /= 2.0f;
-        base.y += m_tile_size.h / 2.0f;
-        base.x += m_tile_size.w / 2.0f;
+        base.y /= 2;
+        base.y += m_tile_size.h / 2;
+        base.x += m_tile_size.w / 2;
         break;
     }
 
-    return RectF::from_size(base);
+    return RectI::from_size(base);
   }
 
   RectI StaggeredGrid::compute_visible_area(RectF local) const
@@ -226,28 +227,28 @@ namespace gf {
     return RectI::from_min_max(compute_position(local.min()), compute_position(local.max()));
   }
 
-  RectF StaggeredGrid::compute_cell_bounds(Vec2I position) const
+  RectI StaggeredGrid::compute_cell_bounds(Vec2I position) const
   {
-    Vec2F base = position * m_tile_size;
+    Vec2I base = position * m_tile_size;
 
     switch (m_axis) {
       case CellAxis::X:
-        base.x /= 2.0f;
+        base.x /= 2;
 
         if ((m_index == CellIndex::Even) == (position.x % 2 == 0)) {
           base.y += m_tile_size.h / 2;
         }
         break;
       case CellAxis::Y:
-        base.y /= 2.0f;
+        base.y /= 2;
 
         if ((m_index == CellIndex::Even) == (position.y % 2 == 0)) {
-          base.x += m_tile_size.w / 2.0f;
+          base.x += m_tile_size.w / 2;
         }
         break;
     }
 
-    return RectF::from_position_size(base, m_tile_size);
+    return RectI::from_position_size(base, m_tile_size);
   }
 
   // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
@@ -317,11 +318,11 @@ namespace gf {
     return position;
   }
 
-  std::vector<Vec2F> StaggeredGrid::compute_contour(Vec2I position) const
+  std::vector<Vec2I> StaggeredGrid::compute_contour(Vec2I position) const
   {
-    const RectF bounds = compute_cell_bounds(position);
+    const RectI bounds = compute_cell_bounds(position);
 
-    std::vector<Vec2F> contour;
+    std::vector<Vec2I> contour;
     contour.push_back(bounds.position_at(Orientation::North));
     contour.push_back(bounds.position_at(Orientation::East));
     contour.push_back(bounds.position_at(Orientation::South));
@@ -416,14 +417,14 @@ namespace gf {
 
   namespace {
 
-    constexpr Vec2F compute_offset(Vec2F tile_size, float side_length)
+    constexpr Vec2I compute_offset(Vec2I tile_size, int32_t side_length)
     {
-      return { (tile_size.w - side_length) / 2.0f, (tile_size.h - side_length) / 2.0f };
+      return { (tile_size.w - side_length) / 2, (tile_size.h - side_length) / 2 };
     }
 
   } // namespace
 
-  HexagonalGrid::HexagonalGrid(Vec2I layer_size, Vec2F tile_size, float side_length, CellAxis axis, CellIndex index)
+  HexagonalGrid::HexagonalGrid(Vec2I layer_size, Vec2I tile_size, int32_t side_length, CellAxis axis, CellIndex index)
   : m_layer_size(layer_size)
   , m_tile_size(tile_size)
   , m_side_length(side_length)
@@ -435,30 +436,30 @@ namespace gf {
   HexagonalGrid::HexagonalGrid(Vec2I layer_size, float radius, CellAxis axis, CellIndex index)
   : m_layer_size(layer_size)
   , m_tile_size(compute_regular_size(axis, radius))
-  , m_side_length(radius)
+  , m_side_length(static_cast<int32_t>(radius))
   , m_axis(axis)
   , m_index(index)
   {
   }
 
-  RectF HexagonalGrid::compute_bounds() const
+  RectI HexagonalGrid::compute_bounds() const
   {
-    Vec2F size = gf::vec(0.0f, 0.0f);
-    const Vec2F offset = compute_offset(m_tile_size, m_side_length);
+    Vec2I size = { 0, 0 };
+    const Vec2I offset = compute_offset(m_tile_size, m_side_length);
 
     switch (m_axis) {
       case CellAxis::X:
-        size.w = static_cast<float>(m_layer_size.w) * (m_tile_size.w - offset.w) + offset.w;
-        size.h = static_cast<float>(m_layer_size.h) * m_tile_size.h + m_tile_size.h / 2.0f;
+        size.w = m_layer_size.w * (m_tile_size.w - offset.w) + offset.w;
+        size.h = m_layer_size.h * m_tile_size.h + m_tile_size.h / 2;
         break;
 
       case CellAxis::Y:
-        size.w = static_cast<float>(m_layer_size.w) * m_tile_size.w + m_tile_size.w / 2.0f;
-        size.h = static_cast<float>(m_layer_size.h) * (m_tile_size.h - offset.h) + offset.h;
+        size.w = m_layer_size.w * m_tile_size.w + m_tile_size.w / 2;
+        size.h = m_layer_size.h * (m_tile_size.h - offset.h) + offset.h;
         break;
     }
 
-    return RectF::from_size(size);
+    return RectI::from_size(size);
   }
 
   RectI HexagonalGrid::compute_visible_area(RectF local) const
@@ -466,32 +467,32 @@ namespace gf {
     return RectI::from_min_max(compute_position(local.min()), compute_position(local.max()));
   }
 
-  RectF HexagonalGrid::compute_cell_bounds(Vec2I position) const
+  RectI HexagonalGrid::compute_cell_bounds(Vec2I position) const
   {
-    Vec2F base = gf::vec(0.0f, 0.0f);
-    const Vec2F offset = compute_offset(m_tile_size, m_side_length);
+    Vec2I base = { 0, 0 };
+    const Vec2I offset = compute_offset(m_tile_size, m_side_length);
 
     switch (m_axis) {
       case CellAxis::X:
-        base.x = static_cast<float>(position.x) * (m_tile_size.w - offset.w);
-        base.y = static_cast<float>(position.y) * m_tile_size.h;
+        base.x = position.x * (m_tile_size.w - offset.w);
+        base.y = position.y * m_tile_size.h;
 
         if ((m_index == CellIndex::Even) == (position.x % 2 == 0)) {
-          base.y += m_tile_size.h / 2.0f;
+          base.y += m_tile_size.h / 2;
         }
         break;
 
       case CellAxis::Y:
-        base.x = static_cast<float>(position.x) * m_tile_size.w;
-        base.y = static_cast<float>(position.y) * (m_tile_size.h - offset.h);
+        base.x = position.x * m_tile_size.w;
+        base.y = position.y * (m_tile_size.h - offset.h);
 
         if ((m_index == CellIndex::Even) == (position.y % 2 == 0)) {
-          base.x += m_tile_size.w / 2.0f;
+          base.x += m_tile_size.w / 2;
         }
         break;
     }
 
-    return RectF::from_position_size(base, m_tile_size);
+    return RectI::from_position_size(base, m_tile_size);
   }
 
   namespace {
@@ -534,12 +535,12 @@ namespace gf {
     assert(m_axis == CellAxis::X);
     const Vec2F offset = compute_offset(m_tile_size, m_side_length);
 
-    const float tx = m_tile_size.w - offset.w;
+    const float tx = static_cast<float>(m_tile_size.w) - offset.w;
     const float qx = std::floor(location.x / tx);
     const float rx = location.x - qx * tx;
     const float nrx = rx / offset.w;
 
-    const float ty = m_tile_size.h / 2.0f;
+    const float ty = static_cast<float>(m_tile_size.h) / 2.0f;
     const float qy = std::floor(location.y / ty);
     const float ry = location.y - qy * ty;
     const float nry = ry / ty;
@@ -612,12 +613,12 @@ namespace gf {
     assert(m_axis == CellAxis::Y);
     const Vec2F offset = compute_offset(m_tile_size, m_side_length);
 
-    const float ty = m_tile_size.h - offset.h;
+    const float ty = static_cast<float>(m_tile_size.h) - offset.h;
     const float qy = std::floor(location.y / ty);
     const float ry = location.y - qy * ty;
     const float nry = ry / offset.h;
 
-    const float tx = m_tile_size.w / 2.0f;
+    const float tx = static_cast<float>(m_tile_size.w) / 2.0f;
     const float qx = std::floor(location.x / tx);
     const float rx = location.x - qx * tx;
     const float nrx = rx / tx;
@@ -662,22 +663,22 @@ namespace gf {
     return {};
   }
 
-  std::vector<Vec2F> HexagonalGrid::compute_contour(Vec2I position) const
+  std::vector<Vec2I> HexagonalGrid::compute_contour(Vec2I position) const
   {
-    const Vec2F offset = compute_offset(m_tile_size, m_side_length);
-    const RectF bounds = compute_cell_bounds(position);
-    const Vec2F min = bounds.min();
-    const Vec2F max = bounds.max();
+    const Vec2I offset = compute_offset(m_tile_size, m_side_length);
+    const RectI bounds = compute_cell_bounds(position);
+    const Vec2I min = bounds.min();
+    const Vec2I max = bounds.max();
 
-    std::vector<Vec2F> contour;
+    std::vector<Vec2I> contour;
 
     switch (m_axis) {
       case CellAxis::X:
         // clang-format off
-        contour.emplace_back(min.x,             (min.y + max.y) / 2.0f);
+        contour.emplace_back(min.x,             (min.y + max.y) / 2);
         contour.emplace_back(min.x + offset.w,  min.y);
         contour.emplace_back(max.x - offset.w,  min.y);
-        contour.emplace_back(max.x,             (min.y + max.y) / 2.0f);
+        contour.emplace_back(max.x,             (min.y + max.y) / 2);
         contour.emplace_back(max.x - offset.w,  max.y);
         contour.emplace_back(min.x + offset.w,  max.y);
         // clang-format on
@@ -685,12 +686,12 @@ namespace gf {
 
       case CellAxis::Y:
         // clang-format off
-        contour.emplace_back((min.x + max.x) / 2.0f, min.y);
-        contour.emplace_back(min.x,                  min.y + offset.h);
-        contour.emplace_back(min.x,                  max.y - offset.h);
-        contour.emplace_back((min.x + max.x) / 2.0f, max.y);
-        contour.emplace_back(max.x,                  max.y - offset.h);
-        contour.emplace_back(max.x,                  min.y + offset.h);
+        contour.emplace_back((min.x + max.x) / 2, min.y);
+        contour.emplace_back(min.x,               min.y + offset.h);
+        contour.emplace_back(min.x,               max.y - offset.h);
+        contour.emplace_back((min.x + max.x) / 2, max.y);
+        contour.emplace_back(max.x,               max.y - offset.h);
+        contour.emplace_back(max.x,               min.y + offset.h);
         // clang-format on
         break;
     }
@@ -755,9 +756,9 @@ namespace gf {
     return false; // there are no diagonal neighbors in hexagonal grids
   }
 
-  Vec2F HexagonalGrid::compute_regular_size(CellAxis axis, float radius)
+  Vec2I HexagonalGrid::compute_regular_size(CellAxis axis, float radius)
   {
-    Vec2F size = gf::vec(0.0f, 0.0f);
+    Vec2F size = { 0.0f, 0.0f };
 
     switch (axis) {
       case CellAxis::X:
@@ -769,6 +770,7 @@ namespace gf {
         break;
     }
 
+    // conversion to integers happens here
     return size;
   }
 

@@ -15,17 +15,17 @@ namespace gf {
   public:
     AnyGrid() = default;
 
-    static AnyGrid make_orthogonal(Vec2I layer_size, Vec2F tile_size);
-    static AnyGrid make_isometric(Vec2I layer_size, Vec2F tile_size);
-    static AnyGrid make_staggered(Vec2I layer_size, Vec2F tile_size, CellAxis axis, CellIndex index);
-    static AnyGrid make_hexagonal(Vec2I layer_size, Vec2F tile_size, float side_length, CellAxis axis, CellIndex index);
+    static AnyGrid make_orthogonal(Vec2I layer_size, Vec2I tile_size);
+    static AnyGrid make_isometric(Vec2I layer_size, Vec2I tile_size);
+    static AnyGrid make_staggered(Vec2I layer_size, Vec2I tile_size, CellAxis axis, CellIndex index);
+    static AnyGrid make_hexagonal(Vec2I layer_size, Vec2I tile_size, int32_t side_length, CellAxis axis, CellIndex index);
     static AnyGrid make_hexagonal(Vec2I layer_size, float radius, CellAxis axis, CellIndex index);
 
-    RectF compute_bounds() const;
+    RectI compute_bounds() const;
     RectI compute_visible_area(RectF local) const;
-    RectF compute_cell_bounds(Vec2I position) const;
+    RectI compute_cell_bounds(Vec2I position) const;
     Vec2I compute_position(Vec2F location) const;
-    std::vector<Vec2F> compute_contour(Vec2I position) const;
+    std::vector<Vec2I> compute_contour(Vec2I position) const;
     std::vector<Vec2I> compute_neighbors(Vec2I position, Flags<CellNeighborQuery> flags = None) const;
     bool are_diagonal_neighbors(Vec2I position0, Vec2I position1) const;
 

@@ -82,7 +82,7 @@ namespace gf {
         case GridOrientation::Staggered:
           return AnyGrid::make_staggered(data.map_size, data.tile_size, data.cell_axis, data.cell_index);
         case GridOrientation::Hexagonal:
-          return AnyGrid::make_hexagonal(data.map_size, data.tile_size, static_cast<float>(data.hex_side_length), data.cell_axis, data.cell_index);
+          return AnyGrid::make_hexagonal(data.map_size, data.tile_size, data.hex_side_length, data.cell_axis, data.cell_index);
         default:
           break;
       }
@@ -230,8 +230,8 @@ namespace gf {
           const Texture* texture = m_textures[tileset_data->texture_index];
           const RectF texture_region = tileset_data->compute_texture_region(gid, texture->size());
 
-          RectF bounds = m_grid.compute_cell_bounds(position);
-          bounds.offset.y += static_cast<float>(data.tile_size.h - tileset_data->tile_size.h);
+          RectI bounds = m_grid.compute_cell_bounds(position);
+          bounds.offset.y += data.tile_size.h - tileset_data->tile_size.h;
           bounds.offset += tile_layer_data.layer.offset;
           bounds.offset += tileset_data->offset;
           bounds.extent = tileset_data->tile_size;
