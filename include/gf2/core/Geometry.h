@@ -6,6 +6,7 @@
 #include <array>
 #include <vector>
 
+#include "CoreApi.h"
 #include "Polyline.h"
 #include "Span.h"
 #include "Vec2.h"
@@ -18,7 +19,7 @@ namespace gf {
   using SegmentI = Segment<int32_t>;
   using SegmentF = Segment<float>;
 
-  std::vector<Polyline> compute_lines(Span<const SegmentI> segments);
+  GF_CORE_API std::vector<Polyline> compute_lines(Span<const SegmentI> segments);
 
 }
 
