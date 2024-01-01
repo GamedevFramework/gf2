@@ -5,6 +5,7 @@
 
 #include <gf2/graphics/Entity.h>
 #include <gf2/graphics/TiledMap.h>
+#include <gf2/physics/PhysicsWorld.h>
 
 #include "WorldData.h"
 
@@ -13,7 +14,7 @@ namespace home {
 
   class MapEntity : public gf::Entity {
   public:
-    MapEntity(GameHub* hub, const WorldData& data);
+    MapEntity(GameHub* hub, const WorldData& data, gf::PhysicsWorld* physics_world);
 
     void set_hero_location(gf::Vec2F location);
 

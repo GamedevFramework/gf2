@@ -3,6 +3,7 @@
 
 #include <filesystem>
 
+#include <gf2/core/ActionData.h>
 #include <gf2/core/AnimationData.h>
 #include <gf2/core/AudioSourceData.h>
 #include <gf2/core/ResourceBundle.h>
@@ -16,6 +17,8 @@ namespace home {
     WorldData();
 
     gf::ResourceBundle bundle(GameHub* hub);
+
+    gf::ActionGroupData action_group;
 
     std::filesystem::path map;
 

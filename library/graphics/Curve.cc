@@ -33,7 +33,10 @@ namespace gf {
       assert(data.points.size() >= 2);
 
       auto compute_vertex = [color](Vec2F location) -> Vertex {
-        return { location, { 0.0f, 0.0f }, color };
+        return {
+          location, { 0.0f, 0.0f },
+           color
+        };
       };
 
       // first point
@@ -169,7 +172,7 @@ namespace gf {
     curve.texture = nullptr;
     curve.vertices = &m_vertices;
     curve.indices = &m_indices;
-    curve.count = m_indices.count();
+    curve.size = m_indices.size();
 
     geometry.curve = curve;
 
@@ -180,7 +183,7 @@ namespace gf {
       outline.texture = nullptr;
       outline.vertices = &m_outline_vertices.value();
       outline.indices = &m_outline_indices.value();
-      outline.count = m_outline_indices.value().count();
+      outline.size = m_outline_indices.value().size();
 
       geometry.outline = outline;
     }
@@ -233,9 +236,9 @@ namespace gf {
   RenderGeometry CurveGroup::geometry() const
   {
     RenderGeometry geometry;
-    geometry.vertices = &m_vertices[m_current_buffer];    // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
-    geometry.indices = &m_indices[m_current_buffer];      // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
-    geometry.count = m_indices[m_current_buffer].count(); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    geometry.vertices = &m_vertices[m_current_buffer];  // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    geometry.indices = &m_indices[m_current_buffer];    // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    geometry.size = m_indices[m_current_buffer].size(); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     return geometry;
   }
 }

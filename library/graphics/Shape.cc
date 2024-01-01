@@ -166,7 +166,7 @@ namespace gf {
     shape.texture = m_texture;
     shape.vertices = &m_vertices;
     shape.indices = &m_indices;
-    shape.count = m_indices.count();
+    shape.size = m_indices.size();
 
     geometry.shape = shape;
 
@@ -177,7 +177,7 @@ namespace gf {
       outline.texture = nullptr;
       outline.vertices = &m_outline_vertices.value();
       outline.indices = &m_outline_indices.value();
-      outline.count = m_outline_indices.value().count();
+      outline.size = m_outline_indices.value().size();
 
       geometry.outline = outline;
     }
@@ -230,9 +230,9 @@ namespace gf {
   RenderGeometry ShapeGroup::geometry() const
   {
     RenderGeometry geometry;
-    geometry.vertices = &m_vertices[m_current_buffer];    // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
-    geometry.indices = &m_indices[m_current_buffer];      // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
-    geometry.count = m_indices[m_current_buffer].count(); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    geometry.vertices = &m_vertices[m_current_buffer];  // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    geometry.indices = &m_indices[m_current_buffer];    // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    geometry.size = m_indices[m_current_buffer].size(); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     return geometry;
   }
 

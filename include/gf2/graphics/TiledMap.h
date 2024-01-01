@@ -79,7 +79,7 @@ namespace gf {
     struct BufferRange {
       std::size_t texture_index = 0;
       std::size_t first = 0;
-      std::size_t count = 0;
+      std::size_t size = 0;
     };
 
     struct LayerBuffers {

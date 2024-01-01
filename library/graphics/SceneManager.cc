@@ -160,7 +160,7 @@ namespace gf {
       command_buffer.bind_index_buffer(object.geometry.indices);
     }
 
-    command_buffer.draw_indexed(object.geometry.count, object.geometry.first, object.geometry.offset);
+    command_buffer.draw_indexed(object.geometry.size, object.geometry.first, object.geometry.offset);
 
     m_last_object = object;
   }

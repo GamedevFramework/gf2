@@ -44,7 +44,7 @@ namespace gf {
 
     std::size_t index_count() const
     {
-      return m_indices.count();
+      return m_indices.size();
     }
 
     RectF bounds() const

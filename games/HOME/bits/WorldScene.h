@@ -5,6 +5,7 @@
 
 #include <gf2/audio/Music.h>
 #include <gf2/audio/Sound.h>
+#include <gf2/graphics/ActionGroup.h>
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/TextEntity.h>
 #include <gf2/physics/PhysicsWorld.h>
@@ -29,8 +30,12 @@ namespace home {
   private:
     void do_update(gf::Time time) override;
     void do_process_event(const gf::Event& event) override;
+    void do_handle_actions() override;
 
     GameHub* m_hub = nullptr;
+
+    gf::ActionGroup m_action_group;
+    bool m_debug = false;
 
     gf::Music* m_main_theme_music = nullptr;
 

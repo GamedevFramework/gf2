@@ -13,12 +13,14 @@
 #include <gf2/physics/PhysicsConstraint.h>
 #include <gf2/physics/PhysicsDebug.h>
 #include <gf2/physics/PhysicsShape.h>
+#include "gf2/physics/PhysicsHandle.h"
 
 namespace gf {
 
   PhysicsWorld::PhysicsWorld()
   : m_space(cpSpaceNew())
   {
+    static_body().m_body.set_refcount(2); // this one + static body in world
   }
 
   namespace {
@@ -180,6 +182,11 @@ namespace gf {
     return cpSpaceIsLocked(m_space) == cpTrue;
   }
 
+  PhysicsBody PhysicsWorld::static_body()
+  {
+    return { details::PhysicsExisting, cpSpaceGetStaticBody(m_space) };
+  }
+
   void PhysicsWorld::add_default_collision_handler(PhysicsCollisionHandler* handler)
   {
     auto* raw = cpSpaceAddDefaultCollisionHandler(m_space);
@@ -312,10 +319,10 @@ namespace gf {
     options.drawPolygon = draw_polygon;
     options.drawDot = draw_dot;
     options.flags = static_cast<cpSpaceDebugDrawFlags>(features.value());
-    options.shapeOutlineColor = { 1.0f, 0.0f, 0.0f, 1.0f };
+    options.shapeOutlineColor = { 1.0f, 0.0f, 0.0f, 0.5f };
     options.colorForShape = draw_color_for_shape;
-    options.constraintColor = { 0.0f, 1.0f, 0.0f, 1.0f };
-    options.collisionPointColor = { 0.0f, 0.0f, 1.0f, 1.0f };
+    options.constraintColor = { 0.0f, 1.0f, 0.0f, 0.5f };
+    options.collisionPointColor = { 0.0f, 0.0f, 1.0f, 0.5f };
     options.data = debug;
     cpSpaceDebugDraw(m_space, &options);
   }

@@ -17,23 +17,23 @@
 
 namespace gf {
 
-  Buffer::Buffer(BufferType type, BufferUsage usage, std::size_t count, std::size_t member_size, const void* data, RenderManager* render_manager)
+  Buffer::Buffer(BufferType type, BufferUsage usage, std::size_t size, std::size_t member_size, const void* data, RenderManager* render_manager)
   : m_allocator(render_manager->m_allocator)
-  , m_count(count)
-  , m_size(count * member_size)
+  , m_size(size)
+  , m_memory_size(size * member_size)
   , m_type(type)
   , m_usage(usage)
   {
-    if (m_count == 0) {
+    if (m_size == 0) {
       return;
     }
 
     switch (type) {
       case BufferType::Host:
-        create_host_buffer(usage, m_size, data);
+        create_host_buffer(usage, m_memory_size, data);
         break;
       case BufferType::Device:
-        create_device_buffer(usage, m_size, data, render_manager);
+        create_device_buffer(usage, m_memory_size, data, render_manager);
         break;
     }
   }
@@ -42,8 +42,8 @@ namespace gf {
   : m_allocator(std::exchange(other.m_allocator, nullptr))
   , m_buffer(std::exchange(other.m_buffer, VK_NULL_HANDLE))
   , m_allocation(std::exchange(other.m_allocation, nullptr))
-  , m_count(other.m_count)
   , m_size(other.m_size)
+  , m_memory_size(other.m_memory_size)
   , m_type(other.m_type)
   , m_usage(other.m_usage)
   {
@@ -61,20 +61,20 @@ namespace gf {
     std::swap(m_allocator, other.m_allocator);
     std::swap(m_buffer, other.m_buffer);
     std::swap(m_allocation, other.m_allocation);
-    std::swap(m_count, other.m_count);
     std::swap(m_size, other.m_size);
+    std::swap(m_memory_size, other.m_memory_size);
     std::swap(m_type, other.m_type);
     std::swap(m_usage, other.m_usage);
     return *this;
   }
 
-  void Buffer::update(std::size_t count, std::size_t member_size, const void* data, RenderManager* render_manager)
+  void Buffer::update(std::size_t size, std::size_t member_size, const void* data, RenderManager* render_manager)
   {
-    const std::size_t total_size = count * member_size;
-    assert(total_size <= m_size);
-    m_count = count;
+    const std::size_t total_size = size * member_size;
+    assert(total_size <= m_memory_size);
+    m_size = size;
 
-    if (count == 0) {
+    if (size == 0) {
       return;
     }
 

@@ -36,8 +36,8 @@ namespace gf {
     Buffer(BufferType type, BufferUsage usage, std::size_t count, std::size_t member_size, const void* data, RenderManager* render_manager);
 
     template<typename T>
-    Buffer(BufferType type, BufferUsage usage, const T* data, std::size_t count, RenderManager* render_manager)
-    : Buffer(type, usage, count, sizeof(T), static_cast<const void*>(data), render_manager)
+    Buffer(BufferType type, BufferUsage usage, const T* data, std::size_t size, RenderManager* render_manager)
+    : Buffer(type, usage, size, sizeof(T), static_cast<const void*>(data), render_manager)
     {
     }
 
@@ -48,27 +48,27 @@ namespace gf {
     Buffer& operator=(const Buffer&) = delete;
     Buffer& operator=(Buffer&& other) noexcept;
 
-    std::size_t count() const
-    {
-      return m_count;
-    }
-
     std::size_t size() const
     {
       return m_size;
     }
 
-    bool empty() const
+    std::size_t memory_size() const
     {
-      return m_count == 0;
+      return m_memory_size;
     }
 
-    void update(std::size_t count, std::size_t member_size, const void* data, RenderManager* render_manager);
+    bool empty() const
+    {
+      return m_size == 0;
+    }
+
+    void update(std::size_t size, std::size_t member_size, const void* data, RenderManager* render_manager);
 
     template<typename T>
-    void update(const T* data, std::size_t count, RenderManager* render_manager)
+    void update(const T* data, std::size_t size, RenderManager* render_manager)
     {
-      update(count, sizeof(T), static_cast<const void*>(data), render_manager);
+      update(size, sizeof(T), static_cast<const void*>(data), render_manager);
     }
 
     void set_debug_name(const std::string& name) const;
@@ -86,8 +86,8 @@ namespace gf {
     VmaAllocator m_allocator = nullptr; // non-owning
     VkBuffer m_buffer = VK_NULL_HANDLE;
     VmaAllocation m_allocation = nullptr;
-    std::size_t m_count = 0;
     std::size_t m_size = 0;
+    std::size_t m_memory_size = 0;
     BufferType m_type = BufferType::Device;
     BufferUsage m_usage = BufferUsage::Vertex;
   };

@@ -15,6 +15,8 @@ namespace home {
   {
     using namespace gf::literals;
 
+    action_group.actions.emplace("debug"_id, gf::ActionData(gf::ActionType::Instantaneous).add_scancode_control(gf::Scancode::F12));
+
     main_theme_music.filename = "sounds/main_theme.ogg";
     main_theme_music.data.type = gf::AudioSourceType::Music;
     main_theme_music.data.loop = true;

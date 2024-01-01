@@ -95,12 +95,19 @@ namespace gf {
   {
     RenderObject object = {};
     object.priority = priority();
-    object.geometry = m_shape_group.geometry();
     object.transform = Identity3F;
-    recorder.record(object);
+
+    object.geometry = m_shape_group.geometry();
+
+    if (object.geometry.size > 0) {
+      recorder.record(object);
+    }
 
     object.geometry = m_curve_group.geometry();
-    recorder.record(object);
+
+    if (object.geometry.size > 0) {
+      recorder.record(object);
+    }
   }
 
 }

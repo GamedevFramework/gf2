@@ -110,7 +110,6 @@ namespace home {
 
     update_location.emit(location());
 
-    m_body.set_location(location());
     m_body.set_velocity(m_velocity);
 
     m_activity = Activity::Walking;

@@ -145,7 +145,7 @@ namespace gf {
         case Orientation::Center:
           return offset + extent / T(2);
         case Orientation::East:
-          return offset + gf::vec(extent.x / T(2), extent.y / T(2));
+          return offset + gf::vec(extent.x, extent.y / T(2));
         case Orientation::SouthWest:
           return offset + gf::vec(T(0), extent.y);
         case Orientation::South:

@@ -59,6 +59,8 @@ namespace gf {
 
     bool locked();
 
+    PhysicsBody static_body();
+
     void add_default_collision_handler(PhysicsCollisionHandler* handler);
     void add_collision_handler(PhysicsCollisionHandler* handler, uintptr_t a, uintptr_t b);
     void add_wildcard_handler(PhysicsCollisionHandler* handler, uintptr_t type);

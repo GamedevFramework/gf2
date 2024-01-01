@@ -255,8 +255,8 @@ namespace gf {
           BufferRange range = {};
           range.texture_index = texture_index;
           range.first = first;
-          range.count = geometry.indices.size();
-          first += range.count;
+          range.size = geometry.indices.size();
+          first += range.size;
           chunk.ranges.push_back(range);
         }
 
@@ -317,8 +317,8 @@ namespace gf {
         BufferRange range = {};
         range.texture_index = texture_index;
         range.first = first;
-        range.count = geometry.indices.size();
-        first += range.count;
+        range.size = geometry.indices.size();
+        first += range.size;
         buffers.ranges.push_back(range);
       }
 
@@ -402,7 +402,7 @@ namespace gf {
         for (auto range : chunk.ranges) {
           geometry.texture = m_textures[range.texture_index];
           geometry.first = range.first;
-          geometry.count = range.count;
+          geometry.size = range.size;
 
           geometries.push_back(geometry);
         }
@@ -420,7 +420,7 @@ namespace gf {
     for (auto range : object_layer.buffers.ranges) {
       geometry.texture = m_textures[range.texture_index];
       geometry.first = range.first;
-      geometry.count = range.count;
+      geometry.size = range.size;
 
       geometries.push_back(geometry);
     }

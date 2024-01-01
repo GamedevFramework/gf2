@@ -11,6 +11,7 @@ namespace gf {
 
   class GF_PHYSICS_API PhysicsCollisionHandler {
   public:
+    PhysicsCollisionHandler() = default;
     PhysicsCollisionHandler(const PhysicsCollisionHandler&) = default;
     PhysicsCollisionHandler(PhysicsCollisionHandler&&) noexcept = default;
     virtual ~PhysicsCollisionHandler() = default;

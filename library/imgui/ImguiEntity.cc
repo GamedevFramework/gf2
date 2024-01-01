@@ -101,7 +101,7 @@ namespace gf {
 
           // count, first, offset
 
-          object.count = command->ElemCount;
+          object.size = command->ElemCount;
           object.first = command->IdxOffset + indices_offset;
           object.offset = command->VtxOffset + vertices_offset;
 
@@ -129,7 +129,7 @@ namespace gf {
       object.geometry.vertices = &m_vertices[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
       object.geometry.indices = &m_indices[m_current_buffer];   // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
       object.geometry.first = raw_object.first;
-      object.geometry.count = raw_object.count;
+      object.geometry.size = raw_object.size;
       object.geometry.offset = raw_object.offset;
       object.geometry.texture = raw_object.texture;
       object.transform = Identity3F;

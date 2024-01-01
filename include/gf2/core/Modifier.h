@@ -9,7 +9,7 @@
 
 namespace gf {
 
-  enum class Modifier : uint32_t { // NOLINT(performance-enum-size)
+  enum class Modifier : uint16_t { // NOLINT(performance-enum-size)
     None = 0x0000,
     LeftShift = 0x0001,
     RightShift = 0x0002,

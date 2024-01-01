@@ -1,5 +1,7 @@
 #include "PhysicsRuntime.h"
 
+#include <gf2/physics/PhysicsShape.h>
+
 namespace home {
 
   PhysicsRuntime::PhysicsRuntime(gf::RenderManager* render_manager)

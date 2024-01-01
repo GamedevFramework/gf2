@@ -5,9 +5,9 @@
 #include <gf2/graphics/Control.h>
 // clang-format on
 
-#include "gf2/core/ControlData.h"
-#include "gf2/core/GamepadTypes.h"
-#include "gf2/core/MouseTypes.h"
+#include <gf2/core/ControlData.h>
+#include <gf2/core/GamepadTypes.h>
+#include <gf2/core/MouseTypes.h>
 
 namespace gf {
 

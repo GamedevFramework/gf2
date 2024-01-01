@@ -162,7 +162,7 @@ namespace gf {
     RenderGeometry geometry;
     geometry.vertices = &m_vertices;
     geometry.indices = &m_indices;
-    geometry.count = IndicesPerAnimationFrame;
+    geometry.size = IndicesPerAnimationFrame;
     geometry.first = frame.offset;
     geometry.texture = m_textures[frame.texture_index];
     return geometry;
@@ -264,7 +264,7 @@ namespace gf {
     RenderGeometry geometry;
     geometry.vertices = &m_vertices;
     geometry.indices = &m_indices;
-    geometry.count = IndicesPerAnimationFrame;
+    geometry.size = IndicesPerAnimationFrame;
     geometry.first = frame.offset;
     geometry.texture = m_textures[frame.texture_index];
     return geometry;
