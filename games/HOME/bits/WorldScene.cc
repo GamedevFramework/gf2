@@ -6,38 +6,6 @@
 #include "GameHub.h"
 
 namespace home {
-  namespace {
-
-#if 0
-    class PhysicsCollisionHandler : public gf::PhysicsCollisionHandler {
-
-      bool begin([[maybe_unused]] gf::PhysicsArbiter arbiter, [[maybe_unused]] gf::PhysicsWorld world) override
-      {
-        gf::Log::info("Collision! {}", arbiter.depth(0));
-        return true;
-      }
-
-      bool pre_solve([[maybe_unused]] gf::PhysicsArbiter arbiter, [[maybe_unused]] gf::PhysicsWorld world) override
-      {
-        gf::Log::info("PreSolve");
-        return true;
-      }
-
-      void post_solve([[maybe_unused]] gf::PhysicsArbiter arbiter, [[maybe_unused]] gf::PhysicsWorld world) override
-      {
-        gf::Log::info("PostSolve");
-      }
-
-
-      void separate([[maybe_unused]] gf::PhysicsArbiter arbiter, [[maybe_unused]] gf::PhysicsWorld world) override
-      {
-        gf::Log::info("Separate! {}", arbiter.count());
-      }
-    };
-
-    PhysicsCollisionHandler handler;
-#endif
-  }
 
   using namespace gf::literals;
 
@@ -57,8 +25,6 @@ namespace home {
     set_clear_color(gf::Color(0xAEF6B8));
     set_world_center({ 0.0f, 0.0f });
     set_world_size({ 800.0f, 800.0f });
-
-    // m_physics_world.add_default_collision_handler(&handler);
 
     add_model(&m_physics_world);
 

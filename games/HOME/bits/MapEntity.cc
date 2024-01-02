@@ -8,13 +8,14 @@
 #include <gf2/core/Geometry.h>
 #include <gf2/core/Grids.h>
 #include <gf2/core/ResourceManager.h>
+#include <gf2/core/TiledMapData.h>
 
 #include <gf2/graphics/RenderObject.h>
 #include <gf2/graphics/RenderRecorder.h>
+#include <gf2/physics/PhysicsShape.h>
 #include <gf2/physics/PhysicsShapeEx.h>
 
 #include "GameHub.h"
-#include "gf2/physics/PhysicsShape.h"
 
 namespace home {
 
@@ -92,6 +93,23 @@ namespace home {
         physics_world->add_shape(std::move(shape));
       }
     }
+
+    for (auto& object_layer : map.object_layers) {
+      if (object_layer.layer.name != "Trees") {
+        continue;
+      }
+
+      for (auto& object : object_layer.objects) {
+        if (object.type != gf::ObjectType::Tile) {
+          continue;
+        }
+
+        const gf::Vec2F location = object.location + object_layer.layer.offset + gf::vec(384.0f / 2, -384.0f / 2);
+        auto shape = gf::PhysicsShape::make_circle(&body, 150.0f, location);
+        physics_world->add_shape(std::move(shape));
+      }
+    }
+
   }
 
   void MapEntity::set_hero_location(gf::Vec2F location)
