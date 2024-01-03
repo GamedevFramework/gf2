@@ -14,6 +14,7 @@
 #include <gf2/core/TiledMapData.h>
 #include <gf2/core/Transform.h>
 
+#include <gf2/graphics/RawGeometry.h>
 #include <gf2/graphics/RenderRecorder.h>
 #include <gf2/graphics/Texture.h>
 #include <gf2/graphics/Vertex.h>
@@ -23,17 +24,12 @@ namespace gf {
 
     constexpr int ChunkSize = 128;
 
-    struct Geometry {
-      std::vector<Vertex> vertices;
-      std::vector<uint16_t> indices;
-    };
-
     struct SplitGeometry {
-      std::map<uint32_t, Geometry> geometry_map;
+      std::map<uint32_t, details::RawGeometry> geometry_map;
 
       void add_quad(uint32_t texture_index, StaticSpan<const Vertex, 4> vertices)
       {
-        Geometry& geometry = geometry_map[texture_index];
+        auto& geometry = geometry_map[texture_index];
         auto index = static_cast<uint16_t>(geometry.vertices.size());
 
         geometry.vertices.insert(geometry.vertices.end(), vertices.begin(), vertices.end());

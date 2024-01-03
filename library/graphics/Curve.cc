@@ -14,6 +14,7 @@
 #include <gf2/core/Range.h>
 
 #include <gf2/graphics/Vertex.h>
+#include <gf2/graphics/RawGeometry.h>
 
 namespace gf {
 
@@ -97,9 +98,7 @@ namespace gf {
       }
     }
 
-    struct RawInteriorCurveGeometry {
-      std::vector<Vertex> vertices;
-      std::vector<uint16_t> indices;
+    struct RawInteriorCurveGeometry : details::RawGeometry {
       RectF bounds = {};
     };
 
@@ -117,10 +116,7 @@ namespace gf {
       return geometry;
     }
 
-    struct RawOutlineCurveGeometry {
-      std::vector<Vertex> vertices;
-      std::vector<uint16_t> indices;
-    };
+    using RawOutlineCurveGeometry = details::RawGeometry;
 
     RawOutlineCurveGeometry compute_outline_curve_geometry(const CurveData& data)
     {
@@ -129,20 +125,7 @@ namespace gf {
       return geometry;
     }
 
-    struct RawCurveGeometry {
-      std::vector<Vertex> vertices;
-      std::vector<uint16_t> indices;
-
-      template<typename T>
-      void merge_with(const T& other)
-      {
-        const std::size_t offset = vertices.size();
-        vertices.insert(vertices.end(), other.vertices.begin(), other.vertices.end());
-        std::transform(other.indices.begin(), other.indices.end(), std::back_inserter(indices), [offset](uint16_t index) {
-          return static_cast<uint16_t>(index + offset);
-        });
-      }
-    };
+    using RawCurveGeometry = details::RawGeometry;
 
   }
 

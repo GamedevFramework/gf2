@@ -15,13 +15,12 @@
 #include <gf2/core/Range.h>
 
 #include <gf2/graphics/Vertex.h>
+#include <gf2/graphics/RawGeometry.h>
 
 namespace gf {
 
   namespace {
-    struct RawInteriorShapeGeometry {
-      std::vector<Vertex> vertices;
-      std::vector<uint16_t> indices;
+    struct RawInteriorShapeGeometry : details::RawGeometry {
       RectF bounds = {};
       Vec2F center = {};
     };
@@ -78,10 +77,7 @@ namespace gf {
       return geometry;
     }
 
-    struct RawOutlineShapeGeometry {
-      std::vector<Vertex> vertices;
-      std::vector<uint16_t> indices;
-    };
+    using RawOutlineShapeGeometry = details::RawGeometry;
 
     RawOutlineShapeGeometry compute_outline_shape_geometry(const ShapeData& data, Vec2F center)
     {
@@ -126,21 +122,7 @@ namespace gf {
       return geometry;
     }
 
-    struct RawShapeGeometry {
-      std::vector<Vertex> vertices;
-      std::vector<uint16_t> indices;
-
-      template<typename T>
-      void merge_with(const T& other)
-      {
-        const std::size_t offset = vertices.size();
-        vertices.insert(vertices.end(), other.vertices.begin(), other.vertices.end());
-        std::transform(other.indices.begin(), other.indices.end(), std::back_inserter(indices), [offset](uint16_t index) {
-          return static_cast<uint16_t>(index + offset);
-        });
-      }
-    };
-
+    using RawShapeGeometry = details::RawGeometry;
   }
 
   Shape::Shape(const Texture* texture, const ShapeData& data, RenderManager* render_manager)
