@@ -406,7 +406,7 @@ namespace gf {
     new_vertices.reserve(count);
 
     for (int i = 0; i < count; ++i) {
-      new_vertices.emplace_back(vertices[i].x, vertices[i].y);
+      new_vertices.emplace_back(static_cast<float>(vertices[i].x), static_cast<float>(vertices[i].y));
     }
 
     auto* debug = static_cast<PhysicsDebug*>(data);
