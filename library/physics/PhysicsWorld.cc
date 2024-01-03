@@ -13,7 +13,6 @@
 #include <gf2/physics/PhysicsConstraint.h>
 #include <gf2/physics/PhysicsDebug.h>
 #include <gf2/physics/PhysicsShape.h>
-#include "gf2/physics/PhysicsHandle.h"
 
 namespace gf {
 

@@ -109,7 +109,6 @@ namespace home {
         physics_world->add_shape(std::move(shape));
       }
     }
-
   }
 
   void MapEntity::set_hero_location(gf::Vec2F location)

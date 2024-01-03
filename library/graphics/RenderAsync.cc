@@ -20,7 +20,7 @@ namespace gf {
     m_clock.restart();
     m_render_manager->prepare_asynchronous_load();
 
-    m_result = std::async(std::launch::async, [&,function=std::move(function)]() {
+    m_result = std::async(std::launch::async, [&, function = std::move(function)]() {
       m_render_manager->begin_asynchronous_load();
       function();
       m_render_manager->end_asynchronous_load();

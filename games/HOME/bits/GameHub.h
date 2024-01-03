@@ -7,8 +7,8 @@
 #include <gf2/core/FontManager.h>
 
 #include <gf2/audio/AudioManager.h>
-#include <gf2/graphics/SceneManager.h>
 #include <gf2/graphics/RenderAsync.h>
+#include <gf2/graphics/SceneManager.h>
 
 #include "ResourceHub.h"
 #include "SplashData.h"
