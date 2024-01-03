@@ -6,15 +6,20 @@
 #include <string>
 
 #include "Buffer.h"
+#include "GraphicsApi.h"
 
 namespace gf {
 
-  class DynamicBuffer {
+  class GF_GRAPHICS_API DynamicBuffer {
   public:
     DynamicBuffer(BufferType type, BufferUsage usage);
 
+    Buffer& buffer()
+    {
+      return m_buffers[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    }
 
-    operator Buffer&()
+    const Buffer& buffer() const
     {
       return m_buffers[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     }

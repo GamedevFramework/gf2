@@ -9,6 +9,7 @@
 #include <gf2/core/Rect.h>
 
 #include "Buffer.h"
+#include "DynamicBuffer.h"
 #include "GraphicsApi.h"
 #include "RenderObject.h"
 
@@ -42,7 +43,7 @@ namespace gf {
 
   class GF_GRAPHICS_API CurveGroup {
   public:
-    CurveGroup() = default;
+    CurveGroup();
     CurveGroup(const CurveGroupData& data, RenderManager* render_manager);
 
     void update(const CurveGroupData& data, RenderManager* render_manager);
@@ -50,10 +51,8 @@ namespace gf {
     RenderGeometry geometry() const;
 
   private:
-    static constexpr std::size_t FramesInFlight = 3;
-    std::size_t m_current_buffer = 0;
-    Buffer m_vertices[FramesInFlight];
-    Buffer m_indices[FramesInFlight];
+    DynamicBuffer m_vertices;
+    DynamicBuffer m_indices;
   };
 
 }

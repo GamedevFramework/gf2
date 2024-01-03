@@ -22,7 +22,7 @@ namespace gf {
       current_buffer = Buffer(m_type, m_usage, size, member_size, data, render_manager);
 
       if (!m_debug_name.empty()) {
-        current_buffer.set_debug_name(m_debug_name + '#' + std::to_string(m_current_buffer));
+        current_buffer.set_debug_name(m_debug_name + " #" + std::to_string(m_current_buffer));
       }
     } else {
       current_buffer.update(size, member_size, data, render_manager);

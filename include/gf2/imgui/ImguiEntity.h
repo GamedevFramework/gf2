@@ -7,7 +7,7 @@
 #include <gf2/core/Transform.h>
 #include <gf2/core/Vec2.h>
 
-#include <gf2/graphics/Buffer.h>
+#include <gf2/graphics/DynamicBuffer.h>
 #include <gf2/graphics/Entity.h>
 #include <gf2/graphics/Texture.h>
 
@@ -19,16 +19,15 @@ namespace gf {
 
   class GF_IMGUI_API ImguiEntity : public Entity {
   public:
+    ImguiEntity();
+
     void set_draw_data(const ImDrawData* data);
 
     void render(RenderRecorder& recorder) override;
 
   private:
-    static constexpr std::size_t ImguiFramesInFlight = 3;
-
-    std::size_t m_current_buffer = 0;
-    Buffer m_vertices[ImguiFramesInFlight];
-    Buffer m_indices[ImguiFramesInFlight];
+    DynamicBuffer m_vertices;
+    DynamicBuffer m_indices;
 
     struct ImguiObject {
       RectI scissor = {};

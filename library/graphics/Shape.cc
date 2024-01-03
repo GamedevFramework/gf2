@@ -189,7 +189,16 @@ namespace gf {
    * ShapeGroup
    */
 
+  ShapeGroup::ShapeGroup()
+  : m_vertices(BufferType::Host, BufferUsage::Vertex)
+  , m_indices(BufferType::Host, BufferUsage::Index)
+  {
+    m_vertices.set_debug_name("[gf2] Shape Group Vertex Buffer");
+    m_indices.set_debug_name("[gf2] Shape Group Index Buffer");
+  }
+
   ShapeGroup::ShapeGroup(const ShapeGroupData& data, RenderManager* render_manager)
+  : ShapeGroup()
   {
     update(data, render_manager);
   }
@@ -208,31 +217,16 @@ namespace gf {
       }
     }
 
-    m_current_buffer = (m_current_buffer + 1) % FramesInFlight;
-    auto& current_vertices = m_vertices[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
-    auto& current_indices = m_indices[m_current_buffer];   // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
-
-    if (geometry.vertices.size() > current_vertices.size()) {
-      current_vertices = Buffer(BufferType::Host, BufferUsage::Vertex, geometry.vertices.data(), geometry.vertices.size(), render_manager);
-      current_vertices.set_debug_name("[gf2] Shape Group Vertex Buffer #" + std::to_string(m_current_buffer));
-    } else {
-      current_vertices.update(geometry.vertices.data(), geometry.vertices.size(), render_manager);
-    }
-
-    if (geometry.indices.size() > current_indices.size()) {
-      current_indices = Buffer(BufferType::Host, BufferUsage::Index, geometry.indices.data(), geometry.indices.size(), render_manager);
-      current_indices.set_debug_name("[gf2] Shape Group Index Buffer #" + std::to_string(m_current_buffer));
-    } else {
-      current_indices.update(geometry.indices.data(), geometry.indices.size(), render_manager);
-    }
+    m_vertices.update(geometry.vertices.data(), geometry.vertices.size(), render_manager);
+    m_indices.update(geometry.indices.data(), geometry.indices.size(), render_manager);
   }
 
   RenderGeometry ShapeGroup::geometry() const
   {
     RenderGeometry geometry;
-    geometry.vertices = &m_vertices[m_current_buffer];  // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
-    geometry.indices = &m_indices[m_current_buffer];    // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
-    geometry.size = m_indices[m_current_buffer].size(); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    geometry.vertices = &m_vertices.buffer();
+    geometry.indices = &m_indices.buffer();
+    geometry.size = m_indices.buffer().size();
     return geometry;
   }
 

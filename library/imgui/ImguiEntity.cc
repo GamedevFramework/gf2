@@ -17,6 +17,14 @@ namespace gf {
 
   static_assert(std::is_same_v<ImDrawIdx, uint16_t>);
 
+  ImguiEntity::ImguiEntity()
+  : m_vertices(BufferType::Host, BufferUsage::Vertex)
+  , m_indices(BufferType::Host, BufferUsage::Index)
+  {
+    m_vertices.set_debug_name("[gf2] Imgui Vertex Buffer");
+    m_indices.set_debug_name("[gf2] Imgui Index Buffer");
+  }
+
   void ImguiEntity::set_draw_data(const ImDrawData* data)
   {
     const ImGuiIO& io = ImGui::GetIO();
@@ -25,10 +33,6 @@ namespace gf {
     // initialize
 
     m_objects.clear();
-
-    m_current_buffer = (m_current_buffer + 1) % ImguiFramesInFlight;
-    auto& current_vertices = m_vertices[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
-    auto& current_indices = m_indices[m_current_buffer];   // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
 
     // merge all buffers
 
@@ -57,23 +61,8 @@ namespace gf {
 
     // create or update buffer if necessary
 
-    const std::size_t vertices_size = data->TotalVtxCount * sizeof(ImDrawVert);
-
-    if (vertices_size > current_vertices.size()) {
-      current_vertices = Buffer(BufferType::Host, BufferUsage::Vertex, vertices.data(), vertices.size(), render_manager);
-      current_vertices.set_debug_name("[gf2] Imgui Vertex Buffer #" + std::to_string(m_current_buffer));
-    } else {
-      current_vertices.update(vertices.data(), vertices.size(), render_manager);
-    }
-
-    const std::size_t indices_size = data->TotalIdxCount * sizeof(ImDrawIdx);
-
-    if (indices_size > current_indices.size()) {
-      current_indices = Buffer(BufferType::Host, BufferUsage::Index, indices.data(), indices.size(), render_manager);
-      current_indices.set_debug_name("[gf2] Imgui Index Buffer #" + std::to_string(m_current_buffer));
-    } else {
-      current_indices.update(indices.data(), indices.size(), render_manager);
-    }
+    m_vertices.update(vertices.data(), vertices.size(), render_manager);
+    m_indices.update(indices.data(), indices.size(), render_manager);
 
     // compute commands
 
@@ -126,8 +115,8 @@ namespace gf {
       RenderObject object = {};
       object.priority = priority();
       object.geometry.pipeline = RenderPipelineType::Imgui;
-      object.geometry.vertices = &m_vertices[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
-      object.geometry.indices = &m_indices[m_current_buffer];   // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+      object.geometry.vertices = &m_vertices.buffer();
+      object.geometry.indices = &m_indices.buffer();
       object.geometry.first = raw_object.first;
       object.geometry.size = raw_object.size;
       object.geometry.offset = raw_object.offset;
