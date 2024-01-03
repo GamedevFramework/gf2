@@ -77,7 +77,7 @@ namespace home {
     auto& map = m_map_resource->data;
     assert(map.orientation == gf::GridOrientation::Staggered);
 
-    gf::StaggeredGrid grid(map.map_size, map.tile_size, map.cell_axis, map.cell_index);
+    const gf::StaggeredGrid grid(map.map_size, map.tile_size, map.cell_axis, map.cell_index);
     auto contour = find_contour(map.tile_layers.front(), grid);
 
     gf::PhysicsBody body = physics_world->static_body();

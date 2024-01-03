@@ -236,7 +236,7 @@ namespace gf {
     submit_info.pCommandBuffers = &memops_command_buffer;
 
     {
-      std::scoped_lock lock(m_queue_mutex);
+      const std::scoped_lock lock(m_queue_mutex);
 
       if (vkQueueSubmit(m_graphics_queue, 1, &submit_info, sync.memops_fence) != VK_SUCCESS) {
         Log::fatal("Failed to submit draw command buffer.");
@@ -335,7 +335,7 @@ namespace gf {
     submit_info.pSignalSemaphores = &sync.present_semaphore;
 
     {
-      std::scoped_lock lock(m_queue_mutex);
+      const std::scoped_lock lock(m_queue_mutex);
 
       if (vkQueueSubmit(m_graphics_queue, 1, &submit_info, sync.render_fence) != VK_SUCCESS) {
         Log::fatal("Failed to submit draw command buffer.");
@@ -353,7 +353,7 @@ namespace gf {
     VkResult result = VK_ERROR_UNKNOWN;
 
     if (m_present_queue_index == m_graphics_queue_index) {
-      std::scoped_lock lock(m_queue_mutex);
+      const std::scoped_lock lock(m_queue_mutex);
       result = vkQueuePresentKHR(m_present_queue, &present_info);
     } else {
       result = vkQueuePresentKHR(m_present_queue, &present_info);
@@ -424,7 +424,7 @@ namespace gf {
     submit_info.pCommandBuffers = &m_async_command_buffer;
 
     {
-      std::scoped_lock lock(m_queue_mutex);
+      const std::scoped_lock lock(m_queue_mutex);
 
       if (vkQueueSubmit(m_graphics_queue, 1, &submit_info, m_async_fence) != VK_SUCCESS) {
         Log::fatal("Failed to submit command buffer.");

@@ -33,7 +33,7 @@ namespace gf {
   public:
     Buffer() = default;
 
-    Buffer(BufferType type, BufferUsage usage, std::size_t count, std::size_t member_size, const void* data, RenderManager* render_manager);
+    Buffer(BufferType type, BufferUsage usage, std::size_t size, std::size_t member_size, const void* data, RenderManager* render_manager);
 
     template<typename T>
     Buffer(BufferType type, BufferUsage usage, const T* data, std::size_t size, RenderManager* render_manager)
