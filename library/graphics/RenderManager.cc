@@ -370,9 +370,7 @@ namespace gf {
 
   MemoryCommandBuffer RenderManager::current_memory_command_buffer()
   {
-    auto id = std::this_thread::get_id();
-
-    if (m_thread_id == id) {
+    if (m_thread_id == std::this_thread::get_id()) {
       return { m_memops_command_buffers[m_current_memops] };
     }
 
@@ -382,9 +380,7 @@ namespace gf {
 
   void RenderManager::defer_release_staging_buffer(StagingBufferReference buffer)
   {
-    auto id = std::this_thread::get_id();
-
-    if (m_thread_id == id) {
+    if (m_thread_id == std::this_thread::get_id()) {
       m_staging_buffers[m_current_memops].push_back(buffer);
       return;
     }
