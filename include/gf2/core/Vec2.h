@@ -115,8 +115,8 @@ namespace gf {
   template<typename T, typename U>
   constexpr Vec2<T>& operator+=(Vec2<T>& lhs, Vec2<U> rhs)
   {
-    lhs.x += rhs.x;
-    lhs.y += rhs.y;
+    lhs.x += static_cast<T>(rhs.x);
+    lhs.y += static_cast<T>(rhs.y);
     return lhs;
   }
 
@@ -129,8 +129,8 @@ namespace gf {
   template<typename T, typename U>
   constexpr Vec2<T>& operator+=(Vec2<T>& lhs, U rhs)
   {
-    lhs.x += rhs;
-    lhs.y += rhs;
+    lhs.x += static_cast<T>(rhs);
+    lhs.y += static_cast<T>(rhs);
     return lhs;
   }
 
@@ -153,8 +153,8 @@ namespace gf {
   template<typename T, typename U>
   constexpr Vec2<T>& operator-=(Vec2<T>& lhs, Vec2<U> rhs)
   {
-    lhs.x -= rhs.x;
-    lhs.y -= rhs.y;
+    lhs.x -= static_cast<T>(rhs.x);
+    lhs.y -= static_cast<T>(rhs.y);
     return lhs;
   }
 
@@ -167,8 +167,8 @@ namespace gf {
   template<typename T, typename U>
   constexpr Vec2<T>& operator-=(Vec2<T>& lhs, U rhs)
   {
-    lhs.x -= rhs;
-    lhs.y -= rhs;
+    lhs.x -= static_cast<T>(rhs);
+    lhs.y -= static_cast<T>(rhs);
     return lhs;
   }
 
@@ -191,8 +191,8 @@ namespace gf {
   template<typename T, typename U>
   constexpr Vec2<T>& operator*=(Vec2<T>& lhs, Vec2<U> rhs)
   {
-    lhs.x *= rhs.x;
-    lhs.y *= rhs.y;
+    lhs.x *= static_cast<T>(rhs.x);
+    lhs.y *= static_cast<T>(rhs.y);
     return lhs;
   }
 
@@ -205,8 +205,8 @@ namespace gf {
   template<typename T, typename U>
   constexpr Vec2<T>& operator*=(Vec2<T>& lhs, U rhs)
   {
-    lhs.x *= rhs;
-    lhs.y *= rhs;
+    lhs.x *= static_cast<T>(rhs);
+    lhs.y *= static_cast<T>(rhs);
     return lhs;
   }
 
@@ -229,8 +229,8 @@ namespace gf {
   template<typename T, typename U>
   constexpr Vec2<T>& operator/=(Vec2<T>& lhs, Vec2<U> rhs)
   {
-    lhs.x /= rhs.x;
-    lhs.y /= rhs.y;
+    lhs.x /= static_cast<T>(rhs.x);
+    lhs.y /= static_cast<T>(rhs.y);
     return lhs;
   }
 
@@ -243,8 +243,8 @@ namespace gf {
   template<typename T, typename U>
   constexpr Vec2<T>& operator/=(Vec2<T>& lhs, U rhs)
   {
-    lhs.x /= rhs;
-    lhs.y /= rhs;
+    lhs.x /= static_cast<T>(rhs);
+    lhs.y /= static_cast<T>(rhs);
     return lhs;
   }
 
