@@ -395,6 +395,7 @@ namespace gf {
 
   void RenderManager::prepare_asynchronous_load()
   {
+    assert(!m_async_loading);
     m_async_loading = true;
   }
 
@@ -447,6 +448,7 @@ namespace gf {
 
   void RenderManager::finish_asynchronous_load()
   {
+    assert(m_async_loading);
     m_async_loading = false;
   }
 
