@@ -5,11 +5,14 @@
 #include <gf2/graphics/RenderManager.h>
 // clang-format on
 
+#include <mutex>
+#include <thread>
 #include <utility>
 
 #include <SDL2/SDL_vulkan.h>
 #include <VkBootstrap.h>
 #include <volk.h>
+#include <vulkan/vulkan_core.h>
 
 #include <gf2/core/Log.h>
 #include <gf2/core/Mat3.h>
@@ -57,6 +60,7 @@ namespace gf {
 
   RenderManager::RenderManager(Window* window)
   : m_window(window->m_window)
+  , m_thread_id(std::this_thread::get_id())
   {
     Vec2I size = {};
     SDL_Vulkan_GetDrawableSize(m_window, &size.w, &size.h);
@@ -67,10 +71,12 @@ namespace gf {
     construct_commands();
     construct_synchronization();
     construct_descriptors();
+    construct_async_objects();
   }
 
   RenderManager::RenderManager(RenderManager&& other) noexcept
   : m_window(std::exchange(other.m_window, nullptr))
+  , m_thread_id(other.m_thread_id)
   // device
   , m_instance(std::exchange(other.m_instance, VK_NULL_HANDLE))
   , m_messenger(std::exchange(other.m_messenger, VK_NULL_HANDLE))
@@ -103,6 +109,11 @@ namespace gf {
   , m_staging_buffers(std::move(other.m_staging_buffers))
   // descriptors
   , m_descriptor_pools(std::move(other.m_descriptor_pools))
+  // asynchronous load objects
+  , m_async_command_pool(std::exchange(other.m_async_command_pool, VK_NULL_HANDLE))
+  , m_async_command_buffer(std::exchange(other.m_async_command_buffer, VK_NULL_HANDLE))
+  , m_async_fence(std::exchange(other.m_async_fence, VK_NULL_HANDLE))
+  , m_async_staging_buffers(std::move(other.m_async_staging_buffers))
   {
     other.m_swapchain_images.clear();
     other.m_swapchain_image_views.clear();
@@ -111,6 +122,7 @@ namespace gf {
     other.m_render_synchronization.clear();
     other.m_staging_buffers.clear();
     other.m_descriptor_pools.clear();
+    other.m_async_staging_buffers.clear();
   }
 
   RenderManager::~RenderManager()
@@ -119,6 +131,7 @@ namespace gf {
 
     finish_staging_buffers();
 
+    destroy_async_objects();
     destroy_descriptors();
     destroy_synchronization();
     destroy_commands();
@@ -130,6 +143,7 @@ namespace gf {
   RenderManager& RenderManager::operator=(RenderManager&& other) noexcept
   {
     std::swap(m_window, other.m_window);
+    std::swap(m_thread_id, other.m_thread_id);
     // device
     std::swap(m_instance, other.m_instance);
     std::swap(m_messenger, other.m_messenger);
@@ -162,6 +176,11 @@ namespace gf {
     std::swap(m_staging_buffers, other.m_staging_buffers);
     // descriptors
     std::swap(m_descriptor_pools, other.m_descriptor_pools);
+    // asynchronous load objects
+    std::swap(m_async_command_pool, other.m_async_command_pool);
+    std::swap(m_async_command_buffer, other.m_async_command_buffer);
+    std::swap(m_async_fence, other.m_async_fence);
+    std::swap(m_async_staging_buffers, other.m_async_staging_buffers);
 
     return *this;
   }
@@ -216,8 +235,12 @@ namespace gf {
     submit_info.commandBufferCount = 1;
     submit_info.pCommandBuffers = &memops_command_buffer;
 
-    if (vkQueueSubmit(m_graphics_queue, 1, &submit_info, sync.memops_fence) != VK_SUCCESS) {
-      Log::fatal("Failed to submit draw command buffer.");
+    {
+      std::scoped_lock lock(m_queue_mutex);
+
+      if (vkQueueSubmit(m_graphics_queue, 1, &submit_info, sync.memops_fence) != VK_SUCCESS) {
+        Log::fatal("Failed to submit draw command buffer.");
+      }
     }
 
     // begin next memory command buffer
@@ -311,8 +334,12 @@ namespace gf {
     submit_info.signalSemaphoreCount = 1;
     submit_info.pSignalSemaphores = &sync.present_semaphore;
 
-    if (vkQueueSubmit(m_graphics_queue, 1, &submit_info, sync.render_fence) != VK_SUCCESS) {
-      Log::fatal("Failed to submit draw command buffer.");
+    {
+      std::scoped_lock lock(m_queue_mutex);
+
+      if (vkQueueSubmit(m_graphics_queue, 1, &submit_info, sync.render_fence) != VK_SUCCESS) {
+        Log::fatal("Failed to submit draw command buffer.");
+      }
     }
 
     VkPresentInfoKHR present_info = {};
@@ -323,7 +350,14 @@ namespace gf {
     present_info.pSwapchains = &m_swapchain;
     present_info.pImageIndices = &m_current_image;
 
-    const VkResult result = vkQueuePresentKHR(m_present_queue, &present_info);
+    VkResult result = VK_ERROR_UNKNOWN;
+
+    if (m_present_queue_index == m_graphics_queue_index) {
+      std::scoped_lock lock(m_queue_mutex);
+      result = vkQueuePresentKHR(m_present_queue, &present_info);
+    } else {
+      result = vkQueuePresentKHR(m_present_queue, &present_info);
+    }
 
     if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR) {
       recreate_swapchain();
@@ -336,12 +370,84 @@ namespace gf {
 
   MemoryCommandBuffer RenderManager::current_memory_command_buffer()
   {
-    return { m_memops_command_buffers[m_current_memops] };
+    auto id = std::this_thread::get_id();
+
+    if (m_thread_id == id) {
+      return { m_memops_command_buffers[m_current_memops] };
+    }
+
+    assert(m_async_loading);
+    return { m_async_command_buffer };
   }
 
   void RenderManager::defer_release_staging_buffer(StagingBufferReference buffer)
   {
-    m_staging_buffers[m_current_memops].push_back(buffer);
+    auto id = std::this_thread::get_id();
+
+    if (m_thread_id == id) {
+      m_staging_buffers[m_current_memops].push_back(buffer);
+      return;
+    }
+
+    assert(m_async_loading);
+    m_async_staging_buffers.push_back(buffer);
+  }
+
+  void RenderManager::prepare_asynchronous_load()
+  {
+    m_async_loading = true;
+  }
+
+  void RenderManager::begin_asynchronous_load()
+  {
+    assert(m_async_loading);
+
+    vkResetCommandBuffer(m_async_command_buffer, 0);
+
+    VkCommandBufferBeginInfo begin_info = {};
+    begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+    begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+
+    if (vkBeginCommandBuffer(m_async_command_buffer, &begin_info) != VK_SUCCESS) {
+      Log::fatal("Failed to begin recording command buffer.");
+    }
+  }
+
+  void RenderManager::end_asynchronous_load()
+  {
+    assert(m_async_loading);
+
+    if (vkEndCommandBuffer(m_async_command_buffer) != VK_SUCCESS) {
+      Log::fatal("Failed to record command buffer.");
+    }
+
+    VkSubmitInfo submit_info = {};
+    submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+    submit_info.commandBufferCount = 1;
+    submit_info.pCommandBuffers = &m_async_command_buffer;
+
+    {
+      std::scoped_lock lock(m_queue_mutex);
+
+      if (vkQueueSubmit(m_graphics_queue, 1, &submit_info, m_async_fence) != VK_SUCCESS) {
+        Log::fatal("Failed to submit command buffer.");
+      }
+    }
+
+    vkWaitForFences(m_device, 1, &m_async_fence, VK_TRUE, UINT64_MAX);
+
+    for (auto staging_buffer : m_async_staging_buffers) {
+      vmaDestroyBuffer(m_allocator, staging_buffer.m_buffer, staging_buffer.m_allocation);
+    }
+
+    m_async_staging_buffers.clear();
+
+    vkResetFences(m_device, 1, &m_async_fence);
+  }
+
+  void RenderManager::finish_asynchronous_load()
+  {
+    m_async_loading = false;
   }
 
   Descriptor RenderManager::allocate_descriptor_for_layout(const DescriptorLayout* layout) const
@@ -767,6 +873,46 @@ namespace gf {
   {
     for (VkDescriptorPool descriptor_pool : m_descriptor_pools) {
       vkDestroyDescriptorPool(m_device, descriptor_pool, nullptr);
+    }
+  }
+
+  void RenderManager::construct_async_objects()
+  {
+    VkCommandPoolCreateInfo command_pool_info = {};
+    command_pool_info.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+    command_pool_info.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
+    command_pool_info.queueFamilyIndex = m_graphics_queue_index;
+
+    if (vkCreateCommandPool(m_device, &command_pool_info, nullptr, &m_async_command_pool) != VK_SUCCESS) {
+      Log::fatal("Failed to create command pool.");
+    }
+
+    VkCommandBufferAllocateInfo allocate_info = {};
+    allocate_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+    allocate_info.commandPool = m_async_command_pool;
+    allocate_info.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+    allocate_info.commandBufferCount = 1;
+
+    if (vkAllocateCommandBuffers(m_device, &allocate_info, &m_async_command_buffer) != VK_SUCCESS) {
+      Log::fatal("Failed to allocate command buffers.");
+    }
+
+    VkFenceCreateInfo fence_info = {};
+    fence_info.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+
+    if (vkCreateFence(m_device, &fence_info, nullptr, &m_async_fence) != VK_SUCCESS) {
+      Log::fatal("Failed to create fence.");
+    }
+  }
+
+  void RenderManager::destroy_async_objects()
+  {
+    if (m_async_fence != VK_NULL_HANDLE) {
+      vkDestroyFence(m_device, m_async_fence, nullptr);
+    }
+
+    if (m_async_command_pool != VK_NULL_HANDLE) {
+      vkDestroyCommandPool(m_device, m_async_command_pool, nullptr);
     }
   }
 

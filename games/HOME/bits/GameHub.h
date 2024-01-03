@@ -8,6 +8,7 @@
 
 #include <gf2/audio/AudioManager.h>
 #include <gf2/graphics/SceneManager.h>
+#include <gf2/graphics/RenderAsync.h>
 
 #include "ResourceHub.h"
 #include "SplashData.h"
@@ -57,7 +58,7 @@ namespace home {
     SplashData m_splash_data;
     std::unique_ptr<SplashScene> m_splash_scene = nullptr;
 
-    std::future<bool> m_world_loaded;
+    gf::RenderAsync m_world_async;
     WorldData m_world_data;
     std::unique_ptr<WorldScene> m_world_scene = nullptr;
   };

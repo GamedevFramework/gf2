@@ -3,7 +3,9 @@
 #ifndef GF_RENDER_MANAGER_H
 #define GF_RENDER_MANAGER_H
 
+#include <mutex>
 #include <optional>
+#include <thread>
 #include <type_traits>
 #include <vector>
 
@@ -58,6 +60,11 @@ namespace gf {
     MemoryCommandBuffer current_memory_command_buffer();
     void defer_release_staging_buffer(StagingBufferReference buffer);
 
+    void prepare_asynchronous_load();
+    void begin_asynchronous_load();
+    void end_asynchronous_load();
+    void finish_asynchronous_load();
+
     Descriptor allocate_descriptor_for_layout(const DescriptorLayout* layout) const;
     RenderTarget current_render_target() const;
 
@@ -87,10 +94,13 @@ namespace gf {
     void destroy_synchronization();
     void construct_descriptors();
     void destroy_descriptors();
+    void construct_async_objects();
+    void destroy_async_objects();
 
     void finish_staging_buffers();
 
     SDL_Window* m_window = nullptr; // non-owning
+    std::thread::id m_thread_id;
 
     // device stuff
 
@@ -99,6 +109,9 @@ namespace gf {
     VkSurfaceKHR m_surface = VK_NULL_HANDLE;
     VkPhysicalDevice m_physical_device = VK_NULL_HANDLE;
     VkDevice m_device = VK_NULL_HANDLE;
+
+    std::mutex m_queue_mutex;
+
     uint32_t m_graphics_queue_index = 0;
     VkQueue m_graphics_queue = VK_NULL_HANDLE;
     uint32_t m_present_queue_index = 0;
@@ -148,6 +161,14 @@ namespace gf {
     // descriptor set stuff
 
     std::vector<VkDescriptorPool> m_descriptor_pools;
+
+    // asynchronous load objects
+
+    bool m_async_loading = false;
+    VkCommandPool m_async_command_pool = VK_NULL_HANDLE;
+    VkCommandBuffer m_async_command_buffer = VK_NULL_HANDLE;
+    VkFence m_async_fence = VK_NULL_HANDLE;
+    std::vector<StagingBufferReference> m_async_staging_buffers;
   };
 
 }
