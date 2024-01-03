@@ -8,11 +8,13 @@
 
 #include <gf2/core/Clock.h>
 
+#include "GraphicsApi.h"
+
 namespace gf {
 
   class RenderManager;
 
-  class RenderAsync {
+  class GF_GRAPHICS_API RenderAsync {
   public:
     RenderAsync(RenderManager* render_manager);
 
