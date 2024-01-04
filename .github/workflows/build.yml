@@ -60,7 +60,7 @@ jobs:
         run: xmake config --plat=${{ matrix.configurations.plat }} --arch=${{ matrix.configurations.arch }} --mode=${{ matrix.configurations.mode }} --yes
 
       - name: Save cached xmake dependencies
-￼        if: ${{ !steps.restore-cache.outputs.cache-hit }}
+        if: ${{ !steps.restore-cache.outputs.cache-hit }}
         uses: actions/cache/save@v3
         with:
           path: ${{ env.XMAKE_GLOBALDIR }}/.xmake/packages
