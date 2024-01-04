@@ -51,7 +51,7 @@ jobs:
 
       - name: Restore cached dependencies
         id: restore-cache
-￼        uses: actions/cache/restore@v3
+        uses: actions/cache/restore@v3
         with:
           path: ${{ env.XMAKE_GLOBALDIR }}/.xmake/packages
           key: ${{ matrix.configurations.plat }}-${{ matrix.configurations.arch }}-${{ matrix.configurations.mode }}-${{ steps.deps_hash.outputs.hash }}
@@ -61,10 +61,10 @@ jobs:
 
       - name: Save cached xmake dependencies
 ￼        if: ${{ !steps.restore-cache.outputs.cache-hit }}
-￼        uses: actions/cache/save@v3
-￼        with:
-￼          path: ${{ env.XMAKE_GLOBALDIR }}/.xmake/packages
-￼          key: ${{ steps.restore-cache.outputs.cache-primary-key }}
+        uses: actions/cache/save@v3
+        with:
+          path: ${{ env.XMAKE_GLOBALDIR }}/.xmake/packages
+          key: ${{ steps.restore-cache.outputs.cache-primary-key }}
 
       - name: Build gf2
         run: xmake --yes
