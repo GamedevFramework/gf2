@@ -119,7 +119,7 @@ namespace home {
   void MapEntity::render(gf::RenderRecorder& recorder)
   {
     auto position = m_map->compute_position(m_location);
-    auto geometries = m_map->select_geometry(position, "");
+    auto geometries = m_map->select_geometry(position, "Scenery");
 
     for (auto& geometry : geometries) {
       gf::RenderObject object = {};
