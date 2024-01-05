@@ -1,10 +1,10 @@
 #ifndef HOME_GAME_HUB_H
 #define HOME_GAME_HUB_H
 
-#include <future>
 #include <memory>
 
 #include <gf2/core/FontManager.h>
+#include <gf2/core/Random.h>
 
 #include <gf2/audio/AudioManager.h>
 #include <gf2/graphics/RenderAsync.h>
@@ -21,6 +21,11 @@ namespace home {
   class GameHub : public gf::SceneManager {
   public:
     GameHub(const std::filesystem::path& asset_directory);
+
+    gf::Random* random()
+    {
+      return &m_random;
+    }
 
     gf::ResourceManager* resource_manager()
     {
@@ -50,6 +55,7 @@ namespace home {
     }
 
   private:
+    gf::Random m_random;
     gf::FontManager m_font_manager;
     gf::AudioManager m_audio_manager;
 

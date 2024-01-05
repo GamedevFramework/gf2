@@ -26,7 +26,7 @@ namespace home {
 
     gf::AudioSourceResource jet_engine_sound;
     gf::AudioSourceResource mining_sound;
-    gf::AudioSourceResource o2_filling_sound;
+    gf::AudioSourceResource oxygen_sound;
     gf::AudioSourceResource breath_low_o2_sound;
     gf::AudioSourceResource victory_sound;
     gf::AudioSourceResource death_sound;
@@ -34,6 +34,9 @@ namespace home {
     gf::AnimationGroupResource hero_animations;
 
     gf::SpriteResource crosshair;
+    gf::SpriteResource energy;
+    gf::SpriteResource metal;
+    gf::SpriteResource oxygen;
   };
 
 }

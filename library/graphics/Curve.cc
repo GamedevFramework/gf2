@@ -13,8 +13,8 @@
 #include <gf2/core/Polyline.h>
 #include <gf2/core/Range.h>
 
-#include <gf2/graphics/Vertex.h>
 #include <gf2/graphics/RawGeometry.h>
+#include <gf2/graphics/Vertex.h>
 
 namespace gf {
 

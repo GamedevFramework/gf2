@@ -26,6 +26,7 @@ namespace home {
     void render(gf::RenderRecorder& recorder) override;
 
     void set_target(gf::Vec2F target);
+    void set_mining();
 
     gf::Signal<void(gf::Vec2F)> update_location; // NOLINT
 

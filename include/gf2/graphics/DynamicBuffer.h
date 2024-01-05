@@ -47,4 +47,3 @@ namespace gf {
 }
 
 #endif // GF_DYNAMIC_BUFFER
-

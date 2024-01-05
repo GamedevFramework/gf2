@@ -16,15 +16,15 @@ namespace gf::details {
     std::vector<Vertex> vertices;
     std::vector<uint16_t> indices;
 
-      template<typename T>
-      void merge_with(const T& other)
-      {
-        const std::size_t offset = vertices.size();
-        vertices.insert(vertices.end(), other.vertices.begin(), other.vertices.end());
-        std::transform(other.indices.begin(), other.indices.end(), std::back_inserter(indices), [offset](uint16_t index) {
-          return static_cast<uint16_t>(index + offset);
-        });
-      }
+    template<typename T>
+    void merge_with(const T& other)
+    {
+      const std::size_t offset = vertices.size();
+      vertices.insert(vertices.end(), other.vertices.begin(), other.vertices.end());
+      std::transform(other.indices.begin(), other.indices.end(), std::back_inserter(indices), [offset](uint16_t index) {
+        return static_cast<uint16_t>(index + offset);
+      });
+    }
   };
 
 }

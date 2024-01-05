@@ -280,8 +280,8 @@ namespace gf {
 
         const TileData tile_data = std::get<TileData>(object_data.feature);
         const TilesetData* tileset_data = data.tileset_from_gid(tile_data.gid);
-        const uint32_t gid = tile_data.gid - tileset_data->first_gid;
         assert(tileset_data != nullptr);
+        const uint32_t gid = tile_data.gid - tileset_data->first_gid;
 
         const Texture* texture = m_textures[tileset_data->texture_index];
         const RectF texture_region = tileset_data->compute_texture_region(gid, texture->size());

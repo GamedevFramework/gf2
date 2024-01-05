@@ -13,6 +13,7 @@
 #include "HeroEntity.h"
 #include "MapEntity.h"
 #include "PhysicsRuntime.h"
+#include "SupplyEntity.h"
 #include "WorldData.h"
 
 namespace home {
@@ -39,8 +40,6 @@ namespace home {
 
     gf::Music* m_main_theme_music = nullptr;
 
-    gf::Sound* m_mining_sound = nullptr;
-    gf::Sound* m_o2_filling_sound = nullptr;
     gf::Sound* m_breath_low_o2_sound = nullptr;
     gf::Sound* m_victory_sound = nullptr;
     gf::Sound* m_death_sound = nullptr;
@@ -49,6 +48,7 @@ namespace home {
     PhysicsRuntime m_physics_debug;
 
     MapEntity m_map_entity;
+    SupplyEntity m_supply_entity;
     HeroEntity m_hero_entity;
   };
 

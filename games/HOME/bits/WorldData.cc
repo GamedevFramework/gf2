@@ -22,8 +22,12 @@ namespace home {
     main_theme_music.data.loop = true;
 
     jet_engine_sound.filename = "sounds/jet_engine.ogg";
+
     mining_sound.filename = "sounds/mining.ogg";
-    o2_filling_sound.filename = "sounds/o2_filling.ogg";
+    mining_sound.data.loop = true;
+    oxygen_sound.filename = "sounds/o2_filling.ogg";
+    oxygen_sound.data.loop = true;
+
     breath_low_o2_sound.filename = "sounds/breath_low_o2.ogg";
     victory_sound.filename = "sounds/win.ogg";
     death_sound.filename = "sounds/death.ogg";
@@ -71,6 +75,16 @@ namespace home {
     hero_animations.data.animations.emplace("death"_id, animation);
 
     crosshair.texture = "crosshair.png";
+
+    constexpr float ResourceUnitX = 1.0f / 7.0f;
+    constexpr float ResourceUnitY = 1.0f / 5.0f;
+
+    energy.texture = "map/ResourceSet.png";
+    energy.data.texture_region = gf::RectF::from_position_size({ 0 * ResourceUnitX, 0.0f }, { ResourceUnitX, ResourceUnitY });
+    metal.texture = "map/ResourceSet.png";
+    metal.data.texture_region = gf::RectF::from_position_size({ 1 * ResourceUnitX, 0.0f }, { ResourceUnitX, ResourceUnitY });
+    oxygen.texture = "map/ResourceSet.png";
+    oxygen.data.texture_region = gf::RectF::from_position_size({ 2 * ResourceUnitX, 0.0f }, { ResourceUnitX, ResourceUnitY });
   }
 
   gf::ResourceBundle WorldData::bundle(GameHub* hub)
@@ -88,13 +102,13 @@ namespace home {
 
       // textures
 
-      for (const gf::SpriteResource& resource : { crosshair }) {
+      for (const gf::SpriteResource& resource : { crosshair, energy, metal, oxygen }) {
         bundle->handle<gf::Texture>(resource.texture, hub->render_manager(), resources, action);
       }
 
       // audio sources
 
-      for (const gf::AudioSourceResource& resource : { main_theme_music, jet_engine_sound, mining_sound, o2_filling_sound, breath_low_o2_sound, victory_sound, death_sound }) {
+      for (const gf::AudioSourceResource& resource : { main_theme_music, jet_engine_sound, mining_sound, oxygen_sound, breath_low_o2_sound, victory_sound, death_sound }) {
         switch (resource.data.type) {
           case gf::AudioSourceType::Music:
             bundle->handle<gf::Music>(resource.filename, hub->audio_manager(), resources, action);

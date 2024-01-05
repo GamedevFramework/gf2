@@ -64,6 +64,11 @@ namespace home {
     m_crosshair.set_location(m_target);
   }
 
+  void HeroEntity::set_mining()
+  {
+    m_activity = Activity::Mining;
+  }
+
   void HeroEntity::update(gf::Time time)
   {
     set_location(m_body.location());
