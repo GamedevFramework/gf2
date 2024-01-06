@@ -5,6 +5,8 @@
 #include <gf2/core/Positioning.h>
 // clang-format on
 
+#include <algorithm>
+
 namespace gf {
 
   Positioning::Positioning(Vec2I surface_size)
