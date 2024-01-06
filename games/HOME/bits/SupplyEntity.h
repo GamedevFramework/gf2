@@ -1,9 +1,6 @@
 #ifndef HOME_SUPPLY_ENTITY_H
 #define HOME_SUPPLY_ENTITY_H
 
-#include <cstdint>
-
-#include <gf2/core/Color.h>
 #include <gf2/core/Random.h>
 #include <gf2/core/Signal.h>
 #include <gf2/core/Transform.h>
@@ -14,30 +11,11 @@
 #include <gf2/graphics/Shape.h>
 #include <gf2/graphics/SpriteEntity.h>
 
+#include "SupplyType.h"
 #include "WorldData.h"
 
 namespace home {
   class GameHub;
-
-  enum class SupplyType : uint8_t {
-    Energy,
-    Metal,
-    Oxygen,
-  };
-
-  inline gf::Color to_color(SupplyType type)
-  {
-    switch (type) {
-      case SupplyType::Energy:
-        return gf::Yellow;
-      case SupplyType::Metal:
-        return gf::Gray;
-      case SupplyType::Oxygen:
-        return gf::Cyan;
-    }
-
-    return gf::Red;
-  }
 
   struct Supply {
     Supply(SupplyType type, gf::RectF bounds, gf::Random* random);

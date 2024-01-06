@@ -46,9 +46,9 @@ namespace home {
   : m_hub(hub)
   , m_oxygen_sound(hub->resource_manager()->get<gf::Sound>(data.oxygen_sound.filename))
   , m_mining_sound(hub->resource_manager()->get<gf::Sound>(data.mining_sound.filename))
-  , m_energy_sprite(data.energy, hub->render_manager(), hub->resource_manager())
-  , m_metal_sprite(data.metal, hub->render_manager(), hub->resource_manager())
-  , m_oxygen_sprite(data.oxygen, hub->render_manager(), hub->resource_manager())
+  , m_energy_sprite(data.energy_sprite, hub->render_manager(), hub->resource_manager())
+  , m_metal_sprite(data.metal_sprite, hub->render_manager(), hub->resource_manager())
+  , m_oxygen_sprite(data.oxygen_sprite, hub->render_manager(), hub->resource_manager())
   {
     const auto* map_data = hub->resource_manager()->get<gf::TiledMapResource>(data.map);
 
@@ -113,10 +113,11 @@ namespace home {
       m_mining_sound->stop();
     }
 
+    // clang-format off
     m_supplies.erase(std::remove_if(m_supplies.begin(), m_supplies.end(), [](const Supply& supply) {
       return supply.current_quantity <= 0;
-    }),
-        m_supplies.end());
+    }), m_supplies.end());
+    // clang-format on
 
     if (is_mining) {
       gf::ShapeGroupData shape_group_data;
@@ -174,10 +175,12 @@ namespace home {
 
     // life bars
 
-    if (m_shapes.geometry().size > 0) {
+    auto geometry = m_shapes.geometry();
+
+    if (geometry.size > 0) {
       gf::RenderObject object = {};
       object.priority = priority();
-      object.geometry = m_shapes.geometry();
+      object.geometry = geometry;
       recorder.record(object);
     }
   }

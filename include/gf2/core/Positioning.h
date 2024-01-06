@@ -23,6 +23,8 @@ namespace gf {
     Vec2F relative_point(Vec2F percent) const;
     Vec2F relative_size(Vec2F percent) const;
 
+    float relative_thickness(float percent) const;
+
     float character_size(float percent) const;
 
     Vec2F absolute_point(Vec2F distance, Orientation orientation) const;

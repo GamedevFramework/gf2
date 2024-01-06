@@ -7,6 +7,7 @@
 #include <gf2/graphics/TiledMap.h>
 
 #include "GameHub.h"
+#include "SupplyType.h"
 
 namespace home {
 
@@ -79,12 +80,16 @@ namespace home {
     constexpr float ResourceUnitX = 1.0f / 7.0f;
     constexpr float ResourceUnitY = 1.0f / 5.0f;
 
-    energy.texture = "map/ResourceSet.png";
-    energy.data.texture_region = gf::RectF::from_position_size({ 0 * ResourceUnitX, 0.0f }, { ResourceUnitX, ResourceUnitY });
-    metal.texture = "map/ResourceSet.png";
-    metal.data.texture_region = gf::RectF::from_position_size({ 1 * ResourceUnitX, 0.0f }, { ResourceUnitX, ResourceUnitY });
-    oxygen.texture = "map/ResourceSet.png";
-    oxygen.data.texture_region = gf::RectF::from_position_size({ 2 * ResourceUnitX, 0.0f }, { ResourceUnitX, ResourceUnitY });
+    energy_sprite.texture = "map/ResourceSet.png";
+    energy_sprite.data.texture_region = gf::RectF::from_position_size({ 0 * ResourceUnitX, 0.0f }, { ResourceUnitX, ResourceUnitY });
+    metal_sprite.texture = "map/ResourceSet.png";
+    metal_sprite.data.texture_region = gf::RectF::from_position_size({ 1 * ResourceUnitX, 0.0f }, { ResourceUnitX, ResourceUnitY });
+    oxygen_sprite.texture = "map/ResourceSet.png";
+    oxygen_sprite.data.texture_region = gf::RectF::from_position_size({ 2 * ResourceUnitX, 0.0f }, { ResourceUnitX, ResourceUnitY });
+
+    backpack_icon.texture = "images/inventory_icon.png";
+    oxygen_icon.texture = "images/oxygen_icon.png";
+    oxygen_icon.data.color = gf::darker(to_color(SupplyType::Oxygen));
   }
 
   gf::ResourceBundle WorldData::bundle(GameHub* hub)
@@ -102,7 +107,7 @@ namespace home {
 
       // textures
 
-      for (const gf::SpriteResource& resource : { crosshair, energy, metal, oxygen }) {
+      for (const gf::SpriteResource& resource : { crosshair, energy_sprite, metal_sprite, oxygen_sprite, backpack_icon, oxygen_icon }) {
         bundle->handle<gf::Texture>(resource.texture, hub->render_manager(), resources, action);
       }
 

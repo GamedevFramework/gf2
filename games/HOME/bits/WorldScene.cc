@@ -20,6 +20,7 @@ namespace home {
   , m_map_entity(hub, data, &m_physics_world)
   , m_supply_entity(hub, data)
   , m_hero_entity(hub, data, &m_physics_world)
+  , m_backpack_entity(hub, data)
   {
     set_clear_color(gf::Color(0xAEF6B8));
     set_world_center({ 0.0f, 0.0f });
@@ -33,11 +34,14 @@ namespace home {
 
     add_world_entity(m_physics_debug.entity());
 
+    add_hud_entity(&m_backpack_entity);
+
     m_hero_entity.update_location.connect([this](gf::Vec2F location) { set_world_center(location); });
     m_hero_entity.update_location.connect([this](gf::Vec2F location) { m_map_entity.set_hero_location(location); });
     m_hero_entity.update_location.connect([this](gf::Vec2F location) { m_supply_entity.set_hero_location(location); });
 
     m_supply_entity.harvest.connect([this]([[maybe_unused]] SupplyType type, [[maybe_unused]] int32_t quantity) { m_hero_entity.set_mining(); });
+    m_supply_entity.harvest.connect([this](SupplyType type, int32_t quantity) { m_backpack_entity.put_in_backpack(type, quantity); });
   }
 
   void WorldScene::do_update(gf::Time time)

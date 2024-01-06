@@ -7,6 +7,11 @@
 
 namespace gf {
 
+  Positioning::Positioning(Vec2I surface_size)
+  : m_surface_size(surface_size)
+  {
+  }
+
   Vec2F Positioning::center() const
   {
     return m_surface_size * 0.5f;
@@ -20,6 +25,12 @@ namespace gf {
   Vec2F Positioning::relative_size(Vec2F percent) const
   {
     return m_surface_size * percent;
+  }
+
+  float Positioning::relative_thickness(float percent) const
+  {
+    auto size = relative_size({ percent, percent });
+    return std::max(size.x, size.y);
   }
 
   float Positioning::character_size(float percent) const

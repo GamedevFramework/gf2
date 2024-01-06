@@ -34,9 +34,12 @@ namespace home {
     gf::AnimationGroupResource hero_animations;
 
     gf::SpriteResource crosshair;
-    gf::SpriteResource energy;
-    gf::SpriteResource metal;
-    gf::SpriteResource oxygen;
+    gf::SpriteResource energy_sprite;
+    gf::SpriteResource metal_sprite;
+    gf::SpriteResource oxygen_sprite;
+
+    gf::SpriteResource backpack_icon;
+    gf::SpriteResource oxygen_icon;
   };
 
 }

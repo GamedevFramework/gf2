@@ -10,6 +10,7 @@
 #include <gf2/graphics/TextEntity.h>
 #include <gf2/physics/PhysicsWorld.h>
 
+#include "BackpackEntity.h"
 #include "HeroEntity.h"
 #include "MapEntity.h"
 #include "PhysicsRuntime.h"
@@ -50,6 +51,8 @@ namespace home {
     MapEntity m_map_entity;
     SupplyEntity m_supply_entity;
     HeroEntity m_hero_entity;
+
+    BackpackEntity m_backpack_entity;
   };
 
 }
