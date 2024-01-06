@@ -5,8 +5,7 @@
 #include <gf2/graphics/RenderRecorder.h>
 
 #include "GameHub.h"
-
-#include "gf2/core/Orientation.h"
+#include "SupplyEntity.h"
 
 namespace home {
 
@@ -17,6 +16,7 @@ namespace home {
     constexpr int MaxOxygen = 100'000;
     constexpr float OxygenLoss = 1000.0f;
 
+    constexpr int UnloadSpeed = 250'000;
   }
 
   BackpackEntity::BackpackEntity(GameHub* hub, const WorldData& data)
@@ -25,6 +25,32 @@ namespace home {
   , m_backpack_sprite(data.backpack_icon, hub->render_manager(), hub->resource_manager())
   , m_oxygen_sprite(data.oxygen_icon, hub->render_manager(), hub->resource_manager())
   {
+
+    const auto* map_data = hub->resource_manager()->get<gf::TiledMapResource>(data.map);
+
+    for (const auto& object_layer : map_data->data.object_layers) {
+      if (object_layer.layer.name != "SpaceShip") {
+        continue;
+      }
+
+      assert(object_layer.objects.size() == 1);
+      const auto& object_data = object_layer.objects.front();
+
+      assert(object_data.type == gf::ObjectType::Tile);
+      const gf::TileData tile_data = std::get<gf::TileData>(object_data.feature);
+
+      const gf::TilesetData* tileset_data = map_data->data.tileset_from_gid(tile_data.gid);
+      assert(tileset_data != nullptr);
+      const gf::RectF bounds = gf::RectF::from_bottom_left_size(object_data.location + object_layer.layer.offset, tileset_data->tile_size);
+
+      m_ship_bounds = bounds;
+      gf::Log::info("ship bounds: ({}, {}), ({}, {})", m_ship_bounds.offset.x, m_ship_bounds.offset.y, m_ship_bounds.extent.w, m_ship_bounds.extent.h);
+    }
+  }
+
+  void BackpackEntity::set_hero_location(gf::Vec2F location)
+  {
+    m_hero_location = location;
   }
 
   void BackpackEntity::update(gf::Time time)
@@ -33,6 +59,24 @@ namespace home {
       m_oxygen_quantity -= static_cast<int32_t>(time.as_seconds() * OxygenLoss);
     } else {
       // TODO: die!
+    }
+
+    if (!m_supplies.empty() && m_ship_bounds.distance_from(m_hero_location, gf::euclidean_distance) < 50.0f) {
+      auto& supply = m_supplies.back();
+
+      int quantity = static_cast<int32_t>(time.as_seconds() * UnloadSpeed);
+
+      if (quantity > supply.quantity) {
+        quantity = supply.quantity;
+      }
+
+      unload.emit(supply.type, quantity);
+
+      supply.quantity -= quantity;
+
+      if (supply.quantity == 0) {
+        m_supplies.pop_back();
+      }
     }
 
     gf::Positioning positioning(m_hub->render_manager()->surface_size());

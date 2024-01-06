@@ -18,6 +18,8 @@ namespace home {
   public:
     BackpackEntity(GameHub* hub, const WorldData& data);
 
+    void set_hero_location(gf::Vec2F location);
+
     void update(gf::Time time) override;
     void render(gf::RenderRecorder& recorder) override;
 
@@ -27,6 +29,8 @@ namespace home {
 
   private:
     GameHub* m_hub = nullptr;
+    gf::RectF m_ship_bounds = {};
+    gf::Vec2F m_hero_location = { 0.0f, 0.0f };
 
     struct PackedSupply {
       SupplyType type;

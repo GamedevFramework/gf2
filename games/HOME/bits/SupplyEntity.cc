@@ -68,9 +68,7 @@ namespace home {
         const uint32_t gid = tile_data.gid - tileset_data->first_gid;
         assert(gid < 3);
 
-        gf::RectF bounds = gf::RectF::from_size(tileset_data->tile_size);
-        bounds.offset.y -= static_cast<float>(tileset_data->tile_size.h);
-        bounds.offset += object_data.location + object_layer.layer.offset;
+        const gf::RectF bounds = gf::RectF::from_bottom_left_size(object_data.location + object_layer.layer.offset, tileset_data->tile_size);
 
         m_supplies.emplace_back(static_cast<SupplyType>(gid), bounds, hub->random());
       }

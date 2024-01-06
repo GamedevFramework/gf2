@@ -6,6 +6,7 @@
 #include <cstdint>
 
 #include <optional>
+#include <utility>
 
 #include "Orientation.h"
 #include "Vec2.h"
@@ -37,6 +38,11 @@ namespace gf {
     static constexpr Rect from_center_size(Vec2<T> center, Vec2<T> size) noexcept
     {
       return { center - size / T(2), size };
+    }
+
+    static constexpr Rect from_bottom_left_size(Vec2<T> bottom_left, Vec2<T> size) noexcept
+    {
+      return { bottom_left - diry(size.h), size };
     }
 
     constexpr bool empty() const noexcept
@@ -165,6 +171,12 @@ namespace gf {
     constexpr Rect shrink_by(T value) const noexcept
     {
       return from_position_size(offset + value, extent - T(2) * value);
+    }
+
+    constexpr T distance_from(Vec2<T> other, Distance2<T> distance) const noexcept(noexcept(distance(std::declval<Vec2<T>>(), std::declval<Vec2<T>>())))
+    {
+      const Vec2<T> nearest = { gf::clamp(other.x, offset.x, offset.x + extent.w), gf::clamp(other.y, offset.y, offset.y + extent.h) };
+      return distance(other, nearest);
     }
   };
 
