@@ -78,25 +78,30 @@ add_library(gf2core0
   core/Clock.cc
   core/Color.cc
   core/ControlData.cc
+  core/CurveData.cc
   core/Direction.cc
   core/Fixed.cc
   core/Flags.cc
   core/FontFace.cc
   core/FontManager.cc
+  core/Geometry.cc
   core/GridMap.cc
   core/Grids.cc
   core/Id.cc
   core/Image.cc
+  core/Interpolation.cc
   core/Log.cc
-  core/Math.cc
   core/Mat3.cc
   core/Mat4.cc
+  core/Math.cc
   core/Model.cc
   core/ModelContainer.cc
   core/Models.cc
   core/Move.cc
   core/Orientation.cc
   core/Polygon.cc
+  core/Polyline.cc
+  core/Positioning.cc
   core/Property.cc
   core/PropertyMap.cc
   core/Random.cc
@@ -111,8 +116,8 @@ add_library(gf2core0
   core/Result.cc
   core/Serialization.cc
   core/SerializationOps.cc
-  core/Signal.cc
   core/ShapeData.cc
+  core/Signal.cc
   core/SpriteData.cc
   core/Stream.cc
   core/Streams.cc
@@ -159,11 +164,16 @@ add_library(gf2graphics0
   graphics/Animation.cc
   graphics/AnimationEntity.cc
   graphics/Buffer.cc
+  graphics/BufferReference.cc
   graphics/Clipboard.cc
   graphics/CommandBuffer.cc
   graphics/Control.cc
   graphics/Cursor.cc
+  graphics/Curve.cc
+  graphics/CurveEntity.cc
+  graphics/DebugEntity.cc
   graphics/Descriptor.cc
+  graphics/DynamicBuffer.cc
   graphics/Entity.cc
   graphics/EntityContainer.cc
   graphics/Event.cc
@@ -175,7 +185,9 @@ add_library(gf2graphics0
   graphics/GraphicsInitializer.cc
   graphics/Keyboard.cc
   graphics/Mouse.cc
+  graphics/RenderAsync.cc
   graphics/RenderManager.cc
+  graphics/RenderObject.cc
   graphics/RenderPipeline.cc
   graphics/RenderRecorder.cc
   graphics/RenderTarget.cc
