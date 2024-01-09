@@ -100,11 +100,11 @@ namespace home {
 
       auto color = to_color(supply.type);
 
-      gf::ShapeData back_shape_data = gf::ShapeData::make_rectangle(gf::RectF::from_position_size(supply_position, { backpack_bounds.extent.w, supply_height }));
-      back_shape_data.color = color;
-      back_shape_data.outline_color = gf::darker(color);
-      back_shape_data.outline_thickness = positioning.relative_thickness(0.001f);
-      shape_group_data.shapes.emplace_back(std::move(back_shape_data));
+      gf::ShapeData supply_shape_data = gf::ShapeData::make_rectangle(gf::RectF::from_position_size(supply_position, { backpack_bounds.extent.w, supply_height }));
+      supply_shape_data.color = color;
+      supply_shape_data.outline_color = gf::darker(color);
+      supply_shape_data.outline_thickness = positioning.relative_thickness(0.001f);
+      shape_group_data.shapes.emplace_back(std::move(supply_shape_data));
     }
 
     gf::RectF oxygen_bounds = gf::RectF::from_position_size(positioning.relative_point({ 0.04f, 0.18f }), positioning.relative_size({ 0.01f, 0.72f }));
@@ -146,7 +146,7 @@ namespace home {
     m_oxygen_sprite.set_scale(icon_size.w / static_cast<float>(m_oxygen_sprite.sprite().texture()->size().w));
     m_oxygen_sprite.render(recorder);
 
-    m_backpack_sprite.set_location(positioning.relative_point({ 0.955, 0.1f }));
+    m_backpack_sprite.set_location(positioning.relative_point({ 0.955f, 0.1f }));
     m_backpack_sprite.set_origin({ 0.5f, 0.0f });
     m_backpack_sprite.set_scale(icon_size.w / static_cast<float>(m_backpack_sprite.sprite().texture()->size().w));
     m_backpack_sprite.render(recorder);
