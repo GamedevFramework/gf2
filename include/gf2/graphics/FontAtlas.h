@@ -3,8 +3,6 @@
 #ifndef GF_FONT_ATLAS_H
 #define GF_FONT_ATLAS_H
 
-#include <cstdint>
-
 #include <map>
 
 #include <gf2/core/BinPack.h>
