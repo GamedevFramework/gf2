@@ -34,7 +34,7 @@ namespace gf {
   struct GF_CORE_API LayerData {
     uint32_t properties_index = NoIndex;
     std::string name;
-    Vec2F offset = { 0.0f, 0.0f };
+    Vec2I offset = { 0, 0 };
   };
 
   template<typename Archive>

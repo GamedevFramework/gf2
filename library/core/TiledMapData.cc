@@ -199,8 +199,8 @@ namespace gf {
       LayerData data;
       data.properties_index = parse_tmx_properties(node, resource);
       data.name = node.attribute("name").as_string();
-      data.offset.x = node.attribute("offsetx").as_float(0.0f);
-      data.offset.y = node.attribute("offsety").as_float(0.0f);
+      data.offset.x = node.attribute("offsetx").as_int(0);
+      data.offset.y = node.attribute("offsety").as_int(0);
       unsupported_attribute(node, "opacity");
       unsupported_attribute(node, "visible");
       return data;
@@ -293,8 +293,7 @@ namespace gf {
                 assert(false);
             }
           } else {
-            Log::error("Unknown character: '{}' ({#X}).", c, c);
-            assert(false);
+            Log::fatal("Unknown character: '{}' ({#X}).", c, c);
           }
 
           ++i;
