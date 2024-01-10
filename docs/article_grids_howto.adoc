@@ -438,7 +438,7 @@ Let stem:[T_x' = T_x - H_x = H_x + \ell] and stem:[T_y' = \frac{T_y}{2}]. The id
 
 Then, let stem:[q_x = \left\lfloor\frac{P_x}{T_x'}\right\rfloor] and stem:[q_y = \left\lfloor\frac{P_y}{T_y'}\right\rfloor]. stem:[q_x] and stem:[q_y] represent the coordinates of point stem:[P] in the orthogonal grid.
 
-Finally, let stem:[r_x = P_x - q_x \times T_x'] and stem:[r_x = P_x - q_x \times T_x']. stem:[r_x] and stem:[r_y] represent the coordinates of point stem:[P] in the orthogonal cell. And let stem:[r_x' = \frac{r_x}{H_x}] and stem:[r_y' = \frac{r_y}{T_y'}]. stem:[r_x'] and stem:[r_y'] represent the normalized coordinates of point stem:[P] in the dashed rectangle at the left of the cell, in case stem:[r_x < H_x].
+Finally, let stem:[r_x = P_x - q_x \times T_x'] and stem:[r_y = P_y - q_y \times T_y']. stem:[r_x] and stem:[r_y] represent the coordinates of point stem:[P] in the orthogonal cell. And let stem:[r_x' = \frac{r_x}{H_x}] and stem:[r_y' = \frac{r_y}{T_y'}]. stem:[r_x'] and stem:[r_y'] represent the normalized coordinates of point stem:[P] in the dashed rectangle at the left of the cell, in case stem:[r_x < H_x].
 
 The situation for `x-even` is shown on <<fig_hexagonal_x_even_coordinates>> and the situation for `x-odd` is shown on <<fig_hexagonal_x_odd_coordinates>>.
 
@@ -468,7 +468,7 @@ Let stem:[T_x' = \frac{T_x}{2}] and stem:[T_y' = T_y - H_y = H_y + \ell]. The id
 
 Then, let stem:[q_x = \left\lfloor\frac{P_x}{T_x'}\right\rfloor] and stem:[q_y = \left\lfloor\frac{P_y}{T_y'}\right\rfloor]. stem:[q_x] and stem:[q_y] represent the coordinates of point stem:[P] in the orthogonal grid.
 
-Finally, let stem:[r_x = P_x - q_x \times T_x'] and stem:[r_x = P_x - q_x \times T_x']. stem:[r_x] and stem:[r_y] represent the coordinates of point stem:[P] in the orthogonal cell. And let stem:[r_x' = \frac{r_x}{T_x'}] and stem:[r_y' = \frac{r_y}{H_y}]. stem:[r_x'] and stem:[r_y'] represent the normalized coordinates of point stem:[P] in the dashed rectangle at the top of the cell, in case stem:[r_y < H_y].
+Finally, let stem:[r_x = P_x - q_x \times T_x'] and stem:[r_y = P_y - q_y \times T_y']. stem:[r_x] and stem:[r_y] represent the coordinates of point stem:[P] in the orthogonal cell. And let stem:[r_x' = \frac{r_x}{T_x'}] and stem:[r_y' = \frac{r_y}{H_y}]. stem:[r_x'] and stem:[r_y'] represent the normalized coordinates of point stem:[P] in the dashed rectangle at the top of the cell, in case stem:[r_y < H_y].
 
 The situation for `y-even` is shown on <<fig_hexagonal_y_even_coordinates>> and the situation for `y-odd` is shown on <<fig_hexagonal_y_odd_coordinates>>.
 
