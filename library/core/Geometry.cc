@@ -6,6 +6,7 @@
 #include "gf2/core/Polyline.h"
 // clang-format on
 
+#include <algorithm>
 #include <set>
 #include <tuple>
 
@@ -81,6 +82,69 @@ namespace gf {
     }
 
     return lines;
+  }
+
+  Bresenham::Bresenham(Vec2I p0, Vec2I p1)
+  : m_p0(p0)
+  , m_p1(p1)
+  , m_delta(p1 - p0)
+  {
+    m_step.x = gf::sign(m_delta.x);
+    m_step.y = gf::sign(m_delta.y);
+    m_error = std::max(m_step.x * m_delta.x, m_step.y * m_delta.y);
+    m_delta *= 2;
+  }
+
+  std::optional<Vec2I> Bresenham::step()
+  {
+    if (m_step.x * m_delta.x > m_step.y * m_delta.y) {
+      if (m_p0.x == m_p1.x) {
+        return std::nullopt;
+      }
+
+      m_p0.x += m_step.x;
+      m_error -= m_step.y * m_delta.y;
+
+      if (m_error < 0) {
+        m_p0.y += m_step.y;
+        m_error += m_step.x * m_delta.x;
+      }
+    } else {
+      if (m_p0.y == m_p1.y) {
+        return std::nullopt;
+      }
+
+      m_p0.y += m_step.y;
+      m_error -= m_step.x * m_delta.x;
+
+      if (m_error < 0) {
+        m_p0.x += m_step.x;
+        m_error += m_step.y * m_delta.y;
+      }
+    }
+
+    return m_p0;
+  }
+
+  std::vector<Vec2I> generate_line(Vec2I p0, Vec2I p1)
+  {
+    Bresenham bresenham(p0, p1);
+
+    std::vector<Vec2I> line;
+    line.push_back(p0);
+
+    for (;;) {
+      if (auto maybe_next = bresenham.step(); maybe_next) {
+        line.push_back(*maybe_next);
+      } else {
+        break;
+      }
+    }
+
+    assert(line.back() == p1);
+    line.pop_back(); // to remove p1
+
+    return line;
   }
 
 }
