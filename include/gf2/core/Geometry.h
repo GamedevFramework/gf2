@@ -22,9 +22,9 @@ namespace gf {
 
   GF_CORE_API std::vector<Polyline> compute_lines(Span<const SegmentI> segments);
 
-  class GF_CORE_API Bresenham {
+  class GF_CORE_API BresenhamAlgorithm {
   public:
-    Bresenham(Vec2I p0, Vec2I p1);
+    BresenhamAlgorithm(Vec2I p0, Vec2I p1);
 
     std::optional<Vec2I> step();
 
@@ -38,6 +38,20 @@ namespace gf {
 
   GF_CORE_API std::vector<Vec2I> generate_line(Vec2I p0, Vec2I p1);
 
+  class GF_CORE_API AndresAlgorithm {
+  public:
+    AndresAlgorithm(int32_t radius);
+
+    std::optional<Vec2I> step();
+
+  private:
+    int32_t m_radius = 0;
+    int32_t m_d = 0;
+    int32_t m_x = 0;
+    int32_t m_y = 0;
+  };
+
+  GF_CORE_API std::vector<Vec2I> generate_circle(Vec2I center, int32_t radius);
 }
 
 #endif // GF_GEOMETRY_H

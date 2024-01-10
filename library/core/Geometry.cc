@@ -84,7 +84,7 @@ namespace gf {
     return lines;
   }
 
-  Bresenham::Bresenham(Vec2I p0, Vec2I p1)
+  BresenhamAlgorithm::BresenhamAlgorithm(Vec2I p0, Vec2I p1)
   : m_p0(p0)
   , m_p1(p1)
   , m_delta(p1 - p0)
@@ -95,7 +95,7 @@ namespace gf {
     m_delta *= 2;
   }
 
-  std::optional<Vec2I> Bresenham::step()
+  std::optional<Vec2I> BresenhamAlgorithm::step()
   {
     if (m_step.x * m_delta.x > m_step.y * m_delta.y) {
       if (m_p0.x == m_p1.x) {
@@ -128,7 +128,7 @@ namespace gf {
 
   std::vector<Vec2I> generate_line(Vec2I p0, Vec2I p1)
   {
-    Bresenham bresenham(p0, p1);
+    BresenhamAlgorithm bresenham(p0, p1);
 
     std::vector<Vec2I> line;
     line.push_back(p0);
@@ -145,6 +145,64 @@ namespace gf {
     line.pop_back(); // to remove p1
 
     return line;
+  }
+
+  AndresAlgorithm::AndresAlgorithm(int32_t radius)
+  : m_radius(radius)
+  , m_d(radius - 1)
+  , m_y(radius)
+  {
+  }
+
+  std::optional<Vec2I> AndresAlgorithm::step()
+  {
+    if (m_y < m_x) {
+      return std::nullopt;
+    }
+
+    if (m_d >= 2 * m_x) {
+      m_d = m_d - 2 * m_x - 1;
+      ++m_x;
+    } else if (m_d < 2 * (m_radius - m_y)) {
+      m_d = m_d + 2 * m_y - 1;
+      --m_y;
+    } else {
+      m_d = m_d + 2 * (m_y - m_x + 1);
+      ++m_x;
+      --m_y;
+    }
+
+    return gf::vec(m_x, m_y);
+  }
+
+  std::vector<Vec2I> generate_circle(Vec2I center, int32_t radius)
+  {
+    AndresAlgorithm andres(radius);
+
+    std::vector<Vec2I> circle;
+
+    auto plot_8_pixels = [&](Vec2I point) {
+      circle.emplace_back(center.x + point.x, center.y + point.y);
+      circle.emplace_back(center.x + point.y, center.y + point.x);
+      circle.emplace_back(center.x - point.x, center.y + point.y);
+      circle.emplace_back(center.x - point.y, center.y + point.x);
+      circle.emplace_back(center.x + point.x, center.y - point.y);
+      circle.emplace_back(center.x + point.y, center.y - point.x);
+      circle.emplace_back(center.x - point.x, center.y - point.y);
+      circle.emplace_back(center.x - point.y, center.y - point.x);
+    };
+
+    plot_8_pixels({ 0, radius });
+
+    for (;;) {
+      if (auto maybe_next = andres.step(); maybe_next) {
+        plot_8_pixels(*maybe_next);
+      } else {
+        break;
+      }
+    }
+
+    return circle;
   }
 
 }
