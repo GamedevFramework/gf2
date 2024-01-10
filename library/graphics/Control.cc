@@ -11,6 +11,13 @@
 
 namespace gf {
 
+  namespace {
+
+    using namespace gf::operators;
+    constexpr Flags<Modifier> SpecialModifiers = Modifier::Num | Modifier::Caps | Modifier::Mode;
+
+  }
+
   Control::Control(const ControlData& data)
   : m_data(data)
   {
@@ -54,14 +61,16 @@ namespace gf {
 
   void Control::process_keycode_control(const Event& event, const KeycodeControlData& data)
   {
+    auto event_modifiers = event.key.modifiers & ~SpecialModifiers;
+
     if (event.type == EventType::KeyPressed) {
-      if (event.key.keycode == data.keycode && event.key.modifiers == data.modifiers) {
+      if (event.key.keycode == data.keycode && event_modifiers == data.modifiers) {
         trigger();
       }
     }
 
     if (event.type == EventType::KeyReleased) {
-      if (event.key.keycode == data.keycode && event.key.modifiers == data.modifiers) {
+      if (event.key.keycode == data.keycode && event_modifiers == data.modifiers) {
         reset();
       }
     }
@@ -69,14 +78,16 @@ namespace gf {
 
   void Control::process_scancode_control(const Event& event, const ScancodeControlData& data)
   {
+    auto event_modifiers = event.key.modifiers & ~SpecialModifiers;
+
     if (event.type == EventType::KeyPressed) {
-      if (event.key.scancode == data.scancode && event.key.modifiers == data.modifiers) {
+      if (event.key.scancode == data.scancode && event_modifiers == data.modifiers) {
         trigger();
       }
     }
 
     if (event.type == EventType::KeyReleased) {
-      if (event.key.scancode == data.scancode && event.key.modifiers == data.modifiers) {
+      if (event.key.scancode == data.scancode && event_modifiers == data.modifiers) {
         reset();
       }
     }
