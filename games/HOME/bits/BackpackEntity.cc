@@ -64,7 +64,7 @@ namespace home {
     if (!m_supplies.empty() && m_ship_bounds.distance_from(m_hero_location, gf::euclidean_distance) < 50.0f) {
       auto& supply = m_supplies.back();
 
-      int quantity = static_cast<int32_t>(time.as_seconds() * UnloadSpeed);
+      auto quantity = static_cast<int32_t>(time.as_seconds() * UnloadSpeed);
 
       if (quantity > supply.quantity) {
         quantity = supply.quantity;
@@ -94,6 +94,10 @@ namespace home {
     auto supply_position = backpack_bounds.position_at(gf::Orientation::SouthWest);
 
     for (auto& supply : m_supplies) {
+      if (supply.quantity == 0) {
+        continue;
+      }
+
       float supply_percent = static_cast<float>(supply.quantity) / static_cast<float>(LimitBackpack);
       float supply_height = backpack_bounds.extent.h * supply_percent;
       supply_position.y -= supply_height;
@@ -124,13 +128,15 @@ namespace home {
     oxygen_back_shape_data.outline_thickness = positioning.relative_thickness(0.001f);
     shape_group_data.shapes.emplace_back(std::move(oxygen_back_shape_data));
 
-    auto difference = oxygen_bounds.extent.h * (1.0f - oxygen_percent);
-    oxygen_bounds.offset.y += difference;
-    oxygen_bounds.extent.h -= difference;
+    if (m_oxygen_quantity > 0) {
+      auto difference = oxygen_bounds.extent.h * (1.0f - oxygen_percent);
+      oxygen_bounds.offset.y += difference;
+      oxygen_bounds.extent.h -= difference;
 
-    gf::ShapeData oxygen_front_shape_data = gf::ShapeData::make_rectangle(oxygen_bounds);
-    oxygen_front_shape_data.color = oxygen_color;
-    shape_group_data.shapes.emplace_back(std::move(oxygen_front_shape_data));
+      gf::ShapeData oxygen_front_shape_data = gf::ShapeData::make_rectangle(oxygen_bounds);
+      oxygen_front_shape_data.color = oxygen_color;
+      shape_group_data.shapes.emplace_back(std::move(oxygen_front_shape_data));
+    }
 
     m_shapes.update(shape_group_data, m_hub->render_manager());
   }
