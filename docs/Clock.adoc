@@ -15,7 +15,7 @@ xref:core_utilities.adoc[< Back to `core` Utilities]
 class Clock;
 ----
 
-`Clock` is a lightweight class for measuring time. It is a thin wrapper around link:http://en.cppreference.com/w/cpp/chrono/steady_clock[`std::chrono::steady_clock`].
+`Clock` is a lightweight class for measuring time. It is a thin wrapper around link:https://en.cppreference.com/w/cpp/chrono/steady_clock[`std::chrono::steady_clock`].
 
 Its provides the most precise time that the underlying OS can achieve (generally microseconds or nanoseconds). It also ensures monotonicity, which means that the returned time can never go backward, even if the system time is changed.
 
