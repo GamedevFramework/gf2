@@ -21,7 +21,7 @@ By using such a flexible interface, the API doesn't impose any fixed type or res
 
 Since they represent a time span and not an absolute time value, times can also be negative.
 
-`Time` is a thin wrapper around C++ link:http://en.cppreference.com/w/cpp/chrono/steady_clock[`std::chrono::steady_clock`].
+`Time` is a thin wrapper around C++ link:https://en.cppreference.com/w/cpp/chrono/duration[`std::chrono::steady_clock::duration`].
 
 .Example for `gf::Time`
 [source,indent=0]
