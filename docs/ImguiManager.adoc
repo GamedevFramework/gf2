@@ -43,4 +43,4 @@ Update the link:https://github.com/ocornut/imgui[Dear Imgui] context with `event
 void update(Time time);
 ----
 
-Update the link:https://github.com/ocornut/imgui[Dear Imgui] context withe `time`.
+Update the link:https://github.com/ocornut/imgui[Dear Imgui] context with `time`.
