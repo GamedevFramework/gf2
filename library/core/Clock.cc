@@ -8,20 +8,20 @@
 namespace gf {
 
   Clock::Clock()
-  : m_start(std::chrono::steady_clock::now())
+  : m_start(details::ClockType::now())
   {
   }
 
   Time Clock::elapsed_time() const
   {
-    auto now = std::chrono::steady_clock::now();
+    auto now = details::ClockType::now();
     auto duration = now - m_start;
     return Time(duration);
   }
 
   Time Clock::restart()
   {
-    auto now = std::chrono::steady_clock::now();
+    auto now = details::ClockType::now();
     auto duration = now - m_start;
     m_start = now;
     return Time(duration);

@@ -14,11 +14,18 @@ namespace gf {
   class Serializer;
   class Deserializer;
 
+  namespace details {
+    using ClockType = std::conditional_t<std::chrono::high_resolution_clock::is_steady, std::chrono::high_resolution_clock, std::chrono::steady_clock>;
+    using DurationType = ClockType::duration;
+    using TimePointType = ClockType::time_point;
+  }
+
   class GF_CORE_API Time {
   public:
+
     constexpr Time() = default;
 
-    constexpr explicit Time(std::chrono::steady_clock::duration duration)
+    constexpr explicit Time(details::DurationType duration)
     : m_duration(duration)
     {
     }
@@ -56,22 +63,22 @@ namespace gf {
     }
 
   private:
-    std::chrono::steady_clock::duration m_duration = std::chrono::steady_clock::duration::zero();
+    details::DurationType m_duration = details::DurationType::zero();
   };
 
   constexpr Time seconds(float amount)
   {
-    return Time(std::chrono::duration_cast<std::chrono::steady_clock::duration>(std::chrono::duration<float>(amount)));
+    return Time(std::chrono::duration_cast<details::DurationType>(std::chrono::duration<float>(amount)));
   }
 
   constexpr Time milliseconds(int32_t amount)
   {
-    return Time(std::chrono::duration_cast<std::chrono::steady_clock::duration>(std::chrono::duration<int32_t, std::milli>(amount)));
+    return Time(std::chrono::duration_cast<details::DurationType>(std::chrono::duration<int32_t, std::milli>(amount)));
   }
 
   constexpr Time microseconds(int64_t amount)
   {
-    return Time(std::chrono::duration_cast<std::chrono::steady_clock::duration>(std::chrono::duration<int64_t, std::micro>(amount)));
+    return Time(std::chrono::duration_cast<details::DurationType>(std::chrono::duration<int64_t, std::micro>(amount)));
   }
 
   namespace literals {

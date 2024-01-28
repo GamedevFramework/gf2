@@ -3,8 +3,6 @@
 #ifndef GF_CLOCK_H
 #define GF_CLOCK_H
 
-#include <chrono>
-
 #include "CoreApi.h"
 #include "Time.h"
 
@@ -18,7 +16,7 @@ namespace gf {
     Time restart();
 
   private:
-    std::chrono::steady_clock::time_point m_start;
+    details::TimePointType m_start;
   };
 
 } // namespace gf
