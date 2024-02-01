@@ -80,6 +80,7 @@ add_library(gf2core0
   core/ControlData.cc
   core/CurveData.cc
   core/Direction.cc
+  core/Easing.cc
   core/Fixed.cc
   core/Flags.cc
   core/FontFace.cc
