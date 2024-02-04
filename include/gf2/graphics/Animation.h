@@ -24,7 +24,7 @@ namespace gf {
 
   struct GF_GRAPHICS_API AnimationFrameRuntime {
     std::size_t texture_index = 0;
-    Time duration = {};
+    Time duration;
     std::size_t offset = 0;
   };
 
@@ -57,7 +57,7 @@ namespace gf {
 
     AnimationRuntime m_animation;
     std::size_t m_current_frame = 0;
-    Time m_current_time = {};
+    Time m_current_time;
   };
 
   class GF_GRAPHICS_API AnimationGroup {
@@ -90,7 +90,7 @@ namespace gf {
     std::map<Id, AnimationRuntime> m_animations;
     Id m_current_animation_id = InvalidId;
     std::size_t m_current_frame = 0;
-    Time m_current_time = {};
+    Time m_current_time;
   };
 }
 

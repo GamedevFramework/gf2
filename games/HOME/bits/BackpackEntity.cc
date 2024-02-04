@@ -79,11 +79,11 @@ namespace home {
       }
     }
 
-    gf::Positioning positioning(m_hub->render_manager()->surface_size());
+    const gf::Positioning positioning(m_hub->render_manager()->surface_size());
 
     gf::ShapeGroupData shape_group_data;
 
-    gf::RectF backpack_bounds = gf::RectF::from_position_size(positioning.relative_point({ 0.95f, 0.18f }), positioning.relative_size({ 0.01f, 0.72f }));
+    const gf::RectF backpack_bounds = gf::RectF::from_position_size(positioning.relative_point({ 0.95f, 0.18f }), positioning.relative_size({ 0.01f, 0.72f }));
 
     gf::ShapeData back_shape_data = gf::ShapeData::make_rectangle(backpack_bounds);
     back_shape_data.color = gf::Black * gf::opaque(0.3f);
@@ -98,8 +98,8 @@ namespace home {
         continue;
       }
 
-      float supply_percent = static_cast<float>(supply.quantity) / static_cast<float>(LimitBackpack);
-      float supply_height = backpack_bounds.extent.h * supply_percent;
+      const float supply_percent = static_cast<float>(supply.quantity) / static_cast<float>(LimitBackpack);
+      const float supply_height = backpack_bounds.extent.h * supply_percent;
       supply_position.y -= supply_height;
 
       auto color = to_color(supply.type);
@@ -112,7 +112,7 @@ namespace home {
     }
 
     gf::RectF oxygen_bounds = gf::RectF::from_position_size(positioning.relative_point({ 0.04f, 0.18f }), positioning.relative_size({ 0.01f, 0.72f }));
-    gf::Color oxygen_color = to_color(SupplyType::Oxygen);
+    const gf::Color oxygen_color = to_color(SupplyType::Oxygen);
 
     auto oxygen_percent = static_cast<float>(m_oxygen_quantity) / static_cast<float>(MaxOxygen);
 
@@ -143,7 +143,7 @@ namespace home {
 
   void BackpackEntity::render(gf::RenderRecorder& recorder)
   {
-    gf::Positioning positioning(m_hub->render_manager()->surface_size());
+    const gf::Positioning positioning(m_hub->render_manager()->surface_size());
 
     auto icon_size = positioning.relative_size({ 0.04f, 0.0f });
 

@@ -22,7 +22,7 @@ namespace gf {
   struct GF_CORE_API AnimationFrameData {
     uint32_t texture_index = 0;
     RectF texture_region = RectF::from_size({ 0.0f, 0.0f });
-    Time duration = {};
+    Time duration;
   };
 
   template<typename Archive>

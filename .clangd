@@ -1,5 +1,5 @@
 CompileFlags:
-    CompilationDatabase: build.cmake
+    CompilationDatabase: build
 Index:
     StandardLibrary: Yes
 Diagnostics:

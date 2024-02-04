@@ -13,6 +13,7 @@ add_requires("vulkan-headers")
 add_requires("vulkan-memory-allocator")
 
 add_rules("mode.coverage", "mode.debug", "mode.releasedbg", "mode.release")
+add_rules("plugin.compile_commands.autoupdate", {outputdir = "$(buildir)"})
 
 if is_mode("sanitizers") then
     set_symbols("debug")

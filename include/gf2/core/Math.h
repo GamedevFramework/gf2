@@ -123,7 +123,7 @@ namespace gf {
   template<typename T>
   constexpr T clamp(T val, T lo, T hi)
   {
-    return val < lo ? lo : (hi < val ? hi : val);
+    return details::min(details::max(val, lo), hi);
   }
 
   template<typename T>

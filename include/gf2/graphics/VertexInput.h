@@ -27,8 +27,8 @@ namespace gf {
   };
 
   struct GF_GRAPHICS_API VertexInput {
-    std::vector<VertexBinding> bindings = {};
-    std::vector<VertexAttribute> attributes = {};
+    std::vector<VertexBinding> bindings;
+    std::vector<VertexAttribute> attributes;
   };
 
 }

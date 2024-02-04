@@ -33,12 +33,12 @@ namespace gf {
       return radius == T(0);
     }
 
-    inline bool contains(Vec2<T> point) const noexcept
+    constexpr bool contains(Vec2<T> point) const noexcept
     {
       return gf::square_distance(center, point) <= gf::square(radius);
     }
 
-    inline bool intersects(Circ other) const noexcept
+    constexpr bool intersects(Circ other) const noexcept
     {
       return gf::square_distance(center, other.center) <= gf::square(radius + other.radius);
     }
