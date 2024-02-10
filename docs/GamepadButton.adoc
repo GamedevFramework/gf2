@@ -5,13 +5,13 @@ include::bits/attributes.adoc[]
 
 `GamepadButton` describes all the gamepad buttons.
 
-xref:graphics_inputs.adoc[< Back to `graphics` Inputs]
+xref:core_input_description.adoc[< Back to `core` Input Description]
 
 == Description
 
 [source]
 ----
-#include <gf2/graphics/Gamepad.h>
+#include <gf2/core/GamepadTypes.h>
 enum class GamepadButton : int32_t;
 ----
 

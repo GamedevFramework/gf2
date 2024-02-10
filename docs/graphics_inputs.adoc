@@ -3,108 +3,13 @@ v0.1
 include::bits/attributes.adoc[]
 :toc: right
 
-The inputs component contains enumerations and types that describe input devices.
+The inputs component runtime handling of input devices.
 
-- Keyboard: <<scancode>>, <<keycode>>, <<modifier>> (<<keyboard>>)
-- Mouse: <<mouse_button>>
-- Gamepad: <<gamepad_axis>>, <<gamepad_button>> (<<gamepad>>)
-
-In addition, <<cursor>> can be used to modify the cursor.
+- Keyboard: <<keyboard>>
+- Gamepad: <<gamepad>>
+- Cursor: <<cursor>>
 
 xref:reference.adoc#graphics[< Back to reference]
-
-== Variables
-
-[#any_gamepad]
-=== `gf::AnyGamepad`
-
-[source]
-----
-#include <gf2/graphics/Gamepad.h>
-constexpr GamepadId AnyGamepad;
-----
-
-A special identifier for all gamepads.
-
-This identifier can be used in controls for specifying any gamepad. This is especially useful for single player game, as you do not have to reconfigure the action in case of gamepad disconnection/reconnection.
-
-[#any_gamepad_axis]
-=== `gf::AnyGamepadAxis`
-
-[source]
-----
-#include <gf2/graphics/Gamepad.h>
-constexpr GamepadAxis AnyGamepadAxis;
-----
-
-A special identifier for all gamepad axis.
-
-See also: <<gamepad_axis>>
-
-[#any_gamepad_button]
-=== `gf::AnyGamepadButton`
-
-[source]
-----
-#include <gf2/graphics/Gamepad.h>
-constexpr GamepadButton AnyGamepadButton;
-----
-
-A special identifier for all gamepad buttons.
-
-See also: <<gamepad_button>>
-
-[#any_keycode]
-=== `gf::AnyKeycode`
-
-[source]
-----
-#include <gf2/graphics/Keyboard.h>
-constexpr Keycode AnyKeycode;
-----
-
-A special identifier for all keycodes.
-
-See also: <<keycode>>
-
-[#any_scancode]
-=== `gf::AnyScancode`
-
-[source]
-----
-#include <gf2/graphics/Keyboard.h>
-constexpr Scancode AnyScancode;
-----
-
-A special identifier for all scancodes.
-
-See also: <<scancode>>
-
-[#mouse_touch_id]
-=== `gf::MouseTouchId`
-
-[source]
-----
-#include <gf2/graphics/Touch.h>
-constexpr TouchId MouseTouchId
-----
-
-A mouse device that acts like a touch device.
-
-See also: <<touch_id>>
-
-[#touch_mouse_id]
-=== `gf::TouchMouseId`
-
-[source]
-----
-#include <gf2/graphics/Mouse.h>
-constexpr MouseId TouchMouseId;
-----
-
-A touch device that acts like a mouse device.
-
-See also: <<mouse_id>>
 
 == Types
 
@@ -174,18 +79,6 @@ enum class CursorType : uint8_t;
 
 See also: <<cursor>>
 
-
-[#finger_id]
-=== `gf::FingerId`
-
-[source]
-----
-#include <gf2/graphics/Touch.h>
-enum class FingerId : int64_t;
-----
-
-`FingerId` describes a finger that touched a touch device.
-
 [#gamepad]
 === `gf::Gamepad`
 
@@ -197,81 +90,6 @@ class Gamepad;
 
 `Gamepad` provides useful functions for handling gamepads. xref:Gamepad.adoc[*Read more...*]
 
-[#gamepad_axis]
-=== `gf::GamepadAxis`
-
-[source]
-----
-#include <gf2/graphics/Gamepad.h>
-enum class GamepadAxis : int32_t;
-----
-
-`GamepadAxis` describes all the gamepad axis. xref:GamepadAxis.adoc[*Read more...*]
-
-[#gamepad_axis_direction]
-=== `gf::GamepadAxisDirection`
-
-[source]
-----
-#include <gf2/graphics/Gamepad.h>
-enum class GamepadAxisDirection : uint32_t;
-----
-
-`GamepadAxisDirection` describes a gamepad axis direction.
-
-The positive direction is right with a X axis and down with a Y axis. For triggers, there is only a positive direction.
-
-.Enumerators for `gf::GamepadAxisDirection`
-[cols="1,1"]
-|===
-| Value | Description
-
-| `gf::GamepadAxisDirection::Positive`
-| Positive direction of the axis.
-
-| `gf::GamepadAxisDirection::Negative`
-| Negative direction of the axis.
-|===
-
-See also: <<gamepad_axis>>
-
-[#gamepad_button]
-=== `gf::GamepadButton`
-
-[source]
-----
-#include <gf2/graphics/Gamepad.h>
-enum class GamepadButton : int32_t;
-----
-
-`GamepadButton` describes all the gamepad buttons. xref:GamepadButton.adoc[*Read more...*]
-
-[#gamepad_hw_id]
-=== `gf::GamepadHwId`
-
-[source]
-----
-#include <gf2/graphics/Gamepad.h>
-enum class GamepadHwId : int;
-----
-
-`GamepadHwId` is a gamepad hardware identifier. This identifier is given when a gamepad has just been connected. It must be transformed in a <<gamepad_id>> with xref:Gamepad.adoc[`Gamepad::open`].
-
-See also: <<gamepad_id>>
-
-[#gamepad_id]
-=== `gf::GamepadId`
-
-[source]
-----
-#include <gf2/graphics/Gamepad.h>
-enum class GamepadId : int32_t;
-----
-
-`GamepadId` is a gamepad identifier. This identifier is the representation of a connected gamepad that has been opened with xref:Gamepad.adoc[`Gamepad::open`]. It is used in the subsequent events related to this gamepad.
-
-See also: <<gamepad_hw_id>>
-
 [#keyboard]
 === `gf::Keyboard`
 
@@ -282,79 +100,3 @@ struct Keyboard;
 ----
 
 `Keyboard` provides useful functions for handling keyboards. xref:Keyboard.adoc[*Read more...*]
-
-See also: <<scancode>>, <<keycode>>
-
-[#keycode]
-=== `gf::Keycode`
-
-[source]
-----
-#include <gf2/graphics/Keyboard.h>
-enum class Keycode : uint32_t;
-----
-
-`Keycode` describes all the logical keyboard buttons. xref:Keycode.adoc[*Read more...*]
-
-See also: <<scancode>>, <<keyboard>>
-
-[#modifier]
-=== `gf::Modifier`
-
-[source]
-----
-#include <gf2/graphics/Keyboard.h>
-enum class Modifiers : uint32_t;
-----
-
-A modifier key is a special key that can be used in combinaison with another key. xref:Modifier.adoc[*Read more...*]
-
-[#mouse_button]
-=== `gf::MouseButton`
-
-[source]
-----
-#include <gf2/graphics/Mouse.h>
-enum class MouseButton : uint32_t;
-----
-
-`MouseButton` describes all the mouse buttons. xref:MouseButton.adoc[*Read more...*]
-
-[#mouse_id]
-=== `gf::MouseId`
-
-[source]
-----
-#include <gf2/graphics/Mouse.h>
-enum class MouseId : uint32_t;
-----
-
-`MouseId` is the identifier of a mouse device.
-
-See also: <<touch_mouse_id>>
-
-[#scancode]
-=== `gf::Scancode`
-
-[source]
-----
-#include <gf2/graphics/Keyboard.h>
-enum class Scancode : uint32_t;
-----
-
-`Scancode` describes all the physical keyboard buttons. xref:Scancode.adoc[*Read more...*]
-
-See also: <<keycode>>, <<keyboard>>
-
-[#touch_id]
-=== `gf::TouchId`
-
-[source]
-----
-#include <gf2/graphics/Touch.h>
-enum class TouchId : int64_t;
-----
-
-`TouchId` is the identifier of a touch device.
-
-See also: <<mouse_touch_id>>

@@ -6,14 +6,14 @@ include::bits/attributes.adoc[]
 
 A modifier key is a special key that can be used in combinaison with another key.
 
-xref:graphics_inputs.adoc[< Back to `graphics` Inputs]
+xref:core_input_description.adoc[< Back to `core` Input Description]
 
 == Description
 
 [source]
 ----
-#include <gf2/graphics/Keyboard.h>
-enum class Modifiers : uint32_t;
+#include <gf2/core/Modifier.h>
+enum class Modifier : uint16_t;
 ----
 
 The main modifiers (shift, control, atl, gui) generally have two instances on keyboards, one on the left of the space bar, one on the right of the space bar. The enumeration handle both instances, but can also be used to address the two instances at a time.

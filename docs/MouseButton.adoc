@@ -5,13 +5,13 @@ include::bits/attributes.adoc[]
 
 `MouseButton` describes all the mouse buttons.
 
-xref:graphics_inputs.adoc[< Back to `graphics` Inputs]
+xref:core_input_description.adoc[< Back to `core` Input Description]
 
 == Description
 
 [source]
 ----
-#include <gf2/graphics/Mouse.h>
+#include <gf2/core/MouseTypes.h>
 enum class MouseButton : uint32_t;
 ----
 

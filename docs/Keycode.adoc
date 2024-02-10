@@ -6,13 +6,13 @@ include::bits/attributes.adoc[]
 
 `Keycode` describes all the logical keyboard buttons.
 
-xref:graphics_inputs.adoc[< Back to `graphics` Inputs]
+xref:core_input_description.adoc[< Back to `core` Input Description]
 
 == Description
 
 [source]
 ----
-#include <gf2/graphics/Keyboard.h>
+#include <gf2/core/Keycode.h>
 enum class Keycode : uint32_t;
 ----
 
