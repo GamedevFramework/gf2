@@ -19,8 +19,6 @@
 
 #include <gf2/graphics/Vertex.h>
 
-#include "gf2/graphics/RenderPipeline.h"
-
 #define VMA_IMPLEMENTATION
 #include <vk_mem_alloc.h>
 
