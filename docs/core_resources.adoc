@@ -147,7 +147,8 @@ class TarballLoader;
 
 == Functions
 
-=== `loader_for`
+[#loader_for]
+=== `gf::loader_for`
 
 [source]
 ----

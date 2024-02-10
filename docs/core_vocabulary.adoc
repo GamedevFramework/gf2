@@ -166,7 +166,8 @@ See also: <<zero>>
 
 == Functions
 
-=== `error`
+[#error]
+=== `gf::error`
 
 [source]
 ----
