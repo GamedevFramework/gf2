@@ -3,19 +3,17 @@
 
 #include <cstdint>
 
-#include <type_traits>
-
 #include <vulkan/vulkan.h>
 
 #include <gf2/core/Color.h>
 #include <gf2/core/Rect.h>
 #include <gf2/core/Vec2.h>
+#include <gf2/core/Mat3.h>
 
 #include "BufferReference.h"
 #include "Descriptor.h"
 #include "GraphicsApi.h"
 #include "RenderTarget.h"
-#include "ShaderData.h"
 #include "TextureReference.h"
 
 namespace gf {
@@ -36,17 +34,7 @@ namespace gf {
     void bind_descriptor(const RenderPipelineLayout* pipeline, uint32_t set, Descriptor descriptor) const;
 
     void push_constant(const RenderPipelineLayout* pipeline, ShaderStage stage, std::size_t size, const void* data) const;
-
-    template<typename T>
-    void push_constant(const RenderPipelineLayout* pipeline, ShaderStage stage, const T* data) const
-    {
-      if constexpr (std::is_same_v<T, ShaderDataType<T>>) {
-        push_constant(pipeline, stage, sizeof(T), data);
-      } else {
-        const ShaderDataType<T> shader_data(*data);
-        push_constant(pipeline, stage, sizeof(shader_data), &shader_data);
-      }
-    }
+    void push_constant(const RenderPipelineLayout* pipeline, ShaderStage stage, const Mat3F& data) const;
 
     void draw(std::size_t vertex_count, std::size_t first_vertex = 0) const;
     void draw_indexed(std::size_t index_count, std::size_t first_index = 0, std::ptrdiff_t vertex_offset = 0) const;

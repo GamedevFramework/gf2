@@ -17,7 +17,6 @@
 #include <gf2/core/Log.h>
 #include <gf2/core/Mat3.h>
 
-#include <gf2/graphics/ShaderData.h>
 #include <gf2/graphics/Vertex.h>
 
 #include "gf2/graphics/RenderPipeline.h"

@@ -7,6 +7,8 @@
 
 #include <cassert>
 
+#include <array>
+
 namespace gf {
 
   RenderRecorder::RenderRecorder(RenderManager* render_manager)
@@ -14,14 +16,16 @@ namespace gf {
   {
   }
 
-  void RenderRecorder::update_view(const Mat4F& view_matrix, const RectF& viewport)
+  void RenderRecorder::update_view(const Mat3F& view_matrix, const RectF& viewport)
   {
+    auto aligned_view_matrix = compute_aligned(view_matrix);
+
     if (m_next_view_matrix_index == m_view_matrix_buffers.size()) {
-      Buffer buffer(BufferType::Device, BufferUsage::Uniform, &view_matrix, 1, m_render_manager);
+      Buffer buffer(BufferType::Device, BufferUsage::Uniform, aligned_view_matrix.size(), sizeof(float), aligned_view_matrix.data(), m_render_manager);
       buffer.set_debug_name("[gf2] View Matrix Buffer #" + std::to_string(m_next_view_matrix_index));
       m_view_matrix_buffers.push_back(std::move(buffer));
     } else {
-      m_view_matrix_buffers[m_next_view_matrix_index].update(&view_matrix, 1, m_render_manager);
+      m_view_matrix_buffers[m_next_view_matrix_index].update(aligned_view_matrix.size(), sizeof(float), aligned_view_matrix.data(), m_render_manager);
     }
 
     const Record record = { RecordType::View, m_views.size() };

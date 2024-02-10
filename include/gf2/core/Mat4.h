@@ -4,8 +4,7 @@
 #define GF_MAT4_H
 
 #include <cassert>
-
-#include "Mat3.h"
+#include <cstdint>
 
 namespace gf {
 
@@ -26,29 +25,33 @@ namespace gf {
       assert(0 <= col && col < 4);
       return m[row][col]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     }
-
-    Mat4()
-    : m{
-      { 1.0f, 0.0f, 0.0f, 0.0f },
-      { 0.0f, 1.0f, 0.0f, 0.0f },
-      { 0.0f, 0.0f, 1.0f, 0.0f },
-      { 0.0f, 0.0f, 0.0f, 1.0f }
-    }
-    {
-    }
-
-    Mat4(const Mat3<T>& other)
-    : m{
-      { other(0, 0), other(0, 1), other(0, 2), 0.0f },
-      { other(1, 0), other(1, 1), other(1, 2), 0.0f },
-      { other(2, 0), other(2, 1), other(2, 2), 0.0f },
-      { 0.0f, 0.0f, 0.0f, 0.0f }
-    }
-    {
-    }
   };
 
+  template<typename T>
+  inline Mat4<T> operator*(const Mat4<T>& lhs, const Mat4<T>& rhs)
+  {
+    Mat4<T> result = {};
+
+    for (int32_t col = 0; col < 4; ++col) {
+      for (int32_t row = 0; row < 4; ++row) {
+        T sum = T(0);
+
+        for (int32_t k = 0; k < 4; ++k) {
+          sum += lhs(row, k) * rhs(k, col);
+        }
+
+        result(row, col) = sum;
+      }
+    }
+
+    return result;
+  }
+
   using Mat4F = Mat4<float>;
+
+  inline constexpr Mat4F Identity4F = {
+    { { 1.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 1.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0f } }
+  };
 
 } // namespace gf
 

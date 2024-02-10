@@ -194,8 +194,6 @@ add_library(gf2graphics0
   graphics/RenderTarget.cc
   graphics/Scene.cc
   graphics/SceneManager.cc
-  graphics/Shader.cc
-  graphics/ShaderData.cc
   graphics/Shape.cc
   graphics/ShapeEntity.cc
   graphics/Sprite.cc

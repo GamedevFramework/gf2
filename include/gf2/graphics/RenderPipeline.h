@@ -7,10 +7,12 @@
 
 #include <vulkan/vulkan.h>
 
+#include <gf2/core/Span.h>
+
 #include "Descriptor.h"
 #include "GraphicsApi.h"
 #include "RenderStates.h"
-#include "Shader.h"
+#include "ShaderStage.h"
 #include "VertexInput.h"
 
 namespace gf {
@@ -100,9 +102,9 @@ namespace gf {
   public:
     RenderPipelineBuilder() = default;
 
-    RenderPipelineBuilder& add_shader(Shader* shader)
+    RenderPipelineBuilder& add_shader(ShaderStage stage, Span<const uint32_t> bytecode)
     {
-      m_shaders.push_back(shader);
+      m_shaders.push_back({ stage, bytecode });
       return *this;
     }
 
@@ -135,10 +137,15 @@ namespace gf {
   private:
     friend class RenderPipeline;
 
+    struct Shader {
+      ShaderStage stage = ShaderStage::Vertex;
+      Span<const uint32_t> bytecode;
+    };
+
     PrimitiveTopology m_primitive_topology = PrimitiveTopology::TriangleList;
     Blend m_blend = AlphaBlending;
     VertexInput m_vertex_input;
-    std::vector<Shader*> m_shaders;
+    std::vector<Shader> m_shaders;
     RenderPipelineLayout* m_pipeline_layout = nullptr;
   };
 

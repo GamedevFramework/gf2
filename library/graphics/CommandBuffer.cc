@@ -125,6 +125,12 @@ namespace gf {
     vkCmdPushConstants(m_command_buffer, pipeline->m_pipeline_layout, static_cast<VkShaderStageFlags>(stage), 0, static_cast<uint32_t>(size), data);
   }
 
+  void RenderCommandBuffer::push_constant(const RenderPipelineLayout* pipeline, ShaderStage stage, const Mat3F& data) const
+  {
+    auto aligned_data = compute_aligned(data);
+    push_constant(pipeline, stage, sizeof(float) * aligned_data.size(), aligned_data.data());
+  }
+
   void RenderCommandBuffer::draw(std::size_t vertex_count, std::size_t first_vertex) const
   {
     vkCmdDraw(m_command_buffer, static_cast<uint32_t>(vertex_count), 1, static_cast<uint32_t>(first_vertex), 0);

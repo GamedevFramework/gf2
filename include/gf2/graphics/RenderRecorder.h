@@ -31,7 +31,7 @@ namespace gf {
     RenderRecorder& operator=(RenderRecorder&&) noexcept = default;
 #endif
 
-    void update_view(const Mat4F& view_matrix, const RectF& viewport);
+    void update_view(const Mat3F& view_matrix, const RectF& viewport);
     void update_scissor(const RectI& scissor);
     void record(const RenderObject& object);
 

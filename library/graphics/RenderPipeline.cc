@@ -141,13 +141,27 @@ namespace gf {
   {
     // shaders
 
+    std::vector<VkShaderModule> shader_modules;
     std::vector<VkPipelineShaderStageCreateInfo> shader_stages;
 
-    for (auto* shader : m_shaders) {
+    for (auto shader : m_shaders) {
+      VkShaderModuleCreateInfo shader_module_create_info = {};
+      shader_module_create_info.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+      shader_module_create_info.codeSize = shader.bytecode.size() * sizeof(uint32_t);
+      shader_module_create_info.pCode = shader.bytecode.data();
+
+      VkShaderModule shader_module = VK_NULL_HANDLE;
+
+      if (vkCreateShaderModule(render_manager->m_device, &shader_module_create_info, nullptr, &shader_module) != VK_SUCCESS) {
+        Log::fatal("Failed to create shader module.");
+      }
+
+      shader_modules.push_back(shader_module);
+
       VkPipelineShaderStageCreateInfo shader_stage_info = {};
       shader_stage_info.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-      shader_stage_info.stage = static_cast<VkShaderStageFlagBits>(shader->m_stage);
-      shader_stage_info.module = shader->m_shader_module;
+      shader_stage_info.stage = static_cast<VkShaderStageFlagBits>(shader.stage);
+      shader_stage_info.module = shader_module;
       shader_stage_info.pName = "main";
 
       shader_stages.push_back(shader_stage_info);
@@ -292,6 +306,12 @@ namespace gf {
 
     if (vkCreateGraphicsPipelines(render_manager->m_device, VK_NULL_HANDLE, 1, &pipeline_create_info, nullptr, &pipeline) != VK_SUCCESS) {
       Log::fatal("Failed to create pipeline.");
+    }
+
+    // destroy shader modules
+
+    for (VkShaderModule shader_module : shader_modules) {
+      vkDestroyShaderModule(render_manager->m_device, shader_module, nullptr);
     }
 
     return { render_manager->m_device, pipeline };
