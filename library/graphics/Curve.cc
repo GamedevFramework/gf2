@@ -7,9 +7,6 @@
 
 #include <cassert>
 
-#include <algorithm>
-#include <iterator>
-
 #include <gf2/core/Polyline.h>
 #include <gf2/core/Range.h>
 
@@ -32,12 +29,12 @@ namespace gf {
     void compute_curve_geometry(Geometry& geometry, const CurveData& data, float half_width, Color color)
     {
       assert(data.points.size() >= 2);
+      const Color linear_color = gf::srgb_to_linear(color);
 
-      auto compute_vertex = [color](Vec2F location) -> Vertex {
-        return {
-          location, { 0.0f, 0.0f },
-           color
-        };
+      auto compute_vertex = [linear_color](Vec2F location) -> Vertex {
+        // clang-format off
+        return { location, { 0.0f, 0.0f }, linear_color };
+        // clang-format on
       };
 
       // first point

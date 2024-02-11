@@ -8,9 +8,6 @@
 #include <cassert>
 #include <cstdint>
 
-#include <algorithm>
-#include <iterator>
-
 #include <gf2/core/Polygon.h>
 #include <gf2/core/Range.h>
 
@@ -43,16 +40,18 @@ namespace gf {
       Vec2F min = data.points[0];
       Vec2F max = data.points[0];
 
+      const Color linear_color = gf::srgb_to_linear(data.color);
+
       Vertex center_vertex;
       center_vertex.location = geometry.center;
-      center_vertex.color = data.color;
+      center_vertex.color = linear_color;
 
       geometry.vertices.push_back(center_vertex);
 
       for (auto point : data.points) {
         Vertex vertex;
         vertex.location = point;
-        vertex.color = data.color;
+        vertex.color = linear_color;
 
         min = gf::min(min, point);
         max = gf::max(max, point);
@@ -82,6 +81,7 @@ namespace gf {
     RawOutlineShapeGeometry compute_outline_shape_geometry(const ShapeData& data, Vec2F center)
     {
       RawOutlineShapeGeometry geometry;
+      const Color linear_outline_color = gf::srgb_to_linear(data.outline_color);
 
       for (auto i : gf::index_range(data.points.size())) {
         const Vec2F prev = data.points[i];
@@ -104,9 +104,9 @@ namespace gf {
 
         Vertex vertices[2];
         vertices[0].location = curr;
-        vertices[0].color = data.outline_color;
+        vertices[0].color = linear_outline_color;
         vertices[1].location = curr + normal * data.outline_thickness;
-        vertices[1].color = data.outline_color;
+        vertices[1].color = linear_outline_color;
 
         geometry.vertices.push_back(vertices[0]);
         geometry.vertices.push_back(vertices[1]);

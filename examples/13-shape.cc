@@ -25,6 +25,7 @@ int main()
   gf::StandardScene scene;
   scene.set_world_center({ 1000.0f, 1000.0f });
   scene.set_world_size({ 200.0f, 200.0f });
+  scene.set_clear_color(gf::White);
 
   scene.add_world_entity(&rectangle_entity);
 
