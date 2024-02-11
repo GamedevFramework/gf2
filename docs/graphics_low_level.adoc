@@ -39,19 +39,13 @@ See also: xref:article_vulkan.adoc[Article: Rendering with Vulkan]
 
 === `gf::RenderCommandBuffer`
 
-=== `gf::Renderer`
-
 === `gf::RenderPipeline`
 
 === `gf::RenderPipelineBuilder`
 
 === `gf::RenderTarget`
 
-=== `gf::Shader`
-
 === `gf::ShaderStage`
-
-=== `gf::SimpleVertex`
 
 === `gf::StagingBufferReference`
 

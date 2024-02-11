@@ -13,9 +13,11 @@ xref:reference.adoc#graphics[< Back to reference]
 
 === `gf::BufferReference`
 
+=== `gf::RenderManager`
+
 === `gf::RenderObject`
 
-=== `gf::Renderer`
+=== `gf::RenderRecorder`
 
 === `gf::Texture`
 
