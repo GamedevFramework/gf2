@@ -188,7 +188,7 @@ namespace gf {
 
     void compute_vertices(std::vector<Vertex>& vertices, std::vector<uint16_t>& indices, RectF bounds, RectF texture_region, Vec2F position, Color color)
     {
-      bounds = bounds.grow_by(static_cast<float>(FontManager::spread() - 1));
+      bounds = bounds.grow_by(static_cast<float>(FontManager::spread()));
 
       assert(vertices.size() < UINT16_MAX);
       auto index = static_cast<uint16_t>(vertices.size());
