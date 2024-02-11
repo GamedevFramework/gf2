@@ -11,13 +11,6 @@
 
 namespace gf {
 
-  struct GF_GRAPHICS_API SimpleVertex {
-    Vec2F location = { 0.0f, 0.0f };
-    Color color = White;
-
-    static VertexInput compute_input();
-  };
-
   struct GF_GRAPHICS_API Vertex {
     Vec2F location = { 0.0f, 0.0f };
     Vec2F tex_coords = { 0.0f, 0.0f };

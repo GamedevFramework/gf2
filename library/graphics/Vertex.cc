@@ -7,18 +7,6 @@
 
 namespace gf {
 
-  VertexInput SimpleVertex::compute_input()
-  {
-    VertexInput input;
-
-    input.bindings.push_back({ 0, sizeof(SimpleVertex) });
-
-    input.attributes.push_back({ 0, 0, Format::Vec2F, offsetof(SimpleVertex, location) });
-    input.attributes.push_back({ 1, 0, Format::Color32F, offsetof(SimpleVertex, color) });
-
-    return input;
-  }
-
   VertexInput Vertex::compute_input()
   {
     VertexInput input;
