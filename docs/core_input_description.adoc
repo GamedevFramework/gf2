@@ -11,6 +11,8 @@ The input description component contains enumerations and types that describe in
 
 xref:reference.adoc#core[< Back to reference]
 
+See also: xref:graphics_inputs.adoc[`graphics` Inputs]
+
 == Variables
 
 [#any_gamepad]
@@ -251,7 +253,7 @@ enum class Scancode : uint32_t;
 
 `Scancode` describes all the physical keyboard buttons. xref:Scancode.adoc[*Read more...*]
 
-See also: <<keycode>>, <<keyboard>>
+See also: <<keycode>>
 
 [#touch_id]
 === `gf::TouchId`

@@ -11,6 +11,8 @@ The inputs component runtime handling of input devices.
 
 xref:reference.adoc#graphics[< Back to reference]
 
+See also: xref:core_input_description.adoc[`core` Input Description]
+
 == Types
 
 [#cursor]
