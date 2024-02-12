@@ -3,14 +3,120 @@ v0.1
 include::bits/attributes.adoc[]
 :toc: right
 
-The data component provides classes for loading various type of data related to graphics objects.
+The data component provides classes for loading various type of data related to:
+
+- inputs:
+- graphics objects
+- resources:
 
 xref:reference.adoc#core[< Back to reference]
 
 == Types
 
+[#action_data]
+=== `gf::ActionData`
+
+[#action_group_data]
+=== `gf::ActionGroupData`
+
+[#action_type]
+=== `gf::ActionType`
+
+[#animation_frame_data]
 === `gf::AnimationFrameData`
 
+[#animation_data]
 === `gf::AnimationData`
 
+[#audio_source_data]
+=== `gf::AudioSourceData`
+
+[#audio_source_resource]
+=== `gf::AudioSourceResource`
+
+[#audio_source_type]
+=== `gf::AudioSourceType`
+
+[#control_data]
+=== `gf::ControlData`
+
+[#control_type]
+=== `gf::ControlType`
+
+[#curve_data]
+=== `gf::CurveData`
+
+[#curve_group_data]
+=== `gf::CurveGroupData`
+
+[#gamepad_axis_control_data]
+=== `gf::GamepadAxisControlData`
+
+[#gamepad_button_control_data]
+=== `gf::GamepadButtonControlData`
+
+[#group_layer_data]
+=== `gf::GroupLayerData`
+
+[#keycode_control_data]
+=== `gf::KeycodeControlData`
+
+[#layer_data]
+=== `gf::LayerData`
+
+[#layer_structure_data]
+=== `gf::LayerStructureData`
+
+[#mouse_button_control_data]
+=== `gf::MouseButtonControlData`
+
+[#object_data]
+=== `gf::ObjectData`
+
+[#object_layer_data]
+=== `gf::ObjectLayerData`
+
+[#object_type]
+=== `gf::ObjectType`
+
+[#scancode_control_data]
+=== `gf::ScancodeControlData`
+
+[#shape_data]
+=== `gf::ShapeData`
+
+[#shape_group_data]
+=== `gf::ShapeGroupData`
+
+[#shape_resource]
+=== `gf::ShapeResource`
+
+[#sprite_data]
+=== `gf::SpriteData`
+
+[#sprite_resource]
+=== `gf::SpriteResource`
+
+[#text_data]
+=== `gf::TextData`
+
+[#text_resource]
+=== `gf::TextResource`
+
+[#tile_data]
+=== `gf::TileData`
+
+[#tile_layer_data]
+=== `gf::TileLayerData`
+
+[#tiled_map_data]
 === `gf::TiledMapData`
+
+[#tiled_map_resource]
+=== `gf::TiledMapResource`
+
+[#tileset_data]
+=== `gf::TilesetData`
+
+[#tileset_tile_data]
+=== `gf::TilesetTileData`

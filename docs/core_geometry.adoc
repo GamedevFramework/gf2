@@ -1,0 +1,31 @@
+= `core` Geometry
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The geometry component contains types and algorithms related to link:https://en.wikipedia.org/wiki/Geometry[geometry].
+
+xref:reference.adoc#core[< Back to reference]
+
+== Types
+
+[#cattmull_rom_type]
+=== `gf::CattmullRomType`
+
+[#compound_curve_builder]
+=== `gf::CompoundCurveBuilder`
+
+== Functions
+
+[#cattmull_rom_time_difference]
+=== `gf::cattmull_rom_time_difference`
+
+[#cattmull_rom_interpolation]
+=== `gf::cattmull_rom_interpolation`
+
+[#cubic_bezier_interpolation]
+=== `gf::cubic_bezier_interpolation`
+
+[#quadratic_bezier_interpolation]
+=== `gf::quadratic_bezier_interpolation`
+
