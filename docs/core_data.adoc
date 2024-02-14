@@ -3,30 +3,38 @@ v0.1
 include::bits/attributes.adoc[]
 :toc: right
 
-The data component provides classes for loading various type of data related to:
+The data component provides classes for handling various type of data related to graphics objects and resources:
 
-- inputs:
-- graphics objects
-- resources:
+- animations (<<animation_data>>, <<animation_group_data>>)
+- audio sources (<<audio_source_data>>)
+- curves (<<curve_data>>, <<curve_group_data>>)
+- shapes (<<shape_data>>, <<shape_group_data>>)
+- sprites (<<sprite_data>>)
+- text (<<text_data>>)
+- tiled map (<<tiled_map_data>>)
+
+These classes are pure data, they are declarative and are meant to be serialized if necessary.
 
 xref:reference.adoc#core[< Back to reference]
 
+See also: xref:core_input_data.adoc[`core` Input Data]
+
 == Types
-
-[#action_data]
-=== `gf::ActionData`
-
-[#action_group_data]
-=== `gf::ActionGroupData`
-
-[#action_type]
-=== `gf::ActionType`
 
 [#animation_frame_data]
 === `gf::AnimationFrameData`
 
 [#animation_data]
 === `gf::AnimationData`
+
+[#animation_group_data]
+=== `gf::AnimationGroupData`
+
+[#animation_group_resource]
+=== `gf::AnimationGroupResource`
+
+[#animation_resource]
+=== `gf::AnimationResource`
 
 [#audio_source_data]
 === `gf::AudioSourceData`
@@ -37,38 +45,20 @@ xref:reference.adoc#core[< Back to reference]
 [#audio_source_type]
 === `gf::AudioSourceType`
 
-[#control_data]
-=== `gf::ControlData`
-
-[#control_type]
-=== `gf::ControlType`
-
 [#curve_data]
 === `gf::CurveData`
 
 [#curve_group_data]
 === `gf::CurveGroupData`
 
-[#gamepad_axis_control_data]
-=== `gf::GamepadAxisControlData`
-
-[#gamepad_button_control_data]
-=== `gf::GamepadButtonControlData`
-
 [#group_layer_data]
 === `gf::GroupLayerData`
-
-[#keycode_control_data]
-=== `gf::KeycodeControlData`
 
 [#layer_data]
 === `gf::LayerData`
 
 [#layer_structure_data]
 === `gf::LayerStructureData`
-
-[#mouse_button_control_data]
-=== `gf::MouseButtonControlData`
 
 [#object_data]
 === `gf::ObjectData`
@@ -78,9 +68,6 @@ xref:reference.adoc#core[< Back to reference]
 
 [#object_type]
 === `gf::ObjectType`
-
-[#scancode_control_data]
-=== `gf::ScancodeControlData`
 
 [#shape_data]
 === `gf::ShapeData`

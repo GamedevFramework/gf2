@@ -1,0 +1,43 @@
+= `core` Data
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The input data component provides classes for handling input data at a high level.
+
+xref:reference.adoc#core[< Back to reference]
+
+See also: xref:core_input_description.adoc[`core` Input Description]
+
+== Types
+
+[#action_data]
+=== `gf::ActionData`
+
+[#action_group_data]
+=== `gf::ActionGroupData`
+
+[#action_type]
+=== `gf::ActionType`
+
+[#control_data]
+=== `gf::ControlData`
+
+[#control_type]
+=== `gf::ControlType`
+
+[#gamepad_axis_control_data]
+=== `gf::GamepadAxisControlData`
+
+[#gamepad_button_control_data]
+=== `gf::GamepadButtonControlData`
+
+[#keycode_control_data]
+=== `gf::KeycodeControlData`
+
+[#mouse_button_control_data]
+=== `gf::MouseButtonControlData`
+
+[#scancode_control_data]
+=== `gf::ScancodeControlData`
+

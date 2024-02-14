@@ -24,7 +24,8 @@ xref:index.adoc[< Back to main page]
 ** xref:core_grids.adoc[Grids] (xref:AnyGrid.adoc[`AnyGrid`], `GridMap`)
 ** xref:core_coordinates.adoc[Coordinates] (xref:Transform.adoc[`Transform`], xref:Camera.adoc[`Camera`])
 ** xref:core_input_description.adoc[Input Description] (xref:Scancode.adoc[`Scancode`], xref:Keycode.adoc[`Keycode`], xref:MouseButton.adoc[`MouseButton`])
-** xref:core_data.adoc[Data] (`TiledMapData`, `AnimationData`)
+** xref:core_input_data.adoc[Input Data] (`ActionData`, `ControlData`)
+** xref:core_data.adoc[Data] (`AnimationData`, `TextData`, `TiledMapData`, `SpriteData`)
 
 == `graphics`
 
