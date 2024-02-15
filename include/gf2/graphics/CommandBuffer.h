@@ -6,9 +6,9 @@
 #include <vulkan/vulkan.h>
 
 #include <gf2/core/Color.h>
+#include <gf2/core/Mat3.h>
 #include <gf2/core/Rect.h>
 #include <gf2/core/Vec2.h>
-#include <gf2/core/Mat3.h>
 
 #include "BufferReference.h"
 #include "Descriptor.h"

@@ -7,7 +7,7 @@
 
 namespace gf {
 
-  using Easing = float(*)(float);
+  using Easing = float (*)(float);
 
   GF_CORE_API float ease_linear(float t);
   GF_CORE_API float ease_smooth(float t);

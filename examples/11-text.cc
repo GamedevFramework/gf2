@@ -5,11 +5,11 @@
 #include <gf2/core/Color.h>
 #include <gf2/core/FontManager.h>
 
+#include <gf2/graphics/CurveEntity.h>
 #include <gf2/graphics/Font.h>
 #include <gf2/graphics/GraphicsInitializer.h>
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/SceneManager.h>
-#include <gf2/graphics/CurveEntity.h>
 #include <gf2/graphics/TextEntity.h>
 
 #include "config.h"

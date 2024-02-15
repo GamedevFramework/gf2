@@ -1,64 +1,75 @@
-#include <gf2/core/Easing.h>
-
 #include <cmath>
 
+#include <gf2/core/Easing.h>
 #include <gf2/core/Math.h>
 
 namespace gf {
 
   namespace {
 
-    template <Easing Func>
+    template<Easing Func>
     class GenericEasing {
     public:
-      static float ease_in(float t) {
+      static float ease_in(float t)
+      {
         return Func(t);
       }
 
-      static float ease_out(float t) {
+      static float ease_out(float t)
+      {
         return 1 - Func(1 - t);
       }
 
-      static float ease_in_out(float t) {
+      static float ease_in_out(float t)
+      {
         return t < 0.5f ? ease_in(2 * t) / 2 : 0.5f + ease_out(2 * t - 1) / 2;
       }
 
-      static float ease_out_in(float t) {
+      static float ease_out_in(float t)
+      {
         return t < 0.5f ? ease_out(2 * t) / 2 : 0.5f + ease_in(2 * t - 1) / 2;
       }
     };
 
-    constexpr float quad(float t) {
+    constexpr float quad(float t)
+    {
       return t * t;
     }
 
-    constexpr float cubic(float t) {
+    constexpr float cubic(float t)
+    {
       return t * t * t;
     }
 
-    constexpr float quart(float t) {
+    constexpr float quart(float t)
+    {
       return t * t * t * t;
     }
 
-    constexpr float quint(float t) {
+    constexpr float quint(float t)
+    {
       return t * t * t * t * t;
     }
 
-    inline float circ(float t) {
+    inline float circ(float t)
+    {
       return 1 - std::sqrt(1 - t * t);
     }
 
-    inline float sine(float t) {
+    inline float sine(float t)
+    {
       return (1 - std::cos(Pi2 * t));
     }
 
-    inline float back(float t) {
+    inline float back(float t)
+    {
       static constexpr float C1 = 1.70158f;
       static constexpr float C2 = 1 + C1;
       return t * t * (C2 * t - C1);
     }
 
-    inline float bounce(float t) {
+    inline float bounce(float t)
+    {
       static constexpr float C1 = 1.0f / 2.75f;
       static constexpr float C2 = 7.5625f; // = 2.75f * 2.75f
 
@@ -79,7 +90,8 @@ namespace gf {
       return 1 - (C2 * gf::square(u - 2.625f * C1) + 0.984375f);
     }
 
-    inline float elastic(float t) {
+    inline float elastic(float t)
+    {
       static constexpr float C0 = 0.3f;
 
       const float u = t - 1;
@@ -87,10 +99,10 @@ namespace gf {
       return -std::pow(2.0f, 10 * u) * std::sin((u - C0 / 4) * 2 * Pi / C0);
     }
 
-    inline float expo(float t) {
+    inline float expo(float t)
+    {
       return t == 0.0f ? 0.0f : std::pow(2.0f, 10 * (t - 1));
     }
-
 
   } // anonymous namespace
 
