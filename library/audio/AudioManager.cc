@@ -1,20 +1,14 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
 
-// clang-format off: main header
 #include <gf2/audio/AudioManager.h>
-// clang-format on
 
 #include <cassert>
 #include <cstring>
 
-#include <array>
-
 #include <gf2/core/Log.h>
 
-// clang-format: off
 #include "bits/AudioBackend.h"
-// clang-format on
 
 namespace gf {
 

@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
 
-// clang-format off: main header
-#include <cstdint>
 #include <gf2/graphics/TiledMap.h>
-// clang-format on
+
+#include <cstdint>
 
 #include <gf2/core/Property.h>
 #include <gf2/core/ResourceBundle.h>

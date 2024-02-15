@@ -37,7 +37,6 @@ IncludeCategories:
   # local headers
   - Regex: '^"[[:alnum:]._]+"'
     Priority: 6
-IncludeIsMainRegex: "$"
 IndentAccessModifiers: false
 IndentCaseBlocks: true
 IndentCaseLabels: true
