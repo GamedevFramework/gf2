@@ -37,6 +37,7 @@ IncludeCategories:
   # local headers
   - Regex: '^"[[:alnum:]._]+"'
     Priority: 6
+IncludeIsMainRegex: "$"
 IndentAccessModifiers: false
 IndentCaseBlocks: true
 IndentCaseLabels: true
@@ -49,6 +50,7 @@ LambdaBodyIndentation: OuterScope
 Language: Cpp
 LineEnding: LF
 MaxEmptyLinesToKeep: 1
+MainIncludeChar: Any
 NamespaceIndentation: All
 NamespaceMacros: [ 'TEST' ]
 PackConstructorInitializers: NextLine

@@ -1,6 +1,10 @@
-#include <cmath>
+// SPDX-License-Identifier: Zlib
+// Copyright (c) 2023 Julien Bernard
 
 #include <gf2/core/Easing.h>
+
+#include <cmath>
+
 #include <gf2/core/Math.h>
 
 namespace gf {
