@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
 
-#include <gf2/core/TouchTypes.h>
-
 #include <type_traits>
 #include <utility>
 
 #include <SDL2/SDL.h>
+
+#include <gf2/core/TouchTypes.h>
 
 namespace gf {
 

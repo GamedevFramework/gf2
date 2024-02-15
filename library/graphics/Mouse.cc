@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
 
-#include <gf2/core/MouseTypes.h>
-
 #include <type_traits>
 
 #include <SDL2/SDL.h>
+
+#include <gf2/core/MouseTypes.h>
 
 namespace gf {
 
