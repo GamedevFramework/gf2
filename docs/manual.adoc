@@ -1,0 +1,29 @@
+= gf2 Manual
+v0.1
+include::bits/attributes.adoc[]
+
+The gf2 manual offers a trip in the framework so that you can learn how to build a full game from zero.
+
+xref:index.adoc[< Back to main page]
+
+== Basics
+
+. xref:manual_gamedev_101.adoc[Gamedev 101]
+. xref:manual_resources.adoc[Resources]
+. xref:manual_scenes.adoc[Scenes]
+. xref:manual_actions.adoc[Actions]
+. xref:manual_entities.adoc[Entities]
+
+== Advanced Topics
+
+// . xref:manual_cameras.adoc[Cameras]
+. xref:manual_tiled_map.adoc[Tiled Map]
+. xref:manual_audio.adoc[Audio]
+. xref:manual_serialization.adoc[Serialization]
+. xref:manual_network.adoc[Network]
+
+== Commented Examples
+
+. xref:manual_workflow.adoc[Workflow for making a game]
+. xref:manual_sokoban.adoc[Sokoban]
+. xref:manual_roguelike.adoc[Roguelike]

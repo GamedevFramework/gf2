@@ -15,7 +15,7 @@ CAUTION: This project is in **alpha stage**. The API is not stabilized and may c
 
 - Quickstart
 - Installation
-- Manual
+- xref:manual.adoc[Manual]
 - Cookbook
 - xref:reference.adoc[Reference]
 - xref:symbols.adoc[Symbols] (xref:symbols_types.adoc[Types], xref:symbols_variables.adoc[Variables], xref:symbols_functions.adoc[Functions])
