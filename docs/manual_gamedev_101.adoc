@@ -1,0 +1,45 @@
+= Gamedev 101
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+link:https://tvtropes.org/pmwiki/pmwiki.php/SoYouWantTo/WriteAVideoGame[So you want to write a video game?] Well, Gamedev Framework 2 will help you on the technical side, but always keep in mind that a video game is more than just a few lines of code. Anyway, here is the beginning of the journey to learn how to write a video game.
+
+This section will teach you the very basics of game development. No code for now as the advices are very generic. If you are already familiar with the development of a video game, you can skip this section entirely and go to the xref:manual_resources.adoc[next section about resources].
+
+xref:manual.adoc[< Back to the manual]
+
+== The Big Picture
+
+Making a video game is hard.
+
+It is hard for several reasons. First, a video game is *real-time interactive application*. "Real-time" is hard, because you have to compute everything in a very short time frame. If you miss the target, it will be visible on the screen and the players will not be happy about it. "Interactive" is hard because the player can do many things you had not imagined at the beginning and the game must deal with unpredicted situations smoothly.
+
+Second, a video game is a very technical piece. It requires *knowledge in many fields*, not only programming but graphics, maths, physics, writing, music, economy, etc. In the end, programming may be the easiest part. Especially when you use a framework like Gamedev Framework 2, or a full-blown engine like link:https://godotengine.org/[Godot].
+
+You still want to make a video game? Let's go!
+
+A video game is a special kind of application that must be programmed in a certain way. It's not about "everybody does this so let's do it too", it's more about understanding that this code organization has been battle-tested and provides many advantages. Of course, there are many variants but the general outline remains the same. First the game has to initialize its state. Second the game enters the game loop until the end of the game.
+
+== Initialization
+
+During initialization, the goal is to setup the window and load the resources. At the end, the game should be able to display something on the screen.
+
+Window creation is the easiest part. Generally, you have to provide *a title and an initial size* for the window. The initial size of the window can take into account the size of the display or be large enough for the majority of configurations footnote:[You can check the link:https://store.steampowered.com/hwsurvey/Steam-Hardware-Software-Survey-Welcome-to-Steam[Steam Hardware and Software Survey] for example]. At the time of writing, with an initial size of stem:[1360 \times 768], you target more than 98% of the users and with an initial size of stem:[1600 \times 900], you target more than 90% of the users. Moreover, you can set some properties of the window: the window may not be resizable, in this case you should provide a way to make the window fullscreen and back; or the window may not be decorated, in this case the window title bar disappears, especially the button to close the window, you may want to allow the user to close the window inside the game.
+
+== Game Loop
+
+=== Process Inputs
+
+=== Update the State
+
+=== Draw a Frame
+
+
+== Conclusion
+
+This section has presented the general principles of video game programming. The following sections will make a focus on one or more parts of this organization. It's important to be able to replace them in the big picture.
+
+*Next: xref:manual_resources.adoc[Resources]*
+
+See also: link:https://gameprogrammingpatterns.com/game-loop.html[Game Programming Patterns - Game Loop], link:https://en.wikipedia.org/wiki/Video_game_programming[Wikipedia - Video game programming]

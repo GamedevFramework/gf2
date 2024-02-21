@@ -14,14 +14,12 @@ CAUTION: This project is in **alpha stage**. The API is not stabilized and may c
 == User Documentation
 
 - Quickstart
-- Installation
 - xref:manual.adoc[Manual]
-- Cookbook
 - xref:reference.adoc[Reference]
 - xref:symbols.adoc[Symbols] (xref:symbols_types.adoc[Types], xref:symbols_variables.adoc[Variables], xref:symbols_functions.adoc[Functions])
-- xref:articles.adoc[Articles]
 - xref:glossary.adoc[Glossary]
 
 == Dev Documentation
 
+- xref:articles.adoc[Articles]
 - xref:documentation_writing_rules.adoc[Documentation Writing Rules]
