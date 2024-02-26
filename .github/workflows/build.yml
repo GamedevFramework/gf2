@@ -51,7 +51,7 @@ jobs:
 
       - name: Restore cached dependencies
         id: restore-cache
-        uses: actions/cache/restore@v3
+        uses: actions/cache/restore@v4
         with:
           path: ${{ env.XMAKE_GLOBALDIR }}/.xmake/packages
           key: ${{ matrix.configurations.plat }}-${{ matrix.configurations.arch }}-${{ matrix.configurations.mode }}-${{ steps.deps_hash.outputs.hash }}
