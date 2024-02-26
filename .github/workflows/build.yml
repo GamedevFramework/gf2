@@ -70,4 +70,4 @@ jobs:
         run: xmake --yes
 
       - name: Test gf2
-        run: xmake run --group=Tests
+        run: xmake test -v
