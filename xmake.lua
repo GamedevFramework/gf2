@@ -27,6 +27,7 @@ set_policy("build.warning", true)
 set_warnings("allextra")
 set_languages("cxx17")
 set_encodings("utf-8")
+set_exceptions("cxx")
 
 if is_plat("windows") then
   add_cxflags("/wd4251") -- Disable warning: class needs to have dll-interface to be used by clients of class blah blah blah
