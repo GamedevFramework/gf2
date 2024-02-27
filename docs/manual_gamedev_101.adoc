@@ -2,6 +2,7 @@
 v0.1
 include::bits/attributes.adoc[]
 :toc: right
+:experimental: // for kbd
 
 link:https://tvtropes.org/pmwiki/pmwiki.php/SoYouWantTo/WriteAVideoGame[So you want to write a video game?] Well, Gamedev Framework 2 will help you on the technical side, but always keep in mind that a video game is more than just a few lines of code. Anyway, here is the beginning of the journey to learn how to write a video game.
 
@@ -25,21 +26,48 @@ A video game is a special kind of application that must be programmed in a certa
 
 During initialization, the goal is to setup the window and load the resources. At the end, the game should be able to display something on the screen.
 
-Window creation is the easiest part. Generally, you have to provide *a title and an initial size* for the window. The initial size of the window can take into account the size of the display or be large enough for the majority of configurations footnote:[You can check the link:https://store.steampowered.com/hwsurvey/Steam-Hardware-Software-Survey-Welcome-to-Steam[Steam Hardware and Software Survey] for example]. At the time of writing, with an initial size of stem:[1360 \times 768], you target more than 98% of the users and with an initial size of stem:[1600 \times 900], you target more than 90% of the users. Moreover, you can set some properties of the window: the window may not be resizable, in this case you should provide a way to make the window fullscreen and back; or the window may not be decorated, in this case the window title bar disappears, especially the button to close the window, you may want to allow the user to close the window inside the game.
+Window creation is the easiest part. Generally, you have to *provide a title and an initial size* for the window. The initial size of the window can take into account the size of the display or be large enough for the majority of configurations footnote:[You can check the link:https://store.steampowered.com/hwsurvey/Steam-Hardware-Software-Survey-Welcome-to-Steam[Steam Hardware and Software Survey] for example]. At the time of writing, with an initial size of stem:[1360 \times 768], you target more than 98% of the users and with an initial size of stem:[1600 \times 900], you target more than 90% of the users. Moreover, you can set some properties of the window: the window may not be resizable, in this case you should provide a way to make the window fullscreen and back; or the window may not be decorated, in this case the window title bar disappears, especially the button to close the window, you may want to allow the user to close the window inside the game.
+
+After the window is created, it's time to *load the resources* the game needs. Or at least you have to load enough resources for your game to start (e.g. a splash screen for the background and a font to display some information to the user). When you work on a _small_ game, you can load all the resources in the initialization phase. All your first games will be _small_, many of your subsequent games will be _small_. And by the time you hit the limit, say more than one second to load all the resources, you will understand how to load the resources asynchronously (see the next section).
+
+What resources? Well, basically everything. Images must be loaded and transfered in the GPU memory: they are then called textures. Fonts must be loaded in the main memory, ready to be used for text rendering. Sounds must be loaded in the main memory, ready to be played. And then, all the game-related data must be loaded: levels, maps, characters, quests, etc. Depending on your game, that can be a short list or a very long list.
 
 == Game Loop
 
+The game loop is the most important part of your game. It's where everything happens. It must be very fast: at least 60 times per seconds. That means you have 16.6 ms to do all you have to do: easy! A game loop is divided in three steps: process the input from the player; update the state of the game; draw a new frame. The game loop finishes when the player closes the window or quits the game.
+
 === Process Inputs
+
+In this first step, you get the input from the player: keyboard, mouse, gamepad. The only goal in this step is to *remember the intent of the player*. For example, if the player presses the kbd:[A] key (on a QWERTY keyboard), the intent is to go left. But the same intent can be mapped on the kbd:[←] key, or on the left direction of an analog stick of a gamepad, or whatever you can imagine. The result is the same, you have to remember that the player wants to go left. The beginner's classical error here would be to move the character on the left immediately. Don't do that. Never. You will deeply regret it in the future. Do not touch the state of the game in this step, that's too early and that's not the right place. Just remember the intent of the player, that's enough.
+
+In this step, you can also *handle the window events*, especially the resize event. The resize event is particularly difficult to handle gracefully because you may want the camera of your game to have very specific behavior depending on the type of game or the current scene in the game or other different factors. You may also want to pause the game if the window is minimized, or at least stop the rendering. And you may want to quit the game if the player close the window, or display a confirmation control.
+
+Many inputs can be processed in a single loop. Events are put in a queue by the operating system and you have to *handle all the pending inputs* as soon as possible to avoid latency. Moreover, in a game, contrary to most link:https://en.wikipedia.org/wiki/Graphical_user_interface[GUI] applications, the program never waits for events, it handles them as fast as possible and then go to the next step.
 
 === Update the State
 
+In this second step, you have to *consider the time* in your game world. You know the amount of time stem:[\Delta t] that has passed since the last update and you use it to modify the state of the game as if this amount of time had passed in the game world. There are two origins for the evolution of the game world.
+
+First, you must *translate the intent of the player* into a modification of the world. The player wanted to go left? Then you move the character a little bit to the left. If the character velocity is stem:[V], then the move distance is simply stem:[V \times \Delta t]. This is a simple example. Sometimes, you have a physics engine that you feed with this information and the physics engine will do the rest. The player wanted to throw an arrow? Then you create an arrow in your state with an initial position, an initial angle and an initial velocity.
+
+Second, the game world has its own logic that implies an evolution. You must *make the game world progress*. The arrow is now going towards the ennemy and has its own movement, you must make the arrow move a little bit according to its velocity, and maybe according to its acceleration. You have hit an ennemy, it may change the behavior of the other link:https://en.wikipedia.org/wiki/Mob_(video_games)[mobs], this step is the right place to compute the new behavior.
+
 === Draw a Frame
 
+The last step in the game loop is to *draw everything*. Yes, you draw everything on each frame. The wrong idea here is to think that you can only draw the entities that have changed since the last frame. Desktop graphical interfaces work like that. But not games. In games, it's far easier to draw everything from scratch on each frame, especially for complex scenes where there may be several thousands of elements to track. Moreover, GPUs are designed to work this way.
+
+At the start of the drawing, you *choose a clear color*. It's a color that is used as the background color when erasing the window surface. The clear color is quite important because that's the color the player will see when nothing is drawn on a part of the surface.
+
+Then, when you draw your entities, you have to *be very careful about the order*. In 3D, you can use link:https://en.wikipedia.org/wiki/Z-buffering[z-buffering] for not drawing parts that are hidden behind other parts. In 2D, you must often do it yourself and order your entities accordingly. You start with the entities in the background and you finish with the entities on the foreground. This may be quite difficult in certain circumstances, especially in link:https://en.wikipedia.org/wiki/2.5D[2.5D].
+
+When you draw something, it's not put on the window surface immediately. In most cases, link:https://en.wikipedia.org/wiki/Multiple_buffering[multiple buffering] is used to prevent flicker or tearing. Your drawing commands arrive in a back buffer. Then, when you have finished, you exchange the front buffer with a back buffer and you can start to draw the next frame.
 
 == Conclusion
 
+The game loop is a variant of the well-known link:https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller[model-view-controller] design pattern. The controller is represented by all the inputs that are handled at the beginning of the loop. The model contains all the state of your game and is updated in each loop. The view is rendered in the last step of the loop while drawing a new frame. Of course, the concepts do not map exactly, but it helps understand that these three steps must be executed independently and must be separated as much as possible.
+
 This section has presented the general principles of video game programming. The following sections will make a focus on one or more parts of this organization. It's important to be able to replace them in the big picture.
 
-*Next: xref:manual_resources.adoc[Resources]*
+*Next section: xref:manual_resources.adoc[Resources]*
 
 See also: link:https://gameprogrammingpatterns.com/game-loop.html[Game Programming Patterns - Game Loop], link:https://en.wikipedia.org/wiki/Video_game_programming[Wikipedia - Video game programming]
