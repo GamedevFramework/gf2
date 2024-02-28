@@ -15,7 +15,7 @@ xref:core_fonts.adoc[< Back to `core` Fonts]
 class FontManager;
 ----
 
-See also: xref:Font.adoc[`Font`]
+See also: xref:FontFace.adoc[`FontFace`]
 
 == Member Functions
 

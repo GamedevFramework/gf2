@@ -1,9 +1,9 @@
-= `gf::Font` type
+= `gf::FontFace` type
 v0.1
 include::bits/attributes.adoc[]
 :toc: right
 
-`Font` represents a link:https://en.wikipedia.org/wiki/Font[font], i.e. a set of glyph with the same weight and style.
+`FontFace` represents a link:https://en.wikipedia.org/wiki/Font[font], i.e. a set of glyph with the same weight and style.
 
 xref:core_fonts.adoc[< Back to `core` Fonts]
 
@@ -11,8 +11,8 @@ xref:core_fonts.adoc[< Back to `core` Fonts]
 
 [source]
 ----
-#include <gf2/core/Font.h>
-class Font;
+#include <gf2/core/FontFace.h>
+class FontFace;
 ----
 
 See also: xref:FontManager.adoc[`FontManager`]
@@ -30,12 +30,12 @@ The context for loading a font.
 
 == Member Functions
 
-=== `Font` constructors
+=== `FontFace` constructors
 
 [source]
 ----
-Font(const std::filesystem::path& filename, FontManager* manager); <1>
-Font(InputStream& stream, FontManager* manager); <2>
+FontFace(const std::filesystem::path& filename, FontManager* manager); <1>
+FontFace(InputStream& stream, FontManager* manager); <2>
 ----
 
 <1> Create a font from a `filename` and a `manager`.

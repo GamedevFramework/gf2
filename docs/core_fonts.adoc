@@ -9,16 +9,16 @@ xref:reference.adoc#core[< Back to reference]
 
 == Types
 
-[#font]
-=== `gf::Font`
+[#font_face]
+=== `gf::FontFace`
 
 [source]
 ----
-#include <gf2/core/Font.h>
-class Font;
+#include <gf2/core/FontFace.h>
+class FontFace;
 ----
 
-`Font` represents a link:https://en.wikipedia.org/wiki/Font[font], i.e. a set of glyph with the same weight and style. xref:Font.adoc[*Read more...*]
+`FontFace` represents a link:https://en.wikipedia.org/wiki/Font[font], i.e. a set of glyph with the same weight and style. xref:FontFace.adoc[*Read more...*]
 
 [#font_glyph]
 === `gf::FontGlyph`
