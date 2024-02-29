@@ -9,16 +9,93 @@ xref:reference.adoc#graphics[< Back to reference]
 
 == Types
 
+[#basic_scene_manager]
 === `gf::BasicSceneManager`
 
+[source]
+----
+#include <gf2/graphics/SceneManager.h>
+class BasicSceneManager;
+----
+
+The basic scene manager handles all the creation and handling of basic rendering objects. xref:BasicSceneManager.adoc[*Read more...*]
+
+See also: <<scene_manager>>, <<single_scene_manager>>
+
+[#scene]
 === `gf::Scene`
 
+[source]
+----
+#include <gf2/graphics/Scene.h>
+class Scene;
+----
+
+A scene is responsible for handling the different steps of a game: process inputs, update the state, draw a frame. xref:Scene.adoc[*Read more...*]
+
+See also: <<standard_scene>>
+
+[#scene_manager]
 === `gf::SceneManager`
 
+[source]
+----
+#include <gf2/graphics/SceneManager.h>
+class SceneManager : public BasicSceneManager;
+----
+
+A scene manager can handle many scenes organized in a stack. xref:SceneManager.adoc[*Read more...*]
+
+See also: <<basic_scene_manager>>
+
+[#scene_rank]
 === `gf::SceneRank`
 
+[source]
+----
+#include <gf2/graphics/Scene.h>
+enum class SceneRank : uint8_t;
+----
+
+`SceneRank` describes the actual rank of the scene in the scene stack.
+
+.Enumerators for `gf::SceneRank`
+[cols="2,3"]
+|===
+| Value | Description
+
+| `gf::SceneRank::None`
+| The scene is not in the stack.
+
+| `gf::SceneRank::Active`
+| The scene is in the stack but not at the top.
+
+| `gf::SceneRank::Top`
+| The scene is at the top of the stack.
+|===
+
+[#single_scene_manager]
 === `gf::SingleSceneManager`
 
+[source]
+----
+#include <gf2/graphics/SceneManager.h>
+class SingleSceneManager : public BasicSceneManager;
+----
+
+A single scene manager can handle a single scene. xref:SingleSceneManager.adoc[*Read more...*]
+
+See also: <<basic_scene_manager>>
+
+[#standard_scene]
 === `gf::StandardScene`
 
+[source]
+----
+#include <gf2/graphics/Scene.h>
+class StandardScene : public Scene;
+----
 
+A standard scene is a scene with models, world entities and hud entities. xref:StandardScene.adoc[*Read more...*]
+
+See also: <<scene>>
