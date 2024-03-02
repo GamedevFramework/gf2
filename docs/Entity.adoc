@@ -1,0 +1,71 @@
+= `gf::Entity` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`Entity` is the parent of all entities.
+
+xref:graphics_entities.adoc[< Back to `graphics` Entities]
+
+== Description
+
+[source]
+----
+#include <gf2/graphics/Entity.h>
+class Entity;
+----
+
+Entities are ordered by priority when they are renderer, with lower priority being rendered first and higher priority being renderered last. The default priority is 0.
+
+Entities can be grouped in a xref:EntityContainer.adoc[`EntityContainer`].
+
+== Member Functions
+
+=== `Entity` constructors
+
+[source]
+----
+Entity(int32_t priority = 0);
+----
+
+Constructor with a priority. By default, the priority is 0.
+
+=== `priority`
+
+[source]
+----
+int32_t priority() const;
+----
+
+Get the priority of the entity.
+
+See also: <<set_priority>>
+
+=== `render`
+
+[source]
+----
+virtual void render(RenderRecorder& recorder);
+----
+
+Render the entity. An entity is rendered with one or more xref:RenderObject.adoc[`RenderObject`]s that are passed to a xref:RenderRecorder.adoc[`RenderRecorder`].
+
+=== `set_priority`
+
+[source]
+----
+void set_priority(int32_t priority);
+----
+
+Set the new priority of the entity.
+
+See also: <<priority>>
+
+=== `update`
+
+[source]
+----
+virtual void update(Time time);
+----
+
+Update the entity's state. Entities are updated each frame. The time between two frames is given as a parameter.

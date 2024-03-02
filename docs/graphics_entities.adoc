@@ -5,14 +5,41 @@ include::bits/attributes.adoc[]
 
 The entities component provides various type of entities.
 
+An entity, sometimes called game object, is something that can be updated and drawn in a scene. The parent class of all entities is <<entity>>. Each entity generally has a corresponding resource to help initialization.
+
+See also: xref:core_data.adoc[`core` Data]
+
 xref:reference.adoc#graphics[< Back to reference]
 
 == Types
 
+[#animation_entity]
 === `gf::AnimationEntity`
 
+[#entity]
 === `gf::Entity`
 
+[source]
+----
+#include <gf2/graphics/Entity.h>
+class Entity;
+----
+
+`Entity` is the parent of all entities. xref:Entity.adoc[*Read more...*]
+
+[#entity_container]
+=== `gf::EntityContainer`
+
+[source]
+----
+#include <gf2/graphics/EntityContainer.h>
+class EntityContainer;
+----
+
+An entity container is a non-owning collection of entities. xref:EntityContainer.adoc[*Read more...*]
+
+[#sprite_entity]
 === `gf::SpriteEntity`
 
+[#text_entity]
 === `gf::TextEntity`

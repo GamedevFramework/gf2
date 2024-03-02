@@ -1,0 +1,97 @@
+= `gf::EntityContainer` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+An entity container is a non-owning collection of entities.
+
+xref:graphics_entities.adoc[< Back to `graphics` Entities]
+
+== Description
+
+[source]
+----
+#include <gf2/graphics/EntityContainer.h>
+class EntityContainer;
+----
+
+The entity manager is not responsible for the memory of the entities. The entities must be allocated by the user and neither moved nor deleted while they are handled by the entity manager.
+
+See also: xref:Entity.adoc[`Entity`].
+
+== Member Functions
+
+=== `add_entity`
+
+[source]
+----
+void add_entity(Entity* entity);
+----
+
+Add an entity to the collection. If the entity is `nullptr`, nothing happens.
+
+The entity must be neither moved nor deleted while it is handled by the entity manager.
+
+See also: <<remove_entity>>
+
+=== `clear`
+
+[source]
+----
+void clear();
+----
+
+Clear the container.
+
+See also: <<empty>>
+
+=== `empty`
+
+[source]
+----
+bool empty() const;
+----
+
+Check if the container is empty.
+
+See also: <<size>>, <<clear>>
+
+=== `remove_entity`
+
+[source]
+----
+void remove_entity(Entity* entity);
+----
+
+Remove an entity from the collection. If the entity is `nullptr` or the entity was not in the collection, nothing happens.
+
+See also: <<add_entity>>
+
+=== `render`
+
+[source]
+----
+void render(RenderRecorder& recorder);
+----
+
+Render the entities in the container.
+
+=== `size`
+
+[source]
+----
+std::size_t size() const;
+----
+
+Get the number of entities in the container.
+
+See also: <<empty>>
+
+=== `update`
+
+[source]
+----
+void update(Time time);
+----
+
+Update the entities in the container. The time between two frames is given as a parameter.

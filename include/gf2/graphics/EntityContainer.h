@@ -19,7 +19,9 @@ namespace gf {
     void render(RenderRecorder& recorder);
 
     bool empty() const;
+    std::size_t size() const;
     void add_entity(Entity* entity);
+    void remove_entity(Entity* entity);
     void clear();
 
   private:
