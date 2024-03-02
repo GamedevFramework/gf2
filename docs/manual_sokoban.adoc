@@ -1,0 +1,4 @@
+= Sokoban
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
