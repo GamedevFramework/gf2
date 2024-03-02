@@ -27,8 +27,6 @@ jobs:
     steps:
       - name: Checkout gf2
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Configure xmake environment
         run: echo "XMAKE_GLOBALDIR=${{ runner.workspace }}/xmake" >> $GITHUB_ENV
