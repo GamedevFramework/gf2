@@ -119,6 +119,10 @@ namespace gf {
     template<typename T>
     T parse_number(std::string_view string)
     {
+      while (string.front() == '\n') {
+        string.remove_prefix(1);
+      }
+
       T value = {};
       [[maybe_unused]] auto [ptr, ec] = std::from_chars(string.data(), string.data() + string.size(), value);
       assert(ec == std::errc());
