@@ -8,9 +8,11 @@
 #include <algorithm>
 #include <vector>
 
+#include <gf2/core/Rect.h>
+
 #include "Vertex.h"
 
-namespace gf::details {
+namespace gf {
 
   struct RawGeometry {
     std::vector<Vertex> vertices;
@@ -25,6 +27,8 @@ namespace gf::details {
         return static_cast<uint16_t>(index + offset);
       });
     }
+
+    RectF compute_bounds() const;
   };
 
 }

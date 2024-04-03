@@ -24,7 +24,7 @@ namespace gf {
     constexpr int ChunkSize = 128;
 
     struct SplitGeometry {
-      std::map<uint32_t, details::RawGeometry> geometry_map;
+      std::map<uint32_t, RawGeometry> geometry_map;
 
       void add_quad(uint32_t texture_index, StaticSpan<const Vertex, 4> vertices)
       {

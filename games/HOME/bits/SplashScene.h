@@ -26,6 +26,7 @@ namespace home {
 
     bool m_world_loaded = false;
 
+    gf::FontAtlas m_atlas;
     gf::ActionGroup m_action_group;
     gf::SpriteEntity m_title_sprite;
     gf::TextEntity m_title_text;

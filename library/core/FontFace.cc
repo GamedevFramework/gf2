@@ -135,7 +135,7 @@ namespace gf {
     return face_as<FT_Face>()->style_name;
   }
 
-  FontGlyph FontFace::create_glyph(char32_t codepoint)
+  FontGlyph FontFace::create_glyph(uint32_t index)
   {
     FontGlyph result = {};
 
@@ -145,7 +145,7 @@ namespace gf {
 
     auto* face = face_as<FT_Face>();
 
-    if (auto err = FT_Load_Char(face, codepoint, FT_LOAD_TARGET_NORMAL)) {
+    if (auto err = FT_Load_Glyph(face, index, FT_LOAD_TARGET_NORMAL)) {
       Log::error("Could not load the glyph: {}", FontManager::error_message(err));
       return result;
     }
@@ -157,23 +157,17 @@ namespace gf {
     auto* glyph = face->glyph;
 
     if (auto err = FT_Render_Glyph(glyph, FT_RENDER_MODE_NORMAL)) {
-      Log::error("Could not create a bitmap from the glyph (U+{:X}): {}", static_cast<uint32_t>(codepoint), FontManager::error_message(err));
+      Log::error("Could not create a bitmap from the glyph (index {}): {}", index, FontManager::error_message(err));
       return result;
     }
 
-    if (codepoint != U' ') {
-      if (auto err = FT_Render_Glyph(glyph, FT_RENDER_MODE_SDF)) {
-        Log::error("Could not create a bitmap from the glyph (U+{:X}): {}", static_cast<uint32_t>(codepoint), FontManager::error_message(err));
-        return result;
-      }
+    if (auto err = FT_Render_Glyph(glyph, FT_RENDER_MODE_SDF)) {
+      Log::error("Could not create a bitmap from the glyph (index {}): {}", index, FontManager::error_message(err));
+      return result;
     }
 
     assert(glyph->format == FT_GLYPH_FORMAT_BITMAP);
     auto* bitmap = &glyph->bitmap;
-
-    // advance
-
-    result.advance = ft_convert_metrics(glyph->metrics.horiAdvance);
 
     // size
 
@@ -197,42 +191,34 @@ namespace gf {
     return result;
   }
 
-  float FontFace::compute_kerning(char32_t left, char32_t right)
-  {
-    if (left == 0 || right == 0) {
-      return 0.0f;
-    }
-
-    if (m_face == nullptr) {
-      return 0.0f;
-    }
-
-    auto* face = face_as<FT_Face>();
-
-    if (!FT_HAS_KERNING(face)) {
-      return 0.0f;
-    }
-
-    auto index_left = FT_Get_Char_Index(face, left);
-    auto index_right = FT_Get_Char_Index(face, right);
-
-    FT_Vector kerning = {};
-
-    if (auto err = FT_Get_Kerning(face, index_left, index_right, FT_KERNING_UNFITTED, &kerning)) {
-      Log::warning("Could not compute kerning: {}", FontManager::error_message(err));
-      return 0.0f;
-    }
-
-    return ft_convert_metrics(kerning.x);
-  }
-
-  float FontFace::compute_line_spacing()
+  float FontFace::compute_line_height()
   {
     if (m_face == nullptr) {
       return 0.0f;
     }
 
     return ft_convert_metrics(face_as<FT_Face>()->size->metrics.height);
+  }
+
+  float FontFace::compute_space_width()
+  {
+    if (m_face == nullptr) {
+      return 0.0f;
+    }
+
+    auto* face = face_as<FT_Face>();
+
+    if (auto err = FT_Load_Char(face, U' ', FT_LOAD_DEFAULT)) {
+      Log::error("Could not load the glyph: {}", FontManager::error_message(err));
+      return 0.0f;
+    }
+
+    return ft_convert_metrics(face->glyph->metrics.horiAdvance);
+  }
+
+  float FontFace::size_factor(float character_size)
+  {
+    return character_size / static_cast<float>(FontSize);
   }
 
   bool FontFace::set_current_character_size(uint32_t character_size)

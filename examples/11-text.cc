@@ -3,10 +3,11 @@
 #include <cstdlib>
 
 #include <gf2/core/Color.h>
+#include <gf2/core/FontFace.h>
 #include <gf2/core/FontManager.h>
 
 #include <gf2/graphics/CurveEntity.h>
-#include <gf2/graphics/Font.h>
+#include <gf2/graphics/FontAtlas.h>
 #include <gf2/graphics/GraphicsInitializer.h>
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/SceneManager.h>
@@ -22,7 +23,8 @@ int main()
   gf::SingleSceneManager scene_manager("11-text | gf2", gf::vec(1600, 900));
 
   gf::FontManager font_manager;
-  gf::Font font(font_file, { &font_manager, scene_manager.render_manager() });
+  gf::FontFace face(font_file, &font_manager);
+  gf::FontAtlas atlas({ 1024, 1024 }, scene_manager.render_manager());
 
   gf::TextData text_data;
   text_data.content = "Gamedev Framework 2";
@@ -31,7 +33,7 @@ int main()
   // text_data.outline_color = gf::Gray;
   // text_data.outline_thickness = 2.0f;
 
-  gf::TextEntity text_entity(font.atlas(), text_data, scene_manager.render_manager());
+  gf::TextEntity text_entity(&atlas, &face, text_data, scene_manager.render_manager());
   text_entity.set_location({ 1000.0f, 1000.0f });
   text_entity.set_origin({ 0.5f, 0.5f });
 

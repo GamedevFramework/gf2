@@ -1,7 +1,7 @@
 set_project("gf2")
 set_version("0.1.0")
 
-add_requires("libsdl", "freetype", "imgui", "pugixml", "zlib", "chipmunk2d")
+add_requires("libsdl", "freetype", "harfbuzz", "imgui", "pugixml", "zlib", "chipmunk2d")
 add_requires("fmt", { system = false, configs = { header_only = true }})
 add_requires("glslang", { configs = { binaryonly = true }})
 add_requires("gtest", { configs = { gmock = false }})
@@ -52,7 +52,7 @@ target("gf2graphics0")
     add_headerfiles("include/graphics/*.h")
     add_includedirs("include", { public = true })
     add_packages("vulkan-headers", "vulkan-memory-allocator", { public = true })
-    add_packages("libsdl", "volk", "vk-bootstrap") -- , "vulkan-validationlayers", "glslang"
+    add_packages("harfbuzz", "libsdl", "volk", "vk-bootstrap") -- , "vulkan-validationlayers", "glslang"
 --     add_rules("utils.glsl2spv", { outputdir = "$(buildir)/shaders", bin2c = true })
 --     add_files("library/graphics/shaders/*.vert", "library/graphics/shaders/*.frag")
     add_includedirs("library/graphics/shaders")

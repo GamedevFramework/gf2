@@ -21,23 +21,22 @@ namespace gf {
 
   using namespace operators;
 
-  FontAtlas::FontAtlas(FontFace* face, Vec2I size, RenderManager* render_manager)
-  : m_face(face)
-  , m_bin_pack(size)
+  FontAtlas::FontAtlas(Vec2I size, RenderManager* render_manager)
+  : m_bin_pack(size)
   , m_bitmap(size, 0x00)
   , m_texture(size, TextureUsage::TransferDestination | TextureUsage::Sampled, Format::Gray8U, render_manager)
   {
   }
 
-  RectF FontAtlas::texture_region(char32_t codepoint)
+  RectF FontAtlas::texture_region(uint32_t index, FontFace* face)
   {
-    auto key = codepoint;
+    auto key = std::make_pair(index, face);
 
     if (auto iterator = m_atlas.find(key); iterator != m_atlas.end()) {
       return iterator->second;
     }
 
-    auto font_glyph = glyph(codepoint);
+    auto font_glyph = glyph(index, face);
     auto maybe_rectangle = m_bin_pack.insert(font_glyph.bitmap.size() + 2 * FontAtlasPadding);
 
     if (!maybe_rectangle) {
@@ -59,38 +58,34 @@ namespace gf {
     return texture_region;
   }
 
-  void FontAtlas::update_texture_regions_for(std::string_view string)
+  void FontAtlas::update_texture_regions_for(Span<uint32_t> indices, FontFace* face)
   {
-    std::vector<char32_t> new_codepoints;
+    std::vector<uint32_t> new_indices;
 
-    for (auto codepoint : gf::codepoints(string)) {
-      if (codepoint == U' ') {
-        continue;
-      }
-
-      auto key = codepoint;
+    for (auto index : indices) {
+      auto key = std::make_pair(index, face);
 
       if (auto it = m_atlas.find(key); it != m_atlas.end()) {
         continue;
       }
 
-      new_codepoints.push_back(codepoint);
+      new_indices.push_back(index);
     }
 
-    if (new_codepoints.empty()) {
+    if (new_indices.empty()) {
       return;
     }
 
-    std::sort(new_codepoints.begin(), new_codepoints.end());
-    new_codepoints.erase(std::unique(new_codepoints.begin(), new_codepoints.end()), new_codepoints.end());
+    std::sort(new_indices.begin(), new_indices.end());
+    new_indices.erase(std::unique(new_indices.begin(), new_indices.end()), new_indices.end());
 
-    const std::size_t count = new_codepoints.size();
+    const std::size_t count = new_indices.size();
 
     std::vector<Vec2I> sizes;
     std::vector<const FontGlyph*> glyphs;
 
-    for (auto codepoint : new_codepoints) {
-      const auto& font_glyph = glyph(codepoint);
+    for (auto index : new_indices) {
+      const auto& font_glyph = glyph(index, face);
       sizes.push_back(font_glyph.bitmap.size() + 2 * FontAtlasPadding);
       glyphs.push_back(&font_glyph);
     }
@@ -108,7 +103,7 @@ namespace gf {
     assert(rectangles.size() == count);
 
     for (std::size_t i = 0; i < count; ++i) {
-      auto key = new_codepoints[i];
+      auto key = std::make_pair(new_indices[i], face);
 
       const RectI bounds = rectangles[i];
       assert(bounds.size() == sizes[i]);
@@ -126,15 +121,15 @@ namespace gf {
     }
   }
 
-  const FontGlyph& FontAtlas::glyph(char32_t codepoint)
+  const FontGlyph& FontAtlas::glyph(uint32_t index, FontFace* face)
   {
-    auto key = codepoint;
+    auto key = std::make_pair(index, face);
 
     if (auto iterator = m_glyph_cache.find(key); iterator != m_glyph_cache.end()) {
       return iterator->second;
     }
 
-    auto glyph = m_face->create_glyph(codepoint);
+    auto glyph = face->create_glyph(index);
     auto [iterator, inserted] = m_glyph_cache.emplace(key, std::move(glyph));
     assert(inserted);
     return iterator->second;

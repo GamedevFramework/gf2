@@ -102,7 +102,7 @@ namespace home {
       // fonts
 
       // for (const gf::TextResource& resource : {  }) {
-      //   bundle->handle<gf::Font>(resource.font, { hub->font_manager(), hub->render_manager() }, resources, action);
+      //   bundle->handle<gf::FontFace>(resource.font, hub->font_manager(), resources, action);
       // }
 
       // textures

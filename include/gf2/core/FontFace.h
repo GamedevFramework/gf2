@@ -18,7 +18,6 @@ namespace gf {
 
   struct GF_CORE_API FontGlyph {
     RectF bounds = {};
-    float advance = 0.0f;
     Bitmap bitmap;
   };
 
@@ -38,10 +37,17 @@ namespace gf {
     std::string family_name() const;
     std::string style_name() const;
 
-    FontGlyph create_glyph(char32_t codepoint);
+    FontGlyph create_glyph(uint32_t index);
 
-    float compute_kerning(char32_t left, char32_t right);
-    float compute_line_spacing();
+    float compute_line_height();
+    float compute_space_width();
+
+    void* raw_handle()
+    {
+      return m_face;
+    }
+
+    static float size_factor(float character_size);
 
   private:
     bool set_current_character_size(uint32_t character_size);

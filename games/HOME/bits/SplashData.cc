@@ -36,14 +36,14 @@ namespace home {
     gf::ResourceBundle bundle([hub, this](gf::ResourceBundle* bundle, gf::ResourceManager* resources, gf::ResourceAction action) {
       // fonts
 
-      for (const gf::TextResource& resource : { title_text, click_text }) {
-        bundle->handle<gf::Font>(resource.font, { hub->font_manager(), hub->render_manager() }, resources, action);
+      for (const gf::TextResource* resource : { &title_text, &click_text }) {
+        bundle->handle<gf::FontFace>(resource->font, hub->font_manager(), resources, action);
       }
 
       // textures
 
-      for (const gf::SpriteResource& resource : { title_sprite }) {
-        bundle->handle<gf::Texture>(resource.texture, hub->render_manager(), resources, action);
+      for (const gf::SpriteResource* resource : { &title_sprite }) {
+        bundle->handle<gf::Texture>(resource->texture, hub->render_manager(), resources, action);
       }
     });
 

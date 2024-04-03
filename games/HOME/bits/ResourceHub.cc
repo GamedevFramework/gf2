@@ -6,7 +6,7 @@ namespace home {
   {
     file_loader.add_search_directory(asset_directory);
 
-    font_registry.add_loader(gf::loader_for<gf::Font>(file_loader));
+    font_registry.add_loader(gf::loader_for<gf::FontFace>(file_loader));
     texture_registry.add_loader(gf::loader_for<gf::Texture>(file_loader));
     sound_registry.add_loader(gf::loader_for<gf::Sound>(file_loader));
     music_registry.add_loader(gf::loader_for<gf::Music>(file_loader));

@@ -6,10 +6,11 @@ namespace home {
 
   SplashScene::SplashScene(GameHub* hub, const SplashData& data)
   : m_hub(hub)
+  , m_atlas({ 1024, 1024 }, hub->render_manager())
   , m_action_group(data.action_group)
   , m_title_sprite(data.title_sprite, hub->render_manager(), hub->resource_manager())
-  , m_title_text(data.title_text, hub->render_manager(), hub->resource_manager())
-  , m_click_text(data.click_text, hub->render_manager(), hub->resource_manager())
+  , m_title_text(&m_atlas, data.title_text, hub->render_manager(), hub->resource_manager())
+  , m_click_text(&m_atlas, data.click_text, hub->render_manager(), hub->resource_manager())
   {
     set_clear_color(gf::Color(0xAEF6B8));
     set_world_center({ 0.0f, 0.0f });

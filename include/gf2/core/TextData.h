@@ -51,6 +51,20 @@ namespace gf {
     return ar | resource.font | resource.data;
   }
 
+  struct GF_CORE_API RichTextResource {
+    std::filesystem::path default_font;
+    std::filesystem::path bold_font;
+    std::filesystem::path italic_font;
+    std::filesystem::path bold_italic_font;
+    TextData data;
+  };
+
+  template<typename Archive>
+  Archive& operator|(Archive& ar, MaybeConst<RichTextResource, Archive>& resource)
+  {
+    return ar | resource.default_font | resource.bold_font | resource.italic_font | resource.bold_italic_font | resource.data;
+  }
+
 }
 
 #endif // GF_TEXT_DATA_H

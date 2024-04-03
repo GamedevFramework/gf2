@@ -105,7 +105,7 @@ namespace gf {
     do_render(recorder);
   }
 
-  void Scene::render_part([[maybe_unused]] RenderRecorder& recorder, [[maybe_unused]] ScenePart& part)
+  void Scene::render_part(RenderRecorder& recorder, ScenePart& part)
   {
     part.camera.update(m_surface_size);
     recorder.update_view(part.camera.compute_view_matrix(), part.camera.compute_viewport(m_surface_size));

@@ -15,7 +15,7 @@
 namespace gf {
 
   namespace {
-    struct RawInteriorShapeGeometry : details::RawGeometry {
+    struct RawInteriorShapeGeometry : RawGeometry {
       RectF bounds = {};
       Vec2F center = {};
     };
@@ -74,7 +74,7 @@ namespace gf {
       return geometry;
     }
 
-    using RawOutlineShapeGeometry = details::RawGeometry;
+    using RawOutlineShapeGeometry = RawGeometry;
 
     RawOutlineShapeGeometry compute_outline_shape_geometry(const ShapeData& data, Vec2F center)
     {
@@ -120,7 +120,7 @@ namespace gf {
       return geometry;
     }
 
-    using RawShapeGeometry = details::RawGeometry;
+    using RawShapeGeometry = RawGeometry;
   }
 
   Shape::Shape(const Texture* texture, const ShapeData& data, RenderManager* render_manager)

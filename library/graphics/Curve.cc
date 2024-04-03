@@ -93,7 +93,7 @@ namespace gf {
       }
     }
 
-    struct RawInteriorCurveGeometry : details::RawGeometry {
+    struct RawInteriorCurveGeometry : RawGeometry {
       RectF bounds = {};
     };
 
@@ -111,7 +111,7 @@ namespace gf {
       return geometry;
     }
 
-    using RawOutlineCurveGeometry = details::RawGeometry;
+    using RawOutlineCurveGeometry = RawGeometry;
 
     RawOutlineCurveGeometry compute_outline_curve_geometry(const CurveData& data)
     {
@@ -120,7 +120,7 @@ namespace gf {
       return geometry;
     }
 
-    using RawCurveGeometry = details::RawGeometry;
+    using RawCurveGeometry = RawGeometry;
 
   }
 
