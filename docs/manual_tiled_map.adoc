@@ -2,3 +2,25 @@
 v0.1
 include::bits/attributes.adoc[]
 :toc: right
+
+link:https://www.mapeditor.org/[Tiled] is a flexible map and level editor. gf2 provides tools to handle the maps et levels created with Tiled, from the embedded data to the rendering.
+
+== Introduction
+
+Here are the features that are supported by gf2:
+
+- Orthogonal, Isometric, Staggered and Hexagonal maps
+- Infinite maps
+- Internal and external tilesets (TSX)
+- Tile layers and Object layers
+- XML format
+
+Here are the features that are currently *not* supported by gf2:
+
+- Image layers
+- Animated tiles
+- Wang Tileset data
+- Text objects
+- JSON format
+
+See also: link:http://eishiya.com/articles/tiled/[Tiled Tip Sheet - eishiya]

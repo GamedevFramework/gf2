@@ -40,7 +40,7 @@ xref:index.adoc[< Back to main page]
 ** xref:graphics_objects.adoc[Objects] (`Sprite`, `Text`, `Animation`)
 * Gaming
 ** xref:graphics_scenes.adoc[Scenes] (`Scene`, `SceneManager`)
-** xref:graphics_entities.adoc[Entities] (`Entity`)
+** xref:graphics_entities.adoc[Entities] (xref:Entity.adoc[`Entity`])
 
 == `network`
 
