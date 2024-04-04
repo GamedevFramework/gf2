@@ -540,6 +540,44 @@ namespace gf {
       std::vector<TextLine> lines;
     };
 
+    class AtlasUpdater {
+    public:
+      AtlasUpdater(FontAtlas* atlas)
+      : m_atlas(atlas)
+      {
+      }
+
+      void change_face(FontFace* face)
+      {
+        if (m_last_face != face) {
+          if (!m_indices.empty()) {
+            assert(m_last_face != nullptr);
+            m_atlas->update_texture_regions_for(m_indices, m_last_face);
+            m_indices.clear();
+          }
+
+          m_last_face = face;
+        }
+      }
+
+      void add_index(uint32_t index)
+      {
+        m_indices.push_back(index);
+      }
+
+      void finish()
+      {
+        if (m_last_face != nullptr && !m_indices.empty()) {
+          m_atlas->update_texture_regions_for(m_indices, m_last_face);
+        }
+      }
+
+    private:
+      FontAtlas* m_atlas = nullptr;
+      std::vector<uint32_t> m_indices;
+      FontFace* m_last_face = nullptr;
+    };
+
     class TextParser {
     public:
       TextParser(FontAtlas* atlas, FontFace* default_font, const TextData& data)
@@ -560,7 +598,7 @@ namespace gf {
       {
         auto raw_paragraphs = compute_raw_paragraphs(lexer);
         compute_shape(raw_paragraphs);
-        auto paragraphs = compute_paragraphs(std::move(raw_paragraphs));
+        auto paragraphs = compute_paragraphs(raw_paragraphs);
         return compute_geometry(paragraphs);
       }
 
@@ -600,32 +638,10 @@ namespace gf {
 
           // space, newline or end
 
-          if (!current_word.parts.empty()) {
-            current_line.items.push_back(TextItem::Word);
-            current_line.words.push_back(std::move(current_word));
-            current_word = {};
-          }
-
-          if (token.type == TextTokenType::Space) {
-            TextSpace space;
-
-            assert(!m_stack.empty());
-            space.properties = m_stack.top();
-            current_line.items.push_back(TextItem::Space);
-            current_line.spaces.push_back(std::move(space));
+          if (handle_space_newline_end(token.type, paragraphs, current_line, current_word)) {
             continue;
           }
 
-          if (!current_line.words.empty() || !current_line.spaces.empty()) {
-            paragraphs.push_back(std::move(current_line));
-            current_line = {};
-          }
-
-          if (token.type == TextTokenType::Newline) {
-            continue;
-          }
-
-          assert(token.type == TextTokenType::End);
           break;
         }
 
@@ -686,11 +702,41 @@ namespace gf {
         m_stack.pop();
       }
 
-      void compute_shape(std::vector<TextLine>& raw_paragraphs)
+      bool handle_space_newline_end(TextTokenType type, std::vector<TextLine>& paragraphs, TextLine& current_line, TextWord& current_word)
+      {
+        if (!current_word.parts.empty()) {
+          current_line.items.push_back(TextItem::Word);
+          current_line.words.push_back(std::move(current_word));
+          current_word = {};
+        }
+
+        if (type == TextTokenType::Space) {
+          TextSpace space;
+
+          assert(!m_stack.empty());
+          space.properties = m_stack.top();
+          current_line.items.push_back(TextItem::Space);
+          current_line.spaces.push_back(std::move(space));
+          return true;
+        }
+
+        if (!current_line.words.empty() || !current_line.spaces.empty()) {
+          paragraphs.push_back(std::move(current_line));
+          current_line = {};
+        }
+
+        if (type == TextTokenType::Newline) {
+          return true;
+        }
+
+        assert(type == TextTokenType::End);
+        return false;
+      }
+
+      void compute_shape(std::vector<TextLine>& raw_paragraphs) const
       {
         HbBuffer buffer(hb_buffer_create());
-        std::vector<uint32_t> indices;
-        FontFace* last_face = nullptr;
+        AtlasUpdater atlas_updater(m_atlas);
 
         for (auto& raw_line : raw_paragraphs) {
           for (auto& raw_word : raw_line.words) {
@@ -698,15 +744,7 @@ namespace gf {
             std::size_t start = 0;
 
             for (auto& part : raw_word.parts) {
-              if (last_face != part.properties.data.face) {
-                if (!indices.empty()) {
-                  assert(last_face != nullptr);
-                  m_atlas->update_texture_regions_for(indices, last_face);
-                  indices.clear();
-                }
-
-                last_face = part.properties.data.face;
-              }
+              atlas_updater.change_face(part.properties.data.face);
 
               hb_buffer_reset(buffer);
               hb_buffer_add_utf8(buffer, raw_word.full.c_str(), -1, static_cast<unsigned>(start), static_cast<int>(part.data.size()));
@@ -725,7 +763,7 @@ namespace gf {
                 glyph.offset = { position[i].x_offset, position[i].y_offset };
                 part.glyphs.push_back(glyph);
 
-                indices.push_back(info[i].codepoint);
+                atlas_updater.add_index(info[i].codepoint);
               }
 
               start += part.data.size();
@@ -739,12 +777,10 @@ namespace gf {
           }
         }
 
-        if (last_face != nullptr && !indices.empty()) {
-          m_atlas->update_texture_regions_for(indices, last_face);
-        }
+        atlas_updater.finish();
       }
 
-      std::vector<TextParagraph> compute_paragraphs(std::vector<TextLine>&& raw_paragraphs)
+      std::vector<TextParagraph> compute_paragraphs(std::vector<TextLine>& raw_paragraphs) const
       {
         std::vector<TextParagraph> paragraphs;
 
@@ -756,14 +792,14 @@ namespace gf {
           }
         } else {
           for (auto& raw_paragraph : raw_paragraphs) {
-            paragraphs.push_back(compute_multi_line_paragraph(std::move(raw_paragraph)));
+            paragraphs.push_back(compute_multi_line_paragraph(raw_paragraph));
           }
         }
 
         return paragraphs;
       }
 
-      TextParagraph compute_multi_line_paragraph(TextLine&& raw_line)
+      TextParagraph compute_multi_line_paragraph(TextLine& raw_line) const
       {
         TextParagraph paragraph;
 
@@ -789,55 +825,7 @@ namespace gf {
             case TextItem::Word:
               {
                 auto& word = raw_line.words[word_index];
-                const float word_width = word.width();
-
-                if (!line.words.empty() && line_width + word_width > m_data.paragraph_width) {
-                  // remove trailing spaces
-
-                  while (line.items.back() == TextItem::Space) {
-                    auto width = line.spaces.back().width;
-                    line_width -= width;
-                    space_width -= width;
-                    line.items.pop_back();
-                    line.spaces.pop_back();
-                  }
-
-                  // compute indent
-
-                  switch (m_data.alignment) {
-                    case Alignment::Left:
-                      line.indent = 0.0f;
-                      break;
-                    case Alignment::Right:
-                      line.indent = m_data.paragraph_width - line_width;
-                      break;
-                    case Alignment::Center:
-                      line.indent = (m_data.paragraph_width - line_width) / 2;
-                      break;
-                    case Alignment::Justify:
-                      if (!line.spaces.empty()) {
-                        const float space_unit = (m_data.paragraph_width - line_width) / space_width;
-
-                        for (auto& space : line.spaces) {
-                          space.width += (space_unit * space.width);
-                        }
-                      }
-                      break;
-
-                    case Alignment::None:
-                      assert(false);
-                      break;
-                  }
-
-                  paragraph.lines.push_back(std::move(line));
-                  line = {};
-                  line_width = 0.0f;
-                  space_width = 0.0f;
-                }
-
-                line_width += word_width;
-                line.words.push_back(std::move(word));
-                line.items.push_back(TextItem::Word);
+                compute_paragraph_line_word(paragraph, line, word, line_width, space_width);
                 ++word_index;
                 break;
               }
@@ -869,7 +857,60 @@ namespace gf {
         return paragraph;
       }
 
-      RawGeometry compute_geometry(std::vector<TextParagraph>& paragraphs)
+      void compute_paragraph_line_word(TextParagraph& paragraph, TextLine& line, TextWord& word, float& line_width, float& space_width) const
+      {
+        const float word_width = word.width();
+
+        if (!line.words.empty() && line_width + word_width > m_data.paragraph_width) {
+          // remove trailing spaces
+
+          while (line.items.back() == TextItem::Space) {
+            auto width = line.spaces.back().width;
+            line_width -= width;
+            space_width -= width;
+            line.items.pop_back();
+            line.spaces.pop_back();
+          }
+
+          // compute indent
+
+          switch (m_data.alignment) {
+            case Alignment::Left:
+              line.indent = 0.0f;
+              break;
+            case Alignment::Right:
+              line.indent = m_data.paragraph_width - line_width;
+              break;
+            case Alignment::Center:
+              line.indent = (m_data.paragraph_width - line_width) / 2;
+              break;
+            case Alignment::Justify:
+              if (!line.spaces.empty()) {
+                const float space_unit = (m_data.paragraph_width - line_width) / space_width;
+
+                for (auto& space : line.spaces) {
+                  space.width += (space_unit * space.width);
+                }
+              }
+              break;
+
+            case Alignment::None:
+              assert(false);
+              break;
+          }
+
+          paragraph.lines.push_back(std::move(line));
+          line = {};
+          line_width = 0.0f;
+          space_width = 0.0f;
+        }
+
+        line_width += word_width;
+        line.words.push_back(std::move(word));
+        line.items.push_back(TextItem::Word);
+      }
+
+      RawGeometry compute_geometry(std::vector<TextParagraph>& paragraphs) const
       {
         RawGeometry geometry;
 
@@ -891,39 +932,7 @@ namespace gf {
                   break;
                 case TextItem::Word:
                   assert(word_index < line.words.size());
-
-                  for (auto& part : line.words[word_index].parts) {
-                    auto* face = part.properties.data.face;
-                    auto color = part.properties.color;
-                    auto character_size_factor = part.properties.character_size_factor;
-
-                    for (const auto& glyph : part.glyphs) {
-                      const RectF glyph_bounds = m_atlas->glyph(glyph.index, face).bounds.grow_by(static_cast<float>(FontManager::spread()));
-                      const RectF bounds = RectF::from_position_size((glyph.offset + glyph_bounds.offset) * character_size_factor, glyph_bounds.extent * character_size_factor);
-                      const RectF texture_region = m_atlas->texture_region(glyph.index, face);
-
-                      assert(geometry.vertices.size() < UINT16_MAX);
-                      auto index = static_cast<uint16_t>(geometry.vertices.size());
-
-                      geometry.vertices.push_back({ position + bounds.position_at(Orientation::NorthEast), texture_region.position_at(Orientation::NorthEast), color });
-                      geometry.vertices.push_back({ position + bounds.position_at(Orientation::SouthEast), texture_region.position_at(Orientation::SouthEast), color });
-                      geometry.vertices.push_back({ position + bounds.position_at(Orientation::NorthWest), texture_region.position_at(Orientation::NorthWest), color });
-                      geometry.vertices.push_back({ position + bounds.position_at(Orientation::SouthWest), texture_region.position_at(Orientation::SouthWest), color });
-
-                      // first triangle
-                      geometry.indices.push_back(index);
-                      geometry.indices.push_back(index + 1);
-                      geometry.indices.push_back(index + 2);
-
-                      // second triangle
-                      geometry.indices.push_back(index + 2);
-                      geometry.indices.push_back(index + 1);
-                      geometry.indices.push_back(index + 3);
-
-                      position.x += position_scale(glyph.advance.x) * character_size_factor;
-                    }
-                  }
-
+                  position = compute_word_geometry(line.words[word_index], position, geometry);
                   ++word_index;
                   break;
               }
@@ -934,6 +943,43 @@ namespace gf {
         }
 
         return geometry;
+      }
+
+      Vec2F compute_word_geometry(const TextWord& word, Vec2F position, RawGeometry& geometry) const
+      {
+        for (const auto& part : word.parts) {
+          auto* face = part.properties.data.face;
+          auto color = part.properties.color;
+          auto character_size_factor = part.properties.character_size_factor;
+
+          for (const auto& glyph : part.glyphs) {
+            const RectF glyph_bounds = m_atlas->glyph(glyph.index, face).bounds.grow_by(static_cast<float>(FontManager::spread()));
+            const RectF bounds = RectF::from_position_size((glyph.offset + glyph_bounds.offset) * character_size_factor, glyph_bounds.extent * character_size_factor);
+            const RectF texture_region = m_atlas->texture_region(glyph.index, face);
+
+            assert(geometry.vertices.size() < UINT16_MAX);
+            auto index = static_cast<uint16_t>(geometry.vertices.size());
+
+            geometry.vertices.push_back({ position + bounds.position_at(Orientation::NorthEast), texture_region.position_at(Orientation::NorthEast), color });
+            geometry.vertices.push_back({ position + bounds.position_at(Orientation::SouthEast), texture_region.position_at(Orientation::SouthEast), color });
+            geometry.vertices.push_back({ position + bounds.position_at(Orientation::NorthWest), texture_region.position_at(Orientation::NorthWest), color });
+            geometry.vertices.push_back({ position + bounds.position_at(Orientation::SouthWest), texture_region.position_at(Orientation::SouthWest), color });
+
+            // first triangle
+            geometry.indices.push_back(index);
+            geometry.indices.push_back(index + 1);
+            geometry.indices.push_back(index + 2);
+
+            // second triangle
+            geometry.indices.push_back(index + 2);
+            geometry.indices.push_back(index + 1);
+            geometry.indices.push_back(index + 3);
+
+            position.x += position_scale(glyph.advance.x) * character_size_factor;
+          }
+        }
+
+        return position;
       }
 
       const TextData& m_data; // NOLINT(cppcoreguidelines-avoid-const-or-ref-data-members)
