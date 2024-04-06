@@ -54,6 +54,15 @@ namespace gf {
     {
       return a < b ? a : b;
     }
+
+    template<typename T>
+    constexpr std::enable_if_t<std::is_arithmetic_v<T>, T> clamp(T val, T min, T max)
+    {
+      // clang-format off
+      return val < min ? min : max < val ? max : val;
+      // clang-format on
+    }
+
   } // namespace details
 
   template<typename T>

@@ -6,6 +6,7 @@
 #include <cstdint>
 
 #include "CoreApi.h"
+#include "Math.h"
 #include "TypeTraits.h"
 
 namespace gf {
@@ -200,6 +201,21 @@ namespace gf {
 
   GF_CORE_API Color srgb_to_linear(Color color);
   GF_CORE_API Color linear_to_srgb(Color color);
+
+  constexpr Color max(Color lhs, Color rhs)
+  {
+    return { details::max(lhs.r, rhs.r), details::max(lhs.g, rhs.g), details::max(lhs.b, rhs.b), details::max(lhs.a, rhs.a) };
+  }
+
+  constexpr Color min(Color lhs, Color rhs)
+  {
+    return { details::min(lhs.r, rhs.r), details::min(lhs.g, rhs.g), details::min(lhs.b, rhs.b), details::min(lhs.a, rhs.a) };
+  }
+
+  constexpr Color clamp(Color color, float min = 0.0f, float max = 1.0f)
+  {
+    return { details::clamp(color.r, min, max), details::clamp(color.g, min, max), details::clamp(color.b, min, max), details::clamp(color.a, min, max) };
+  }
 
   constexpr Color opaque(float value = 0.5f)
   {
