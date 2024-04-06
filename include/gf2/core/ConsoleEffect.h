@@ -10,7 +10,7 @@
 
 namespace gf {
 
-  enum ConsoleEffectType : uint8_t {
+  enum class ConsoleEffectType : uint8_t {
     None,
     Set,
     Multiply,
