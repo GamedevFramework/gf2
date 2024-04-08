@@ -52,7 +52,6 @@ namespace gf {
     RectF m_bounds = {};
   };
 
-
 }
 
 #endif // GF_CONSOLE_H

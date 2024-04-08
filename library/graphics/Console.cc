@@ -72,14 +72,15 @@ namespace gf {
       const auto& cell = data.screen(position);
 
       const RectF bounds = RectF::from_position_size(position * m_font->character_size(), m_font->character_size());
+      const Vec2F texture_coordinates = { 0.0f, 0.0f };
       const Color color = srgb_to_linear(cell.background);
 
       auto index = static_cast<uint16_t>(geometry.vertices.size());
 
-      geometry.vertices.push_back({ bounds.position_at(Orientation::NorthEast), { 0.0f, 0.0f }, color });
-      geometry.vertices.push_back({ bounds.position_at(Orientation::SouthEast), { 0.0f, 0.0f }, color });
-      geometry.vertices.push_back({ bounds.position_at(Orientation::NorthWest), { 0.0f, 0.0f }, color });
-      geometry.vertices.push_back({ bounds.position_at(Orientation::SouthWest), { 0.0f, 0.0f }, color });
+      geometry.vertices.push_back({ bounds.position_at(Orientation::NorthEast), texture_coordinates, color });
+      geometry.vertices.push_back({ bounds.position_at(Orientation::SouthEast), texture_coordinates, color });
+      geometry.vertices.push_back({ bounds.position_at(Orientation::NorthWest), texture_coordinates, color });
+      geometry.vertices.push_back({ bounds.position_at(Orientation::SouthWest), texture_coordinates, color });
 
       // first triangle
       geometry.indices.push_back(index);

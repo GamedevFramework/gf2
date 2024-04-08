@@ -4,9 +4,9 @@
 
 #include <gf2/core/ConsoleChar.h>
 
+#include <gf2/graphics/ConsoleEntity.h>
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/SceneManager.h>
-#include <gf2/graphics/ConsoleEntity.h>
 
 #include "config.h"
 
@@ -39,7 +39,7 @@ int main()
   const std::string_view text = "This is a simple but long text with multiple lines.";
 
   style.alignment = gf::ConsoleAlignment::Left;
-  console_data.print_area(gf::RectI::from_position_size({ 2,  5 }, { 16, 5 }), style, text);
+  console_data.print_area(gf::RectI::from_position_size({ 2, 5 }, { 16, 5 }), style, text);
   style.alignment = gf::ConsoleAlignment::Center;
   console_data.print_area(gf::RectI::from_position_size({ 2, 15 }, { 16, 5 }), style, text);
   style.alignment = gf::ConsoleAlignment::Right;
