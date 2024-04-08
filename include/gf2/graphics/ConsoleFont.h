@@ -54,7 +54,7 @@ namespace gf {
     RenderManager* render_manager = nullptr;
   };
 
-  class ConsoleFont {
+  class GF_GRAPHICS_API ConsoleFont {
   public:
     using Context = ConsoleFontContext;
 
@@ -84,7 +84,7 @@ namespace gf {
     void map_elements(Span<const ConsoleFontElement> elements);
     void clear_mapping();
 
-    RectF texture_region(char16_t c) const;
+    RectF texture_region(char16_t character) const;
 
     const Texture* texture() const
     {

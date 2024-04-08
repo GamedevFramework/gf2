@@ -352,9 +352,10 @@ namespace gf {
   void ConsoleData::actual_draw_frame(RectI area, const ConsoleStyle& style, const std::string& title)
   {
     draw_rectangle(area, style);
-    auto size = area.extent - 2;
+    area.extent -= 1;
+    auto size = area.extent - 1;
     Vec2I min = area.offset;
-    Vec2I max = area.offset + area.extent - 1;
+    Vec2I max = area.offset + area.extent;
 
     put_character(area.position_at(Orientation::NorthWest), ConsoleChar::BoxDrawingsLightDownAndRight, style);
     put_character(area.position_at(Orientation::NorthEast), ConsoleChar::BoxDrawingsLightDownAndLeft, style);

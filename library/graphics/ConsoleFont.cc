@@ -328,9 +328,9 @@ namespace gf {
     assert(m_mapping.size() == MappingSize);
   }
 
-  RectF ConsoleFont::texture_region(char16_t c) const
+  RectF ConsoleFont::texture_region(char16_t character) const
   {
-    uint8_t index = m_mapping[c];
+    uint8_t index = m_mapping[character];
     Vec2F position = compute_position(index, m_format.layout, m_size);
     Vec2F size = m_size;
     return RectF::from_position_size(position / size, 1.0f / size);

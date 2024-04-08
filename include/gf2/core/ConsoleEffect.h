@@ -103,7 +103,7 @@ namespace gf {
       return m_alpha;
     }
 
-    Color compute_color(Color existing, Color current) const;
+    Color compute_color(Color existing, Color proposed) const;
 
   private:
     constexpr ConsoleEffect(ConsoleEffectType type, float alpha = 0.0f)

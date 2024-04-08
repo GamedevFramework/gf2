@@ -5,6 +5,8 @@
 
 #include <cstdint>
 
+#include <filesystem>
+
 #include <fmt/core.h>
 
 #include "Array2D.h"
@@ -37,7 +39,7 @@ namespace gf {
   struct GF_CORE_API ConsoleStyle {
     Color foreground = White;
     Color background = Black;
-    ConsoleEffect effect = ConsoleEffect::none();
+    ConsoleEffect effect = ConsoleEffect::set();
     ConsoleAlignment alignment = ConsoleAlignment::Left;
   };
 
@@ -109,9 +111,20 @@ namespace gf {
   };
 
   template<typename Archive>
-  Archive& operator|(Archive& ar, MaybeConst<ConsoleData, Archive>& cell)
+  Archive& operator|(Archive& ar, MaybeConst<ConsoleData, Archive>& data)
   {
-    return ar | cell.screen;
+    return ar | data.screen;
+  }
+
+  struct GF_CORE_API ConsoleResource {
+    std::filesystem::path console_font;
+    ConsoleData data;
+  };
+
+  template<typename Archive>
+  Archive& operator|(Archive& ar, MaybeConst<ConsoleResource, Archive>& resource)
+  {
+    return ar | resource.console_font | resource.data;
   }
 
 }
