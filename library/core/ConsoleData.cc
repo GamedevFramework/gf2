@@ -7,15 +7,43 @@
 
 #include <gf2/core/Blit.h>
 #include <gf2/core/ConsoleChar.h>
+#include <gf2/core/ConsoleStyle.h>
 #include <gf2/core/Log.h>
 #include <gf2/core/StringUtils.h>
+#include <gf2/core/TextLexer.h>
 
 namespace gf {
 
   namespace {
+    struct ConsoleWordPart {
+      std::string_view data;
+      ConsoleColorStyle style;
+    };
+
+    struct ConsoleWord {
+      std::vector<ConsoleWordPart> parts;
+
+      int width() const
+      {
+        std::size_t length = 0;
+
+        for (const auto& part : parts) {
+          length += part.data.size();
+        }
+
+        return static_cast<int>(length);
+      }
+    };
+
+    enum class ConsoleTextItem : uint8_t {
+      Word,
+      Space,
+    };
 
     struct ConsoleLine {
-      std::vector<std::string_view> words;
+      std::vector<ConsoleTextItem> items;
+      std::vector<ConsoleWord> words;
+      std::vector<ConsoleColorStyle> spaces;
       int indent = 0;
     };
 
@@ -23,83 +51,205 @@ namespace gf {
       std::vector<ConsoleLine> lines;
     };
 
-    std::vector<ConsoleParagraph> make_paragraph(const std::string& message, ConsoleAlignment alignment, int paragraph_width)
-    {
-      auto raw_paragraphs = split_in_paragraphs(message);
-      std::vector<ConsoleParagraph> paragraphs;
+    class ConsoleTextParser {
+    public:
+      ConsoleTextParser(const std::string& message, int paragraph_width, ConsoleRichStyle* rich_style)
+      : m_message(message)
+      , m_paragraph_width(paragraph_width)
+      , m_rich_style(rich_style)
+      {
+        m_stack.push_back(m_rich_style->default_style().color);
+      }
 
-      for (auto& raw_paragraph : raw_paragraphs) {
-        auto raw_words = split_in_words(raw_paragraph);
+      std::vector<ConsoleParagraph> parser_with(TextLexer& lexer)
+      {
+        auto raw_paragraphs = compute_raw_paragraphs(lexer);
+        return compute_paragraphs(raw_paragraphs);
+      }
 
-        ConsoleParagraph paragraph;
+    private:
+      std::vector<ConsoleLine> compute_raw_paragraphs(TextLexer& lexer)
+      {
+        assert(m_stack.size() == 1);
+        lexer.initialize(m_message);
+
+        std::vector<ConsoleLine> paragraphs;
         ConsoleLine current_line;
-        int current_width = 0;
+        ConsoleWord current_word;
 
-        for (auto raw_word : raw_words) {
-          int word_width = static_cast<int>(raw_word.size());
+        for (;;) {
+          auto token = lexer.next();
 
-          if (!current_line.words.empty() && current_width + 1 + word_width > paragraph_width) {
-            switch (alignment) {
-              case ConsoleAlignment::Left:
-                current_line.indent = 0;
-                break;
+          if (token.type == TextTokenType::StartTag) {
+            auto data = std::get<TextTag>(token.data);
 
-              case ConsoleAlignment::Right:
-                current_line.indent = paragraph_width - current_width;
-                break;
-
-              case ConsoleAlignment::Center:
-                current_line.indent = (paragraph_width - current_width) / 2;
-                break;
+            if (data.tag != "style") {
+              Log::fatal("Unknown tag: {}.", data.tag);
             }
 
-            paragraph.lines.push_back(std::move(current_line));
+            m_stack.push_back(m_rich_style->style(data.value));
+            continue;
+          }
+
+          if (token.type == TextTokenType::EndTag) {
+            if (m_stack.size() == 1 || m_stack.empty()) {
+              Log::fatal("Too many end tags.");
+            }
+
+            m_stack.pop_back();
+            continue;
+          }
+
+          if (token.type == TextTokenType::Word) {
+            auto word = std::get<std::string_view>(token.data);
+
+            assert(!m_stack.empty());
+            current_word.parts.push_back({ word, m_stack.back() });
+            continue;
+          }
+
+          // space, newline or end
+
+          if (!current_word.parts.empty()) {
+            current_line.items.push_back(ConsoleTextItem::Word);
+            current_line.words.push_back(std::move(current_word));
+            current_word = {};
+          }
+
+          if (token.type == TextTokenType::Space) {
+            current_line.items.push_back(ConsoleTextItem::Space);
+            current_line.spaces.push_back(m_stack.back());
+            continue;
+          }
+
+          if (!current_line.items.empty()) {
+            paragraphs.push_back(std::move(current_line));
             current_line = {};
           }
 
-          if (current_line.words.empty()) {
-            current_width = word_width;
-          } else {
-            current_width += 1 + word_width;
+          if (token.type == TextTokenType::Newline) {
+            continue;
           }
 
-          current_line.words.push_back(raw_word);
+          assert(token.type == TextTokenType::End);
+          break;
         }
 
-        // add the last line
-
-        if (!current_line.words.empty()) {
-          switch (alignment) {
-            case ConsoleAlignment::Left:
-              current_line.indent = 0;
-              break;
-
-            case ConsoleAlignment::Right:
-              current_line.indent = paragraph_width - current_width;
-              break;
-
-            case ConsoleAlignment::Center:
-              current_line.indent = (paragraph_width - current_width) / 2;
-              break;
-          }
-
-          paragraph.lines.push_back(std::move(current_line));
+        if (m_stack.size() != 1) {
+          Log::fatal("Mismatched tags.");
         }
 
-        paragraphs.push_back(std::move(paragraph));
-        paragraph = {};
+        return paragraphs;
       }
 
-      return paragraphs;
-    }
+      std::vector<ConsoleParagraph> compute_paragraphs(std::vector<ConsoleLine>& raw_paragraphs) const
+      {
+        auto alignment = m_rich_style->default_style().alignment;
+
+        std::vector<ConsoleParagraph> paragraphs;
+
+        for (auto& raw_paragraph : raw_paragraphs) {
+          ConsoleParagraph paragraph;
+
+          ConsoleLine line;
+          int line_width = 0;
+          std::size_t word_index = 0;
+          std::size_t space_index = 0;
+
+          for (auto item : raw_paragraph.items) {
+            switch (item) {
+              case ConsoleTextItem::Space:
+                {
+                  auto& space = raw_paragraph.spaces[space_index];
+                  line.spaces.push_back(space);
+                  line.items.push_back(ConsoleTextItem::Space);
+                  ++line_width;
+                  ++space_index;
+                }
+                break;
+
+              case ConsoleTextItem::Word:
+                {
+                  auto& word = raw_paragraph.words[word_index];
+                  const int word_width = word.width();
+
+                  if (!line.words.empty() && line_width + word_width > m_paragraph_width) {
+                    // remove trailing spaces
+
+                    while (line.items.back() == ConsoleTextItem::Space) {
+                      --line_width;
+                      line.items.pop_back();
+                      line.spaces.pop_back();
+                    }
+
+                    // compute indent
+
+                    switch (alignment) {
+                      case ConsoleAlignment::Left:
+                        line.indent = 0;
+                        break;
+
+                      case ConsoleAlignment::Right:
+                        line.indent = m_paragraph_width - line_width;
+                        break;
+
+                      case ConsoleAlignment::Center:
+                        line.indent = (m_paragraph_width - line_width) / 2;
+                        break;
+                    }
+
+                    paragraph.lines.push_back(std::move(line));
+                    line = {};
+                    line_width = 0;
+                  }
+
+                  line_width += word_width;
+                  line.words.push_back(std::move(word));
+                  line.items.push_back(ConsoleTextItem::Word);
+
+                  ++word_index;
+                }
+                break;
+            }
+          }
+
+          // add the last line
+
+          if (!line.words.empty()) {
+            switch (alignment) {
+              case ConsoleAlignment::Left:
+                line.indent = 0;
+                break;
+              case ConsoleAlignment::Right:
+                line.indent = m_paragraph_width - line_width;
+                break;
+              case ConsoleAlignment::Center:
+                line.indent = (m_paragraph_width - line_width) / 2;
+                break;
+            }
+
+            paragraph.lines.push_back(std::move(line));
+          }
+
+          paragraphs.push_back(std::move(paragraph));
+        }
+
+        return paragraphs;
+      }
+
+      const std::string& m_message; // NOLINT(cppcoreguidelines-avoid-const-or-ref-data-members)
+      int m_paragraph_width = 0;
+      ConsoleRichStyle* m_rich_style;
+      std::vector<ConsoleColorStyle> m_stack;
+    };
 
   }
 
   void ConsoleData::clear(const ConsoleStyle& style)
   {
     for (auto& cell : screen) {
-      cell.background = style.background;
-      cell.foreground = style.foreground;
+      cell.background = style.color.background;
+      cell.foreground = style.color.foreground;
       cell.character = u' ';
     }
   }
@@ -117,8 +267,8 @@ namespace gf {
     for (auto position : position_range(area.extent)) {
       position += area.offset;
       auto& cell = screen(position);
-      cell.background = style.background;
-      cell.foreground = style.foreground;
+      cell.background = style.color.background;
+      cell.foreground = style.color.foreground;
       cell.character = u' ';
     }
   }
@@ -175,8 +325,8 @@ namespace gf {
     }
 
     auto& cell = screen(position);
-    cell.foreground = style.foreground;
-    cell.background = style.effect.compute_color(cell.background, style.background);
+    cell.foreground = style.color.foreground;
+    cell.background = style.effect.compute_color(cell.background, style.color.background);
     cell.character = character;
   }
 
@@ -192,13 +342,13 @@ namespace gf {
   void ConsoleData::draw_rectangle(RectI area, const ConsoleStyle& style)
   {
     for (int x = area.offset.x; x < area.offset.x + area.extent.w; ++x) {
-      set_background({ x, area.offset.y }, style.background, style.effect);
-      set_background({ x, area.offset.y + area.extent.h - 1 }, style.background, style.effect);
+      set_background({ x, area.offset.y }, style.color.background, style.effect);
+      set_background({ x, area.offset.y + area.extent.h - 1 }, style.color.background, style.effect);
     }
 
     for (int y = area.offset.y; y < area.offset.y + area.extent.h; ++y) {
-      set_background({ area.offset.x, y }, style.background, style.effect);
-      set_background({ area.offset.x + area.extent.w - 1, y }, style.background, style.effect);
+      set_background({ area.offset.x, y }, style.color.background, style.effect);
+      set_background({ area.offset.x + area.extent.w - 1, y }, style.color.background, style.effect);
     }
   }
 
@@ -256,7 +406,7 @@ namespace gf {
     return width;
   }
 
-  int ConsoleData::actual_print(RectI area, const std::string& message, const ConsoleStyle& style, uint8_t flags)
+  int ConsoleData::raw_print(RectI area, const std::string& message, const ConsoleRichStyle& style, uint8_t flags)
   {
     auto size = screen.size();
     auto min = area.min();
@@ -268,38 +418,46 @@ namespace gf {
 
     if ((flags & PrintSplit) != 0) {
       // multiline
-      return actual_print_multiline(area, message, style, flags);
+      return raw_print_multiline(area, message, style, flags);
     }
     // single line
     assert(area.extent == gf::vec(0, 0));
-    auto position = area.position();
-    int width = static_cast<int>(message.size());
 
-    switch (style.alignment) {
+    auto position = area.position();
+
+    RectI single_line_area = {};
+
+    switch (style.default_style().alignment) {
       case ConsoleAlignment::Left:
+        single_line_area.offset = position;
+        single_line_area.extent = { size.w - position.x, 1 };
         break;
 
       case ConsoleAlignment::Center:
-        position.x -= width / 2;
+        {
+          int half_width = std::min(position.x, size.w - position.x - 1);
+          single_line_area.offset = { position.x - half_width, position.y };
+          single_line_area.extent = { 2 * half_width + 1, 1 };
+        }
         break;
 
       case ConsoleAlignment::Right:
-        position.x -= width;
+        single_line_area.offset = { 0, position.y };
+        single_line_area.extent = { position.x + 1, 1 };
         break;
     }
 
-    put_string(position, message, style);
-    return 1;
+    return raw_print_multiline(single_line_area, message, style, flags);
   }
 
-  int ConsoleData::actual_print_multiline(RectI area, const std::string& message, const ConsoleStyle& style, uint8_t flags)
+  int ConsoleData::raw_print_multiline(RectI area, const std::string& message, const ConsoleRichStyle& style, uint8_t flags)
   {
     auto size = screen.size();
     int line_count = 0;
     int paragraph_width = area.extent.w;
 
     if (paragraph_width == 0) {
-      switch (style.alignment) {
+      switch (style.default_style().alignment) {
         case ConsoleAlignment::Left:
           paragraph_width = size.w - area.offset.x;
           break;
@@ -314,8 +472,21 @@ namespace gf {
       }
     }
 
-    auto paragraphs = make_paragraph(message, style.alignment, paragraph_width);
+    ConsoleRichStyle rich_style(style);
+    ConsoleTextParser parser(message, paragraph_width, &rich_style);
+
+    std::vector<ConsoleParagraph> paragraphs;
+
+    if ((flags & PrintSimple) != 0) {
+      SimpleTextLexer lexer;
+      paragraphs = parser.parser_with(lexer);
+    } else {
+      RichTextLexer lexer;
+      paragraphs = parser.parser_with(lexer);
+    }
+
     auto position = area.position();
+    ConsoleStyle current_style = style.default_style();
 
     for (const auto& paragraph : paragraphs) {
       if ((flags & PrintCount) != 0) {
@@ -328,15 +499,33 @@ namespace gf {
 
           Vec2I line_position = position;
           line_position.x += line.indent;
-          auto word_count = line.words.size();
+          std::size_t word_index = 0;
+          std::size_t space_index = 0;
 
-          for (auto word : line.words) {
-            line_position.x += put_string(line_position, word, style);
-            --word_count;
+          for (auto item : line.items) {
+            switch (item) {
+              case ConsoleTextItem::Space:
+                {
+                  const auto& space = line.spaces[space_index];
+                  current_style.color = space;
+                  put_character(line_position, ' ', current_style);
+                  ++line_position.x;
+                  ++space_index;
+                }
+                break;
 
-            if (word_count > 0) {
-              put_character(line_position, ' ', style);
-              ++line_position.x;
+              case ConsoleTextItem::Word:
+                {
+                  const auto& word = line.words[word_index];
+
+                  for (const auto& parts : word.parts) {
+                    current_style.color = parts.style;
+                    line_position.x += put_string(line_position, parts.data, current_style);
+                  }
+
+                  ++word_index;
+                }
+                break;
             }
           }
 
@@ -349,7 +538,7 @@ namespace gf {
     return line_count;
   }
 
-  void ConsoleData::actual_draw_frame(RectI area, const ConsoleStyle& style, const std::string& title)
+  void ConsoleData::raw_draw_frame(RectI area, const ConsoleStyle& style, std::string_view title)
   {
     draw_rectangle(area, style);
     area.extent -= 1;
@@ -371,7 +560,7 @@ namespace gf {
     }
 
     ConsoleStyle title_style = style;
-    std::swap(title_style.foreground, title_style.background);
+    std::swap(title_style.color.foreground, title_style.color.background);
     title_style.effect = ConsoleEffect::set();
     title_style.alignment = ConsoleAlignment::Left;
     print({ min.x + 1, min.y }, title_style, " {} ", title);

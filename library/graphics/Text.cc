@@ -498,7 +498,7 @@ namespace gf {
           return true;
         }
 
-        if (!current_line.words.empty() || !current_line.spaces.empty()) {
+        if (!current_line.items.empty()) {
           paragraphs.push_back(std::move(current_line));
           current_line = {};
         }
@@ -590,7 +590,7 @@ namespace gf {
         for (auto item : raw_line.items) {
           switch (item) {
             case TextItem::Space:
-              if (!line.words.empty()) {
+              {
                 auto& space = raw_line.spaces[space_index];
                 line_width += space.width;
                 space_width += space.width;
@@ -605,8 +605,8 @@ namespace gf {
                 auto& word = raw_line.words[word_index];
                 compute_paragraph_line_word(paragraph, line, word, line_width, space_width);
                 ++word_index;
-                break;
               }
+              break;
           }
         }
 

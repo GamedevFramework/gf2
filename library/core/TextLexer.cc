@@ -25,7 +25,6 @@ namespace gf {
     m_current = string.data();
   }
 
-
   bool TextLexer::at_end() const
   {
     return m_current == m_source.data() + m_source.size();
@@ -169,6 +168,5 @@ namespace gf {
     std::string_view word(word_start, static_cast<std::size_t>(current() - word_start));
     return TextToken::make_word(word);
   }
-
 
 }

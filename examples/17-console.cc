@@ -3,6 +3,7 @@
 #include <cstdlib>
 
 #include <gf2/core/ConsoleChar.h>
+#include <gf2/core/ConsoleStyle.h>
 
 #include <gf2/graphics/ConsoleEntity.h>
 #include <gf2/graphics/Scene.h>
@@ -24,29 +25,38 @@ int main()
   const gf::ConsoleFont console_font(font_file, font_context);
 
   gf::ConsoleStyle style;
-  style.background = gf::gray(0.25f);
+  style.color.background = gf::gray(0.25f);
+
+  gf::ConsoleRichStyle rich_style(style);
+  rich_style.set_style("red", { gf::Red, gf::Black });
+  rich_style.set_style("gf", { gf::Orange, gf::Azure });
+  rich_style.set_style("warn", { gf::Black, gf::Yellow });
 
   gf::ConsoleData console_data({ 80, 50 });
 
   console_data.put_character({ 40, 25 }, '@', style);
   console_data.put_character({ 42, 25 }, gf::ConsoleChar::WhiteSmilingFace, style);
 
-  console_data.print({ 1, 1 }, style, "String with a red word.");
+  console_data.print({ 1, 1 }, rich_style, "String with a <style=red>red</> word.");
 
   style.alignment = gf::ConsoleAlignment::Right;
-  console_data.print(console_data.screen.size() - 2, style, "Made with gf!");
+  rich_style.set_default_style(style);
+  console_data.print(console_data.screen.size() - 2, rich_style, "Made with <style=gf>gf</>!");
 
-  const std::string_view text = "This is a simple but long text with multiple lines.";
+  const std::string_view text = "This is a simple but long text with <style=warn>multiple</> lines.";
 
   style.alignment = gf::ConsoleAlignment::Left;
-  console_data.print_area(gf::RectI::from_position_size({ 2, 5 }, { 16, 5 }), style, text);
+  rich_style.set_default_style(style);
+  console_data.print_area(gf::RectI::from_position_size({ 2, 5 }, { 16, 5 }), rich_style, text);
   style.alignment = gf::ConsoleAlignment::Center;
-  console_data.print_area(gf::RectI::from_position_size({ 2, 15 }, { 16, 5 }), style, text);
+  rich_style.set_default_style(style);
+  console_data.print_area(gf::RectI::from_position_size({ 2, 15 }, { 16, 5 }), rich_style, text);
   style.alignment = gf::ConsoleAlignment::Right;
-  console_data.print_area(gf::RectI::from_position_size({ 2, 25 }, { 16, 5 }), style, text);
+  rich_style.set_default_style(style);
+  console_data.print_area(gf::RectI::from_position_size({ 2, 25 }, { 16, 5 }), rich_style, text);
 
   console_data.clear(gf::RectI::from_position_size({ 30, 5 }, { 16, 5 }), style);
-  console_data.draw_frame(gf::RectI::from_position_size({ 30, 5 }, { 16, 5 }), style, "");
+  console_data.draw_frame(gf::RectI::from_position_size({ 30, 5 }, { 16, 5 }), style);
   console_data.draw_frame(gf::RectI::from_position_size({ 30, 15 }, { 16, 5 }), style, "Frame title");
 
   gf::ConsoleEntity console_entity(&console_font, console_data, scene_manager.render_manager());
