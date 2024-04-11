@@ -61,5 +61,5 @@ xref:index.adoc[< Back to main page]
 
 == `imgui`
 
-- xref:imgui_initialization.adoc[Initialization] (`ImguiInitializer`)
-- xref:imgui_management.adoc[Management] (`ImguiManager`, `ImguiEntity`)
+- xref:imgui_initialization.adoc[Initialization]
+- xref:imgui_management.adoc[Management] (xref:ImguiManager.adoc[`ImguiManager`], xref:ImguiEntity.adoc[`ImguiEntity`])
