@@ -5,7 +5,7 @@ include::bits/attributes.adoc[]
 
 The management component provides global audio management.
 
-xref:reference.adoc[< Back to reference]
+xref:reference.adoc#audio[< Back to reference]
 
 == Types
 

@@ -7,7 +7,7 @@ The sources component contains the different audio sources.
 
 The library provides two audio sources: <<sound>> and <<music>>.
 
-xref:reference.adoc[< Back to reference]
+xref:reference.adoc#audio[< Back to reference]
 
 == Types
 

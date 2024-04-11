@@ -5,7 +5,7 @@ include::bits/attributes.adoc[]
 
 The spatialization component provides structures for managing audio spatialization.
 
-xref:reference.adoc[< Back to reference]
+xref:reference.adoc#audio[< Back to reference]
 
 == Types
 
