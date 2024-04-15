@@ -4,6 +4,7 @@
 #include <gf2/core/Noises.h>
 
 #include <algorithm>
+#include <numeric>
 
 #include <gf2/core/Math.h>
 
@@ -187,6 +188,13 @@ namespace gf {
     const double w = m_step(rz);
 
     return gf::lerp(p0, p1, w);
+  }
+
+  Vec3D GradientNoise3D::at(uint8_t i, uint8_t j, uint8_t k) const {
+    uint8_t index = i;
+    index = m_permutation.at(index) + j;
+    index = m_permutation.at(index) + k;
+    return m_gradients.at(m_permutation.at(index));
   }
 
   /*
