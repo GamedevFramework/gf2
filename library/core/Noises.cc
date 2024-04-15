@@ -4,7 +4,8 @@
 #include <gf2/core/Noises.h>
 
 #include <algorithm>
-#include "gf2/core/Math.h"
+
+#include <gf2/core/Math.h>
 
 namespace gf {
 
@@ -238,8 +239,219 @@ namespace gf {
 
   Vec2D BetterGradientNoise2D::at(uint8_t i, uint8_t j) const
   {
-    uint8_t index = m_permutation_x.at(i) ^ m_permutation_y.at(j);
+    const uint8_t index = m_permutation_x.at(i) ^ m_permutation_y.at(j);
     return m_gradients.at(index);
+  }
+
+  /*
+   * FractalNoise2D
+   */
+
+  FractalNoise2D::FractalNoise2D(Noise2D* noise, double scale, int octaves, double lacunarity, double persistence, double dimension)
+  : m_noise(noise)
+  , m_scale(scale)
+  , m_octaves(octaves)
+  , m_lacunarity(lacunarity)
+  , m_persistence(persistence)
+  , m_dimension(dimension)
+  {
+  }
+
+  double FractalNoise2D::value(double x, double y)
+  {
+    if (m_noise == nullptr) {
+      return 0.0;
+    }
+
+    double value = 0.0;
+    double frequency = 1.0;
+    double amplitude = 1.0;
+
+    x *= m_scale;
+    y *= m_scale;
+
+    for (int k = 0; k < m_octaves; ++k) {
+      value += m_noise->value(x * frequency, y * frequency) * std::pow(amplitude, m_dimension);
+
+      frequency *= m_lacunarity;
+      amplitude *= m_persistence;
+    }
+
+    return value;
+  }
+
+  /*
+   * FractalNoise3D
+   */
+
+  FractalNoise3D::FractalNoise3D(Noise3D* noise, double scale, int octaves, double lacunarity, double persistence, double dimension)
+  : m_noise(noise)
+  , m_scale(scale)
+  , m_octaves(octaves)
+  , m_lacunarity(lacunarity)
+  , m_persistence(persistence)
+  , m_dimension(dimension)
+  {
+  }
+
+  double FractalNoise3D::value(double x, double y, double z)
+  {
+    if (m_noise == nullptr) {
+      return 0.0;
+    }
+
+    double value = 0.0;
+    double frequency = 1.0;
+    double amplitude = 1.0;
+
+    x *= m_scale;
+    y *= m_scale;
+    z *= m_scale;
+
+    for (int k = 0; k < m_octaves; ++k) {
+      value += m_noise->value(x * frequency, y * frequency, z * frequency) * std::pow(amplitude, m_dimension);
+
+      frequency *= m_lacunarity;
+      amplitude *= m_persistence;
+    }
+
+    return value;
+  }
+
+  /*
+   * PerlinNoise2D
+   */
+
+  PerlinNoise2D::PerlinNoise2D(Random& random, double scale, int octaves)
+  : m_gradient_noise(random, gf::quintic_step)
+  , m_fractal_noise(&m_gradient_noise, scale, octaves)
+  {
+  }
+
+  double PerlinNoise2D::value(double x, double y)
+  {
+    return m_fractal_noise(x, y);
+  }
+
+  /*
+   * PerlinNoise3D
+   */
+
+  PerlinNoise3D::PerlinNoise3D(Random& random, double scale, int octaves)
+  : m_gradient_noise(random, gf::quintic_step)
+  , m_fractal_noise(&m_gradient_noise, scale, octaves)
+  {
+  }
+
+  double PerlinNoise3D::value(double x, double y, double z)
+  {
+    return m_fractal_noise(x, y, z);
+  }
+
+  /*
+   * SimplexNoise2D
+   */
+
+  SimplexNoise2D::SimplexNoise2D(Random& random)
+  {
+    generate_permutation(random, m_permutation);
+  }
+
+  double SimplexNoise2D::value(double x, double y)
+  {
+    static constexpr double F2 = .366025403784438646763723170752; // (sqrt(3) - 1) / 2
+    static constexpr double G2 = .211324865405187117745425609748; // K / (1 + 2 * K)
+
+    const double s = (x + y) * F2;
+    double i = x + s;
+    double j = y + s;
+
+    i = std::floor(i);
+    j = std::floor(j);
+
+    const double t = (i + j) * G2;
+    double x0 = i - t;
+    double y0 = j - t;
+
+    x0 = x - x0;
+    y0 = y - y0;
+
+    uint8_t i1 = 0;
+    uint8_t j1 = 0;
+
+    if (x0 > y0) {
+      i1 = 1;
+    } else {
+      j1 = 1;
+    }
+
+    const double x1 = x0 - i1 + G2;
+    const double y1 = y0 - j1 + G2;
+
+    const double x2 = x0 - 1 + 2 * G2;
+    const double y2 = y0 - 1 + 2 * G2;
+
+    auto ii = static_cast<uint8_t>(i);
+    auto jj = static_cast<uint8_t>(j);
+
+    double res = 0.0;
+
+    double d0 = 0.5 - x0 * x0 - y0 * y0;
+
+    if (d0 > 0) {
+      d0 *= d0;
+      res += d0 * d0 * dot(at(ii, jj), { x0, y0 });
+    }
+
+    double d1 = 0.5 - x1 * x1 - y1 * y1;
+
+    if (d1 > 0) {
+      d1 *= d1;
+      res += d1 * d1 * dot(at(ii + i1, jj + j1), { x1, y1 });
+    }
+
+    double d2 = 0.5 - x2 * x2 - y2 * y2;
+
+    if (d2 > 0) {
+      d2 *= d2;
+      res += d2 * d2 * dot(at(ii + 1, jj + 1), { x2, y2 });
+    }
+
+    return 45.23065 * res;
+  }
+
+  /*
+   *         |
+   *      1  -  0
+   *         |
+   *   6     -     4
+   *         |
+   * --|--|--+--|--|--
+   *         |
+   *   7     -     5
+   *         |
+   *      3  -  2
+   *         |
+   */
+
+  Vec2D SimplexNoise2D::at(uint8_t i, uint8_t j) const
+  {
+    // clang-format off
+    static constexpr std::array<Vec2D, 8> Gradients = {
+      gf::vec( 1.0,  2.0),
+      gf::vec(-1.0,  2.0),
+      gf::vec( 1.0, -2.0),
+      gf::vec(-1.0, -2.0),
+      gf::vec( 2.0,  1.0),
+      gf::vec( 2.0, -1.0),
+      gf::vec(-2.0,  1.0),
+      gf::vec(-2.0, -1.0)
+    };
+    // clang-format on
+
+    uint8_t index = i;
+    index = m_permutation.at(index) + j;
+    return Gradients.at(m_permutation.at(index) % 8);
   }
 
 }
