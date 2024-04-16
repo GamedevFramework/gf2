@@ -136,6 +136,106 @@ namespace gf {
     std::array<uint8_t, 256> m_permutation{};
   };
 
+  class GF_CORE_API WaveletNoise3D : public Noise3D {
+  public:
+    WaveletNoise3D(Random& random, std::ptrdiff_t wavelet_tile_size = 32);
+
+    double value(double x, double y, double z) override;
+
+  private:
+    std::ptrdiff_t m_wavelet_tile_size;
+    std::vector<double> m_data;
+  };
+
+  class GF_CORE_API WorleyNoise2D : public Noise2D {
+  public:
+    WorleyNoise2D(Random& random, std::size_t points_count, Distance2<double> distance, std::vector<double> coefficients);
+
+    double value(double x, double y) override;
+
+  private:
+    std::size_t m_points_count;
+    Distance2<double> m_distance;
+    std::vector<double> m_coefficients;
+    std::vector<Vec2D> m_cells;
+  };
+
+  class GF_CORE_API Multifractal2D : public Noise2D {
+  public:
+    Multifractal2D(Noise2D* noise, double scale, int octaves = 8, double lacunarity = 2.0, double persistence = 0.5, double dimension = 1.0);
+
+    double value(double x, double y) override;
+
+  private:
+    Noise2D* m_noise = nullptr;
+    double m_scale = 1.0;
+    int m_octaves = 8;
+    double m_lacunarity = 2.0;
+    double m_persistence = 0.5;
+    double m_dimension = 1.0;
+  };
+
+  class GF_CORE_API HeteroTerrain2D : public Noise2D {
+  public:
+    HeteroTerrain2D(Noise2D* noise, double scale, double offset = 0.0, int octaves = 8, double lacunarity = 2.0, double persistence = 0.5, double dimension = 1.0);
+
+    double value(double x, double y) override;
+
+  private:
+    Noise2D* m_noise = nullptr;
+    double m_scale = 1.0;
+    double m_offset = 0.0;
+    int m_octaves = 8;
+    double m_lacunarity = 2.0;
+    double m_persistence = 0.5;
+    double m_dimension = 1.0;
+  };
+
+  class GF_CORE_API HybridMultifractal2D : public Noise2D {
+  public:
+    HybridMultifractal2D(Noise2D* noise, double scale, double offset = 0.0, int octaves = 8, double lacunarity = 2.0, double persistence = 0.5, double dimension = 1.0);
+
+    double value(double x, double y) override;
+
+  private:
+    Noise2D* m_noise = nullptr;
+    double m_scale = 1.0;
+    double m_offset = 0.0;
+    int m_octaves = 8;
+    double m_lacunarity = 2.0;
+    double m_persistence = 0.5;
+    double m_dimension = 1.0;
+  };
+
+  class GF_CORE_API RidgedMultifractal2D : public Noise2D {
+  public:
+    RidgedMultifractal2D(Noise2D* noise, double scale, double offset = 1.0, double gain = 1.0, int octaves = 8, double lacunarity = 2.0, double persistence = 0.5, double dimension = 1.0);
+
+    double value(double x, double y) override;
+
+  private:
+    Noise2D* m_noise = nullptr;
+    double m_scale = 1.0;
+    double m_offset = 1.0;
+    double m_gain = 1.0;
+    int m_octaves = 8;
+    double m_lacunarity = 2.0;
+    double m_persistence = 0.5;
+    double m_dimension = 1.0;
+  };
+
+  class GF_CORE_API Noise3DTo2DAdapter : public Noise2D {
+  public:
+    Noise3DTo2DAdapter(Noise3D* noise, Vec3D normal = { 0.0, 0.0, 1.0 }, Vec3D point = { 0.0, 0.0, 0.0 });
+
+    double value(double x, double y) override;
+
+  private:
+    Noise3D* m_noise;
+    Vec3D m_normal;
+    Vec3D m_point;
+  };
+
 }
 
 #endif // GF_NOISES_H
