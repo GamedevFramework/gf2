@@ -8,8 +8,8 @@ using RangeF = gf::Range<float>;
 TEST(RangeTest, Constructor) {
   RangeI ri{ 0, 10 };
 
-  EXPECT_EQ(0, ri.lo);
-  EXPECT_EQ(10, ri.hi);
+  EXPECT_EQ(0, ri.lo());
+  EXPECT_EQ(10, ri.hi());
 }
 
 TEST(RangeTest, Contains) {

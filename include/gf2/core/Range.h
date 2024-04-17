@@ -6,102 +6,127 @@
 #include <iterator>
 #include <utility>
 
+#include "Rect.h"
 #include "Vec2.h"
 
 namespace gf {
 
-  template<typename T>
-  struct Range {
-    T lo; // The lower endpoint (included)
-    T hi; // The higher endpoint (excluded)
+  /*
+   * Range
+   */
 
-    struct Iterator {
+  template<typename T>
+  class Range {
+  public:
+    class Iterator {
+    public:
       using difference_type = std::ptrdiff_t;
       using value_type = T;
       using pointer = value_type;
       using reference = value_type;
       using iterator_category = std::bidirectional_iterator_tag;
 
-      T index;
-
       constexpr Iterator(T index) noexcept
-      : index(index)
+      : m_index(index)
       {
       }
 
       void swap(Iterator& other) noexcept
       {
         using std::swap;
-        swap(index, other.index);
+        swap(m_index, other.m_index);
       }
 
-      reference operator*() noexcept { return index; }
-      pointer operator->() noexcept { return index; }
+      reference operator*() noexcept { return m_index; }
+      pointer operator->() noexcept { return m_index; }
 
       Iterator& operator++() noexcept
       {
-        ++index;
+        ++m_index;
         return *this;
       }
 
       Iterator operator++(int) noexcept
       {
         Iterator copy = *this;
-        ++index;
+        ++m_index;
         return copy;
       }
 
       Iterator& operator--() noexcept
       {
-        --index;
+        --m_index;
         return *this;
       }
 
       Iterator operator--(int) noexcept
       {
         Iterator copy = *this;
-        --index;
+        --m_index;
         return copy;
       }
 
-      constexpr bool operator!=(const Iterator& other) const noexcept { return index != other.index; }
-      constexpr bool operator==(const Iterator& other) const noexcept { return index == other.index; }
+      constexpr bool operator!=(const Iterator& other) const noexcept { return m_index != other.m_index; }
+      constexpr bool operator==(const Iterator& other) const noexcept { return m_index == other.m_index; }
+
+    private:
+      T m_index;
     };
+
+    constexpr Range(T lo, T hi) noexcept
+    : m_lo(lo)
+    , m_hi(hi)
+    {
+    }
+
+    constexpr T lo() const noexcept
+    {
+      return m_lo;
+    }
+
+    constexpr T hi() const noexcept
+    {
+      return m_hi;
+    }
 
     constexpr bool contains(T value) const noexcept
     {
-      return lo <= value && value < hi;
+      return m_lo <= value && value < m_hi;
     }
 
     constexpr Iterator begin() const noexcept
     {
-      return Iterator(lo);
+      return { m_lo };
     }
 
     constexpr Iterator end() const noexcept
     {
-      return Iterator(hi);
+      return { m_hi };
     }
 
     constexpr T size() const noexcept
     {
-      return hi - lo;
+      return m_hi - m_lo;
     }
 
     constexpr bool empty() const noexcept
     {
-      return lo >= hi;
+      return m_lo >= m_hi;
     }
 
     constexpr bool valid() const noexcept
     {
-      return lo <= hi;
+      return m_lo <= m_hi;
     }
 
     constexpr Range skip(T count) const noexcept
     {
-      return { details::min(lo + count, hi), hi };
+      return { details::min(m_lo + count, m_hi), m_hi };
     }
+
+  private:
+    T m_lo; // The lower endpoint (included)
+    T m_hi; // The higher endpoint (excluded)
   };
 
   template<typename T>
@@ -120,39 +145,39 @@ namespace gf {
 
   constexpr IndexRange index_range(std::size_t size)
   {
-    return { static_cast<std::size_t>(0), size };
+    return { std::size_t(0), size };
   }
 
-  template<typename T>
-  struct Range2D {
-    Range<T> dx;
-    Range<T> dy;
+  /*
+   * Range2D
+   */
 
-    struct Iterator {
+  template<typename T>
+  class Range2D {
+  public:
+    class Iterator {
+    public:
       using difference_type = std::ptrdiff_t;
       using value_type = Vec2<T>;
       using pointer = value_type;
       using reference = value_type;
       using iterator_category = std::forward_iterator_tag;
 
-      Range<T> dx;
-      Vec2<T> position;
-
       constexpr Iterator(Range<T> dx, Vec2<T> position) noexcept
-      : dx(dx)
-      , position(position)
+      : m_dx(dx)
+      , m_position(position)
       {
       }
 
       void swap(Iterator& other) noexcept
       {
         using std::swap;
-        swap(dx, other.dx);
-        swap(position, other.position);
+        swap(m_dx, other.m_dx);
+        swap(m_position, other.m_position);
       }
 
-      reference operator*() noexcept { return position; }
-      pointer operator->() noexcept { return position; }
+      reference operator*() noexcept { return m_position; }
+      pointer operator->() noexcept { return m_position; }
 
       Iterator& operator++() noexcept
       {
@@ -167,30 +192,43 @@ namespace gf {
         return copy;
       }
 
-      constexpr bool operator!=(const Iterator& other) const noexcept { return position.x != other.position.x || position.y != other.position.y; }
-      constexpr bool operator==(const Iterator& other) const noexcept { return position.x == other.position.x && position.y == other.position.y; }
+      constexpr bool operator!=(const Iterator& other) const noexcept { return m_position != other.m_position; }
+      constexpr bool operator==(const Iterator& other) const noexcept { return m_position == other.m_position; }
 
     private:
       void step() noexcept
       {
-        ++position.x;
+        ++m_position.x;
 
-        if (position.x >= dx.hi) {
-          position.x = dx.lo;
-          ++position.y;
+        if (m_position.x >= m_dx.hi()) {
+          m_position.x = m_dx.lo();
+          ++m_position.y;
         }
       }
+
+      Range<T> m_dx;
+      Vec2<T> m_position;
     };
+
+    constexpr Range2D(Range<T> dx, Range<T> dy) noexcept
+    : m_dx(dx)
+    , m_dy(dy)
+    {
+    }
 
     constexpr Iterator begin() const noexcept
     {
-      return Iterator(dx, { dx.lo, dy.lo });
+      return Iterator(m_dx, { m_dx.lo(), m_dy.lo() });
     }
 
     constexpr Iterator end() const noexcept
     {
-      return Iterator(dx, { dx.lo, dy.hi });
+      return Iterator(m_dx, { m_dx.lo(), m_dy.hi() });
     }
+
+  private:
+    Range<T> m_dx;
+    Range<T> m_dy;
   };
 
   template<typename T>
@@ -206,43 +244,324 @@ namespace gf {
     return { range(0, size.x), range(0, size.y) };
   }
 
+  constexpr PositionRange rectangle_range(RectI rectangle)
+  {
+    return { range(rectangle.offset.x, rectangle.offset.x + rectangle.extent.w), range(rectangle.offset.y, rectangle.offset.y + rectangle.extent.h) };
+  }
+
+  /*
+   * NeighborSquareRange
+   */
+
+  template<typename T>
+  class NeighborSquareRange {
+  public:
+    class Iterator {
+    public:
+      using difference_type = std::ptrdiff_t;
+      using value_type = Vec2<T>;
+      using pointer = value_type;
+      using reference = value_type;
+      using iterator_category = std::forward_iterator_tag;
+
+      constexpr Iterator(Vec2<T> current, Range<T> dx, Range<T> dy, Vec2<T> origin) noexcept
+      : m_current(current)
+      , m_dx(dx)
+      , m_dy(dy)
+      , m_origin(origin)
+      {
+        if (!valid()) {
+          step();
+        }
+      }
+
+      void swap(Iterator& other) noexcept
+      {
+        using std::swap;
+        swap(m_current, other.m_current);
+        swap(m_dx, other.m_dx);
+        swap(m_dy, other.m_dy);
+        swap(m_origin, other.m_origin);
+      }
+
+      reference operator*() noexcept { return m_current; }
+      pointer operator->() noexcept { return m_current; }
+
+      Iterator& operator++() noexcept
+      {
+        step();
+        return *this;
+      }
+
+      Iterator operator++(int) noexcept
+      {
+        Iterator copy = *this;
+        step();
+        return copy;
+      }
+
+      constexpr bool operator!=(const Iterator& other) const noexcept { return m_current != other.m_current; }
+      constexpr bool operator==(const Iterator& other) const noexcept { return m_current == other.m_current; }
+
+    private:
+      void step() noexcept
+      {
+        for (;;) {
+          ++m_current.x;
+
+          if (m_current.x >= m_dx.hi()) {
+            m_current.x = m_dx.lo();
+            ++m_current.y;
+          }
+
+          if (valid()) {
+            break;
+          }
+        }
+      }
+
+      bool valid() const noexcept
+      {
+        return m_current != m_origin;
+      }
+
+      Vec2<T> m_current;
+      Range<T> m_dx;
+      Range<T> m_dy;
+      Vec2<T> m_origin;
+    };
+
+    constexpr NeighborSquareRange(Range<T> dx, Range<T> dy, Vec2<T> origin) noexcept
+    : m_dx(dx)
+    , m_dy(dy)
+    , m_origin(origin)
+    {
+    }
+
+    constexpr Iterator begin() const
+    {
+      return {
+        { m_dx.lo(), m_dy.lo() },
+        m_dx, m_dy, m_origin
+      };
+    }
+
+    constexpr Iterator end() const
+    {
+      return {
+        { m_dx.lo(), m_dy.hi() },
+        m_dx, m_dy, m_origin
+      };
+    }
+
+  private:
+    Range<T> m_dx;
+    Range<T> m_dy;
+    Vec2<T> m_origin;
+  };
+
+  template<typename T>
+  constexpr NeighborSquareRange<T> neighbor_square_range(Vec2<T> origin, T radius = T(1)) noexcept
+  {
+    return { range(origin.x - radius, origin.x + radius), range(origin.y - radius, origin.y + radius), origin };
+  }
+
+  template<typename T>
+  inline void swap(typename NeighborSquareRange<T>::Iterator& lhs, typename NeighborSquareRange<T>::Iterator& rhs) noexcept
+  {
+    lhs.swap(rhs);
+  }
+
+  /*
+   * NeighborDiamondRange
+   */
+
+  template<typename T>
+  class NeighborDiamondRange {
+  public:
+    class Iterator {
+    public:
+      using difference_type = std::ptrdiff_t;
+      using value_type = Vec2<T>;
+      using pointer = value_type;
+      using reference = value_type;
+      using iterator_category = std::forward_iterator_tag;
+
+      constexpr Iterator(Vec2<T> current, Range<T> dx, Range<T> dy, Vec2<T> origin, T radius) noexcept
+      : m_current(current)
+      , m_dx(dx)
+      , m_dy(dy)
+      , m_origin(origin)
+      , m_radius(radius)
+      {
+        if (!valid()) {
+          step();
+        }
+      }
+
+      void swap(Iterator& other) noexcept
+      {
+        using std::swap;
+        swap(m_current, other.m_current);
+        swap(m_dx, other.m_dx);
+        swap(m_dy, other.m_dy);
+        swap(m_origin, other.m_origin);
+        swap(m_radius, other.m_radius);
+      }
+
+      reference operator*() noexcept { return m_current; }
+      pointer operator->() noexcept { return m_current; }
+
+      Iterator& operator++() noexcept
+      {
+        step();
+        return *this;
+      }
+
+      Iterator operator++(int) noexcept
+      {
+        Iterator copy = *this;
+        step();
+        return copy;
+      }
+
+      constexpr bool operator!=(const Iterator& other) const noexcept { return m_current != other.m_current; }
+      constexpr bool operator==(const Iterator& other) const noexcept { return m_current == other.m_current; }
+
+    private:
+      void step() noexcept
+      {
+        for (;;) {
+          ++m_current.x;
+
+          if (m_current.x >= m_dx.hi()) {
+            m_current.x = m_dx.lo();
+            ++m_current.y;
+
+            if (m_current.y >= m_dy.hi()) {
+              // outside the square
+              break;
+            }
+          }
+
+          if (valid()) {
+            break;
+          }
+        }
+      }
+
+      bool valid() noexcept
+      {
+        return m_current != m_origin && gf::manhattan_distance(m_current, m_origin) <= m_radius;
+      }
+
+      Vec2<T> m_current;
+      Range<T> m_dx;
+      Range<T> m_dy;
+      Vec2<T> m_origin;
+      T m_radius;
+    };
+
+    constexpr NeighborDiamondRange(Range<T> dx, Range<T> dy, Vec2<T> origin, T radius) noexcept
+    : m_dx(dx)
+    , m_dy(dy)
+    , m_origin(origin)
+    , m_radius(radius)
+    {
+    }
+
+    constexpr Iterator begin() const
+    {
+      return {
+        { m_dx.lo(), m_dy.lo() },
+        m_dx, m_dy, m_origin, m_radius
+      };
+    }
+
+    constexpr Iterator end() const
+    {
+      return {
+        { m_dx.lo(), m_dy.hi() },
+        m_dx, m_dy, m_origin, m_radius
+      };
+    }
+
+  private:
+    Range<T> m_dx;
+    Range<T> m_dy;
+    Vec2<T> m_origin;
+    T m_radius;
+  };
+
+  template<typename T>
+  constexpr NeighborDiamondRange<T> neighbor_diamond_range(Vec2<T> origin, T radius = T(1)) noexcept
+  {
+    return { range(origin.x - radius, origin.x + radius), range(origin.y - radius, origin.y + radius), origin, radius };
+  }
+
+  template<typename T>
+  inline void swap(typename NeighborDiamondRange<T>::Iterator& lhs, typename NeighborDiamondRange<T>::Iterator& rhs) noexcept
+  {
+    lhs.swap(rhs);
+  }
+
+  /*
+   * Enumerate
+   */
+
   template<typename IteratorType, typename SentinelType>
-  struct Enumerate {
-    IteratorType begin_iterator;
-    SentinelType end_iterator;
-
-    struct Iterator {
-      size_t index;
-      IteratorType iterator;
-
+  class Enumerate {
+  public:
+    class Iterator {
+    public:
       using difference_type = std::ptrdiff_t;
       using value_type = std::pair<std::size_t, decltype(*std::declval<IteratorType>())>;
       using iterator_category = std::forward_iterator_tag;
       using pointer = value_type;
       using reference = value_type;
 
-      void operator++()
+      constexpr Iterator(size_t index, IteratorType iterator) noexcept
+      : m_index(index)
+      , m_iterator(iterator)
       {
-        ++index;
-        ++iterator;
       }
 
-      pointer operator->() const { return std::make_pair(index, *iterator); }
-      reference operator*() const { return std::make_pair(index, *iterator); }
+      void operator++()
+      {
+        ++m_index;
+        ++m_iterator;
+      }
 
-      bool operator!=(const Iterator& other) const { return iterator != other.iterator; }
-      bool operator==(const Iterator& other) const { return iterator == other.iterator; }
+      pointer operator->() const { return std::make_pair(m_index, *m_iterator); }
+      reference operator*() const { return std::make_pair(m_index, *m_iterator); }
 
-      bool operator!=(const SentinelType& other) const { return iterator != other; }
-      bool operator==(const SentinelType& other) const { return iterator == other; }
+      bool operator!=(const Iterator& other) const { return m_iterator != other.m_iterator; }
+      bool operator==(const Iterator& other) const { return m_iterator == other.m_iterator; }
+
+      bool operator!=(const SentinelType& other) const { return m_iterator != other; }
+      bool operator==(const SentinelType& other) const { return m_iterator == other; }
+
+    private:
+      size_t m_index;
+      IteratorType m_iterator;
     };
 
-    auto begin() { return Iterator{ 0, begin_iterator }; }
-    auto end() { return end_iterator; }
+    Enumerate(IteratorType begin_iterator, SentinelType end_iterator)
+    : m_begin_iterator(begin_iterator)
+    , m_end_iterator(end_iterator)
+    {
+    }
+
+    auto begin() { return Iterator{ 0, m_begin_iterator }; }
+    auto end() { return m_end_iterator; }
+
+  private:
+    IteratorType m_begin_iterator;
+    SentinelType m_end_iterator;
   };
 
   template<typename T>
-  constexpr auto enumerate(T& iterable)
+  inline auto enumerate(T& iterable)
   {
     using std::begin;
     using IteratorType = decltype(begin(std::declval<T>()));
@@ -254,7 +573,7 @@ namespace gf {
   }
 
   template<typename T>
-  constexpr auto enumerate(const T& iterable)
+  inline auto enumerate(const T& iterable)
   {
     using std::begin;
     using IteratorType = decltype(begin(std::declval<T>()));
