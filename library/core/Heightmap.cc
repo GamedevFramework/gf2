@@ -7,6 +7,7 @@
 
 #include <gf2/core/Range.h>
 #include <gf2/core/Vec3.h>
+#include <gf2/core/Direction.h>
 
 namespace gf {
 
@@ -154,153 +155,133 @@ namespace gf {
 
   void Heightmap::thermal_erosion(int iterations, double talus, double fraction)
   {
-    double d[3][3];
-
     Array2D<double> material(m_data.size());
-
-    auto size = m_data.size();
+    const RectI outer = RectI::from_size(m_data.size()).shrink_by(1);
+    const RectI inner = RectI::from_position_size({ -1, -1 }, { 3, 3 });
 
     for (int k = 0; k < iterations; ++k) {
-
       // initialize material map
       std::fill(material.begin(), material.end(), 0.0);
 
       // compute material map
-      for (int y = 1; y < size.h - 1; ++y) {
-        for (int x = 1; x < size.w - 1; ++x) {
-          double diffTotal = 0.0;
-          double diffMax = 0.0;
+      for (auto position : rectangle_range(outer)) {
+        double difference_total = 0.0;
+        double difference_max = 0.0;
+        double difference_array[3][3] = {};
 
-          for (int i = -1; i <= 1; ++i) {
-            for (int j = -1; j <= 1; ++j) {
-              double diff = m_data({ x, y }) - m_data({ x + i, y + j });
-              d[1 + i][1 + j] = diff;
+        for (auto displacement : rectangle_range(inner)) {
+          const double difference = m_data(position) - m_data(position + displacement);
+          difference_array[1 + displacement.x][1 + displacement.y] = difference; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
 
-              if (diff > talus) {
-                diffTotal += diff;
+          if (difference > talus) {
+            difference_total += difference;
 
-                if (diff > diffMax) {
-                  diffMax = diff;
-                }
-              }
+            if (difference > difference_max) {
+              difference_max = difference;
             }
           }
+        }
 
-          for (int i = -1; i <= 1; ++i) {
-            for (int j = -1; j <= 1; ++j) {
-              double diff = d[1 + i][1 + j];
+        for (auto displacement : rectangle_range(inner)) {
+          const double difference = difference_array[1 + displacement.x][1 + displacement.y]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
 
-              if (diff > talus) {
-                material({ x + i, y + j }) += fraction * (diffMax - talus) * (diff / diffTotal);
-              }
-            }
+          if (difference > talus) {
+            material(position + displacement) += fraction * (difference_max - talus) * (difference / difference_total);
           }
         }
       }
 
       // add material map to the heightmap
-      for (int y = 1; y < size.h - 1; ++y) {
-        for (int x = 1; x < size.w - 1; ++x) {
-          m_data({ x, y }) += material({ x, y });
-        }
+      for (auto position : rectangle_range(outer)) {
+        m_data(position) += material(position);
       }
     }
   }
 
+  // NOLINTNEXTLINE(readability-function-cognitive-complexity)
   void Heightmap::hydraulic_erosion(int iterations, double rain_amount, double solubility, double evaporation, double capacity)
   {
-    Array2D<double> waterMap(m_data.size(), 0.0);
-    Array2D<double> waterDiff(m_data.size(), 0.0);
+    Array2D<double> water_map(m_data.size(), 0.0);
+    Array2D<double> water_difference(m_data.size(), 0.0);
 
-    Array2D<double> materialMap(m_data.size(), 0.0);
-    Array2D<double> materialDiff(m_data.size(), 0.0);
+    Array2D<double> material_map(m_data.size(), 0.0);
+    Array2D<double> material_difference(m_data.size(), 0.0);
 
-    double d[3][3];
-
-    auto size = m_data.size();
+    const RectI outer = RectI::from_size(m_data.size()).shrink_by(1);
+    const RectI inner = RectI::from_position_size({ -1, -1 }, { 3, 3 });
 
     for (int k = 0; k < iterations; ++k) {
-
       // 1. appearance of new water
-      for (auto& water : waterMap) {
+      for (auto& water : water_map) {
         water += rain_amount;
       }
 
       // 2. water erosion of the terrain
-      for (auto pos : waterMap.position_range()) {
-        double material = solubility * waterMap(pos);
-        m_data(pos) -= material;
-        materialMap(pos) += material;
+      for (auto position : water_map.position_range()) {
+        const double material = solubility * water_map(position);
+        m_data(position) -= material;
+        material_map(position) += material;
       }
 
       // 3. transportation of water
-      std::fill(waterDiff.begin(), waterDiff.end(), 0.0);
-      std::fill(materialDiff.begin(), materialDiff.end(), 0.0);
+      std::fill(water_difference.begin(), water_difference.end(), 0.0);
+      std::fill(material_difference.begin(), material_difference.end(), 0.0);
 
-      for (int y = 1; y < size.h - 1; ++y) {
-        for (int x = 1; x < size.w - 1; ++x) {
-          double diffTotal = 0.0;
-          double altitudeTotal = 0.0;
-          double altitude = m_data({ x, y }) + waterMap({ x, y });
-          int n = 0;
+      for (auto position : rectangle_range(outer)) {
+        double altitude_difference_total = 0.0;
+        double altitude_total = 0.0;
+        const double altitude = m_data(position) + water_map(position);
+        double difference_array[3][3];
+        int count = 0;
 
-          for (int i = -1; i <= 1; ++i) {
-            for (int j = -1; j <= 1; ++j) {
-              double altitudeLocal = m_data({ x + i, y + j }) + waterMap({ x + i, y + j });
-              double diff = altitude - altitudeLocal;
-              d[1 + i][1 + j] = diff;
+        for (auto displacement : rectangle_range(inner)) {
+          const double altitude_neighbor = m_data(position + displacement) + water_map(position + displacement);
+          const double altitude_difference = altitude - altitude_neighbor;
+          difference_array[1 + displacement.x][1 + displacement.y] = altitude_difference; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
 
-              if (diff > 0.0) {
-                diffTotal += diff;
-                altitudeTotal += altitudeLocal;
-                n++;
-              }
-            }
+          if (altitude_difference > 0.0) {
+            altitude_difference_total += altitude_difference;
+            altitude_total += altitude_neighbor;
+            ++count;
           }
+        }
 
-          if (n == 0) {
-            continue;
-          }
+        if (count == 0) {
+          continue;
+        }
 
-          double altitudeAverage = altitudeTotal / n;
-          double diffAltitude = std::min(waterMap({ x, y }), altitude - altitudeAverage);
+        const double altitude_average = altitude_total / count;
+        const double altitude_relative = std::min(water_map(position), altitude - altitude_average);
 
-          for (int i = -1; i <= 1; ++i) {
-            for (int j = -1; j <= 1; ++j) {
-              double diff = d[1 + i][1 + j];
+        for (auto displacement : rectangle_range(inner)) {
+          const double altitude_difference = difference_array[1 + displacement.x][1 + displacement.y]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
 
-              if (diff > 0.0) {
-                double diffWater = diffAltitude * (diff / diffTotal);
-                waterDiff({ x + i, y + j }) += diffWater;
-                waterDiff({ x, y }) -= diffWater;
+          if (altitude_difference > 0.0) {
+            const double water = altitude_relative * (altitude_difference / altitude_difference_total);
+            water_difference(position + displacement) += water;
+            water_difference(position) -= water;
 
-                double diffMaterial = materialMap({ x, y }) * (diffWater / waterMap({ x, y }));
-                materialDiff({ x + i, y + j }) += diffMaterial;
-                materialDiff({ x, y }) -= diffMaterial;
-              }
-            }
+            const double material = material_map(position) * (water / water_map(position));
+            material_difference(position + displacement) += material;
+            material_difference(position) -= material;
           }
         }
       }
 
-      for (auto pos : waterMap.position_range()) {
-        waterMap(pos) += waterDiff(pos);
-      }
-
-      for (auto pos : materialMap.position_range()) {
-        materialMap(pos) += materialDiff(pos);
+      for (auto position : m_data.position_range()) {
+        water_map(position) += water_difference(position);
+        material_map(position) += material_difference(position);
       }
 
       // 4. evaporation of water
-      for (auto pos : waterMap.position_range()) {
-        double water = waterMap(pos) * (1 - evaporation);
+      for (auto position : water_map.position_range()) {
+        const double water = water_map(position) * (1 - evaporation);
+        water_map(position) = water;
 
-        waterMap(pos) = water;
-
-        double materialMax = capacity * water;
-        double diffMaterial = std::max(double(0), materialMap(pos) - materialMax);
-        materialMap(pos) -= diffMaterial;
-        m_data(pos) += diffMaterial;
+        const double material_max = capacity * water;
+        const double material_difference = std::max(0.0, material_map(position) - material_max);
+        material_map(position) -= material_difference;
+        m_data(position) += material_difference;
       }
     }
   }
@@ -316,24 +297,24 @@ namespace gf {
 
       // compute material map
       for (auto position : m_data.position_range()) {
-        double altitudeDifferenceMax = 0.0;
-        Vec2I positionMax = position;
+        double altitude_difference_max = 0.0;
+        Vec2I position_max = position;
 
         const double altitude = m_data(position);
 
-        for (auto positionThere : m_data.compute_8_neighbors_range(position)) {
-          double altitudeThere = m_data(positionThere);
+        for (auto neighbor : m_data.compute_8_neighbors_range(position)) {
+          double altitude_neighbor = m_data(neighbor);
 
-          double altitudeDifference = altitude - altitudeThere;
-          if (altitudeDifference > altitudeDifferenceMax) {
-            altitudeDifferenceMax = altitudeDifference;
-            positionMax = positionThere;
+          double altitude_difference = altitude - altitude_neighbor;
+          if (altitude_difference > altitude_difference_max) {
+            altitude_difference_max = altitude_difference;
+            position_max = neighbor;
           }
         }
 
-        if (0 < altitudeDifferenceMax && altitudeDifferenceMax <= talus) {
-          material(position) -= fraction * altitudeDifferenceMax;
-          material(positionMax) += fraction * altitudeDifferenceMax;
+        if (0 < altitude_difference_max && altitude_difference_max <= talus) {
+          material(position) -= fraction * altitude_difference_max;
+          material(position_max) += fraction * altitude_difference_max;
         }
       }
 
@@ -420,77 +401,44 @@ namespace gf {
     if (render == HeightmapRender::Shaded) {
       static constexpr Vec3D Light = { -1.0, -1.0, 0.0 };
 
-      for (auto pos : m_data.position_range()) {
-        if (m_data(pos) < water_level) {
+      for (auto position : m_data.position_range()) {
+        if (m_data(position) < water_level) {
           continue;
         }
 
-        double x = pos.x;
-        double y = pos.y;
-
-        // compute the normal vector
-        Vec3D normal(0, 0, 0);
+        Vec3D normal(0.0, 0.0, 0.0);
         int count = 0;
 
-        Vec3D p{ x, y, m_data(pos) };
+        const Vec3D origin(position.x, position.y, m_data(position));
 
-        if (pos.x > 0 && pos.y > 0) {
-          Vec3D pn{ x, y - 1, m_data({ pos.x, pos.y - 1 }) };
-          Vec3D pw{ x - 1, y, m_data({ pos.x - 1, pos.y }) };
+        for (auto direction : { Direction::Up, Direction::Right, Direction::Down, Direction::Left }) {
+          const Vec2I direction0 = displacement(direction);
+          const Vec2I direction1 = perp(direction0);
 
-          Vec3D v3 = cross(p - pw, p - pn);
-          assert(v3.z > 0);
+          if (m_data.valid(position + direction0) && m_data.valid(position + direction1)) {
+            const Vec3D leaning0(position.x + direction0.x, position.y + direction0.y, m_data(position + direction0));
+            const Vec3D leaning1(position.x + direction1.x, position.y + direction1.y, m_data(position + direction1));
 
-          normal += v3;
-          count += 1;
-        }
+            const Vec3D vertical = cross(origin - leaning0, origin - leaning1);
+            assert(vertical.z > 0.0);
 
-        if (pos.x > 0 && pos.y < size.h - 1) {
-          Vec3D pw{ x - 1, y, m_data({ pos.x - 1, pos.y }) };
-          Vec3D ps{ x, y + 1, m_data({ pos.x, pos.y + 1 }) };
-
-          Vec3D v3 = cross(p - ps, p - pw);
-          assert(v3.z > 0);
-
-          normal += v3;
-          count += 1;
-        }
-
-        if (pos.x < size.w - 1 && pos.y > 0) {
-          Vec3D pe{ x + 1, y, m_data({ pos.x + 1, pos.y }) };
-          Vec3D pn{ x, y - 1, m_data({ pos.x, pos.y - 1 }) };
-
-          Vec3D v3 = cross(p - pn, p - pe);
-          assert(v3.z > 0);
-
-          normal += v3;
-          count += 1;
-        }
-
-        if (pos.x < size.w - 1 && pos.y < size.h - 1) {
-          Vec3D pe{ x + 1, y, m_data({ pos.x + 1, pos.y }) };
-          Vec3D ps{ x, y + 1, m_data({ pos.x, pos.y + 1 }) };
-
-          Vec3D v3 = cross(p - pe, p - ps);
-          assert(v3.z > 0);
-
-          normal += v3;
-          count += 1;
+            normal += vertical;
+            count += 1;
+          }
         }
 
         normal = gf::normalize(normal / count);
-        double d = gf::dot(Light, normal);
-        d = gf::clamp(0.5 + 35 * d, 0.0, 1.0);
+        const double light = gf::clamp(0.5 + 35 * gf::dot(Light, normal), 0.0, 1.0);
 
-        Color pixel = image(pos);
+        Color pixel = image(position);
 
-        Color lo = gf::lerp(pixel, Color(0x331133), 0.7);
-        Color hi = gf::lerp(pixel, Color(0xFFFFCC), 0.3);
+        Color lo = gf::lerp(pixel, Color(0x331133), 0.7f);
+        Color hi = gf::lerp(pixel, Color(0xFFFFCC), 0.3f);
 
-        if (d < 0.5) {
-          image.put_pixel(pos, gf::lerp(lo, pixel, 2 * d));
+        if (light < 0.5) {
+          image.put_pixel(position, gf::lerp(lo, pixel, static_cast<float>(2 * light)));
         } else {
-          image.put_pixel(pos, gf::lerp(pixel, hi, 2 * d - 1));
+          image.put_pixel(position, gf::lerp(pixel, hi, static_cast<float>(2 * light - 1)));
         }
       }
     }
