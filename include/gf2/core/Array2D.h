@@ -97,7 +97,47 @@ namespace gf {
     T* begin() noexcept { return m_data.data(); }
     T* end() noexcept { return m_data.data() + m_data.size(); }
 
+    auto compute_4_neighbors_range(Vec2I position) const noexcept
+    {
+      return diamond_range(position, 1);
+    }
+
+    auto compute_8_neighbors_range(Vec2I position) const noexcept
+    {
+      return square_range(position, 1);
+    }
+
+    auto compute_12_neighbors_range(Vec2I position) const noexcept
+    {
+      return diamond_range(position, 2);
+    }
+
+    auto compute_24_neighbors_range(Vec2I position) const noexcept
+    {
+      return square_range(position, 2);
+    }
+
   private:
+    NeighborSquareRange<int> square_range(Vec2I position, int radius) const noexcept
+    {
+      assert(valid(position));
+
+      auto dx = range(position.x - std::min(position.x, radius), position.x + std::min(m_size.w - position.x, radius));
+      auto dy = range(position.y - std::min(position.y, radius), position.y + std::min(m_size.h - position.y, radius));
+
+      return { dx, dy, position };
+    }
+
+    NeighborDiamondRange<int> diamond_range(Vec2I position, int radius) const noexcept
+    {
+      assert(valid(position));
+
+      auto dx = range(position.x - std::min(position.x, radius), position.x + std::min(m_size.w - position.x, radius));
+      auto dy = range(position.y - std::min(position.y, radius), position.y + std::min(m_size.h - position.y, radius));
+
+      return { dx, dy, position, radius };
+    }
+
     std::size_t linearize(Vec2I index) const
     {
       return static_cast<std::size_t>(index.x) + static_cast<std::size_t>(index.y) * static_cast<std::size_t>(m_size.x);
