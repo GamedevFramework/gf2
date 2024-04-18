@@ -23,6 +23,7 @@ xref:index.adoc[< Back to main page]
 ** xref:core_serialization.adoc[Serialization] (xref:Serializer.adoc[`Serializer`], xref:Deserializer.adoc[`Deserializer`])
 ** xref:core_models.adoc[Models] (xref:Model.adoc[`Model`], xref:ModelContainer.adoc[`ModelContainer`])
 ** xref:core_grids.adoc[Grids] (xref:AnyGrid.adoc[`AnyGrid`], `GridMap`)
+** xref:core_procedural_generation.adoc[Procedural Generation] (Noise2D, PerlinNoise2D, Heightmap)
 * Data
 ** xref:core_input_description.adoc[Input Description] (xref:Scancode.adoc[`Scancode`], xref:Keycode.adoc[`Keycode`], xref:MouseButton.adoc[`MouseButton`])
 ** xref:core_input_data.adoc[Input Data] (`ActionData`, `ControlData`)

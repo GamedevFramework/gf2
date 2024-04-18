@@ -1,0 +1,73 @@
+= `core` Procedural Generation
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The procedural generation component provides classical algorithms of procedural generation.
+
+* Noises: <<noise_2d>>, <<noise_3d>> (<<noise_3d_to_2d_adapter>>)
+** 2D: <<value_noise_2d>>, <<gradient_noise_2d>>, <<better_gradient_noise_2d>>, <<perlin_noise_2d>>, <<worley_noise_2d>>
+** 3D: <<gradient_noise_3d>>, <<perlin_noise_3d>>, <<wavelet_noise_3d>>,
+* Noise Fractals: <<fractal_noise_2d>>, <<multifractal_2d>>, <<hetero_terrain_2d>>, <<hybrid_multifractal_2d>>, <<ridged_multifractal_2d>>
+* Heightmap: <<heightmap>>
+
+xref:reference.adoc#core[< Back to reference]
+
+== Types
+
+[#better_gradient_noise_2d]
+=== `gf::BetterGradientNoise2D`
+
+[#fractal_noise_2d]
+=== `gf::FractalNoise2D`
+
+[#fractal_noise_3d]
+=== `gf::FractalNoise3D`
+
+[#gradient_noise_2d]
+=== `gf::GradientNoise2D`
+
+[#gradient_noise_3d]
+=== `gf::GradientNoise3D`
+
+[#heightmap]
+=== `gf::Heightmap`
+
+[#hetero_terrain_2d]
+=== `gf::HeteroTerrain2D`
+
+[#hybrid_multifractal_2d]
+=== `gf::HybridMultifractal2D`
+
+[#multifractal_2d]
+=== `gf::Multifractal2D`
+
+[#noise_2d]
+=== `gf::Noise2D`
+
+[#noise_3d]
+=== `gf::Noise3D`
+
+[#noise_3d_to_2d_adapter]
+=== `gf::Noise3DTo2DAdapter`
+
+[#perlin_noise_2d]
+=== `gf::PerlinNoise2D`
+
+[#perlin_noise_3d]
+=== `gf::PerlinNoise3D`
+
+[#ridged_multifractal_2d]
+=== `gf::RidgedMultifractal2D`
+
+[#simplex_noise_2d]
+=== `gf::SimplexNoise2D`
+
+[#value_noise_2d]
+=== `gf::ValueNoise2D`
+
+[#wavelet_noise_3d]
+=== `gf::WaveletNoise3D`
+
+[#worley_noise_2d]
+=== `gf::WorleyNoise2D`
