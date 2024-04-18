@@ -24,8 +24,8 @@ namespace {
 
 int main(int argc, char* argv[])
 {
-  if (argc == 1 || argc > 4) {
-    std::cerr << "gf2_glyph_display <font> [char] [size]\n";
+  if (argc == 1 || argc > 3) {
+    std::cerr << "gf2_glyph_display <font> [char]\n";
     return EXIT_FAILURE;
   }
 
@@ -33,6 +33,7 @@ int main(int argc, char* argv[])
   gf::FontFace font_face(argv[1], &font_manager);
 
   std::cout << "backend: " << font_manager.backend() << '\n';
+  std::cout << "spread: " << gf::FontManager::spread() << '\n';
   std::cout << "family: " << font_face.family_name() << '\n';
   std::cout << "style: " << font_face.style_name() << '\n';
 
@@ -46,8 +47,9 @@ int main(int argc, char* argv[])
     }
   }
 
-  const auto glyph = font_face.create_glyph(c);
-  const auto size = glyph.bitmap.size();
+  auto index = font_face.index_from_character(c);
+  auto glyph = font_face.create_glyph(index);
+  auto size = glyph.bitmap.size();
 
   constexpr std::string_view Gray = " .:-=+*#%@";
 

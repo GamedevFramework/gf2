@@ -1,0 +1,46 @@
+= `core` Tiled Map Data
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The data component provides classes for tiled map data.
+
+xref:reference.adoc#core[< Back to reference]
+
+== Types
+
+[#group_layer_data]
+=== `gf::GroupLayerData`
+
+[#layer_data]
+=== `gf::LayerData`
+
+[#layer_structure_data]
+=== `gf::LayerStructureData`
+
+[#object_data]
+=== `gf::ObjectData`
+
+[#object_layer_data]
+=== `gf::ObjectLayerData`
+
+[#object_type]
+=== `gf::ObjectType`
+
+[#tile_data]
+=== `gf::TileData`
+
+[#tile_layer_data]
+=== `gf::TileLayerData`
+
+[#tiled_map_data]
+=== `gf::TiledMapData`
+
+[#tiled_map_resource]
+=== `gf::TiledMapResource`
+
+[#tileset_data]
+=== `gf::TilesetData`
+
+[#tileset_tile_data]
+=== `gf::TilesetTileData`

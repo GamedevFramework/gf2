@@ -37,6 +37,7 @@ namespace gf {
     std::string family_name() const;
     std::string style_name() const;
 
+    uint32_t index_from_character(char32_t character);
     FontGlyph create_glyph(uint32_t index);
 
     float compute_line_height();

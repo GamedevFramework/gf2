@@ -16,7 +16,7 @@ xref:index.adoc[< Back to main page]
 ** xref:core_container.adoc[Container] (xref:Array2D.adoc[`Array2D<T>`], xref:Span.adoc[`Span<T>`], xref:BinaryHeap.adoc[`BinaryHeap<T, Compare>`])
 ** xref:core_strings.adoc[Strings] (xref:CodepointRange.adoc[`CodepointRange`])
 ** xref:core_streams.adoc[Streams] (xref:InputStream.adoc[`InputStream`], xref:OutputStream.adoc[`OutputStream`])
-** xref:core_fonts.adoc[Fonts] (xref:Font.adoc[`Font`], xref:FontManager.adoc[`FontManager`])
+** xref:core_fonts.adoc[Fonts] (xref:FontFace.adoc[`FontFace`], xref:FontManager.adoc[`FontManager`])
 ** xref:core_coordinates.adoc[Coordinates] (xref:Transform.adoc[`Transform`], xref:Camera.adoc[`Camera`])
 * Game Toolkit
 ** xref:core_resources.adoc[Resources] (xref:ResourceManager.adoc[`ResourceManager`], xref:ResourceBundle.adoc[`ResourceBundle`])
@@ -25,9 +25,10 @@ xref:index.adoc[< Back to main page]
 ** xref:core_grids.adoc[Grids] (xref:AnyGrid.adoc[`AnyGrid`], `GridMap`)
 ** xref:core_procedural_generation.adoc[Procedural Generation] (Noise2D, PerlinNoise2D, Heightmap)
 * Data
+** xref:core_data.adoc[Data] (`AnimationData`, `TextData`, `SpriteData`)
 ** xref:core_input_description.adoc[Input Description] (xref:Scancode.adoc[`Scancode`], xref:Keycode.adoc[`Keycode`], xref:MouseButton.adoc[`MouseButton`])
 ** xref:core_input_data.adoc[Input Data] (`ActionData`, `ControlData`)
-** xref:core_data.adoc[Data] (`AnimationData`, `TextData`, `TiledMapData`, `SpriteData`)
+** xref:core_tiled_map_data.adoc[Tiled Map Data] (`TiledMapData`)
 
 == `graphics`
 

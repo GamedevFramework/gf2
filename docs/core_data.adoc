@@ -11,13 +11,12 @@ The data component provides classes for handling various type of data related to
 - shapes (<<shape_data>>, <<shape_group_data>>)
 - sprites (<<sprite_data>>)
 - text (<<text_data>>)
-- tiled map (<<tiled_map_data>>)
 
 These classes are pure data, they are declarative and are meant to be serialized if necessary.
 
 xref:reference.adoc#core[< Back to reference]
 
-See also: xref:core_input_data.adoc[`core` Input Data]
+See also: xref:core_input_data.adoc[`core` Input Data], xref:core_tiled_map_data.adoc[`core` Tiled Map Data]
 
 == Types
 
@@ -51,24 +50,6 @@ See also: xref:core_input_data.adoc[`core` Input Data]
 [#curve_group_data]
 === `gf::CurveGroupData`
 
-[#group_layer_data]
-=== `gf::GroupLayerData`
-
-[#layer_data]
-=== `gf::LayerData`
-
-[#layer_structure_data]
-=== `gf::LayerStructureData`
-
-[#object_data]
-=== `gf::ObjectData`
-
-[#object_layer_data]
-=== `gf::ObjectLayerData`
-
-[#object_type]
-=== `gf::ObjectType`
-
 [#shape_data]
 === `gf::ShapeData`
 
@@ -89,21 +70,3 @@ See also: xref:core_input_data.adoc[`core` Input Data]
 
 [#text_resource]
 === `gf::TextResource`
-
-[#tile_data]
-=== `gf::TileData`
-
-[#tile_layer_data]
-=== `gf::TileLayerData`
-
-[#tiled_map_data]
-=== `gf::TiledMapData`
-
-[#tiled_map_resource]
-=== `gf::TiledMapResource`
-
-[#tileset_data]
-=== `gf::TilesetData`
-
-[#tileset_tile_data]
-=== `gf::TilesetTileData`

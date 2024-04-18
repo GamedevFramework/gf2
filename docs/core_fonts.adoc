@@ -40,10 +40,6 @@ struct FontGlyph;
 | xref:Rect.adoc[`RectF`]
 | The bounds of the glyph.
 
-| `advance`
-| `float`
-| The distance to the next glyph.
-
 | `bitmap`
 | xref:Bitmap.adoc[`Bitmap`]
 | The bitmap of the glyph.

@@ -135,6 +135,16 @@ namespace gf {
     return face_as<FT_Face>()->style_name;
   }
 
+  uint32_t FontFace::index_from_character(char32_t character)
+  {
+    if (m_face == nullptr) {
+      return 0;
+    }
+
+    auto* face = face_as<FT_Face>();
+    return FT_Get_Char_Index(face, character);
+  }
+
   FontGlyph FontFace::create_glyph(uint32_t index)
   {
     FontGlyph result = {};

@@ -5,6 +5,8 @@ include::bits/attributes.adoc[]
 
 `FontManager` handles fonts common features.
 
+It is responsible for loading and unloading the link:https://freetype.org/[Freetype] library.
+
 xref:core_fonts.adoc[< Back to `core` Fonts]
 
 == Description
@@ -16,6 +18,17 @@ class FontManager;
 ----
 
 See also: xref:FontFace.adoc[`FontFace`]
+
+== Static Member Functions
+
+=== `spread`
+
+[source]
+----
+int32_t spread();
+----
+
+Get the spread used in SDF rendering. This property is set up when the library is loaded.
 
 == Member Functions
 

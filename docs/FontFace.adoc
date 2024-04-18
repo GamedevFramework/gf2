@@ -15,6 +15,8 @@ xref:core_fonts.adoc[< Back to `core` Fonts]
 class FontFace;
 ----
 
+The font is used to create glyphs. Glyphs are all created with the same internal size with a link:https://en.wikipedia.org/wiki/Signed_distance_function[signed distance field (SDF)].
+
 See also: xref:FontManager.adoc[`FontManager`]
 
 == Types
@@ -27,6 +29,17 @@ using Context = FontManager*;
 ----
 
 The context for loading a font.
+
+== Static Member Functions
+
+=== `size_factor`
+
+[source]
+----
+float size_factor(float character_size);
+----
+
+Compute the size factor between the internal size of the font and the requested size of the font.
 
 == Member Functions
 
@@ -41,32 +54,34 @@ FontFace(InputStream& stream, FontManager* manager); <2>
 <1> Create a font from a `filename` and a `manager`.
 <2> Create a font from a `stream` and a `manager`.
 
-=== `compute_kerning`
+=== `compute_line_height`
 
 [source]
 ----
-float compute_kerning(char32_t left, char32_t right, unsigned character_size);
-----
-
-Compute link:https://en.wikipedia.org/wiki/Kerning[kerning], i.e. the space between two consecutive characters (`left` and `right`).
-
-=== `compute_line_spacing`
-
-[source]
-----
-float compute_line_spacing(unsigned character_size);
+float compute_line_height();
 ----
 
 Compute the space between two consecutive lines of text.
+
+=== `compute_space_width`
+
+[source]
+----
+float compute_space_width();
+----
+
+Compute the size of a space character.
 
 === `create_glyph`
 
 [source]
 ----
-FontGlyph create_glyph(char32_t codepoint, unsigned character_size, float outline_thickness = 0.0f);
+FontGlyph create_glyph(uint32_t index);
 ----
 
-Create a glyph from the `codepoint` of the character, the `character_size`. The glyph can be created with an `outline_thickness` if not null.
+Create a glyph from the `index` of the character in the font.
+
+See also: <<index_from_character>>
 
 === `family_name`
 
@@ -76,6 +91,15 @@ std::string family_name() const;
 ----
 
 Get the family name of the font.
+
+=== `index_from_character`
+
+[source]
+----
+uint32_t index_from_character(char32_t character);
+----
+
+Compute the index of the character in the font.
 
 === `style_name`
 
