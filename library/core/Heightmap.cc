@@ -91,13 +91,9 @@ namespace gf {
           const double z = (radius_square - dist_square) * factor;
 
           if (height > 0.0) {
-            if (m_data({ x, y }) < z) {
-              m_data({ x, y }) = z;
-            }
+            m_data({ x, y }) = std::max(m_data({ x, y }), z);
           } else {
-            if (m_data({ x, y }) > z) {
-              m_data({ x, y }) = z;
-            }
+            m_data({ x, y }) = std::min(m_data({ x, y }), z);
           }
         }
       }
@@ -111,7 +107,7 @@ namespace gf {
     }
 
     for (auto position : m_data.position_range()) {
-      Vec2D location = Vec2D(position) / m_data.size() * scale;
+      const Vec2D location = Vec2D(position) / m_data.size() * scale;
       m_data(position) += noise->value(location.x, location.y);
     }
   }
@@ -143,11 +139,8 @@ namespace gf {
     double altitude_difference_max = 0.0;
 
     for (auto neighbor : m_data.compute_4_neighbors_range(position)) {
-      double altitude_difference = std::abs(altitude - m_data(neighbor));
-
-      if (altitude_difference > altitude_difference_max) {
-        altitude_difference_max = altitude_difference;
-      }
+      const double altitude_difference = std::abs(altitude - m_data(neighbor));
+      altitude_difference_max = std::max(altitude_difference, altitude_difference_max);
     }
 
     return altitude_difference_max;
@@ -175,10 +168,7 @@ namespace gf {
 
           if (difference > talus) {
             difference_total += difference;
-
-            if (difference > difference_max) {
-              difference_max = difference;
-            }
+            difference_max = std::max(difference, difference_max);
           }
         }
 
@@ -279,9 +269,9 @@ namespace gf {
         water_map(position) = water;
 
         const double material_max = capacity * water;
-        const double material_difference = std::max(0.0, material_map(position) - material_max);
-        material_map(position) -= material_difference;
-        m_data(position) += material_difference;
+        const double material = std::max(0.0, material_map(position) - material_max);
+        material_map(position) -= material;
+        m_data(position) += material;
       }
     }
   }
@@ -303,9 +293,9 @@ namespace gf {
         const double altitude = m_data(position);
 
         for (auto neighbor : m_data.compute_8_neighbors_range(position)) {
-          double altitude_neighbor = m_data(neighbor);
+          const double altitude_neighbor = m_data(neighbor);
+          const double altitude_difference = altitude - altitude_neighbor;
 
-          double altitude_difference = altitude - altitude_neighbor;
           if (altitude_difference > altitude_difference_max) {
             altitude_difference_max = altitude_difference;
             position_max = neighbor;
@@ -352,7 +342,7 @@ namespace gf {
       return {};
     }
 
-    RectI intersection = *maybe_intersection;
+    const RectI intersection = *maybe_intersection;
     Heightmap heightmap(intersection.size());
 
     for (auto position : gf::position_range(intersection.extent)) {
@@ -393,8 +383,8 @@ namespace gf {
     Image image(size);
 
     for (auto pos : m_data.position_range()) {
-      double value = value_with_water_level(m_data(pos), water_level);
-      Color color = ramp.compute_color(static_cast<float>(value));
+      const double value = value_with_water_level(m_data(pos), water_level);
+      const Color color = ramp.compute_color(static_cast<float>(value));
       image.put_pixel(pos, color);
     }
 
@@ -430,10 +420,10 @@ namespace gf {
         normal = gf::normalize(normal / count);
         const double light = gf::clamp(0.5 + 35 * gf::dot(Light, normal), 0.0, 1.0);
 
-        Color pixel = image(position);
+        const Color pixel = image(position);
 
-        Color lo = gf::lerp(pixel, Color(0x331133), 0.7f);
-        Color hi = gf::lerp(pixel, Color(0xFFFFCC), 0.3f);
+        const Color lo = gf::lerp(pixel, Color(0x331133), 0.7f);
+        const Color hi = gf::lerp(pixel, Color(0xFFFFCC), 0.3f);
 
         if (light < 0.5) {
           image.put_pixel(position, gf::lerp(lo, pixel, static_cast<float>(2 * light)));

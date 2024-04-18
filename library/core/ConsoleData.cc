@@ -370,7 +370,7 @@ namespace gf {
 
   void ConsoleData::blit_to(ConsoleData& console, RectI source, Vec2I destination, float foreground_alpha, float background_alpha) const
   {
-    Blit blit = compute_blit(source, screen.size(), destination, console.screen.size());
+    const Blit blit = compute_blit(source, screen.size(), destination, console.screen.size());
     Vec2I offset = {};
 
     for (offset.y = 0; offset.y < blit.source_region.extent.h; ++offset.y) {
@@ -435,7 +435,7 @@ namespace gf {
 
       case ConsoleAlignment::Center:
         {
-          int half_width = std::min(position.x, size.w - position.x - 1);
+          const int half_width = std::min(position.x, size.w - position.x - 1);
           single_line_area.offset = { position.x - half_width, position.y };
           single_line_area.extent = { 2 * half_width + 1, 1 };
         }
@@ -543,8 +543,8 @@ namespace gf {
     draw_rectangle(area, style);
     area.extent -= 1;
     auto size = area.extent - 1;
-    Vec2I min = area.offset;
-    Vec2I max = area.offset + area.extent;
+    const Vec2I min = area.offset;
+    const Vec2I max = area.offset + area.extent;
 
     put_character(area.position_at(Orientation::NorthWest), ConsoleChar::BoxDrawingsLightDownAndRight, style);
     put_character(area.position_at(Orientation::NorthEast), ConsoleChar::BoxDrawingsLightDownAndLeft, style);

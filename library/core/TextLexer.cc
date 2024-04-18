@@ -97,7 +97,7 @@ namespace gf {
       advance();
     }
 
-    std::string_view word(word_start, static_cast<std::size_t>(current() - word_start));
+    const std::string_view word(word_start, static_cast<std::size_t>(current() - word_start));
     return TextToken::make_word(word);
   }
 
@@ -127,7 +127,7 @@ namespace gf {
         advance();
       }
 
-      std::string_view tag(tag_start, static_cast<std::size_t>(current() - tag_start));
+      const std::string_view tag(tag_start, static_cast<std::size_t>(current() - tag_start));
       std::string_view value;
 
       if (match('=')) {
@@ -165,7 +165,7 @@ namespace gf {
       advance();
     }
 
-    std::string_view word(word_start, static_cast<std::size_t>(current() - word_start));
+    const std::string_view word(word_start, static_cast<std::size_t>(current() - word_start));
     return TextToken::make_word(word);
   }
 

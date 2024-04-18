@@ -79,11 +79,9 @@ namespace gf {
 
   ShapeData ShapeData::make_circle(CircF circle, uint32_t point_count)
   {
-    ShapeData data = {};
+    point_count = std::max<uint32_t>(point_count, 3);
 
-    if (point_count < 3) {
-      point_count = 3;
-    }
+    ShapeData data = {};
 
     for (uint32_t i = 0; i < point_count; ++i) {
       const float angle = static_cast<float>(i) * 2.0f * Pi / static_cast<float>(point_count) - Pi2;
@@ -104,9 +102,7 @@ namespace gf {
       to_angle += 2 * Pi;
     }
 
-    if (point_count < 3) {
-      point_count = 3;
-    }
+    point_count = std::max<uint32_t>(point_count, 3);
 
     ShapeData data = {};
     data.points.emplace_back(0.0f, 0.0f);

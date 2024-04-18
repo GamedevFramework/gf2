@@ -15,7 +15,7 @@
 namespace gf {
 
   struct GF_GRAPHICS_API ConsoleFontFormat {
-    enum Transparency {
+    enum Transparency : uint8_t {
       Alpha,
       Grayscale,
       ColorKey,
@@ -23,14 +23,14 @@ namespace gf {
 
     Transparency transparency;
 
-    enum Layout {
+    enum Layout : uint8_t {
       InColumn,
       InRow,
     };
 
     Layout layout;
 
-    enum Mapping {
+    enum Mapping : uint8_t {
       CodePage437,
       ModifiedCodePage437,
       Special,

@@ -59,7 +59,7 @@ namespace gf {
     constexpr std::enable_if_t<std::is_arithmetic_v<T>, T> clamp(T val, T min, T max)
     {
       // clang-format off
-      return val < min ? min : max < val ? max : val;
+      return val < min ? min : (max < val ? max : val);
       // clang-format on
     }
 

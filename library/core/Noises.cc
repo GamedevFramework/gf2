@@ -495,7 +495,7 @@ namespace gf {
         double value = 0;
 
         for (std::ptrdiff_t k = 2 * i - DownCoefficientsCount; k <= 2 * i - DownCoefficientsCount; ++k) {
-          std::ptrdiff_t index = k - 2 * i;
+          const std::ptrdiff_t index = k - 2 * i;
           assert(-DownCoefficientsCount <= index && index < DownCoefficientsCount);
           value += coeffs[index] * from[positive_mod(k, n) * stride];
         }
@@ -518,7 +518,7 @@ namespace gf {
         double value = 0;
 
         for (std::ptrdiff_t k = i / 2; k <= i / 2 + 1; ++k) {
-          std::ptrdiff_t index = i - 2 * k;
+          const std::ptrdiff_t index = i - 2 * k;
           assert(-UpCoefficientsCount <= index && index < UpCoefficientsCount);
           value += coeffs[index] * from[positive_mod(k, n / 2) * stride];
         }
@@ -532,7 +532,7 @@ namespace gf {
   WaveletNoise3D::WaveletNoise3D(Random& random, std::ptrdiff_t wavelet_tile_size)
   : m_wavelet_tile_size(wavelet_tile_size + wavelet_tile_size % 2)
   {
-    std::size_t data_size = m_wavelet_tile_size * m_wavelet_tile_size * m_wavelet_tile_size;
+    const std::size_t data_size = m_wavelet_tile_size * m_wavelet_tile_size * m_wavelet_tile_size;
     m_data.resize(data_size);
 
     std::vector<double> tmp1(data_size);
@@ -551,7 +551,7 @@ namespace gf {
     for (std::ptrdiff_t iy = 0; iy < m_wavelet_tile_size; ++iy) {
       for (std::ptrdiff_t iz = 0; iz < m_wavelet_tile_size; ++iz) {
         // each x row
-        std::ptrdiff_t i = iy * m_wavelet_tile_size + iz * m_wavelet_tile_size * m_wavelet_tile_size;
+        const std::ptrdiff_t i = iy * m_wavelet_tile_size + iz * m_wavelet_tile_size * m_wavelet_tile_size;
         wavelet_downsample(&m_data[i], &tmp1[i], m_wavelet_tile_size, 1);
         wavelet_upsample(&tmp1[i], &tmp2[i], m_wavelet_tile_size, 1);
       }
@@ -560,7 +560,7 @@ namespace gf {
     for (std::ptrdiff_t ix = 0; ix < m_wavelet_tile_size; ++ix) {
       for (std::ptrdiff_t iz = 0; iz < m_wavelet_tile_size; ++iz) {
         // each y row
-        std::ptrdiff_t i = ix + iz * m_wavelet_tile_size * m_wavelet_tile_size;
+        const std::ptrdiff_t i = ix + iz * m_wavelet_tile_size * m_wavelet_tile_size;
         wavelet_downsample(&tmp2[i], &tmp1[i], m_wavelet_tile_size, m_wavelet_tile_size);
         wavelet_upsample(&tmp1[i], &tmp2[i], m_wavelet_tile_size, m_wavelet_tile_size);
       }
@@ -569,7 +569,7 @@ namespace gf {
     for (std::ptrdiff_t ix = 0; ix < m_wavelet_tile_size; ++ix) {
       for (std::ptrdiff_t iy = 0; iy < m_wavelet_tile_size; ++iy) {
         // each z row
-        std::ptrdiff_t i = ix + iy * m_wavelet_tile_size;
+        const std::ptrdiff_t i = ix + iy * m_wavelet_tile_size;
         wavelet_downsample(&tmp2[i], &tmp1[i], m_wavelet_tile_size, m_wavelet_tile_size * m_wavelet_tile_size);
         wavelet_upsample(&tmp1[i], &tmp2[i], m_wavelet_tile_size, m_wavelet_tile_size * m_wavelet_tile_size);
       }
@@ -595,9 +595,9 @@ namespace gf {
       for (std::ptrdiff_t iy = 0; iy < m_wavelet_tile_size; ++iy) {
         for (std::ptrdiff_t iz = 0; iz < m_wavelet_tile_size; ++iz) {
           // clang-format off
-          std::ptrdiff_t index = positive_mod(ix + offset, m_wavelet_tile_size)
-                               + positive_mod(iy + offset, m_wavelet_tile_size) * m_wavelet_tile_size
-                               + positive_mod(iz + offset, m_wavelet_tile_size) * m_wavelet_tile_size * m_wavelet_tile_size;
+          const std::ptrdiff_t index = positive_mod(ix + offset, m_wavelet_tile_size)
+                                     + positive_mod(iy + offset, m_wavelet_tile_size) * m_wavelet_tile_size
+                                     + positive_mod(iz + offset, m_wavelet_tile_size) * m_wavelet_tile_size * m_wavelet_tile_size;
           // clang-format on
           assert(0 <= index && index < m_wavelet_tile_size * m_wavelet_tile_size * m_wavelet_tile_size);
           tmp1[k++] = m_data[index];
@@ -612,7 +612,7 @@ namespace gf {
 
   double WaveletNoise3D::value(double x, double y, double z)
   {
-    double p[3] = { x, y, z };
+    const double p[3] = { x, y, z };
 
     std::ptrdiff_t f[3];
     std::ptrdiff_t c[3];
@@ -626,7 +626,7 @@ namespace gf {
     for (std::ptrdiff_t i = 0; i < 3; ++i) {
       // NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index)
       mid[i] = static_cast<std::ptrdiff_t>(std::ceil(p[i] - 0.5));
-      double t = static_cast<double>(mid[i]) - (p[i] - 0.5);
+      const double t = static_cast<double>(mid[i]) - (p[i] - 0.5);
       w[i][0] = t * t / 2;
       w[i][2] = (1 - t) * (1 - t) / 2;
       w[i][1] = 1 - w[i][0] - w[i][2];
@@ -714,12 +714,12 @@ namespace gf {
 
   double WorleyNoise2D::value(double x, double y)
   {
-    double rx = std::fmod(x, 1.0);
-    double ry = std::fmod(y, 1.0);
+    const double rx = std::fmod(x, 1.0);
+    const double ry = std::fmod(y, 1.0);
 
     auto size = m_coefficients.size();
 
-    Vec2D here(rx, ry);
+    const Vec2D here(rx, ry);
 
     std::partial_sort(m_cells.begin(), std::next(m_cells.begin(), static_cast<std::ptrdiff_t>(size)), m_cells.end(), [here, this](const Vec2D& lhs, const Vec2D& rhs) {
       return m_distance(here, lhs) < m_distance(here, rhs);
@@ -847,11 +847,9 @@ namespace gf {
     amplitude *= m_persistence;
 
     for (int k = 1; k < m_octaves; ++k) {
-      if (weight > 1.0) {
-        weight = 1.0;
-      }
+      weight = std::min(weight, 1.0);
 
-      double signal = (m_noise->value(x * frequency, y * frequency) + m_offset) * std::pow(amplitude, m_dimension);
+      const double signal = (m_noise->value(x * frequency, y * frequency) + m_offset) * std::pow(amplitude, m_dimension);
       value += weight * signal;
       weight *= signal;
 

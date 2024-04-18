@@ -3,6 +3,8 @@
 #ifndef GF_HEIGHTMAP_H
 #define GF_HEIGHTMAP_H
 
+#include <cstdint>
+
 #include <tuple>
 
 #include "Array2D.h"
@@ -15,7 +17,7 @@
 
 namespace gf {
 
-  enum class HeightmapRender {
+  enum class HeightmapRender : uint8_t {
     Colored,
     Shaded,
   };

@@ -36,6 +36,7 @@ namespace home {
 
     add_hud_entity(&m_backpack_entity);
 
+    // NOLINTNEXTLINE(bugprone-unused-return-value)
     m_hero_entity.update_location.connect([this](gf::Vec2F location) {
       set_world_center(location);
       m_map_entity.set_hero_location(location);
@@ -43,6 +44,7 @@ namespace home {
       m_backpack_entity.set_hero_location(location);
     });
 
+    // NOLINTNEXTLINE(bugprone-unused-return-value)
     m_supply_entity.harvest.connect([this](SupplyType type, int32_t quantity) {
       m_hero_entity.set_mining();
       m_backpack_entity.put_in_backpack(type, quantity);

@@ -100,12 +100,8 @@ namespace gf {
       return 0;
     }
 
-    std::size_t count = buffer.size();
     const std::size_t available = m_memory.size() - m_offset;
-
-    if (count > available) {
-      count = available;
-    }
+    const std::size_t count = std::min(buffer.size(), available);
 
     if (count > 0) {
       std::copy_n(m_memory.data() + m_offset, count, buffer.data());
@@ -263,12 +259,8 @@ namespace gf {
       return 0;
     }
 
-    std::size_t count = buffer.size();
     const std::size_t available = m_bytes->size() - m_offset;
-
-    if (count > available) {
-      count = available;
-    }
+    const std::size_t count = std::min(buffer.size(), available);
 
     if (count > 0) {
       std::copy_n(m_bytes->data() + m_offset, count, buffer.data());

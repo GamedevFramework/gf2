@@ -12,13 +12,8 @@ namespace gf {
     if (empty()) {
       m_min = m_max = offset;
     } else {
-      if (offset < m_min) {
-        m_min = offset;
-      }
-
-      if (offset > m_max) {
-        m_max = offset;
-      }
+      m_min = std::min(offset, m_min);
+      m_max = std::max(offset, m_max);
     }
 
     m_mapping.emplace(offset, color);

@@ -58,7 +58,7 @@ namespace gf {
     void print(Vec2I position, const ConsoleStyle& style, fmt::format_string<T...> fmt, T&&... args)
     {
       auto message = fmt::format(fmt, std::forward<T>(args)...);
-      ConsoleRichStyle rich_style(style);
+      const ConsoleRichStyle rich_style(style);
       raw_print(RectI::from_position_size(position, { 0, 0 }), message, rich_style, PrintSimple);
     }
 
@@ -66,7 +66,7 @@ namespace gf {
     void print_area(RectI area, const ConsoleStyle& style, fmt::format_string<T...> fmt, T&&... args)
     {
       auto message = fmt::format(fmt, std::forward<T>(args)...);
-      ConsoleRichStyle rich_style(style);
+      const ConsoleRichStyle rich_style(style);
       raw_print(area, message, rich_style, PrintSplit | PrintSimple);
     }
 

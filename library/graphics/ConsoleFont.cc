@@ -249,7 +249,7 @@ namespace gf {
 
       case ConsoleFontFormat::Grayscale:
         for (auto position : copy.position_range()) {
-          auto color = copy(position);
+          Color color = copy(position);
           assert(color.r == color.g && color.g == color.b);
           color.a = color.r;
           copy.put_pixel(position, color);
@@ -258,10 +258,10 @@ namespace gf {
 
       case ConsoleFontFormat::ColorKey:
         {
-          Color key = copy(color_key_position());
+          const Color key = copy(color_key_position());
 
           for (auto position : copy.position_range()) {
-            Color color = copy(position);
+            const Color color = copy(position);
 
             if (color == key) {
               copy.put_pixel(position, Transparent);
@@ -276,7 +276,7 @@ namespace gf {
 
   void ConsoleFont::map_code(char16_t character, Vec2I position)
   {
-    int index = compute_index(position, m_format.layout, m_size);
+    const int index = compute_index(position, m_format.layout, m_size);
     assert(0 <= index && index < 0x100);
     m_mapping[character] = static_cast<uint8_t>(index);
   }
@@ -330,9 +330,9 @@ namespace gf {
 
   RectF ConsoleFont::texture_region(char16_t character) const
   {
-    uint8_t index = m_mapping[character];
-    Vec2F position = compute_position(index, m_format.layout, m_size);
-    Vec2F size = m_size;
+    const uint8_t index = m_mapping[character];
+    const Vec2F position = compute_position(index, m_format.layout, m_size);
+    const Vec2F size = m_size;
     return RectF::from_position_size(position / size, 1.0f / size);
   }
 

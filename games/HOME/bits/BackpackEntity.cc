@@ -65,10 +65,7 @@ namespace home {
       auto& supply = m_supplies.back();
 
       auto quantity = static_cast<int32_t>(time.as_seconds() * UnloadSpeed);
-
-      if (quantity > supply.quantity) {
-        quantity = supply.quantity;
-      }
+      quantity = std::min(quantity, supply.quantity);
 
       unload.emit(supply.type, quantity);
 
@@ -171,10 +168,7 @@ namespace home {
   {
     if (type == SupplyType::Oxygen) {
       m_oxygen_quantity += quantity;
-
-      if (m_oxygen_quantity > MaxOxygen) {
-        m_oxygen_quantity = MaxOxygen;
-      }
+      m_oxygen_quantity = std::min(m_oxygen_quantity, MaxOxygen);
     } else {
       if (m_total_quantity + quantity > LimitBackpack) {
         quantity = LimitBackpack - m_total_quantity;

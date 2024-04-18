@@ -121,7 +121,7 @@ namespace gf {
 
     constexpr Iterator begin() const noexcept
     {
-      return { m_string.data() };
+      return { m_string.data() }; // NOLINT(bugprone-suspicious-stringview-data-usage)
     }
 
     constexpr Iterator end() const noexcept

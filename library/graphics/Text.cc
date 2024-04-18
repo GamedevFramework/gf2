@@ -222,6 +222,9 @@ namespace gf {
           case style_value(FontStyle::Bold | FontStyle::Italic):
             data = m_bold_italic;
             break;
+          default:
+            assert(false);
+            break;
         }
 
         if (data.face == nullptr) {

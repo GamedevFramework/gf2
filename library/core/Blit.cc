@@ -23,13 +23,8 @@ namespace gf {
 
     const Vec2I max_size = source_size - source_region.offset;
 
-    if (source_region.extent.w > max_size.w) {
-      source_region.extent.w = max_size.w;
-    }
-
-    if (source_region.extent.h > max_size.h) {
-      source_region.extent.h = max_size.h;
-    }
+    source_region.extent.w = std::min(source_region.extent.w, max_size.w);
+    source_region.extent.h = std::min(source_region.extent.h, max_size.h);
 
     // clip target
 

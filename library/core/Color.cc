@@ -112,11 +112,7 @@ namespace gf {
 
     if (hsv.v > 1) {
       hsv.s -= (hsv.v - 1);
-
-      if (hsv.s < 0) {
-        hsv.s = 0;
-      }
-
+      hsv.s = std::max(hsv.s, 0.0f);
       hsv.v = 1;
     }
 
