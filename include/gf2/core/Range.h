@@ -342,7 +342,9 @@ namespace gf {
     {
       return {
         { m_dx.lo(), m_dy.lo() },
-        m_dx, m_dy, m_origin
+        m_dx,
+        m_dy,
+        m_origin
       };
     }
 
@@ -350,7 +352,9 @@ namespace gf {
     {
       return {
         { m_dx.lo(), m_dy.hi() },
-        m_dx, m_dy, m_origin
+        m_dx,
+        m_dy,
+        m_origin
       };
     }
 
@@ -474,7 +478,10 @@ namespace gf {
     {
       return {
         { m_dx.lo(), m_dy.lo() },
-        m_dx, m_dy, m_origin, m_radius
+        m_dx,
+        m_dy,
+        m_origin,
+        m_radius
       };
     }
 
@@ -482,7 +489,10 @@ namespace gf {
     {
       return {
         { m_dx.lo(), m_dy.hi() },
-        m_dx, m_dy, m_origin, m_radius
+        m_dx,
+        m_dy,
+        m_origin,
+        m_radius
       };
     }
 

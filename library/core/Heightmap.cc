@@ -5,9 +5,9 @@
 
 #include <algorithm>
 
+#include <gf2/core/Direction.h>
 #include <gf2/core/Range.h>
 #include <gf2/core/Vec3.h>
-#include <gf2/core/Direction.h>
 
 namespace gf {
 
