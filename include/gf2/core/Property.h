@@ -7,7 +7,6 @@
 
 #include <filesystem>
 #include <string>
-#include <type_traits>
 #include <variant>
 
 #include "Color.h"
@@ -23,7 +22,7 @@ namespace gf {
   public:
     Property() = default;
 
-    template<typename T, typename = std::enable_if_t<!std::is_same_v<std::remove_cv_t<std::remove_reference_t<T>>, Property>>>
+    template<typename T, typename = PreventHiddenCopyMove<T, Property>>
     explicit Property(T&& value)
     : m_value(std::forward<T>(value))
     {

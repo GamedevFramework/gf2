@@ -27,7 +27,9 @@ namespace gf {
 
     static constexpr Rect from_size(Vec2<T> size) noexcept
     {
+      // clang-format off
       return { { T(0), T(0) }, size };
+      // clang-format on
     }
 
     static constexpr Rect from_min_max(Vec2<T> min, Vec2<T> max) noexcept

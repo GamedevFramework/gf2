@@ -25,10 +25,10 @@ namespace gf {
     {
     }
 
-    Tween(T origin, T target, T& value, Time duration, Easing easing = ease_linear)
+    Tween(T origin, T target, T* value, Time duration, Easing easing = ease_linear)
     : m_origin(origin)
     , m_target(target)
-    , m_setter([&value](const T& new_value) { value = new_value; })
+    , m_setter([value](const T& new_value) { if (value != nullptr) { *value = new_value; } })
     , m_duration(duration)
     , m_easing(easing)
     {

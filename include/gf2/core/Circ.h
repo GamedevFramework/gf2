@@ -25,7 +25,9 @@ namespace gf {
 
     static constexpr Circ from_radius(T radius) noexcept
     {
+      // clang-format off
       return { { T(0), T(0) }, radius };
+      // clang-format on
     }
 
     constexpr bool empty() const noexcept
