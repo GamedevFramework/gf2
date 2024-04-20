@@ -25,7 +25,7 @@ namespace gf {
 
     static constexpr Circ from_radius(T radius) noexcept
     {
-      return { gf::vec(T(0), T(0)), radius };
+      return { { T(0), T(0) }, radius };
     }
 
     constexpr bool empty() const noexcept
@@ -35,12 +35,12 @@ namespace gf {
 
     constexpr bool contains(Vec2<T> point) const noexcept
     {
-      return gf::square_distance(center, point) <= gf::square(radius);
+      return square_distance(center, point) <= square(radius);
     }
 
     constexpr bool intersects(Circ other) const noexcept
     {
-      return gf::square_distance(center, other.center) <= gf::square(radius + other.radius);
+      return square_distance(center, other.center) <= square(radius + other.radius);
     }
   };
 

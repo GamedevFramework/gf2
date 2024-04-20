@@ -10,7 +10,7 @@ namespace gf {
 
   class GF_CORE_API FixedTimestepModel : public Model {
   public:
-    FixedTimestepModel(Model* model, Time timestep = gf::seconds(1 / 60.0f));
+    FixedTimestepModel(Model* model, Time timestep = seconds(1 / 60.0f));
 
     void update(Time time) override;
 

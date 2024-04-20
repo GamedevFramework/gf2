@@ -46,7 +46,7 @@ namespace gf {
 
   private:
     ConsoleStyle m_default_style;
-    std::map<gf::Id, ConsoleColorStyle> m_styles;
+    std::map<Id, ConsoleColorStyle> m_styles;
   };
 
 }

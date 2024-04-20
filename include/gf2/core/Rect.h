@@ -27,7 +27,7 @@ namespace gf {
 
     static constexpr Rect from_size(Vec2<T> size) noexcept
     {
-      return { Vec2<T>(T(0), T(0)), size };
+      return { { T(0), T(0) }, size };
     }
 
     static constexpr Rect from_min_max(Vec2<T> min, Vec2<T> max) noexcept
@@ -143,19 +143,19 @@ namespace gf {
         case Orientation::NorthWest:
           return offset;
         case Orientation::North:
-          return offset + gf::vec(extent.x / T(2), T(0));
+          return offset + vec(extent.x / T(2), T(0));
         case Orientation::NorthEast:
-          return offset + gf::vec(extent.x, T(0));
+          return offset + vec(extent.x, T(0));
         case Orientation::West:
-          return offset + gf::vec(T(0), extent.y / T(2));
+          return offset + vec(T(0), extent.y / T(2));
         case Orientation::Center:
           return offset + extent / T(2);
         case Orientation::East:
-          return offset + gf::vec(extent.x, extent.y / T(2));
+          return offset + vec(extent.x, extent.y / T(2));
         case Orientation::SouthWest:
-          return offset + gf::vec(T(0), extent.y);
+          return offset + vec(T(0), extent.y);
         case Orientation::South:
-          return offset + gf::vec(extent.x / T(2), extent.y);
+          return offset + vec(extent.x / T(2), extent.y);
         case Orientation::SouthEast:
           return offset + extent;
       }
@@ -175,7 +175,7 @@ namespace gf {
 
     constexpr T distance_from(Vec2<T> other, Distance2<T> distance) const noexcept(noexcept(distance(std::declval<Vec2<T>>(), std::declval<Vec2<T>>())))
     {
-      const Vec2<T> nearest = { gf::clamp(other.x, offset.x, offset.x + extent.w), gf::clamp(other.y, offset.y, offset.y + extent.h) };
+      const Vec2<T> nearest = { clamp(other.x, offset.x, offset.x + extent.w), clamp(other.y, offset.y, offset.y + extent.h) };
       return distance(other, nearest);
     }
   };

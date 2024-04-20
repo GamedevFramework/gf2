@@ -105,3 +105,5 @@ includes("bin/xmake.lua")
 includes("examples/xmake.lua")
 
 includes("games/HOME/xmake.lua")
+
+includes("docs/snippets/xmake.lua")

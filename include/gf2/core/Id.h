@@ -19,7 +19,7 @@ namespace gf {
 
   constexpr Id InvalidId = id(0);
 
-  constexpr Id hash(const char* str, std::size_t sz)
+  constexpr Id hash_string(const char* str, std::size_t sz)
   {
     uint64_t value = UINT64_C(0xcbf29ce484222325);
 
@@ -31,16 +31,16 @@ namespace gf {
     return id(value);
   }
 
-  constexpr Id hash(std::string_view str)
+  constexpr Id hash_string(std::string_view str)
   {
-    return hash(str.data(), str.size());
+    return hash_string(str.data(), str.size());
   }
 
   namespace literals {
 
     constexpr Id operator""_id(const char* str, std::size_t sz)
     {
-      return gf::hash(str, sz);
+      return hash_string(str, sz);
     }
 
   } // namespace literals

@@ -22,7 +22,7 @@ namespace gf {
 
   void ConsoleRichStyle::set_style(std::string_view name, const ConsoleColorStyle& style)
   {
-    set_style(gf::hash(name), style);
+    set_style(gf::hash_string(name), style);
   }
 
   void ConsoleRichStyle::set_style(Id id, const ConsoleColorStyle& style)
@@ -32,7 +32,7 @@ namespace gf {
 
   ConsoleColorStyle ConsoleRichStyle::style(std::string_view name) const
   {
-    return style(gf::hash(name));
+    return style(gf::hash_string(name));
   }
 
   ConsoleColorStyle ConsoleRichStyle::style(Id id) const

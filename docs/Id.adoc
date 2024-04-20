@@ -79,12 +79,12 @@ constexpr Id id(uint64_t id);
 
 Create an identifier from an integer.
 
-=== `gf::hash`
+=== `gf::hash_string`
 
 [source]
 ----
-constexpr Id hash(const char* str, std::size_t sz); <1>
-constexpr Id hash(std::string_view str); <2>
+constexpr Id hash_string(const char* str, std::size_t sz); <1>
+constexpr Id hash_string(std::string_view str); <2>
 ----
 
 <1> Get an identifier from a string `str` of size `sz`.

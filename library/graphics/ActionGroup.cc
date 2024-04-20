@@ -17,7 +17,7 @@ namespace gf {
 
   void ActionGroup::add_action(std::string_view name, const ActionData& data)
   {
-    m_actions.emplace(gf::hash(name), Action(data));
+    m_actions.emplace(gf::hash_string(name), Action(data));
   }
 
   void ActionGroup::add_action(Id id, const ActionData& data)
@@ -27,7 +27,7 @@ namespace gf {
 
   void ActionGroup::add_action(std::string_view name, Action action)
   {
-    m_actions.emplace(gf::hash(name), std::move(action));
+    m_actions.emplace(gf::hash_string(name), std::move(action));
   }
 
   void ActionGroup::add_action(Id id, Action action)
@@ -37,7 +37,7 @@ namespace gf {
 
   bool ActionGroup::active(std::string_view name) const
   {
-    return active(gf::hash(name));
+    return active(gf::hash_string(name));
   }
 
   bool ActionGroup::active(Id id) const

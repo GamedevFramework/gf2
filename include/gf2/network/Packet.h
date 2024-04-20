@@ -49,8 +49,8 @@ namespace gf {
     {
       m_bytes.clear();
       m_type = T::type;
-      gf::BufferOutputStream stream(&m_bytes);
-      gf::Serializer serializer(&stream);
+      BufferOutputStream stream(&m_bytes);
+      Serializer serializer(&stream);
       serializer | m_type | data;
     }
 

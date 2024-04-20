@@ -456,7 +456,7 @@ namespace gf {
 
       bool valid() noexcept
       {
-        return m_current != m_origin && gf::manhattan_distance(m_current, m_origin) <= m_radius;
+        return m_current != m_origin && manhattan_distance(m_current, m_origin) <= m_radius;
       }
 
       Vec2<T> m_current;

@@ -27,15 +27,15 @@ TEST(IdTest, FNV) {
   };
 
   for (auto& test : TestVectors) {
-    EXPECT_EQ(gf::hash(test.input), gf::id(test.expected));
+    EXPECT_EQ(gf::hash_string(test.input), gf::id(test.expected));
   }
 }
 
 TEST(IdTest, Hash) {
-  gf::Id id = gf::hash("foobar");
+  gf::Id id = gf::hash_string("foobar");
   EXPECT_EQ(id, gf::id(UINT64_C(0x85944171f73967e8)));
 
-  constexpr gf::Id cid = gf::hash("foobar");
+  constexpr gf::Id cid = gf::hash_string("foobar");
   static_assert(cid == gf::id(UINT64_C(0x85944171f73967e8)), "Check gf::Id");
 }
 

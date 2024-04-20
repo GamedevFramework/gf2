@@ -163,7 +163,7 @@ namespace gf {
             } else if (type == "file") {
               property_map.add_property(std::move(name), std::filesystem::path(value_attribute.as_string()));
             } else if (type == "object") {
-              property_map.add_property(std::move(name), gf::hash(value_attribute.as_string()));
+              property_map.add_property(std::move(name), gf::hash_string(value_attribute.as_string()));
             } else if (type == "class") {
               property_map.add_property(std::move(name), parse_tmx_raw_properties(property));
             } else {

@@ -21,10 +21,10 @@ namespace {
 
 void doc_hash() {
   // tag::hash[]
-  gf::Id id1 = gf::hash("C string");
+  gf::Id id1 = gf::hash_string("C string");
 
   std::string str("std::string");
-  gf::Id id2 = gf::hash(str);
+  gf::Id id2 = gf::hash_string(str);
   // end::hash[]
 
   unused(id1, id2);
@@ -49,7 +49,7 @@ void doc_switch() {
   // tag::switch[]
   std::string input = my_input();
 
-  switch (gf::hash(input)) {
+  switch (gf::hash_string(input)) {
     case "Foo"_id:
       // input is "Foo"
       break;

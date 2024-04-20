@@ -27,7 +27,7 @@ namespace gf {
         return nullptr;
       }
 
-      if constexpr (std::is_empty_v<gf::ResourceContext<T>>) {
+      if constexpr (std::is_empty_v<ResourceContext<T>>) {
         return std::make_unique<T>(absolute_path);
       } else {
         return std::make_unique<T>(absolute_path, context);
@@ -54,7 +54,7 @@ namespace gf {
 
       MemoryInputStream input(buffer);
 
-      if constexpr (std::is_empty_v<gf::ResourceContext<T>>) {
+      if constexpr (std::is_empty_v<ResourceContext<T>>) {
         return std::make_unique<T>(input);
       } else {
         return std::make_unique<T>(input, context);
@@ -82,7 +82,7 @@ namespace gf {
 
       BufferInputStream input(&buffer);
 
-      if constexpr (std::is_empty_v<gf::ResourceContext<T>>) {
+      if constexpr (std::is_empty_v<ResourceContext<T>>) {
         return std::make_unique<T>(input);
       } else {
         return std::make_unique<T>(input, context);

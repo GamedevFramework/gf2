@@ -195,7 +195,7 @@ namespace gf {
 
   void AnimationGroup::select(std::string_view animation_name)
   {
-    select(gf::hash(animation_name));
+    select(gf::hash_string(animation_name));
   }
 
   void AnimationGroup::select(Id animation_id)
