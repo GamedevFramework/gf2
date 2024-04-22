@@ -199,6 +199,7 @@ namespace gf {
 
     m_vertices.update(geometry.vertices.data(), geometry.vertices.size(), render_manager);
     m_indices.update(geometry.indices.data(), geometry.indices.size(), render_manager);
+    m_bounds = geometry.compute_bounds();
   }
 
   RenderGeometry ShapeGroup::geometry() const

@@ -77,7 +77,7 @@ namespace gf {
     void update(Time time)
     {
       m_elapsed += time;
-      m_elapsed = m_elapsed > m_duration ? m_elapsed : m_duration;
+      m_elapsed = m_elapsed < m_duration ? m_elapsed : m_duration;
       m_setter(value());
     }
 

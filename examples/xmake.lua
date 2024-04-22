@@ -53,6 +53,11 @@ if has_config("examples") then
         add_deps("gf2graphics0")
         add_includedirs("$(buildir)/config/examples")
 
+    target("18-activities")
+        set_kind("binary")
+        add_files("18-activities.cc")
+        add_deps("gf2graphics0")
+
     target("20-physics")
         set_kind("binary")
         add_files("20-physics.cc")

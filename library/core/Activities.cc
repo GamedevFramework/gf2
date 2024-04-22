@@ -36,13 +36,13 @@ namespace gf {
    * RotateToActivity
    */
 
-  RotateToActivity::RotateToActivity(float origin, float target, float* angle, Time duration, Easing easing)
+  RotationActivity::RotationActivity(float origin, float target, float* angle, Time duration, Easing easing)
   : m_tween(origin, target, angle, duration, easing)
   {
     normalize();
   }
 
-  ActivityStatus RotateToActivity::run(Time time)
+  ActivityStatus RotationActivity::run(Time time)
   {
     if (m_tween.finished()) {
       return ActivityStatus::Finished;
@@ -52,12 +52,12 @@ namespace gf {
     return m_tween.finished() ? ActivityStatus::Finished : ActivityStatus::Running;
   }
 
-  void RotateToActivity::restart()
+  void RotationActivity::restart()
   {
     m_tween.restart();
   }
 
-  void RotateToActivity::normalize()
+  void RotationActivity::normalize()
   {
     const float origin = m_tween.origin();
     float target = m_tween.target();
@@ -72,12 +72,12 @@ namespace gf {
    * MoveToActivity
    */
 
-  MoveToActivity::MoveToActivity(Vec2F origin, Vec2F target, Vec2F* position, Time duration, Easing easing)
+  MotionActivity::MotionActivity(Vec2F origin, Vec2F target, Vec2F* position, Time duration, Easing easing)
   : m_tween(origin, target, position, duration, easing)
   {
   }
 
-  ActivityStatus MoveToActivity::run(Time time)
+  ActivityStatus MotionActivity::run(Time time)
   {
     if (m_tween.finished()) {
       return ActivityStatus::Finished;
@@ -87,7 +87,7 @@ namespace gf {
     return m_tween.finished() ? ActivityStatus::Finished : ActivityStatus::Running;
   }
 
-  void MoveToActivity::restart()
+  void MotionActivity::restart()
   {
     m_tween.restart();
   }

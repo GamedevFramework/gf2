@@ -57,9 +57,9 @@ namespace gf {
     Tween<float> m_tween;
   };
 
-  class GF_CORE_API RotateToActivity : public Activity {
+  class GF_CORE_API RotationActivity : public Activity {
   public:
-    RotateToActivity(float origin, float target, float* angle, Time duration, Easing easing = ease_linear);
+    RotationActivity(float origin, float target, float* angle, Time duration, Easing easing = ease_linear);
 
     void set_origin(float origin)
     {
@@ -102,9 +102,9 @@ namespace gf {
     Tween<float> m_tween;
   };
 
-  class GF_CORE_API MoveToActivity : public Activity {
+  class GF_CORE_API MotionActivity : public Activity {
   public:
-    MoveToActivity(Vec2F origin, Vec2F target, Vec2F* position, Time duration, Easing easing = ease_linear);
+    MotionActivity(Vec2F origin, Vec2F target, Vec2F* position, Time duration, Easing easing = ease_linear);
 
     void set_origin(Vec2F origin)
     {
@@ -266,10 +266,30 @@ namespace gf {
       return { origin, target, value, duration, easing };
     }
 
+    inline RotationActivity rotation(float origin, float target, float* value, Time duration, Easing easing = ease_linear)
+    {
+      return { origin, target, value, duration, easing };
+    }
+
+    inline MotionActivity motion(Vec2F origin, Vec2F target, Vec2F* value, Time duration, Easing easing = ease_linear)
+    {
+      return { origin, target, value, duration, easing };
+    }
+
+    inline ColorActivity color(Color origin, Color target, Color* value, Time duration, Easing easing = ease_linear)
+    {
+      return { origin, target, value, duration, easing };
+    }
+
     template<typename Func>
     CallbackActivity call(Func&& callback)
     {
       return { std::forward<Func>(callback) };
+    }
+
+    inline DelayActivity delay(Time duration)
+    {
+      return { duration };
     }
 
     namespace details {
@@ -286,12 +306,12 @@ namespace gf {
 
       template<typename Tuple, std::size_t... Indices>
       struct ActivityTupleGetters<Tuple, std::index_sequence<Indices...>> {
-        using Getter = Activity* (*)(Tuple&);
+        using Getter = Activity& (*)(Tuple&);
         static inline constexpr Getter Table[std::tuple_size_v<Tuple>] = { &activity_tuple_get<Tuple, Indices>... };
       };
 
       template<typename Tuple>
-      Activity* activity_tuple_get_ith(Tuple& tuple, std::size_t i)
+      Activity& activity_tuple_get_ith(Tuple& tuple, std::size_t i)
       {
         assert(i < std::tuple_size_v<Tuple>);
         return ActivityTupleGetters<Tuple>::Table[i](tuple);
@@ -300,9 +320,9 @@ namespace gf {
     }
 
     template<typename... Args>
-    class SequenceActivityEx : public Activity {
+    class Sequence : public Activity {
     public:
-      SequenceActivityEx(Args... activities)
+      Sequence(Args... activities)
       : m_activities(std::forward<Args>(activities)...)
       {
       }
@@ -338,15 +358,15 @@ namespace gf {
     };
 
     template<typename... Args>
-    SequenceActivityEx<Args...> sequence(Args... activities)
+    Sequence<Args...> sequence(Args... activities)
     {
       return { std::forward<Args>(activities)... };
     }
 
     template<typename Other>
-    class RepeatActivityEx : public Activity {
+    class Repeat : public Activity {
     public:
-      RepeatActivityEx(Other activity, int repeat)
+      Repeat(Other activity, int repeat)
       : m_activity(std::move(activity))
       , m_repeat(repeat)
       {
@@ -381,21 +401,15 @@ namespace gf {
     };
 
     template<typename Other>
-    RepeatActivityEx<Other> repeat(Other activity, int repeat = 0)
+    Repeat<Other> repeat(Other activity, int repeat = 0)
     {
-      return RepeatActivityEx<Other>(std::move(activity), repeat);
+      return { std::move(activity), repeat };
     }
 
     template<typename... Args>
-    class ParallelActivityEx : public Activity {
+    class Parallel : public Activity {
     public:
-      /**
-       * @brief Constructor.
-       *
-       * @param finish The type of finish
-       * @param activities The activities in parallel
-       */
-      ParallelActivityEx(ActivityFinish finish, Args... activities)
+      Parallel(ActivityFinish finish, Args... activities)
       : m_finish(finish)
       , m_activities(std::forward<Args>(activities)...)
       {
@@ -450,13 +464,13 @@ namespace gf {
     };
 
     template<typename... Args>
-    ParallelActivityEx<Args...> parallel_any(Args... activities)
+    Parallel<Args...> parallel_any(Args... activities)
     {
       return { ActivityFinish::Any, std::forward<Args>(activities)... };
     }
 
     template<typename... Args>
-    ParallelActivityEx<Args...> parallel_all(Args... activities)
+    Parallel<Args...> parallel_all(Args... activities)
     {
       return { ActivityFinish::All, std::forward<Args>(activities)... };
     }

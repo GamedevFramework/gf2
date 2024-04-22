@@ -51,9 +51,15 @@ namespace gf {
 
     RenderGeometry geometry() const;
 
+    RectF bounds() const
+    {
+      return m_bounds;
+    }
+
   private:
     DynamicBuffer m_vertices;
     DynamicBuffer m_indices;
+    RectF m_bounds = {};
   };
 
 }

@@ -1,0 +1,89 @@
+= `core` Activities
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The activities component provides classes and functions for pre-computing link:https://en.wikipedia.org/wiki/Cutscene[cutscenes] or cinematics.
+
+An *activity* is an action that can be run automatically according to a predefined schedule. An activity has two states: either it is _running_, or it is _finished_ (see <<activity_status>>). The framework offers different type of activities:
+
+- Interpolation activities: these activities are based on <<tween>> and make a value change from an origin to a target. See <<value_activity>>, <<motion_activity>>, <<rotation_activity>>, <<color_activity>>.
+- Toolbox activities: these activities are useful for controlling the overall schedule and creating side effects. See <<delay_activity>>, <<callback_activity>>.
+- Driver activities: these activities handle other activities to organize them in sequence or in parallel, or to repeat an activity. See <<repeat_activity>>, <<sequence_activity>>, <<parallel_activity>>.
+
+A series of functions is provided to create complex activities that are built upon these basic activities. The <<any_activity>> class provide a type-erased activity that can hold any activity created with these functions.
+
+xref:reference.adoc#core[< Back to reference]
+
+== Types
+
+[#activity]
+=== `gf::Activity`
+
+[#activity_finish]
+=== `gf::ActivityFinish`
+
+[#activity_status]
+=== `gf::ActivityStatus`
+
+[#callback_activity]
+=== `gf::CallbackActivity`
+
+[#color_activity]
+=== `gf::ColorActivity`
+
+[#delay_activity]
+=== `gf::DelayActivity`
+
+[#motion_activity]
+=== `gf::MotionActivity`
+
+[#parallel_activity]
+=== `gf::ParallelActivity`
+
+[#repeat_activity]
+=== `gf::RepeatActivity`
+
+[#rotation_activity]
+=== `gf::RotationActivity`
+
+[#sequence_activity]
+=== `gf::SequenceActivity`
+
+[#tween]
+=== `gf::Tween`
+
+[#value_activity]
+=== `gf::ValueActivity`
+
+[#any_activity]
+=== `gf::activity::AnyActivity`
+
+[#parallel]
+=== `gf::activity::Parallel`
+
+[#repeat]
+=== `gf::activity::Repeat`
+
+[#sequence]
+=== `gf::activity::Sequence`
+
+== Functions
+
+[#value]
+=== `gf::activity::value`
+
+[#call]
+=== `gf::activity::call`
+
+[#sequence_fn]
+=== `gf::activity::sequence`
+
+[#repeat_fn]
+=== `gf::activity::repeat`
+
+[#parallel_any]
+=== `gf::activity::parallel_any`
+
+[#parallel_all]
+=== `gf::activity::parallel_all`
