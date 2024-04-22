@@ -47,8 +47,8 @@ int main(int argc, char* argv[])
     }
   }
 
-  auto index = font_face.index_from_character(c);
-  auto glyph = font_face.create_glyph(index);
+  auto glyph_index = font_face.index_from_character(c);
+  auto glyph = font_face.create_glyph(glyph_index);
   auto size = glyph.bitmap.size();
 
   constexpr std::string_view Gray = " .:-=+*#%@";
