@@ -232,18 +232,29 @@ namespace gf {
   inline constexpr Color Gray = gray();
 
   inline constexpr Color Red(1.0f, 0.0f, 0.0f);
-  inline constexpr Color Green(0.0f, 1.0f, 0.0f);
-  inline constexpr Color Blue(0.0f, 0.0f, 1.0f);
-  inline constexpr Color Cyan(0.0f, 1.0f, 1.0f);
-  inline constexpr Color Magenta(1.0f, 0.0f, 1.0f);
-  inline constexpr Color Yellow(1.0f, 1.0f, 0.0f);
-
+  inline constexpr Color Vermilion(1.0f, 0.25f, 0.0f);
   inline constexpr Color Orange(1.0f, 0.5f, 0.0f);
-  inline constexpr Color Rose(1.0f, 0.0f, 0.5f);
+  inline constexpr Color Amber(1.0f, 0.75f, 0.0f);
+  inline constexpr Color Yellow(1.0f, 1.0f, 0.0f);
+  inline constexpr Color Lime(0.75f, 1.0f, 0.0f);
   inline constexpr Color Chartreuse(0.5f, 1.0f, 0.0f);
+  inline constexpr Color Harlequin(0.25f, 1.0f, 0.0f);
+  inline constexpr Color Green(0.0f, 1.0f, 0.0f);
+  inline constexpr Color Erin(0.0f, 1.0f, 0.25f);
   inline constexpr Color Spring(0.0f, 1.0f, 0.5f);
-  inline constexpr Color Violet(0.5f, 0.0f, 1.0f);
+  inline constexpr Color Aquamarine(0.0f, 1.0f, 0.75f);
+  inline constexpr Color Cyan(0.0f, 1.0f, 1.0f);
+  inline constexpr Color Capri(0.0f, 0.75f, 1.0f);
   inline constexpr Color Azure(0.0f, 0.5f, 1.0f);
+  inline constexpr Color Cerulean(0.0f, 0.25f, 1.0f);
+  inline constexpr Color Blue(0.0f, 0.0f, 1.0f);
+  inline constexpr Color Indigo(0.25f, 0.0f, 1.0f);
+  inline constexpr Color Violet(0.5f, 0.0f, 1.0f);
+  inline constexpr Color Purple(0.75f, 0.0f, 1.0f);
+  inline constexpr Color Magenta(1.0f, 0.0f, 1.0f);
+  inline constexpr Color Cerise(1.0f, 0.0f, 0.75f);
+  inline constexpr Color Rose(1.0f, 0.0f, 0.5f);
+  inline constexpr Color Crimson(1.0f, 0.0f, 0.25f);
 
   inline constexpr Color Transparent(0.0f, 0.0f, 0.0f, 0.0f);
 
