@@ -72,7 +72,6 @@ namespace gf {
     }
 
   private:
-    static Level s_level; // NOLINT
     static void log(Level level, const std::string& string);
   };
 

@@ -15,7 +15,7 @@ namespace gf {
 
 #ifdef _WIN32
   namespace {
-    std::atomic_int g_winsock = 0; // NOLINT
+    std::atomic_int g_winsock = 0; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
   }
 
   NetworkInitializer::NetworkInitializer()

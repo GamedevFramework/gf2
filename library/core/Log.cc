@@ -17,6 +17,8 @@ namespace gf {
 
   namespace {
 
+    Log::Level g_level = Log::Debug; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
+
     const char* to_string(Log::Level level)
     {
       switch (level) {
@@ -76,16 +78,14 @@ namespace gf {
 
   } // namespace
 
-  Log::Level Log::s_level = Log::Debug; // NOLINT
-
   void Log::set_level(Level level)
   {
-    s_level = level;
+    g_level = level;
   }
 
   void Log::log(Level level, const std::string& string)
   {
-    if (level < s_level) {
+    if (level < g_level) {
       return;
     }
 

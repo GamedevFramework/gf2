@@ -15,7 +15,7 @@
 namespace gf {
 
   namespace {
-    std::atomic_bool g_graphics_loaded = false; // NOLINT
+    std::atomic_bool g_graphics_loaded = false; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
   }
 
   GraphicsInitializer::GraphicsInitializer()
