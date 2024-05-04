@@ -1042,4 +1042,74 @@
 
 \end{gridfig}
 
+
+
+
+
+
+
+% neighbors (x same parity)
+
+\begin{gridfig}[xscale=2.5,yscale=2]
+
+\xhex{0.0}{5.0}{$x - 1, y$}
+\xhex{0.5}{5.5}{$x,     y - 1$}
+\xhex{1.0}{5.0}{$x + 1, y$}
+
+\xhex{0.5}{4.5}{$x, y$}
+
+\xhex{0.0}{4.0}{$x - 1, y + 1$}
+\xhex{0.5}{3.5}{$x,     y + 1$}
+\xhex{1.0}{4.0}{$x + 1, y + 1$}
+
+\end{gridfig}
+
+% neighbors (x different parity)
+
+\begin{gridfig}[xscale=2.5,yscale=2]
+
+\xhex{0.0}{5.0}{$x - 1, y - 1$}
+\xhex{0.5}{5.5}{$x,     y - 1$}
+\xhex{1.0}{5.0}{$x + 1, y - 1$}
+
+\xhex{0.5}{4.5}{$x, y$}
+
+\xhex{0.0}{4.0}{$x - 1, y$}
+\xhex{0.5}{3.5}{$x,     y + 1$}
+\xhex{1.0}{4.0}{$x + 1, y$}
+
+\end{gridfig}
+
+% neighbors (y same parity)
+
+\begin{gridfig}[xscale=2.5,yscale=2]
+
+\yhex{0.5}{5}{$x,     y - 1$}
+\yhex{0}{4.5}{$x - 1, y$}
+\yhex{0.5}{4}{$x,     y + 1$}
+
+\yhex{1}{4.5}{$x, y$}
+
+\yhex{1.5}{5}{$x + 1, y - 1$}
+\yhex{2}{4.5}{$x + 1, y$}
+\yhex{1.5}{4}{$x + 1, y - 1$}
+
+\end{gridfig}
+
+% neighbors (y different parity)
+
+\begin{gridfig}[xscale=2.5,yscale=2]
+
+\yhex{0.5}{5}{$x - 1, y - 1$}
+\yhex{0}{4.5}{$x - 1, y$}
+\yhex{0.5}{4}{$x - 1, y + 1$}
+
+\yhex{1}{4.5}{$x, y$}
+
+\yhex{1.5}{5}{$x,     y - 1$}
+\yhex{2}{4.5}{$x + 1, y$}
+\yhex{1.5}{4}{$x,     y - 1$}
+
+\end{gridfig}
+
 \end{document}

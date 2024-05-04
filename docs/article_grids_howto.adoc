@@ -28,13 +28,13 @@ The shape of a cell in an orthogonal grid is a rectangle that fills the whole ti
 
 [#fig_orthogonal_tile]
 .Orthogonal tile
-image::fig/orthogonal_tile.png[Orthogonal tile,400]
+image::fig/orthogonal_tile.png[Orthogonal tile,382.5]
 
 There is a single layout for an orthogonal grid, as shown is <<fig_orthogonal_layout>>. stem:[x] is the column and stem:[y] is the row of the tile.
 
 [#fig_orthogonal_layout]
 .Orthogonal layout
-image::fig/orthogonal_layout.png[Orthogonal layout,420]
+image::fig/orthogonal_layout.png[Orthogonal layout,444]
 
 === Map Bounds and Cell Bounds
 
@@ -68,7 +68,7 @@ The coordinates of the neighbors of a cell at stem:[(x, y)] are given on <<fig_o
 
 [#fig_orthogonal_neighbors]
 .Orthogonal neighbors
-image::fig/orthogonal_neighbors.png[Orthogonal neighors,400]
+image::fig/orthogonal_neighbors.png[Orthogonal neighors,444]
 
 
 == Isometric grid
@@ -79,13 +79,13 @@ The shape of a cell in an isometric grid is a link:https://en.wikipedia.org/wiki
 
 [#fig_isometric_tile]
 .Isometric tile
-image::fig/isometric_tile.png[Isometric tile,400]
+image::fig/isometric_tile.png[Isometric tile,382.5]
 
 The cells are organised in a rhombus. There is a single layout for an isometric grid, as shown is <<fig_isometric_layout>>. stem:[x] is the column and stem:[y] is the row of the tile.
 
 [#fig_isometric_layout]
 .Isometric layout
-image::fig/isometric_layout.png[Isometric layout,420]
+image::fig/isometric_layout.png[Isometric layout,445.5]
 
 === Map Bounds and Cell Bounds
 
@@ -132,7 +132,7 @@ The coordinates of the neighbors of a cell at stem:[(x, y)] are given on <<fig_i
 
 [#fig_isometric_neighbors]
 .Isometric neighbors
-image::fig/isometric_neighbors.png[Isometric neighors,400]
+image::fig/isometric_neighbors.png[Isometric neighors,445.5]
 
 
 
@@ -144,7 +144,7 @@ The shape of a cell in a staggered grid is a link:https://en.wikipedia.org/wiki/
 
 [#fig_staggered_tile]
 .Staggered tile
-image::fig/staggered_tile.png[Staggered tile,400]
+image::fig/staggered_tile.png[Staggered tile,382.5]
 
 The cells are organised in a rectangle. Contrary to the orthogonal grid, there are several layouts for a staggered grid. It is characterized by two parameters:
 
@@ -160,19 +160,19 @@ This gives four layouts:
 
 [#fig_staggered_x_even_layout]
 .Staggered `x-even` layout
-image::fig/staggered_x_even_layout.png[Staggered x-even layout,245]
+image::fig/staggered_x_even_layout.png[Staggered x-even layout,261]
 
 [#fig_staggered_x_odd_layout]
 .Staggered `x-odd` layout
-image::fig/staggered_x_odd_layout.png[Staggered x-odd layout,245]
+image::fig/staggered_x_odd_layout.png[Staggered x-odd layout,261]
 
 [#fig_staggered_y_even_layout]
 .Staggered `y-even` layout
-image::fig/staggered_y_even_layout.png[Staggered y-even layout,455]
+image::fig/staggered_y_even_layout.png[Staggered y-even layout,481.5]
 
 [#fig_staggered_y_odd_layout]
 .Staggered `y-odd` layout
-image::fig/staggered_y_odd_layout.png[Staggered y-odd layout,455]
+image::fig/staggered_y_odd_layout.png[Staggered y-odd layout,481.5]
 
 === Map Bounds and Cell Bounds
 
@@ -224,7 +224,7 @@ Finally, let stem:[r_x = \frac{P_x - q_x \times T_x'}{T_x'}] and stem:[r_y = \fr
 
 [#fig_staggered_rx_ry]
 .Interpretation of stem:[r_x] and stem:[r_y] with a cell divided diagonally (on the left) or anti-diagonally (on the right)
-image::fig/staggered_rx_ry.png[Interpretation of rx and ry,700]
+image::fig/staggered_rx_ry.png[Interpretation of rx and ry,677.25]
 
 ==== Coordinates for `x-even`
 
@@ -232,7 +232,7 @@ The situation for `x-even` is shown on <<fig_staggered_x_even_coordinates>>. In 
 
 [#fig_staggered_x_even_coordinates]
 .Staggered `x-even` coordinates
-image::fig/staggered_x_even_coordinates.png[Staggered x-even coordinates,400]
+image::fig/staggered_x_even_coordinates.png[Staggered x-even coordinates,440.25]
 
 For the computation of stem:[x], we observe that in the column stem:[q_x], stem:[x] is either equal to stem:[q_x] or stem:[q_x - 1]. This second case occurs in the following conditions:
 
@@ -250,7 +250,7 @@ The situation for `x-odd` is shown on <<fig_staggered_x_odd_coordinates>>. In th
 
 [#fig_staggered_x_odd_coordinates]
 .Staggered `x-odd` coordinates
-image::fig/staggered_x_odd_coordinates.png[Staggered x-odd coordinates,400]
+image::fig/staggered_x_odd_coordinates.png[Staggered x-odd coordinates,440.25]
 
 With the updated definitions of "diagonally" and "anti-diagonally", we observe that the computations of stem:[x] and stem:[y] are exactly the same as <<coordinates-for-x-even>>.
 
@@ -260,7 +260,7 @@ The situation for `y-even` is shown on <<fig_staggered_y_even_coordinates>>. In 
 
 [#fig_staggered_y_even_coordinates]
 .Staggered `y-even` coordinates
-image::fig/staggered_y_even_coordinates.png[Staggered y-even coordinates,600]
+image::fig/staggered_y_even_coordinates.png[Staggered y-even coordinates,588]
 
 Compared to <<coordinates-for-x-even>>, the staggered coordinates are inverted, so the reasoning is exactly the same but with inverted coordinates.
 
@@ -280,7 +280,7 @@ The situation for `y-odd` is shown on <<fig_staggered_y_odd_coordinates>>. In th
 
 [#fig_staggered_y_odd_coordinates]
 .Staggered `y-odd` coordinates
-image::fig/staggered_y_odd_coordinates.png[Staggered y-odd coordinates,600]
+image::fig/staggered_y_odd_coordinates.png[Staggered y-odd coordinates,588]
 
 With the updated definitions of "diagonally" and "anti-diagonally", we observe that the computations of stem:[x] and stem:[y] are exactly the same as <<coordinates-for-y-even>>.
 
@@ -293,11 +293,11 @@ In this case, the neighbors depends on stem:[\delta_x], defined previously. When
 
 [#fig_stagerred_x_1_neighbors]
 .Staggered neighbors for `x` axis when stem:[\delta_x = 1]
-image::fig/staggered_x_1_neighbors.png[Staggered neighors,400]
+image::fig/staggered_x_1_neighbors.png[Staggered neighors,445.5]
 
 [#fig_stagerred_x_0_neighbors]
 .Staggered neighbors for `x` axis when stem:[\delta_x = 0]
-image::fig/staggered_x_0_neighbors.png[Staggered neighors,400]
+image::fig/staggered_x_0_neighbors.png[Staggered neighors,445.5]
 
 ==== Neighbors for `y` axis
 
@@ -305,11 +305,11 @@ In this case, the neighbors depends on stem:[\delta_y], defined previously. When
 
 [#fig_stagerred_y_1_neighbors]
 .Staggered neighbors for `y` axis when stem:[\delta_y = 1]
-image::fig/staggered_y_1_neighbors.png[Staggered neighors,400]
+image::fig/staggered_y_1_neighbors.png[Staggered neighors,445.5]
 
 [#fig_stagerred_y_0_neighbors]
 .Staggered neighbors for `y` axis when stem:[\delta_y = 0]
-image::fig/staggered_y_0_neighbors.png[Staggered neighors,400]
+image::fig/staggered_y_0_neighbors.png[Staggered neighors,445.5]
 
 == Hexagonal grid
 
@@ -324,11 +324,11 @@ The shape of a cell in a hexagonal grid is a link:https://en.wikipedia.org/wiki/
 
 [#fig_hexagonal_x_tile]
 .Hexagonal tile for `x` axis (flat top)
-image::fig/hexagonal_x_tile.png[Hexagonal flat-top tile,400]
+image::fig/hexagonal_x_tile.png[Hexagonal flat-top tile,382.5]
 
 [#fig_hexagonal_y_tile]
 .Hexagonal tile for `y` axis (pointy top)
-image::fig/hexagonal_y_tile.png[Hexagonal pointy-top tile,400]
+image::fig/hexagonal_y_tile.png[Hexagonal pointy-top tile,457.5]
 
 In order to have a regular hexagon of radius stem:[r], you have to fix the different parameters as follows.
 
@@ -368,19 +368,19 @@ This gives four layouts:
 
 [#fig_hexagonal_x_even_layout]
 .Hexagonal `x-even` layout
-image::fig/hexagonal_x_even_layout.png[Hexagonal x-even layout,400]
+image::fig/hexagonal_x_even_layout.png[Hexagonal x-even layout,437.25]
 
 [#fig_hexagonal_x_odd_layout]
 .Hexagonal `x-odd` layout
-image::fig/hexagonal_x_odd_layout.png[Hexagonal x-odd layout,400]
+image::fig/hexagonal_x_odd_layout.png[Hexagonal x-odd layout,437.25]
 
 [#fig_hexagonal_y_even_layout]
 .Hexagonal `y-even` layout
-image::fig/hexagonal_y_even_layout.png[Hexagonal y-even layout,400]
+image::fig/hexagonal_y_even_layout.png[Hexagonal y-even layout,481.5]
 
 [#fig_hexagonal_y_odd_layout]
 .Hexagonal `y-odd` layout
-image::fig/hexagonal_y_odd_layout.png[Hexagonal y-odd layout,400]
+image::fig/hexagonal_y_odd_layout.png[Hexagonal y-odd layout,481.5]
 
 
 === Map Bounds and Cell Bounds
@@ -444,11 +444,11 @@ The situation for `x-even` is shown on <<fig_hexagonal_x_even_coordinates>> and 
 
 [#fig_hexagonal_x_even_coordinates]
 .Hexagonal `x-even` coordinates
-image::fig/hexagonal_x_even_coordinates.png[Hexagonal x-even coordinates,600]
+image::fig/hexagonal_x_even_coordinates.png[Hexagonal x-even coordinates,602.25]
 
 [#fig_hexagonal_x_odd_coordinates]
 .Hexagonal `x-odd` coordinates
-image::fig/hexagonal_x_odd_coordinates.png[Hexagonal x-odd coordinates,600]
+image::fig/hexagonal_x_odd_coordinates.png[Hexagonal x-odd coordinates,602.25]
 
 When stem:[r_x \geq H_x], stem:[x  = q_x] and stem:[y = \left\lfloor\frac{q_y - 1}{2}\right\rfloor] if stem:[q_x] has the same parity as the cell index, and stem:[y = \left\lfloor\frac{q_y}{2}\right\rfloor] otherwise. When stem:[r_x < H_x], we first compute stem:[x] and stem:[y] like the first case and then make some tweaking as follows.
 
@@ -474,11 +474,11 @@ The situation for `y-even` is shown on <<fig_hexagonal_y_even_coordinates>> and 
 
 [#fig_hexagonal_y_even_coordinates]
 .Hexagonal `y-even` coordinates
-image::fig/hexagonal_y_even_coordinates.png[Hexagonal y-even coordinates,600]
+image::fig/hexagonal_y_even_coordinates.png[Hexagonal y-even coordinates,588]
 
 [#fig_hexagonal_y_odd_coordinates]
 .Hexagonal `y-odd` coordinates
-image::fig/hexagonal_y_odd_coordinates.png[Hexagonal y-odd coordinates,600]
+image::fig/hexagonal_y_odd_coordinates.png[Hexagonal y-odd coordinates,588]
 
 When stem:[r_y \geq H_y], stem:[y  = q_y] and stem:[x = \left\lfloor\frac{q_x - 1}{2}\right\rfloor] if stem:[q_y] has the same parity as the cell index, and stem:[x = \left\lfloor\frac{q_x}{2}\right\rfloor] otherwise. When stem:[r_y < H_y], we first compute stem:[x] and stem:[y] like the first case and then make some tweaking as follows.
 
@@ -494,3 +494,27 @@ When stem:[q_y] has not the same parity as the cell index, then:
 
 
 === Neighbors of a Cell
+
+==== Neighbors for `x` axis
+
+In this case, the neighbors depends on stem:[\delta_x], defined previously. When stem:[\delta_x = 1] i.e. when stem:[x] has the same parity as the cell index, then the coordinates of the neighbors of a cell at stem:[(x, y)] are given on <<fig_hexagonal_x_1_neighbors>>. When stem:[\delta_x = 0] i.e. when stem:[x] has a different parity from the cell index, then the coordinates of the neighbors of a cell at stem:[(x, y)] are given on <<fig_hexagonal_x_0_neighbors>>.
+
+[#fig_hexagonal_x_1_neighbors]
+.Hexagonal neighbors for `x` axis when stem:[\delta_x = 1]
+image::fig/hexagonal_x_1_neighbors.png[Hexagonal neighors,355.5]
+
+[#fig_hexagonal_x_0_neighbors]
+.Hexagonal neighbors for `x` axis when stem:[\delta_x = 0]
+image::fig/hexagonal_x_0_neighbors.png[Hexagonal neighors,355.5]
+
+==== Neighbors for `y` axis
+
+In this case, the neighbors depends on stem:[\delta_y], defined previously. When stem:[\delta_y = 1] i.e. when stem:[y] has the same parity as the cell index, then the coordinates of the neighbors of a cell at stem:[(x, y)] are given on <<fig_hexagonal_y_1_neighbors>>. When stem:[\delta_y = 0] i.e. when stem:[y] has a different parity from the cell index, then the coordinates of the neighbors of a cell at stem:[(x, y)] are given on <<fig_hexagonal_y_0_neighbors>>.
+
+[#fig_hexagonal_y_1_neighbors]
+.Hexagonal neighbors for `y` axis when stem:[\delta_y = 1]
+image::fig/hexagonal_y_1_neighbors.png[Hexagonal neighors,444]
+
+[#fig_hexagonal_y_0_neighbors]
+.Hexagonal neighbors for `y` axis when stem:[\delta_y = 0]
+image::fig/hexagonal_y_0_neighbors.png[Hexagonal neighors,444]

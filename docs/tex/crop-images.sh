@@ -56,4 +56,7 @@ mv "${WORKING_DIR}/grids-27.png" "${OUTPUT_DIR}/hexagonal_x_even_coordinates.png
 mv "${WORKING_DIR}/grids-28.png" "${OUTPUT_DIR}/hexagonal_x_odd_coordinates.png"
 mv "${WORKING_DIR}/grids-29.png" "${OUTPUT_DIR}/hexagonal_y_even_coordinates.png"
 mv "${WORKING_DIR}/grids-30.png" "${OUTPUT_DIR}/hexagonal_y_odd_coordinates.png"
-
+mv "${WORKING_DIR}/grids-31.png" "${OUTPUT_DIR}/hexagonal_x_1_neighbors.png"
+mv "${WORKING_DIR}/grids-32.png" "${OUTPUT_DIR}/hexagonal_x_0_neighbors.png"
+mv "${WORKING_DIR}/grids-33.png" "${OUTPUT_DIR}/hexagonal_y_1_neighbors.png"
+mv "${WORKING_DIR}/grids-34.png" "${OUTPUT_DIR}/hexagonal_y_0_neighbors.png"
