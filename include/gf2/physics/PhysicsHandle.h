@@ -82,6 +82,16 @@ namespace gf::details {
       return *this;
     }
 
+    T* get()
+    {
+      return m_handle;
+    }
+
+    const T* get() const
+    {
+      return m_handle;
+    }
+
     operator T*()
     {
       return m_handle;

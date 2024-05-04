@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="staggered" renderorder="right-down" width="100" height="304" tilewidth="128" tileheight="64" infinite="0" staggeraxis="y" staggerindex="odd" nextlayerid="11" nextobjectid="256">
+<map version="1.10" tiledversion="1.10.2" orientation="staggered" renderorder="right-down" width="100" height="304" tilewidth="128" tileheight="64" infinite="0" staggeraxis="y" staggerindex="odd" nextlayerid="12" nextobjectid="257">
  <tileset firstgid="1" name="TileSet" tilewidth="128" tileheight="128" tilecount="35" columns="7">
   <grid orientation="orthogonal" width="128" height="64"/>
   <image source="TileSet.png" trans="ffffff" width="896" height="640"/>
@@ -212,5 +212,10 @@
   <object id="203" gid="72" x="7944" y="2688" width="128" height="128"/>
   <object id="204" gid="72" x="8220" y="1580" width="128" height="128"/>
   <object id="205" gid="72" x="8424" y="640" width="128" height="128"/>
+ </objectgroup>
+ <objectgroup id="11" name="Locations">
+  <object id="256" name="start" x="5588.59" y="2583.11">
+   <point/>
+  </object>
  </objectgroup>
 </map>

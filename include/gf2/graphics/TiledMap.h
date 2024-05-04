@@ -70,6 +70,11 @@ namespace gf {
       return m_grid;
     }
 
+    const TiledMapData& data() const
+    {
+      return m_data;
+    }
+
   private:
     void compute_tile_layers(const TiledMapData& data, RenderManager* render_manager);
     void compute_object_layers(const TiledMapData& data, RenderManager* render_manager);

@@ -31,6 +31,9 @@ namespace gf {
     PhysicsWorld& operator=(const PhysicsWorld&) = delete;
     PhysicsWorld& operator=(PhysicsWorld&&) noexcept = default;
 
+    Time timestep() const;
+    void set_timestep(Time timestep);
+
     int iterations() const;
     void set_iterations(int iterations);
 
@@ -120,6 +123,8 @@ namespace gf {
     PhysicsWorld(details::PhysicsExistingType existing, cpSpace* space);
 
     details::PhysicsHandle<cpSpace, cpSpaceGetUserData, cpSpaceSetUserData, cpSpaceFree> m_space;
+    Time m_timestep = seconds(1.0f / 120.0f);
+    Time m_elapsed;
   };
 
 }

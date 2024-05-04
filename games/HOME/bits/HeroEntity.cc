@@ -1,5 +1,10 @@
 #include "HeroEntity.h"
 
+#include <gf2/core/TiledMapData.h>
+#include <gf2/core/Log.h>
+
+#include <gf2/physics/PhysicsArbiter.h>
+
 #include "GameHub.h"
 
 namespace home {
@@ -10,8 +15,6 @@ namespace home {
     constexpr float HeroRadius = 20.0f;
 
     constexpr float HeroVelocity = 200.0f;
-
-    constexpr gf::Vec2F HeroInitialLocation = { 45.0f * 128.0f, 42.0f * 64.0f };
 
     gf::Orientation harvest_orientation(float angle)
     {
@@ -31,14 +34,36 @@ namespace home {
 
       return gf::Orientation::SouthWest;
     }
+
+    gf::Vec2F compute_initial_location(const WorldData& data, gf::ResourceManager* resource_manager)
+    {
+      const gf::TiledMapResource* map = resource_manager->get<gf::TiledMapResource>(data.map);
+
+      for (const gf::ObjectLayerData& object_layer : map->data.object_layers) {
+        if (object_layer.layer.name == "Locations") {
+          for (const gf::ObjectData& object : object_layer.objects) {
+            if (object.name == "start") {
+              assert(object.type == gf::ObjectType::Point);
+              return object.location;
+            }
+          }
+        }
+      }
+
+      assert(false);
+      return { 0.0f, 0.0f };
+    }
   }
 
   using namespace gf::literals;
 
   HeroEntity::HeroEntity(GameHub* hub, const WorldData& data, gf::PhysicsWorld* physics_world)
-  : m_body(gf::PhysicsBody::make_dynamic(HeroMass, gf::compute_moment_for_circle(HeroMass, 0.0f, HeroRadius, { 0.0f, 0.0f })))
+  : m_controller(gf::PhysicsBody::make_kinematic())
+  , m_body(gf::PhysicsBody::make_dynamic(HeroMass, gf::compute_moment_for_circle(HeroMass, 0.0f, HeroRadius, { 0.0f, 0.0f })))
+  , m_pivot(gf::PhysicsConstraint::make_pivot_joint(&m_controller, &m_body, { 0.0f, 0.0f }, { 0.0f, 0.0f }))
+  , m_gear(gf::PhysicsConstraint::make_gear_joint(&m_controller, &m_body, 0.0f, 1.0f))
   , m_shape(gf::PhysicsShape::make_circle(&m_body, HeroRadius, { 0.0f, 0.0f }))
-  , m_target(HeroInitialLocation)
+  , m_target(compute_initial_location(data, hub->resource_manager()))
   , m_hero_animations(data.hero_animations, hub->render_manager(), hub->resource_manager())
   , m_crosshair(data.crosshair, hub->render_manager(), hub->resource_manager())
   , m_jet_engine_sound(hub->resource_manager()->get<gf::Sound>(data.jet_engine_sound.filename))
@@ -48,9 +73,21 @@ namespace home {
     set_scale(0.75f);
     m_hero_animations.select("pause_south_east"_id);
 
+    physics_world->add_body(m_controller);
     physics_world->add_body(m_body);
+
+    m_pivot.set_max_bias(0.0f);
+    m_pivot.set_max_force(1'000.0f);
+    physics_world->add_constraint(m_pivot);
+
+    m_gear.set_error_bias(0.0f);
+    m_gear.set_max_bias(1.2f);
+    m_gear.set_max_force(5'000.0f);
+    physics_world->add_constraint(m_gear);
+
     physics_world->add_shape(m_shape);
-    m_body.set_location(HeroInitialLocation);
+
+    m_body.set_location(m_target);
 
     m_crosshair.set_scale({ 0.5f, 0.25f });
     m_crosshair.set_origin({ 0.5f, 0.5f });
@@ -72,7 +109,6 @@ namespace home {
   void HeroEntity::update(gf::Time time)
   {
     set_location(m_body.location());
-    m_velocity = m_body.velocity();
 
     if (m_status == Status::Dying) {
       m_target = location();
@@ -83,7 +119,7 @@ namespace home {
       auto move = m_target - location();
       const float length = gf::euclidean_length(move);
 
-      if (length > time.as_seconds() * HeroVelocity) {
+      if (length > HeroRadius) {
         if (m_activity == Activity::Mining) {
           m_orientation = harvest_orientation(gf::angle(move));
         } else {
@@ -94,7 +130,6 @@ namespace home {
         m_velocity = (move / length) * HeroVelocity;
         m_status = Status::Moving;
       } else {
-        set_location(m_target);
         m_velocity = { 0.0f, 0.0f };
         m_status = Status::Waiting;
       }
@@ -115,7 +150,7 @@ namespace home {
 
     update_location.emit(location());
 
-    m_body.set_velocity(m_velocity);
+    m_controller.set_velocity(m_velocity);
 
     m_activity = Activity::Walking;
   }

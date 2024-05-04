@@ -87,7 +87,7 @@ namespace home {
         point.y -= static_cast<float>(map.tile_size.h) / 2;
       }
 
-      auto shapes = make_polyline_shapes(&body, polyline, 15.0f);
+      auto shapes = make_polyline_shapes(&body, polyline, 1.0f);
 
       for (auto& shape : shapes) {
         physics_world->add_shape(std::move(shape));

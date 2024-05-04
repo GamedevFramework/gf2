@@ -96,6 +96,7 @@ namespace gf {
     friend class PhysicsConstraint;
     friend class PhysicsShape;
     friend class PhysicsWorld;
+    friend bool operator==(const PhysicsBody& lhs, const PhysicsBody& rhs);
 
     static void shape_iterator(cpBody* body, cpShape* shape, void* data);
     static void constraint_iterator(cpBody* body, cpConstraint* constraint, void* data);
@@ -107,6 +108,11 @@ namespace gf {
     Handle m_body;
   };
 
+
+  inline bool operator==(const PhysicsBody& lhs, const PhysicsBody& rhs)
+  {
+    return lhs.m_body.get() == rhs.m_body.get();
+  }
 }
 
 #endif // GF_PHYSICS_BODY_H

@@ -3,6 +3,7 @@
 
 #include <gf2/physics/PhysicsWorld.h>
 
+#include <algorithm>
 #include <vector>
 
 #include <gf2/physics/PhysicsArbiter.h>
@@ -86,6 +87,16 @@ namespace gf {
       cpSpaceEachConstraint(space, dispose_constraint_iterator, static_cast<void*>(space));
       cpSpaceEachBody(space, dispose_body_iterator, static_cast<void*>(space));
     }
+  }
+
+  Time PhysicsWorld::timestep() const
+  {
+    return m_timestep;
+  }
+
+  void PhysicsWorld::set_timestep(Time timestep)
+  {
+    m_timestep = timestep;
   }
 
   int PhysicsWorld::iterations() const
@@ -326,7 +337,13 @@ namespace gf {
 
   void PhysicsWorld::update(Time time)
   {
-    cpSpaceStep(m_space, time.as_seconds());
+    time = std::min(time, seconds(0.25f));
+    m_elapsed += time;
+
+    while (m_elapsed > m_timestep) {
+      cpSpaceStep(m_space, m_timestep.as_seconds());
+      m_elapsed -= m_timestep;
+    }
   }
 
   cpBool PhysicsWorld::collision_begin(cpArbiter* arbiter, cpSpace* space, cpDataPointer user_data)
