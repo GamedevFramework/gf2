@@ -67,7 +67,7 @@ jobs:
           key: ${{ steps.restore-cache.outputs.cache-primary-key }}
 
       - name: Build gf2
-        run: xmake --yes
+        run: xmake --yes -v
 
       - name: Test gf2
         run: xmake test -v
