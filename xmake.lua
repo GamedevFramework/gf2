@@ -35,7 +35,11 @@ end
 
 target("gf2core0")
     set_kind("$(kind)")
-    add_defines("GF_CORE_BUILD")
+    if is_kind("static") then
+        add_defines("GF_CORE_STATIC", { public = true })
+    else
+        add_defines("GF_CORE_BUILD")
+    end
     add_defines("ZLIB_CONST")
     add_files("library/core/*.cc")
     add_headerfiles("include/(gf2/core/*.h)")
@@ -46,7 +50,11 @@ target("gf2core0")
 
 target("gf2graphics0")
     set_kind("$(kind)")
-    add_defines("GF_GRAPHICS_BUILD")
+    if is_kind("static") then
+        add_defines("GF_GRAPHICS_STATIC", { public = true })
+    else
+        add_defines("GF_GRAPHICS_BUILD")
+    end
     add_defines("VK_NO_PROTOTYPES", { public = true })
     add_files("library/graphics/*.cc")
     add_headerfiles("include/(gf2/graphics/*.h)")
@@ -59,7 +67,11 @@ target("gf2graphics0")
 
 target("gf2network0")
     set_kind("$(kind)")
-    add_defines("GF_NETWORK_BUILD")
+    if is_kind("static") then
+        add_defines("GF_NETWORK_STATIC", { public = true })
+    else
+        add_defines("GF_NETWORK_BUILD")
+    end
     add_files("library/network/*.cc")
     add_files("library/network/bits/*.cc")
     add_headerfiles("include/(gf2/network/*.h)")
@@ -72,7 +84,11 @@ target("gf2network0")
 
 target("gf2audio0")
     set_kind("$(kind)")
-    add_defines("GF_AUDIO_BUILD")
+    if is_kind("static") then
+        add_defines("GF_AUDIO_STATIC", { public = true })
+    else
+        add_defines("GF_AUDIO_BUILD")
+    end
     add_files("library/audio/*.cc")
     add_headerfiles("include/(gf2/audio/*.h)")
     add_files("library/audio/bits/*.cc", { warnings = "none" })
@@ -86,7 +102,11 @@ target("gf2audio0")
 
 target("gf2physics0")
     set_kind("$(kind)")
-    add_defines("GF_PHYSICS_BUILD")
+    if is_kind("static") then
+        add_defines("GF_PHYSICS_STATIC", { public = true })
+    else
+        add_defines("GF_PHYSICS_BUILD")
+    end
     add_files("library/physics/*.cc")
     add_headerfiles("include/(gf2/physics/*.h)")
     add_includedirs("include", { public = true })

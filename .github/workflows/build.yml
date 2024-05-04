@@ -12,17 +12,19 @@ jobs:
       fail-fast: false
       matrix:
         configurations:
-        - { name: Windows,  runner: windows-latest, shell: pwsh, plat: windows, arch: x64,    mode: debug       }
-        - { name: Windows,  runner: windows-latest, shell: pwsh, plat: windows, arch: x64,    mode: release     }
-        - { name: Linux,    runner: ubuntu-latest,  shell: bash, plat: linux,   arch: x86_64, mode: debug       }
-        - { name: Linux,    runner: ubuntu-latest,  shell: bash, plat: linux,   arch: x86_64, mode: release     }
-        - { name: Linux,    runner: ubuntu-latest,  shell: bash, plat: linux,   arch: x86_64, mode: sanitizers  }
+        - { name: Windows,  runner: windows-latest, shell: pwsh, plat: windows, arch: x64,    kind: shared, mode: debug       }
+        - { name: Windows,  runner: windows-latest, shell: pwsh, plat: windows, arch: x64,    kind: shared, mode: release     }
+        - { name: Windows,  runner: windows-latest, shell: pwsh, plat: windows, arch: x64,    kind: static, mode: debug       }
+        - { name: Linux,    runner: ubuntu-latest,  shell: bash, plat: linux,   arch: x86_64, kind: shared, mode: debug       }
+        - { name: Linux,    runner: ubuntu-latest,  shell: bash, plat: linux,   arch: x86_64, kind: shared, mode: release     }
+        - { name: Linux,    runner: ubuntu-latest,  shell: bash, plat: linux,   arch: x86_64, kind: shared, mode: sanitizers  }
+        - { name: Linux,    runner: ubuntu-latest,  shell: bash, plat: linux,   arch: x86_64, kind: static, mode: debug       }
 
     defaults:
       run:
         shell: ${{ matrix.configurations.shell }}
 
-    name: ${{ matrix.configurations.name }} ${{ matrix.configurations.arch }} (${{ matrix.configurations.mode }})
+    name: ${{ matrix.configurations.name }} ${{ matrix.configurations.arch }} (${{ matrix.configurations.kind }} ${{ matrix.configurations.mode }})
     runs-on: ${{ matrix.configurations.runner }}
     steps:
       - name: Checkout gf2
@@ -52,10 +54,10 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: ${{ env.XMAKE_GLOBALDIR }}/.xmake/packages
-          key: ${{ matrix.configurations.plat }}-${{ matrix.configurations.arch }}-${{ matrix.configurations.mode }}-${{ steps.deps_hash.outputs.hash }}
+          key: ${{ matrix.configurations.plat }}-${{ matrix.configurations.arch }}-${{ matrix.configurations.kind }}-${{ matrix.configurations.mode }}-${{ steps.deps_hash.outputs.hash }}
 
       - name: Install gf2 dependencies
-        run: xmake config --plat=${{ matrix.configurations.plat }} --arch=${{ matrix.configurations.arch }} --mode=${{ matrix.configurations.mode }} --doc-examples=true --yes
+        run: xmake config --plat=${{ matrix.configurations.plat }} --arch=${{ matrix.configurations.arch }} --kind=${{ matrix.configurations.kind }} --mode=${{ matrix.configurations.mode }} --doc-examples=true --yes
 
       - name: Save cached xmake dependencies
         if: ${{ !steps.restore-cache.outputs.cache-hit }}
