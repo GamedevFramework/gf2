@@ -3,7 +3,7 @@ set_version("0.1.0")
 
 add_requires("libsdl", "freetype", "harfbuzz", "imgui", "pugixml", "zlib")
 add_requires("chipmunk2d")
-add_requires("fmt", { system = false, configs = { header_only = true }})
+add_requires("fmt")
 add_requires("gtest", { configs = { gmock = false }})
 add_requires("miniaudio")
 add_requires("stb", { system = false })
