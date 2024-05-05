@@ -7,10 +7,10 @@
 #include <gf2/core/Random.h>
 
 #include <gf2/audio/AudioManager.h>
+#include <gf2/framework/SceneSystem.h>
 #include <gf2/graphics/RenderAsync.h>
 #include <gf2/graphics/SceneManager.h>
 
-#include "ResourceHub.h"
 #include "SplashData.h"
 #include "SplashScene.h"
 #include "WorldData.h"
@@ -18,29 +18,9 @@
 
 namespace home {
 
-  class GameHub : public gf::SceneManager {
+  class GameHub : public gf::SceneSystem {
   public:
     GameHub(const std::filesystem::path& asset_directory);
-
-    gf::Random* random()
-    {
-      return &m_random;
-    }
-
-    gf::ResourceManager* resource_manager()
-    {
-      return &m_resource_hub.manager;
-    }
-
-    gf::FontManager* font_manager()
-    {
-      return &m_font_manager;
-    }
-
-    gf::AudioManager* audio_manager()
-    {
-      return &m_audio_manager;
-    }
 
     SplashScene* splash_scene()
     {
@@ -55,12 +35,6 @@ namespace home {
     }
 
   private:
-    gf::Random m_random;
-    gf::FontManager m_font_manager;
-    gf::AudioManager m_audio_manager;
-
-    ResourceHub m_resource_hub;
-
     SplashData m_splash_data;
     std::unique_ptr<SplashScene> m_splash_scene = nullptr;
 

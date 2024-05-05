@@ -3,8 +3,7 @@
 namespace home {
 
   GameHub::GameHub(const std::filesystem::path& asset_directory)
-  : gf::SceneManager("H.O.M.E.", { 1600, 900 })
-  , m_resource_hub(asset_directory)
+  : gf::SceneSystem("H.O.M.E.", { 1600, 900 }, asset_directory)
   , m_world_async(render_manager())
   {
     auto splash_bundle = m_splash_data.bundle(this);

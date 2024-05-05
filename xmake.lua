@@ -124,6 +124,21 @@ target("gf2imgui0")
     add_deps("gf2graphics0")
     set_license("Zlib")
 
+target("gf2framework0")
+    set_kind("$(kind)")
+    if is_kind("static") then
+        add_defines("GF_FRAMEWORK_STATIC", { public = true })
+    else
+        add_defines("GF_FRAMEWORK_BUILD")
+    end
+    add_files("library/framework/*.cc")
+    add_headerfiles("include/(gf2/framework/*.h)")
+    add_includedirs("include", { public = true })
+    add_deps("gf2core0")
+    add_deps("gf2graphics0")
+    add_deps("gf2audio0")
+    set_license("Zlib")
+
 includes("tests/xmake.lua")
 includes("bin/xmake.lua")
 includes("examples/xmake.lua")
