@@ -51,6 +51,11 @@ namespace gf {
       return static_cast<float>(value) / 64.0f;
     }
 
+    hb_position_t position_unscale(float value)
+    {
+      return static_cast<hb_position_t>(value * 64.0f);
+    }
+
     template<typename T, void (*Destroy)(T*), T* (*Reference)(T*)>
     class HbHandle {
     public:
@@ -259,7 +264,7 @@ namespace gf {
       std::string full;
       std::vector<TextWordPart> parts;
 
-      float width(float letter_spacing_factor) const
+      float width() const
       {
         float width = 0.0f;
 
@@ -270,7 +275,7 @@ namespace gf {
             part_width += glyph.advance.w;
           }
 
-          width += position_scale(part_width) * letter_spacing_factor * part.properties.character_size_factor;
+          width += position_scale(part_width) * part.properties.character_size_factor;
         }
 
         return width;
@@ -514,6 +519,11 @@ namespace gf {
         return false;
       }
 
+      float compute_additional_space(float space_width) const
+      {
+        return space_width * (m_data.letter_spacing_factor - 1.0f);
+      }
+
       void compute_shape(std::vector<TextLine>& raw_paragraphs) const
       {
         HbBuffer buffer(hb_buffer_create());
@@ -526,6 +536,8 @@ namespace gf {
 
             for (auto& part : raw_word.parts) {
               atlas_updater.change_face(part.properties.data.face);
+
+              const hb_position_t additional_space = position_unscale(compute_additional_space(part.properties.data.face->compute_space_width()));
 
               hb_buffer_reset(buffer);
               hb_buffer_add_utf8(buffer, raw_word.full.c_str(), -1, static_cast<unsigned>(start), static_cast<int>(part.data.size()));
@@ -540,7 +552,7 @@ namespace gf {
               for (unsigned i = 0; i < length; ++i) {
                 TextGlyph glyph = {};
                 glyph.index = info[i].codepoint;
-                glyph.advance = { position[i].x_advance, position[i].y_advance };
+                glyph.advance = { position[i].x_advance, position[i].y_advance + additional_space };
                 glyph.offset = { position[i].x_offset, position[i].y_offset };
                 part.glyphs.push_back(glyph);
 
@@ -554,7 +566,8 @@ namespace gf {
           }
 
           for (auto& raw_space : raw_line.spaces) {
-            raw_space.width = raw_space.properties.data.face->compute_space_width() * raw_space.properties.character_size_factor;
+            const float additional_space = compute_additional_space(raw_space.properties.data.face->compute_space_width());
+            raw_space.width = (raw_space.properties.data.face->compute_space_width() + additional_space) * raw_space.properties.character_size_factor;
           }
         }
 
@@ -640,7 +653,7 @@ namespace gf {
 
       void compute_paragraph_line_word(TextParagraph& paragraph, TextLine& line, TextWord& word, float& line_width, float& space_width) const
       {
-        const float word_width = word.width(m_data.letter_spacing_factor);
+        const float word_width = word.width();
 
         if (!line.words.empty() && line_width + word_width > m_data.paragraph_width) {
           // remove trailing spaces
@@ -756,7 +769,7 @@ namespace gf {
             geometry.indices.push_back(index + 1);
             geometry.indices.push_back(index + 3);
 
-            position.x += position_scale(glyph.advance.x) * m_data.letter_spacing_factor * character_size_factor;
+            position.x += position_scale(glyph.advance.x) * character_size_factor;
           }
         }
 
