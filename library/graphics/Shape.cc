@@ -8,8 +8,10 @@
 
 #include <gf2/core/Polygon.h>
 #include <gf2/core/Range.h>
+#include <gf2/core/ResourceManager.h>
 
 #include <gf2/graphics/RawGeometry.h>
+#include <gf2/graphics/Texture.h>
 #include <gf2/graphics/Vertex.h>
 
 namespace gf {
@@ -121,6 +123,15 @@ namespace gf {
     }
 
     using RawShapeGeometry = RawGeometry;
+
+    const Texture* load_resource(const ShapeResource& resource, ResourceManager* resource_manager)
+    {
+      if (resource.texture.empty()) {
+        return nullptr;
+      }
+
+      return resource_manager->get<Texture>(resource.texture);
+    }
   }
 
   Shape::Shape(const Texture* texture, const ShapeData& data, RenderManager* render_manager)
@@ -136,6 +147,11 @@ namespace gf {
       m_outline_vertices = Buffer(BufferType::Device, BufferUsage::Vertex, raw_outline.vertices.data(), raw_outline.vertices.size(), render_manager);
       m_outline_indices = Buffer(BufferType::Device, BufferUsage::Index, raw_outline.indices.data(), raw_outline.indices.size(), render_manager);
     }
+  }
+
+  Shape::Shape(const ShapeResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
+  : Shape(load_resource(resource, resource_manager), resource.data, render_manager)
+  {
   }
 
   ShapeGeometry Shape::geometry() const

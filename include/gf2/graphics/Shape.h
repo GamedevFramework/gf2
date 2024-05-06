@@ -15,6 +15,7 @@
 
 namespace gf {
   class RenderManager;
+  class ResourceManager;
   class Texture;
 
   struct GF_GRAPHICS_API ShapeGeometry {
@@ -25,6 +26,7 @@ namespace gf {
   class GF_GRAPHICS_API Shape {
   public:
     Shape(const Texture* texture, const ShapeData& data, RenderManager* render_manager);
+    Shape(const ShapeResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
     ShapeGeometry geometry() const;
 

@@ -13,6 +13,11 @@ namespace gf {
   {
   }
 
+  ShapeEntity::ShapeEntity(const ShapeResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
+  : m_shape(resource, render_manager, resource_manager)
+  {
+  }
+
   void ShapeEntity::render(RenderRecorder& recorder)
   {
     auto shape_geometry = m_shape.geometry();
