@@ -259,7 +259,7 @@ namespace gf {
       std::string full;
       std::vector<TextWordPart> parts;
 
-      float width() const
+      float width(float letter_spacing_factor) const
       {
         float width = 0.0f;
 
@@ -270,7 +270,7 @@ namespace gf {
             part_width += glyph.advance.w;
           }
 
-          width += position_scale(part_width) * part.properties.character_size_factor;
+          width += position_scale(part_width) * letter_spacing_factor * part.properties.character_size_factor;
         }
 
         return width;
@@ -640,7 +640,7 @@ namespace gf {
 
       void compute_paragraph_line_word(TextParagraph& paragraph, TextLine& line, TextWord& word, float& line_width, float& space_width) const
       {
-        const float word_width = word.width();
+        const float word_width = word.width(m_data.letter_spacing_factor);
 
         if (!line.words.empty() && line_width + word_width > m_data.paragraph_width) {
           // remove trailing spaces
@@ -756,7 +756,7 @@ namespace gf {
             geometry.indices.push_back(index + 1);
             geometry.indices.push_back(index + 3);
 
-            position.x += position_scale(glyph.advance.x) * character_size_factor;
+            position.x += position_scale(glyph.advance.x) * m_data.letter_spacing_factor * character_size_factor;
           }
         }
 
