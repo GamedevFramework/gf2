@@ -17,6 +17,7 @@ namespace gf {
   {
     const Vec2F size = texture->size() * texture_region.size();
     m_bounds = RectF::from_size(size);
+    color = srgb_to_linear(color);
 
     Vertex vertices[4] = {
       { m_bounds.position_at(Orientation::NorthEast), texture_region.position_at(Orientation::NorthEast), color },

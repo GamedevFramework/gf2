@@ -40,7 +40,7 @@ namespace gf {
       Vec2F min = data.points[0];
       Vec2F max = data.points[0];
 
-      const Color linear_color = gf::srgb_to_linear(data.color);
+      const Color linear_color = srgb_to_linear(data.color);
 
       Vertex center_vertex;
       center_vertex.location = geometry.center;
