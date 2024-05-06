@@ -552,7 +552,7 @@ namespace gf {
               for (unsigned i = 0; i < length; ++i) {
                 TextGlyph glyph = {};
                 glyph.index = info[i].codepoint;
-                glyph.advance = { position[i].x_advance, position[i].y_advance + additional_space };
+                glyph.advance = { position[i].x_advance + additional_space, position[i].y_advance };
                 glyph.offset = { position[i].x_offset, position[i].y_offset };
                 part.glyphs.push_back(glyph);
 
