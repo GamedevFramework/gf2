@@ -19,6 +19,7 @@ xref:index.adoc[< Back to main page]
 // . xref:manual_cameras.adoc[Cameras]
 . xref:manual_tiled_map.adoc[Tiled Map]
 . xref:manual_audio.adoc[Audio]
+. xref:manual_physics.adoc[Physics]
 . xref:manual_serialization.adoc[Serialization]
 . xref:manual_network.adoc[Network]
 
