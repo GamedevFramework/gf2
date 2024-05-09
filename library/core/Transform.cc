@@ -27,4 +27,16 @@ namespace gf {
     return mat;
   }
 
+  Mat3F Transform::compute_inverse_matrix(RectF bounds) const
+  {
+    return inverse(compute_matrix(bounds));
+  }
+
+  bool transformed_contains(RectF object_bounds, const Transform& object_transform, Vec2F location)
+  {
+    const Mat3F matrix = object_transform.compute_inverse_matrix(object_bounds);
+    const Vec2F local = transform_point(matrix, location);
+    return object_bounds.contains(local);
+  }
+
 } // namespace gf

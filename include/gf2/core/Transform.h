@@ -24,7 +24,10 @@ namespace gf {
     Vec2F scale = { 1.0f, 1.0f };
 
     Mat3F compute_matrix(RectF bounds) const;
+    Mat3F compute_inverse_matrix(RectF bounds) const;
   };
+
+  bool transformed_contains(RectF object_bounds, const Transform& object_transform, Vec2F location);
 
 } // namespace gf
 
