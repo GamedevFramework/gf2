@@ -28,7 +28,6 @@ namespace gf {
   struct GF_CORE_API ConsoleStyle {
     ConsoleColorStyle color;
     ConsoleEffect effect = ConsoleEffect::set();
-    ConsoleAlignment alignment = ConsoleAlignment::Left;
   };
 
   class GF_CORE_API ConsoleRichStyle {

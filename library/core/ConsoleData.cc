@@ -53,9 +53,10 @@ namespace gf {
 
     class ConsoleTextParser {
     public:
-      ConsoleTextParser(const std::string& message, int paragraph_width, ConsoleRichStyle* rich_style)
+      ConsoleTextParser(const std::string& message, int paragraph_width, ConsoleAlignment alignment, ConsoleRichStyle* rich_style)
       : m_message(message)
       , m_paragraph_width(paragraph_width)
+      , m_alignment(alignment)
       , m_rich_style(rich_style)
       {
         m_stack.push_back(m_rich_style->default_style().color);
@@ -144,8 +145,6 @@ namespace gf {
 
       std::vector<ConsoleParagraph> compute_paragraphs(std::vector<ConsoleLine>& raw_paragraphs) const
       {
-        auto alignment = m_rich_style->default_style().alignment;
-
         std::vector<ConsoleParagraph> paragraphs;
 
         for (auto& raw_paragraph : raw_paragraphs) {
@@ -184,7 +183,7 @@ namespace gf {
 
                     // compute indent
 
-                    switch (alignment) {
+                    switch (m_alignment) {
                       case ConsoleAlignment::Left:
                         line.indent = 0;
                         break;
@@ -216,7 +215,7 @@ namespace gf {
           // add the last line
 
           if (!line.words.empty()) {
-            switch (alignment) {
+            switch (m_alignment) {
               case ConsoleAlignment::Left:
                 line.indent = 0;
                 break;
@@ -239,6 +238,7 @@ namespace gf {
 
       const std::string& m_message; // NOLINT(cppcoreguidelines-avoid-const-or-ref-data-members)
       int m_paragraph_width = 0;
+      ConsoleAlignment m_alignment = ConsoleAlignment::Left;
       ConsoleRichStyle* m_rich_style;
       std::vector<ConsoleColorStyle> m_stack;
     };
@@ -406,7 +406,7 @@ namespace gf {
     return width;
   }
 
-  int ConsoleData::raw_print(RectI area, const std::string& message, const ConsoleRichStyle& style, uint8_t flags)
+  int ConsoleData::raw_print(RectI area, const std::string& message, ConsoleAlignment alignment, const ConsoleRichStyle& style, uint8_t flags)
   {
     auto size = screen.size();
     auto min = area.min();
@@ -418,7 +418,7 @@ namespace gf {
 
     if ((flags & PrintSplit) != 0) {
       // multiline
-      return raw_print_multiline(area, message, style, flags);
+      return raw_print_multiline(area, message, alignment, style, flags);
     }
     // single line
     assert(area.extent == gf::vec(0, 0));
@@ -427,7 +427,7 @@ namespace gf {
 
     RectI single_line_area = {};
 
-    switch (style.default_style().alignment) {
+    switch (alignment) {
       case ConsoleAlignment::Left:
         single_line_area.offset = position;
         single_line_area.extent = { size.w - position.x, 1 };
@@ -447,17 +447,17 @@ namespace gf {
         break;
     }
 
-    return raw_print_multiline(single_line_area, message, style, flags);
+    return raw_print_multiline(single_line_area, message, alignment, style, flags);
   }
 
-  int ConsoleData::raw_print_multiline(RectI area, const std::string& message, const ConsoleRichStyle& style, uint8_t flags)
+  int ConsoleData::raw_print_multiline(RectI area, const std::string& message, ConsoleAlignment alignment, const ConsoleRichStyle& style, uint8_t flags)
   {
     auto size = screen.size();
     int line_count = 0;
     int paragraph_width = area.extent.w;
 
     if (paragraph_width == 0) {
-      switch (style.default_style().alignment) {
+      switch (alignment) {
         case ConsoleAlignment::Left:
           paragraph_width = size.w - area.offset.x;
           break;
@@ -473,7 +473,7 @@ namespace gf {
     }
 
     ConsoleRichStyle rich_style(style);
-    ConsoleTextParser parser(message, paragraph_width, &rich_style);
+    ConsoleTextParser parser(message, paragraph_width, alignment, &rich_style);
 
     std::vector<ConsoleParagraph> paragraphs;
 
@@ -562,8 +562,7 @@ namespace gf {
     ConsoleStyle title_style = style;
     std::swap(title_style.color.foreground, title_style.color.background);
     title_style.effect = ConsoleEffect::set();
-    title_style.alignment = ConsoleAlignment::Left;
-    print({ min.x + 1, min.y }, title_style, " {} ", title);
+    print({ min.x + 1, min.y }, ConsoleAlignment::Left, title_style, " {} ", title);
   }
 
 }

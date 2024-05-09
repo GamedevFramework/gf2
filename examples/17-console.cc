@@ -46,23 +46,15 @@ int main()
   console_data.put_character({ 40, 25 }, '@', style);
   console_data.put_character({ 42, 25 }, gf::ConsoleChar::WhiteSmilingFace, style);
 
-  console_data.print({ 1, 1 }, rich_style, "String with a <style=red>red</> word.");
+  console_data.print({ 1, 1 }, gf::ConsoleAlignment::Left, rich_style, "String with a <style=red>red</> word.");
 
-  style.alignment = gf::ConsoleAlignment::Right;
-  rich_style.set_default_style(style);
-  console_data.print(console_data.screen.size() - 2, rich_style, "Made with <style=gf>gf</>!");
+  console_data.print(console_data.screen.size() - 2, gf::ConsoleAlignment::Right, rich_style, "Made with <style=gf>gf</>!");
 
   const std::string_view text = "This is a simple but long text with <style=warn>multiple</> lines.";
 
-  style.alignment = gf::ConsoleAlignment::Left;
-  rich_style.set_default_style(style);
-  console_data.print_area(rect({ 2, 5 }, { 16, 5 }), rich_style, text);
-  style.alignment = gf::ConsoleAlignment::Center;
-  rich_style.set_default_style(style);
-  console_data.print_area(rect({ 2, 15 }, { 16, 5 }), rich_style, text);
-  style.alignment = gf::ConsoleAlignment::Right;
-  rich_style.set_default_style(style);
-  console_data.print_area(rect({ 2, 25 }, { 16, 5 }), rich_style, text);
+  console_data.print_area(rect({ 2, 5 }, { 16, 5 }), gf::ConsoleAlignment::Left, rich_style, text);
+  console_data.print_area(rect({ 2, 15 }, { 16, 5 }), gf::ConsoleAlignment::Center, rich_style, text);
+  console_data.print_area(rect({ 2, 25 }, { 16, 5 }), gf::ConsoleAlignment::Right, rich_style, text);
 
   console_data.clear(rect({ 30, 5 }, { 16, 5 }), style);
   console_data.draw_frame(rect({ 30, 5 }, { 16, 5 }), style);

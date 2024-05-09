@@ -54,41 +54,53 @@ namespace gf {
     void put_character(Vec2I position, char16_t character, const ConsoleStyle& style = ConsoleStyle());
     void put_character(Vec2I position, char16_t character, Color foreground, Color background);
 
+    // console style versions
+
     template<typename... T>
-    void print(Vec2I position, const ConsoleStyle& style, fmt::format_string<T...> fmt, T&&... args)
+    void print(Vec2I position, ConsoleAlignment alignment, const ConsoleStyle& style, fmt::format_string<T...> fmt, T&&... args)
     {
       auto message = fmt::format(fmt, std::forward<T>(args)...);
       const ConsoleRichStyle rich_style(style);
-      raw_print(RectI::from_position_size(position, { 0, 0 }), message, rich_style, PrintSimple);
+      raw_print(RectI::from_position_size(position, { 0, 0 }), message, alignment, rich_style, PrintSimple);
     }
 
     template<typename... T>
-    void print_area(RectI area, const ConsoleStyle& style, fmt::format_string<T...> fmt, T&&... args)
+    void print_area(RectI area, ConsoleAlignment alignment, const ConsoleStyle& style, fmt::format_string<T...> fmt, T&&... args)
     {
       auto message = fmt::format(fmt, std::forward<T>(args)...);
       const ConsoleRichStyle rich_style(style);
-      raw_print(area, message, rich_style, PrintSplit | PrintSimple);
+      raw_print(area, message, alignment, rich_style, PrintSplit | PrintSimple);
     }
 
     template<typename... T>
-    void print(Vec2I position, const ConsoleRichStyle& style, fmt::format_string<T...> fmt, T&&... args)
+    int print_area_height(RectI area, ConsoleAlignment alignment, const ConsoleStyle& style, fmt::format_string<T...> fmt, T&&... args)
     {
       auto message = fmt::format(fmt, std::forward<T>(args)...);
-      raw_print(RectI::from_position_size(position, { 0, 0 }), message, style);
+      const ConsoleRichStyle rich_style(style);
+      return raw_print(area, message, alignment, rich_style, PrintSplit | PrintCount | PrintSimple);
+    }
+
+    // rich console style versions
+
+    template<typename... T>
+    void print(Vec2I position, ConsoleAlignment alignment, const ConsoleRichStyle& style, fmt::format_string<T...> fmt, T&&... args)
+    {
+      auto message = fmt::format(fmt, std::forward<T>(args)...);
+      raw_print(RectI::from_position_size(position, { 0, 0 }), message, alignment, style);
     }
 
     template<typename... T>
-    void print_area(RectI area, const ConsoleRichStyle& style, fmt::format_string<T...> fmt, T&&... args)
+    void print_area(RectI area, ConsoleAlignment alignment, const ConsoleRichStyle& style, fmt::format_string<T...> fmt, T&&... args)
     {
       auto message = fmt::format(fmt, std::forward<T>(args)...);
-      raw_print(area, message, style, PrintSplit);
+      raw_print(area, message, alignment, style, PrintSplit);
     }
 
     template<typename... T>
-    int print_area_height(RectI area, fmt::format_string<T...> fmt, T&&... args)
+    int print_area_height(RectI area, ConsoleAlignment alignment, const ConsoleRichStyle& style, fmt::format_string<T...> fmt, T&&... args)
     {
       auto message = fmt::format(fmt, std::forward<T>(args)...);
-      return raw_print(area, message, PrintSplit | PrintCount);
+      return raw_print(area, message, alignment, style, PrintSplit | PrintCount);
     }
 
     void draw_rectangle(RectI area, const ConsoleStyle& style = ConsoleStyle());
@@ -115,8 +127,8 @@ namespace gf {
     static constexpr uint8_t PrintSimple = 0x04;
 
     int put_string(Vec2I position, std::string_view message, const ConsoleStyle& style);
-    int raw_print(RectI area, const std::string& message, const ConsoleRichStyle& style, uint8_t flags = 0x00);
-    int raw_print_multiline(RectI area, const std::string& message, const ConsoleRichStyle& style, uint8_t flags = 0x00);
+    int raw_print(RectI area, const std::string& message, ConsoleAlignment alignment, const ConsoleRichStyle& style, uint8_t flags = 0x00);
+    int raw_print_multiline(RectI area, const std::string& message, ConsoleAlignment alignment, const ConsoleRichStyle& style, uint8_t flags = 0x00);
     void raw_draw_frame(RectI area, const ConsoleStyle& style, std::string_view title);
   };
 
