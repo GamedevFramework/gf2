@@ -11,6 +11,15 @@
 
 #include "config.h"
 
+namespace {
+
+  gf::RectI rect(gf::Vec2I position, gf::Vec2I size)
+  {
+    return gf::RectI::from_position_size(position, size);
+  }
+
+}
+
 int main()
 {
   const std::filesystem::path assets_directory = GF_EXAMPLE_ASSETS_DIRECTORY;
@@ -47,17 +56,17 @@ int main()
 
   style.alignment = gf::ConsoleAlignment::Left;
   rich_style.set_default_style(style);
-  console_data.print_area(gf::RectI::from_position_size({ 2, 5 }, { 16, 5 }), rich_style, text);
+  console_data.print_area(rect({ 2, 5 }, { 16, 5 }), rich_style, text);
   style.alignment = gf::ConsoleAlignment::Center;
   rich_style.set_default_style(style);
-  console_data.print_area(gf::RectI::from_position_size({ 2, 15 }, { 16, 5 }), rich_style, text);
+  console_data.print_area(rect({ 2, 15 }, { 16, 5 }), rich_style, text);
   style.alignment = gf::ConsoleAlignment::Right;
   rich_style.set_default_style(style);
-  console_data.print_area(gf::RectI::from_position_size({ 2, 25 }, { 16, 5 }), rich_style, text);
+  console_data.print_area(rect({ 2, 25 }, { 16, 5 }), rich_style, text);
 
-  console_data.clear(gf::RectI::from_position_size({ 30, 5 }, { 16, 5 }), style);
-  console_data.draw_frame(gf::RectI::from_position_size({ 30, 5 }, { 16, 5 }), style);
-  console_data.draw_frame(gf::RectI::from_position_size({ 30, 15 }, { 16, 5 }), style, "Frame title");
+  console_data.clear(rect({ 30, 5 }, { 16, 5 }), style);
+  console_data.draw_frame(rect({ 30, 5 }, { 16, 5 }), style);
+  console_data.draw_frame(rect({ 30, 15 }, { 16, 5 }), style, "Frame title");
 
   gf::ConsoleEntity console_entity(&console_font, console_data, scene_manager.render_manager());
   console_entity.set_location({ 1000.0f, 1000.0f });
