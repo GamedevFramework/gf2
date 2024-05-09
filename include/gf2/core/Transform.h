@@ -27,7 +27,7 @@ namespace gf {
     Mat3F compute_inverse_matrix(RectF bounds) const;
   };
 
-  bool transformed_contains(RectF object_bounds, const Transform& object_transform, Vec2F location);
+  GF_CORE_API bool transformed_contains(RectF object_bounds, const Transform& object_transform, Vec2F location);
 
 } // namespace gf
 
