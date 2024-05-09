@@ -104,7 +104,8 @@ namespace gf {
     for (auto position : data.screen.position_range()) {
       const auto& cell = data.screen(position);
 
-      const RectF bounds = RectF::from_position_size(position * m_font->character_size(), m_font->character_size());
+      const Vec2I character_size = m_font->character_size();
+      const RectI bounds = RectI::from_position_size(position * character_size, character_size);
       const RectF texture_region = m_font->texture_region(cell.character);
       const Color color = srgb_to_linear(cell.foreground);
 

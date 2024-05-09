@@ -27,21 +27,6 @@ namespace gf {
       return m_atlas->texture();
     }
 
-    const Buffer* vertices() const
-    {
-      return &m_vertices;
-    }
-
-    const Buffer* indices() const
-    {
-      return &m_indices;
-    }
-
-    std::size_t index_count() const
-    {
-      return m_indices.size();
-    }
-
     RectF bounds() const
     {
       return m_bounds;
@@ -67,21 +52,6 @@ namespace gf {
     const Texture* texture() const
     {
       return m_atlas->texture();
-    }
-
-    const Buffer* vertices() const
-    {
-      return &m_vertices;
-    }
-
-    const Buffer* indices() const
-    {
-      return &m_indices;
-    }
-
-    std::size_t index_count() const
-    {
-      return m_indices.size();
     }
 
     RectF bounds() const

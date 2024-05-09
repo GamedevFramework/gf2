@@ -15,7 +15,6 @@
 
 #include "WorldData.h"
 
-
 namespace home {
   class GameHub;
 

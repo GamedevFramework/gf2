@@ -32,21 +32,6 @@ namespace gf {
       return m_texture;
     }
 
-    const Buffer* vertices() const
-    {
-      return &m_vertices;
-    }
-
-    const Buffer* indices() const
-    {
-      return &m_indices;
-    }
-
-    std::size_t index_count() const
-    {
-      return m_indices.size();
-    }
-
     RectF bounds() const
     {
       return m_bounds;

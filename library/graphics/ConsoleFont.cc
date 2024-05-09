@@ -331,7 +331,7 @@ namespace gf {
   RectF ConsoleFont::texture_region(char16_t character) const
   {
     const uint8_t index = m_mapping[character];
-    const Vec2F position = compute_position(index, m_format.layout, m_size);
+    const Vec2I position = compute_position(index, m_format.layout, m_size);
     const Vec2F size = m_size;
     return RectF::from_position_size(position / size, 1.0f / size);
   }

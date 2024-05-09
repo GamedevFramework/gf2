@@ -18,7 +18,7 @@ namespace gf {
     SpriteEntity(const Texture* texture, RenderManager* render_manager);
     SpriteEntity(const SpriteResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
-    const Sprite& sprite()
+    const Sprite& sprite() const
     {
       return m_sprite;
     }

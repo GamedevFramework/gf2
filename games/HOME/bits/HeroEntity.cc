@@ -1,7 +1,7 @@
 #include "HeroEntity.h"
 
-#include <gf2/core/TiledMapData.h>
 #include <gf2/core/Log.h>
+#include <gf2/core/TiledMapData.h>
 
 #include <gf2/physics/PhysicsArbiter.h>
 

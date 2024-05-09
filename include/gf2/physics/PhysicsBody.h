@@ -108,7 +108,6 @@ namespace gf {
     Handle m_body;
   };
 
-
   inline bool operator==(const PhysicsBody& lhs, const PhysicsBody& rhs)
   {
     return lhs.m_body.get() == rhs.m_body.get();

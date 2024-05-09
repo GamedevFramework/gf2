@@ -4,9 +4,8 @@
 
 #include <gf2/core/Activities.h>
 #include <gf2/core/Easing.h>
-#include <gf2/core/Transform.h>
-
 #include <gf2/core/Log.h>
+#include <gf2/core/Transform.h>
 
 #include <gf2/graphics/Entity.h>
 #include <gf2/graphics/RenderRecorder.h>
@@ -20,27 +19,21 @@ namespace {
   auto create_activity(gf::Vec2F* location, float* rotation, gf::Color* color, float* faces)
   {
     return ga::repeat(
-      ga::sequence(
-        ga::parallel_any(
-          ga::sequence(
-            ga::motion({ 100.0f, 100.0f }, { 540.0f, 100.0f }, location, gf::seconds(2.7f), gf::ease_in_out_quad),
-            ga::motion({ 540.0f, 100.0f }, { 540.0f, 380.0f }, location, gf::seconds(1.9f), gf::ease_out_back),
-            ga::motion({ 540.0f, 380.0f }, { 100.0f, 380.0f }, location, gf::seconds(2.7f), gf::ease_out_elastic),
-            ga::motion({ 100.0f, 380.0f }, { 100.0f, 100.0f }, location, gf::seconds(1.9f))
-          ),
-          ga::sequence(
-            ga::value(4, 8, faces, gf::seconds(4.6f), gf::ease_in_out_circ),
-            ga::value(8, 4, faces, gf::seconds(4.6f), gf::ease_in_out_circ)
-          ),
-          ga::sequence(
-            ga::color(gf::Azure, gf::Orange, color, gf::seconds(4.6f)),
-            ga::color(gf::Orange, gf::Azure, color, gf::seconds(4.6f))
-          ),
-          ga::value(0, 10 * gf::Pi, rotation, gf::seconds(9.2f), gf::ease_in_out_bounce)
-        ),
-        ga::delay(gf::seconds(0.5f))
-      )
-    );
+        ga::sequence(
+            ga::parallel_any(
+                ga::sequence(
+                    ga::motion({ 100.0f, 100.0f }, { 540.0f, 100.0f }, location, gf::seconds(2.7f), gf::ease_in_out_quad),
+                    ga::motion({ 540.0f, 100.0f }, { 540.0f, 380.0f }, location, gf::seconds(1.9f), gf::ease_out_back),
+                    ga::motion({ 540.0f, 380.0f }, { 100.0f, 380.0f }, location, gf::seconds(2.7f), gf::ease_out_elastic),
+                    ga::motion({ 100.0f, 380.0f }, { 100.0f, 100.0f }, location, gf::seconds(1.9f))),
+                ga::sequence(
+                    ga::value(4, 8, faces, gf::seconds(4.6f), gf::ease_in_out_circ),
+                    ga::value(8, 4, faces, gf::seconds(4.6f), gf::ease_in_out_circ)),
+                ga::sequence(
+                    ga::color(gf::Azure, gf::Orange, color, gf::seconds(4.6f)),
+                    ga::color(gf::Orange, gf::Azure, color, gf::seconds(4.6f))),
+                ga::value(0, 10 * gf::Pi, rotation, gf::seconds(9.2f), gf::ease_in_out_bounce)),
+            ga::delay(gf::seconds(0.5f))));
   }
 
   class BlobEntity : public gf::Entity {
@@ -87,7 +80,6 @@ namespace {
     ga::AnyActivity m_activity;
     gf::ShapeGroup m_shape;
   };
-
 
 }
 

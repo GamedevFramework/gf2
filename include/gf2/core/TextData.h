@@ -24,7 +24,7 @@ namespace gf {
 
   struct GF_CORE_API TextData {
     std::string content;
-    float character_size = 0;
+    float character_size = 0.0f;
     Color color = Black;
     // float outline_thickness = 0.0f;
     // Color outline_color = White;

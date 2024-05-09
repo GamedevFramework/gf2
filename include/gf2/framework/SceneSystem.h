@@ -18,7 +18,8 @@ namespace gf {
   public:
     SceneSystem(const std::string& title, Vec2I size, const std::filesystem::path& asset_directory);
 
-    Random* random() {
+    Random* random()
+    {
       return &m_random;
     }
 

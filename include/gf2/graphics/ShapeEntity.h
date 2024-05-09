@@ -18,6 +18,11 @@ namespace gf {
 
     void render(RenderRecorder& recorder) override;
 
+    const Shape& shape() const
+    {
+      return m_shape;
+    }
+
   private:
     Shape m_shape;
   };
