@@ -29,6 +29,8 @@ namespace gf {
     std::vector<Vec2I> compute_neighbors(Vec2I position, Flags<CellNeighborQuery> flags = None) const;
     bool are_diagonal_neighbors(Vec2I position0, Vec2I position1) const;
 
+    GridOrientation orientation() const;
+
   private:
     AnyGrid(OrthogonalGrid grid);
     AnyGrid(IsometricGrid grid);

@@ -6,6 +6,9 @@
 #include <algorithm>
 
 #include <gf2/core/BinaryHeap.h>
+#include "gf2/core/GridTypes.h"
+#include <gf2/core/Log.h>
+#include <gf2/core/GridVisibility.h>
 
 namespace gf {
   using namespace operators;
@@ -61,6 +64,11 @@ namespace gf {
   void GridMap::set_properties(Vec2I position, Flags<CellProperty> properties)
   {
     m_cells(position) = properties;
+  }
+
+  void GridMap::add_properties(Vec2I position, Flags<CellProperty> properties)
+  {
+    m_cells(position) |= properties;
   }
 
   bool GridMap::transparent(Vec2I position) const
@@ -273,6 +281,58 @@ namespace gf {
     }
 
     return {};
+  }
+
+  void GridMap::compute_field_of_vision(Vec2I origin, int range_limit, Visibility visibility)
+  {
+    raw_compute_field_of_vision(origin, range_limit, CellProperty::Visible | CellProperty::Explored, visibility);
+  }
+
+  void GridMap::compute_local_field_of_vision(Vec2I origin, int range_limit, Visibility visibility)
+  {
+    raw_compute_field_of_vision(origin, range_limit, CellProperty::Visible, visibility);
+  }
+
+  void GridMap::raw_compute_field_of_vision(Vec2I origin, int range_limit, Flags<CellProperty> properties, Visibility visibility)
+  {
+    const GridOrientation orientation = m_grid.orientation();
+
+    if (orientation == GridOrientation::Hexagonal || orientation == GridOrientation::Unknown) {
+      Log::fatal("Unsupported orientation for field of vision.");
+    }
+
+    switch (visibility) {
+      case Visibility::RayCast:
+        {
+          RayCastVisibility visibility(this, properties);
+          visibility.compute_visibility(origin, range_limit);
+        }
+        break;
+      case Visibility::ShadowCast:
+        {
+          ShadowCastVisibility visibility(this, properties);
+          visibility.compute_visibility(origin, range_limit);
+        }
+        break;
+      case Visibility::DiamondWalls:
+        {
+          DiamondWallsVisibility visibility(this, properties);
+          visibility.compute_visibility(origin, range_limit);
+        }
+        break;
+      case Visibility::Permissive:
+        {
+          PermissiveVisibility visibility(this, properties);
+          visibility.compute_visibility(origin, range_limit);
+        }
+        break;
+      case Visibility::Improved:
+        {
+          ImprovedVisibility visibility(this, properties);
+          visibility.compute_visibility(origin, range_limit);
+        }
+        break;
+    }
   }
 
 }

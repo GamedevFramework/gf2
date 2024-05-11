@@ -2,6 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 #include <gf2/core/AnyGrid.h>
+#include "gf2/core/GridTypes.h"
 
 namespace gf {
 
@@ -134,6 +135,11 @@ namespace gf {
         return grid.are_diagonal_neighbors(position0, position1);
       }
     }, m_variant);
+  }
+
+  GridOrientation AnyGrid::orientation() const
+  {
+    return static_cast<GridOrientation>(m_variant.index());
   }
 
 } // namespace gf

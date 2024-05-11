@@ -48,6 +48,17 @@ namespace gf {
   struct EnableBitmaskOperators<CellNeighborQuery> : std::true_type {
   };
 
+  enum class CellProperty : uint8_t {
+    Transparent = 0x01,
+    Walkable = 0x02,
+    Visible = 0x10,
+    Explored = 0x20,
+  };
+
+  template<>
+  struct EnableBitmaskOperators<CellProperty> : std::true_type {
+  };
+
 } // namespace gf
 
 #endif // GF_GRID_TYPES_H

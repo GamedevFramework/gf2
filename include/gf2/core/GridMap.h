@@ -13,20 +13,17 @@
 
 namespace gf {
 
-  enum class CellProperty : uint8_t {
-    Transparent = 0x01,
-    Walkable = 0x02,
-    Visible = 0x10,
-    Explored = 0x20,
-  };
-
-  template<>
-  struct EnableBitmaskOperators<CellProperty> : std::true_type {
-  };
-
   enum class Route : uint8_t {
     AStar,
     Dijkstra,
+  };
+
+  enum class Visibility : uint8_t {
+    RayCast,
+    ShadowCast,
+    DiamondWalls,
+    Permissive,
+    Improved,
   };
 
   class GF_CORE_API GridMap {
@@ -46,6 +43,7 @@ namespace gf {
     void reset(Flags<CellProperty> properties);
 
     void set_properties(Vec2I position, Flags<CellProperty> properties);
+    void add_properties(Vec2I position, Flags<CellProperty> properties);
 
     bool transparent(Vec2I position) const;
     void set_transparent(Vec2I position, bool transparent = true);
@@ -63,8 +61,13 @@ namespace gf {
 
     std::vector<Vec2I> compute_route(Vec2I origin, Vec2I target, float diagonal_cost = Sqrt2, Route route = Route::AStar);
 
+    void compute_field_of_vision(Vec2I origin, int range_limit, Visibility visibility);
+    void compute_local_field_of_vision(Vec2I origin, int range_limit, Visibility visibility);
+
   private:
     GridMap(Vec2I size, AnyGrid grid);
+
+    void raw_compute_field_of_vision(Vec2I origin, int range_limit, Flags<CellProperty> properties, Visibility visibility);
 
     Array2D<Flags<CellProperty>> m_cells;
     AnyGrid m_grid;
