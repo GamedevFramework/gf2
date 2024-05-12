@@ -66,3 +66,16 @@ struct Transform;
 ----
 
 A transform object contains data about an entity's location, rotation and scale. xref:Transform.adoc[*Read more...*]
+
+== Functions
+
+[#transformed_contains]
+=== `gf::transformed_contains`
+
+[source]
+----
+#include <gf2/core/Transform.h>
+bool transformed_contains(RectF object_bounds, const Transform& object_transform, Vec2F location);
+----
+
+Tell if `location` in inside an object defined by its `object_bounds` and `object_transform`. This function is useful for detecting a clic on an object.

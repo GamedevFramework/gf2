@@ -55,6 +55,17 @@ constexpr Transform(Vec2F location = gf::vec(0.0f, 0.0f), Vec2F origin = gf::vec
 
 Create a transform.
 
+=== `compute_inverse_matrix`
+
+[source]
+----
+Mat3F compute_inverse_matrix(RectF bounds) const;
+----
+
+Compute the inverse model matrix from the bouding box of the entity.
+
+See also: <<compute_matrix>>
+
 === `compute_matrix`
 
 [source]
@@ -63,3 +74,5 @@ Mat3F compute_matrix(RectF bounds) const;
 ----
 
 Compute the model matrix from the bouding box of the entity.
+
+See also: <<compute_inverse_matrix>>

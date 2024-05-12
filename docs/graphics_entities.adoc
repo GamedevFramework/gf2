@@ -16,6 +16,9 @@ xref:reference.adoc#graphics[< Back to reference]
 [#animation_entity]
 === `gf::AnimationEntity`
 
+[#console_entity]
+=== `gf::ConsoleEntity`
+
 [#entity]
 === `gf::Entity`
 
@@ -43,3 +46,6 @@ An entity container is a non-owning collection of entities. xref:EntityContainer
 
 [#text_entity]
 === `gf::TextEntity`
+
+[#transformable_entity]
+=== `gf::TransformableEntity`
