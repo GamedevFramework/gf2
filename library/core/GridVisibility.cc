@@ -5,8 +5,9 @@
 
 #include <limits>
 
-#include <gf2/core/GridMap.h>
 #include <gf2/core/Geometry.h>
+#include <gf2/core/GridMap.h>
+
 #include "gf2/core/Vec2.h"
 
 namespace gf {
@@ -18,6 +19,7 @@ namespace gf {
     Vec2I transform_octant(Vec2I origin, Vec2I relative, int octant)
     {
       switch (octant) {
+          // clang-format off
         case 0: origin.x += relative.x; origin.y -= relative.y; break;
         case 1: origin.x += relative.y; origin.y -= relative.x; break;
         case 2: origin.x -= relative.y; origin.y -= relative.x; break;
@@ -26,7 +28,10 @@ namespace gf {
         case 5: origin.x -= relative.y; origin.y += relative.x; break;
         case 6: origin.x += relative.y; origin.y += relative.x; break;
         case 7: origin.x += relative.x; origin.y += relative.y; break;
-        default: assert(false); break;
+        // clang-format on
+        default:
+          assert(false);
+          break;
       }
 
       return origin;
@@ -65,7 +70,7 @@ namespace gf {
     RectI area = RectI::from_size(m_map->size());
 
     if (range_limit >= 0) {
-      RectI limited = RectI::from_position_size(origin - range_limit, vec(1,1) * (2 * range_limit + 1));
+      RectI limited = RectI::from_position_size(origin - range_limit, vec(1, 1) * (2 * range_limit + 1));
 
       auto maybe_intersection = area.intersection(limited);
 
@@ -144,8 +149,8 @@ namespace gf {
     const int square_range_limit = square(range_limit);
 
     for (; x <= x_limit; ++x) {
-      const int top_y = top.x == 1 ? x : ((x*2+1) * top.y + top.x - 1) / (top.x * 2);
-      const int bottom_y = bottom.y == 0 ? 0 : ((x*2-1) * bottom.y + bottom.x) / (bottom.x * 2);
+      const int top_y = top.x == 1 ? x : ((x * 2 + 1) * top.y + top.x - 1) / (top.x * 2);
+      const int bottom_y = bottom.y == 0 ? 0 : ((x * 2 - 1) * bottom.y + bottom.x) / (bottom.x * 2);
 
       Opacity was_opaque = Opacity::Unknown;
 
@@ -317,7 +322,9 @@ namespace gf {
     static constexpr int Infinity = std::numeric_limits<int>::max();
 
     std::list<Field> active_fields;
-    active_fields.push_back(Field({{ 1, 0 }, { 0, Infinity }}, {{ 0, 1 }, { Infinity, 0 }}));
+    const Field initial_field(Line({ 1, 0 }, { 0, Infinity }), Line({ 0, 1 }, { Infinity, 0 }));
+    active_fields.push_back(initial_field);
+
     Vec2I local = { 0, 0 };
     blocked(local, quadrant, origin, range_limit);
 
@@ -329,9 +336,7 @@ namespace gf {
         local.y = j;
         current_field = visit_square(local, quadrant, origin, range_limit, current_field, active_fields);
       }
-
     }
-
   }
 
   bool PermissiveVisibility::blocked(Vec2I local, Vec2I quadrant, Vec2I origin, int range_limit) const
@@ -413,7 +418,6 @@ namespace gf {
     return current_field;
   }
 
-
   /*
    * ImprovedVisibility
    */
@@ -467,7 +471,6 @@ namespace gf {
         }
       }
 
-
       int bottom_y = 0;
 
       if (bottom.y == 0) {
@@ -499,7 +502,7 @@ namespace gf {
               if (was_opaque == Opacity::Transparent) {
                 details::Slope new_bottom = { y * 2 + 1, x * 2 };
 
-                if (!transparent(octant, origin, { x, y + 1})) {
+                if (!transparent(octant, origin, { x, y + 1 })) {
                   --new_bottom.x;
                 }
 
@@ -522,7 +525,7 @@ namespace gf {
               if (was_opaque == Opacity::Opaque) {
                 details::Slope new_top = { y * 2 + 1, x * 2 };
 
-                if (!transparent(octant, origin, { x + 1, y + 1})) {
+                if (!transparent(octant, origin, { x + 1, y + 1 })) {
                   ++new_top.x;
                 }
 
@@ -542,7 +545,6 @@ namespace gf {
       if (was_opaque != Opacity::Transparent) {
         break;
       }
-
     }
   }
 

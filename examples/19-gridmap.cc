@@ -1,19 +1,19 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
 
+#include <gf2/core/Color.h>
 #include <gf2/core/GridMap.h>
+#include <gf2/core/Log.h>
+#include <gf2/core/Range.h>
+#include <gf2/core/ShapeData.h>
 
 #include <gf2/graphics/ActionGroup.h>
+#include <gf2/graphics/Entity.h>
+#include <gf2/graphics/RenderObject.h>
 #include <gf2/graphics/RenderRecorder.h>
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/SceneManager.h>
 #include <gf2/graphics/Shape.h>
-#include <gf2/core/Color.h>
-#include <gf2/core/Range.h>
-#include <gf2/core/ShapeData.h>
-#include <gf2/graphics/RenderObject.h>
-#include <gf2/graphics/Entity.h>
-#include <gf2/core/Log.h>
 
 namespace {
   using namespace gf::literals;
@@ -116,7 +116,6 @@ namespace {
       }
     }
 
-
     void update([[maybe_unused]] gf::Time time) override
     {
       gf::ShapeGroupData data;
@@ -217,7 +216,6 @@ namespace {
               m_grid_entity.map().clear_visible();
               m_grid_entity.map().compute_field_of_vision(m_state.light, m_state.radius, m_state.visibility);
             }
-
           }
           break;
         default:

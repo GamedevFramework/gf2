@@ -6,9 +6,8 @@
 #include <algorithm>
 
 #include <gf2/core/BinaryHeap.h>
-#include "gf2/core/GridTypes.h"
-#include <gf2/core/Log.h>
 #include <gf2/core/GridVisibility.h>
+#include <gf2/core/Log.h>
 
 namespace gf {
   using namespace operators;

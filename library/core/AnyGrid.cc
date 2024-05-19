@@ -2,6 +2,7 @@
 // Copyright (c) 2023 Julien Bernard
 
 #include <gf2/core/AnyGrid.h>
+
 #include "gf2/core/GridTypes.h"
 
 namespace gf {
