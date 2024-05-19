@@ -5,6 +5,9 @@
 
 #include <cstdint>
 
+#include <forward_list>
+#include <list>
+
 #include "CoreApi.h"
 #include "GridTypes.h"
 #include "Vec2.h"
@@ -70,6 +73,50 @@ namespace gf {
     void compute_visibility(Vec2I origin, int range_limit) const;
 
   private:
+    struct Line {
+      Line(Vec2I near, Vec2I far)
+      : near(near), far(far)
+      {
+      }
+
+      Vec2I near = { 0, 0 };
+      Vec2I far = { 0, 0 };
+
+      bool is_below(Vec2I point) const { return relative_slope(point) > 0; }
+      bool is_below_or_contains(Vec2I point) const { return relative_slope(point) >= 0; }
+      bool is_above(Vec2I point) const { return relative_slope(point) < 0; }
+      bool is_above_or_contains(Vec2I point) const { return relative_slope(point) <= 0; }
+      bool contains(Vec2I point) const { return relative_slope(point) == 0; }
+
+      int relative_slope(Vec2I point) const
+      {
+        return (far.y - near.y) * (far.x - point.x) - (far.y - point.y) * (far.x - near.x);
+      }
+    };
+
+    struct Field {
+      Field(Line steep, Line shallow)
+      : steep(steep), shallow(shallow)
+      {
+      }
+
+      std::forward_list<Vec2I> steep_bump;
+      std::forward_list<Vec2I> shallow_bump;
+      Line steep;
+      Line shallow;
+    };
+
+    using FieldList = std::list<Field>;
+    using FieldIterator = FieldList::iterator;
+
+    void compute_quadrant(Vec2I quadrant, Vec2I origin, int range_limit) const;
+    bool blocked(Vec2I local, Vec2I quadrant, Vec2I origin, int range_limit) const;
+    FieldIterator visit_square(Vec2I local, Vec2I quadrant, Vec2I origin, int range_limit, FieldIterator current_field, FieldList& active_fields) const;
+
+    static void add_shallow_bump(Vec2I position, FieldIterator current_field);
+    static void add_steep_bump(Vec2I position, FieldIterator current_field);
+    static FieldIterator check_field(FieldIterator current_field, FieldList& active_fields);
+
     GridMap* m_map;
     Flags<CellProperty> m_properties;
   };

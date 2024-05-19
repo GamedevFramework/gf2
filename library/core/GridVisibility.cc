@@ -25,8 +25,8 @@ namespace gf {
         case 4: origin.x -= relative.x; origin.y += relative.y; break;
         case 5: origin.x -= relative.y; origin.y += relative.x; break;
         case 6: origin.x += relative.y; origin.y += relative.x; break;
-        case 7: origin.x += relative.x; origin.y -= relative.y; break;
-        default: break;
+        case 7: origin.x += relative.x; origin.y += relative.y; break;
+        default: assert(false); break;
       }
 
       return origin;
@@ -305,7 +305,114 @@ namespace gf {
     if (m_map == nullptr) {
       return;
     }
+
+    compute_quadrant({ +1, +1 }, origin, range_limit);
+    compute_quadrant({ -1, +1 }, origin, range_limit);
+    compute_quadrant({ +1, -1 }, origin, range_limit);
+    compute_quadrant({ -1, -1 }, origin, range_limit);
   }
+
+  void PermissiveVisibility::compute_quadrant(Vec2I quadrant, Vec2I origin, int range_limit) const
+  {
+    static constexpr int Infinity = std::numeric_limits<int>::max();
+
+    std::list<Field> active_fields;
+    active_fields.push_back(Field({{ 1, 0 }, { 0, Infinity }}, {{ 0, 1 }, { Infinity, 0 }}));
+    Vec2I local = { 0, 0 };
+    blocked(local, quadrant, origin, range_limit);
+
+    for (int i = 1; i < Infinity; ++i) {
+      auto current_field = active_fields.begin();
+
+      for (int j = 0; j <= i; ++j) {
+        local.x = i - j;
+        local.y = j;
+        current_field = visit_square(local, quadrant, origin, range_limit, current_field, active_fields);
+      }
+
+    }
+
+  }
+
+  bool PermissiveVisibility::blocked(Vec2I local, Vec2I quadrant, Vec2I origin, int range_limit) const
+  {
+    if (range_limit >= 0 && square_length(local) > square(range_limit)) {
+      return true;
+    }
+
+    Vec2I position = origin + quadrant * local;
+    m_map->add_properties(position, m_properties);
+    return !m_map->transparent(position);
+  }
+
+  auto PermissiveVisibility::visit_square(Vec2I local, Vec2I quadrant, Vec2I origin, int range_limit, FieldIterator current_field, FieldList& active_fields) const -> FieldIterator
+  {
+    Vec2I top_left = { local.x, local.y + 1 };
+    Vec2I bottom_right = { local.x + 1, local.y };
+
+    while (current_field != active_fields.end() && current_field->steep.is_below_or_contains(bottom_right)) {
+      ++current_field;
+    }
+
+    if (current_field == active_fields.end() || current_field->shallow.is_above_or_contains(top_left) || !blocked(local, quadrant, origin, range_limit)) {
+      return current_field;
+    }
+
+    if (current_field->shallow.is_above(bottom_right) && current_field->steep.is_below(top_left)) {
+      return active_fields.erase(current_field);
+    }
+
+    if (current_field->shallow.is_above(bottom_right)) {
+      add_shallow_bump(top_left, current_field);
+      return check_field(current_field, active_fields);
+    }
+
+    if (current_field->steep.is_below(top_left)) {
+      add_steep_bump(bottom_right, current_field);
+      return check_field(current_field, active_fields);
+    }
+
+    auto steeper = current_field;
+    auto shallower = active_fields.insert(current_field, *current_field);
+    add_steep_bump(bottom_right, shallower);
+    check_field(shallower, active_fields);
+    add_shallow_bump(top_left, steeper);
+    return check_field(steeper, active_fields);
+  }
+
+  void PermissiveVisibility::add_shallow_bump(Vec2I position, FieldIterator current_field)
+  {
+    current_field->shallow.far = position;
+    current_field->shallow_bump.push_front(position);
+
+    for (auto& bump : current_field->steep_bump) {
+      if (current_field->shallow.is_above(bump)) {
+        current_field->shallow.near = bump;
+      }
+    }
+  }
+
+  void PermissiveVisibility::add_steep_bump(Vec2I position, FieldIterator current_field)
+  {
+    current_field->steep.far = position;
+    current_field->steep_bump.push_front(position);
+
+    for (auto& bump : current_field->shallow_bump) {
+      if (current_field->steep.is_below(bump)) {
+        current_field->steep.near = bump;
+      }
+    }
+  }
+
+  auto PermissiveVisibility::check_field(FieldIterator current_field, FieldList& active_fields) -> FieldIterator
+  {
+    if (current_field->shallow.contains(current_field->steep.near) && current_field->shallow.contains(current_field->steep.far) && (current_field->shallow.contains({ 0, 1 }) || current_field->shallow.contains({ 1, 0 }))) {
+      return active_fields.erase(current_field);
+    }
+
+    return current_field;
+  }
+
 
   /*
    * ImprovedVisibility

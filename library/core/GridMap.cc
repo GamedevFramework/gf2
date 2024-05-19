@@ -24,9 +24,19 @@ namespace gf {
     return { size, AnyGrid::make_orthogonal(size, vec(1.0f, 1.0f)) };
   }
 
+  GridMap GridMap::make_orthogonal(Vec2I layer_size, Vec2I tile_size)
+  {
+    return { layer_size, AnyGrid::make_orthogonal(layer_size, tile_size) };
+  }
+
   GridMap GridMap::make_isometric(Vec2I size)
   {
     return { size, AnyGrid::make_isometric(size, vec(1.0f, 1.0f)) };
+  }
+
+  GridMap GridMap::make_isometric(Vec2I layer_size, Vec2I tile_size)
+  {
+    return { layer_size, AnyGrid::make_isometric(layer_size, tile_size) };
   }
 
   GridMap GridMap::make_staggered(Vec2I size, CellAxis axis, CellIndex index)
@@ -34,9 +44,24 @@ namespace gf {
     return { size, AnyGrid::make_staggered(size, vec(1.0f, 1.0f), axis, index) };
   }
 
+  GridMap GridMap::make_staggered(Vec2I layer_size, Vec2I tile_size, CellAxis axis, CellIndex index)
+  {
+    return { layer_size, AnyGrid::make_staggered(layer_size, tile_size, axis, index) };
+  }
+
   GridMap GridMap::make_hexagonal(Vec2I size, CellAxis axis, CellIndex index)
   {
     return { size, AnyGrid::make_hexagonal(size, 1.0f, axis, index) };
+  }
+
+  GridMap GridMap::make_hexagonal(Vec2I layer_size, Vec2I tile_size, int32_t side_length, CellAxis axis, CellIndex index)
+  {
+    return { layer_size, AnyGrid::make_hexagonal(layer_size, tile_size, side_length, axis, index) };
+  }
+
+  GridMap GridMap::make_hexagonal(Vec2I layer_size, float radius, CellAxis axis, CellIndex index)
+  {
+    return { layer_size, AnyGrid::make_hexagonal(layer_size, radius, axis, index) };
   }
 
   const AnyGrid& GridMap::grid() const
@@ -63,21 +88,37 @@ namespace gf {
 
   void GridMap::set_properties(Vec2I position, Flags<CellProperty> properties)
   {
+    if (!m_cells.valid(position)) {
+      return;
+    }
+
     m_cells(position) = properties;
   }
 
   void GridMap::add_properties(Vec2I position, Flags<CellProperty> properties)
   {
+    if (!m_cells.valid(position)) {
+      return;
+    }
+
     m_cells(position) |= properties;
   }
 
   bool GridMap::transparent(Vec2I position) const
   {
+    if (!m_cells.valid(position)) {
+      return false;
+    }
+
     return m_cells(position).test(CellProperty::Transparent);
   }
 
   void GridMap::set_transparent(Vec2I position, bool transparent)
   {
+    if (!m_cells.valid(position)) {
+      return;
+    }
+
     if (transparent) {
       m_cells(position).set(CellProperty::Transparent);
     } else {
@@ -87,11 +128,19 @@ namespace gf {
 
   bool GridMap::walkable(Vec2I position) const
   {
+    if (!m_cells.valid(position)) {
+      return false;
+    }
+
     return m_cells(position).test(CellProperty::Walkable);
   }
 
   void GridMap::set_walkable(Vec2I position, bool walkable)
   {
+    if (!m_cells.valid(position)) {
+      return;
+    }
+
     if (walkable) {
       m_cells(position).set(CellProperty::Walkable);
     } else {
@@ -101,6 +150,10 @@ namespace gf {
 
   void GridMap::set_empty(Vec2I position)
   {
+    if (!m_cells.valid(position)) {
+      return;
+    }
+
     m_cells(position) |= (CellProperty::Transparent | CellProperty::Walkable);
   }
 
@@ -124,11 +177,19 @@ namespace gf {
 
   bool GridMap::visible(Vec2I position) const
   {
+    if (!m_cells.valid(position)) {
+      return false;
+    }
+
     return m_cells(position).test(CellProperty::Visible);
   }
 
   bool GridMap::explored(Vec2I position) const
   {
+    if (!m_cells.valid(position)) {
+      return false;
+    }
+
     return m_cells(position).test(CellProperty::Explored);
   }
 

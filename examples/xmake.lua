@@ -58,6 +58,11 @@ if has_config("examples") then
         add_files("18-activities.cc")
         add_deps("gf2graphics0")
 
+    target("19-gridmap")
+        set_kind("binary")
+        add_files("19-gridmap.cc")
+        add_deps("gf2graphics0")
+
     target("20-physics")
         set_kind("binary")
         add_files("20-physics.cc")

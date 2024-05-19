@@ -31,9 +31,17 @@ namespace gf {
     GridMap() = default;
 
     static GridMap make_orthogonal(Vec2I size);
+    static GridMap make_orthogonal(Vec2I layer_size, Vec2I tile_size);
+
     static GridMap make_isometric(Vec2I size);
+    static GridMap make_isometric(Vec2I layer_size, Vec2I tile_size);
+
     static GridMap make_staggered(Vec2I size, CellAxis axis, CellIndex index);
+    static GridMap make_staggered(Vec2I layer_size, Vec2I tile_size, CellAxis axis, CellIndex index);
+
     static GridMap make_hexagonal(Vec2I size, CellAxis axis, CellIndex index);
+    static GridMap make_hexagonal(Vec2I layer_size, Vec2I tile_size, int32_t side_length, CellAxis axis, CellIndex index);
+    static GridMap make_hexagonal(Vec2I layer_size, float radius, CellAxis axis, CellIndex index);
 
     const AnyGrid& grid() const;
 
