@@ -40,6 +40,7 @@ namespace gf {
     Color clear_color() const;
 
     void set_rank(SceneRank rank);
+    SceneRank rank() const;
 
     void pause();
     void resume();

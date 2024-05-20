@@ -12,6 +12,8 @@ A grid is a set of cells with a specific organization. As a grid is a two-dimens
 - Staggered grids (rhombus cells organised in a rectangle)
 - Hexagonal grids (hexagon cells organised in a rectangle)
 
+On top of grids, the library provides <<grid_map>> that can be used to modelize a map based on a grid.
+
 xref:reference.adoc#core[< Back to reference]
 
 See also: xref:article_grids_howto.adoc[Article: Grids How To]
@@ -117,7 +119,7 @@ The indices that are shifted along the shifted axis.
 
 [source]
 ----
-#include <gf2/core/Cells.h>
+#include <gf2/core/GridTypes.h>
 enum class CellNeighborQuery : uint8_t;
 ----
 
@@ -134,6 +136,49 @@ The specification of the query when asking for neighborhood. `CellNeighborQuery`
 | `gf::CellNeighborQuery::Diagonal`
 | The neighbors may be in diagonal.
 |===
+
+
+[#cells_property]
+=== `gf::CellProperty`
+
+[source]
+----
+#include <gf2/core/GridTypes.h>
+enum class CellProperty : uint8_t;
+----
+
+The property of a cell in a grid map. `CellProperty` can be used with xref:Flags.adoc[`Flags<E>`].
+
+.Enumerators for `gf::CellProperty`
+[cols="2,3"]
+|===
+| Value | Description
+
+| `gf::CellProperty::Transparent`
+| The cell is transparent.
+
+| `gf::CellProperty::Walkable`
+| The cell is walkable.
+
+| `gf::CellProperty::Visible`
+| The cell is visible.
+
+| `gf::CellProperty::Explored`
+| The cell is explored.
+|===
+
+See also: <<grid_map>>
+
+[#grid_map]
+=== `gf::GridMap`
+
+[source]
+----
+#include <gf2/core/GridMap.h>
+class GridMap;
+----
+
+A grid map is an abstract map organized in a grid. xref:GridMap.adoc[*Read more...*]
 
 
 [#grid_orientation]

@@ -323,7 +323,9 @@ namespace gf {
 
   void SingleSceneManager::set_scene(Scene* scene)
   {
-    assert(scene != nullptr);
+    if (scene == nullptr) {
+      return;
+    }
 
     if (m_scene != nullptr) {
       m_scene->set_rank(SceneRank::None);
@@ -414,7 +416,10 @@ namespace gf {
 
   void SceneManager::push_scene(Scene* scene)
   {
-    assert(scene != nullptr);
+    if (scene == nullptr) {
+      return;
+    }
+
     m_scenes_changed = true;
 
     if (!m_curr_scenes.empty()) {
@@ -434,7 +439,10 @@ namespace gf {
     }
 
     for (auto* scene : scenes) {
-      assert(scene != nullptr);
+      if (scene == nullptr) {
+        continue;
+      }
+
       m_curr_scenes.push_back(scene);
       scene->set_rank(SceneRank::Active);
     }

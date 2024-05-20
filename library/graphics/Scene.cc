@@ -41,6 +41,11 @@ namespace gf {
     }
   }
 
+  SceneRank Scene::rank() const
+  {
+    return m_rank;
+  }
+
   void Scene::pause()
   {
     m_status = Status::Paused;

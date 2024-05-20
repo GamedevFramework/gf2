@@ -1,0 +1,89 @@
+= `gf::BasicSceneManager` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The basic scene manager handles all the creation and handling of basic rendering objects.
+
+xref:graphics_scenes.adoc[< Back to `graphics` Scenes]
+
+== Description
+
+[source]
+----
+#include <gf2/graphics/SceneManager.h>
+class BasicSceneManager;
+----
+
+The basic scene manager initializes a window and a render manager, and all the associated rendering objects.
+
+This class is not meant to be used directly, it serves as a base class for complete scene managers:
+
+- xref:SingleSceneManager.adoc[`gf::SingleSceneManager`]
+- xref:SceneManager.adoc[`gf::SceneManager`]
+
+== Member Functions
+
+=== `BasicSceneManager` constructors
+
+[source]
+----
+BasicSceneManager(const std::string& title, Vec2I size, Flags<WindowHints> hints = All);
+----
+
+Constructor of a basic scene manager with a title and a size for the window.
+
+=== `render_manager`
+
+[source]
+----
+RenderManager* render_manager();
+----
+
+Get the associated render manager.
+
+See also: xref:RenderManager.adoc[`gf::RenderManager`]
+
+=== `window`
+
+[source]
+----
+Window* window();
+----
+
+Get the associated window.
+
+See also: xref:Window.adoc[`gf::Window`]
+
+== Protected Member Functions
+
+=== `render_object`
+
+[source]
+----
+void render_object(RenderCommandBuffer command_buffer, RenderObject object);
+----
+
+Record the commands for rendering a single object.
+
+See also: <<render_records>>
+
+=== `render_pipeline`
+
+[source]
+----
+const RenderPipeline* render_pipeline(RenderPipelineType type) const;
+----
+
+Get the render pipeline associated with the pipeline type.
+
+=== `render_records`
+
+[source]
+----
+void render_records(RenderCommandBuffer command_buffer, const RenderRecorder& recorder);
+----
+
+Record the commands for rendering all the objects in the render recorder.
+
+See also: <<render_object>>

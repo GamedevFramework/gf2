@@ -5,6 +5,17 @@ include::bits/attributes.adoc[]
 
 The scenes component provides scenes and scene managers for various type of situations.
 
+A *scene* is a class that implements a single game loop with different methods. Sometimes called "game state", a scene is responsible for managing all the entities of a part of the game and handling the associated events.
+<<scene>> is the base class of all types of scene. Currently, the library offers the following types of scene:
+
+- <<standard_scene>>: a scene with with models, world entities and hud entities
+
+A *scene manager* handles one or more scenes, it is responsible for managing the main game loop with the different scenes. There is always a single game manager in a game.
+<<basic_scene_manager>> is the base class of all types of scene manager. Currently, the library offers the following types of scene manager:
+
+- <<single_scene_manager>>: a scene manager with a single scene
+- <<scene_manager>>: a scene manager that handles many scenes organized in a stack
+
 xref:reference.adoc#graphics[< Back to reference]
 
 == Types

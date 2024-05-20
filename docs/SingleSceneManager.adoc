@@ -1,0 +1,53 @@
+= `gf::SingleSceneManager` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+A single scene manager can handle a single scene.
+
+xref:graphics_scenes.adoc[< Back to `graphics` Scenes]
+
+== Description
+
+[source]
+----
+#include <gf2/graphics/SceneManager.h>
+class SingleSceneManager : public BasicSceneManager;
+----
+
+*Inherits*: xref:BasicSceneManager.adoc[`BasicSceneManager`]
+
+The manager runs a single scene.
+
+== Member Functions
+
+=== `SingleSceneManager` constructors
+
+[source]
+----
+SingleSceneManager(const std::string& title, Vec2I size, Flags<WindowHints> hints = All);
+----
+
+Constructor of a scene manager with a title and a size for the window.
+
+=== `run`
+
+[source]
+----
+int run(); <1>
+int run(Scene* scene); <2>
+----
+
+<1> Run the game loop with the current scene
+<2> Push a scene and run the game loop
+
+Return an exit code that can be used as a return value for `main`.
+
+=== `set_scene`
+
+[source]
+----
+void set_scene(Scene* scene);
+----
+
+Set the scene of the manager.

@@ -114,3 +114,12 @@ RectI compute_visible_area(RectF local) const;
 ----
 
 Compute the visible area in terms of position.
+
+=== `orientation`
+
+[source]
+----
+GridOrientation orientation() const;
+----
+
+Tell the actual orientation of the grid.

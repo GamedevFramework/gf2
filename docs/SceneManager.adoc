@@ -1,0 +1,117 @@
+= `gf::SceneManager` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+A scene manager can handle many scenes organized in a stack.
+
+xref:graphics_scenes.adoc[< Back to `graphics` Scenes]
+
+== Description
+
+[source]
+----
+#include <gf2/graphics/SceneManager.h>
+class SceneManager : public BasicSceneManager;
+----
+
+*Inherits*: xref:BasicSceneManager.adoc[`BasicSceneManager`]
+
+The manager runs the scenes while the stack is not empty. All the scenes in the stack process inputs, are updated and are rendered, beginning from the base of the stack until the top.
+
+Generally, when building a game, the main class of the game is derived from this class.
+
+.Example for `gf::SceneManager`
+[source,indent=0]
+----
+include::snippets/graphics_scene_manager.cc[tag=class]
+----
+
+.Example for a constructor
+[source,indent=0]
+----
+include::snippets/graphics_scene_manager.cc[tag=constructor]
+----
+
+
+== Member Functions
+
+=== `SceneManager` constructors
+
+[source]
+----
+SceneManager(const std::string& title, Vec2I size, Flags<WindowHints> hints = All);
+----
+
+Constructor of a scene manager with a title and a size for the window.
+
+=== `pop_all_scenes`
+
+[source]
+----
+void pop_all_scenes();
+----
+
+Pop all the scene from the stack.
+
+=== `pop_scene`
+
+[source]
+----
+void pop_scene();
+----
+
+Pop the top scene from the stack.
+
+=== `push_scene`
+
+[source]
+----
+void push_scene(Scene* scene);
+----
+
+Push a single scene of the stack.
+
+=== `push_scenes`
+
+[source]
+----
+void push_scenes(Span<Scene*> scenes);
+----
+
+Push multiple scenes of the stack at once.
+
+=== `replace_scene`
+
+[source]
+----
+void replace_scene(Scene* scene); <1>
+void replace_scene(Span<Scene*> scenes); <2>
+----
+
+<1> Replace the top scene with a single scene.
+<2> Replace the top scene with multiple scenes.
+
+=== `replace_all_scenes`
+
+[source]
+----
+void replace_all_scenes(Scene* scene); <1>
+void replace_all_scenes(Span<Scene*> scenes); <2>
+----
+
+<1> Replace all the scenes with a single scene.
+<2> Replace all the scenes with multiple scenes.
+
+=== `run`
+
+[source]
+----
+int run(); <1>
+int run(Scene* scene); <2>
+----
+
+<1> Run the game loop with the current scenes
+<2> Push a scene and run the game loop
+
+Return an exit code that can be used as a return value for `main`.
