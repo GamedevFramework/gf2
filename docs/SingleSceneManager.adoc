@@ -35,7 +35,7 @@ Constructor of a scene manager with a title and a size for the window.
 [source]
 ----
 int run(); <1>
-int run(Scene* scene); <2>
+int run(BasicScene* scene); <2>
 ----
 
 <1> Run the game loop with the current scene

@@ -67,7 +67,7 @@ Pop the top scene from the stack.
 
 [source]
 ----
-void push_scene(Scene* scene);
+void push_scene(BasicScene* scene);
 ----
 
 Push a single scene of the stack.
@@ -76,7 +76,7 @@ Push a single scene of the stack.
 
 [source]
 ----
-void push_scenes(Span<Scene*> scenes);
+void push_scenes(Span<BasicScene*> scenes);
 ----
 
 Push multiple scenes of the stack at once.
@@ -85,8 +85,8 @@ Push multiple scenes of the stack at once.
 
 [source]
 ----
-void replace_scene(Scene* scene); <1>
-void replace_scene(Span<Scene*> scenes); <2>
+void replace_scene(BasicScene* scene); <1>
+void replace_scene(Span<BasicScene*> scenes); <2>
 ----
 
 <1> Replace the top scene with a single scene.
@@ -96,8 +96,8 @@ void replace_scene(Span<Scene*> scenes); <2>
 
 [source]
 ----
-void replace_all_scenes(Scene* scene); <1>
-void replace_all_scenes(Span<Scene*> scenes); <2>
+void replace_all_scenes(BasicScene* scene); <1>
+void replace_all_scenes(Span<BasicScene*> scenes); <2>
 ----
 
 <1> Replace all the scenes with a single scene.
@@ -108,7 +108,7 @@ void replace_all_scenes(Span<Scene*> scenes); <2>
 [source]
 ----
 int run(); <1>
-int run(Scene* scene); <2>
+int run(BasicScene* scene); <2>
 ----
 
 <1> Run the game loop with the current scenes

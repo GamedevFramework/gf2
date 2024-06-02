@@ -3,7 +3,7 @@ v0.1
 include::bits/attributes.adoc[]
 :toc: right
 
-A scene is responsible for handling the different steps of a game: process inputs, update the state, draw a frame.
+A standard scene is a scene with models, world entities and hud entities.
 
 xref:graphics_scenes.adoc[< Back to `graphics` Scenes]
 
@@ -12,336 +12,118 @@ xref:graphics_scenes.adoc[< Back to `graphics` Scenes]
 [source]
 ----
 #include <gf2/graphics/Scene.h>
-class Scene;
+class Scene : public BasicScene;
 ----
 
-In a game loop managed by a scene manager, the following methods are called in this order:
+*Inherits*: xref:BasicScene.adoc[`BasicScene`]
 
-- <<process_event>> for all pending events
-- <<handle_actions>> once all the events have been processed
-- <<update>>
-- <<render>>
+The standard scene has two parts: first the world entities that are meant to be drawn using the world camera (a `gf::CameraType::Extend` camera), second the HUD entities that are meant to be draw using the HUD camera (a `gf::CameraType::Window` camera).
 
-A scene has a *clear color* used to clear the rendering surface at the beginning.
-
-A scene have a *rank* determining its position in the stack of the scene manager (for scene managers that use a stack of scenes). It may be at the top of the stack, in the stack but not at the top or outside the stack.
-
-A scene can be either *paused* or *resumed*. A paused scene is not updated. In other words, the update step is discarded. It is the user's responsability to pause or resume a scene. An scene is always resumed when becoming the top scene.
-
-A scene can be either *hidden* or *shown*. A hidden scene is not rendererd. In other words, the render step is discarded. It is the user's responsability to hide or show a scene. An scene is always shown when becoming the top scene.
-
-This class is not meant to be used directly, it serves as a base class for scenes with more features:
-
-- xref:StandardScene.adoc[`gf::StandardScene`]
-
-== Protected Types
-
-[#scene_part]
-=== `ScenePart`
-
-[source]
-----
-struct ScenePart;
-----
-
-A part of a scene. A scene may be composed of several parts. This type is used by scenes for internal use.
-
-.Data members for `gf::ScenePart`
-[cols="1,1,2"]
-|===
-| Name | Type | Description
-
-| `entities`
-| xref:EntityContainer.adoc[`EntityContainer`]
-| An entity container.
-
-| `camera`
-| xref:Camera.adoc[`Camera`]
-| The camera used for the entities.
-|===
-
-See also: <<render_part>>
+See also: xref:Camera.adoc[`gf::Camera`]
 
 == Member Functions
 
-=== `clear_color`
+=== `add_hud_entity`
 
 [source]
 ----
-Color clear_color() const;
+void add_hud_entity(Entity* entity);
 ----
 
-Get the clear color of the scene.
+Add a HUD entity to the scene.
 
-See also: <<set_clear_color>>
+See also: <<add_world_entity>>
 
-=== `handle_actions`
+=== `add_model`
 
 [source]
 ----
-void handle_actions();
+void add_model(Model* model);
 ----
 
-Call <<do_handle_actions>>.
+Add a model to the scene.
 
-=== `hidden`
+=== `add_world_entity`
 
 [source]
 ----
-bool hidden() const;
+void add_world_entity(Entity* entity);
 ----
 
-Tell if this scene is hidden.
+Add a world entity to the scene.
 
-See also: <<hide>>, <<show>>
+See also: <<add_hud_entity>>
 
-=== `hide`
+=== `position_to_world_location`
 
 [source]
 ----
-void hide();
+Vec2F position_to_world_location(Vec2I position);
 ----
 
-Hide this scene, the scene is not rendered anymore. Call <<do_hide>>.
+Transform a position (typically from a mouse pointer) to a world location.
 
-See also: <<show>>, <<hidden>>
+See also: <<world_location_to_position>>
 
-=== `pause`
+=== `set_world_center`
 
 [source]
 ----
-void pause();
+void set_world_center(Vec2F center);
 ----
 
-Pause this scene, the scene is not updated anymore. Call <<do_pause>>.
+Set the center of the visible world.
 
-See also: <<resume>>, <<paused>>
+See also: <<set_world_size>>
 
-=== `paused`
+=== `set_world_size`
 
 [source]
 ----
-bool paused() const;
+void set_world_size(Vec2F size);
 ----
 
-Tell if the scene is paused.
+Set the size of the visible world.
 
-See also: <<pause>>, <<resume>>
+See also: <<set_world_center>>.
 
-=== `process_event`
+=== `world_location_to_position`
 
 [source]
 ----
-void process_event(const Event& event);
+Vec2I world_location_to_position(Vec2F location);
 ----
 
-First call <<do_early_process_event>> and if it returns `false`, then call <<do_process_event>>.
+Transform a world location to a position on the screen.
 
-=== `rank`
+See also: <<position_to_world_location>>
 
-[source]
-----
-SceneRank rank() const;
-----
-
-Get the rank of the scene.
-
-See also: <<set_rank>>
-
-=== `resume`
-
-[source]
-----
-void resume();
-----
-
-Resume this scene, the scene is updated again. Call <<do_resume>>.
-
-See also: <<pause>>, <<paused>>
-
-=== `render`
-
-[source]
-----
-void render(RenderRecorder& recorder);
-----
-
-If the scene is not hidden, call <<do_render>>.
-
-=== `set_clear_color`
-
-[source]
-----
-void set_clear_color(Color color);
-----
-
-Set the clear color of the scene.
-
-See also: <<clear_color>>
-
-=== `set_rank`
-
-[source]
-----
-void set_rank(SceneRank rank);
-----
-
-Set the rank of the scene. This function is called by the render manager when the user modifies the stack of scenes. If the new rank is different from the old rank, <<on_rank_change>> is called.
-
-See also: <<rank>>, <<on_rank_change>>
-
-=== `set_surface_size`
-
-[source]
-----
-void set_surface_size(Vec2I size);
-----
-
-Set the rendering surface size. This function is called by the render manager when the surface changes its size.
-
-See also: <<surface_size>>
-
-=== `show`
-
-[source]
-----
-void show();
-----
-
-Show this scene, the scene is rendered again. Call <<do_show>>.
-
-See also: <<hide>>, <<hidden>>
-
-=== `surface_size`
-
-[source]
-----
-Vec2I surface_size() const;
-----
-
-Get the rendering surface size.
-
-See also: <<set_surface_size>>
-
-=== `update`
-
-[source]
-----
-void update(Time time);
-----
-
-If the scene is not paused, call <<do_update>>
 
 == Protected Member Functions
 
-=== `render_part`
+=== `render_entities`
 
 [source]
 ----
-void render_part(RenderRecorder& recorder, ScenePart& part);
+void render_entities(RenderRecorder& recorder);
 ----
 
-Record the objects in the scene part.
+Render all the entities of the scene, first the world entities then the HUD entities. This function is called in the implementation of `do_render`.
 
-See also: <<scene_part>>
-
-== Private Virtual Member Functions
-
-=== `do_early_process_event`
+=== `update_entities`
 
 [source]
 ----
-virtual bool do_early_process_event(const Event& event);
+void update_entities(Time time);
 ----
 
-This function is called when <<process_event>> is called. By default, do nothing and return false.
+Update all the models and entities of the scene. This function is called in the implementation of `do_update`.
 
-The return value indicates if the event should be processed further. This is useful for user interfaces that may actually handle an event and do not want the rest of the game to handle the event.
-
-See also: <<do_process_event>>
-
-=== `do_handle_actions`
+=== `world_camera`
 
 [source]
 ----
-virtual void do_handle_actions();
+Camera* world_camera()
 ----
 
-This function is called when <<handle_actions>> is called. By default, do nothing.
-
-=== `do_hide`
-
-[source]
-----
-virtual void do_hide();
-----
-
-This function is called when <<hide>> is called. By default, do nothing.
-
-=== `do_pause`
-
-[source]
-----
-virtual void do_pause();
-----
-
-This function is called when <<pause>> is called. By default, do nothing.
-
-=== `do_process_event`
-
-[source]
-----
-virtual void do_process_event(const Event& event);
-----
-
-This function is called when <<process_event>> is called. By default, do nothing.
-
-See also: <<do_early_process_event>>
-
-=== `do_render`
-
-[source]
-----
-virtual void do_render(RenderRecorder& recorder);
-----
-
-This function is called when <<render>> is called. By default, do nothing.
-
-=== `do_resume`
-
-[source]
-----
-virtual void do_resume();
-----
-
-This function is called when <<resume>> is called. By default, do nothing.
-
-=== `do_show`
-
-[source]
-----
-virtual void do_show();
-----
-
-This function is called when <<show>> is called. By default, do nothing.
-
-=== `do_update`
-
-[source]
-----
-virtual void do_update(Time time);
-----
-
-This function is called when <<update>> is called. By default, do nothing.
-
-=== `on_rank_change`
-
-[source]
-----
-virtual void on_rank_change(SceneRank old_rank, SceneRank new_rank);
-----
-
-This function is called when the actual rank of the scene is modified.
-
-See also: <<set_rank>>
-
+Get the world camera.

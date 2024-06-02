@@ -6,9 +6,9 @@ include::bits/attributes.adoc[]
 The scenes component provides scenes and scene managers for various type of situations.
 
 A *scene* is a class that implements a single game loop with different methods. Sometimes called "game state", a scene is responsible for managing all the entities of a part of the game and handling the associated events.
-<<scene>> is the base class of all types of scene. Currently, the library offers the following types of scene:
+<<basic_scene>> is the base class of all types of scene. Currently, the library offers the following types of scene:
 
-- <<standard_scene>>: a scene with with models, world entities and hud entities
+- <<scene>>: a scene with with models, world entities and hud entities
 
 A *scene manager* handles one or more scenes, it is responsible for managing the main game loop with the different scenes. There is always a single game manager in a game.
 <<basic_scene_manager>> is the base class of all types of scene manager. Currently, the library offers the following types of scene manager:
@@ -19,6 +19,19 @@ A *scene manager* handles one or more scenes, it is responsible for managing the
 xref:reference.adoc#graphics[< Back to reference]
 
 == Types
+
+[#basic_scene]
+=== `gf::BasicScene`
+
+[source]
+----
+#include <gf2/graphics/Scene.h>
+class BasicScene;
+----
+
+A scene is responsible for handling the different steps of a game: process inputs, update the state, draw a frame. xref:BasicScene.adoc[*Read more...*]
+
+See also: <<scene>>
 
 [#basic_scene_manager]
 === `gf::BasicSceneManager`
@@ -39,12 +52,12 @@ See also: <<scene_manager>>, <<single_scene_manager>>
 [source]
 ----
 #include <gf2/graphics/Scene.h>
-class Scene;
+class Scene : public BasicScene;
 ----
 
-A scene is responsible for handling the different steps of a game: process inputs, update the state, draw a frame. xref:Scene.adoc[*Read more...*]
+A standard scene is a scene with models, world entities and hud entities. xref:Scene.adoc[*Read more...*]
 
-See also: <<standard_scene>>
+See also: <<basic_scene>>
 
 [#scene_manager]
 === `gf::SceneManager`
@@ -97,16 +110,3 @@ class SingleSceneManager : public BasicSceneManager;
 A single scene manager can handle a single scene. xref:SingleSceneManager.adoc[*Read more...*]
 
 See also: <<basic_scene_manager>>
-
-[#standard_scene]
-=== `gf::StandardScene`
-
-[source]
-----
-#include <gf2/graphics/Scene.h>
-class StandardScene : public Scene;
-----
-
-A standard scene is a scene with models, world entities and hud entities. xref:StandardScene.adoc[*Read more...*]
-
-See also: <<scene>>
