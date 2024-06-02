@@ -101,7 +101,7 @@ namespace {
     gf::ShapeEntity m_ball_entity;
   };
 
-  class PhysicsScene : public gf::StandardScene {
+  class PhysicsScene : public gf::Scene {
   public:
     PhysicsScene(gf::BasicSceneManager* scene_manager)
     : m_entity(scene_manager->render_manager(), m_random)

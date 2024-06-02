@@ -49,7 +49,7 @@ namespace {
     gf::TiledMap* m_map = nullptr;
   };
 
-  class TmxScene : public gf::StandardScene {
+  class TmxScene : public gf::Scene {
   public:
     TmxScene(const std::filesystem::path& path, gf::RenderManager* render_manager)
     : m_zoom(world_camera())

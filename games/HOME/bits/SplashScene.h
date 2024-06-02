@@ -13,7 +13,7 @@
 namespace home {
   class GameHub;
 
-  class SplashScene : public gf::StandardScene {
+  class SplashScene : public gf::Scene {
   public:
     SplashScene(GameHub* hub, const SplashData& data);
 

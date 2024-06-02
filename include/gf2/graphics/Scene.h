@@ -23,15 +23,15 @@ namespace gf {
     Top,
   };
 
-  class GF_GRAPHICS_API Scene {
+  class GF_GRAPHICS_API BasicScene {
   public:
-    Scene() = default;
-    Scene(const Scene&) = delete;
-    Scene(Scene&&) noexcept = default;
-    virtual ~Scene();
+    BasicScene() = default;
+    BasicScene(const BasicScene&) = delete;
+    BasicScene(BasicScene&&) noexcept = default;
+    virtual ~BasicScene();
 
-    Scene& operator=(const Scene&) = delete;
-    Scene& operator=(Scene&&) noexcept = default;
+    BasicScene& operator=(const BasicScene&) = delete;
+    BasicScene& operator=(BasicScene&&) noexcept = default;
 
     void set_surface_size(Vec2I size);
     Vec2I surface_size() const;
@@ -97,9 +97,9 @@ namespace gf {
     Color m_clear_color = Black;
   };
 
-  class GF_GRAPHICS_API StandardScene : public Scene {
+  class GF_GRAPHICS_API Scene : public BasicScene {
   public:
-    StandardScene();
+    Scene();
 
     void set_world_center(Vec2F center);
     void set_world_size(Vec2F size);

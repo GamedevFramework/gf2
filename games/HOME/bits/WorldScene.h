@@ -20,7 +20,7 @@
 namespace home {
   class GameHub;
 
-  class WorldScene : public gf::StandardScene {
+  class WorldScene : public gf::Scene {
   public:
     WorldScene(GameHub* hub, const WorldData& data);
 

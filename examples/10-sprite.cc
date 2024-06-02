@@ -21,7 +21,7 @@ int main()
   sprite_entity.set_origin({ 0.5f, 0.5f });
   sprite_entity.set_scale(0.1f);
 
-  gf::StandardScene scene;
+  gf::Scene scene;
   scene.set_world_center({ 1000.0f, 1000.0f });
   scene.set_world_size({ 200.0f, 200.0f });
 

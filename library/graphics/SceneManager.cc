@@ -321,7 +321,7 @@ namespace gf {
     return EXIT_SUCCESS;
   }
 
-  void SingleSceneManager::set_scene(Scene* scene)
+  void SingleSceneManager::set_scene(BasicScene* scene)
   {
     if (scene == nullptr) {
       return;
@@ -350,7 +350,7 @@ namespace gf {
     RenderRecorder recorder(render_manager());
 
     while (!m_curr_scenes.empty() && !window()->should_close()) {
-      std::vector<Scene*> scenes = m_curr_scenes; // make a copy to avoid iterator invalidation
+      std::vector<BasicScene*> scenes = m_curr_scenes; // make a copy to avoid iterator invalidation
       m_scenes_changed = false;
       auto surface_size = window()->surface_size();
 
@@ -414,7 +414,7 @@ namespace gf {
     return EXIT_SUCCESS;
   }
 
-  void SceneManager::push_scene(Scene* scene)
+  void SceneManager::push_scene(BasicScene* scene)
   {
     if (scene == nullptr) {
       return;
@@ -430,7 +430,7 @@ namespace gf {
     m_curr_scenes.back()->set_rank(SceneRank::Top);
   }
 
-  void SceneManager::push_scenes(Span<Scene*> scenes)
+  void SceneManager::push_scenes(Span<BasicScene*> scenes)
   {
     m_scenes_changed = true;
 

@@ -18,7 +18,7 @@
 #include "Window.h"
 
 namespace gf {
-  class Scene;
+  class BasicScene;
   class RenderRecorder;
 
   class GF_GRAPHICS_API BasicSceneManager {
@@ -69,16 +69,16 @@ namespace gf {
 
     int run();
 
-    int run(Scene* scene)
+    int run(BasicScene* scene)
     {
       set_scene(scene);
       return run();
     }
 
-    void set_scene(Scene* scene);
+    void set_scene(BasicScene* scene);
 
   private:
-    Scene* m_scene = nullptr;
+    BasicScene* m_scene = nullptr;
   };
 
   class GF_GRAPHICS_API SceneManager : public BasicSceneManager {
@@ -86,37 +86,37 @@ namespace gf {
     SceneManager(const std::string& title, Vec2I size, Flags<WindowHints> hints = All);
 
     int run();
-    int run(Scene* scene)
+    int run(BasicScene* scene)
     {
       push_scene(scene);
       return run();
     }
 
-    void push_scene(Scene* scene);
-    void push_scenes(Span<Scene*> scenes);
+    void push_scene(BasicScene* scene);
+    void push_scenes(Span<BasicScene*> scenes);
 
     void pop_scene();
     void pop_all_scenes();
 
-    void replace_scene(Scene* scene)
+    void replace_scene(BasicScene* scene)
     {
       pop_scene();
       push_scene(scene);
     }
 
-    void replace_scene(Span<Scene*> scenes)
+    void replace_scene(Span<BasicScene*> scenes)
     {
       pop_scene();
       push_scenes(scenes);
     }
 
-    void replace_all_scenes(Scene* scene)
+    void replace_all_scenes(BasicScene* scene)
     {
       pop_all_scenes();
       push_scene(scene);
     }
 
-    void replace_all_scenes(Span<Scene*> scenes)
+    void replace_all_scenes(Span<BasicScene*> scenes)
     {
       pop_all_scenes();
       push_scenes(scenes);
@@ -124,8 +124,8 @@ namespace gf {
 
   private:
     bool m_scenes_changed = false;
-    std::vector<Scene*> m_curr_scenes;
-    std::vector<Scene*> m_prev_scenes;
+    std::vector<BasicScene*> m_curr_scenes;
+    std::vector<BasicScene*> m_prev_scenes;
   };
 
 }

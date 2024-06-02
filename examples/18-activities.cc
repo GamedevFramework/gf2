@@ -87,7 +87,7 @@ int main()
 {
   gf::SingleSceneManager scene_manager("18-activities | gf2", gf::vec(1600, 900));
 
-  gf::StandardScene scene;
+  gf::Scene scene;
   scene.set_clear_color(gf::White);
   scene.set_world_center({ 320.0f, 240.0f });
   scene.set_world_size({ 640.0f, 480.0f });

@@ -37,7 +37,7 @@ int main()
 
   gf::CurveEntity spline_entity(spline_data, scene_manager.render_manager());
 
-  gf::StandardScene scene;
+  gf::Scene scene;
   scene.set_world_center({ 400.0f, 300.0f });
   scene.set_world_size({ 800.0f, 600.0f });
 

@@ -47,7 +47,7 @@ int main()
   curve_entity.set_location({ 1000.0f, 1026.0f });
   curve_entity.set_origin({ 0.5f, 0.5f });
 
-  gf::StandardScene scene;
+  gf::Scene scene;
   scene.set_world_center({ 1000.0f, 1000.0f });
   scene.set_world_size({ 500.0f, 500.0f });
   scene.set_clear_color(gf::White);

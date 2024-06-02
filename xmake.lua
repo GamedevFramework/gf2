@@ -8,7 +8,7 @@ add_requires("gtest", { configs = { gmock = false }})
 add_requires("miniaudio")
 add_requires("stb", { system = false })
 add_requires("vk-bootstrap")
-add_requires("volk", { configs = { header_only = true }})
+add_requires("volk")
 add_requires("vulkan-headers")
 add_requires("vulkan-memory-allocator")
 

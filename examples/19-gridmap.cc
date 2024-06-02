@@ -181,7 +181,7 @@ namespace {
     gf::Visibility visibility = gf::Visibility::ShadowCast;
   };
 
-  class GridScene : public gf::StandardScene {
+  class GridScene : public gf::Scene {
   public:
     GridScene(gf::BasicSceneManager* scene_manager)
     : m_scene_manager(scene_manager)
