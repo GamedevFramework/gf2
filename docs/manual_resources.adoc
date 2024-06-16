@@ -7,6 +7,8 @@ Loading (and unloading) resources is an essential task in a game.
 
 In this section, we try to understand how the resource system works and we learn how to define a bundle of ressources that can easily be loaded at any time.
 
+xref:manual.adoc[< Back to the manual]
+
 == Resources
 
 The library provides a component that can handle many types of resources in a very generic way. The heart of this component is xref:ResourceManager.adoc[`gf::ResourceManager`].
@@ -31,7 +33,7 @@ include::snippets/manual_resources.cc[tag=manual_configuration]
 
 === Resource System
 
-xref:ResourceSystem.adoc[`gf::ResourceSystem`] is a resource manager that contains the registries for all known resources in the library (see <<list_of_resources>>). It uses a file loader with a root asset directory passed at the construction of the system.
+xref:ResourceSystem.adoc[`gf::ResourceSystem`] is a resource manager that contains the registries for all known resources in the library (see <<list-of-resources>>). It uses a file loader with a root asset directory passed at the construction of the system.
 
 .Load an image with a `gf::ResourceSystem`
 [source,indent=0]
@@ -59,54 +61,78 @@ Finally, you can create a registry for the `sf::SoundBuffer` resource and add it
 include::snippets/manual_resources.cc[tag=sfml_loader_use]
 ----
 
-== Bundles
-
-
-
-// TODO: data classes
-// TODO: how to make a bundle
-
-
 === List of Resources
 
-The following table provides a list of resources in the gf2 library that can be loaded with a resource manager, either through a filename, or through an xref:InputStream.adoc[`InputStream`].
+The following table provides a list of resources in the gf2 library that can be loaded with a resource manager, either through a filename (with a xref:FileLoader.adoc[`gf::FileLoader`]), or through an xref:InputStream.adoc[`InputStream`] (with a xref:TarballLoader.adoc[`gf::TarballLoader`] or a xref:MemoryLoader.adoc[`gf::MemoryLoader`]).
 
 .List of Resources
 [cols="2,1,1,1,1,1"]
 |===
 | Resource | Library | File | Stream | Context? | Composite?
 
-| xref:FontFace.adoc[`FontFace`]
+| xref:FontFace.adoc[`gf::FontFace`]
 | `core`
 | &check;
 | &check;
 | &check;
 |
 
-| xref:Image.adoc[`Image`]
+| xref:Image.adoc[`gf::Image`]
 | `core`
 | &check;
 | &check;
 |
 |
 
-| xref:Music.adoc[`Music`]
+| xref:Music.adoc[`gf::Music`]
 | `audio`
 | &check;
 |
 | &check;
 |
 
-| xref:Sound.adoc[`Sound`]
+| xref:Sound.adoc[`gf::Sound`]
 | `audio`
 | &check;
 |
 | &check;
+|
+
+| xref:Texture.adoc[`gf::Texture`]
+| `graphics`
+| &check;
+| &check;
+| &check;
+|
+
+| xref:TiledMap.adoc[`gf::TiledMap`]
+| `graphics`
+| &check;
+|
+| &check;
+| &check;
+
+| xref:TiledMapResource.adoc[`gf::TiledMapResource`]
+| `core`
+| &check;
+|
+|
 |
 |===
 
 
-// TODO: update the list
+== Bundles
+
+In fact, you hardly ever load the resources directly. The library offers an advanced mechanism for managing all the resources of you game: xref:ResourceBundle.adoc[`gf::ResourceBundle`].
+
+=== Data Classes
+
+// TODO: data classes
+
+=== Bundle Creation
+
+// TODO: how to make a bundle
+
 
 
 == Asynchronous loading
