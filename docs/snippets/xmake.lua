@@ -21,4 +21,10 @@ if has_config("doc-examples") then
         add_files("main.cc")
         add_deps("gf2network0")
 
+    target("gf2manualdoc")
+        set_kind("binary")
+        add_files("manual_*.cc")
+        add_files("main.cc")
+        add_deps("gf2framework0", "gf2audio0", "gf2physics0", "gf2imgui0", "gf2graphics0", "gf2core0")
+
 end

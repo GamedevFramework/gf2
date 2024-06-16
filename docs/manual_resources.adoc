@@ -2,3 +2,119 @@
 v0.1
 include::bits/attributes.adoc[]
 :toc: right
+
+Loading (and unloading) resources is an essential task in a game.
+
+In this section, we try to understand how the resource system works and we learn how to define a bundle of ressources that can easily be loaded at any time.
+
+== Resources
+
+The library provides a component that can handle many types of resources in a very generic way. The heart of this component is xref:ResourceManager.adoc[`gf::ResourceManager`].
+
+=== Resource Manager
+
+The resource manager knows all the resource that have been loaded and how many times they have been loaded through a link:https://en.wikipedia.org/wiki/Reference_counting[reference couting] mechanism. Each time you call `load`, you increase the number of references, and each time you call `unload`, you decrease the number of references until it reaches zero and the resource is deleted. Once loaded, you can get a pointer to the resource as many times as you want.
+
+.Load an image with a `gf::ResourceManager`
+[source,indent=0]
+----
+include::snippets/manual_resources.cc[tag=simple_load]
+----
+
+In order to load a resource, you must have defined and registered a resource registry for the type of the resource. If you want maximum flexibility, you can define your own registries and their associated loaders.
+
+.Configure a `gf::ResourceManager`
+[source,indent=0]
+----
+include::snippets/manual_resources.cc[tag=manual_configuration]
+----
+
+=== Resource System
+
+xref:ResourceSystem.adoc[`gf::ResourceSystem`] is a resource manager that contains the registries for all known resources in the library (see <<list_of_resources>>). It uses a file loader with a root asset directory passed at the construction of the system.
+
+.Load an image with a `gf::ResourceSystem`
+[source,indent=0]
+----
+include::snippets/manual_resources.cc[tag=resource_system]
+----
+
+=== User-Defined Loader
+
+Sometimes you may want to define your own loader. For example, imagine you want to use link:https://www.sfml-dev.org/tutorials/2.6/#audio-module[SFML2 Audio module] (instead of xref:reference.adoc#audio[gf2 `audio` library]). The resource classes in SFML2 do not take a link:https://en.cppreference.com/w/cpp/filesystem/path[`std::filesystem::path`] in their constructor, they are loaded through a `loadFromFile` method.
+
+You can define your own loader for all SFML resources. This loader is very basic, it does not handle a root asset directory, but it can easily be tweaked for your own purpose.
+
+.Definition of a generic SFML resource loader
+[source,indent=0]
+----
+include::snippets/manual_resources.cc[tag=sfml_loader_definition]
+----
+
+Finally, you can create a registry for the `sf::SoundBuffer` resource and add it to a resource system. From now on, you will be able to use `sf::SoundBuffer` like any other resources in the library.
+
+.Use of the generic SFML resource loader
+[source,indent=0]
+----
+include::snippets/manual_resources.cc[tag=sfml_loader_use]
+----
+
+== Bundles
+
+
+
+// TODO: data classes
+// TODO: how to make a bundle
+
+
+=== List of Resources
+
+The following table provides a list of resources in the gf2 library that can be loaded with a resource manager, either through a filename, or through an xref:InputStream.adoc[`InputStream`].
+
+.List of Resources
+[cols="2,1,1,1,1,1"]
+|===
+| Resource | Library | File | Stream | Context? | Composite?
+
+| xref:FontFace.adoc[`FontFace`]
+| `core`
+| &check;
+| &check;
+| &check;
+|
+
+| xref:Image.adoc[`Image`]
+| `core`
+| &check;
+| &check;
+|
+|
+
+| xref:Music.adoc[`Music`]
+| `audio`
+| &check;
+|
+| &check;
+|
+
+| xref:Sound.adoc[`Sound`]
+| `audio`
+| &check;
+|
+| &check;
+|
+|===
+
+
+// TODO: update the list
+
+
+== Asynchronous loading
+
+
+
+== Conclusion
+
+*Next section: xref:manual_scenes.adoc[Scenes]*
+
+See also: xref:core_resources.adoc[`core` Resources]
