@@ -1,0 +1,18 @@
+= `framework` Systems
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The systems component provides high level versions of existing classes with more integrated features.
+
+xref:reference.adoc#framework[< Back to reference]
+
+== Types
+
+[#resource_system]
+=== `gf::ResourceSystem`
+
+
+[#scene_system]
+=== `gf::SceneSystem`
+

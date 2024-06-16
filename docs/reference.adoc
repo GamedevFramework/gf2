@@ -33,6 +33,8 @@ xref:index.adoc[< Back to main page]
 
 == `graphics`
 
+_Depends on <<core>>_
+
 * Windowing
 ** Initialization (`GraphicsInitializer`)
 ** xref:graphics_inputs.adoc[Inputs] (xref:Cursor.adoc[`Cursor`])
@@ -48,11 +50,15 @@ xref:index.adoc[< Back to main page]
 
 == `network`
 
+_Depends on <<core>>_
+
 - Initialization (`NetworkInitializer`)
 - xref:network_utilities.adoc[Utilities] (xref:Queue.adoc[`Queue<T>`], xref:Packet.adoc[`Packet`])
 - xref:network_sockets.adoc[Sockets] (xref:TcpSocket.adoc[`TcpSocket`], xref:TcpListener.adoc[`TcpListener`], xref:SocketSelector.adoc[`SocketSelector`], xref:UdpSocket.adoc[`UdpSocket`])
 
 == `audio`
+
+_Depends on <<core>>_
 
 - xref:audio_management.adoc[Management] (xref:AudioManager.adoc[`AudioManager`])
 - xref:audio_sources.adoc[Sources] (xref:Sound.adoc[`Sound`], xref:Music.adoc[`Music`])
@@ -60,10 +66,20 @@ xref:index.adoc[< Back to main page]
 
 == `physics`
 
+_Depends on <<core>>_
+
 - xref:physics_world.adoc[World] (`PhysicsWorld`, `PhysicsCollisionHandler`, `PhysicsDebug`)
 - xref:physics_objects.adoc[Objects] (`PhysicsBody`, `PhysicsShape`)
 
 == `imgui`
 
+_Depends on <<core>>, <<graphics>>_
+
 - xref:imgui_initialization.adoc[Initialization]
 - xref:imgui_management.adoc[Management] (xref:ImguiManager.adoc[`ImguiManager`], xref:ImguiEntity.adoc[`ImguiEntity`])
+
+== `framework`
+
+_Depends on <<core>>, <<graphics>>, <<audio>>_
+
+- xref:framework_systems.adoc[Systems] (`ResourceSystem`, `SceneSystem`)
