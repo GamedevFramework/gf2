@@ -13,6 +13,8 @@
 #include <gf2/graphics/Texture.h>
 #include <gf2/graphics/TiledMap.h>
 
+#include <utility>
+
 #include "FrameworkApi.h"
 
 namespace gf {
@@ -20,6 +22,16 @@ namespace gf {
   class GF_FRAMEWORK_API ResourceSystem : public ResourceManager {
   public:
     ResourceSystem(const std::filesystem::path& asset_directory);
+
+    void add_search_directory(std::filesystem::path directory)
+    {
+      m_file_loader.add_search_directory(std::move(directory));
+    }
+
+    std::filesystem::path search(const std::filesystem::path& relative_path)
+    {
+      return m_file_loader.search(relative_path);
+    }
 
   private:
     FileLoader m_file_loader;

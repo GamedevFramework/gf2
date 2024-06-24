@@ -1,0 +1,72 @@
+= `gf::SceneSystem` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+`SceneSystem` is a scene manager with additional features.
+
+The system provides:
+
+- xref:Random.adoc[`Random`]
+- xref:FontManager.adoc[`FontManager`]
+- xref:AudioManager.adoc[`AudioManager`]
+- xref:ResourceSystem.adoc[`ResourceSystem`]
+
+xref:framework_systems.adoc[< Back to `framework` Systems]
+
+== Description
+
+[source]
+----
+#include <gf2/framework/SceneSystem.h>
+class SceneSystem : public SceneManager;
+----
+
+*Inherits*: xref:SceneManager.adoc[`SceneManager`]
+
+== Member functions
+
+=== `SceneSystem` constructors
+
+[source]
+----
+SceneSystem(const std::string& title, Vec2I size, const std::filesystem::path& asset_directory);
+----
+
+Construct a scene manager with a title, a size and an asset directory as a root directory.
+
+=== `audio_manager`
+
+[source]
+----
+AudioManager* audio_manager();
+----
+
+Get an xref:AudioManager.adoc[`AudioManager`].
+
+=== `font_manager`
+
+[source]
+----
+FontManager* font_manager();
+----
+
+Get a xref:FontManager.adoc[`FontManager`].
+
+=== `random`
+
+[source]
+----
+Random* random();
+----
+
+Get an instance of xref:Random.adoc[`Random`].
+
+=== `resource_manager`
+
+[source]
+----
+ResourceSystem* resource_manager();
+----
+
+Get a xref:ResourceSystem.adoc[`ResourceSystem`].

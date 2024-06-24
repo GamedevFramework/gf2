@@ -12,7 +12,21 @@ xref:reference.adoc#framework[< Back to reference]
 [#resource_system]
 === `gf::ResourceSystem`
 
+[source]
+----
+#include <gf2/framework/ResourceSystem.h>
+class ResourceSystem : public ResourceManager;
+----
+
+`ResourceSystem` is a resource manager with predefined registries. xref:ResourceSystem.adoc[*Read more...*]
 
 [#scene_system]
 === `gf::SceneSystem`
 
+[source]
+----
+#include <gf2/framework/SceneSystem.h>
+class SceneSystem : public SceneManager;
+----
+
+`SceneSystem` is a scene manager with additional features. xref:SceneSystem.adoc[*Read more...*]

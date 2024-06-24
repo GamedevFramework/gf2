@@ -33,7 +33,7 @@ namespace gf {
       return &m_audio_manager;
     }
 
-    ResourceManager* resource_manager()
+    ResourceSystem* resource_manager()
     {
       return &m_resource_system;
     }

@@ -8,7 +8,7 @@
 namespace gf {
 
   /*
-   * Scene
+   * BasicScene
    */
 
   BasicScene::~BasicScene() = default;
@@ -169,7 +169,7 @@ namespace gf {
   }
 
   /*
-   * StandardScene
+   * Scene
    */
 
   Scene::Scene()
