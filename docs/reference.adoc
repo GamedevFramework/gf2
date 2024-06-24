@@ -45,7 +45,7 @@ _Depends on <<core>>_
 ** xref:graphics_primitives.adoc[Primitives] (`Renderer`, `RenderObject`, `Texture`, `Buffer`)
 ** xref:graphics_objects.adoc[Objects] (`Sprite`, `Text`, `Animation`)
 * Gaming
-** xref:graphics_scenes.adoc[Scenes] (`Scene`, `SceneManager`)
+** xref:graphics_scenes.adoc[Scenes] (xref:Scene.adoc[`Scene`], xref:SceneManager.adoc[`SceneManager`])
 ** xref:graphics_entities.adoc[Entities] (xref:Entity.adoc[`Entity`])
 
 == `network`
