@@ -12,6 +12,7 @@
 #include <gf2/audio/Sound.h>
 #include <gf2/graphics/Texture.h>
 #include <gf2/graphics/TiledMap.h>
+#include <gf2/graphics/ConsoleFont.h>
 
 #include <utility>
 
@@ -40,6 +41,7 @@ namespace gf {
     ResourceRegistry<FontFace> m_font_registry;
     ResourceRegistry<TiledMapResource> m_tiled_map_resource_registry;
     // from graphics
+    ResourceRegistry<ConsoleFont> m_console_font_registry;
     ResourceRegistry<Texture> m_texture_registry;
     ResourceRegistry<TiledMap> m_tiled_map_registry;
     // from audio
