@@ -72,12 +72,28 @@ namespace gf {
     void compute_field_of_vision(Vec2I origin, int range_limit, Visibility visibility);
     void compute_local_field_of_vision(Vec2I origin, int range_limit, Visibility visibility);
 
+    uint32_t tag(Vec2I position) const;
+    void set_tag(Vec2I position, uint32_t tag);
+
+    template<typename E, typename = std::enable_if_t<std::is_enum_v<E>>>
+    E tag_as(Vec2I position) const
+    {
+      return static_cast<E>(static_cast<std::underlying_type_t<E>>(tag(position)));
+    }
+
+    template<typename E, typename = std::enable_if_t<std::is_enum_v<E>>>
+    void set_tag(Vec2I position, E tag)
+    {
+      set_tag(position, static_cast<uint32_t>(static_cast<std::underlying_type_t<E>>(tag)));
+    }
+
   private:
     GridMap(Vec2I size, AnyGrid grid);
 
     void raw_compute_field_of_vision(Vec2I origin, int range_limit, Flags<CellProperty> properties, Visibility visibility);
 
     Array2D<Flags<CellProperty>> m_cells;
+    Array2D<uint32_t> m_tags;
     AnyGrid m_grid;
   };
 

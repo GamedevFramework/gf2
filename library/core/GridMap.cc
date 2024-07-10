@@ -10,10 +10,17 @@
 #include <gf2/core/Log.h>
 
 namespace gf {
+  namespace {
+
+    constexpr uint32_t DefaultTag = 0;
+
+  }
+
   using namespace operators;
 
   GridMap::GridMap(Vec2I size, AnyGrid grid)
   : m_cells(size, CellProperty::Transparent | CellProperty::Walkable)
+  , m_tags(size, DefaultTag)
   , m_grid(grid)
   {
   }
@@ -351,6 +358,24 @@ namespace gf {
   void GridMap::compute_local_field_of_vision(Vec2I origin, int range_limit, Visibility visibility)
   {
     raw_compute_field_of_vision(origin, range_limit, CellProperty::Visible, visibility);
+  }
+
+  uint32_t GridMap::tag(Vec2I position) const
+  {
+    if (!m_tags.valid(position)) {
+      return DefaultTag;
+    }
+
+    return m_tags(position);
+  }
+
+  void GridMap::set_tag(Vec2I position, uint32_t tag)
+  {
+    if (!m_tags.valid(position)) {
+      return;
+    }
+
+    m_tags(position) = tag;
   }
 
   void GridMap::raw_compute_field_of_vision(Vec2I origin, int range_limit, Flags<CellProperty> properties, Visibility visibility)
