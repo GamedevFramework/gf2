@@ -85,6 +85,11 @@ namespace gf {
     return m_cells.position_range();
   }
 
+  bool GridMap::valid(Vec2I position) const
+  {
+    return m_cells.valid(position);
+  }
+
   void GridMap::reset(Flags<CellProperty> properties)
   {
     for (auto& cell : m_cells) {

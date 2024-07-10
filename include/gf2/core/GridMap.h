@@ -47,6 +47,7 @@ namespace gf {
 
     Vec2I size() const;
     PositionRange position_range() const;
+    bool valid(Vec2I position) const;
 
     void reset(Flags<CellProperty> properties);
 
