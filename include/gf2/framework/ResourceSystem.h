@@ -3,6 +3,8 @@
 #ifndef GF_RESOURCE_SYSTEM_H
 #define GF_RESOURCE_SYSTEM_H
 
+#include <utility>
+
 #include <gf2/core/FontFace.h>
 #include <gf2/core/ResourceLoaders.h>
 #include <gf2/core/ResourceManager.h>
@@ -10,11 +12,9 @@
 
 #include <gf2/audio/Music.h>
 #include <gf2/audio/Sound.h>
+#include <gf2/graphics/ConsoleFont.h>
 #include <gf2/graphics/Texture.h>
 #include <gf2/graphics/TiledMap.h>
-#include <gf2/graphics/ConsoleFont.h>
-
-#include <utility>
 
 #include "FrameworkApi.h"
 

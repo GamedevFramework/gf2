@@ -7,16 +7,16 @@
 
 namespace gf {
 
-  struct GF_CORE_API NoneType { };
+  struct GF_CORE_API NoneType{};
   constexpr NoneType None = {};
 
-  struct GF_CORE_API AllType { };
+  struct GF_CORE_API AllType{};
   constexpr AllType All = {};
 
-  struct GF_CORE_API AnyType { };
+  struct GF_CORE_API AnyType{};
   constexpr AnyType Any = {};
 
-  struct GF_CORE_API ZeroType { };
+  struct GF_CORE_API ZeroType{};
   constexpr ZeroType Zero = {};
 
 } // namespace gf

@@ -80,7 +80,7 @@ namespace gf {
       return raw_print(area, message, alignment, rich_style, PrintSplit | PrintCount | PrintSimple);
     }
 
-    // rich console style versions
+    // console rich style versions
 
     template<typename... T>
     void print(Vec2I position, ConsoleAlignment alignment, const ConsoleRichStyle& style, fmt::format_string<T...> fmt, T&&... args)
