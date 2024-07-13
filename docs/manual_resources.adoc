@@ -70,6 +70,13 @@ The following table provides a list of resources in the gf2 library that can be 
 |===
 | Resource | Library | File | Stream | Context? | Composite?
 
+| xref:ConsoleFont.adoc[`gf::ConsoleFont`]
+| `graphics`
+| &check;
+|
+| &check;
+|
+
 | xref:FontFace.adoc[`gf::FontFace`]
 | `core`
 | &check;
