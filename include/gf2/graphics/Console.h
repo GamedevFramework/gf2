@@ -3,7 +3,7 @@
 #ifndef GF_CONSOLE_H
 #define GF_CONSOLE_H
 
-#include <gf2/core/ConsoleData.h>
+#include <gf2/core/ConsoleBuffer.h>
 
 #include "ConsoleFont.h"
 #include "DynamicBuffer.h"
@@ -17,7 +17,7 @@ namespace gf {
   class GF_GRAPHICS_API Console {
   public:
     Console();
-    Console(const ConsoleFont* font, const ConsoleData& data, RenderManager* render_manager);
+    Console(const ConsoleFont* font, const ConsoleBuffer& buffer, RenderManager* render_manager);
     Console(const ConsoleResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
     const ConsoleFont* font() const
@@ -30,7 +30,7 @@ namespace gf {
       m_font = font;
     }
 
-    void update(const ConsoleData& data, RenderManager* render_manager);
+    void update(const ConsoleBuffer& buffer, RenderManager* render_manager);
 
     RenderGeometry background_geometry() const;
     RenderGeometry foreground_geometry() const;
@@ -41,8 +41,8 @@ namespace gf {
     }
 
   private:
-    void update_background(const ConsoleData& data, RenderManager* render_manager);
-    void update_foreground(const ConsoleData& data, RenderManager* render_manager);
+    void update_background(const ConsoleBuffer& buffer, RenderManager* render_manager);
+    void update_foreground(const ConsoleBuffer& buffer, RenderManager* render_manager);
 
     const ConsoleFont* m_font = nullptr;
     DynamicBuffer m_background_vertices;

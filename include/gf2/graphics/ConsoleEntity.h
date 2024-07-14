@@ -12,7 +12,7 @@ namespace gf {
   class GF_GRAPHICS_API ConsoleEntity : public TransformableEntity {
   public:
     ConsoleEntity() = default;
-    ConsoleEntity(const ConsoleFont* font, const ConsoleData& data, RenderManager* render_manager);
+    ConsoleEntity(const ConsoleFont* font, const ConsoleBuffer& buffer, RenderManager* render_manager);
     ConsoleEntity(const ConsoleResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
     Console& console()

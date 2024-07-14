@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
-#ifndef GF_CONSOLE_DATA_H
-#define GF_CONSOLE_DATA_H
+#ifndef GF_CONSOLE_BUFFER_H
+#define GF_CONSOLE_BUFFER_H
 
 #include <cstdint>
 
@@ -31,11 +31,11 @@ namespace gf {
     return ar | cell.foreground | cell.background | cell.character;
   }
 
-  struct GF_CORE_API ConsoleData {
-    Array2D<ConsoleCell> screen;
+  struct GF_CORE_API ConsoleBuffer {
+    Array2D<ConsoleCell> cells;
 
-    ConsoleData(Vec2I size = { 0, 0 })
-    : screen(size)
+    ConsoleBuffer(Vec2I size = { 0, 0 })
+    : cells(size)
     {
     }
 
@@ -119,7 +119,7 @@ namespace gf {
       raw_draw_frame(area, style, actual_title);
     }
 
-    void blit_to(ConsoleData& console, RectI source, Vec2I destination, float foreground_alpha = 1.0f, float background_alpha = 1.0f) const;
+    void blit_to(ConsoleBuffer& console, RectI source, Vec2I destination, float foreground_alpha = 1.0f, float background_alpha = 1.0f) const;
 
   private:
     static constexpr uint8_t PrintSplit = 0x01;
@@ -133,22 +133,22 @@ namespace gf {
   };
 
   template<typename Archive>
-  Archive& operator|(Archive& ar, MaybeConst<ConsoleData, Archive>& data)
+  Archive& operator|(Archive& ar, MaybeConst<ConsoleBuffer, Archive>& buffer)
   {
-    return ar | data.screen;
+    return ar | buffer.cells;
   }
 
   struct GF_CORE_API ConsoleResource {
     std::filesystem::path console_font;
-    ConsoleData data;
+    ConsoleBuffer buffer;
   };
 
   template<typename Archive>
   Archive& operator|(Archive& ar, MaybeConst<ConsoleResource, Archive>& resource)
   {
-    return ar | resource.console_font | resource.data;
+    return ar | resource.console_font | resource.buffer;
   }
 
 }
 
-#endif // GF_CONSOLE_DATA_H
+#endif // GF_CONSOLE_BUFFER_H

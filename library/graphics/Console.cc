@@ -21,28 +21,28 @@ namespace gf {
     m_foreground_indices.set_debug_name("[gf2] Console Foreground Index Buffer");
   }
 
-  Console::Console(const ConsoleFont* font, const ConsoleData& data, RenderManager* render_manager)
+  Console::Console(const ConsoleFont* font, const ConsoleBuffer& buffer, RenderManager* render_manager)
   : Console()
   {
     m_font = font;
-    update(data, render_manager);
+    update(buffer, render_manager);
   }
 
   Console::Console(const ConsoleResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
-  : Console(resource_manager->get<ConsoleFont>(resource.console_font), resource.data, render_manager)
+  : Console(resource_manager->get<ConsoleFont>(resource.console_font), resource.buffer, render_manager)
   {
   }
 
-  void Console::update(const ConsoleData& data, RenderManager* render_manager)
+  void Console::update(const ConsoleBuffer& buffer, RenderManager* render_manager)
   {
     if (m_font == nullptr) {
       return;
     }
 
-    update_background(data, render_manager);
-    update_foreground(data, render_manager);
+    update_background(buffer, render_manager);
+    update_foreground(buffer, render_manager);
 
-    m_bounds = RectF::from_size(data.screen.size() * m_font->character_size());
+    m_bounds = RectF::from_size(buffer.cells.size() * m_font->character_size());
   }
 
   RenderGeometry Console::background_geometry() const
@@ -64,12 +64,12 @@ namespace gf {
     return geometry;
   }
 
-  void Console::update_background(const ConsoleData& data, RenderManager* render_manager)
+  void Console::update_background(const ConsoleBuffer& buffer, RenderManager* render_manager)
   {
     RawGeometry geometry;
 
-    for (auto position : data.screen.position_range()) {
-      const auto& cell = data.screen(position);
+    for (auto position : buffer.cells.position_range()) {
+      const auto& cell = buffer.cells(position);
 
       const RectF bounds = RectF::from_position_size(position * m_font->character_size(), m_font->character_size());
       const Vec2F texture_coordinates = { 0.0f, 0.0f };
@@ -97,12 +97,12 @@ namespace gf {
     m_background_indices.update(geometry.indices.data(), geometry.indices.size(), render_manager);
   }
 
-  void Console::update_foreground(const ConsoleData& data, RenderManager* render_manager)
+  void Console::update_foreground(const ConsoleBuffer& buffer, RenderManager* render_manager)
   {
     RawGeometry geometry;
 
-    for (auto position : data.screen.position_range()) {
-      const auto& cell = data.screen(position);
+    for (auto position : buffer.cells.position_range()) {
+      const auto& cell = buffer.cells(position);
 
       const Vec2I character_size = m_font->character_size();
       const RectI bounds = RectI::from_position_size(position * character_size, character_size);
