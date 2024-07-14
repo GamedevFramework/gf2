@@ -187,13 +187,13 @@ namespace {
     : m_scene_manager(scene_manager)
     , m_grid_entity(scene_manager)
     {
-      m_actions.add_action("RayCast"_id, gf::ActionData().add_keycode_control(gf::Keycode::Num1));
-      m_actions.add_action("ShadowCast"_id, gf::ActionData().add_keycode_control(gf::Keycode::Num2));
-      m_actions.add_action("DiamondWalls"_id, gf::ActionData().add_keycode_control(gf::Keycode::Num3));
-      m_actions.add_action("Permissive"_id, gf::ActionData().add_keycode_control(gf::Keycode::Num4));
-      m_actions.add_action("Improved"_id, gf::ActionData().add_keycode_control(gf::Keycode::Num5));
+      m_actions.add_action("RayCast"_id, gf::ActionSettings().add_keycode_control(gf::Keycode::Num1));
+      m_actions.add_action("ShadowCast"_id, gf::ActionSettings().add_keycode_control(gf::Keycode::Num2));
+      m_actions.add_action("DiamondWalls"_id, gf::ActionSettings().add_keycode_control(gf::Keycode::Num3));
+      m_actions.add_action("Permissive"_id, gf::ActionSettings().add_keycode_control(gf::Keycode::Num4));
+      m_actions.add_action("Improved"_id, gf::ActionSettings().add_keycode_control(gf::Keycode::Num5));
 
-      m_actions.add_action("clear"_id, gf::ActionData().add_keycode_control(gf::Keycode::C));
+      m_actions.add_action("clear"_id, gf::ActionSettings().add_keycode_control(gf::Keycode::C));
 
       set_world_size(MapSize * CellSize);
       set_world_center(MapSize * CellSize / 2);

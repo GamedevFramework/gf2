@@ -8,21 +8,21 @@
 #include <gf2/core/Log.h>
 
 namespace gf {
-  ActionGroup::ActionGroup(const ActionGroupData& data)
+  ActionGroup::ActionGroup(const ActionGroupSettings& settings)
   {
-    for (const auto& [id, action] : data.actions) {
+    for (const auto& [id, action] : settings.actions) {
       add_action(id, action);
     }
   }
 
-  void ActionGroup::add_action(std::string_view name, const ActionData& data)
+  void ActionGroup::add_action(std::string_view name, const ActionSettings& settings)
   {
-    m_actions.emplace(gf::hash_string(name), Action(data));
+    m_actions.emplace(gf::hash_string(name), Action(settings));
   }
 
-  void ActionGroup::add_action(Id id, const ActionData& data)
+  void ActionGroup::add_action(Id id, const ActionSettings& settings)
   {
-    m_actions.emplace(id, Action(data));
+    m_actions.emplace(id, Action(settings));
   }
 
   void ActionGroup::add_action(std::string_view name, Action action)

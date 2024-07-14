@@ -1,6 +1,6 @@
-#include <gf2/core/ActionData.h>
+#include <gf2/core/ActionSettings.h>
 #include <gf2/core/AnimationData.h>
-#include <gf2/core/ControlData.h>
+#include <gf2/core/ControlSettings.h>
 #include <gf2/core/Property.h>
 #include <gf2/core/SerializationOps.h>
 #include <gf2/core/SpriteData.h>
@@ -120,14 +120,14 @@ TEST(DataTest, TiledMapData) {
 }
 
 TEST(DataTest, ControlData) {
-  gf::ControlData data = {};
+  gf::ControlSettings data = {};
 
   serialize(data);
   deserialize(data);
 }
 
 TEST(DataTest, ActionData) {
-  gf::ActionGroupData data = {};
+  gf::ActionGroupSettings data = {};
 
   serialize(data);
   deserialize(data);

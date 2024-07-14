@@ -10,7 +10,7 @@ namespace home {
 
     // action_group
 
-    action_group.actions.emplace("click"_id, gf::ActionData(gf::ActionType::Instantaneous).add_mouse_button_control(gf::AnyMouseButton));
+    action_group.actions.emplace("click"_id, gf::ActionSettings(gf::ActionType::Instantaneous).add_mouse_button_control(gf::AnyMouseButton));
 
     // title_sprite
 

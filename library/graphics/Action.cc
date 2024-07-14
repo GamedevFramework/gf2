@@ -13,10 +13,10 @@ namespace gf {
   {
   }
 
-  Action::Action(const ActionData& data)
-  : m_type(data.type)
+  Action::Action(const ActionSettings& settings)
+  : m_type(settings.type)
   {
-    for (const auto& control : data.controls) {
+    for (const auto& control : settings.controls) {
       add_control(control);
     }
   }
@@ -43,52 +43,52 @@ namespace gf {
 
   void Action::add_keycode_control(Keycode keycode, Flags<Modifier> modifiers)
   {
-    ControlData data = {};
-    data.type = ControlType::Keycode;
-    data.keycode.keycode = keycode;
-    data.keycode.modifiers = modifiers;
-    add_control(data);
+    ControlSettings settings = {};
+    settings.type = ControlType::Keycode;
+    settings.keycode.keycode = keycode;
+    settings.keycode.modifiers = modifiers;
+    add_control(settings);
   }
 
   void Action::add_scancode_control(Scancode scancode, Flags<Modifier> modifiers)
   {
-    ControlData data = {};
-    data.type = ControlType::Scancode;
-    data.scancode.scancode = scancode;
-    data.scancode.modifiers = modifiers;
-    add_control(data);
+    ControlSettings settings = {};
+    settings.type = ControlType::Scancode;
+    settings.scancode.scancode = scancode;
+    settings.scancode.modifiers = modifiers;
+    add_control(settings);
   }
 
   void Action::add_mouse_button_control(MouseButton button)
   {
-    ControlData data = {};
-    data.type = ControlType::MouseButton;
-    data.mouse_button.button = button;
-    add_control(data);
+    ControlSettings settings = {};
+    settings.type = ControlType::MouseButton;
+    settings.mouse_button.button = button;
+    add_control(settings);
   }
 
   void Action::add_gamepad_button_control(GamepadId gamepad_id, GamepadButton button)
   {
-    ControlData data = {};
-    data.type = ControlType::GamepadButton;
-    data.gamepad_button.gamepad_id = gamepad_id;
-    data.gamepad_button.button = button;
-    add_control(data);
+    ControlSettings settings = {};
+    settings.type = ControlType::GamepadButton;
+    settings.gamepad_button.gamepad_id = gamepad_id;
+    settings.gamepad_button.button = button;
+    add_control(settings);
   }
 
   void Action::add_gamepad_axis_control(GamepadId gamepad_id, GamepadAxis axis, GamepadAxisDirection direction)
   {
-    ControlData data = {};
-    data.type = ControlType::GamepadAxis;
-    data.gamepad_axis.gamepad_id = gamepad_id;
-    data.gamepad_axis.axis = axis;
-    data.gamepad_axis.direction = direction;
-    add_control(data);
+    ControlSettings settings = {};
+    settings.type = ControlType::GamepadAxis;
+    settings.gamepad_axis.gamepad_id = gamepad_id;
+    settings.gamepad_axis.axis = axis;
+    settings.gamepad_axis.direction = direction;
+    add_control(settings);
   }
 
-  void Action::add_control(const ControlData& data)
+  void Action::add_control(const ControlSettings& settings)
   {
-    add_control(Control(data));
+    add_control(Control(settings));
   }
 
   void Action::add_control(const Control& control)

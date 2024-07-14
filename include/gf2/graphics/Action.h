@@ -5,7 +5,7 @@
 
 #include <vector>
 
-#include <gf2/core/ActionData.h>
+#include <gf2/core/ActionSettings.h>
 
 #include "Control.h"
 #include "GraphicsApi.h"
@@ -15,7 +15,7 @@ namespace gf {
   class GF_GRAPHICS_API Action {
   public:
     Action(ActionType type = ActionType::Instantaneous);
-    Action(const ActionData& data);
+    Action(const ActionSettings& settings);
 
     void set_continuous();
     bool continuous() const;
@@ -30,7 +30,7 @@ namespace gf {
     void add_gamepad_axis_control(GamepadId gamepad_id, GamepadAxis axis, GamepadAxisDirection direction);
 
     void add_control(const Control& control);
-    void add_control(const ControlData& data);
+    void add_control(const ControlSettings& settings);
 
     const Control* begin() const
     {

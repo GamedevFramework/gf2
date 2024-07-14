@@ -5,7 +5,7 @@
 
 #include <string_view>
 
-#include <gf2/core/ActionData.h>
+#include <gf2/core/ActionSettings.h>
 #include <gf2/core/Id.h>
 
 #include "Action.h"
@@ -16,10 +16,10 @@ namespace gf {
   class GF_GRAPHICS_API ActionGroup {
   public:
     ActionGroup() = default;
-    ActionGroup(const ActionGroupData& data);
+    ActionGroup(const ActionGroupSettings& settings);
 
-    void add_action(std::string_view name, const ActionData& data);
-    void add_action(Id id, const ActionData& data);
+    void add_action(std::string_view name, const ActionSettings& settings);
+    void add_action(Id id, const ActionSettings& settings);
     void add_action(std::string_view name, Action action);
     void add_action(Id id, Action action);
 
