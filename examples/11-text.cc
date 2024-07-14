@@ -39,11 +39,11 @@ int main()
 
   const float width = text_entity.text().bounds().extent.w;
 
-  gf::CurveData curve_data = gf::CurveData::make_line({ 0.0f, 0.0f }, { 1.02f * width, 0.0f });
-  curve_data.color = gf::Orange;
-  curve_data.thickness = 4.0f;
+  gf::CurveBuffer curve_buffer = gf::CurveBuffer::make_line({ 0.0f, 0.0f }, { 1.02f * width, 0.0f });
+  curve_buffer.color = gf::Orange;
+  curve_buffer.thickness = 4.0f;
 
-  gf::CurveEntity curve_entity(curve_data, scene_manager.render_manager());
+  gf::CurveEntity curve_entity(curve_buffer, scene_manager.render_manager());
   curve_entity.set_location({ 1000.0f, 1026.0f });
   curve_entity.set_origin({ 0.5f, 0.5f });
 

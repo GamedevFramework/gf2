@@ -24,7 +24,7 @@ namespace gf {
     }
 
     template<typename Geometry>
-    void compute_curve_geometry(Geometry& geometry, const CurveData& data, float half_width, Color color)
+    void compute_curve_geometry(Geometry& geometry, const CurveBuffer& data, float half_width, Color color)
     {
       assert(data.points.size() >= 2);
       const Color linear_color = gf::srgb_to_linear(color);
@@ -97,7 +97,7 @@ namespace gf {
       RectF bounds = {};
     };
 
-    RawInteriorCurveGeometry compute_interior_curve_geometry(const CurveData& data)
+    RawInteriorCurveGeometry compute_interior_curve_geometry(const CurveBuffer& data)
     {
       RawInteriorCurveGeometry geometry;
       compute_curve_geometry(geometry, data, data.thickness / 2.0f, data.color);
@@ -113,7 +113,7 @@ namespace gf {
 
     using RawOutlineCurveGeometry = RawGeometry;
 
-    RawOutlineCurveGeometry compute_outline_curve_geometry(const CurveData& data)
+    RawOutlineCurveGeometry compute_outline_curve_geometry(const CurveBuffer& data)
     {
       RawOutlineCurveGeometry geometry;
       compute_curve_geometry(geometry, data, data.thickness / 2.0f + data.outline_thickness, data.outline_color);
@@ -128,15 +128,15 @@ namespace gf {
    * Curve
    */
 
-  Curve::Curve(const CurveData& data, RenderManager* render_manager)
+  Curve::Curve(const CurveBuffer& buffer, RenderManager* render_manager)
   {
-    auto raw_interior = compute_interior_curve_geometry(data);
+    auto raw_interior = compute_interior_curve_geometry(buffer);
     m_vertices = Buffer(BufferType::Device, BufferUsage::Vertex, raw_interior.vertices.data(), raw_interior.vertices.size(), render_manager);
     m_indices = Buffer(BufferType::Device, BufferUsage::Index, raw_interior.indices.data(), raw_interior.indices.size(), render_manager);
     m_bounds = raw_interior.bounds;
 
-    if (data.outline_thickness > 0.0f) {
-      auto raw_outline = compute_outline_curve_geometry(data);
+    if (buffer.outline_thickness > 0.0f) {
+      auto raw_outline = compute_outline_curve_geometry(buffer);
       m_outline_vertices = Buffer(BufferType::Device, BufferUsage::Vertex, raw_outline.vertices.data(), raw_outline.vertices.size(), render_manager);
       m_outline_indices = Buffer(BufferType::Device, BufferUsage::Index, raw_outline.indices.data(), raw_outline.indices.size(), render_manager);
     }
@@ -181,17 +181,17 @@ namespace gf {
     m_indices.set_debug_name("[gf2] Curve Group Index Buffer");
   }
 
-  CurveGroup::CurveGroup(const CurveGroupData& data, RenderManager* render_manager)
+  CurveGroup::CurveGroup(const CurveGroupBuffer& buffer, RenderManager* render_manager)
   : CurveGroup()
   {
-    update(data, render_manager);
+    update(buffer, render_manager);
   }
 
-  void CurveGroup::update(const CurveGroupData& data, RenderManager* render_manager)
+  void CurveGroup::update(const CurveGroupBuffer& buffer, RenderManager* render_manager)
   {
     RawCurveGeometry geometry;
 
-    for (const auto& curve : data.curves) {
+    for (const auto& curve : buffer.curves) {
       auto raw_interior = compute_interior_curve_geometry(curve);
       geometry.merge_with(raw_interior);
 

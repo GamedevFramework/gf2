@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
-#ifndef GF_CURVE_DATA_H
-#define GF_CURVE_DATA_H
+#ifndef GF_CURVE_BUFFER_H
+#define GF_CURVE_BUFFER_H
 
 #include <cstdint>
 
@@ -37,12 +37,12 @@ namespace gf {
     PolylineType type = PolylineType::Chain;
   };
 
-  struct GF_CORE_API CurveData {
-    static CurveData make_line(Vec2F p0, Vec2F p1);
-    static CurveData make_compound_curve(Span<const Vec2F> points, PolylineType type = PolylineType::Chain);
-    static CurveData make_quadratic_bezier(Vec2F p0, Vec2F p1, Vec2F p2, uint32_t point_count = 20);
-    static CurveData make_cubic_bezier(Vec2F p0, Vec2F p1, Vec2F p2, Vec2F p3, uint32_t point_count = 30);
-    static CurveData make_cattmull_rom_spline(Span<const Vec2F> points, PolylineType type = PolylineType::Chain, CattmullRomType spline_type = CattmullRomType::Centripetal, uint32_t point_count = 30);
+  struct GF_CORE_API CurveBuffer {
+    static CurveBuffer make_line(Vec2F p0, Vec2F p1);
+    static CurveBuffer make_compound_curve(Span<const Vec2F> points, PolylineType type = PolylineType::Chain);
+    static CurveBuffer make_quadratic_bezier(Vec2F p0, Vec2F p1, Vec2F p2, uint32_t point_count = 20);
+    static CurveBuffer make_cubic_bezier(Vec2F p0, Vec2F p1, Vec2F p2, Vec2F p3, uint32_t point_count = 30);
+    static CurveBuffer make_cattmull_rom_spline(Span<const Vec2F> points, PolylineType type = PolylineType::Chain, CattmullRomType spline_type = CattmullRomType::Centripetal, uint32_t point_count = 30);
 
     std::vector<Vec2F> points;
     PolylineType type = PolylineType::Chain;
@@ -53,21 +53,21 @@ namespace gf {
   };
 
   template<typename Archive>
-  inline Archive& operator|(Archive& ar, MaybeConst<CurveData, Archive>& data)
+  inline Archive& operator|(Archive& ar, MaybeConst<CurveBuffer, Archive>& buffer)
   {
-    return ar | data.points | data.type | data.thickness | data.color | data.outline_thickness | data.outline_color;
+    return ar | buffer.points | buffer.type | buffer.thickness | buffer.color | buffer.outline_thickness | buffer.outline_color;
   }
 
-  struct GF_CORE_API CurveGroupData {
-    std::vector<CurveData> curves;
+  struct GF_CORE_API CurveGroupBuffer {
+    std::vector<CurveBuffer> curves;
   };
 
   template<typename Archive>
-  inline Archive& operator|(Archive& ar, MaybeConst<CurveGroupData, Archive>& data)
+  inline Archive& operator|(Archive& ar, MaybeConst<CurveGroupBuffer, Archive>& buffer)
   {
-    return ar | data.curves;
+    return ar | buffer.curves;
   }
 
 }
 
-#endif // GF_CURVE_DATA_H
+#endif // GF_CURVE_BUFFER_H

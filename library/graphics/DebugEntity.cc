@@ -39,14 +39,14 @@ namespace gf {
     shape.outline_color = outline_color;
     m_shape_group_data.shapes.push_back(std::move(shape));
 
-    auto curve = CurveData::make_line(center, center + radius * unit(angle));
+    auto curve = CurveBuffer::make_line(center, center + radius * unit(angle));
     curve.color = outline_color;
     m_curve_group_data.curves.push_back(std::move(curve));
   }
 
   void DebugEntity::draw_segment(Vec2F a, Vec2F b, Color color)
   {
-    auto curve = CurveData::make_line(a, b);
+    auto curve = CurveBuffer::make_line(a, b);
     curve.color = color;
     m_curve_group_data.curves.push_back(std::move(curve));
   }
@@ -55,7 +55,7 @@ namespace gf {
   {
     fill_color.a = DebugAlpha;
 
-    auto curve = CurveData::make_line(a, b);
+    auto curve = CurveBuffer::make_line(a, b);
     curve.thickness = 2.0f * radius;
     curve.color = fill_color;
     curve.outline_thickness = DebugLineThickness;

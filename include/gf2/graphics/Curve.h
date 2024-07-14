@@ -5,7 +5,7 @@
 
 #include <optional>
 
-#include <gf2/core/CurveData.h>
+#include <gf2/core/CurveBuffer.h>
 #include <gf2/core/Rect.h>
 
 #include "Buffer.h"
@@ -24,7 +24,7 @@ namespace gf {
 
   class GF_GRAPHICS_API Curve {
   public:
-    Curve(const CurveData& data, RenderManager* render_manager);
+    Curve(const CurveBuffer& buffer, RenderManager* render_manager);
 
     CurveGeometry geometry() const;
 
@@ -44,9 +44,9 @@ namespace gf {
   class GF_GRAPHICS_API CurveGroup {
   public:
     CurveGroup();
-    CurveGroup(const CurveGroupData& data, RenderManager* render_manager);
+    CurveGroup(const CurveGroupBuffer& buffer, RenderManager* render_manager);
 
-    void update(const CurveGroupData& data, RenderManager* render_manager);
+    void update(const CurveGroupBuffer& buffer, RenderManager* render_manager);
 
     RenderGeometry geometry() const;
 

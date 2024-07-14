@@ -23,19 +23,19 @@ int main()
     { 600.0f, 500.0f },
   };
 
-  gf::CurveData line_data = gf::CurveData::make_line({ 10.0f, 10.0f }, { 250.0f, 450.0f });
-  line_data.color = gf::Chartreuse;
-  line_data.thickness = 10.0f;
+  gf::CurveBuffer line_buffer = gf::CurveBuffer::make_line({ 10.0f, 10.0f }, { 250.0f, 450.0f });
+  line_buffer.color = gf::Chartreuse;
+  line_buffer.thickness = 10.0f;
 
-  gf::CurveEntity line_entity(line_data, scene_manager.render_manager());
+  gf::CurveEntity line_entity(line_buffer, scene_manager.render_manager());
 
-  gf::CurveData spline_data = gf::CurveData::make_cattmull_rom_spline(SplinePoints);
-  spline_data.color = gf::Orange;
-  spline_data.thickness = 8.0f;
-  spline_data.outline_color = gf::darker(gf::Orange);
-  spline_data.outline_thickness = 2.0f;
+  gf::CurveBuffer spline_buffer = gf::CurveBuffer::make_cattmull_rom_spline(SplinePoints);
+  spline_buffer.color = gf::Orange;
+  spline_buffer.thickness = 8.0f;
+  spline_buffer.outline_color = gf::darker(gf::Orange);
+  spline_buffer.outline_thickness = 2.0f;
 
-  gf::CurveEntity spline_entity(spline_data, scene_manager.render_manager());
+  gf::CurveEntity spline_entity(spline_buffer, scene_manager.render_manager());
 
   gf::Scene scene;
   scene.set_world_center({ 400.0f, 300.0f });

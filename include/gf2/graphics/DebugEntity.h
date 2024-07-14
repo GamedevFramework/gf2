@@ -35,7 +35,7 @@ namespace gf {
 
     ShapeGroupData m_shape_group_data;
     ShapeGroup m_shape_group;
-    CurveGroupData m_curve_group_data;
+    CurveGroupBuffer m_curve_group_data;
     CurveGroup m_curve_group;
   };
 

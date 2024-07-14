@@ -13,7 +13,12 @@ namespace gf {
 
   class GF_GRAPHICS_API CurveEntity : public TransformableEntity {
   public:
-    CurveEntity(const CurveData& data, RenderManager* render_manager);
+    CurveEntity(const CurveBuffer& buffer, RenderManager* render_manager);
+
+    const Curve& curve()
+    {
+      return m_curve;
+    }
 
     void render(RenderRecorder& recorder) override;
 

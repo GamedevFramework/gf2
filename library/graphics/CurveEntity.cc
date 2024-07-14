@@ -10,8 +10,8 @@
 
 namespace gf {
 
-  CurveEntity::CurveEntity(const CurveData& data, RenderManager* render_manager)
-  : m_curve(data, render_manager)
+  CurveEntity::CurveEntity(const CurveBuffer& buffer, RenderManager* render_manager)
+  : m_curve(buffer, render_manager)
   {
   }
 

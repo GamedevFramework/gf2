@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
 
-#include <gf2/core/CurveData.h>
+#include <gf2/core/CurveBuffer.h>
 
 #include <cassert>
 
@@ -89,49 +89,49 @@ namespace gf {
     type = PolylineType::Chain;
   }
 
-  CurveData CurveData::make_line(Vec2F p0, Vec2F p1)
+  CurveBuffer CurveBuffer::make_line(Vec2F p0, Vec2F p1)
   {
-    CurveData data;
-    data.points.emplace_back(p0);
-    data.points.emplace_back(p1);
-    return data;
+    CurveBuffer buffer;
+    buffer.points.emplace_back(p0);
+    buffer.points.emplace_back(p1);
+    return buffer;
   }
 
-  CurveData CurveData::make_compound_curve(Span<const Vec2F> points, PolylineType type)
+  CurveBuffer CurveBuffer::make_compound_curve(Span<const Vec2F> points, PolylineType type)
   {
-    CurveData data;
-    data.points.assign(points.begin(), points.end());
-    data.type = type;
-    return data;
+    CurveBuffer buffer;
+    buffer.points.assign(points.begin(), points.end());
+    buffer.type = type;
+    return buffer;
   }
 
-  CurveData CurveData::make_quadratic_bezier(Vec2F p0, Vec2F p1, Vec2F p2, uint32_t point_count)
+  CurveBuffer CurveBuffer::make_quadratic_bezier(Vec2F p0, Vec2F p1, Vec2F p2, uint32_t point_count)
   {
     assert(point_count >= 2);
-    CurveData data;
+    CurveBuffer buffer;
 
     for (uint32_t i = 1; i < point_count; ++i) {
       const float t = static_cast<float>(i) / static_cast<float>(point_count - 1);
-      data.points.emplace_back(quadratic_bezier_interpolation(p0, p1, p2, t));
+      buffer.points.emplace_back(quadratic_bezier_interpolation(p0, p1, p2, t));
     }
 
-    return data;
+    return buffer;
   }
 
-  CurveData CurveData::make_cubic_bezier(Vec2F p0, Vec2F p1, Vec2F p2, Vec2F p3, uint32_t point_count)
+  CurveBuffer CurveBuffer::make_cubic_bezier(Vec2F p0, Vec2F p1, Vec2F p2, Vec2F p3, uint32_t point_count)
   {
     assert(point_count >= 2);
-    CurveData data;
+    CurveBuffer buffer;
 
     for (uint32_t i = 1; i < point_count; ++i) {
       const float t = static_cast<float>(i) / static_cast<float>(point_count - 1);
-      data.points.emplace_back(cubic_bezier_interpolation(p0, p1, p2, p3, t));
+      buffer.points.emplace_back(cubic_bezier_interpolation(p0, p1, p2, p3, t));
     }
 
-    return data;
+    return buffer;
   }
 
-  CurveData CurveData::make_cattmull_rom_spline(Span<const Vec2F> points, PolylineType type, CattmullRomType spline_type, uint32_t point_count)
+  CurveBuffer CurveBuffer::make_cattmull_rom_spline(Span<const Vec2F> points, PolylineType type, CattmullRomType spline_type, uint32_t point_count)
   {
     assert(point_count >= 2);
     const PolylineView polyline_view = { type, points };
@@ -140,7 +140,7 @@ namespace gf {
     const Vec2F prev_extension_point = 2 * points[0] - points[1];               // == p_0 - (p_1 - p_0);
     const Vec2F next_extension_point = 2 * points[size - 1] - points[size - 2]; // = p_{n-1} - (p_{n-2} - p_{n-1})
 
-    CurveData data;
+    CurveBuffer buffer;
 
     for (std::size_t i = 0; i < size - 1; ++i) {
       const Vec2F p0 = polyline_view.has_prev(i) ? polyline_view.prev_point(i) : prev_extension_point;
@@ -155,12 +155,12 @@ namespace gf {
 
       for (uint32_t j = 0; j < point_count; ++j) {
         const float t = t1 + (t2 - t1) * static_cast<float>(j) / static_cast<float>(point_count);
-        data.points.emplace_back(cattmull_rom_interpolation(p0, t0, p1, t1, p2, t2, p3, t3, t));
+        buffer.points.emplace_back(cattmull_rom_interpolation(p0, t0, p1, t1, p2, t2, p3, t3, t));
       }
     }
 
-    data.type = type;
-    return data;
+    buffer.type = type;
+    return buffer;
   }
 
 }
