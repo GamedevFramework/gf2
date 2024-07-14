@@ -78,15 +78,15 @@ namespace home {
 
     const gf::Positioning positioning(m_hub->render_manager()->surface_size());
 
-    gf::ShapeGroupData shape_group_data;
+    gf::ShapeGroupBuffer shape_group_buffer;
 
     const gf::RectF backpack_bounds = gf::RectF::from_position_size(positioning.relative_point({ 0.95f, 0.18f }), positioning.relative_size({ 0.01f, 0.72f }));
 
-    gf::ShapeData back_shape_data = gf::ShapeData::make_rectangle(backpack_bounds);
-    back_shape_data.color = gf::Black * gf::opaque(0.3f);
-    back_shape_data.outline_color = gf::Black;
-    back_shape_data.outline_thickness = positioning.relative_thickness(0.001f);
-    shape_group_data.shapes.emplace_back(std::move(back_shape_data));
+    gf::ShapeBuffer back_shape_buffer = gf::ShapeBuffer::make_rectangle(backpack_bounds);
+    back_shape_buffer.color = gf::Black * gf::opaque(0.3f);
+    back_shape_buffer.outline_color = gf::Black;
+    back_shape_buffer.outline_thickness = positioning.relative_thickness(0.001f);
+    shape_group_buffer.shapes.emplace_back(std::move(back_shape_buffer));
 
     auto supply_position = backpack_bounds.position_at(gf::Orientation::SouthWest);
 
@@ -101,11 +101,11 @@ namespace home {
 
       auto color = to_color(supply.type);
 
-      gf::ShapeData supply_shape_data = gf::ShapeData::make_rectangle(gf::RectF::from_position_size(supply_position, { backpack_bounds.extent.w, supply_height }));
-      supply_shape_data.color = color;
-      supply_shape_data.outline_color = gf::darker(color);
-      supply_shape_data.outline_thickness = positioning.relative_thickness(0.001f);
-      shape_group_data.shapes.emplace_back(std::move(supply_shape_data));
+      gf::ShapeBuffer supply_shape_buffer = gf::ShapeBuffer::make_rectangle(gf::RectF::from_position_size(supply_position, { backpack_bounds.extent.w, supply_height }));
+      supply_shape_buffer.color = color;
+      supply_shape_buffer.outline_color = gf::darker(color);
+      supply_shape_buffer.outline_thickness = positioning.relative_thickness(0.001f);
+      shape_group_buffer.shapes.emplace_back(std::move(supply_shape_buffer));
     }
 
     gf::RectF oxygen_bounds = gf::RectF::from_position_size(positioning.relative_point({ 0.04f, 0.18f }), positioning.relative_size({ 0.01f, 0.72f }));
@@ -113,29 +113,29 @@ namespace home {
 
     auto oxygen_percent = static_cast<float>(m_oxygen_quantity) / static_cast<float>(MaxOxygen);
 
-    gf::ShapeData oxygen_back_shape_data = gf::ShapeData::make_rectangle(oxygen_bounds);
-    oxygen_back_shape_data.color = gf::darker(oxygen_color) * gf::opaque(0.3f);
+    gf::ShapeBuffer oxygen_back_shape_buffer = gf::ShapeBuffer::make_rectangle(oxygen_bounds);
+    oxygen_back_shape_buffer.color = gf::darker(oxygen_color) * gf::opaque(0.3f);
 
     if (oxygen_percent < 0.2f) {
-      oxygen_back_shape_data.outline_color = gf::Red;
+      oxygen_back_shape_buffer.outline_color = gf::Red;
     } else {
-      oxygen_back_shape_data.outline_color = gf::darker(oxygen_color);
+      oxygen_back_shape_buffer.outline_color = gf::darker(oxygen_color);
     }
 
-    oxygen_back_shape_data.outline_thickness = positioning.relative_thickness(0.001f);
-    shape_group_data.shapes.emplace_back(std::move(oxygen_back_shape_data));
+    oxygen_back_shape_buffer.outline_thickness = positioning.relative_thickness(0.001f);
+    shape_group_buffer.shapes.emplace_back(std::move(oxygen_back_shape_buffer));
 
     if (m_oxygen_quantity > 0) {
       auto difference = oxygen_bounds.extent.h * (1.0f - oxygen_percent);
       oxygen_bounds.offset.y += difference;
       oxygen_bounds.extent.h -= difference;
 
-      gf::ShapeData oxygen_front_shape_data = gf::ShapeData::make_rectangle(oxygen_bounds);
-      oxygen_front_shape_data.color = oxygen_color;
-      shape_group_data.shapes.emplace_back(std::move(oxygen_front_shape_data));
+      gf::ShapeBuffer oxygen_front_shape_buffer = gf::ShapeBuffer::make_rectangle(oxygen_bounds);
+      oxygen_front_shape_buffer.color = oxygen_color;
+      shape_group_buffer.shapes.emplace_back(std::move(oxygen_front_shape_buffer));
     }
 
-    m_shapes.update(shape_group_data, m_hub->render_manager());
+    m_shapes.update(shape_group_buffer, m_hub->render_manager());
   }
 
   void BackpackEntity::render(gf::RenderRecorder& recorder)

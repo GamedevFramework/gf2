@@ -118,7 +118,7 @@ namespace home {
     // clang-format on
 
     if (is_mining) {
-      gf::ShapeGroupData shape_group_data;
+      gf::ShapeGroupBuffer shape_group_buffer;
 
       for (const auto& supply : m_supplies) {
         if (supply.current_quantity == supply.initial_quantity) {
@@ -129,21 +129,21 @@ namespace home {
         bounds.extent.h = 10.0f;
         auto color = to_color(supply.type);
 
-        gf::ShapeData back_shape_data = gf::ShapeData::make_rectangle(bounds);
-        back_shape_data.color = gf::darker(color) * gf::opaque(0.3f);
-        back_shape_data.outline_color = gf::darker(color);
-        back_shape_data.outline_thickness = 2.0f;
-        shape_group_data.shapes.emplace_back(std::move(back_shape_data));
+        gf::ShapeBuffer back_shape_buffer = gf::ShapeBuffer::make_rectangle(bounds);
+        back_shape_buffer.color = gf::darker(color) * gf::opaque(0.3f);
+        back_shape_buffer.outline_color = gf::darker(color);
+        back_shape_buffer.outline_thickness = 2.0f;
+        shape_group_buffer.shapes.emplace_back(std::move(back_shape_buffer));
 
         const float percent = static_cast<float>(supply.current_quantity) / static_cast<float>(supply.initial_quantity);
         bounds.extent.w *= percent;
 
-        gf::ShapeData front_shape_data = gf::ShapeData::make_rectangle(bounds);
-        front_shape_data.color = color;
-        shape_group_data.shapes.emplace_back(std::move(front_shape_data));
+        gf::ShapeBuffer front_shape_buffer = gf::ShapeBuffer::make_rectangle(bounds);
+        front_shape_buffer.color = color;
+        shape_group_buffer.shapes.emplace_back(std::move(front_shape_buffer));
       }
 
-      m_shapes.update(shape_group_data, m_hub->render_manager());
+      m_shapes.update(shape_group_buffer, m_hub->render_manager());
     }
   }
 

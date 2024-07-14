@@ -33,7 +33,7 @@ namespace gf {
   private:
     RenderManager* m_render_manager = nullptr;
 
-    ShapeGroupData m_shape_group_data;
+    ShapeGroupBuffer m_shape_group_data;
     ShapeGroup m_shape_group;
     CurveGroupBuffer m_curve_group_data;
     CurveGroup m_curve_group;

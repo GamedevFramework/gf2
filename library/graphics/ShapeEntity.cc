@@ -8,8 +8,8 @@
 
 namespace gf {
 
-  ShapeEntity::ShapeEntity(const Texture* texture, const ShapeData& data, RenderManager* render_manager)
-  : m_shape(texture, data, render_manager)
+  ShapeEntity::ShapeEntity(const Texture* texture, const ShapeBuffer& buffer, RenderManager* render_manager)
+  : m_shape(texture, buffer, render_manager)
   {
   }
 

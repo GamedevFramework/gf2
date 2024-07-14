@@ -29,7 +29,7 @@ namespace {
   class PhysicsEntity : public gf::Entity {
   public:
     PhysicsEntity(gf::RenderManager* render_manager, gf::Random& random)
-    : m_ball_entity(nullptr, gf::ShapeData::make_circle(1.5f), render_manager)
+    : m_ball_entity(nullptr, gf::ShapeBuffer::make_circle(1.5f), render_manager)
     {
       setup_world(random);
     }

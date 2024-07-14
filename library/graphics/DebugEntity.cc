@@ -33,7 +33,7 @@ namespace gf {
   {
     fill_color.a = DebugAlpha;
 
-    auto shape = ShapeData::make_circle(CircF::from_center_radius(center, radius), DebugPointCount);
+    auto shape = ShapeBuffer::make_circle(CircF::from_center_radius(center, radius), DebugPointCount);
     shape.color = fill_color;
     shape.outline_thickness = DebugLineThickness;
     shape.outline_color = outline_color;
@@ -67,7 +67,7 @@ namespace gf {
   {
     fill_color.a = DebugAlpha;
 
-    auto shape = ShapeData::make_polygon(points);
+    auto shape = ShapeBuffer::make_polygon(points);
     shape.color = fill_color;
     shape.outline_thickness = radius;
     shape.outline_color = outline_color;
@@ -78,7 +78,7 @@ namespace gf {
   {
     color.a = DebugAlpha;
 
-    auto shape = ShapeData::make_circle(CircF::from_center_radius(location, size), DebugPointCount);
+    auto shape = ShapeBuffer::make_circle(CircF::from_center_radius(location, size), DebugPointCount);
     shape.color = color;
     m_shape_group_data.shapes.push_back(std::move(shape));
   }

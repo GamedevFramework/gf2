@@ -13,12 +13,12 @@ int main()
 {
   gf::SingleSceneManager scene_manager("13-shape | gf2", gf::vec(1600, 900));
 
-  gf::ShapeData rectangle_data = gf::ShapeData::make_rectangle({ 160.0f, 90.0f });
-  rectangle_data.color = gf::Azure;
-  rectangle_data.outline_thickness = 2.0f;
-  rectangle_data.outline_color = gf::darker(gf::Azure);
+  gf::ShapeBuffer rectangle_buffer = gf::ShapeBuffer::make_rectangle({ 160.0f, 90.0f });
+  rectangle_buffer.color = gf::Azure;
+  rectangle_buffer.outline_thickness = 2.0f;
+  rectangle_buffer.outline_color = gf::darker(gf::Azure);
 
-  gf::ShapeEntity rectangle_entity(nullptr, rectangle_data, scene_manager.render_manager());
+  gf::ShapeEntity rectangle_entity(nullptr, rectangle_buffer, scene_manager.render_manager());
   rectangle_entity.set_location({ 1000.0f, 1000.0f });
   rectangle_entity.set_origin({ 0.5f, 0.5f });
 

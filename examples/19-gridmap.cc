@@ -5,7 +5,7 @@
 #include <gf2/core/GridMap.h>
 #include <gf2/core/Log.h>
 #include <gf2/core/Range.h>
-#include <gf2/core/ShapeData.h>
+#include <gf2/core/ShapeBuffer.h>
 
 #include <gf2/graphics/ActionGroup.h>
 #include <gf2/graphics/Entity.h>
@@ -118,10 +118,10 @@ namespace {
 
     void update([[maybe_unused]] gf::Time time) override
     {
-      gf::ShapeGroupData data;
+      gf::ShapeGroupBuffer buffer;
 
       for (auto position : gf::position_range(MapSize)) {
-        gf::ShapeData shape = gf::ShapeData::make_rectangle(gf::RectF::from_position_size(position * CellSize, CellSize));
+        gf::ShapeBuffer shape = gf::ShapeBuffer::make_rectangle(gf::RectF::from_position_size(position * CellSize, CellSize));
 
         if (m_grid_map.transparent(position) && m_grid_map.walkable(position)) {
           // walkable, transparent (ground)
@@ -143,10 +143,10 @@ namespace {
           shape.color = gf::lighter(shape.color, 0.1f);
         }
 
-        data.shapes.push_back(std::move(shape));
+        buffer.shapes.push_back(std::move(shape));
       }
 
-      m_grid_display.update(data, m_scene_manager->render_manager());
+      m_grid_display.update(buffer, m_scene_manager->render_manager());
     }
 
     void render(gf::RenderRecorder& recorder) override

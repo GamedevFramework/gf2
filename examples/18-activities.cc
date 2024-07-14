@@ -48,10 +48,10 @@ namespace {
     {
       m_activity.run(time);
 
-      gf::ShapeData shape = gf::ShapeData::make_circle(30.0f, static_cast<uint32_t>(m_faces));
+      gf::ShapeBuffer shape = gf::ShapeBuffer::make_circle(30.0f, static_cast<uint32_t>(m_faces));
       shape.color = m_color;
 
-      gf::ShapeGroupData shape_group;
+      gf::ShapeGroupBuffer shape_group;
       shape_group.shapes.push_back(std::move(shape));
 
       m_shape.update(shape_group, m_render_manager);

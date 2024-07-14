@@ -6,7 +6,7 @@
 #include <optional>
 
 #include <gf2/core/Rect.h>
-#include <gf2/core/ShapeData.h>
+#include <gf2/core/ShapeBuffer.h>
 
 #include "Buffer.h"
 #include "DynamicBuffer.h"
@@ -25,7 +25,7 @@ namespace gf {
 
   class GF_GRAPHICS_API Shape {
   public:
-    Shape(const Texture* texture, const ShapeData& data, RenderManager* render_manager);
+    Shape(const Texture* texture, const ShapeBuffer& buffer, RenderManager* render_manager);
     Shape(const ShapeResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
     ShapeGeometry geometry() const;
@@ -47,9 +47,9 @@ namespace gf {
   class GF_GRAPHICS_API ShapeGroup {
   public:
     ShapeGroup();
-    ShapeGroup(const ShapeGroupData& data, RenderManager* render_manager);
+    ShapeGroup(const ShapeGroupBuffer& buffer, RenderManager* render_manager);
 
-    void update(const ShapeGroupData& data, RenderManager* render_manager);
+    void update(const ShapeGroupBuffer& buffer, RenderManager* render_manager);
 
     RenderGeometry geometry() const;
 

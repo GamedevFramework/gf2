@@ -22,25 +22,25 @@ namespace gf {
       Vec2F center = {};
     };
 
-    RawInteriorShapeGeometry compute_interior_shape_geometry(const ShapeData& data)
+    RawInteriorShapeGeometry compute_interior_shape_geometry(const ShapeBuffer& buffer)
     {
-      assert(data.points.size() > 2);
+      assert(buffer.points.size() > 2);
 
       RawInteriorShapeGeometry geometry;
 
       geometry.center = { 0.0f, 0.0f };
 
-      for (auto point : data.points) {
+      for (auto point : buffer.points) {
         geometry.center += point;
       }
 
-      geometry.center /= data.points.size();
-      assert(contains(data.points, geometry.center));
+      geometry.center /= buffer.points.size();
+      assert(contains(buffer.points, geometry.center));
 
-      Vec2F min = data.points[0];
-      Vec2F max = data.points[0];
+      Vec2F min = buffer.points[0];
+      Vec2F max = buffer.points[0];
 
-      const Color linear_color = srgb_to_linear(data.color);
+      const Color linear_color = srgb_to_linear(buffer.color);
 
       Vertex center_vertex;
       center_vertex.location = geometry.center;
@@ -48,7 +48,7 @@ namespace gf {
 
       geometry.vertices.push_back(center_vertex);
 
-      for (auto point : data.points) {
+      for (auto point : buffer.points) {
         Vertex vertex;
         vertex.location = point;
         vertex.color = linear_color;
@@ -60,17 +60,17 @@ namespace gf {
       }
 
       // simulate triangle fan
-      for (auto i : gf::index_range(data.points.size())) {
+      for (auto i : gf::index_range(buffer.points.size())) {
         geometry.indices.push_back(0);
         geometry.indices.push_back(static_cast<uint16_t>(1 + i));
-        geometry.indices.push_back(static_cast<uint16_t>(1 + (i + 1) % data.points.size()));
+        geometry.indices.push_back(static_cast<uint16_t>(1 + (i + 1) % buffer.points.size()));
       }
 
       geometry.bounds = RectF::from_min_max(min, max);
 
       for (auto& vertex : geometry.vertices) {
         const Vec2F ratio = (vertex.location - geometry.bounds.position()) / geometry.bounds.size();
-        vertex.tex_coords = data.texture_region.position() + data.texture_region.size() * ratio;
+        vertex.tex_coords = buffer.texture_region.position() + buffer.texture_region.size() * ratio;
       }
 
       return geometry;
@@ -78,15 +78,15 @@ namespace gf {
 
     using RawOutlineShapeGeometry = RawGeometry;
 
-    RawOutlineShapeGeometry compute_outline_shape_geometry(const ShapeData& data, Vec2F center)
+    RawOutlineShapeGeometry compute_outline_shape_geometry(const ShapeBuffer& buffer, Vec2F center)
     {
       RawOutlineShapeGeometry geometry;
-      const Color linear_outline_color = gf::srgb_to_linear(data.outline_color);
+      const Color linear_outline_color = gf::srgb_to_linear(buffer.outline_color);
 
-      for (auto i : gf::index_range(data.points.size())) {
-        const Vec2F prev = data.points[i];
-        const Vec2F curr = data.points[(i + 1) % data.points.size()];
-        const Vec2F next = data.points[(i + 2) % data.points.size()];
+      for (auto i : gf::index_range(buffer.points.size())) {
+        const Vec2F prev = buffer.points[i];
+        const Vec2F curr = buffer.points[(i + 1) % buffer.points.size()];
+        const Vec2F next = buffer.points[(i + 2) % buffer.points.size()];
 
         Vec2F normal_prev = gf::normalize(gf::perp(curr - prev));
         Vec2F normal_next = gf::normalize(gf::perp(next - curr));
@@ -105,7 +105,7 @@ namespace gf {
         Vertex vertices[2];
         vertices[0].location = curr;
         vertices[0].color = linear_outline_color;
-        vertices[1].location = curr + normal * data.outline_thickness;
+        vertices[1].location = curr + normal * buffer.outline_thickness;
         vertices[1].color = linear_outline_color;
 
         geometry.vertices.push_back(vertices[0]);
@@ -134,23 +134,23 @@ namespace gf {
     }
   }
 
-  Shape::Shape(const Texture* texture, const ShapeData& data, RenderManager* render_manager)
+  Shape::Shape(const Texture* texture, const ShapeBuffer& buffer, RenderManager* render_manager)
   : m_texture(texture)
   {
-    auto raw_interior = compute_interior_shape_geometry(data);
+    auto raw_interior = compute_interior_shape_geometry(buffer);
     m_vertices = Buffer(BufferType::Device, BufferUsage::Vertex, raw_interior.vertices.data(), raw_interior.vertices.size(), render_manager);
     m_indices = Buffer(BufferType::Device, BufferUsage::Index, raw_interior.indices.data(), raw_interior.indices.size(), render_manager);
     m_bounds = raw_interior.bounds;
 
-    if (data.outline_thickness > 0.0f) {
-      auto raw_outline = compute_outline_shape_geometry(data, raw_interior.center);
+    if (buffer.outline_thickness > 0.0f) {
+      auto raw_outline = compute_outline_shape_geometry(buffer, raw_interior.center);
       m_outline_vertices = Buffer(BufferType::Device, BufferUsage::Vertex, raw_outline.vertices.data(), raw_outline.vertices.size(), render_manager);
       m_outline_indices = Buffer(BufferType::Device, BufferUsage::Index, raw_outline.indices.data(), raw_outline.indices.size(), render_manager);
     }
   }
 
   Shape::Shape(const ShapeResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
-  : Shape(load_resource(resource, resource_manager), resource.data, render_manager)
+  : Shape(load_resource(resource, resource_manager), resource.buffer, render_manager)
   {
   }
 
@@ -193,17 +193,17 @@ namespace gf {
     m_indices.set_debug_name("[gf2] Shape Group Index Buffer");
   }
 
-  ShapeGroup::ShapeGroup(const ShapeGroupData& data, RenderManager* render_manager)
+  ShapeGroup::ShapeGroup(const ShapeGroupBuffer& buffer, RenderManager* render_manager)
   : ShapeGroup()
   {
-    update(data, render_manager);
+    update(buffer, render_manager);
   }
 
-  void ShapeGroup::update(const ShapeGroupData& data, RenderManager* render_manager)
+  void ShapeGroup::update(const ShapeGroupBuffer& buffer, RenderManager* render_manager)
   {
     RawShapeGeometry geometry;
 
-    for (const auto& shape : data.shapes) {
+    for (const auto& shape : buffer.shapes) {
       auto raw_interior = compute_interior_shape_geometry(shape);
       geometry.merge_with(raw_interior);
 
