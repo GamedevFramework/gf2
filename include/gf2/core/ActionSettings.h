@@ -62,6 +62,16 @@ namespace gf {
     std::vector<ControlSettings> controls;
   };
 
+  inline ActionSettings instantaneous_action()
+  {
+    return { ActionType::Instantaneous };
+  }
+
+  inline ActionSettings continuous_action()
+  {
+    return { ActionType::Instantaneous };
+  }
+
   template<typename Archive>
   inline Archive& operator|(Archive& ar, MaybeConst<ActionSettings, Archive>& settings)
   {
