@@ -251,8 +251,7 @@ namespace gf {
         for (auto position : copy.position_range()) {
           Color color = copy(position);
           assert(color.r == color.g && color.g == color.b);
-          color.a = color.r;
-          copy.put_pixel(position, color);
+          copy.put_pixel(position, opaque(color.r));
         }
         break;
 
