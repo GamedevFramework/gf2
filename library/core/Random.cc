@@ -171,8 +171,8 @@ namespace gf {
 
   Vec2I Random::compute_position(const RectI& area)
   {
-    std::uniform_int_distribution<int> dist_x(area.offset.x, area.offset.x + area.extent.x);
-    std::uniform_int_distribution<int> dist_y(area.offset.y, area.offset.y + area.extent.y);
+    std::uniform_int_distribution<int> dist_x(area.offset.x, area.offset.x + area.extent.x - 1);
+    std::uniform_int_distribution<int> dist_y(area.offset.y, area.offset.y + area.extent.y - 1);
     const int x = dist_x(m_engine);
     const int y = dist_y(m_engine);
     return { x, y };
