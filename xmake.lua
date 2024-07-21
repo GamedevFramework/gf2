@@ -137,6 +137,7 @@ target("gf2framework0")
     add_deps("gf2core0")
     add_deps("gf2graphics0")
     add_deps("gf2audio0")
+    add_deps("gf2physics0")
     set_license("Zlib")
 
 includes("tests/xmake.lua")

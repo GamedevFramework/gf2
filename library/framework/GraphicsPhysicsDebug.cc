@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
 
-#include <gf2/graphics/DebugEntity.h>
+#include <gf2/framework/GraphicsPhysicsDebug.h>
 
 #include <gf2/core/Mat3.h>
 
@@ -18,18 +18,17 @@ namespace gf {
 
   }
 
-  DebugEntity::DebugEntity(RenderManager* render_manager)
-  : m_render_manager(render_manager)
+  /*
+   * GraphicsPhysicsDebug
+   */
+
+  void GraphicsPhysicsDebug::clear()
   {
+    m_shape_group_buffer.shapes.clear();
+    m_curve_group_buffer.curves.clear();
   }
 
-  void DebugEntity::start_debug()
-  {
-    m_shape_group_data.shapes.clear();
-    m_curve_group_data.curves.clear();
-  }
-
-  void DebugEntity::draw_circle(Vec2F center, float angle, float radius, Color outline_color, Color fill_color)
+  void GraphicsPhysicsDebug::draw_circle(Vec2F center, float angle, float radius, Color outline_color, Color fill_color)
   {
     fill_color.a = DebugAlpha;
 
@@ -37,21 +36,21 @@ namespace gf {
     shape.color = fill_color;
     shape.outline_thickness = DebugLineThickness;
     shape.outline_color = outline_color;
-    m_shape_group_data.shapes.push_back(std::move(shape));
+    m_shape_group_buffer.shapes.push_back(std::move(shape));
 
     auto curve = CurveBuffer::make_line(center, center + radius * unit(angle));
     curve.color = outline_color;
-    m_curve_group_data.curves.push_back(std::move(curve));
+    m_curve_group_buffer.curves.push_back(std::move(curve));
   }
 
-  void DebugEntity::draw_segment(Vec2F a, Vec2F b, Color color)
+  void GraphicsPhysicsDebug::draw_segment(Vec2F a, Vec2F b, Color color)
   {
     auto curve = CurveBuffer::make_line(a, b);
     curve.color = color;
-    m_curve_group_data.curves.push_back(std::move(curve));
+    m_curve_group_buffer.curves.push_back(std::move(curve));
   }
 
-  void DebugEntity::draw_fat_segment(Vec2F a, Vec2F b, float radius, Color outline_color, Color fill_color)
+  void GraphicsPhysicsDebug::draw_fat_segment(Vec2F a, Vec2F b, float radius, Color outline_color, Color fill_color)
   {
     fill_color.a = DebugAlpha;
 
@@ -60,10 +59,10 @@ namespace gf {
     curve.color = fill_color;
     curve.outline_thickness = DebugLineThickness;
     curve.outline_color = outline_color;
-    m_curve_group_data.curves.push_back(std::move(curve));
+    m_curve_group_buffer.curves.push_back(std::move(curve));
   }
 
-  void DebugEntity::draw_polygon(Span<const Vec2F> points, float radius, Color outline_color, Color fill_color)
+  void GraphicsPhysicsDebug::draw_polygon(Span<const Vec2F> points, float radius, Color outline_color, Color fill_color)
   {
     fill_color.a = DebugAlpha;
 
@@ -71,26 +70,46 @@ namespace gf {
     shape.color = fill_color;
     shape.outline_thickness = radius;
     shape.outline_color = outline_color;
-    m_shape_group_data.shapes.push_back(std::move(shape));
+    m_shape_group_buffer.shapes.push_back(std::move(shape));
   }
 
-  void DebugEntity::draw_dot(float size, Vec2F location, Color color)
+  void GraphicsPhysicsDebug::draw_dot(float size, Vec2F location, Color color)
   {
     color.a = DebugAlpha;
 
     auto shape = ShapeBuffer::make_circle(CircF::from_center_radius(location, size), DebugPointCount);
     shape.color = color;
-    m_shape_group_data.shapes.push_back(std::move(shape));
+    m_shape_group_buffer.shapes.push_back(std::move(shape));
   }
 
-  void DebugEntity::stop_debug()
+  /*
+   * GraphicsPhysicsDebugEntity
+   */
+
+  GraphicsPhysicsDebugEntity::GraphicsPhysicsDebugEntity(PhysicsWorld* physics_world, RenderManager* render_manager)
+  : m_physics_world(physics_world)
+  , m_render_manager(render_manager)
   {
-    m_shape_group.update(m_shape_group_data, m_render_manager);
-    m_curve_group.update(m_curve_group_data, m_render_manager);
   }
 
-  void DebugEntity::render(RenderRecorder& recorder)
+  void GraphicsPhysicsDebugEntity::update([[maybe_unused]] Time time)
   {
+    if (m_awake) {
+      m_debug.clear();
+
+      m_physics_world->debug_draw(&m_debug);
+
+      m_shape_group.update(m_debug.shapes(), m_render_manager);
+      m_curve_group.update(m_debug.curves(), m_render_manager);
+    }
+  }
+
+  void GraphicsPhysicsDebugEntity::render(RenderRecorder& recorder)
+  {
+    if (!m_awake) {
+      return;
+    }
+
     RenderObject object = {};
     object.priority = priority();
     object.transform = Identity3F;

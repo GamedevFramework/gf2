@@ -9,11 +9,11 @@
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/TextEntity.h>
 #include <gf2/physics/PhysicsWorld.h>
+#include <gf2/framework/GraphicsPhysicsDebug.h>
 
 #include "BackpackEntity.h"
 #include "HeroEntity.h"
 #include "MapEntity.h"
-#include "PhysicsRuntime.h"
 #include "SupplyEntity.h"
 #include "WorldData.h"
 
@@ -46,7 +46,7 @@ namespace home {
     gf::Sound* m_death_sound = nullptr;
 
     gf::PhysicsWorld m_physics_world;
-    PhysicsRuntime m_physics_debug;
+    gf::GraphicsPhysicsDebugEntity m_physics_debug;
 
     MapEntity m_map_entity;
     SupplyEntity m_supply_entity;

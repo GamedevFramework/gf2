@@ -16,7 +16,7 @@ namespace home {
   , m_breath_low_o2_sound(hub->resource_manager()->get<gf::Sound>(data.breath_low_o2_sound.filename))
   , m_victory_sound(hub->resource_manager()->get<gf::Sound>(data.victory_sound.filename))
   , m_death_sound(hub->resource_manager()->get<gf::Sound>(data.death_sound.filename))
-  , m_physics_debug(hub->render_manager())
+  , m_physics_debug(&m_physics_world, hub->render_manager())
   , m_map_entity(hub, data, &m_physics_world)
   , m_supply_entity(hub, data)
   , m_hero_entity(hub, data, &m_physics_world)
@@ -32,7 +32,7 @@ namespace home {
     add_world_entity(&m_supply_entity);
     add_world_entity(&m_hero_entity);
 
-    add_world_entity(m_physics_debug.entity());
+    add_world_entity(&m_physics_debug);
 
     add_hud_entity(&m_backpack_entity);
 
@@ -54,14 +54,6 @@ namespace home {
   void WorldScene::do_update(gf::Time time)
   {
     update_entities(time);
-
-    m_physics_debug.start_debug();
-
-    if (m_debug) {
-      m_physics_world.debug_draw(&m_physics_debug);
-    }
-
-    m_physics_debug.stop_debug();
   }
 
   void WorldScene::do_process_event(const gf::Event& event)
@@ -79,6 +71,7 @@ namespace home {
   {
     if (m_action_group.active("debug"_id)) {
       m_debug = !m_debug;
+      m_physics_debug.set_awake(m_debug);
     }
 
     m_action_group.reset();
