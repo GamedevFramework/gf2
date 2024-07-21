@@ -80,6 +80,6 @@ _Depends on <<core>>, <<graphics>>_
 
 == `framework`
 
-_Depends on <<core>>, <<graphics>>, <<audio>>_
+_Depends on <<core>>, <<graphics>>, <<audio>>, <<physics>>_
 
 - xref:framework_systems.adoc[Systems] (xref:ResourceSystem.adoc[`ResourceSystem`], xref:SceneSystem.adoc[`SceneSystem`])
