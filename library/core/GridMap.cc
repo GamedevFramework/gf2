@@ -8,6 +8,7 @@
 #include <gf2/core/BinaryHeap.h>
 #include <gf2/core/GridVisibility.h>
 #include <gf2/core/Log.h>
+#include "gf2/core/GridTypes.h"
 
 namespace gf {
   namespace {
@@ -168,6 +169,36 @@ namespace gf {
     m_cells(position) |= (CellProperty::Transparent | CellProperty::Walkable);
   }
 
+
+  bool GridMap::blocked(Vec2I position) const
+  {
+    if (!m_cells.valid(position)) {
+      return false;
+    }
+
+    return m_cells(position).test(CellProperty::Blocked);
+  }
+
+  void GridMap::set_blocked(Vec2I position, bool blocked)
+  {
+    if (!m_cells.valid(position)) {
+      return;
+    }
+
+    if (blocked) {
+      m_cells(position).set(CellProperty::Blocked);
+    } else {
+      m_cells(position).reset(CellProperty::Blocked);
+    }
+  }
+
+  void GridMap::clear_blocks()
+  {
+    for (auto& cell : m_cells) {
+      cell.reset(CellProperty::Blocked);
+    }
+  }
+
   /*
    * field of vision
    */
@@ -241,11 +272,11 @@ namespace gf {
       {
       }
 
-      std::vector<Vec2I> operator()(Vec2I origin, Vec2I target, float diagonal_cost)
+      std::vector<Vec2I> operator()(Vec2I origin, Vec2I target, RouteCost cost)
       {
         Flags<CellNeighborQuery> flags = CellNeighborQuery::Valid;
 
-        if (diagonal_cost > 0) {
+        if (cost.diagonal > 0) {
           flags |= CellNeighborQuery::Diagonal;
         }
 
@@ -254,7 +285,7 @@ namespace gf {
         while (!m_heap.empty()) {
           const DijkstraHeapData data = m_heap.top();
           m_heap.pop();
-          compute_node(data, diagonal_cost, flags);
+          compute_node(data, cost, flags);
         }
 
         return compute_route(origin, target);
@@ -280,23 +311,20 @@ namespace gf {
         }
       }
 
-      void compute_node(DijkstraHeapData heap_data, float diagonal_cost, Flags<CellNeighborQuery> flags)
+      void compute_node(DijkstraHeapData heap_data, RouteCost cost, Flags<CellNeighborQuery> flags)
       {
         auto neighbors = m_grid.compute_neighbors(heap_data.position, flags);
 
         for (auto position : neighbors) {
           assert(position != heap_data.position);
 
-          const Flags<CellProperty>& value = m_cells(position);
+          const Flags<CellProperty>& cell = m_cells(position);
 
-          if (!value.test(CellProperty::Walkable)) {
+          if (!cell.test(CellProperty::Walkable)) {
             continue;
           }
 
-          const bool is_diagonal = m_grid.are_diagonal_neighbors(heap_data.position, position);
-          assert(diagonal_cost > 0 || !is_diagonal);
-
-          const float updated_distance = m_data(heap_data.position).distance + (is_diagonal ? diagonal_cost : 1.0f);
+          const float updated_distance = m_data(heap_data.position).distance + compute_cost(heap_data.position, position, cost);
 
           if (updated_distance < m_data(position).distance) {
             auto& data = m_data(position);
@@ -308,6 +336,20 @@ namespace gf {
             m_heap.increase(data.handle);
           }
         }
+      }
+
+      float compute_cost(Vec2I current, Vec2I neighbor, RouteCost cost)
+      {
+        const bool is_diagonal = m_grid.are_diagonal_neighbors(current, neighbor);
+        assert(cost.diagonal > 0 || !is_diagonal);
+
+        float neighbor_cost = is_diagonal ? cost.diagonal : cost.straight;
+
+        if (m_cells(neighbor).test(CellProperty::Blocked)) {
+          neighbor_cost += cost.blocked;
+        }
+
+        return neighbor_cost;
       }
 
       std::vector<Vec2I> compute_route(Vec2I origin, Vec2I target) const
@@ -339,13 +381,13 @@ namespace gf {
     };
   }
 
-  std::vector<Vec2I> GridMap::compute_route(Vec2I origin, Vec2I target, float diagonal_cost, Route route)
+  std::vector<Vec2I> GridMap::compute_route(Vec2I origin, Vec2I target, RouteCost cost, Route route)
   {
     switch (route) {
       case Route::Dijkstra:
         {
           DijkstraAlgorithm algorithm(m_cells, m_grid);
-          return algorithm(origin, target, diagonal_cost);
+          return algorithm(origin, target, cost);
         }
 
       default:

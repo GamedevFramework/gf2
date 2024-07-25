@@ -18,6 +18,12 @@ namespace gf {
     Dijkstra,
   };
 
+  struct RouteCost {
+    float straight = 1.0f;
+    float diagonal = Sqrt2;
+    float blocked = 5.0f;
+  };
+
   enum class Visibility : uint8_t {
     RayCast,
     ShadowCast,
@@ -62,13 +68,17 @@ namespace gf {
 
     void set_empty(Vec2I position);
 
+    bool blocked(Vec2I position) const;
+    void set_blocked(Vec2I position, bool blocked = true);
+    void clear_blocks();
+
     void clear_visible();
     void clear_explored();
 
     bool visible(Vec2I position) const;
     bool explored(Vec2I position) const;
 
-    std::vector<Vec2I> compute_route(Vec2I origin, Vec2I target, float diagonal_cost = Sqrt2, Route route = Route::AStar);
+    std::vector<Vec2I> compute_route(Vec2I origin, Vec2I target, RouteCost cost = {}, Route route = Route::AStar);
 
     void compute_field_of_vision(Vec2I origin, int range_limit, Visibility visibility);
     void compute_local_field_of_vision(Vec2I origin, int range_limit, Visibility visibility);
