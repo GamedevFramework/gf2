@@ -343,7 +343,7 @@ namespace gf {
         const bool is_diagonal = m_grid.are_diagonal_neighbors(current, neighbor);
         assert(cost.diagonal > 0 || !is_diagonal);
 
-        float neighbor_cost = is_diagonal ? cost.diagonal : cost.straight;
+        float neighbor_cost = is_diagonal ? cost.diagonal : cost.cardinal;
 
         if (m_cells(neighbor).test(CellProperty::Blocked)) {
           neighbor_cost += cost.blocked;

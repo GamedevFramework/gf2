@@ -19,7 +19,7 @@ namespace gf {
   };
 
   struct RouteCost {
-    float straight = 1.0f;
+    float cardinal = 1.0f;
     float diagonal = Sqrt2;
     float blocked = 5.0f;
   };
