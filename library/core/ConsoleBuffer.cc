@@ -412,7 +412,7 @@ namespace gf {
     auto min = area.min();
     auto max = area.max();
 
-    if (min.x < 0 || min.y < 0 || max.x >= size.w || max.y >= size.h) {
+    if (min.x < 0 || min.y < 0 || max.x > size.w || max.y > size.h) {
       Log::warning("Position of console text is outside the console.");
     }
 
