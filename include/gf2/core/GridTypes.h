@@ -51,7 +51,7 @@ namespace gf {
   enum class CellProperty : uint8_t {
     Transparent = 0x01,
     Walkable = 0x02,
-    Blocked = 0x03,
+    Blocked = 0x04,
     Visible = 0x10,
     Explored = 0x20,
   };
