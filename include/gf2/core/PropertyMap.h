@@ -32,6 +32,8 @@ namespace gf {
     void add_property(std::string key, Color value);
     void add_property(std::string key, PropertyMap value);
 
+    bool has_property(std::string_view key) const;
+
     const Property& operator()(std::string_view path) const;
 
     bool empty() const

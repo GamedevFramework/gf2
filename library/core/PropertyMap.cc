@@ -51,6 +51,11 @@ namespace gf {
     m_properties.emplace(std::move(key), Property(std::move(value)));
   }
 
+  bool PropertyMap::has_property(std::string_view key) const
+  {
+    return m_properties.find(key) != m_properties.end();
+  }
+
   const Property& PropertyMap::operator()(std::string_view path) const
   {
     auto keys = split_path(path);
