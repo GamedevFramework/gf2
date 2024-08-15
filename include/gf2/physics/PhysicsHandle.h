@@ -8,6 +8,8 @@
 
 #include <utility>
 
+#include "PhysicsId.h"
+
 namespace gf::details {
 
   class PhysicsExistingType {
@@ -80,6 +82,11 @@ namespace gf::details {
     {
       std::swap(m_handle, other.m_handle);
       return *this;
+    }
+
+    PhysicsId id() const
+    {
+      return PhysicsId{reinterpret_cast<uintptr_t>(m_handle)}; // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
     }
 
     T* get()

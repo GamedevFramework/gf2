@@ -32,6 +32,8 @@ namespace gf {
     static PhysicsBody make_kinematic();
     static PhysicsBody make_static();
 
+    PhysicsId id() { return m_body.id(); }
+
     void activate();
     void activate_static(PhysicsShape* filter);
 

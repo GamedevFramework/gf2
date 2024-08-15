@@ -45,6 +45,8 @@ namespace gf {
     static PhysicsConstraint make_gear_joint(PhysicsBody* body_a, PhysicsBody* body_b, float phase, float ratio);
     static PhysicsConstraint make_simple_motor(PhysicsBody* body_a, PhysicsBody* body_b, float rate);
 
+    PhysicsId id() { return m_constraint.id(); }
+
     PhysicsConstraintType type() const;
 
     PhysicsWorld world() const;

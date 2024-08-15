@@ -31,6 +31,8 @@ namespace gf {
     PhysicsWorld& operator=(const PhysicsWorld&) = delete;
     PhysicsWorld& operator=(PhysicsWorld&&) noexcept = default;
 
+    PhysicsId id() { return m_space.id(); }
+
     Time timestep() const;
     void set_timestep(Time timestep);
 

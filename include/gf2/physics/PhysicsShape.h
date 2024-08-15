@@ -37,6 +37,8 @@ namespace gf {
     static PhysicsShape make_polygon(PhysicsBody* body, Span<const Vec2F> vertices, Mat3F transform, float radius);
     static PhysicsShape make_box(PhysicsBody* body, RectF box, float radius);
 
+    PhysicsId id() { return m_shape.id(); }
+
     PhysicsWorld world() const;
 
     PhysicsBody body() const;
