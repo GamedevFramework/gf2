@@ -177,6 +177,7 @@ namespace gf {
     std::vector<LayerStructureData> layers;
 
     const TilesetData* tileset_from_gid(uint32_t gid) const noexcept;
+    const std::vector<LayerStructureData>& compute_structure(std::string_view path) const;
   };
 
   template<typename Archive>

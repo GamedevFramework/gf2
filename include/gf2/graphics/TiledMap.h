@@ -76,10 +76,8 @@ namespace gf {
     }
 
   private:
-    void compute_tile_layers(const TiledMapData& data, RenderManager* render_manager);
-    void compute_object_layers(const TiledMapData& data, RenderManager* render_manager);
-
-    const std::vector<LayerStructureData>& compute_structure(std::string_view path) const;
+    void compute_tile_layers(RenderManager* render_manager);
+    void compute_object_layers(RenderManager* render_manager);
 
     struct BufferRange {
       std::size_t texture_index = 0;

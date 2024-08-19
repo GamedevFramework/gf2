@@ -848,6 +848,30 @@ namespace gf {
     return nullptr;
   }
 
+  const std::vector<LayerStructureData>& TiledMapData::compute_structure(std::string_view path) const
+  {
+    auto path_elements = split_path(path);
+    const auto* structure = &layers;
+
+    for (auto layer_name : path_elements) {
+      auto predicate = [this, layer_name](const LayerStructureData& current) {
+        if (current.type != LayerType::Group) {
+          return false;
+        }
+
+        return group_layers[current.layer_index].layer.name == layer_name;
+      };
+
+      if (auto iterator = std::find_if(structure->begin(), structure->end(), predicate); iterator != structure->end()) {
+        structure = &group_layers[iterator->layer_index].sub_layers;
+      } else {
+        Log::fatal("Unknown layer '{}' in path '{}'", layer_name, path);
+      }
+    }
+
+    return *structure;
+  }
+
   /*
    * TiledMapResource
    */

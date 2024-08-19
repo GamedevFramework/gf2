@@ -109,9 +109,8 @@ namespace gf {
   , m_data(data)
   , m_grid(compute_grid(data))
   {
-    compute_grid(data);
-    compute_tile_layers(data, render_manager);
-    compute_object_layers(data, render_manager);
+    compute_tile_layers(render_manager);
+    compute_object_layers(render_manager);
   }
 
   namespace {
@@ -163,7 +162,7 @@ namespace gf {
 
   std::vector<RenderGeometry> TiledMap::select_geometry(Vec2I position, std::string_view path, Flags<TiledMapQuery> query)
   {
-    const auto& structure = compute_structure(path);
+    const auto& structure = m_data.compute_structure(path);
 
     std::vector<RenderGeometry> geometries;
     const RectI neighbors = RectI::from_center_size(position / ChunkSize, { 3, 3 });
@@ -173,7 +172,7 @@ namespace gf {
 
   std::vector<RenderGeometry> TiledMap::select_geometry(std::string_view path, Flags<TiledMapQuery> query)
   {
-    const auto& structure = compute_structure(path);
+    const auto& structure = m_data.compute_structure(path);
 
     RectI neighbors = RectI::from_size({ 1, 1 });
 
@@ -192,17 +191,17 @@ namespace gf {
   }
 
   // useful documentation: http://eishiya.com/articles/tiled/#rendering-maps
-  void TiledMap::compute_tile_layers(const TiledMapData& data, RenderManager* render_manager)
+  void TiledMap::compute_tile_layers(RenderManager* render_manager)
   {
-    const Vec2I chunk_count = { div_ceil(data.map_size.w, ChunkSize), div_ceil(data.map_size.h, ChunkSize) };
+    const Vec2I chunk_count = { div_ceil(m_data.map_size.w, ChunkSize), div_ceil(m_data.map_size.h, ChunkSize) };
 
-    for (const auto& tile_layer_data : data.tile_layers) {
+    for (const auto& tile_layer_data : m_data.tile_layers) {
       TileLayer tile_layer;
       tile_layer.chunks = Array2D<LayerBuffers>(chunk_count);
 
       for (auto base : tile_layer.chunks.position_range()) {
         RectI chunk_rectangle = RectI::from_position_size(base * ChunkSize, vec(ChunkSize, ChunkSize));
-        auto maybe_intersection = RectI::from_size(data.map_size).intersection(chunk_rectangle);
+        auto maybe_intersection = RectI::from_size(m_data.map_size).intersection(chunk_rectangle);
         assert(maybe_intersection);
         chunk_rectangle = *maybe_intersection;
         assert(!chunk_rectangle.empty());
@@ -218,7 +217,7 @@ namespace gf {
             continue;
           }
 
-          const TilesetData* tileset_data = data.tileset_from_gid(tile_data.gid);
+          const TilesetData* tileset_data = m_data.tileset_from_gid(tile_data.gid);
           assert(tileset_data != nullptr);
           const uint32_t gid = tile_data.gid - tileset_data->first_gid;
 
@@ -226,7 +225,7 @@ namespace gf {
           const RectF texture_region = tileset_data->compute_texture_region(gid, texture->size());
 
           RectI bounds = m_grid.compute_cell_bounds(position);
-          bounds.offset.y += data.tile_size.h - tileset_data->tile_size.h;
+          bounds.offset.y += m_data.tile_size.h - tileset_data->tile_size.h;
           bounds.offset += tile_layer_data.layer.offset;
           bounds.offset += tileset_data->offset;
           bounds.extent = tileset_data->tile_size;
@@ -267,9 +266,9 @@ namespace gf {
     }
   }
 
-  void TiledMap::compute_object_layers(const TiledMapData& data, RenderManager* render_manager)
+  void TiledMap::compute_object_layers(RenderManager* render_manager)
   {
-    for (const auto& object_layer_data : data.object_layers) {
+    for (const auto& object_layer_data : m_data.object_layers) {
       SplitGeometry split_geometry;
 
       for (const auto& object_data : object_layer_data.objects) {
@@ -278,7 +277,7 @@ namespace gf {
         }
 
         const TileData tile_data = std::get<TileData>(object_data.feature);
-        const TilesetData* tileset_data = data.tileset_from_gid(tile_data.gid);
+        const TilesetData* tileset_data = m_data.tileset_from_gid(tile_data.gid);
         assert(tileset_data != nullptr);
         const uint32_t gid = tile_data.gid - tileset_data->first_gid;
 
@@ -294,7 +293,7 @@ namespace gf {
           { bounds.position_at(Orientation::SouthWest), texture_region.position_at(Orientation::SouthWest) }
         };
 
-        const Vec2F origin = data.orientation == GridOrientation::Isometric ? vec(0.5f, 1.0f) : vec(0.0f, 1.0f);
+        const Vec2F origin = m_data.orientation == GridOrientation::Isometric ? vec(0.5f, 1.0f) : vec(0.0f, 1.0f);
         const Transform transform(object_data.location + object_layer_data.layer.offset, origin, degrees_to_radians(object_data.rotation));
         const Mat3F transform_matrix = transform.compute_matrix(bounds);
 
@@ -324,30 +323,6 @@ namespace gf {
 
       m_object_layers.push_back({ std::move(buffers) });
     }
-  }
-
-  const std::vector<LayerStructureData>& TiledMap::compute_structure(std::string_view path) const
-  {
-    auto layers = split_path(path);
-    const auto* structure = &m_data.layers;
-
-    for (auto layer : layers) {
-      auto predicate = [this, layer](const LayerStructureData& current) {
-        if (current.type != LayerType::Group) {
-          return false;
-        }
-
-        return m_data.group_layers[current.layer_index].layer.name == layer;
-      };
-
-      if (auto iterator = std::find_if(structure->begin(), structure->end(), predicate); iterator != structure->end()) {
-        structure = &m_data.group_layers[iterator->layer_index].sub_layers;
-      } else {
-        Log::fatal("Unknown layer '{}' in path '{}'", layer, path);
-      }
-    }
-
-    return *structure;
   }
 
   // NOLINTNEXTLINE(misc-no-recursion)
