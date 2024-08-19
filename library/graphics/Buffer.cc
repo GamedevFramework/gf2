@@ -139,14 +139,9 @@ namespace gf {
 
   void Buffer::update_host_buffer(std::size_t total_size, const void* data)
   {
-    void* memory = nullptr;
-
-    if (vmaMapMemory(m_allocator, m_allocation, &memory) != VK_SUCCESS) {
-      Log::fatal("Failed to map memory.");
+    if (vmaCopyMemoryToAllocation(m_allocator, data, m_allocation, 0, total_size) != VK_SUCCESS) {
+      Log::fatal("Failed copy memory to buffer.");
     }
-
-    std::memcpy(memory, data, total_size);
-    vmaUnmapMemory(m_allocator, m_allocation);
   }
 
   void Buffer::update_device_buffer(std::size_t total_size, const void* data, RenderManager* render_manager)
@@ -170,14 +165,9 @@ namespace gf {
       Log::fatal("Failed to allocate buffer.");
     }
 
-    void* memory = nullptr;
-
-    if (vmaMapMemory(m_allocator, staging_allocation, &memory) != VK_SUCCESS) {
-      Log::fatal("Failed to map memory.");
+    if (vmaCopyMemoryToAllocation(m_allocator, data, staging_allocation, 0, total_size) != VK_SUCCESS) {
+      Log::fatal("Failed copy memory to buffer.");
     }
-
-    std::memcpy(memory, data, total_size);
-    vmaUnmapMemory(m_allocator, staging_allocation);
 
     // commands
 

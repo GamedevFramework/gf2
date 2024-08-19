@@ -209,14 +209,9 @@ namespace gf {
       Log::fatal("Failed to allocate buffer.");
     }
 
-    void* memory = nullptr;
-
-    if (vmaMapMemory(m_allocator, staging_allocation, &memory) != VK_SUCCESS) {
-      Log::fatal("Failed to map memory.");
+    if (vmaCopyMemoryToAllocation(m_allocator, raw_data, staging_allocation, 0, raw_size) != VK_SUCCESS) {
+      Log::fatal("Failed copy memory to buffer.");
     }
-
-    std::memcpy(memory, raw_data, raw_size);
-    vmaUnmapMemory(m_allocator, staging_allocation);
 
     return { staging_buffer, staging_allocation };
   }
