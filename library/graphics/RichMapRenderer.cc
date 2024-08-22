@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
 
-#include <gf2/graphics/TiledMap.h>
+#include <gf2/graphics/RichMapRenderer.h>
 
 #include <cstdint>
 
@@ -10,7 +10,7 @@
 #include <gf2/core/ResourceManager.h>
 #include <gf2/core/Span.h>
 #include <gf2/core/StringUtils.h>
-#include <gf2/core/TiledMapData.h>
+#include <gf2/core/TiledMap.h>
 #include <gf2/core/Transform.h>
 
 #include <gf2/graphics/RawGeometry.h>
@@ -67,17 +67,17 @@ namespace gf {
       }
     };
 
-    AnyGrid compute_grid(const TiledMapData& data)
+    AnyGrid compute_grid(const TiledMap* tiled_map)
     {
-      switch (data.orientation) {
+      switch (tiled_map->orientation) {
         case GridOrientation::Orthogonal:
-          return AnyGrid::make_orthogonal(data.map_size, data.tile_size);
+          return AnyGrid::make_orthogonal(tiled_map->map_size, tiled_map->tile_size);
         case GridOrientation::Isometric:
-          return AnyGrid::make_isometric(data.map_size, data.tile_size);
+          return AnyGrid::make_isometric(tiled_map->map_size, tiled_map->tile_size);
         case GridOrientation::Staggered:
-          return AnyGrid::make_staggered(data.map_size, data.tile_size, data.cell_axis, data.cell_index);
+          return AnyGrid::make_staggered(tiled_map->map_size, tiled_map->tile_size, tiled_map->cell_axis, tiled_map->cell_index);
         case GridOrientation::Hexagonal:
-          return AnyGrid::make_hexagonal(data.map_size, data.tile_size, data.hex_side_length, data.cell_axis, data.cell_index);
+          return AnyGrid::make_hexagonal(tiled_map->map_size, tiled_map->tile_size, tiled_map->hex_side_length, tiled_map->cell_axis, tiled_map->cell_index);
         default:
           break;
       }
@@ -104,65 +104,22 @@ namespace gf {
 
   }
 
-  TiledMap::TiledMap(std::vector<const Texture*> textures, const TiledMapData& data, RenderManager* render_manager)
-  : m_textures(std::move(textures))
-  , m_data(data)
-  , m_grid(compute_grid(data))
+  RichMapRenderer::RichMapRenderer(const RichMap* map, RenderManager* render_manager)
+  : m_map(map)
+  , m_grid(compute_grid(m_map->tiled_map()))
   {
     compute_tile_layers(render_manager);
     compute_object_layers(render_manager);
   }
 
-  namespace {
-
-    std::vector<const Texture*> load_resources(const TiledMapResource& resource, ResourceManager* resource_manager)
-    {
-      std::vector<const Texture*> resources;
-      resources.reserve(resource.textures.size());
-
-      for (const auto& texture : resource.textures) {
-        resources.push_back(resource_manager->get<Texture>(texture));
-      }
-
-      return resources;
-    }
-
-  }
-
-  TiledMap::TiledMap(const TiledMapResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
-  : TiledMap(load_resources(resource, resource_manager), resource.data, render_manager)
+  RichMapRenderer::RichMapRenderer(const RichMapResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
+  : RichMapRenderer(resource_manager->get<RichMap>(resource.filename), render_manager)
   {
   }
 
-  namespace {
-
-    const TiledMapResource& load_resource(const std::filesystem::path& filename, ResourceManager* resource_manager)
-    {
-      auto* resource = resource_manager->get<TiledMapResource>(filename);
-      assert(resource != nullptr);
-      return *resource;
-    }
-  }
-
-  TiledMap::TiledMap(const std::filesystem::path& filename, TiledMapContext context)
-  : TiledMap(load_resource(filename, context.resource_manager), context.render_manager, context.resource_manager)
+  std::vector<RenderGeometry> RichMapRenderer::select_geometry(Vec2I position, std::string_view path, Flags<TiledMapQuery> query)
   {
-  }
-
-  ResourceBundle TiledMap::bundle(const std::filesystem::path& filename, TiledMapContext context)
-  {
-    auto textures = load_resource(filename, context.resource_manager).textures;
-
-    return ResourceBundle([textures, context](ResourceBundle* bundle, ResourceManager* manager, ResourceAction action) {
-      for (const auto& texture : textures) {
-        bundle->handle<Texture>(texture, context.render_manager, manager, action);
-      }
-    });
-  }
-
-  std::vector<RenderGeometry> TiledMap::select_geometry(Vec2I position, std::string_view path, Flags<TiledMapQuery> query)
-  {
-    const auto& structure = m_data.compute_structure(path);
+    const auto& structure = tiled_map()->compute_structure(path);
 
     std::vector<RenderGeometry> geometries;
     const RectI neighbors = RectI::from_center_size(position / ChunkSize, { 3, 3 });
@@ -170,9 +127,9 @@ namespace gf {
     return geometries;
   }
 
-  std::vector<RenderGeometry> TiledMap::select_geometry(std::string_view path, Flags<TiledMapQuery> query)
+  std::vector<RenderGeometry> RichMapRenderer::select_geometry(std::string_view path, Flags<TiledMapQuery> query)
   {
-    const auto& structure = m_data.compute_structure(path);
+    const auto& structure = tiled_map()->compute_structure(path);
 
     RectI neighbors = RectI::from_size({ 1, 1 });
 
@@ -185,23 +142,25 @@ namespace gf {
     return geometries;
   }
 
-  Vec2I TiledMap::compute_position(Vec2F location) const
+  Vec2I RichMapRenderer::compute_position(Vec2F location) const
   {
     return m_grid.compute_position(location);
   }
 
   // useful documentation: http://eishiya.com/articles/tiled/#rendering-maps
-  void TiledMap::compute_tile_layers(RenderManager* render_manager)
+  void RichMapRenderer::compute_tile_layers(RenderManager* render_manager)
   {
-    const Vec2I chunk_count = { div_ceil(m_data.map_size.w, ChunkSize), div_ceil(m_data.map_size.h, ChunkSize) };
+    const TiledMap* map = tiled_map();
 
-    for (const auto& tile_layer_data : m_data.tile_layers) {
+    const Vec2I chunk_count = { div_ceil(map->map_size.w, ChunkSize), div_ceil(map->map_size.h, ChunkSize) };
+
+    for (const auto& raw_tile_layer : map->tile_layers) {
       TileLayer tile_layer;
       tile_layer.chunks = Array2D<LayerBuffers>(chunk_count);
 
       for (auto base : tile_layer.chunks.position_range()) {
         RectI chunk_rectangle = RectI::from_position_size(base * ChunkSize, vec(ChunkSize, ChunkSize));
-        auto maybe_intersection = RectI::from_size(m_data.map_size).intersection(chunk_rectangle);
+        auto maybe_intersection = RectI::from_size(map->map_size).intersection(chunk_rectangle);
         assert(maybe_intersection);
         chunk_rectangle = *maybe_intersection;
         assert(!chunk_rectangle.empty());
@@ -211,24 +170,24 @@ namespace gf {
         for (auto position : gf::position_range(chunk_rectangle.size())) {
           position += chunk_rectangle.position();
 
-          const TileData tile_data = tile_layer_data.tiles(position);
+          const MapTile tile = raw_tile_layer.tiles(position);
 
-          if (tile_data.gid == 0) {
+          if (tile.gid == 0) {
             continue;
           }
 
-          const TilesetData* tileset_data = m_data.tileset_from_gid(tile_data.gid);
-          assert(tileset_data != nullptr);
-          const uint32_t gid = tile_data.gid - tileset_data->first_gid;
+          const MapTileset* tileset = map->tileset_from_gid(tile.gid);
+          assert(tileset != nullptr);
+          const uint32_t gid = tile.gid - tileset->first_gid;
 
-          const Texture* texture = m_textures[tileset_data->texture_index];
-          const RectF texture_region = tileset_data->compute_texture_region(gid, texture->size());
+          const Texture* texture = rich_map()->texture(tileset->texture_index);
+          const RectF texture_region = tileset->compute_texture_region(gid, texture->size());
 
           RectI bounds = m_grid.compute_cell_bounds(position);
-          bounds.offset.y += m_data.tile_size.h - tileset_data->tile_size.h;
-          bounds.offset += tile_layer_data.layer.offset;
-          bounds.offset += tileset_data->offset;
-          bounds.extent = tileset_data->tile_size;
+          bounds.offset.y += map->tile_size.h - tileset->tile_size.h;
+          bounds.offset += raw_tile_layer.layer.offset;
+          bounds.offset += tileset->offset;
+          bounds.extent = tileset->tile_size;
 
           Vertex vertices[4] = {
             { bounds.position_at(Orientation::NorthEast), texture_region.position_at(Orientation::NorthEast) },
@@ -237,9 +196,9 @@ namespace gf {
             { bounds.position_at(Orientation::SouthWest), texture_region.position_at(Orientation::SouthWest) }
           };
 
-          flip_vertices(vertices, tile_data.flip);
+          flip_vertices(vertices, tile.flip);
 
-          split_geometry.add_quad(tileset_data->texture_index, vertices);
+          split_geometry.add_quad(tileset->texture_index, vertices);
         }
 
         LayerBuffers chunk;
@@ -266,25 +225,27 @@ namespace gf {
     }
   }
 
-  void TiledMap::compute_object_layers(RenderManager* render_manager)
+  void RichMapRenderer::compute_object_layers(RenderManager* render_manager)
   {
-    for (const auto& object_layer_data : m_data.object_layers) {
+    const TiledMap* map = tiled_map();
+
+    for (const auto& raw_object_layer : map->object_layers) {
       SplitGeometry split_geometry;
 
-      for (const auto& object_data : object_layer_data.objects) {
-        if (object_data.type != ObjectType::Tile) {
+      for (const auto& object : raw_object_layer.objects) {
+        if (object.type != MapObjectType::Tile) {
           continue;
         }
 
-        const TileData tile_data = std::get<TileData>(object_data.feature);
-        const TilesetData* tileset_data = m_data.tileset_from_gid(tile_data.gid);
-        assert(tileset_data != nullptr);
-        const uint32_t gid = tile_data.gid - tileset_data->first_gid;
+        const MapTile tile = std::get<MapTile>(object.feature);
+        const MapTileset* tileset = map->tileset_from_gid(tile.gid);
+        assert(tileset != nullptr);
+        const uint32_t gid = tile.gid - tileset->first_gid;
 
-        const Texture* texture = m_textures[tileset_data->texture_index];
-        const RectF texture_region = tileset_data->compute_texture_region(gid, texture->size());
+        const Texture* texture = rich_map()->texture(tileset->texture_index);
+        const RectF texture_region = tileset->compute_texture_region(gid, texture->size());
 
-        const RectF bounds = RectF::from_size(tileset_data->tile_size);
+        const RectF bounds = RectF::from_size(tileset->tile_size);
 
         Vertex vertices[4] = {
           { bounds.position_at(Orientation::NorthEast), texture_region.position_at(Orientation::NorthEast) },
@@ -293,15 +254,15 @@ namespace gf {
           { bounds.position_at(Orientation::SouthWest), texture_region.position_at(Orientation::SouthWest) }
         };
 
-        const Vec2F origin = m_data.orientation == GridOrientation::Isometric ? vec(0.5f, 1.0f) : vec(0.0f, 1.0f);
-        const Transform transform(object_data.location + object_layer_data.layer.offset, origin, degrees_to_radians(object_data.rotation));
+        const Vec2F origin = map->orientation == GridOrientation::Isometric ? vec(0.5f, 1.0f) : vec(0.0f, 1.0f);
+        const Transform transform(object.location + raw_object_layer.layer.offset, origin, degrees_to_radians(object.rotation));
         const Mat3F transform_matrix = transform.compute_matrix(bounds);
 
         for (Vertex& vertex : vertices) {
           vertex.location = transform_point(transform_matrix, vertex.location);
         }
 
-        split_geometry.add_quad(tileset_data->texture_index, vertices);
+        split_geometry.add_quad(tileset->texture_index, vertices);
       }
 
       LayerBuffers buffers;
@@ -326,24 +287,26 @@ namespace gf {
   }
 
   // NOLINTNEXTLINE(misc-no-recursion)
-  void TiledMap::compute_geometries(RectI view, Flags<TiledMapQuery> query, const std::vector<LayerStructureData>& structure, std::vector<RenderGeometry>& geometries) const
+  void RichMapRenderer::compute_geometries(RectI view, Flags<TiledMapQuery> query, const std::vector<MapLayerStructure>& structure, std::vector<RenderGeometry>& geometries) const
   {
+    const TiledMap* map = tiled_map();
+
     for (const auto& layer : structure) {
       switch (layer.type) {
-        case LayerType::Group:
+        case MapLayerType::Group:
           if (query.test(TiledMapQuery::Recursive)) {
-            const std::vector<LayerStructureData>& sub_structure = m_data.group_layers[layer.layer_index].sub_layers;
+            const std::vector<MapLayerStructure>& sub_structure = map->group_layers[layer.layer_index].sub_layers;
             compute_geometries(view, query, sub_structure, geometries);
           }
           break;
 
-        case LayerType::Tile:
+        case MapLayerType::Tile:
           if (query.test(TiledMapQuery::Tile)) {
             compute_tile_geometry(view, m_tile_layers[layer.layer_index], geometries);
           }
           break;
 
-        case LayerType::Object:
+        case MapLayerType::Object:
           if (query.test(TiledMapQuery::Object)) {
             compute_object_geometry(m_object_layers[layer.layer_index], geometries);
           }
@@ -352,7 +315,7 @@ namespace gf {
     }
   }
 
-  void TiledMap::compute_tile_geometry(RectI view, const TileLayer& tile_layer, std::vector<RenderGeometry>& geometries) const
+  void RichMapRenderer::compute_tile_geometry(RectI view, const TileLayer& tile_layer, std::vector<RenderGeometry>& geometries) const
   {
     if (auto maybe_view = view.intersection(RectI::from_size(tile_layer.chunks.size()))) {
       for (auto xy : gf::position_range(maybe_view->size())) {
@@ -370,7 +333,7 @@ namespace gf {
         geometry.indices = &chunk.indices;
 
         for (auto range : chunk.ranges) {
-          geometry.texture = m_textures[range.texture_index];
+          geometry.texture = rich_map()->texture(range.texture_index);
           geometry.first = range.first;
           geometry.size = range.size;
 
@@ -380,7 +343,7 @@ namespace gf {
     }
   }
 
-  void TiledMap::compute_object_geometry(const ObjectLayer& object_layer, std::vector<RenderGeometry>& geometries) const
+  void RichMapRenderer::compute_object_geometry(const ObjectLayer& object_layer, std::vector<RenderGeometry>& geometries) const
   {
     RenderGeometry geometry = {};
     geometry.pipeline = RenderPipelineType::Default;
@@ -388,7 +351,7 @@ namespace gf {
     geometry.indices = &object_layer.buffers.indices;
 
     for (auto range : object_layer.buffers.ranges) {
-      geometry.texture = m_textures[range.texture_index];
+      geometry.texture = rich_map()->texture(range.texture_index);
       geometry.first = range.first;
       geometry.size = range.size;
 

@@ -8,7 +8,6 @@
 #include <gf2/core/Geometry.h>
 #include <gf2/core/Grids.h>
 #include <gf2/core/ResourceManager.h>
-#include <gf2/core/TiledMapData.h>
 
 #include <gf2/graphics/RenderObject.h>
 #include <gf2/graphics/RenderRecorder.h>
@@ -26,7 +25,7 @@ namespace home {
       return std::tie(lhs.x, lhs.y) < std::tie(rhs.x, rhs.y);
     }
 
-    std::vector<gf::Polyline> find_contour(const gf::TileLayerData& tile_layer, const gf::StaggeredGrid& grid)
+    std::vector<gf::Polyline> find_contour(const gf::MapTileLayer& tile_layer, const gf::StaggeredGrid& grid)
     {
       gf::Log::info("Tile Layer '{}'", tile_layer.layer.name);
 
@@ -70,21 +69,20 @@ namespace home {
   }
 
   MapEntity::MapEntity(GameHub* hub, const WorldData& data, gf::PhysicsWorld* physics_world)
-  : m_map_resource(hub->resource_manager()->get<gf::TiledMapResource>(data.map))
-  , m_map(hub->resource_manager()->get<gf::TiledMap>(data.map))
+  : m_map_renderer(data.map, hub->render_manager(), hub->resource_manager())
   {
 
-    auto& map = m_map_resource->data;
-    assert(map.orientation == gf::GridOrientation::Staggered);
+    const gf::TiledMap* tiled_map = m_map_renderer.tiled_map();
+    assert(tiled_map->orientation == gf::GridOrientation::Staggered);
 
-    const gf::StaggeredGrid grid(map.map_size, map.tile_size, map.cell_axis, map.cell_index);
-    auto contour = find_contour(map.tile_layers.front(), grid);
+    const gf::StaggeredGrid grid(tiled_map->map_size, tiled_map->tile_size, tiled_map->cell_axis, tiled_map->cell_index);
+    auto contour = find_contour(tiled_map->tile_layers.front(), grid);
 
     gf::PhysicsBody body = physics_world->static_body();
 
     for (auto& polyline : contour) {
       for (auto& point : polyline.points) {
-        point.y -= static_cast<float>(map.tile_size.h) / 2;
+        point.y -= static_cast<float>(tiled_map->tile_size.h) / 2;
       }
 
       auto shapes = make_polyline_shapes(&body, polyline, 1.0f);
@@ -94,13 +92,13 @@ namespace home {
       }
     }
 
-    for (auto& object_layer : map.object_layers) {
+    for (const auto& object_layer : tiled_map->object_layers) {
       if (object_layer.layer.name != "Trees") {
         continue;
       }
 
-      for (auto& object : object_layer.objects) {
-        if (object.type != gf::ObjectType::Tile) {
+      for (const auto& object : object_layer.objects) {
+        if (object.type != gf::MapObjectType::Tile) {
           continue;
         }
 
@@ -118,8 +116,8 @@ namespace home {
 
   void MapEntity::render(gf::RenderRecorder& recorder)
   {
-    auto position = m_map->compute_position(m_location);
-    auto geometries = m_map->select_geometry(position, "Scenery");
+    auto position = m_map_renderer.compute_position(m_location);
+    auto geometries = m_map_renderer.select_geometry(position, "Scenery");
 
     for (auto& geometry : geometries) {
       gf::RenderObject object = {};

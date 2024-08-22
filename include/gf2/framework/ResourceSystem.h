@@ -6,15 +6,16 @@
 #include <utility>
 
 #include <gf2/core/FontFace.h>
+#include <gf2/core/Image.h>
 #include <gf2/core/ResourceLoaders.h>
 #include <gf2/core/ResourceManager.h>
-#include <gf2/core/TiledMapData.h>
+#include <gf2/core/TiledMap.h>
 
 #include <gf2/audio/Music.h>
 #include <gf2/audio/Sound.h>
 #include <gf2/graphics/ConsoleFont.h>
+#include <gf2/graphics/RichMap.h>
 #include <gf2/graphics/Texture.h>
-#include <gf2/graphics/TiledMap.h>
 
 #include "FrameworkApi.h"
 
@@ -38,12 +39,13 @@ namespace gf {
     FileLoader m_file_loader;
 
     // from core
+    ResourceRegistry<Image> m_image_registry;
     ResourceRegistry<FontFace> m_font_registry;
-    ResourceRegistry<TiledMapResource> m_tiled_map_resource_registry;
+    ResourceRegistry<TiledMap> m_tiled_map_registry;
     // from graphics
     ResourceRegistry<ConsoleFont> m_console_font_registry;
     ResourceRegistry<Texture> m_texture_registry;
-    ResourceRegistry<TiledMap> m_tiled_map_registry;
+    ResourceRegistry<RichMap> m_rich_map_registry;
     // from audio
     ResourceRegistry<Sound> m_sound_registry;
     ResourceRegistry<Music> m_music_registry;

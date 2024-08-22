@@ -1,8 +1,8 @@
 #include "HeroEntity.h"
 
 #include <gf2/core/Log.h>
-#include <gf2/core/TiledMapData.h>
 
+#include <gf2/graphics/RichMap.h>
 #include <gf2/physics/PhysicsArbiter.h>
 
 #include "GameHub.h"
@@ -37,13 +37,13 @@ namespace home {
 
     gf::Vec2F compute_initial_location(const WorldData& data, gf::ResourceManager* resource_manager)
     {
-      const gf::TiledMapResource* map = resource_manager->get<gf::TiledMapResource>(data.map);
+      const gf::RichMap* map = resource_manager->get<gf::RichMap>(data.map.filename);
 
-      for (const gf::ObjectLayerData& object_layer : map->data.object_layers) {
+      for (const gf::MapObjectLayer& object_layer : map->tiled_map()->object_layers) {
         if (object_layer.layer.name == "Locations") {
-          for (const gf::ObjectData& object : object_layer.objects) {
+          for (const gf::MapObject& object : object_layer.objects) {
             if (object.name == "start") {
-              assert(object.type == gf::ObjectType::Point);
+              assert(object.type == gf::MapObjectType::Point);
               return object.location;
             }
           }

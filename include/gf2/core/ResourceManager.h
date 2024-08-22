@@ -1,5 +1,7 @@
-#ifndef RESOURCE_MANAGER_H
-#define RESOURCE_MANAGER_H
+// SPDX-License-Identifier: Zlib
+// Copyright (c) 2023 Julien Bernard
+#ifndef GF_RESOURCE_MANAGER_H
+#define GF_RESOURCE_MANAGER_H
 
 #include <cassert>
 #include <cstddef>
@@ -87,4 +89,4 @@ namespace gf {
 
 } // namespace gf
 
-#endif // RESOURCE_MANAGER_H
+#endif // GF_RESOURCE_MANAGER_H

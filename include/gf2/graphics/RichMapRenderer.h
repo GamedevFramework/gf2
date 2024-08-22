@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
-#ifndef GF_TILED_MAP_H
-#define GF_TILED_MAP_H
+#ifndef GF_RICH_MAP_RENDERER_H
+#define GF_RICH_MAP_RENDERER_H
 
-#include <filesystem>
 #include <string_view>
 #include <vector>
 
@@ -11,18 +10,15 @@
 #include <gf2/core/Array2D.h>
 #include <gf2/core/Flags.h>
 #include <gf2/core/Rect.h>
-#include <gf2/core/TiledMapData.h>
 #include <gf2/core/Vec2.h>
 
 #include "Buffer.h"
 #include "GraphicsApi.h"
 #include "RenderObject.h"
+#include "RichMap.h"
 
 namespace gf {
   class RenderManager;
-  class ResourceBundle;
-  class ResourceManager;
-  class Texture;
 
   enum class TiledMapQuery : uint8_t {
     Tile = 0x01,
@@ -34,19 +30,10 @@ namespace gf {
   struct EnableBitmaskOperators<TiledMapQuery> : std::true_type {
   };
 
-  struct GF_GRAPHICS_API TiledMapContext {
-    RenderManager* render_manager;
-    ResourceManager* resource_manager;
-  };
-
-  class GF_GRAPHICS_API TiledMap {
+  class GF_GRAPHICS_API RichMapRenderer {
   public:
-    using Primitive = TiledMapResource;
-    using Context = TiledMapContext;
-
-    TiledMap(std::vector<const Texture*> textures, const TiledMapData& data, RenderManager* render_manager);
-    TiledMap(const TiledMapResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
-    TiledMap(const std::filesystem::path& filename, TiledMapContext context);
+    RichMapRenderer(const RichMap* map, RenderManager* render_manager);
+    RichMapRenderer(const RichMapResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
 #ifdef _MSC_VER
     // why?
@@ -58,8 +45,6 @@ namespace gf {
     TiledMap& operator=(TiledMap&&) noexcept = default;
 #endif
 
-    static ResourceBundle bundle(const std::filesystem::path& filename, TiledMapContext context);
-
     std::vector<RenderGeometry> select_geometry(Vec2I position, std::string_view path, Flags<TiledMapQuery> query = All);
     std::vector<RenderGeometry> select_geometry(std::string_view path, Flags<TiledMapQuery> query = All);
 
@@ -70,9 +55,14 @@ namespace gf {
       return m_grid;
     }
 
-    const TiledMapData& data() const
+    const RichMap* rich_map() const
     {
-      return m_data;
+      return m_map;
+    }
+
+    const TiledMap* tiled_map() const
+    {
+      return m_map->tiled_map();
     }
 
   private:
@@ -99,12 +89,11 @@ namespace gf {
       LayerBuffers buffers;
     };
 
-    void compute_geometries(RectI view, Flags<TiledMapQuery> query, const std::vector<LayerStructureData>& structure, std::vector<RenderGeometry>& geometries) const;
+    void compute_geometries(RectI view, Flags<TiledMapQuery> query, const std::vector<MapLayerStructure>& structure, std::vector<RenderGeometry>& geometries) const;
     void compute_tile_geometry(RectI view, const TileLayer& tile_layer, std::vector<RenderGeometry>& geometries) const;
     void compute_object_geometry(const ObjectLayer& object_layer, std::vector<RenderGeometry>& geometries) const;
 
-    std::vector<const Texture*> m_textures;
-    TiledMapData m_data;
+    const RichMap* m_map;
     AnyGrid m_grid;
     std::vector<TileLayer> m_tile_layers;
     std::vector<ObjectLayer> m_object_layers;
@@ -112,4 +101,4 @@ namespace gf {
 
 } // namespace gf
 
-#endif // GF_TILED_MAP_H
+#endif // GF_RICH_MAP_RENDERER_H

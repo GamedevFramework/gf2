@@ -6,7 +6,6 @@
 #include <gf2/core/SpriteData.h>
 #include <gf2/core/Stream.h>
 #include <gf2/core/TextData.h>
-#include <gf2/core/TiledMapData.h>
 
 #include "gtest/gtest.h"
 
@@ -104,17 +103,6 @@ TEST(DataTest, TextData) {
   deserialize(data);
 
   gf::TextResource resource;
-  serialize(resource);
-  deserialize(resource);
-}
-
-TEST(DataTest, TiledMapData) {
-  gf::TiledMapData data;
-
-  serialize(data);
-  deserialize(data);
-
-  gf::TiledMapResource resource;
   serialize(resource);
   deserialize(resource);
 }

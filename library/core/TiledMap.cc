@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023 Julien Bernard
 
-#include <gf2/core/TiledMapData.h>
+#include <gf2/core/TiledMap.h>
 
 #include <algorithm>
 #include <array>
@@ -179,7 +179,7 @@ namespace gf {
       return property_map;
     }
 
-    uint32_t parse_tmx_properties(const pugi::xml_node node, TiledMapResource& resource)
+    uint32_t parse_tmx_properties(const pugi::xml_node node, TiledMap& map)
     {
       PropertyMap property_map = parse_tmx_raw_properties(node);
 
@@ -187,8 +187,8 @@ namespace gf {
         return NoIndex;
       }
 
-      auto index = static_cast<uint32_t>(resource.data.properties.size());
-      resource.data.properties.push_back(std::move(property_map));
+      auto index = static_cast<uint32_t>(map.properties.size());
+      map.properties.push_back(std::move(property_map));
       return index;
     }
 
@@ -196,16 +196,16 @@ namespace gf {
      * layers
      */
 
-    LayerData parse_tmx_layer_common(const pugi::xml_node node, TiledMapResource& resource)
+    MapLayer parse_tmx_layer_common(const pugi::xml_node node, TiledMap& map)
     {
-      LayerData data;
-      data.properties_index = parse_tmx_properties(node, resource);
-      data.name = node.attribute("name").as_string();
-      data.offset.x = node.attribute("offsetx").as_int(0);
-      data.offset.y = node.attribute("offsety").as_int(0);
+      MapLayer layer;
+      layer.properties_index = parse_tmx_properties(node, map);
+      layer.name = node.attribute("name").as_string();
+      layer.offset.x = node.attribute("offsetx").as_int(0);
+      layer.offset.y = node.attribute("offsety").as_int(0);
       unsupported_attribute(node, "opacity");
       unsupported_attribute(node, "visible");
-      return data;
+      return layer;
     }
 
     // tile layer
@@ -397,14 +397,14 @@ namespace gf {
       return data;
     }
 
-    TileData parse_gid(uint32_t gid)
+    MapTile parse_gid(uint32_t gid)
     {
       static constexpr uint32_t FlippedHorizontallyBit = UINT32_C(0x80000000);
       static constexpr uint32_t FlippedVerticallyBit = UINT32_C(0x40000000);
       static constexpr uint32_t FlippedDiagonallyBit = UINT32_C(0x20000000);
       static constexpr uint32_t RotatedHexagonal120Bit = UINT32_C(0x10000000);
 
-      TileData tile;
+      MapTile tile;
 
       if ((gid & FlippedHorizontallyBit) != 0) {
         tile.flip.set(CellFlip::Horizontally);
@@ -426,9 +426,9 @@ namespace gf {
       return tile;
     }
 
-    std::vector<TileData> parse_tmx_tiles(const pugi::xml_node node, TmxFormat format)
+    std::vector<MapTile> parse_tmx_tiles(const pugi::xml_node node, TmxFormat format)
     {
-      std::vector<TileData> tiles;
+      std::vector<MapTile> tiles;
 
       switch (format) {
         case TmxFormat::Base64:
@@ -470,17 +470,17 @@ namespace gf {
       return tiles;
     }
 
-    LayerStructureData parse_tmx_tile_layer(const pugi::xml_node node, TiledMapResource& resource)
+    MapLayerStructure parse_tmx_tile_layer(const pugi::xml_node node, TiledMap& map)
     {
       assert(node.name() == "layer"sv);
-      assert(resource.data.map_size.w == node.attribute("width").as_int());
-      assert(resource.data.map_size.h == node.attribute("height").as_int());
+      assert(map.map_size.w == node.attribute("width").as_int());
+      assert(map.map_size.h == node.attribute("height").as_int());
 
-      TileLayerData tile_layer;
-      tile_layer.layer = parse_tmx_layer_common(node, resource);
+      MapTileLayer tile_layer;
+      tile_layer.layer = parse_tmx_layer_common(node, map);
 
       for (const pugi::xml_node data_node : node.children("data")) {
-        tile_layer.tiles = Array2D<TileData>(resource.data.map_size);
+        tile_layer.tiles = Array2D<MapTile>(map.map_size);
 
         auto format = parse_data_format(data_node);
         auto range = data_node.children("chunk");
@@ -506,18 +506,18 @@ namespace gf {
           }
         } else {
           auto tiles = parse_tmx_tiles(data_node, format);
-          assert(tiles.size() == static_cast<std::size_t>(resource.data.map_size.w * resource.data.map_size.h));
+          assert(tiles.size() == static_cast<std::size_t>(map.map_size.w * map.map_size.h));
           std::copy(tiles.begin(), tiles.end(), tile_layer.tiles.begin());
         }
       }
 
-      LayerStructureData data = {};
-      data.type = LayerType::Tile;
-      data.layer_index = static_cast<uint32_t>(resource.data.tile_layers.size());
+      MapLayerStructure structure = {};
+      structure.type = MapLayerType::Tile;
+      structure.layer_index = static_cast<uint32_t>(map.tile_layers.size());
 
-      resource.data.tile_layers.push_back(std::move(tile_layer));
+      map.tile_layers.push_back(std::move(tile_layer));
 
-      return data;
+      return structure;
     }
 
     // object layer
@@ -537,10 +537,10 @@ namespace gf {
       return points;
     }
 
-    ObjectData parse_tmx_object(const pugi::xml_node node, TiledMapResource& resource)
+    MapObject parse_tmx_object(const pugi::xml_node node, TiledMap& map)
     {
-      ObjectData object;
-      object.properties_index = parse_tmx_properties(node, resource);
+      MapObject object;
+      object.properties_index = parse_tmx_properties(node, map);
       object.id = gf::id(node.attribute("id").as_int());
       object.name = node.attribute("name").as_string();
       object.location.x = node.attribute("x").as_float();
@@ -551,24 +551,24 @@ namespace gf {
       unsupported_attribute(node, "visible");
 
       if (const pugi::xml_node polygon = node.child("polygon"); polygon) {
-        object.type = ObjectType::Polygon;
+        object.type = MapObjectType::Polygon;
         object.feature = parse_points(polygon.attribute("points").as_string());
       } else if (const pugi::xml_node polyline = node.child("polyline"); polyline) {
-        object.type = ObjectType::Polyline;
+        object.type = MapObjectType::Polyline;
         object.feature = parse_points(polyline.attribute("points").as_string());
       } else if (!node.child("text").empty()) {
         unsupported_node(node, "text");
       } else if (const pugi::xml_attribute gid = node.attribute("gid"); gid) {
-        object.type = ObjectType::Tile;
+        object.type = MapObjectType::Tile;
         object.feature = parse_gid(gid.as_uint());
       } else if (!node.child("point").empty()) {
-        object.type = ObjectType::Point;
+        object.type = MapObjectType::Point;
       } else if (!node.child("ellipse").empty()) {
-        object.type = ObjectType::Ellipse;
+        object.type = MapObjectType::Ellipse;
         const Vec2F size = { node.attribute("width").as_float(), node.attribute("height").as_float() };
         object.feature = size;
       } else {
-        object.type = ObjectType::Rectangle;
+        object.type = MapObjectType::Rectangle;
         const Vec2F size = { node.attribute("width").as_float(), node.attribute("height").as_float() };
         object.feature = size;
       }
@@ -576,65 +576,65 @@ namespace gf {
       return object;
     }
 
-    LayerStructureData parse_tmx_object_layer(const pugi::xml_node node, TiledMapResource& resource)
+    MapLayerStructure parse_tmx_object_layer(const pugi::xml_node node, TiledMap& map)
     {
       assert(node.name() == "objectgroup"sv);
 
-      ObjectLayerData object_layer;
-      object_layer.layer = parse_tmx_layer_common(node, resource);
+      MapObjectLayer object_layer;
+      object_layer.layer = parse_tmx_layer_common(node, map);
 
       unsupported_attribute(node, "color");
       unsupported_attribute(node, "draworder");
 
       for (const pugi::xml_node object : node.children("object")) {
-        object_layer.objects.push_back(parse_tmx_object(object, resource));
+        object_layer.objects.push_back(parse_tmx_object(object, map));
       }
 
-      LayerStructureData data = {};
-      data.type = LayerType::Object;
-      data.layer_index = static_cast<uint32_t>(resource.data.object_layers.size());
+      MapLayerStructure structure = {};
+      structure.type = MapLayerType::Object;
+      structure.layer_index = static_cast<uint32_t>(map.object_layers.size());
 
-      resource.data.object_layers.push_back(std::move(object_layer));
+      map.object_layers.push_back(std::move(object_layer));
 
-      return data;
+      return structure;
     }
 
     // group layer
 
-    std::vector<LayerStructureData> parse_tmx_layer_structure(pugi::xml_node node, TiledMapResource& resource);
+    std::vector<MapLayerStructure> parse_tmx_layer_structure(pugi::xml_node node, TiledMap& map);
 
     // NOLINTNEXTLINE(misc-no-recursion)
-    LayerStructureData parse_tmx_group_layer(const pugi::xml_node node, TiledMapResource& resource)
+    MapLayerStructure parse_tmx_group_layer(const pugi::xml_node node, TiledMap& map)
     {
       assert(node.name() == "group"sv);
 
-      GroupLayerData group_layer = {};
-      group_layer.layer = parse_tmx_layer_common(node, resource);
-      group_layer.sub_layers = parse_tmx_layer_structure(node, resource);
+      MapGroupLayer group_layer = {};
+      group_layer.layer = parse_tmx_layer_common(node, map);
+      group_layer.sub_layers = parse_tmx_layer_structure(node, map);
 
-      LayerStructureData data = {};
-      data.type = LayerType::Group;
-      data.layer_index = static_cast<uint32_t>(resource.data.group_layers.size());
+      MapLayerStructure structure = {};
+      structure.type = MapLayerType::Group;
+      structure.layer_index = static_cast<uint32_t>(map.group_layers.size());
 
-      resource.data.group_layers.push_back(std::move(group_layer));
+      map.group_layers.push_back(std::move(group_layer));
 
-      return data;
+      return structure;
     }
 
     // NOLINTNEXTLINE(misc-no-recursion)
-    std::vector<LayerStructureData> parse_tmx_layer_structure(const pugi::xml_node node, TiledMapResource& resource)
+    std::vector<MapLayerStructure> parse_tmx_layer_structure(const pugi::xml_node node, TiledMap& map)
     {
-      std::vector<LayerStructureData> layers;
+      std::vector<MapLayerStructure> layers;
 
       for (const pugi::xml_node layer : node.children()) {
         const std::string name = layer.name();
 
         if (name == "layer") {
-          layers.push_back(parse_tmx_tile_layer(layer, resource));
+          layers.push_back(parse_tmx_tile_layer(layer, map));
         } else if (name == "objectgroup") {
-          layers.push_back(parse_tmx_object_layer(layer, resource));
+          layers.push_back(parse_tmx_object_layer(layer, map));
         } else if (name == "group") {
-          layers.push_back(parse_tmx_group_layer(layer, resource));
+          layers.push_back(parse_tmx_group_layer(layer, map));
         }
       }
 
@@ -645,18 +645,18 @@ namespace gf {
      * tileset
      */
 
-    TilesetTileData parse_tmx_tileset_tile(const pugi::xml_node node, TiledMapResource& resource)
+    MapTilesetTile parse_tmx_tileset_tile(const pugi::xml_node node, TiledMap& map)
     {
       assert(node.name() == "tile"sv);
-      TilesetTileData tile;
-      tile.properties_index = parse_tmx_properties(node, resource);
+      MapTilesetTile tile;
+      tile.properties_index = parse_tmx_properties(node, map);
       tile.id = node.attribute("id").as_int();
       tile.type = node.attribute("type").as_string();
 
       const pugi::xml_node objects = node.child("objectgroup");
 
       if (!objects.empty()) {
-        tile.objects = parse_tmx_object_layer(objects, resource).layer_index;
+        tile.objects = parse_tmx_object_layer(objects, map).layer_index;
       }
 
       unsupported_node(node, "image");
@@ -665,7 +665,7 @@ namespace gf {
       return tile;
     }
 
-    void parse_tmx_tileset_from_element(TilesetData& tileset, const pugi::xml_node node, TiledMapResource& resource, const std::filesystem::path& base_directory)
+    void parse_tmx_tileset_from_element(MapTileset& tileset, const pugi::xml_node node, TiledMap& map, const std::filesystem::path& base_directory)
     {
       assert(node.name() == "tileset"sv);
 
@@ -683,17 +683,17 @@ namespace gf {
       const pugi::xml_node image = node.child("image");
       assert(image);
       std::filesystem::path image_path = base_directory / image.attribute("source").as_string();
-      tileset.texture_index = static_cast<uint32_t>(resource.textures.size());
-      resource.textures.push_back(std::move(image_path));
+      tileset.texture_index = static_cast<uint32_t>(map.textures.size());
+      map.textures.push_back(std::move(image_path));
 
       for (const pugi::xml_node tile : node.children("tile")) {
-        tileset.tiles.push_back(parse_tmx_tileset_tile(tile, resource));
+        tileset.tiles.push_back(parse_tmx_tileset_tile(tile, map));
       }
 
       unsupported_node(node, "wangsets");
     }
 
-    void parse_tmx_tileset_from_file(TilesetData& tileset, const std::filesystem::path& source, TiledMapResource& resource, const std::filesystem::path& base_directory)
+    void parse_tmx_tileset_from_file(MapTileset& tileset, const std::filesystem::path& source, TiledMap& map, const std::filesystem::path& base_directory)
     {
       std::filesystem::path tileset_path = base_directory / source;
       std::ifstream tileset_file(tileset_path);
@@ -719,22 +719,22 @@ namespace gf {
         Log::warning("Attribute 'source' present in a TSX file: '{}'.", tileset_path);
       }
 
-      parse_tmx_tileset_from_element(tileset, node, resource, tileset_path.parent_path());
+      parse_tmx_tileset_from_element(tileset, node, map, tileset_path.parent_path());
     }
 
-    TilesetData parse_tmx_tileset(const pugi::xml_node node, TiledMapResource& resource, const std::filesystem::path& base_directory)
+    MapTileset parse_tmx_tileset(const pugi::xml_node node, TiledMap& map, const std::filesystem::path& base_directory)
     {
       assert(node.name() == "tileset"sv);
-      TilesetData tileset;
-      tileset.properties_index = parse_tmx_properties(node, resource);
+      MapTileset tileset;
+      tileset.properties_index = parse_tmx_properties(node, map);
       tileset.first_gid = node.attribute("firstgid").as_uint();
 
       const std::filesystem::path source = node.attribute("source").as_string();
 
       if (!source.empty()) {
-        parse_tmx_tileset_from_file(tileset, source, resource, base_directory);
+        parse_tmx_tileset_from_file(tileset, source, map, base_directory);
       } else {
-        parse_tmx_tileset_from_element(tileset, node, resource, base_directory);
+        parse_tmx_tileset_from_element(tileset, node, map, base_directory);
       }
 
       return tileset;
@@ -744,41 +744,41 @@ namespace gf {
      * map
      */
 
-    void parse_tmx_map(const pugi::xml_node node, TiledMapResource& resource, const std::filesystem::path& base_directory)
+    void parse_tmx_map(const pugi::xml_node node, TiledMap& map, const std::filesystem::path& base_directory)
     {
       assert(node.name() == "map"sv);
 
-      resource.data.properties_index = parse_tmx_properties(node, resource);
+      map.properties_index = parse_tmx_properties(node, map);
 
       std::string orientation = node.attribute("orientation").as_string();
       assert(!orientation.empty());
 
       if (orientation == "orthogonal") {
-        resource.data.orientation = GridOrientation::Orthogonal;
+        map.orientation = GridOrientation::Orthogonal;
       } else if (orientation == "isometric") {
-        resource.data.orientation = GridOrientation::Isometric;
+        map.orientation = GridOrientation::Isometric;
       } else if (orientation == "staggered") {
-        resource.data.orientation = GridOrientation::Staggered;
+        map.orientation = GridOrientation::Staggered;
       } else if (orientation == "hexagonal") {
-        resource.data.orientation = GridOrientation::Hexagonal;
+        map.orientation = GridOrientation::Hexagonal;
       } else {
         Log::error("Wrong orientation string: '{}'.", orientation);
       }
 
-      resource.data.map_size.w = node.attribute("width").as_int();
-      resource.data.map_size.h = node.attribute("height").as_int();
+      map.map_size.w = node.attribute("width").as_int();
+      map.map_size.h = node.attribute("height").as_int();
 
-      resource.data.tile_size.w = node.attribute("tilewidth").as_int();
-      resource.data.tile_size.h = node.attribute("tileheight").as_int();
+      map.tile_size.w = node.attribute("tilewidth").as_int();
+      map.tile_size.h = node.attribute("tileheight").as_int();
 
-      resource.data.hex_side_length = node.attribute("hexsidelength").as_int(0);
+      map.hex_side_length = node.attribute("hexsidelength").as_int(0);
 
       std::string cell_axis = node.attribute("staggeraxis").as_string("x");
 
       if (cell_axis == "x") {
-        resource.data.cell_axis = CellAxis::X;
+        map.cell_axis = CellAxis::X;
       } else if (cell_axis == "y") {
-        resource.data.cell_axis = CellAxis::Y;
+        map.cell_axis = CellAxis::Y;
       } else {
         Log::error("Wrong cell axis string: '{}'.", cell_axis);
       }
@@ -786,9 +786,9 @@ namespace gf {
       std::string cell_index = node.attribute("staggerindex").as_string("odd");
 
       if (cell_index == "odd") {
-        resource.data.cell_index = CellIndex::Odd;
+        map.cell_index = CellIndex::Odd;
       } else if (cell_index == "even") {
-        resource.data.cell_index = CellIndex::Even;
+        map.cell_index = CellIndex::Even;
       } else {
         Log::error("Wrong cell index string: '{}'.", cell_index);
       }
@@ -796,19 +796,19 @@ namespace gf {
       unsupported_attribute(node, "backgroundcolor");
 
       for (const pugi::xml_node tileset : node.children("tileset")) {
-        resource.data.tilesets.push_back(parse_tmx_tileset(tileset, resource, base_directory));
+        map.tilesets.push_back(parse_tmx_tileset(tileset, map, base_directory));
       }
 
-      resource.data.layers = parse_tmx_layer_structure(node, resource);
+      map.layers = parse_tmx_layer_structure(node, map);
     }
 
   }
 
   /*
-   * TilesetData
+   * MapTileset
    */
 
-  Vec2I TilesetData::compute_layout(Vec2I texture_size) const
+  Vec2I MapTileset::compute_layout(Vec2I texture_size) const
   {
     if (tile_size.w == 0 || tile_size.h == 0) {
       return { 0, 0 };
@@ -817,13 +817,13 @@ namespace gf {
     return (texture_size - 2 * margin + spacing) / (tile_size + spacing);
   }
 
-  RectF TilesetData::compute_texture_region(uint32_t tile, Vec2I texture_size) const
+  RectF MapTileset::compute_texture_region(uint32_t tile, Vec2I texture_size) const
   {
     auto layout = compute_layout(texture_size);
     return compute_texture_region({ static_cast<int32_t>(tile) % layout.w, static_cast<int32_t>(tile) / layout.w }, texture_size);
   }
 
-  RectF TilesetData::compute_texture_region(Vec2I position, Vec2I texture_size) const
+  RectF MapTileset::compute_texture_region(Vec2I position, Vec2I texture_size) const
   {
     [[maybe_unused]] auto layout = compute_layout(texture_size);
     assert(position.x < layout.w);
@@ -834,49 +834,10 @@ namespace gf {
   }
 
   /*
-   * TiledMapData
+   * TiledMap
    */
 
-  const TilesetData* TiledMapData::tileset_from_gid(uint32_t gid) const noexcept
-  {
-    for (auto it = tilesets.rbegin(); it != tilesets.rend(); ++it) {
-      if (it->first_gid <= gid) {
-        return &(*it);
-      }
-    }
-
-    return nullptr;
-  }
-
-  const std::vector<LayerStructureData>& TiledMapData::compute_structure(std::string_view path) const
-  {
-    auto path_elements = split_path(path);
-    const auto* structure = &layers;
-
-    for (auto layer_name : path_elements) {
-      auto predicate = [this, layer_name](const LayerStructureData& current) {
-        if (current.type != LayerType::Group) {
-          return false;
-        }
-
-        return group_layers[current.layer_index].layer.name == layer_name;
-      };
-
-      if (auto iterator = std::find_if(structure->begin(), structure->end(), predicate); iterator != structure->end()) {
-        structure = &group_layers[iterator->layer_index].sub_layers;
-      } else {
-        Log::fatal("Unknown layer '{}' in path '{}'", layer_name, path);
-      }
-    }
-
-    return *structure;
-  }
-
-  /*
-   * TiledMapResource
-   */
-
-  TiledMapResource::TiledMapResource(const std::filesystem::path& filename)
+  TiledMap::TiledMap(const std::filesystem::path& filename)
   {
     std::ifstream file(filename);
 
@@ -892,6 +853,41 @@ namespace gf {
     }
 
     parse_tmx_map(doc.child("map"), *this, filename.parent_path());
+  }
+
+  const MapTileset* TiledMap::tileset_from_gid(uint32_t gid) const noexcept
+  {
+    for (auto it = tilesets.rbegin(); it != tilesets.rend(); ++it) {
+      if (it->first_gid <= gid) {
+        return &(*it);
+      }
+    }
+
+    return nullptr;
+  }
+
+  const std::vector<MapLayerStructure>& TiledMap::compute_structure(std::string_view path) const
+  {
+    auto path_elements = split_path(path);
+    const auto* structure = &layers;
+
+    for (auto layer_name : path_elements) {
+      auto predicate = [this, layer_name](const MapLayerStructure& current) {
+        if (current.type != MapLayerType::Group) {
+          return false;
+        }
+
+        return group_layers[current.layer_index].layer.name == layer_name;
+      };
+
+      if (auto iterator = std::find_if(structure->begin(), structure->end(), predicate); iterator != structure->end()) {
+        structure = &group_layers[iterator->layer_index].sub_layers;
+      } else {
+        Log::fatal("Unknown layer '{}' in path '{}'", layer_name, path);
+      }
+    }
+
+    return *structure;
   }
 
 }

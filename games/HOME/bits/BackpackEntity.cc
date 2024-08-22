@@ -26,22 +26,23 @@ namespace home {
   , m_oxygen_sprite(data.oxygen_icon, hub->render_manager(), hub->resource_manager())
   {
 
-    const auto* map_data = hub->resource_manager()->get<gf::TiledMapResource>(data.map);
+    const auto* rich_map = hub->resource_manager()->get<gf::RichMap>(data.map.filename);
+    const gf::TiledMap* tiled_map = rich_map->tiled_map();
 
-    for (const auto& object_layer : map_data->data.object_layers) {
+    for (const auto& object_layer : tiled_map->object_layers) {
       if (object_layer.layer.name != "SpaceShip") {
         continue;
       }
 
       assert(object_layer.objects.size() == 1);
-      const auto& object_data = object_layer.objects.front();
+      const auto& object = object_layer.objects.front();
 
-      assert(object_data.type == gf::ObjectType::Tile);
-      const gf::TileData tile_data = std::get<gf::TileData>(object_data.feature);
+      assert(object.type == gf::MapObjectType::Tile);
+      const gf::MapTile tile = std::get<gf::MapTile>(object.feature);
 
-      const gf::TilesetData* tileset_data = map_data->data.tileset_from_gid(tile_data.gid);
-      assert(tileset_data != nullptr);
-      const gf::RectF bounds = gf::RectF::from_bottom_left_size(object_data.location + object_layer.layer.offset, tileset_data->tile_size);
+      const gf::MapTileset* tileset = tiled_map->tileset_from_gid(tile.gid);
+      assert(tileset != nullptr);
+      const gf::RectF bounds = gf::RectF::from_bottom_left_size(object.location + object_layer.layer.offset, tileset->tile_size);
 
       m_ship_bounds = bounds;
       gf::Log::info("ship bounds: ({}, {}), ({}, {})", m_ship_bounds.offset.x, m_ship_bounds.offset.y, m_ship_bounds.extent.w, m_ship_bounds.extent.h);

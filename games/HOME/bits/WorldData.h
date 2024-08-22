@@ -1,12 +1,11 @@
 #ifndef HOME_WORLD_DATA_H
 #define HOME_WORLD_DATA_H
 
-#include <filesystem>
-
 #include <gf2/core/ActionSettings.h>
 #include <gf2/core/AnimationData.h>
 #include <gf2/core/AudioSourceData.h>
 #include <gf2/core/ResourceBundle.h>
+#include <gf2/core/RichMapResource.h>
 #include <gf2/core/SpriteData.h>
 #include <gf2/core/TextData.h>
 
@@ -20,7 +19,7 @@ namespace home {
 
     gf::ActionGroupSettings action_group;
 
-    std::filesystem::path map;
+    gf::RichMapResource map;
 
     gf::AudioSourceResource main_theme_music;
 

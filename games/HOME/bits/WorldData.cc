@@ -4,7 +4,7 @@
 
 #include <gf2/audio/Music.h>
 #include <gf2/audio/Sound.h>
-#include <gf2/graphics/TiledMap.h>
+#include <gf2/graphics/RichMap.h>
 
 #include "GameHub.h"
 #include "SupplyType.h"
@@ -12,11 +12,12 @@
 namespace home {
 
   WorldData::WorldData()
-  : map("map/Map.tmx")
   {
     using namespace gf::literals;
 
     action_group.actions.emplace("debug"_id, gf::ActionSettings(gf::ActionType::Instantaneous).add_keycode_control(gf::Keycode::P));
+
+    map.filename = "map/Map.tmx";
 
     main_theme_music.filename = "sounds/main_theme.ogg";
     main_theme_music.data.type = gf::AudioSourceType::Music;
@@ -97,7 +98,7 @@ namespace home {
     gf::ResourceBundle bundle([hub, this](gf::ResourceBundle* bundle, gf::ResourceManager* resources, gf::ResourceAction action) {
       // map
 
-      bundle->handle<gf::TiledMap>(map, { hub->render_manager(), resources }, resources, action);
+      bundle->handle<gf::RichMap>(map.filename, { hub->render_manager(), resources }, resources, action);
 
       // fonts
 

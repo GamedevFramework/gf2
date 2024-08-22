@@ -1,10 +1,8 @@
 #ifndef HOME_MAP_ENTITY_H
 #define HOME_MAP_ENTITY_H
 
-#include <gf2/core/TiledMapData.h>
-
 #include <gf2/graphics/Entity.h>
-#include <gf2/graphics/TiledMap.h>
+#include <gf2/graphics/RichMapRenderer.h>
 #include <gf2/physics/PhysicsWorld.h>
 
 #include "WorldData.h"
@@ -21,8 +19,7 @@ namespace home {
     void render(gf::RenderRecorder& recorder) override;
 
   private:
-    gf::TiledMapResource* m_map_resource = nullptr;
-    gf::TiledMap* m_map = nullptr;
+    gf::RichMapRenderer m_map_renderer;
     gf::Vec2F m_location = { 0.0f, 0.0f };
   };
 

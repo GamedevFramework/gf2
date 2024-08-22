@@ -8,14 +8,16 @@
 #include <gf2/core/ResourceLoaders.h>
 #include <gf2/core/ResourceManager.h>
 #include <gf2/core/ResourceRegistry.h>
-#include <gf2/core/TiledMapData.h>
+#include <gf2/core/RichMapResource.h>
+#include <gf2/core/TiledMap.h>
 
 #include <gf2/graphics/Entity.h>
 #include <gf2/graphics/RenderManager.h>
 #include <gf2/graphics/RenderRecorder.h>
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/SceneManager.h>
-#include <gf2/graphics/TiledMap.h>
+#include <gf2/graphics/RichMap.h>
+#include <gf2/graphics/RichMapRenderer.h>
 #include <gf2/graphics/Zoom.h>
 
 namespace {
@@ -23,18 +25,18 @@ namespace {
 
   class MapEntity : public gf::Entity {
   public:
-    void set_map(gf::TiledMap* map)
+    MapEntity(const gf::RichMap* map, gf::RenderManager* render_manager)
+    : m_renderer(map, render_manager)
     {
-      m_map = map;
     }
 
     void render(gf::RenderRecorder& recorder) override
     {
-      if (m_map == nullptr) {
+      auto geometries = m_renderer.select_geometry("");
+
+      if (geometries.empty()) {
         return;
       }
-
-      auto geometries = m_map->select_geometry("");
 
       for (auto& geometry : geometries) {
         gf::RenderObject object = {};
@@ -45,40 +47,25 @@ namespace {
       }
     }
 
+    const gf::RichMapRenderer* map_renderer() const
+    {
+      return &m_renderer;
+    }
+
   private:
-    gf::TiledMap* m_map = nullptr;
+    gf::RichMapRenderer m_renderer;
   };
 
   class TmxScene : public gf::Scene {
   public:
-    TmxScene(const std::filesystem::path& path, gf::RenderManager* render_manager)
+    TmxScene(const gf::RichMap* map, gf::RenderManager* render_manager)
     : m_zoom(world_camera())
+    , m_map_entity(map, render_manager)
     {
-      auto directory = std::filesystem::absolute(path.parent_path());
-      auto filename = path.filename();
 
-      m_file_loader.add_search_directory(directory);
-
-      m_texture_registry.add_loader(gf::loader_for<gf::Texture>(m_file_loader));
-      m_map_resource_registry.add_loader(gf::loader_for<gf::TiledMapResource>(m_file_loader));
-      m_map_registry.add_loader(gf::loader_for<gf::TiledMap>(m_file_loader));
-
-      m_resource_manager.add_registry(&m_texture_registry);
-      m_resource_manager.add_registry(&m_map_resource_registry);
-      m_resource_manager.add_registry(&m_map_registry);
-
-      gf::ResourceBundle bundle([&](gf::ResourceBundle* bundle, gf::ResourceManager* resources, gf::ResourceAction action) {
-        bundle->handle<gf::TiledMap>(filename, { render_manager, resources }, resources, action);
-      });
-
-      bundle.load_from(&m_resource_manager);
-
-      auto* map = m_resource_manager.get<gf::TiledMap>(filename);
-
-      m_map_entity.set_map(map);
       add_world_entity(&m_map_entity);
 
-      auto bounds = map->grid().compute_bounds();
+      auto bounds = m_map_entity.map_renderer()->grid().compute_bounds();
 
       set_world_size(ViewSize);
       set_world_center(bounds.center());
@@ -92,13 +79,6 @@ namespace {
     }
 
     gf::Zoom m_zoom;
-
-    gf::FileLoader m_file_loader;
-    gf::ResourceRegistry<gf::Texture> m_texture_registry;
-    gf::ResourceRegistry<gf::TiledMapResource> m_map_resource_registry;
-    gf::ResourceRegistry<gf::TiledMap> m_map_registry;
-    gf::ResourceManager m_resource_manager;
-
     MapEntity m_map_entity;
   };
 
@@ -112,8 +92,36 @@ int main(int argc, char* argv[])
   }
 
   try {
+    // scene manager
     gf::SingleSceneManager scene_manager("gf2_tmx_display", ViewSize);
-    TmxScene scene(argv[1], scene_manager.render_manager());
+
+    // resources
+    const std::filesystem::path path = argv[1];
+    const std::filesystem::path directory = std::filesystem::absolute(path.parent_path());
+    const std::filesystem::path filename = path.filename();
+
+    gf::FileLoader file_loader;
+    file_loader.add_search_directory(directory);
+
+    gf::ResourceRegistry<gf::Texture> texture_registry;
+    texture_registry.add_loader(gf::loader_for<gf::Texture>(file_loader));
+
+    gf::ResourceRegistry<gf::RichMap> rich_map_registry;
+    rich_map_registry.add_loader(gf::loader_for<gf::RichMap>(file_loader));
+
+    gf::ResourceManager resource_manager;
+    resource_manager.add_registry(&texture_registry);
+    resource_manager.add_registry(&rich_map_registry);
+
+    gf::ResourceBundle bundle([filename, &scene_manager](gf::ResourceBundle* bundle, gf::ResourceManager* resource_manager, gf::ResourceAction action) {
+      bundle->handle<gf::RichMap>(filename, { scene_manager.render_manager(), resource_manager }, resource_manager, action);
+    });
+
+    bundle.load_from(&resource_manager);
+
+    // scene
+
+    TmxScene scene(resource_manager.get<gf::RichMap>(filename), scene_manager.render_manager());
 
     return scene_manager.run(&scene);
   } catch (...) {
