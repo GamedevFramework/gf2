@@ -120,7 +120,7 @@ namespace gf {
   template<typename Archive>
   Archive& operator|(Archive& ar, MaybeConst<MapGroupLayer, Archive>& data)
   {
-    return ar | data.layer | data.layers;
+    return ar | data.layer | data.sub_layers;
   }
 
   struct GF_CORE_API MapTilesetTile {
