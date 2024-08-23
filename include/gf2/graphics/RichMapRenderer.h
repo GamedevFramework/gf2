@@ -35,16 +35,6 @@ namespace gf {
     RichMapRenderer(const RichMap* map, RenderManager* render_manager);
     RichMapRenderer(const RichMapResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
-#ifdef _MSC_VER
-    // why?
-    TiledMap(const TiledMap&) = delete;
-    TiledMap(TiledMap&&) noexcept = default;
-    ~TiledMap() = default;
-
-    TiledMap& operator=(const TiledMap&) = delete;
-    TiledMap& operator=(TiledMap&&) noexcept = default;
-#endif
-
     std::vector<RenderGeometry> select_geometry(Vec2I position, std::string_view path, Flags<TiledMapQuery> query = All);
     std::vector<RenderGeometry> select_geometry(std::string_view path, Flags<TiledMapQuery> query = All);
 
