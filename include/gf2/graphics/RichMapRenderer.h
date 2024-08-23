@@ -20,14 +20,14 @@
 namespace gf {
   class RenderManager;
 
-  enum class TiledMapQuery : uint8_t {
+  enum class RichMapQuery : uint8_t {
     Tile = 0x01,
     Object = 0x02,
     Recursive = 0x04,
   };
 
   template<>
-  struct EnableBitmaskOperators<TiledMapQuery> : std::true_type {
+  struct EnableBitmaskOperators<RichMapQuery> : std::true_type {
   };
 
   class GF_GRAPHICS_API RichMapRenderer {
@@ -35,8 +35,11 @@ namespace gf {
     RichMapRenderer(const RichMap* map, RenderManager* render_manager);
     RichMapRenderer(const RichMapResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
-    std::vector<RenderGeometry> select_geometry(Vec2I position, std::string_view path, Flags<TiledMapQuery> query = All);
-    std::vector<RenderGeometry> select_geometry(std::string_view path, Flags<TiledMapQuery> query = All);
+    std::vector<RenderGeometry> select_geometry(Vec2I position, std::string_view path, Flags<RichMapQuery> query = All);
+    std::vector<RenderGeometry> select_geometry(std::string_view path, Flags<RichMapQuery> query = All);
+
+    std::vector<RenderGeometry> select_geometry(Vec2I position, const std::vector<MapLayerStructure>& structure, Flags<RichMapQuery> query = All);
+    std::vector<RenderGeometry> select_geometry(const std::vector<MapLayerStructure>& structure, Flags<RichMapQuery> query = All);
 
     Vec2I compute_position(Vec2F location) const;
 
@@ -79,7 +82,7 @@ namespace gf {
       LayerBuffers buffers;
     };
 
-    void compute_geometries(RectI view, Flags<TiledMapQuery> query, const std::vector<MapLayerStructure>& structure, std::vector<RenderGeometry>& geometries) const;
+    void compute_geometries(RectI view, Flags<RichMapQuery> query, const std::vector<MapLayerStructure>& structure, std::vector<RenderGeometry>& geometries) const;
     void compute_tile_geometry(RectI view, const TileLayer& tile_layer, std::vector<RenderGeometry>& geometries) const;
     void compute_object_geometry(const ObjectLayer& object_layer, std::vector<RenderGeometry>& geometries) const;
 

@@ -117,20 +117,28 @@ namespace gf {
   {
   }
 
-  std::vector<RenderGeometry> RichMapRenderer::select_geometry(Vec2I position, std::string_view path, Flags<TiledMapQuery> query)
+  std::vector<RenderGeometry> RichMapRenderer::select_geometry(Vec2I position, std::string_view path, Flags<RichMapQuery> query)
   {
     const auto& structure = tiled_map()->compute_structure(path);
+    return select_geometry(position, structure, query);
+  }
 
+  std::vector<RenderGeometry> RichMapRenderer::select_geometry(std::string_view path, Flags<RichMapQuery> query)
+  {
+    const auto& structure = tiled_map()->compute_structure(path);
+    return select_geometry(structure, query);
+  }
+
+  std::vector<RenderGeometry> RichMapRenderer::select_geometry(Vec2I position, const std::vector<MapLayerStructure>& structure, Flags<RichMapQuery> query)
+  {
     std::vector<RenderGeometry> geometries;
     const RectI neighbors = RectI::from_center_size(position / ChunkSize, { 3, 3 });
     compute_geometries(neighbors, query, structure, geometries);
     return geometries;
   }
 
-  std::vector<RenderGeometry> RichMapRenderer::select_geometry(std::string_view path, Flags<TiledMapQuery> query)
+  std::vector<RenderGeometry> RichMapRenderer::select_geometry(const std::vector<MapLayerStructure>& structure, Flags<RichMapQuery> query)
   {
-    const auto& structure = tiled_map()->compute_structure(path);
-
     RectI neighbors = RectI::from_size({ 1, 1 });
 
     if (!m_tile_layers.empty()) {
@@ -287,27 +295,27 @@ namespace gf {
   }
 
   // NOLINTNEXTLINE(misc-no-recursion)
-  void RichMapRenderer::compute_geometries(RectI view, Flags<TiledMapQuery> query, const std::vector<MapLayerStructure>& structure, std::vector<RenderGeometry>& geometries) const
+  void RichMapRenderer::compute_geometries(RectI view, Flags<RichMapQuery> query, const std::vector<MapLayerStructure>& structure, std::vector<RenderGeometry>& geometries) const
   {
     const TiledMap* map = tiled_map();
 
     for (const auto& layer : structure) {
       switch (layer.type) {
         case MapLayerType::Group:
-          if (query.test(TiledMapQuery::Recursive)) {
+          if (query.test(RichMapQuery::Recursive)) {
             const std::vector<MapLayerStructure>& sub_structure = map->group_layers[layer.layer_index].sub_layers;
             compute_geometries(view, query, sub_structure, geometries);
           }
           break;
 
         case MapLayerType::Tile:
-          if (query.test(TiledMapQuery::Tile)) {
+          if (query.test(RichMapQuery::Tile)) {
             compute_tile_geometry(view, m_tile_layers[layer.layer_index], geometries);
           }
           break;
 
         case MapLayerType::Object:
-          if (query.test(TiledMapQuery::Object)) {
+          if (query.test(RichMapQuery::Object)) {
             compute_object_geometry(m_object_layers[layer.layer_index], geometries);
           }
           break;
