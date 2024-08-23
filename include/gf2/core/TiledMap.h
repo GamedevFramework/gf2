@@ -188,7 +188,7 @@ namespace gf {
   template<typename Archive>
   Archive& operator|(Archive& ar, MaybeConst<TiledMap, Archive>& map)
   {
-    return ar | map.properties_index | map.orientation | map.cell_axis | map.cell_index | map.hex_side_length | map.map_size | map.tile_size | map.properties | map.tilesets | map.tile_layers | map.object_layers | map.layers | map.textures;
+    return ar | map.properties_index | map.orientation | map.cell_axis | map.cell_index | map.hex_side_length | map.map_size | map.tile_size | map.properties | map.tilesets | map.tile_layers | map.object_layers | map.group_layers | map.layers | map.textures;
   }
 
 }
