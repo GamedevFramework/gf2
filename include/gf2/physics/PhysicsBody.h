@@ -28,11 +28,14 @@ namespace gf {
 
   class GF_PHYSICS_API PhysicsBody {
   public:
+    PhysicsBody() = default;
+
     static PhysicsBody make_dynamic(float mass, float moment);
     static PhysicsBody make_kinematic();
     static PhysicsBody make_static();
 
-    PhysicsId id() { return m_body.id(); }
+    PhysicsId id() const { return m_body.id(); }
+    explicit operator bool() const { return m_body.get() != nullptr; }
 
     void activate();
     void activate_static(PhysicsShape* filter);
