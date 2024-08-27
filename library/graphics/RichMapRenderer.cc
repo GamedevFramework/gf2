@@ -129,7 +129,7 @@ namespace gf {
     return select_geometry(structure, query);
   }
 
-  std::vector<RenderGeometry> RichMapRenderer::select_geometry(Vec2I position, const std::vector<MapLayerStructure>& structure, Flags<RichMapQuery> query)
+  std::vector<RenderGeometry> RichMapRenderer::select_geometry(Vec2I position, Span<const MapLayerStructure> structure, Flags<RichMapQuery> query)
   {
     std::vector<RenderGeometry> geometries;
     const RectI neighbors = RectI::from_center_size(position / ChunkSize, { 3, 3 });
@@ -137,7 +137,7 @@ namespace gf {
     return geometries;
   }
 
-  std::vector<RenderGeometry> RichMapRenderer::select_geometry(const std::vector<MapLayerStructure>& structure, Flags<RichMapQuery> query)
+  std::vector<RenderGeometry> RichMapRenderer::select_geometry(Span<const MapLayerStructure> structure, Flags<RichMapQuery> query)
   {
     RectI neighbors = RectI::from_size({ 1, 1 });
 
@@ -295,7 +295,7 @@ namespace gf {
   }
 
   // NOLINTNEXTLINE(misc-no-recursion)
-  void RichMapRenderer::compute_geometries(RectI view, Flags<RichMapQuery> query, const std::vector<MapLayerStructure>& structure, std::vector<RenderGeometry>& geometries) const
+  void RichMapRenderer::compute_geometries(RectI view, Flags<RichMapQuery> query, Span<const MapLayerStructure> structure, std::vector<RenderGeometry>& geometries) const
   {
     const TiledMap* map = tiled_map();
 
