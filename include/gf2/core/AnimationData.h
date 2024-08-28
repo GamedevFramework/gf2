@@ -44,7 +44,7 @@ namespace gf {
     Flags<AnimationProperties> properties = None;
     Color color = White;
 
-    void add_tileset(uint32_t texture_index, Vec2I layout, Time duration, int32_t frame_count, int32_t frame_offset = 0);
+    void add_tileset(uint32_t texture_index, Vec2I layout, Time duration, int32_t frame_count, int32_t frame_offset = 0, int32_t frame_direction = 1);
   };
 
   template<typename Archive>

@@ -5,7 +5,7 @@
 
 namespace gf {
 
-  void AnimationData::add_tileset(uint32_t texture_index, Vec2I layout, Time duration, int32_t frame_count, int32_t frame_offset)
+  void AnimationData::add_tileset(uint32_t texture_index, Vec2I layout, Time duration, int32_t frame_count, int32_t frame_offset, int32_t frame_direction)
   {
     int32_t x = frame_offset % layout.w;
     int32_t y = frame_offset / layout.w;
@@ -20,11 +20,20 @@ namespace gf {
 
       frames.push_back(frame);
 
-      ++x;
+      if (frame_direction > 0) {
+        x += frame_direction;
 
-      if (x == layout.w) {
-        x = 0;
-        ++y;
+        if (x >= layout.w) {
+          x = 0;
+          ++y;
+        }
+      } else {
+        x -= frame_direction;
+
+        if (x < 0) {
+          x = layout.w - 1;
+          --y;
+        }
       }
     }
   }
