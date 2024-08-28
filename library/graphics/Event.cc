@@ -5,12 +5,14 @@
 
 #include <algorithm>
 #include <tuple>
+#include <type_traits>
 
 #include <SDL2/SDL.h>
 
 #include <gf2/core/Log.h>
 
 namespace gf {
+  static_assert(std::is_trivial_v<Event>);
 
   namespace {
 
