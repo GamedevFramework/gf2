@@ -67,8 +67,8 @@ namespace gf {
     Vec2F force() const;
     void set_force(Vec2F force);
 
-    float angle() const;
-    void set_angle(float angle);
+    float rotation() const;
+    void set_rotation(float angle);
 
     float angular_velocity() const;
     void set_angular_velocity(float velocity);

@@ -132,12 +132,12 @@ namespace gf {
     cpBodySetForce(m_body, cpv(force.x, force.y));
   }
 
-  float PhysicsBody::angle() const
+  float PhysicsBody::rotation() const
   {
     return static_cast<float>(cpBodyGetAngle(m_body));
   }
 
-  void PhysicsBody::set_angle(float angle)
+  void PhysicsBody::set_rotation(float angle)
   {
     cpBodySetAngle(m_body, angle);
   }
