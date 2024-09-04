@@ -98,6 +98,13 @@ The following table provides a list of resources in the gf2 library that can be 
 | &check;
 |
 
+| xref:RichMap.adoc[`gf::RichMap`]
+| `graphics`
+| &check;
+|
+| &check;
+| &check;
+
 | xref:Sound.adoc[`gf::Sound`]
 | `audio`
 | &check;
@@ -113,13 +120,6 @@ The following table provides a list of resources in the gf2 library that can be 
 |
 
 | xref:TiledMap.adoc[`gf::TiledMap`]
-| `graphics`
-| &check;
-|
-| &check;
-| &check;
-
-| xref:TiledMapResource.adoc[`gf::TiledMapResource`]
 | `core`
 | &check;
 |
