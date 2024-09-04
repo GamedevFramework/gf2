@@ -28,6 +28,11 @@ namespace gf {
 
   constexpr GamepadButton AnyGamepadButton = static_cast<GamepadButton>(0x7FFFFFFF);
 
+  enum class GamepadStick : uint8_t {
+    Left,
+    Right,
+  };
+
   enum class GamepadAxis : int32_t { // NOLINT(performance-enum-size)
     Invalid = -1,
     LeftX,

@@ -20,7 +20,7 @@
 
 namespace gf {
 
-  enum EventType : uint8_t {
+  enum class EventType : uint8_t {
     Quit,
 
     WindowShown,
