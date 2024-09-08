@@ -69,7 +69,7 @@ namespace gf {
 
   inline ActionSettings continuous_action()
   {
-    return { ActionType::Instantaneous };
+    return { ActionType::Continuous };
   }
 
   template<typename Archive>
