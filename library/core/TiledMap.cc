@@ -645,6 +645,23 @@ namespace gf {
      * tileset
      */
 
+    struct MapTilesetTileComparator {
+      constexpr bool operator()(const MapTilesetTile& lhs, const MapTilesetTile& rhs)
+      {
+        return lhs.id < rhs.id;
+      }
+
+      constexpr bool operator()(uint32_t lhs, const MapTilesetTile& rhs)
+      {
+        return lhs < rhs.id;
+      }
+
+      constexpr bool operator()(const MapTilesetTile& lhs, uint32_t rhs)
+      {
+        return lhs.id < rhs;
+      }
+    };
+
     MapTilesetTile parse_tmx_tileset_tile(const pugi::xml_node node, TiledMap& map)
     {
       assert(node.name() == "tile"sv);
@@ -689,6 +706,8 @@ namespace gf {
       for (const pugi::xml_node tile : node.children("tile")) {
         tileset.tiles.push_back(parse_tmx_tileset_tile(tile, map));
       }
+
+      std::sort(tileset.tiles.begin(), tileset.tiles.end(), MapTilesetTileComparator());
 
       unsupported_node(node, "wangsets");
     }
@@ -831,6 +850,17 @@ namespace gf {
     const RectI texture_rectangle = RectI::from_position_size(position * tile_size + position * spacing + margin, tile_size);
     const Vec2F texture_size_f = texture_size;
     return RectF::from_position_size(texture_rectangle.offset / texture_size_f, texture_rectangle.extent / texture_size_f);
+  }
+
+  const MapTilesetTile* MapTileset::tile(uint32_t id) const
+  {
+    auto [ first, last ] = std::equal_range(tiles.begin(), tiles.end(), id, MapTilesetTileComparator());
+
+    if (std::distance(first, last) != 1) {
+      return nullptr;
+    }
+
+    return &*first;
   }
 
   /*

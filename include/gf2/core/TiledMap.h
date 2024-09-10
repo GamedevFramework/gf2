@@ -125,7 +125,7 @@ namespace gf {
 
   struct GF_CORE_API MapTilesetTile {
     uint32_t properties_index = NoIndex;
-    int32_t id = 0;
+    uint32_t id = 0;
     std::string type;
     std::optional<uint32_t> objects = std::nullopt;
   };
@@ -149,6 +149,7 @@ namespace gf {
     Vec2I compute_layout(Vec2I texture_size) const;
     RectF compute_texture_region(uint32_t tile, Vec2I texture_size) const;
     RectF compute_texture_region(Vec2I position, Vec2I texture_size) const;
+    const MapTilesetTile* tile(uint32_t id) const;
   };
 
   template<typename Archive>
