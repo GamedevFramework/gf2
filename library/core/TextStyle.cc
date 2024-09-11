@@ -63,7 +63,9 @@ namespace gf {
       return iterator->second;
     }
 
-    return m_default_style;
+    TextStyle default_relative_style = m_default_style;
+    default_relative_style.character_size_factor = 1.0f;
+    return default_relative_style;
   }
 
 }

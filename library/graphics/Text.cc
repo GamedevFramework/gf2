@@ -178,7 +178,7 @@ namespace gf {
       {
         assert(!m_stack.empty());
         FontProperties properties = m_stack.back();
-        properties.text_style.character_size_factor = style.character_size_factor;
+        properties.text_style.character_size_factor *= style.character_size_factor;
         properties.text_style.color = style.color;
         properties.text_style.font_style |= style.font_style;
         properties.data = font_from_style(properties.text_style.font_style);
