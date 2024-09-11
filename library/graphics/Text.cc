@@ -790,15 +790,19 @@ namespace gf {
   Text::Text(FontAtlas* atlas, FontFace* default_font, const TextData& data, RenderManager* render_manager)
   : m_atlas(atlas)
   , m_font(default_font)
+  , m_vertices(BufferType::Device, BufferUsage::Vertex)
+  , m_indices(BufferType::Device, BufferUsage::Index)
   {
-    update_buffers(data, render_manager);
+    update(data, render_manager);
   }
 
   Text::Text(FontAtlas* atlas, const TextResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
   : m_atlas(atlas)
   , m_font(resource_manager->get<FontFace>(resource.font))
+  , m_vertices(BufferType::Device, BufferUsage::Vertex)
+  , m_indices(BufferType::Device, BufferUsage::Index)
   {
-    update_buffers(resource.data, render_manager);
+    update(resource.data, render_manager);
   }
 
   RenderGeometry Text::geometry() const
@@ -806,14 +810,14 @@ namespace gf {
     RenderGeometry geometry;
     geometry.pipeline = RenderPipelineType::Text;
     geometry.texture = m_atlas->texture();
-    geometry.vertices = &m_vertices;
-    geometry.indices = &m_indices;
-    geometry.size = m_indices.size();
+    geometry.vertices = &m_vertices.buffer();
+    geometry.indices = &m_indices.buffer();
+    geometry.size = m_indices.buffer().size();
 
     return geometry;
   }
 
-  void Text::update_buffers(const TextData& data, RenderManager* render_manager)
+  void Text::update(const TextData& data, RenderManager* render_manager)
   {
     assert(m_atlas);
 
@@ -824,8 +828,8 @@ namespace gf {
 
     m_atlas->update_texture(render_manager);
 
-    m_vertices = Buffer(BufferType::Device, BufferUsage::Vertex, geometry.vertices.data(), geometry.vertices.size(), render_manager);
-    m_indices = Buffer(BufferType::Device, BufferUsage::Index, geometry.indices.data(), geometry.indices.size(), render_manager);
+    m_vertices.update(geometry.vertices.data(), geometry.vertices.size(), render_manager);
+    m_indices.update(geometry.indices.data(), geometry.indices.size(), render_manager);
 
     m_bounds = geometry.compute_bounds();
   }
@@ -840,8 +844,10 @@ namespace gf {
   , m_bold_font(bold_font)
   , m_italic_font(italic_font)
   , m_bold_italic_font(bold_italic_font)
+  , m_vertices(BufferType::Device, BufferUsage::Vertex)
+  , m_indices(BufferType::Device, BufferUsage::Index)
   {
-    update_buffers(data, render_manager);
+    update(data, render_manager);
   }
 
   RichText::RichText(FontAtlas* atlas, const RichTextResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
@@ -850,8 +856,10 @@ namespace gf {
   , m_bold_font(resource.bold_font.empty() ? nullptr : resource_manager->get<FontFace>(resource.bold_font))
   , m_italic_font(resource.italic_font.empty() ? nullptr : resource_manager->get<FontFace>(resource.italic_font))
   , m_bold_italic_font(resource.bold_italic_font.empty() ? nullptr : resource_manager->get<FontFace>(resource.bold_italic_font))
+  , m_vertices(BufferType::Device, BufferUsage::Vertex)
+  , m_indices(BufferType::Device, BufferUsage::Index)
   {
-    update_buffers(resource.data, render_manager);
+    update(resource.data, render_manager);
   }
 
   RenderGeometry RichText::geometry() const
@@ -859,14 +867,14 @@ namespace gf {
     RenderGeometry geometry;
     geometry.pipeline = RenderPipelineType::Text;
     geometry.texture = m_atlas->texture();
-    geometry.vertices = &m_vertices;
-    geometry.indices = &m_indices;
-    geometry.size = m_indices.size();
+    geometry.vertices = &m_vertices.buffer();
+    geometry.indices = &m_indices.buffer();
+    geometry.size = m_indices.buffer().size();
 
     return geometry;
   }
 
-  void RichText::update_buffers(const TextData& data, RenderManager* render_manager)
+  void RichText::update(const TextData& data, RenderManager* render_manager)
   {
     assert(m_atlas);
 
@@ -877,8 +885,8 @@ namespace gf {
 
     m_atlas->update_texture(render_manager);
 
-    m_vertices = Buffer(BufferType::Device, BufferUsage::Vertex, geometry.vertices.data(), geometry.vertices.size(), render_manager);
-    m_indices = Buffer(BufferType::Device, BufferUsage::Index, geometry.indices.data(), geometry.indices.size(), render_manager);
+    m_vertices.update(geometry.vertices.data(), geometry.vertices.size(), render_manager);
+    m_indices.update(geometry.indices.data(), geometry.indices.size(), render_manager);
 
     m_bounds = geometry.compute_bounds().shrink_by(static_cast<float>(FontManager::spread()));
   }

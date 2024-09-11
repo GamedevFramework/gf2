@@ -7,6 +7,7 @@
 #include <gf2/core/TextData.h>
 
 #include "Buffer.h"
+#include "DynamicBuffer.h"
 #include "FontAtlas.h"
 #include "GraphicsApi.h"
 #include "RenderObject.h"
@@ -20,6 +21,8 @@ namespace gf {
     Text(FontAtlas* atlas, FontFace* default_font, const TextData& data, RenderManager* render_manager);
     Text(FontAtlas* atlas, const TextResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
+    void update(const TextData& data, RenderManager* render_manager);
+
     RenderGeometry geometry() const;
 
     const Texture* texture() const
@@ -33,12 +36,11 @@ namespace gf {
     }
 
   private:
-    void update_buffers(const TextData& data, RenderManager* render_manager);
 
     FontAtlas* m_atlas = nullptr;
     FontFace* m_font = nullptr;
-    Buffer m_vertices;
-    Buffer m_indices;
+    DynamicBuffer m_vertices;
+    DynamicBuffer m_indices;
     RectF m_bounds = {};
   };
 
@@ -47,6 +49,8 @@ namespace gf {
     RichText(FontAtlas* atlas, FontFace* default_font, FontFace* bold_font, FontFace* italic_font, FontFace* bold_italic_font, const TextData& data, RenderManager* render_manager);
     RichText(FontAtlas* atlas, const RichTextResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
+    void update(const TextData& data, RenderManager* render_manager);
+
     RenderGeometry geometry() const;
 
     const Texture* texture() const
@@ -60,15 +64,13 @@ namespace gf {
     }
 
   private:
-    void update_buffers(const TextData& data, RenderManager* render_manager);
-
     FontAtlas* m_atlas = nullptr;
     FontFace* m_default_font = nullptr;
     FontFace* m_bold_font = nullptr;
     FontFace* m_italic_font = nullptr;
     FontFace* m_bold_italic_font = nullptr;
-    Buffer m_vertices;
-    Buffer m_indices;
+    DynamicBuffer m_vertices;
+    DynamicBuffer m_indices;
     RectF m_bounds = {};
   };
 
