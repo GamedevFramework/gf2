@@ -13,6 +13,7 @@
 #include "Id.h"
 
 namespace gf {
+  struct TextData;
 
   enum class FontStyle : uint8_t {
     Bold = 0x01,
@@ -29,8 +30,15 @@ namespace gf {
     Flags<FontStyle> font_style = None;
   };
 
-  class GF_CORE_API TextRichStyle {
+  class GF_CORE_API RichTextStyle {
   public:
+    RichTextStyle(const TextStyle& default_style = {});
+    RichTextStyle(const TextData& text_data);
+
+    void compute_default_style_from(const TextData& text_data);
+    void set_default_style(const TextStyle& style);
+    TextStyle default_style() const;
+
     void set_style(std::string_view name, const TextStyle& style);
     void set_style(Id id, const TextStyle& style);
 
@@ -38,6 +46,7 @@ namespace gf {
     TextStyle style(Id id) const;
 
   private:
+    TextStyle m_default_style;
     std::map<Id, TextStyle> m_styles;
   };
 

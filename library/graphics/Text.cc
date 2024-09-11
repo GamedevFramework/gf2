@@ -26,19 +26,6 @@
 namespace gf {
 
   namespace {
-
-    enum class FontStyle : uint8_t {
-      Bold = 0x01,
-      Italic = 0x02,
-    };
-
-  }
-
-  template<>
-  struct EnableBitmaskOperators<FontStyle> : std::true_type {
-  };
-
-  namespace {
     using namespace operators;
 
     constexpr uint8_t style_value(Flags<FontStyle> style)
@@ -132,35 +119,33 @@ namespace gf {
     };
 
     struct FontProperties {
+      TextStyle text_style;
       FontData data;
-      float character_size_factor = 0.0f;
-      Color color = Black;
-      Flags<FontStyle> style = None;
     };
 
     class FontPropertiesStack {
     public:
-      FontPropertiesStack(FontFace* default_font, const TextData& data)
+      FontPropertiesStack(const TextStyle& default_style, FontFace* default_font)
       : m_default(default_font)
       {
-        m_stack.push_back({ m_default, FontFace::size_factor(data.character_size), srgb_to_linear(data.color) });
+        m_stack.push_back({ default_style, m_default });
       }
 
-      FontPropertiesStack(FontFace* default_font, FontFace* bold_font, FontFace* italic_font, FontFace* bold_italic_font, const TextData& data)
+      FontPropertiesStack(const TextStyle& default_style, FontFace* default_font, FontFace* bold_font, FontFace* italic_font, FontFace* bold_italic_font)
       : m_default(default_font)
       , m_bold(bold_font)
       , m_italic(italic_font)
       , m_bold_italic(bold_italic_font)
       {
-        m_stack.push_back({ m_default, FontFace::size_factor(data.character_size), data.color });
+        m_stack.push_back({ default_style, m_default });
       }
 
       void set_italic()
       {
         assert(!m_stack.empty());
         FontProperties properties = m_stack.back();
-        properties.style |= FontStyle::Italic;
-        properties.data = font_from_style(properties.style);
+        properties.text_style.font_style |= FontStyle::Italic;
+        properties.data = font_from_style(properties.text_style.font_style);
         m_stack.push_back(properties);
       }
 
@@ -168,8 +153,8 @@ namespace gf {
       {
         assert(!m_stack.empty());
         FontProperties properties = m_stack.back();
-        properties.style |= FontStyle::Bold;
-        properties.data = font_from_style(properties.style);
+        properties.text_style.font_style |= FontStyle::Bold;
+        properties.data = font_from_style(properties.text_style.font_style);
         m_stack.push_back(properties);
       }
 
@@ -177,7 +162,7 @@ namespace gf {
       {
         assert(!m_stack.empty());
         FontProperties properties = m_stack.back();
-        properties.character_size_factor *= factor;
+        properties.text_style.character_size_factor *= factor;
         m_stack.push_back(properties);
       }
 
@@ -185,7 +170,18 @@ namespace gf {
       {
         assert(!m_stack.empty());
         FontProperties properties = m_stack.back();
-        properties.color = srgb_to_linear(color);
+        properties.text_style.color = srgb_to_linear(color);
+        m_stack.push_back(properties);
+      }
+
+      void set_style(const TextStyle& style)
+      {
+        assert(!m_stack.empty());
+        FontProperties properties = m_stack.back();
+        properties.text_style.character_size_factor = style.character_size_factor;
+        properties.text_style.color = style.color;
+        properties.text_style.font_style |= style.font_style;
+        properties.data = font_from_style(properties.text_style.font_style);
         m_stack.push_back(properties);
       }
 
@@ -275,7 +271,7 @@ namespace gf {
             part_width += glyph.advance.w;
           }
 
-          width += position_scale(part_width) * part.properties.character_size_factor;
+          width += position_scale(part_width) * part.properties.text_style.character_size_factor;
         }
 
         return width;
@@ -286,7 +282,7 @@ namespace gf {
         float line_height = 0.0f;
 
         for (const auto& part : parts) {
-          line_height = std::max(line_height, part.properties.data.face->compute_line_height() * part.properties.character_size_factor);
+          line_height = std::max(line_height, part.properties.data.face->compute_line_height() * part.properties.text_style.character_size_factor);
         }
 
         return line_height;
@@ -366,17 +362,19 @@ namespace gf {
 
     class TextParser {
     public:
-      TextParser(FontAtlas* atlas, FontFace* default_font, const TextData& data)
+      TextParser(FontAtlas* atlas, const RichTextStyle* style, FontFace* default_font, const TextData& data)
       : m_data(data)
       , m_atlas(atlas)
-      , m_stack(default_font, data)
+      , m_style(style)
+      , m_stack(style->default_style(), default_font)
       {
       }
 
-      TextParser(FontAtlas* atlas, FontFace* default_font, FontFace* bold_font, FontFace* italic_font, FontFace* bold_italic_font, const TextData& data)
+      TextParser(FontAtlas* atlas, const RichTextStyle* style, FontFace* default_font, FontFace* bold_font, FontFace* italic_font, FontFace* bold_italic_font, const TextData& data)
       : m_data(data)
       , m_atlas(atlas)
-      , m_stack(default_font, bold_font, italic_font, bold_italic_font, data)
+      , m_style(style)
+      , m_stack(style->default_style(), default_font, bold_font, italic_font, bold_italic_font)
       {
       }
 
@@ -476,6 +474,12 @@ namespace gf {
           return;
         }
 
+        if (data.tag == "style"sv) {
+          auto style = m_style->style(data.value);
+          m_stack.set_style(style);
+          return;
+        }
+
         Log::fatal("Unknown tag: {}.", data.tag);
       }
 
@@ -567,7 +571,7 @@ namespace gf {
 
           for (auto& raw_space : raw_line.spaces) {
             const float additional_space = compute_additional_space(raw_space.properties.data.face->compute_space_width());
-            raw_space.width = (raw_space.properties.data.face->compute_space_width() + additional_space) * raw_space.properties.character_size_factor;
+            raw_space.width = (raw_space.properties.data.face->compute_space_width() + additional_space) * raw_space.properties.text_style.character_size_factor;
           }
         }
 
@@ -743,8 +747,8 @@ namespace gf {
       {
         for (const auto& part : word.parts) {
           auto* face = part.properties.data.face;
-          auto color = part.properties.color;
-          auto character_size_factor = part.properties.character_size_factor;
+          auto color = part.properties.text_style.color;
+          auto character_size_factor = part.properties.text_style.character_size_factor;
 
           for (const auto& glyph : part.glyphs) {
             const RectF glyph_bounds = m_atlas->glyph(glyph.index, face).bounds.grow_by(static_cast<float>(FontManager::spread()));
@@ -778,6 +782,7 @@ namespace gf {
 
       const TextData& m_data; // NOLINT(cppcoreguidelines-avoid-const-or-ref-data-members)
       FontAtlas* m_atlas = nullptr;
+      const RichTextStyle* m_style = nullptr;
       FontPropertiesStack m_stack;
     };
 
@@ -821,7 +826,8 @@ namespace gf {
   {
     assert(m_atlas);
 
-    TextParser parser(m_atlas, m_font, data);
+    RichTextStyle style(data);
+    TextParser parser(m_atlas, &style, m_font, data);
     SimpleTextLexer lexer;
 
     auto geometry = parser.parse_with(lexer);
@@ -838,8 +844,9 @@ namespace gf {
    * RichText
    */
 
-  RichText::RichText(FontAtlas* atlas, FontFace* default_font, FontFace* bold_font, FontFace* italic_font, FontFace* bold_italic_font, const TextData& data, RenderManager* render_manager)
+  RichText::RichText(FontAtlas* atlas, RichTextStyle* style, FontFace* default_font, FontFace* bold_font, FontFace* italic_font, FontFace* bold_italic_font, const TextData& data, RenderManager* render_manager)
   : m_atlas(atlas)
+  , m_style(style)
   , m_default_font(default_font)
   , m_bold_font(bold_font)
   , m_italic_font(italic_font)
@@ -850,8 +857,9 @@ namespace gf {
     update(data, render_manager);
   }
 
-  RichText::RichText(FontAtlas* atlas, const RichTextResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
+  RichText::RichText(FontAtlas* atlas, RichTextStyle* style, const RichTextResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
   : m_atlas(atlas)
+  , m_style(style)
   , m_default_font(resource_manager->get<FontFace>(resource.default_font))
   , m_bold_font(resource.bold_font.empty() ? nullptr : resource_manager->get<FontFace>(resource.bold_font))
   , m_italic_font(resource.italic_font.empty() ? nullptr : resource_manager->get<FontFace>(resource.italic_font))
@@ -877,8 +885,11 @@ namespace gf {
   void RichText::update(const TextData& data, RenderManager* render_manager)
   {
     assert(m_atlas);
+    assert(m_style);
 
-    TextParser parser(m_atlas, m_default_font, m_bold_font, m_italic_font, m_bold_italic_font, data);
+    m_style->compute_default_style_from(data);
+
+    TextParser parser(m_atlas, m_style, m_default_font, m_bold_font, m_italic_font, m_bold_italic_font, data);
     RichTextLexer lexer;
 
     auto geometry = parser.parse_with(lexer);

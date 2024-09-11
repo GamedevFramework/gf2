@@ -5,6 +5,7 @@
 #include <gf2/core/Color.h>
 #include <gf2/core/FontFace.h>
 #include <gf2/core/FontManager.h>
+#include <gf2/core/TextStyle.h>
 
 #include <gf2/graphics/CurveEntity.h>
 #include <gf2/graphics/FontAtlas.h>
@@ -33,8 +34,10 @@ int main()
 
   gf::FontAtlas atlas({ 1024, 1024 }, scene_manager.render_manager());
 
+  gf::RichTextStyle empty_style;
+
   gf::TextData text_data;
-  text_data.content = "Default <color=0080FF>colored</> <b>bold and <i>italic</></> and <i>only italic</>\nand <size=1.4>bigger</> or <size=0.6>smaller</>, it works!";
+  text_data.content = "Default <color=0080FF>colored</> <b>bold and <i>italic</></> and <i>only italic</>\nand <size=1.4>bigger</> or <size=0.6>smaller</>, it <style=unknown>works</>!";
   text_data.character_size = 32;
   text_data.color = gf::Black;
 
@@ -45,11 +48,11 @@ int main()
   paragraph_data.alignment = gf::Alignment::Justify;
   paragraph_data.paragraph_width = 750.0f;
 
-  gf::RichTextEntity text_entity(&atlas, &default_face, &bold_face, &italic_face, &bold_italic_face, text_data, scene_manager.render_manager());
+  gf::RichTextEntity text_entity(&atlas, &empty_style, &default_face, &bold_face, &italic_face, &bold_italic_face, text_data, scene_manager.render_manager());
   text_entity.set_location({ 1000.0f, 800.0f });
   text_entity.set_origin({ 0.5f, 0.5f });
 
-  gf::RichTextEntity paragraph_entity(&atlas, &default_face, &bold_face, &italic_face, &bold_italic_face, paragraph_data, scene_manager.render_manager());
+  gf::RichTextEntity paragraph_entity(&atlas, &empty_style, &default_face, &bold_face, &italic_face, &bold_italic_face, paragraph_data, scene_manager.render_manager());
   paragraph_entity.set_location({ 1000.0f, 875.0f });
   paragraph_entity.set_origin({ 0.5f, 0.0f });
 

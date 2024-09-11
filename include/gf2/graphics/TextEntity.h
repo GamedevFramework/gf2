@@ -31,8 +31,8 @@ namespace gf {
 
   class GF_GRAPHICS_API RichTextEntity : public TransformableEntity {
   public:
-    RichTextEntity(FontAtlas* atlas, FontFace* default_font, FontFace* bold_font, FontFace* italic_font, FontFace* bold_italic_font, const TextData& data, RenderManager* render_manager);
-    RichTextEntity(FontAtlas* atlas, const RichTextResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
+    RichTextEntity(FontAtlas* atlas, RichTextStyle* style, FontFace* default_font, FontFace* bold_font, FontFace* italic_font, FontFace* bold_italic_font, const TextData& data, RenderManager* render_manager);
+    RichTextEntity(FontAtlas* atlas, RichTextStyle* style, const RichTextResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
     RichText& text()
     {

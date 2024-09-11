@@ -34,13 +34,13 @@ namespace gf {
    * RichText
    */
 
-  RichTextEntity::RichTextEntity(FontAtlas* atlas, FontFace* default_font, FontFace* bold_font, FontFace* italic_font, FontFace* bold_italic_font, const TextData& data, RenderManager* render_manager)
-  : m_text(atlas, default_font, bold_font, italic_font, bold_italic_font, data, render_manager)
+  RichTextEntity::RichTextEntity(FontAtlas* atlas, RichTextStyle* style, FontFace* default_font, FontFace* bold_font, FontFace* italic_font, FontFace* bold_italic_font, const TextData& data, RenderManager* render_manager)
+  : m_text(atlas, style, default_font, bold_font, italic_font, bold_italic_font, data, render_manager)
   {
   }
 
-  RichTextEntity::RichTextEntity(FontAtlas* atlas, const RichTextResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
-  : m_text(atlas, resource, render_manager, resource_manager)
+  RichTextEntity::RichTextEntity(FontAtlas* atlas, RichTextStyle* style, const RichTextResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
+  : m_text(atlas, style, resource, render_manager, resource_manager)
   {
   }
 
