@@ -50,7 +50,7 @@ namespace {
 
     void reset_world(gf::Random& random)
     {
-      m_world = gf::PhysicsWorld();
+      m_world.clear();
       setup_world(random);
     }
 

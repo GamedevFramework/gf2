@@ -76,17 +76,21 @@ namespace gf {
 
   PhysicsWorld::~PhysicsWorld()
   {
-    cpSpace* space = m_space;
-
     if (m_space == nullptr) {
       return;
     }
 
     if (m_space.refcount() == 1) {
-      cpSpaceEachShape(space, dispose_shape_iterator, static_cast<void*>(space));
-      cpSpaceEachConstraint(space, dispose_constraint_iterator, static_cast<void*>(space));
-      cpSpaceEachBody(space, dispose_body_iterator, static_cast<void*>(space));
+      clear();
     }
+  }
+
+  void PhysicsWorld::clear()
+  {
+    cpSpace* space = m_space;
+    cpSpaceEachShape(space, dispose_shape_iterator, static_cast<void*>(space));
+    cpSpaceEachConstraint(space, dispose_constraint_iterator, static_cast<void*>(space));
+    cpSpaceEachBody(space, dispose_body_iterator, static_cast<void*>(space));
   }
 
   Time PhysicsWorld::timestep() const
