@@ -27,6 +27,8 @@ namespace gf {
     bool active(Id id) const;
 
     void reset();
+    void hard_reset();
+
     void process_event(const Event& event);
 
   private:

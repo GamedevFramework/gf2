@@ -112,6 +112,13 @@ namespace gf {
     }
   }
 
+  void Action::hard_reset()
+  {
+    for (auto& control : m_controls) {
+      control.reset();
+    }
+  }
+
   void Action::process_event(const Event& event)
   {
     for (auto& control : m_controls) {

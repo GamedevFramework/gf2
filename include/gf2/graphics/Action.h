@@ -43,7 +43,9 @@ namespace gf {
     }
 
     bool active() const;
+
     void reset();
+    void hard_reset();
 
     void process_event(const Event& event);
 

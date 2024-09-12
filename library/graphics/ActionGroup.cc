@@ -59,6 +59,13 @@ namespace gf {
     }
   }
 
+  void ActionGroup::hard_reset()
+  {
+    for (auto& [id, action] : m_actions) {
+      action.hard_reset();
+    }
+  }
+
   void ActionGroup::process_event(const Event& event)
   {
     for (auto& [id, action] : m_actions) {
