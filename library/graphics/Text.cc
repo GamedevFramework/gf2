@@ -786,6 +786,28 @@ namespace gf {
       FontPropertiesStack m_stack;
     };
 
+    void fix_bounds(gf::Alignment alignment, float paragraph_width, gf::RectF& bounds)
+    {
+      const float undersize = paragraph_width - bounds.extent.w;
+
+      switch (alignment) {
+        case Alignment::None:
+          break;
+        case Alignment::Center:
+          bounds.offset.x -= undersize / 2.0f;
+          bounds.extent.w = paragraph_width;
+          break;
+        case Alignment::Justify:
+        case Alignment::Left:
+          bounds.extent.w = paragraph_width;
+          break;
+        case Alignment::Right:
+          bounds.offset.x -= undersize;
+          bounds.extent.w = paragraph_width;
+          break;
+      }
+    }
+
   }
 
   /*
@@ -838,6 +860,7 @@ namespace gf {
     m_indices.update(geometry.indices.data(), geometry.indices.size(), render_manager);
 
     m_bounds = geometry.compute_bounds();
+    fix_bounds(data.alignment, data.paragraph_width, m_bounds);
   }
 
   /*
@@ -900,6 +923,7 @@ namespace gf {
     m_indices.update(geometry.indices.data(), geometry.indices.size(), render_manager);
 
     m_bounds = geometry.compute_bounds().shrink_by(static_cast<float>(FontManager::spread()));
+    fix_bounds(data.alignment, data.paragraph_width, m_bounds);
   }
 
 }
