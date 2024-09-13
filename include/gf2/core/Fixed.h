@@ -41,7 +41,12 @@ namespace gf {
       return static_cast<float>(m_raw) / static_cast<float>(Factor);
     }
 
-    constexpr T raw() const
+    constexpr const T& raw() const
+    {
+      return m_raw;
+    }
+
+    constexpr T& raw()
     {
       return m_raw;
     }
@@ -143,6 +148,28 @@ namespace gf {
   }
 
   using Fixed32 = Fixed<int32_t, 16>;
+
+  namespace details {
+
+    template<typename Archive, typename Self>
+    Archive& handle_fixed_serialization(Archive& ar, Self& self)
+    {
+      return ar | self.raw();
+    }
+
+  }
+
+  template<typename Archive, typename T, std::size_t Shift>
+  inline Archive& operator|(Archive& ar, Fixed<T, Shift>& fixed)
+  {
+    return details::handle_fixed_serialization(ar, fixed);
+  }
+
+  template<typename Archive, typename T, std::size_t Shift>
+  inline Archive& operator|(Archive& ar, const Fixed<T, Shift>& fixed)
+  {
+    return details::handle_fixed_serialization(ar, fixed);
+  }
 
 }
 
