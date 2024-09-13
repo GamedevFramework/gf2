@@ -8,6 +8,10 @@
 
 namespace gf {
 
+  /*
+   * ShapeEntity
+   */
+
   ShapeEntity::ShapeEntity(const Texture* texture, const ShapeBuffer& buffer, RenderManager* render_manager)
   : m_shape(texture, buffer, render_manager)
   {
@@ -35,6 +39,24 @@ namespace gf {
     object.priority = priority();
     object.geometry = shape_geometry.shape;
     object.transform = model_matrix;
+    recorder.record(object);
+  }
+
+  /*
+   * ShapeGroupEntity
+   */
+
+  ShapeGroupEntity::ShapeGroupEntity(const ShapeGroupBuffer& buffer, RenderManager* render_manager)
+  : m_shape_group(buffer, render_manager)
+  {
+  }
+
+  void ShapeGroupEntity::render(RenderRecorder& recorder)
+  {
+    RenderObject object = {};
+    object.priority = priority();
+    object.geometry = m_shape_group.geometry();
+    object.transform = compute_matrix(m_shape_group.bounds());
     recorder.record(object);
   }
 

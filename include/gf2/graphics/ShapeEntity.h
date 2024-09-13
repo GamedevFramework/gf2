@@ -27,6 +27,21 @@ namespace gf {
     Shape m_shape;
   };
 
+  class GF_GRAPHICS_API ShapeGroupEntity : public TransformableEntity {
+  public:
+    ShapeGroupEntity(const ShapeGroupBuffer& buffer, RenderManager* render_manager);
+
+    void render(RenderRecorder& recorder) override;
+
+    ShapeGroup& shape_group()
+    {
+      return m_shape_group;
+    }
+
+  private:
+    ShapeGroup m_shape_group;
+  };
+
 }
 
 #endif // GF_SHAPE_ENTITY_H
