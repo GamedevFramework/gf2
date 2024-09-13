@@ -8,13 +8,37 @@
 #include <type_traits>
 
 namespace gf {
+  namespace details {
+
+    template<typename T>
+    struct LargerType;
+
+    template<>
+    struct LargerType<int8_t> { using type = int16_t; };
+    template<>
+    struct LargerType<int16_t> { using type = int32_t; };
+    template<>
+    struct LargerType<int32_t> { using type = int64_t; };
+    template<>
+    struct LargerType<uint8_t> { using type = uint16_t; };
+    template<>
+    struct LargerType<uint16_t> { using type = uint32_t; };
+    template<>
+    struct LargerType<uint32_t> { using type = uint64_t; };
+
+    template<typename T>
+    using Larger = typename LargerType<T>::type;
+
+  }
 
   template<typename T, std::size_t Shift>
   class Fixed {
   public:
     static_assert(std::is_integral_v<T>);
 
-    static constexpr T Factor = (T(1) << Shift);
+    using Intermediary = details::Larger<T>;
+
+    static constexpr Intermediary Factor = (Intermediary(1) << Shift);
 
     constexpr Fixed()
     : m_raw(0)
@@ -51,6 +75,11 @@ namespace gf {
       return m_raw;
     }
 
+    constexpr Fixed operator-() const
+    {
+      return { -m_raw, Raw };
+    }
+
     constexpr Fixed& operator+=(Fixed other)
     {
       m_raw += other.m_raw;
@@ -65,19 +94,27 @@ namespace gf {
 
     constexpr Fixed& operator*=(Fixed other)
     {
-      m_raw *= other.m_raw;
-      m_raw /= Factor;
+      Intermediary raw = static_cast<Intermediary>(m_raw) * static_cast<Intermediary>(other.m_raw) / Factor;
+      m_raw = static_cast<T>(raw);
       return *this;
     }
 
     constexpr Fixed& operator/=(Fixed other)
     {
-      m_raw *= Factor;
-      m_raw /= other.m_raw;
+      Intermediary raw = static_cast<Intermediary>(m_raw) * Factor / static_cast<Intermediary>(other.m_raw);
+      m_raw = static_cast<T>(raw);
       return *this;
     }
 
   private:
+    struct RawType {};
+    static constexpr RawType Raw = {};
+
+    constexpr Fixed(T raw, [[maybe_unused]] RawType tag)
+    : m_raw(raw)
+    {
+    }
+
     T m_raw;
   };
 
@@ -87,10 +124,34 @@ namespace gf {
     return lhs += rhs;
   }
 
+  template<typename T, std::size_t Shift, typename U>
+  constexpr Fixed<T, Shift> operator+(Fixed<T, Shift> lhs, U rhs)
+  {
+    return lhs += Fixed<T, Shift>(rhs);
+  }
+
+  template<typename T, std::size_t Shift, typename U>
+  constexpr Fixed<T, Shift> operator+(U lhs, Fixed<T, Shift> rhs)
+  {
+    return Fixed<T, Shift>(lhs) += rhs;
+  }
+
   template<typename T, std::size_t Shift>
   constexpr Fixed<T, Shift> operator-(Fixed<T, Shift> lhs, Fixed<T, Shift> rhs)
   {
     return lhs -= rhs;
+  }
+
+  template<typename T, std::size_t Shift, typename U>
+  constexpr Fixed<T, Shift> operator-(Fixed<T, Shift> lhs, U rhs)
+  {
+    return lhs -= Fixed<T, Shift>(rhs);
+  }
+
+  template<typename T, std::size_t Shift, typename U>
+  constexpr Fixed<T, Shift> operator-(U lhs, Fixed<T, Shift> rhs)
+  {
+    return Fixed<T, Shift>(lhs) -= rhs;
   }
 
   template<typename T, std::size_t Shift>
@@ -99,10 +160,46 @@ namespace gf {
     return lhs *= rhs;
   }
 
+  template<typename T, std::size_t Shift, typename U>
+  constexpr Fixed<T, Shift> operator*(Fixed<T, Shift> lhs, U rhs)
+  {
+    return lhs *= Fixed<T, Shift>(rhs);
+  }
+
+  template<typename T, std::size_t Shift, typename U>
+  constexpr Fixed<T, Shift> operator*(U lhs, Fixed<T, Shift> rhs)
+  {
+    return Fixed<T, Shift>(lhs) *= rhs;
+  }
+
   template<typename T, std::size_t Shift>
   constexpr Fixed<T, Shift> operator/(Fixed<T, Shift> lhs, Fixed<T, Shift> rhs)
   {
     return lhs /= rhs;
+  }
+
+  template<typename T, std::size_t Shift, typename U>
+  constexpr Fixed<T, Shift> operator/(Fixed<T, Shift> lhs, U rhs)
+  {
+    return lhs /= Fixed<T, Shift>(rhs);
+  }
+
+  template<typename T, std::size_t Shift, typename U>
+  constexpr Fixed<T, Shift> operator/(U lhs, Fixed<T, Shift> rhs)
+  {
+    return Fixed<T, Shift>(lhs) /= rhs;
+  }
+
+  template<typename T, std::size_t Shift, typename U>
+  constexpr Fixed<T, Shift> operator%(Fixed<T, Shift> lhs, U rhs)
+  {
+    return lhs %= Fixed<T, Shift>(rhs);
+  }
+
+  template<typename T, std::size_t Shift, typename U>
+  constexpr Fixed<T, Shift> operator%(U lhs, Fixed<T, Shift> rhs)
+  {
+    return Fixed<T, Shift>(lhs) %= rhs;
   }
 
   template<typename T, std::size_t Shift>
