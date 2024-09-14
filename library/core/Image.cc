@@ -3,6 +3,8 @@
 
 #include <gf2/core/Image.h>
 
+#include <cstdio>
+
 #include <algorithm>
 
 // clang-format off: main header
@@ -261,7 +263,28 @@ namespace gf {
 
   std::ptrdiff_t Image::offset_from_position(Vec2I position) const
   {
-    return static_cast<std::ptrdiff_t>(position.x + position.y * m_size.w) * 4;
+    return static_cast<std::ptrdiff_t>(position.x + (position.y * m_size.w)) * 4;
   }
+
+
+  Vec2I image_size(const std::filesystem::path& filename)
+  {
+    std::unique_ptr<std::FILE, decltype(&std::fclose)> file(std::fopen(filename.string().c_str(), "rb"), std::fclose);
+
+    if (!file) {
+      Log::fatal("Unknwon file: {}", filename.string());
+    }
+
+    Vec2I size = { 0, 0 };
+    int n = 0;
+    auto ok = stbi_info_from_file(file.get(), &size.x, &size.y, &n);
+
+    if (ok == 0) {
+      Log::fatal("Could not find the size of the image: {}", filename.string());
+    }
+
+    return size;
+  }
+
 
 } // namespace gf

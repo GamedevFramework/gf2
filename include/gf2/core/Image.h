@@ -50,6 +50,8 @@ namespace gf {
     std::vector<uint8_t> m_pixels;
   };
 
+  GF_CORE_API Vec2I image_size(const std::filesystem::path& filename);
+
 } // namespace gf
 
 #endif // GF_IMAGE_H
