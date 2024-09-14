@@ -36,6 +36,13 @@ namespace gf {
     RichMapRenderer(const RichMap* map, RenderManager* render_manager);
     RichMapRenderer(const RichMapResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
+    RichMapRenderer(const RichMapRenderer&) = delete;
+    RichMapRenderer(RichMapRenderer&&) noexcept = default;
+    ~RichMapRenderer() = default;
+
+    RichMapRenderer& operator=(const RichMapRenderer&) = delete;
+    RichMapRenderer& operator=(RichMapRenderer&&) noexcept = default;
+
     std::vector<RenderGeometry> select_geometry(Vec2I position, std::string_view path, Flags<RichMapQuery> query = All);
     std::vector<RenderGeometry> select_geometry(std::string_view path, Flags<RichMapQuery> query = All);
 
@@ -64,7 +71,7 @@ namespace gf {
     void compute_object_layers(RenderManager* render_manager);
 
     struct BufferRange {
-      std::size_t texture_index = 0;
+      uint32_t texture_index = 0;
       std::size_t first = 0;
       std::size_t size = 0;
     };
