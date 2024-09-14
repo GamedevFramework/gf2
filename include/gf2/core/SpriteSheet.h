@@ -7,13 +7,14 @@
 #include <map>
 #include <string>
 
+#include "CoreApi.h"
 #include "Rect.h"
 #include "SpriteData.h"
 #include "NinePatchData.h"
 
 namespace gf {
 
-  class SpriteSheet {
+  class GF_CORE_API SpriteSheet {
   public:
     SpriteSheet(const std::filesystem::path& filename);
 
