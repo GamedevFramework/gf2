@@ -13,6 +13,11 @@ namespace gf {
   {
   }
 
+  SpriteEntity::SpriteEntity(const Texture* texture, const SpriteData& data, RenderManager* render_manager)
+  : m_sprite(texture, data, render_manager)
+  {
+  }
+
   SpriteEntity::SpriteEntity(const SpriteResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
   : m_sprite(resource, render_manager, resource_manager)
   {

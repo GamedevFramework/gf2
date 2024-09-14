@@ -13,6 +13,12 @@ if has_config("examples") then
         add_deps("gf2graphics0")
         add_includedirs("$(buildir)/config/examples")
 
+    target("ninepatch")
+        set_kind("binary")
+        add_files("ninepatch.cc")
+        add_deps("gf2graphics0")
+        add_includedirs("$(buildir)/config/examples")
+
     target("11-text")
         set_kind("binary")
         add_files("11-text.cc")

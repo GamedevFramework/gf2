@@ -5,7 +5,6 @@
 
 #include <gf2/core/ResourceManager.h>
 
-#include <gf2/graphics/CommandBuffer.h>
 #include <gf2/graphics/RenderManager.h>
 #include <gf2/graphics/Texture.h>
 #include <gf2/graphics/Vertex.h>
