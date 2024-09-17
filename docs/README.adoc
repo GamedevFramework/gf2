@@ -1,0 +1,5 @@
+= gf2 documentation
+v0.1
+include::bits/attributes.adoc[]
+
+This directory contains the gf2 documentation. Go to the xref:index.adoc[index].
