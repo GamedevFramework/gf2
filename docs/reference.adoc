@@ -28,7 +28,7 @@ xref:index.adoc[< Back to main page]
 * Data
 ** xref:core_data.adoc[Data] (`AnimationData`, `TextData`, `SpriteData`)
 ** xref:core_input_description.adoc[Input Description] (xref:Scancode.adoc[`Scancode`], xref:Keycode.adoc[`Keycode`], xref:MouseButton.adoc[`MouseButton`])
-** xref:core_input_data.adoc[Input Data] (`ActionData`, `ControlData`)
+** xref:core_input_settings.adoc[Input Data] (`ActionSettings`, `ControlSettings`)
 ** xref:core_tiled_map_data.adoc[Tiled Map Data] (`TiledMapData`)
 
 == `graphics`

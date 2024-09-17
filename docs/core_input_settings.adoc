@@ -1,0 +1,43 @@
+= `core` Input Settings
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The input settings component provides classes for handling inputs at a high level.
+
+xref:reference.adoc#core[< Back to reference]
+
+See also: xref:core_input_description.adoc[`core` Input Description]
+
+== Types
+
+[#action_settings]
+=== `gf::ActionSettings`
+
+[#action_group_settings]
+=== `gf::ActionGroupSettings`
+
+[#action_type]
+=== `gf::ActionType`
+
+[#control_settings]
+=== `gf::ControlSettings`
+
+[#control_type]
+=== `gf::ControlType`
+
+[#gamepad_axis_control_settings]
+=== `gf::GamepadAxisControlSettings`
+
+[#gamepad_button_control_settings]
+=== `gf::GamepadButtonControlSettings`
+
+[#keycode_control_settings]
+=== `gf::KeycodeControlSettings`
+
+[#mouse_button_control_settings]
+=== `gf::MouseButtonControlSettings`
+
+[#scancode_control_settings]
+=== `gf::ScancodeControlSettings`
+

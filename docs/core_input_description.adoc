@@ -11,7 +11,7 @@ The input description component contains enumerations and types that describe in
 
 xref:reference.adoc#core[< Back to reference]
 
-See also: xref:graphics_inputs.adoc[`graphics` Inputs]
+See also: xref:core_input_settings.adoc[``core` Input settings], xref:graphics_inputs.adoc[`graphics` Inputs]
 
 == Variables
 
