@@ -198,6 +198,17 @@ struct Color;
 
 A color in the link:https://en.wikipedia.org/wiki/RGB_color_model[RGB color model]. xref:Color.adoc[*Read more...*].
 
+[#color_map]
+=== `gf::ColorMap`
+
+[source]
+----
+#include <gf2/core/ColorMap.h>
+class ColorMap;
+----
+
+A color map can compute a color by interpolating of predefined colors. xref:ColorMap.adoc[*Read more...*].
+
 [#image]
 === `gf::Image`
 

@@ -1,0 +1,64 @@
+= `gf::ColorMap` type
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+A color map can compute a color by interpolating of predefined colors.
+
+xref:core_color.adoc[< Back to `core` Color]
+
+== Description
+
+[source]
+----
+#include <gf2/core/ColorMap.h>
+class ColorMap;
+----
+
+== Member Functions
+
+=== `add_color_stop`
+
+[source]
+----
+void add_color_stop(float offset, const Color& color);
+----
+
+Add a reference color with a predefined offset.
+
+See also: <<compute_color>>
+
+=== `clear`
+
+[source]
+----
+void clear();
+----
+
+Clear the color map.
+
+See also: <<empty>>
+
+
+=== `compute_color`
+
+[source]
+----
+Color compute_color(float offset) const;
+----
+
+Compute a color associated to the given offset.
+
+See also: <<add_color_stop>>
+
+
+=== `empty`
+
+[source]
+----
+bool empty() const;
+----
+
+Tell if the color map is empty.
+
+See also: <<clear>>

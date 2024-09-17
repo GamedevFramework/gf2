@@ -12,6 +12,11 @@ namespace gf {
 
   class GF_CORE_API ColorRamp {
   public:
+    void clear()
+    {
+      m_mapping.clear();
+    }
+
     bool empty() const
     {
       return m_mapping.empty();
