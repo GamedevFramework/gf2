@@ -1,0 +1,51 @@
+= `core` Tiled Map
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+
+The tiled map component provides classes for maps, especially those built with link:https://www.mapeditor.org/[Tiled].
+
+xref:reference.adoc#core[< Back to reference]
+
+== Variables
+
+[#no_index]
+=== `gf::NoIndex`
+
+== Types
+
+[#map_group_layer]
+=== `gf::GroupLayer`
+
+[#map_layer]
+=== `gf::MapLayer`
+
+[#map_layer_structure]
+=== `gf::MapLayerStructure`
+
+[#map_object]
+=== `gf::MapObject`
+
+[#map_object_layer]
+=== `gf::MapObjectLayer`
+
+[#map_object_type]
+=== `gf::MapObjectType`
+
+[#map_tile]
+=== `gf::MapTile`
+
+[#map_tile_layer]
+=== `gf::MapTileLayer`
+
+[#map_tileset]
+=== `gf::MapTileset`
+
+[#mzp_tileset_tile]
+=== `gf::MapTilesetTile`
+
+[#tiled_map]
+=== `gf::TiledMap`
+
+[#rich_map_resource]
+=== `gf::RichMapResource`
