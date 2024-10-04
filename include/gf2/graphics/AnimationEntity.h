@@ -3,12 +3,8 @@
 #ifndef GF_ANIMATION_ENTITY_H
 #define GF_ANIMATION_ENTITY_H
 
-#include <gf2/core/AnimationData.h>
-#include <gf2/core/Transform.h>
-
 #include "Animation.h"
 #include "GraphicsApi.h"
-#include "Texture.h"
 #include "TransformableEntity.h"
 
 namespace gf {
@@ -34,38 +30,6 @@ namespace gf {
 
   private:
     Animation m_animation;
-  };
-
-  class GF_GRAPHICS_API AnimationGroupEntity : public TransformableEntity {
-  public:
-    AnimationGroupEntity(std::vector<const Texture*> textures, const AnimationGroupData& data, RenderManager* render_manager);
-    AnimationGroupEntity(const AnimationGroupResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
-
-    void update(Time time) override;
-    void render(RenderRecorder& recorder) override;
-
-    void select(std::string_view animation_name)
-    {
-      m_animation_group.select(animation_name);
-    }
-
-    void select(Id animation_id)
-    {
-      m_animation_group.select(animation_id);
-    }
-
-    void reset()
-    {
-      m_animation_group.reset();
-    }
-
-    bool finished() const
-    {
-      return m_animation_group.finished();
-    }
-
-  private:
-    AnimationGroup m_animation_group;
   };
 
 }

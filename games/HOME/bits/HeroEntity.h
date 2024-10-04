@@ -6,7 +6,7 @@
 #include <gf2/core/Vec2.h>
 
 #include <gf2/audio/Sound.h>
-#include <gf2/graphics/AnimationEntity.h>
+#include <gf2/graphics/AnimationGroupEntity.h>
 #include <gf2/graphics/SpriteEntity.h>
 #include <gf2/graphics/TransformableEntity.h>
 #include <gf2/physics/PhysicsBody.h>

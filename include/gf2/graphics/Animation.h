@@ -8,29 +8,58 @@
 
 #include <gf2/core/AnimationData.h>
 #include <gf2/core/Flags.h>
+#include <gf2/core/Id.h>
 #include <gf2/core/Rect.h>
 #include <gf2/core/Time.h>
 
 #include "Buffer.h"
 #include "GraphicsApi.h"
 #include "RenderObject.h"
-
-#include "gf2/core/Id.h"
+#include "AnimationRuntime.h"
 
 namespace gf {
   class Texture;
   class RenderManager;
   class ResourceManager;
 
-  struct GF_GRAPHICS_API AnimationFrameRuntime {
-    std::size_t texture_index = 0;
-    Time duration;
-    std::size_t offset = 0;
+  class GF_GRAPHICS_API AnimationState {
+  public:
+    AnimationState(const AnimationData& data);
+
+    void update(Time time);
+    void reset();
+    bool finished() const;
+
+    std::size_t current_frame() const
+    {
+      return m_current_frame;
+    }
+
+  private:
+    details::AnimationStateRuntime m_animation;
+    std::size_t m_current_frame = 0;
+    Time m_current_time;
   };
 
-  struct GF_GRAPHICS_API AnimationRuntime {
-    Flags<AnimationProperties> properties = None;
-    std::vector<AnimationFrameRuntime> frames;
+
+  class GF_GRAPHICS_API AnimationGraphics {
+  public:
+    AnimationGraphics(std::vector<const Texture*> textures, const AnimationData& data, RenderManager* render_manager);
+    AnimationGraphics(const AnimationResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
+
+    RenderGeometry geometry(std::size_t frame_index) const;
+
+    RectF bounds() const
+    {
+      return m_bounds;
+    }
+
+  private:
+    std::vector<const Texture*> m_textures;
+    Buffer m_vertices;
+    Buffer m_indices;
+    RectF m_bounds = RectF::from_size({ 0.0f, 0.0f });
+    details::AnimationGraphicsRuntime m_animation;
   };
 
   class GF_GRAPHICS_API Animation {
@@ -38,60 +67,36 @@ namespace gf {
     Animation(std::vector<const Texture*> textures, const AnimationData& data, RenderManager* render_manager);
     Animation(const AnimationResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
-    void update(Time time);
-    void reset();
-    bool finished() const;
+    void update(Time time)
+    {
+      m_state.update(time);
+    }
 
-    RenderGeometry geometry() const;
+    void reset()
+    {
+      m_state.reset();
+    }
+
+    bool finished() const
+    {
+      return m_state.finished();
+    }
+
+    RenderGeometry geometry() const
+    {
+      return m_graphics.geometry(m_state.current_frame());
+    }
 
     RectF bounds() const
     {
-      return m_bounds;
+      return m_graphics.bounds();
     }
 
   private:
-    std::vector<const Texture*> m_textures;
-    Buffer m_vertices;
-    Buffer m_indices;
-    RectF m_bounds = RectF::from_size({ 0.0f, 0.0f });
-
-    AnimationRuntime m_animation;
-    std::size_t m_current_frame = 0;
-    Time m_current_time;
+    AnimationState m_state;
+    AnimationGraphics m_graphics;
   };
 
-  class GF_GRAPHICS_API AnimationGroup {
-  public:
-    AnimationGroup(std::vector<const Texture*> textures, const AnimationGroupData& data, RenderManager* render_manager);
-    AnimationGroup(const AnimationGroupResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
-
-    void select(std::string_view animation_name);
-    void select(Id animation_id);
-
-    void update(Time time);
-    void reset();
-    bool finished() const;
-
-    RenderGeometry geometry() const;
-
-    RectF bounds() const
-    {
-      return m_bounds;
-    }
-
-  private:
-    const AnimationRuntime* current_animation() const;
-
-    std::vector<const Texture*> m_textures;
-    Buffer m_vertices;
-    Buffer m_indices;
-    RectF m_bounds = RectF::from_size({ 0.0f, 0.0f });
-
-    std::map<Id, AnimationRuntime> m_animations;
-    Id m_current_animation_id = InvalidId;
-    std::size_t m_current_frame = 0;
-    Time m_current_time;
-  };
 }
 
 #endif // GF_ANIMATION_H
