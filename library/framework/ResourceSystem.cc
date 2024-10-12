@@ -11,6 +11,7 @@ namespace gf {
 
     m_image_registry.add_loader(loader_for<Image>(m_file_loader));
     m_font_registry.add_loader(loader_for<FontFace>(m_file_loader));
+    m_sprite_sheet_registry.add_loader(loader_for<SpriteSheet>(m_file_loader));
     m_tiled_map_registry.add_loader(loader_for<TiledMap>(m_file_loader));
     m_console_font_registry.add_loader(loader_for<ConsoleFont>(m_file_loader));
     m_texture_registry.add_loader(loader_for<Texture>(m_file_loader));
@@ -20,6 +21,7 @@ namespace gf {
 
     add_registry(&m_image_registry);
     add_registry(&m_font_registry);
+    add_registry(&m_sprite_sheet_registry);
     add_registry(&m_tiled_map_registry);
     add_registry(&m_console_font_registry);
     add_registry(&m_texture_registry);

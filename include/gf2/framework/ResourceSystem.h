@@ -9,6 +9,7 @@
 #include <gf2/core/Image.h>
 #include <gf2/core/ResourceLoaders.h>
 #include <gf2/core/ResourceManager.h>
+#include <gf2/core/SpriteSheet.h>
 #include <gf2/core/TiledMap.h>
 
 #include <gf2/audio/Music.h>
@@ -41,6 +42,7 @@ namespace gf {
     // from core
     ResourceRegistry<Image> m_image_registry;
     ResourceRegistry<FontFace> m_font_registry;
+    ResourceRegistry<SpriteSheet> m_sprite_sheet_registry;
     ResourceRegistry<TiledMap> m_tiled_map_registry;
     // from graphics
     ResourceRegistry<ConsoleFont> m_console_font_registry;
