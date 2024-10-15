@@ -93,7 +93,7 @@ namespace gf {
 
     const char* word_start = current();
 
-    while (!at_end() && !is_space(peek()) && peek() != '\n' && peek() != '<') {
+    while (!at_end() && !is_space(peek()) && peek() != '\n') {
       advance();
     }
 
