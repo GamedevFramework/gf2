@@ -122,8 +122,8 @@ namespace gf {
     {
       assert(valid(position));
 
-      auto dx = range(position.x - std::min(position.x, radius), position.x + std::min(m_size.w - position.x, radius));
-      auto dy = range(position.y - std::min(position.y, radius), position.y + std::min(m_size.h - position.y, radius));
+      auto dx = range(position.x - std::min(position.x, radius), position.x + std::min(m_size.w - position.x - 1, radius) + 1);
+      auto dy = range(position.y - std::min(position.y, radius), position.y + std::min(m_size.h - position.y - 1, radius) + 1);
 
       return { dx, dy, position };
     }
@@ -132,8 +132,8 @@ namespace gf {
     {
       assert(valid(position));
 
-      auto dx = range(position.x - std::min(position.x, radius), position.x + std::min(m_size.w - position.x, radius));
-      auto dy = range(position.y - std::min(position.y, radius), position.y + std::min(m_size.h - position.y, radius));
+      auto dx = range(position.x - std::min(position.x, radius), position.x + std::min(m_size.w - position.x - 1, radius) + 1);
+      auto dy = range(position.y - std::min(position.y, radius), position.y + std::min(m_size.h - position.y - 1, radius) + 1);
 
       return { dx, dy, position, radius };
     }

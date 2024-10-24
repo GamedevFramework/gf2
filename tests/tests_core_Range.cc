@@ -2,6 +2,8 @@
 
 #include "gtest/gtest.h"
 
+#include <iostream>
+
 using RangeI = gf::Range<int>;
 using RangeF = gf::Range<float>;
 
@@ -90,4 +92,142 @@ TEST(RangeTest, BeginEnd) {
   }
 
   ASSERT_EQ(count, ri.size());
+}
+
+/*
+ * NeighborSquareRange
+ */
+
+TEST(RangeTest, NeighborSquareCanonical) {
+  for (int radius = 1; radius < 5; ++radius) {
+    const gf::NeighborSquareRange<int> range = gf::neighbor_square_range({ 0, 0 }, radius);
+    int count = 0;
+
+    for ([[maybe_unused]] auto position : range) {
+      ++count;
+    }
+
+    ASSERT_EQ(count, ((2 * radius + 1) * (2 * radius + 1)) - 1);
+  }
+}
+
+TEST(RangeTest, NeighborSquareCorner) {
+  for (int radius = 1; radius < 5; ++radius) {
+    const gf::NeighborSquareRange<int> range(gf::range(0, radius + 1), gf::range(0, radius + 1), { 0, 0 });
+    int count = 0;
+
+    for ([[maybe_unused]] auto position : range) {
+      ++count;
+    }
+
+    ASSERT_EQ(count, ((radius + 1) * (radius + 1)) - 1);
+  }
+}
+
+TEST(RangeTest, NeighborSquareOppositeCorner) {
+  for (int radius = 1; radius < 5; ++radius) {
+    const gf::NeighborSquareRange<int> range(gf::range(0, radius + 1), gf::range(0, radius + 1), { radius, radius });
+    int count = 0;
+
+    for ([[maybe_unused]] auto position : range) {
+      ++count;
+    }
+
+    ASSERT_EQ(count, ((radius + 1) * (radius + 1)) - 1);
+  }
+}
+
+TEST(RangeTest, NeighborSquareHorizontalSide) {
+  for (int radius = 1; radius < 5; ++radius) {
+    const gf::NeighborSquareRange<int> range(gf::range(0, (2 * radius) + 1), gf::range(0, radius), { radius, 0 });
+    int count = 0;
+
+    for ([[maybe_unused]] auto position : range) {
+      ++count;
+    }
+
+    ASSERT_EQ(count, (radius * (2 * radius + 1)) - 1);
+  }
+}
+
+TEST(RangeTest, NeighborSquareVerticalSide) {
+  for (int radius = 1; radius < 5; ++radius) {
+    const gf::NeighborSquareRange<int> range(gf::range(0, radius), gf::range(0, (2 * radius) + 1), { 0, radius });
+    int count = 0;
+
+    for ([[maybe_unused]] auto position : range) {
+      ++count;
+    }
+
+    ASSERT_EQ(count, (radius * (2 * radius + 1)) - 1);
+  }
+}
+
+/*
+ * NeighborDiamondRange
+ */
+
+TEST(RangeTest, NeighborDiamondCanonical) {
+  for (int radius = 1; radius < 5; ++radius) {
+    const gf::NeighborDiamondRange<int> range = gf::neighbor_diamond_range({ 0, 0 }, radius);
+    int count = 0;
+
+    for ([[maybe_unused]] auto position : range) {
+      ++count;
+    }
+
+    ASSERT_EQ(count, (radius * radius) + ((radius + 1) * (radius + 1)) - 1);
+  }
+}
+
+TEST(RangeTest, NeighborDiamondCorner) {
+  for (int radius = 1; radius < 5; ++radius) {
+    const gf::NeighborDiamondRange<int> range(gf::range(0, radius + 1), gf::range(0, radius + 1), { 0, 0 }, radius);
+    int count = 0;
+
+    for ([[maybe_unused]] auto position : range) {
+      ++count;
+    }
+
+    ASSERT_EQ(count, ((radius + 1) * (radius + 2) / 2) - 1);
+  }
+}
+
+TEST(RangeTest, NeighborDiamondOppositeCorner) {
+  for (int radius = 1; radius < 5; ++radius) {
+    const gf::NeighborDiamondRange<int> range(gf::range(0, radius + 1), gf::range(0, radius + 1), { radius, radius }, radius);
+    int count = 0;
+
+    for ([[maybe_unused]] auto position : range) {
+      ++count;
+    }
+
+    ASSERT_EQ(count, ((radius + 1) * (radius + 2) / 2) - 1);
+  }
+}
+
+TEST(RangeTest, NeighborDiamondHorizontalSide) {
+  for (int radius = 1; radius < 5; ++radius) {
+    const gf::NeighborDiamondRange<int> range(gf::range(0, (2 * radius) + 2), gf::range(0, radius + 1), { radius, 0 }, radius);
+    int count = 0;
+
+    for ([[maybe_unused]] auto position : range) {
+      ++count;
+    }
+
+    ASSERT_EQ(count, ((radius + 1) * (radius + 1)) - 1);
+  }
+}
+
+TEST(RangeTest, NeighborDiamondVerticalSide) {
+  for (int radius = 1; radius < 5; ++radius) {
+    const gf::NeighborDiamondRange<int> range(gf::range(0, radius + 1), gf::range(0, (2 * radius) + 2), { 0, radius }, radius);
+    int count = 0;
+
+    for ([[maybe_unused]] auto position : range) {
+      ++count;
+    }
+
+    ASSERT_EQ(count, ((radius + 1) * (radius + 1)) - 1);
+  }
 }

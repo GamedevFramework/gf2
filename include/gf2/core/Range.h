@@ -300,8 +300,8 @@ namespace gf {
         return copy;
       }
 
-      constexpr bool operator!=(const Iterator& other) const noexcept { return m_current != other.m_current; }
-      constexpr bool operator==(const Iterator& other) const noexcept { return m_current == other.m_current; }
+      constexpr bool operator!=(Vec2<T> other) const noexcept { return m_current != other; }
+      constexpr bool operator==(Vec2<T> other) const noexcept { return m_current == other; }
 
     private:
       void step() noexcept
@@ -348,14 +348,9 @@ namespace gf {
       };
     }
 
-    constexpr Iterator end() const
+    constexpr Vec2<T> end() const
     {
-      return {
-        { m_dx.lo(), m_dy.hi() },
-        m_dx,
-        m_dy,
-        m_origin
-      };
+      return { m_dx.lo(), m_dy.hi() };
     }
 
   private:
@@ -367,7 +362,7 @@ namespace gf {
   template<typename T>
   constexpr NeighborSquareRange<T> neighbor_square_range(Vec2<T> origin, T radius = T(1)) noexcept
   {
-    return { range(origin.x - radius, origin.x + radius), range(origin.y - radius, origin.y + radius), origin };
+    return { range(origin.x - radius, origin.x + radius + 1), range(origin.y - radius, origin.y + radius + 1), origin };
   }
 
   template<typename T>
@@ -429,8 +424,8 @@ namespace gf {
         return copy;
       }
 
-      constexpr bool operator!=(const Iterator& other) const noexcept { return m_current != other.m_current; }
-      constexpr bool operator==(const Iterator& other) const noexcept { return m_current == other.m_current; }
+      constexpr bool operator!=(Vec2<T> other) const noexcept { return m_current != other; }
+      constexpr bool operator==(Vec2<T> other) const noexcept { return m_current == other; }
 
     private:
       void step() noexcept
@@ -485,15 +480,9 @@ namespace gf {
       };
     }
 
-    constexpr Iterator end() const
+    constexpr Vec2<T> end() const
     {
-      return {
-        { m_dx.lo(), m_dy.hi() },
-        m_dx,
-        m_dy,
-        m_origin,
-        m_radius
-      };
+      return { m_dx.lo(), m_dy.hi() };
     }
 
   private:
@@ -506,7 +495,7 @@ namespace gf {
   template<typename T>
   constexpr NeighborDiamondRange<T> neighbor_diamond_range(Vec2<T> origin, T radius = T(1)) noexcept
   {
-    return { range(origin.x - radius, origin.x + radius), range(origin.y - radius, origin.y + radius), origin, radius };
+    return { range(origin.x - radius, origin.x + radius + 1), range(origin.y - radius, origin.y + radius + 1), origin, radius };
   }
 
   template<typename T>
