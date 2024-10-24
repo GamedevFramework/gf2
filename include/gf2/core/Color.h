@@ -5,6 +5,8 @@
 
 #include <cstdint>
 
+#include <array>
+
 #include "CoreApi.h"
 #include "Math.h"
 #include "TypeTraits.h"
@@ -24,11 +26,11 @@ namespace gf {
 
     constexpr Color(uint32_t rgb, uint8_t a = 255)
     // clang-format off
-    : r(static_cast<float>((rgb >> 16) & 0xFF) / 255.0f)
-    , g(static_cast<float>((rgb >> 8)  & 0xFF) / 255.0f)
-    , b(static_cast<float>((rgb >> 0)  & 0xFF) / 255.0f)
+    : r(float((rgb >> 16) & 0xFF) / 255.0f)
+    , g(float((rgb >> 8)  & 0xFF) / 255.0f)
+    , b(float((rgb >> 0)  & 0xFF) / 255.0f)
     // clang-format on
-    , a(static_cast<float>(a) / 255.0f)
+    , a(float(a) / 255.0f)
     {
     }
 
@@ -36,6 +38,17 @@ namespace gf {
     float g;
     float b;
     float a;
+
+    constexpr std::array<uint8_t, 4> to_rgba32() const
+    {
+      return { uint8_t(r * 255), uint8_t(g * 255), uint8_t(b * 255), uint8_t(a * 255) };
+    }
+
+    constexpr uint32_t to_hex() const
+    {
+      const auto rgba = to_rgba32();
+      return (rgba[0] << 24) + (rgba[1] << 16) + (rgba[2] << 8) + (rgba[3] << 0);
+    }
   };
 
   constexpr bool operator==(Color lhs, Color rhs)
