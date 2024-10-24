@@ -86,6 +86,8 @@ namespace gf {
           const Vec2F max((command->ClipRect.z - position.x) * scale.x, (command->ClipRect.w - position.y) * scale.y);
           object.scissor = RectI::from_min_max(min, max);
 
+          object.scissor.offset = gf::max(object.scissor.offset, { 0, 0 }); // because VUID-vkCmdSetScissor-x-00595
+
           // count, first, offset
 
           object.size = command->ElemCount;
