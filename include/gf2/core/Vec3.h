@@ -361,6 +361,30 @@ namespace gf {
     };
   }
 
+  template<typename T>
+  constexpr bool almost_equals(Vec3<T> a, Vec3<T> b, T abs_error = std::numeric_limits<T>::epsilon(), T rel_error = std::numeric_limits<T>::epsilon())
+  {
+    return almost_equals(a.x, b.x, abs_error, rel_error) && almost_equals(a.y, b.y, abs_error, rel_error) && almost_equals(a.z, b.z, abs_error, rel_error);
+  }
+
+  template<typename T>
+  constexpr Vec3<T> abs(Vec3<T> vec)
+  {
+    return { details::abs(vec.x), details::abs(vec.y), details::abs(vec.z) };
+  }
+
+  template<typename T>
+  constexpr Vec3<T> clamp(Vec3<T> vec, Vec3<T> lo, Vec3<T> hi)
+  {
+    return { clamp(vec.x, lo.x, hi.x), clamp(vec.y, lo.y, hi.y), clamp(vec.z, lo.z, hi.z) };
+  }
+
+  template<typename T>
+  constexpr Vec3<T> clamp(Vec3<T> vec, T lo, T hi)
+  {
+    return { clamp(vec.x, lo, hi), clamp(vec.y, lo, hi), clamp(vec.z, lo, hi) };
+  }
+
   namespace details {
 
     template<typename Archive, typename Self>

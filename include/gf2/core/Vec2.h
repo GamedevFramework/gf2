@@ -420,6 +420,24 @@ namespace gf {
     return almost_equals(a.x, b.x, abs_error, rel_error) && almost_equals(a.y, b.y, abs_error, rel_error);
   }
 
+  template<typename T>
+  constexpr Vec2<T> abs(Vec2<T> vec)
+  {
+    return { details::abs(vec.x), details::abs(vec.y) };
+  }
+
+  template<typename T>
+  constexpr Vec2<T> clamp(Vec2<T> vec, Vec2<T> lo, Vec2<T> hi)
+  {
+    return { clamp(vec.x, lo.x, hi.x), clamp(vec.y, lo.y, hi.y) };
+  }
+
+  template<typename T>
+  constexpr Vec2<T> clamp(Vec2<T> vec, T lo, T hi)
+  {
+    return { clamp(vec.x, lo, hi), clamp(vec.y, lo, hi) };
+  }
+
   namespace details {
 
     template<typename Archive, typename Self>
