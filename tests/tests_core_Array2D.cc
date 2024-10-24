@@ -2,8 +2,6 @@
 
 #include "gtest/gtest.h"
 
-#include <iostream>
-
 constexpr gf::Vec2I Size = { 7, 7 };
 
 TEST(Array2DTest, PositionRange) {

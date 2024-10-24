@@ -2,8 +2,6 @@
 
 #include "gtest/gtest.h"
 
-#include <iostream>
-
 using RangeI = gf::Range<int>;
 using RangeF = gf::Range<float>;
 
