@@ -39,6 +39,28 @@ constexpr Color(uint32_t rgb, uint8_t a = 255); <3>
 <2> Constructor with `r`, `g`, `b` and optionally `a` initializers.
 <3> Constructor with an link:https://en.wikipedia.org/wiki/Web_colors#Hex_triplet[hex triplet] and an alpha channel
 
+=== `to_hex`
+
+[source]
+----
+constexpr uint32_t to_hex() const;
+----
+
+Transform the color into an hex triplet with an alpha channel.
+
+See also: <<to_rgba32>>
+
+=== `to_rgba32`
+
+[source]
+----
+constexpr std::array<uint8_t, 4> to_rgba32() const;
+----
+
+Transform the color in an array of four 8-bit channels.
+
+See also: <<to_hex>>
+
 == Operators
 
 === `operator==`
