@@ -30,6 +30,8 @@ namespace home {
     }
 
   private:
+    static gf::ActionGroupSettings compute_settings();
+
     void do_update(gf::Time time) override;
     void do_process_event(const gf::Event& event) override;
     void do_handle_actions() override;

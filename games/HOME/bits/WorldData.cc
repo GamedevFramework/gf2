@@ -15,8 +15,6 @@ namespace home {
   {
     using namespace gf::literals;
 
-    action_group.actions.emplace("debug"_id, gf::ActionSettings(gf::ActionType::Instantaneous).add_keycode_control(gf::Keycode::P));
-
     map.filename = "map/Map.tmx";
 
     main_theme_music.filename = "sounds/main_theme.ogg";

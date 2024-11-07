@@ -7,11 +7,9 @@
 
 namespace home {
 
-  using namespace gf::literals;
-
   WorldScene::WorldScene(GameHub* hub, const WorldData& data)
   : m_hub(hub)
-  , m_action_group(data.action_group)
+  , m_action_group(compute_settings())
   , m_main_theme_music(hub->resource_manager()->get<gf::Music>(data.main_theme_music.filename))
   , m_breath_low_o2_sound(hub->resource_manager()->get<gf::Sound>(data.breath_low_o2_sound.filename))
   , m_victory_sound(hub->resource_manager()->get<gf::Sound>(data.victory_sound.filename))
@@ -51,6 +49,16 @@ namespace home {
     });
   }
 
+  gf::ActionGroupSettings WorldScene::compute_settings()
+  {
+    using namespace gf::literals;
+    gf::ActionGroupSettings settings;
+
+    settings.actions.emplace("debug"_id, gf::ActionSettings(gf::ActionType::Instantaneous).add_keycode_control(gf::Keycode::P));
+
+    return settings;
+  }
+
   void WorldScene::do_update(gf::Time time)
   {
     update_entities(time);
@@ -69,6 +77,8 @@ namespace home {
 
   void WorldScene::do_handle_actions()
   {
+    using namespace gf::literals;
+
     if (m_action_group.active("debug"_id)) {
       m_debug = !m_debug;
       m_physics_debug.set_awake(m_debug);

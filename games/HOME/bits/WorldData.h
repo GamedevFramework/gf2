@@ -17,8 +17,6 @@ namespace home {
 
     gf::ResourceBundle bundle(GameHub* hub);
 
-    gf::ActionGroupSettings action_group;
-
     gf::RichMapResource map;
 
     gf::AudioSourceResource main_theme_music;
