@@ -5,14 +5,14 @@
 #include <gf2/graphics/RichMapRenderer.h>
 #include <gf2/physics/PhysicsWorld.h>
 
-#include "WorldData.h"
+#include "WorldResources.h"
 
 namespace home {
   class GameHub;
 
   class MapEntity : public gf::Entity {
   public:
-    MapEntity(GameHub* hub, const WorldData& data, gf::PhysicsWorld* physics_world);
+    MapEntity(GameHub* hub, const WorldResources& resources, gf::PhysicsWorld* physics_world);
 
     void set_hero_location(gf::Vec2F location);
 

@@ -42,15 +42,15 @@ namespace home {
   {
   }
 
-  SupplyEntity::SupplyEntity(GameHub* hub, const WorldData& data)
+  SupplyEntity::SupplyEntity(GameHub* hub, const WorldResources& resources)
   : m_hub(hub)
-  , m_oxygen_sound(hub->resource_manager()->get<gf::Sound>(data.oxygen_sound.filename))
-  , m_mining_sound(hub->resource_manager()->get<gf::Sound>(data.mining_sound.filename))
-  , m_energy_sprite(data.energy_sprite, hub->render_manager(), hub->resource_manager())
-  , m_metal_sprite(data.metal_sprite, hub->render_manager(), hub->resource_manager())
-  , m_oxygen_sprite(data.oxygen_sprite, hub->render_manager(), hub->resource_manager())
+  , m_oxygen_sound(hub->resource_manager()->get<gf::Sound>(resources.oxygen_sound.filename))
+  , m_mining_sound(hub->resource_manager()->get<gf::Sound>(resources.mining_sound.filename))
+  , m_energy_sprite(resources.energy_sprite, hub->render_manager(), hub->resource_manager())
+  , m_metal_sprite(resources.metal_sprite, hub->render_manager(), hub->resource_manager())
+  , m_oxygen_sprite(resources.oxygen_sprite, hub->render_manager(), hub->resource_manager())
   {
-    const gf::RichMap* rich_map = hub->resource_manager()->get<gf::RichMap>(data.map.filename);
+    const gf::RichMap* rich_map = hub->resource_manager()->get<gf::RichMap>(resources.map.filename);
     const gf::TiledMap* tiled_map = rich_map->tiled_map();
 
     for (const auto& object_layer : tiled_map->object_layers) {

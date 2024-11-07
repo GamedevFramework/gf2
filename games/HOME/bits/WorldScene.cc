@@ -7,18 +7,18 @@
 
 namespace home {
 
-  WorldScene::WorldScene(GameHub* hub, const WorldData& data)
+  WorldScene::WorldScene(GameHub* hub, const WorldResources& resources)
   : m_hub(hub)
   , m_action_group(compute_settings())
-  , m_main_theme_music(hub->resource_manager()->get<gf::Music>(data.main_theme_music.filename))
-  , m_breath_low_o2_sound(hub->resource_manager()->get<gf::Sound>(data.breath_low_o2_sound.filename))
-  , m_victory_sound(hub->resource_manager()->get<gf::Sound>(data.victory_sound.filename))
-  , m_death_sound(hub->resource_manager()->get<gf::Sound>(data.death_sound.filename))
+  , m_main_theme_music(hub->resource_manager()->get<gf::Music>(resources.main_theme_music.filename))
+  , m_breath_low_o2_sound(hub->resource_manager()->get<gf::Sound>(resources.breath_low_o2_sound.filename))
+  , m_victory_sound(hub->resource_manager()->get<gf::Sound>(resources.victory_sound.filename))
+  , m_death_sound(hub->resource_manager()->get<gf::Sound>(resources.death_sound.filename))
   , m_physics_debug(&m_physics_world, hub->render_manager())
-  , m_map_entity(hub, data, &m_physics_world)
-  , m_supply_entity(hub, data)
-  , m_hero_entity(hub, data, &m_physics_world)
-  , m_backpack_entity(hub, data)
+  , m_map_entity(hub, resources, &m_physics_world)
+  , m_supply_entity(hub, resources)
+  , m_hero_entity(hub, resources, &m_physics_world)
+  , m_backpack_entity(hub, resources)
   {
     set_clear_color(gf::Color(0xAEF6B8));
     set_world_center({ 0.0f, 0.0f });

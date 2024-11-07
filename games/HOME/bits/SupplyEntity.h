@@ -12,7 +12,7 @@
 #include <gf2/graphics/SpriteEntity.h>
 
 #include "SupplyType.h"
-#include "WorldData.h"
+#include "WorldResources.h"
 
 namespace home {
   class GameHub;
@@ -28,7 +28,7 @@ namespace home {
 
   class SupplyEntity : public gf::Entity {
   public:
-    SupplyEntity(GameHub* hub, const WorldData& data);
+    SupplyEntity(GameHub* hub, const WorldResources& resources);
 
     void update(gf::Time time) override;
     void render(gf::RenderRecorder& recorder) override;

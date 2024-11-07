@@ -35,7 +35,7 @@ namespace home {
       return gf::Orientation::SouthWest;
     }
 
-    gf::Vec2F compute_initial_location(const WorldData& data, gf::ResourceManager* resource_manager)
+    gf::Vec2F compute_initial_location(const WorldResources& data, gf::ResourceManager* resource_manager)
     {
       const gf::RichMap* map = resource_manager->get<gf::RichMap>(data.map.filename);
 
@@ -57,16 +57,16 @@ namespace home {
 
   using namespace gf::literals;
 
-  HeroEntity::HeroEntity(GameHub* hub, const WorldData& data, gf::PhysicsWorld* physics_world)
+  HeroEntity::HeroEntity(GameHub* hub, const WorldResources& resources, gf::PhysicsWorld* physics_world)
   : m_controller(gf::PhysicsBody::make_kinematic())
   , m_body(gf::PhysicsBody::make_dynamic(HeroMass, gf::compute_moment_for_circle(HeroMass, 0.0f, HeroRadius, { 0.0f, 0.0f })))
   , m_pivot(gf::PhysicsConstraint::make_pivot_joint(&m_controller, &m_body, { 0.0f, 0.0f }, { 0.0f, 0.0f }))
   , m_gear(gf::PhysicsConstraint::make_gear_joint(&m_controller, &m_body, 0.0f, 1.0f))
   , m_shape(gf::PhysicsShape::make_circle(&m_body, HeroRadius, { 0.0f, 0.0f }))
-  , m_target(compute_initial_location(data, hub->resource_manager()))
-  , m_hero_animations(data.hero_animations, hub->render_manager(), hub->resource_manager())
-  , m_crosshair(data.crosshair, hub->render_manager(), hub->resource_manager())
-  , m_jet_engine_sound(hub->resource_manager()->get<gf::Sound>(data.jet_engine_sound.filename))
+  , m_target(compute_initial_location(resources, hub->resource_manager()))
+  , m_hero_animations(resources.hero_animations, hub->render_manager(), hub->resource_manager())
+  , m_crosshair(resources.crosshair, hub->render_manager(), hub->resource_manager())
+  , m_jet_engine_sound(hub->resource_manager()->get<gf::Sound>(resources.jet_engine_sound.filename))
   {
     set_location({ 0.0f, 0.0f });
     set_origin({ 0.5f, 0.5f });

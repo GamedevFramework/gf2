@@ -13,7 +13,7 @@
 
 #include "SplashResources.h"
 #include "SplashScene.h"
-#include "WorldData.h"
+#include "WorldResources.h"
 #include "WorldScene.h"
 
 namespace home {
@@ -35,11 +35,11 @@ namespace home {
     }
 
   private:
-    SplashResources m_splash_data;
+    SplashResources m_splash_resources;
     std::unique_ptr<SplashScene> m_splash_scene = nullptr;
 
     gf::RenderAsync m_world_async;
-    WorldData m_world_data;
+    WorldResources m_world_resources;
     std::unique_ptr<WorldScene> m_world_scene = nullptr;
   };
 

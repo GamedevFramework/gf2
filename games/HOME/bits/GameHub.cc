@@ -6,16 +6,16 @@ namespace home {
   : gf::SceneSystem("H.O.M.E.", { 1600, 900 }, asset_directory)
   , m_world_async(render_manager())
   {
-    auto splash_bundle = m_splash_data.bundle(this);
+    auto splash_bundle = m_splash_resources.bundle(this);
     splash_bundle.load_from(resource_manager());
 
-    m_splash_scene = std::make_unique<SplashScene>(this, m_splash_data);
+    m_splash_scene = std::make_unique<SplashScene>(this, m_splash_resources);
 
     m_world_async.run_async([this]() {
-      auto world_bundle = m_world_data.bundle(this);
+      auto world_bundle = m_world_resources.bundle(this);
       world_bundle.load_from(resource_manager());
 
-      m_world_scene = std::make_unique<WorldScene>(this, m_world_data);
+      m_world_scene = std::make_unique<WorldScene>(this, m_world_resources);
     });
 
     push_scene(splash_scene());

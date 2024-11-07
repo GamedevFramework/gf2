@@ -68,8 +68,8 @@ namespace home {
 
   }
 
-  MapEntity::MapEntity(GameHub* hub, const WorldData& data, gf::PhysicsWorld* physics_world)
-  : m_map_renderer(data.map, hub->render_manager(), hub->resource_manager())
+  MapEntity::MapEntity(GameHub* hub, const WorldResources& resources, gf::PhysicsWorld* physics_world)
+  : m_map_renderer(resources.map, hub->render_manager(), hub->resource_manager())
   {
 
     const gf::TiledMap* tiled_map = m_map_renderer.tiled_map();

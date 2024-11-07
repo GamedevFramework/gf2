@@ -13,14 +13,14 @@
 #include <gf2/physics/PhysicsConstraint.h>
 #include <gf2/physics/PhysicsShape.h>
 
-#include "WorldData.h"
+#include "WorldResources.h"
 
 namespace home {
   class GameHub;
 
   class HeroEntity : public gf::TransformableEntity {
   public:
-    HeroEntity(GameHub* hub, const WorldData& data, gf::PhysicsWorld* physics_world);
+    HeroEntity(GameHub* hub, const WorldResources& resources, gf::PhysicsWorld* physics_world);
 
     void update(gf::Time time) override;
     void render(gf::RenderRecorder& recorder) override;

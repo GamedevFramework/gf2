@@ -19,14 +19,14 @@ namespace home {
     constexpr int UnloadSpeed = 250'000;
   }
 
-  BackpackEntity::BackpackEntity(GameHub* hub, const WorldData& data)
+  BackpackEntity::BackpackEntity(GameHub* hub, const WorldResources& resources)
   : m_hub(hub)
   , m_oxygen_quantity(MaxOxygen)
-  , m_backpack_sprite(data.backpack_icon, hub->render_manager(), hub->resource_manager())
-  , m_oxygen_sprite(data.oxygen_icon, hub->render_manager(), hub->resource_manager())
+  , m_backpack_sprite(resources.backpack_icon, hub->render_manager(), hub->resource_manager())
+  , m_oxygen_sprite(resources.oxygen_icon, hub->render_manager(), hub->resource_manager())
   {
 
-    const auto* rich_map = hub->resource_manager()->get<gf::RichMap>(data.map.filename);
+    const auto* rich_map = hub->resource_manager()->get<gf::RichMap>(resources.map.filename);
     const gf::TiledMap* tiled_map = rich_map->tiled_map();
 
     for (const auto& object_layer : tiled_map->object_layers) {

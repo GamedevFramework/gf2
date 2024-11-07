@@ -8,7 +8,7 @@
 #include <gf2/graphics/SpriteEntity.h>
 
 #include "SupplyType.h"
-#include "WorldData.h"
+#include "WorldResources.h"
 
 namespace home {
 
@@ -16,7 +16,7 @@ namespace home {
 
   class BackpackEntity : public gf::Entity {
   public:
-    BackpackEntity(GameHub* hub, const WorldData& data);
+    BackpackEntity(GameHub* hub, const WorldResources& resources);
 
     void set_hero_location(gf::Vec2F location);
 

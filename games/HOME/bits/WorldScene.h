@@ -15,14 +15,14 @@
 #include "HeroEntity.h"
 #include "MapEntity.h"
 #include "SupplyEntity.h"
-#include "WorldData.h"
+#include "WorldResources.h"
 
 namespace home {
   class GameHub;
 
   class WorldScene : public gf::Scene {
   public:
-    WorldScene(GameHub* hub, const WorldData& data);
+    WorldScene(GameHub* hub, const WorldResources& resources);
 
     gf::PhysicsWorld* physics_world()
     {
