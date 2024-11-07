@@ -1,5 +1,7 @@
 #include "SplashResources.h"
 
+#include <gf2/framework/BundleBuilder.h>
+
 #include "GameHub.h"
 
 namespace home {
@@ -25,23 +27,15 @@ namespace home {
     click_text.data.color = gf::Color(0x44548E);
   }
 
-  gf::ResourceBundle SplashResources::bundle(GameHub* hub)
+  gf::ResourceBundle SplashResources::bundle(GameHub* hub) const
   {
-    gf::ResourceBundle bundle([hub, this](gf::ResourceBundle* bundle, gf::ResourceManager* resources, gf::ResourceAction action) {
-      // fonts
+    gf::BundleBuilder builder(hub);
 
-      for (const gf::TextResource* resource : { &title_text, &click_text }) {
-        bundle->handle<gf::FontFace>(resource->font, hub->font_manager(), resources, action);
-      }
+    builder.add_in_bundle(title_sprite);
+    builder.add_in_bundle(title_text);
+    builder.add_in_bundle(click_text);
 
-      // textures
-
-      for (const gf::SpriteResource* resource : { &title_sprite }) {
-        bundle->handle<gf::Texture>(resource->texture, hub->render_manager(), resources, action);
-      }
-    });
-
-    return bundle;
+    return builder.make_bundle();
   }
 
 }

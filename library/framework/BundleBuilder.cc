@@ -15,12 +15,20 @@
 #include <gf2/audio/Sound.h>
 #include <gf2/graphics/Texture.h>
 #include <gf2/graphics/RichMap.h>
+#include <gf2/framework/SceneSystem.h>
 
 namespace gf {
   BundleBuilder::BundleBuilder(RenderManager* render_manager, FontManager* font_manager, AudioManager* audio_manager)
   : m_render_manager(render_manager)
   , m_font_manager(font_manager)
   , m_audio_manager(audio_manager)
+  {
+  }
+
+  BundleBuilder::BundleBuilder(SceneSystem* scene_manager)
+  : m_render_manager(scene_manager->render_manager())
+  , m_font_manager(scene_manager->font_manager())
+  , m_audio_manager(scene_manager->audio_manager())
   {
   }
 

@@ -12,7 +12,7 @@ namespace home {
   struct SplashResources {
     SplashResources();
 
-    gf::ResourceBundle bundle(GameHub* hub);
+    gf::ResourceBundle bundle(GameHub* hub) const;
 
     gf::SpriteResource title_sprite;
     gf::TextResource title_text;

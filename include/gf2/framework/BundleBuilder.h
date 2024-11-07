@@ -14,6 +14,7 @@ namespace gf {
   class AudioManager;
   class FontManager;
   class RenderManager;
+  class SceneSystem;
   struct AnimationResource;
   struct AnimationGroupResource;
   struct AudioSourceResource;
@@ -26,6 +27,7 @@ namespace gf {
   class GF_FRAMEWORK_API BundleBuilder {
   public:
     BundleBuilder(RenderManager* render_manager, FontManager* font_manager, AudioManager* audio_manager);
+    BundleBuilder(SceneSystem* scene_manager);
 
     void add_in_bundle(const AnimationResource& resource);
     void add_in_bundle(const AnimationGroupResource& resource);
