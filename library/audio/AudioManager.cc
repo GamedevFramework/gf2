@@ -63,12 +63,12 @@ namespace gf {
 
   AudioListener AudioManager::default_listener()
   {
-    return AudioListener(engine(), 0);
+    return {engine(), 0};
   }
 
   AudioListener AudioManager::closest_listener(Vec3F position)
   {
-    return AudioListener(engine(), ma_engine_find_closest_listener(engine(), position.x, position.y, position.z));
+    return {engine(), ma_engine_find_closest_listener(engine(), position.x, position.y, position.z)};
   }
 
   ma_engine* AudioManager::engine()

@@ -201,7 +201,7 @@ namespace gf {
 
   AudioCone AudioSource::cone() const
   {
-    AudioCone cone;
+    AudioCone cone = {};
     ma_sound_get_cone(m_source.get(), &cone.inner_angle, &cone.outer_angle, &cone.outer_gain);
     return cone;
   }
@@ -258,7 +258,7 @@ namespace gf {
 
   bool AudioSource::finished() const
   {
-    return ma_sound_at_end(m_source.get());
+    return ma_sound_at_end(m_source.get()) == MA_TRUE;
   }
 
   Time AudioSource::cursor()

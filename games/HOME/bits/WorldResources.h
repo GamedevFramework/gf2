@@ -15,7 +15,7 @@ namespace home {
   struct WorldResources {
     WorldResources();
 
-    gf::ResourceBundle bundle(GameHub* hub);
+    gf::ResourceBundle bundle(GameHub* hub) const;
 
     gf::RichMapResource map;
 

@@ -92,7 +92,7 @@ namespace home {
     oxygen_icon.data.color = gf::darker(to_color(SupplyType::Oxygen));
   }
 
-  gf::ResourceBundle WorldResources::bundle(GameHub* hub)
+  gf::ResourceBundle WorldResources::bundle(GameHub* hub) const
   {
     gf::BundleBuilder builder(hub);
 
