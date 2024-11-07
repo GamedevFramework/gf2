@@ -1,10 +1,10 @@
-#include "SplashData.h"
+#include "SplashResources.h"
 
 #include "GameHub.h"
 
 namespace home {
 
-  SplashData::SplashData()
+  SplashResources::SplashResources()
   {
     // title_sprite
 
@@ -25,7 +25,7 @@ namespace home {
     click_text.data.color = gf::Color(0x44548E);
   }
 
-  gf::ResourceBundle SplashData::bundle(GameHub* hub)
+  gf::ResourceBundle SplashResources::bundle(GameHub* hub)
   {
     gf::ResourceBundle bundle([hub, this](gf::ResourceBundle* bundle, gf::ResourceManager* resources, gf::ResourceAction action) {
       // fonts

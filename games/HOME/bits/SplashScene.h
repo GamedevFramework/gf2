@@ -8,14 +8,14 @@
 #include <gf2/graphics/SpriteEntity.h>
 #include <gf2/graphics/TextEntity.h>
 
-#include "SplashData.h"
+#include "SplashResources.h"
 
 namespace home {
   class GameHub;
 
   class SplashScene : public gf::Scene {
   public:
-    SplashScene(GameHub* hub, const SplashData& data);
+    SplashScene(GameHub* hub, const SplashResources& resources);
 
   private:
     static gf::ActionGroupSettings compute_settings();

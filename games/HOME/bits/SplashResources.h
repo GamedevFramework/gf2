@@ -9,8 +9,8 @@
 namespace home {
   class GameHub;
 
-  struct SplashData {
-    SplashData();
+  struct SplashResources {
+    SplashResources();
 
     gf::ResourceBundle bundle(GameHub* hub);
 

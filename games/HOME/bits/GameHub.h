@@ -11,7 +11,7 @@
 #include <gf2/graphics/RenderAsync.h>
 #include <gf2/graphics/SceneManager.h>
 
-#include "SplashData.h"
+#include "SplashResources.h"
 #include "SplashScene.h"
 #include "WorldData.h"
 #include "WorldScene.h"
@@ -35,7 +35,7 @@ namespace home {
     }
 
   private:
-    SplashData m_splash_data;
+    SplashResources m_splash_data;
     std::unique_ptr<SplashScene> m_splash_scene = nullptr;
 
     gf::RenderAsync m_world_async;
