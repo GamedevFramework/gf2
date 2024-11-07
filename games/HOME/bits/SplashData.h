@@ -14,8 +14,6 @@ namespace home {
 
     gf::ResourceBundle bundle(GameHub* hub);
 
-    gf::ActionGroupSettings action_group;
-
     gf::SpriteResource title_sprite;
     gf::TextResource title_text;
     gf::TextResource click_text;

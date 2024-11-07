@@ -7,7 +7,7 @@ namespace home {
   SplashScene::SplashScene(GameHub* hub, const SplashData& data)
   : m_hub(hub)
   , m_atlas({ 1024, 1024 }, hub->render_manager())
-  , m_action_group(data.action_group)
+  , m_action_group(compute_settings())
   , m_title_sprite(data.title_sprite, hub->render_manager(), hub->resource_manager())
   , m_title_text(&m_atlas, data.title_text, hub->render_manager(), hub->resource_manager())
   , m_click_text(&m_atlas, data.click_text, hub->render_manager(), hub->resource_manager())
@@ -26,6 +26,16 @@ namespace home {
 
     m_click_text.set_location({ 0.0f, 500.0f });
     m_click_text.set_origin({ 0.5f, 0.5f });
+  }
+
+  gf::ActionGroupSettings SplashScene::compute_settings()
+  {
+    using namespace gf::literals;
+    gf::ActionGroupSettings settings;
+
+    settings.actions.emplace("click"_id, gf::ActionSettings(gf::ActionType::Instantaneous).add_mouse_button_control(gf::AnyMouseButton));
+
+    return settings;
   }
 
   void SplashScene::do_update([[maybe_unused]] gf::Time time)

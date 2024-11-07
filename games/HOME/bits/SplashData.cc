@@ -6,12 +6,6 @@ namespace home {
 
   SplashData::SplashData()
   {
-    using namespace gf::literals;
-
-    // action_group
-
-    action_group.actions.emplace("click"_id, gf::ActionSettings(gf::ActionType::Instantaneous).add_mouse_button_control(gf::AnyMouseButton));
-
     // title_sprite
 
     title_sprite.texture = "images/title.png";
