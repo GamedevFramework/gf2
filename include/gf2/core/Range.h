@@ -4,6 +4,7 @@
 #include <cstddef>
 
 #include <iterator>
+#include <tuple>
 #include <utility>
 
 #include "Rect.h"
@@ -513,32 +514,15 @@ namespace gf {
   public:
     class Iterator {
     public:
-      using difference_type = std::ptrdiff_t;
-      using value_type = std::pair<std::size_t, decltype(*std::declval<IteratorType>())>;
-      using iterator_category = std::forward_iterator_tag;
-      using pointer = value_type;
-      using reference = value_type;
-
       constexpr Iterator(size_t index, IteratorType iterator) noexcept
       : m_index(index)
       , m_iterator(iterator)
       {
       }
 
-      void operator++()
-      {
-        ++m_index;
-        ++m_iterator;
-      }
-
-      pointer operator->() const { return std::make_pair(m_index, *m_iterator); }
-      reference operator*() const { return std::make_pair(m_index, *m_iterator); }
-
+      void operator++() { ++m_index; ++m_iterator; }
+      auto operator*() const { return std::tie(m_index, *m_iterator); }
       bool operator!=(const Iterator& other) const { return m_iterator != other.m_iterator; }
-      bool operator==(const Iterator& other) const { return m_iterator == other.m_iterator; }
-
-      bool operator!=(const SentinelType& other) const { return m_iterator != other; }
-      bool operator==(const SentinelType& other) const { return m_iterator == other; }
 
     private:
       size_t m_index;
