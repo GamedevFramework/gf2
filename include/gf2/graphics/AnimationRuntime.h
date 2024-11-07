@@ -9,8 +9,8 @@
 #include <gf2/core/ResourceManager.h>
 #include <gf2/core/Time.h>
 
-#include "Vertex.h"
 #include "Texture.h"
+#include "Vertex.h"
 
 namespace gf {
   class Buffer;
@@ -41,7 +41,6 @@ namespace gf {
       std::vector<Vertex> vertices;
       std::vector<uint16_t> indices;
     };
-
 
     template<typename Resource>
     std::vector<const Texture*> load_animation_resources(const Resource& resource, ResourceManager* resource_manager)

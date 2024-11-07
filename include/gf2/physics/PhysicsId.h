@@ -7,7 +7,7 @@
 
 namespace gf {
 
-  enum class PhysicsId : uintptr_t {};
+  enum class PhysicsId : uintptr_t { };
 
 }
 

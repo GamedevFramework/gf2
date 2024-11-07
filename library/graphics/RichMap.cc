@@ -66,5 +66,4 @@ namespace gf {
     return m_textures[i];
   }
 
-
 }

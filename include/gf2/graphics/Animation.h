@@ -12,10 +12,10 @@
 #include <gf2/core/Rect.h>
 #include <gf2/core/Time.h>
 
+#include "AnimationRuntime.h"
 #include "Buffer.h"
 #include "GraphicsApi.h"
 #include "RenderObject.h"
-#include "AnimationRuntime.h"
 
 namespace gf {
   class Texture;
@@ -40,7 +40,6 @@ namespace gf {
     std::size_t m_current_frame = 0;
     Time m_current_time;
   };
-
 
   class GF_GRAPHICS_API AnimationGraphics {
   public:

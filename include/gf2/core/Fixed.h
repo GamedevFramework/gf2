@@ -13,6 +13,7 @@ namespace gf {
     template<typename T>
     struct LargerType;
 
+    // clang-format off
     template<>
     struct LargerType<int8_t> { using type = int16_t; };
     template<>
@@ -25,6 +26,7 @@ namespace gf {
     struct LargerType<uint16_t> { using type = uint32_t; };
     template<>
     struct LargerType<uint32_t> { using type = uint64_t; };
+    // clang-format on
 
     template<typename T>
     using Larger = typename LargerType<T>::type;
@@ -107,7 +109,7 @@ namespace gf {
     }
 
   private:
-    struct RawType {};
+    struct RawType { };
     static constexpr RawType Raw = {};
 
     constexpr Fixed(T raw, [[maybe_unused]] RawType tag)

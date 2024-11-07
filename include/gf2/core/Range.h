@@ -523,7 +523,12 @@ namespace gf {
       {
       }
 
-      void operator++() { ++m_index; ++m_iterator; }
+      void operator++()
+      {
+        ++m_index;
+        ++m_iterator;
+      }
+
       auto operator*() { return std::tie(m_index, *m_iterator); }
       bool operator!=(SentinelType other) const { return m_iterator != other; }
 

@@ -8,6 +8,7 @@
 #include <gf2/core/BinaryHeap.h>
 #include <gf2/core/GridVisibility.h>
 #include <gf2/core/Log.h>
+
 #include "gf2/core/GridTypes.h"
 
 namespace gf {
@@ -168,7 +169,6 @@ namespace gf {
 
     m_cells(position) |= (CellProperty::Transparent | CellProperty::Walkable);
   }
-
 
   bool GridMap::blocked(Vec2I position) const
   {

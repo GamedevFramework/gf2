@@ -14,10 +14,10 @@
 #include <gf2/graphics/Entity.h>
 #include <gf2/graphics/RenderManager.h>
 #include <gf2/graphics/RenderRecorder.h>
-#include <gf2/graphics/Scene.h>
-#include <gf2/graphics/SceneManager.h>
 #include <gf2/graphics/RichMap.h>
 #include <gf2/graphics/RichMapRenderer.h>
+#include <gf2/graphics/Scene.h>
+#include <gf2/graphics/SceneManager.h>
 #include <gf2/graphics/Zoom.h>
 
 namespace {

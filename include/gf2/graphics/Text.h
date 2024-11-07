@@ -47,7 +47,7 @@ namespace gf {
 
   class GF_GRAPHICS_API RichText {
   public:
-    RichText(FontAtlas* atlas, RichTextStyle* style,  FontFace* default_font, FontFace* bold_font, FontFace* italic_font, FontFace* bold_italic_font, const TextData& data, RenderManager* render_manager);
+    RichText(FontAtlas* atlas, RichTextStyle* style, FontFace* default_font, FontFace* bold_font, FontFace* italic_font, FontFace* bold_italic_font, const TextData& data, RenderManager* render_manager);
     RichText(FontAtlas* atlas, RichTextStyle* style, const RichTextResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
     void update(const TextData& data, RenderManager* render_manager);

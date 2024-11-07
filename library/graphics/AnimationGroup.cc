@@ -4,6 +4,7 @@
 #include <gf2/graphics/AnimationGroup.h>
 
 #include <gf2/core/Log.h>
+
 #include "gf2/graphics/AnimationRuntime.h"
 
 namespace gf {

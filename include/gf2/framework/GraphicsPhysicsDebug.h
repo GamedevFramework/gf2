@@ -1,10 +1,9 @@
 #ifndef GF_GRAPHICS_PHYSICS_DEBUG_H
 #define GF_GRAPHICS_PHYSICS_DEBUG_H
 
-#include <gf2/graphics/Entity.h>
 #include <gf2/graphics/Curve.h>
+#include <gf2/graphics/Entity.h>
 #include <gf2/graphics/Shape.h>
-
 #include <gf2/physics/PhysicsDebug.h>
 #include <gf2/physics/PhysicsWorld.h>
 

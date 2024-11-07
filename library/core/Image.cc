@@ -266,7 +266,6 @@ namespace gf {
     return static_cast<std::ptrdiff_t>(position.x + (position.y * m_size.w)) * 4;
   }
 
-
   Vec2I image_size(const std::filesystem::path& filename)
   {
     std::unique_ptr<std::FILE, decltype(&std::fclose)> file(std::fopen(filename.string().c_str(), "rb"), std::fclose);
@@ -285,6 +284,5 @@ namespace gf {
 
     return size;
   }
-
 
 } // namespace gf

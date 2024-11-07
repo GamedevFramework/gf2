@@ -13,7 +13,9 @@ TEST(Array2DTest, PositionRange) {
     ++count;
   }
 
+  // clang-format off
   EXPECT_EQ(count, Size.x * Size.y);
+  // clang-format on
 }
 
 TEST(Array2DTest, FourNeighbors) {

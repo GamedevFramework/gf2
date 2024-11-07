@@ -10,10 +10,10 @@
 #include <gf2/core/Id.h>
 #include <gf2/core/Time.h>
 
+#include "AnimationRuntime.h"
 #include "Buffer.h"
 #include "GraphicsApi.h"
 #include "RenderObject.h"
-#include "AnimationRuntime.h"
 
 namespace gf {
   class Texture;
@@ -70,7 +70,6 @@ namespace gf {
 
     std::map<Id, details::AnimationGraphicsRuntime> m_animations;
   };
-
 
   class GF_GRAPHICS_API AnimationGroup {
   public:

@@ -87,7 +87,7 @@ namespace gf {
 
   RenderGeometry AnimationGraphics::geometry(std::size_t frame_index) const
   {
-    assert(frame_index  < m_animation.frames.size());
+    assert(frame_index < m_animation.frames.size());
 
     const auto& frame = m_animation.frames[frame_index];
 

@@ -8,9 +8,9 @@
 #include <string>
 
 #include "CoreApi.h"
+#include "NinePatchData.h"
 #include "Rect.h"
 #include "SpriteData.h"
-#include "NinePatchData.h"
 
 namespace gf {
 
@@ -37,4 +37,3 @@ namespace gf {
 }
 
 #endif // GF_SPRITE_SHEET_H
-

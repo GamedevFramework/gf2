@@ -86,7 +86,7 @@ namespace gf::details {
 
     PhysicsId id() const
     {
-      return PhysicsId{reinterpret_cast<uintptr_t>(m_handle)}; // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
+      return PhysicsId{ reinterpret_cast<uintptr_t>(m_handle) }; // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
     }
 
     T* get()

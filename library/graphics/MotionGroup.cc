@@ -8,6 +8,7 @@
 #include <algorithm>
 
 #include <gf2/graphics/Event.h>
+
 #include "gf2/core/GamepadTypes.h"
 
 namespace gf {

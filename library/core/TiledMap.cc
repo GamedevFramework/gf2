@@ -854,7 +854,7 @@ namespace gf {
 
   const MapTilesetTile* MapTileset::tile(uint32_t id) const
   {
-    auto [ first, last ] = std::equal_range(tiles.begin(), tiles.end(), id, MapTilesetTileComparator());
+    auto [first, last] = std::equal_range(tiles.begin(), tiles.end(), id, MapTilesetTileComparator());
 
     if (std::distance(first, last) != 1) {
       return nullptr;

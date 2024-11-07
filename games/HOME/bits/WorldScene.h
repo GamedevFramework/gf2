@@ -5,11 +5,11 @@
 
 #include <gf2/audio/Music.h>
 #include <gf2/audio/Sound.h>
+#include <gf2/framework/GraphicsPhysicsDebug.h>
 #include <gf2/graphics/ActionGroup.h>
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/TextEntity.h>
 #include <gf2/physics/PhysicsWorld.h>
-#include <gf2/framework/GraphicsPhysicsDebug.h>
 
 #include "BackpackEntity.h"
 #include "HeroEntity.h"

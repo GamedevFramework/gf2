@@ -54,7 +54,8 @@ namespace gf {
 
   namespace {
 
-    int compute_power_of_two_size(Vec2I size) {
+    int compute_power_of_two_size(Vec2I size)
+    {
       int actual_size = 1;
 
       while (actual_size + 1 < size.h || actual_size + 1 < size.w) {
@@ -64,7 +65,8 @@ namespace gf {
       return actual_size;
     }
 
-    void initialize_corners(Heightmap& map, Span<const double> initial_values, int d) {
+    void initialize_corners(Heightmap& map, Span<const double> initial_values, int d)
+    {
       if (initial_values.size() == 0) {
         map.set_value({ 0, 0 }, 0.0);
         map.set_value({ 0, d }, 0.0);
@@ -142,7 +144,8 @@ namespace gf {
 
   namespace {
 
-    void diamond(Heightmap& map, Random& random, Vec2I pos, int d) {
+    void diamond(Heightmap& map, Random& random, Vec2I pos, int d)
+    {
       // clang-format off
       const double value = (map.value({ pos.x - d, pos.y - d })
                           + map.value({ pos.x - d, pos.y + d })
@@ -154,7 +157,8 @@ namespace gf {
       map.set_value(pos, value + noise);
     }
 
-    void square(Heightmap& map, Random& random, Vec2I pos, int d) {
+    void square(Heightmap& map, Random& random, Vec2I pos, int d)
+    {
       const Vec2I size = map.size();
 
       double value = 0.0;
