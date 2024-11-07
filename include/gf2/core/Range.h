@@ -509,9 +509,12 @@ namespace gf {
    * Enumerate
    */
 
-  template<typename IteratorType, typename SentinelType>
+  template<typename T>
   class Enumerate {
   public:
+    using IteratorType = decltype(std::begin(std::declval<T>()));
+    using SentinelType = decltype(std::end(std::declval<T>()));
+
     class Iterator {
     public:
       constexpr Iterator(size_t index, IteratorType iterator) noexcept
@@ -521,50 +524,30 @@ namespace gf {
       }
 
       void operator++() { ++m_index; ++m_iterator; }
-      auto operator*() const { return std::tie(m_index, *m_iterator); }
-      bool operator!=(const Iterator& other) const { return m_iterator != other.m_iterator; }
+      auto operator*() { return std::tie(m_index, *m_iterator); }
+      bool operator!=(SentinelType other) const { return m_iterator != other; }
 
     private:
       size_t m_index;
       IteratorType m_iterator;
     };
 
-    Enumerate(IteratorType begin_iterator, SentinelType end_iterator)
-    : m_begin_iterator(begin_iterator)
-    , m_end_iterator(end_iterator)
+    Enumerate(T iterable)
+    : m_iterable(iterable)
     {
     }
 
-    auto begin() { return Iterator{ 0, m_begin_iterator }; }
-    auto end() { return m_end_iterator; }
+    auto begin() { return Iterator{ 0, std::begin(m_iterable) }; }
+    auto end() { return std::end(m_iterable); }
 
   private:
-    IteratorType m_begin_iterator;
-    SentinelType m_end_iterator;
+    T m_iterable;
   };
 
   template<typename T>
-  inline auto enumerate(T& iterable)
+  inline auto enumerate(T&& iterable)
   {
-    using std::begin;
-    using IteratorType = decltype(begin(std::declval<T>()));
-
-    using std::end;
-    using SentinelType = decltype(end(std::declval<T>()));
-
-    return Enumerate<IteratorType, SentinelType>(begin(iterable), end(iterable));
-  }
-
-  template<typename T>
-  inline auto enumerate(const T& iterable)
-  {
-    using std::begin;
-    using IteratorType = decltype(begin(std::declval<T>()));
-
-    using std::end;
-    using SentinelType = decltype(end(std::declval<T>()));
-
-    return Enumerate<IteratorType, SentinelType>{ begin(iterable), end(iterable) };
+    return Enumerate<T>(std::forward<T>(iterable));
   }
 
 } // namespace gf

@@ -229,3 +229,20 @@ TEST(RangeTest, NeighborDiamondVerticalSide) {
     ASSERT_EQ(count, ((radius + 1) * (radius + 1)) - 1);
   }
 }
+
+/*
+ * Enumerate
+ */
+
+TEST(RangeTest, Enumerate) {
+  std::vector<double> vec = { 3.14, 2.2, 1.1 };
+
+  for (auto [i, value ] : gf::enumerate(vec)) {
+    EXPECT_EQ(vec[i], value);
+  }
+
+  for (auto&& [i, value ] : gf::enumerate(vec)) {
+    static_assert(std::is_lvalue_reference_v<decltype(value)>);
+    EXPECT_EQ(vec[i], value);
+  }
+}
