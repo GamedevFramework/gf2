@@ -6,15 +6,18 @@
 #include <cstdint>
 
 #include <algorithm>
+#include <map>
 #include <vector>
 
 #include <gf2/core/Rect.h>
+#include <gf2/core/Span.h>
 
+#include "GraphicsApi.h"
 #include "Vertex.h"
 
 namespace gf {
 
-  struct RawGeometry {
+  struct GF_GRAPHICS_API RawGeometry {
     std::vector<Vertex> vertices;
     std::vector<uint16_t> indices;
 
@@ -29,6 +32,14 @@ namespace gf {
     }
 
     RectF compute_bounds() const;
+  };
+
+  struct GF_GRAPHICS_API RawSplitGeometry {
+    std::map<uint32_t, RawGeometry> map;
+
+    void add_quad(uint32_t texture_index, StaticSpan<const Vertex, 4> vertices);
+
+    RawGeometry merge() const;
   };
 
 }

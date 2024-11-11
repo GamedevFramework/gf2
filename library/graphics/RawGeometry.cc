@@ -7,6 +7,10 @@
 
 namespace gf {
 
+  /*
+   * RawGeometry
+   */
+
   RectF RawGeometry::compute_bounds() const
   {
     if (vertices.empty()) {
@@ -24,6 +28,39 @@ namespace gf {
     });
 
     return RectF::from_min_max(min, max);
+  }
+
+  /*
+   * RawSplitGeometry
+   */
+
+  void RawSplitGeometry::add_quad(uint32_t texture_index, StaticSpan<const Vertex, 4> vertices)
+  {
+    auto& geometry = map[texture_index];
+    auto index = static_cast<uint16_t>(geometry.vertices.size());
+
+    geometry.vertices.insert(geometry.vertices.end(), vertices.begin(), vertices.end());
+
+    // first triangle
+    geometry.indices.push_back(index);
+    geometry.indices.push_back(index + 1);
+    geometry.indices.push_back(index + 2);
+
+    // second triangle
+    geometry.indices.push_back(index + 2);
+    geometry.indices.push_back(index + 1);
+    geometry.indices.push_back(index + 3);
+  }
+
+  RawGeometry RawSplitGeometry::merge() const
+  {
+    RawGeometry merged_geometry;
+
+    for (const auto& [texture_index, geometry] : map) {
+      merged_geometry.merge_with(geometry);
+    }
+
+    return merged_geometry;
   }
 
 }

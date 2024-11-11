@@ -23,50 +23,6 @@ namespace gf {
 
     constexpr int ChunkSize = 128;
 
-    struct SplitGeometry {
-      std::map<uint32_t, RawGeometry> geometry_map;
-
-      void add_quad(uint32_t texture_index, StaticSpan<const Vertex, 4> vertices)
-      {
-        auto& geometry = geometry_map[texture_index];
-        auto index = static_cast<uint16_t>(geometry.vertices.size());
-
-        geometry.vertices.insert(geometry.vertices.end(), vertices.begin(), vertices.end());
-
-        // first triangle
-        geometry.indices.push_back(index);
-        geometry.indices.push_back(index + 1);
-        geometry.indices.push_back(index + 2);
-
-        // second triangle
-        geometry.indices.push_back(index + 2);
-        geometry.indices.push_back(index + 1);
-        geometry.indices.push_back(index + 3);
-      }
-
-      std::vector<Vertex> merge_vertices() const
-      {
-        std::vector<Vertex> vertices;
-
-        for (const auto& [texture_index, geometry] : geometry_map) {
-          vertices.insert(vertices.end(), geometry.vertices.begin(), geometry.vertices.end());
-        }
-
-        return vertices;
-      }
-
-      std::vector<uint16_t> merge_indices() const
-      {
-        std::vector<uint16_t> indices;
-
-        for (const auto& [texture_index, geometry] : geometry_map) {
-          indices.insert(indices.end(), geometry.indices.begin(), geometry.indices.end());
-        }
-
-        return indices;
-      }
-    };
-
     AnyGrid compute_grid(const TiledMap* tiled_map)
     {
       switch (tiled_map->orientation) {
@@ -173,7 +129,7 @@ namespace gf {
         chunk_rectangle = *maybe_intersection;
         assert(!chunk_rectangle.empty());
 
-        SplitGeometry split_geometry;
+        RawSplitGeometry split_geometry;
 
         for (auto position : gf::position_range(chunk_rectangle.size())) {
           position += chunk_rectangle.position();
@@ -212,7 +168,7 @@ namespace gf {
         LayerBuffers chunk;
         std::size_t first = 0;
 
-        for (auto& [texture_index, geometry] : split_geometry.geometry_map) {
+        for (auto& [texture_index, geometry] : split_geometry.map) {
           BufferRange range = {};
           range.texture_index = texture_index;
           range.first = first;
@@ -221,10 +177,10 @@ namespace gf {
           chunk.ranges.push_back(range);
         }
 
-        auto vertices = split_geometry.merge_vertices();
-        chunk.vertices = Buffer(BufferType::Device, BufferUsage::Vertex, vertices.data(), vertices.size(), render_manager);
-        auto indices = split_geometry.merge_indices();
-        chunk.indices = Buffer(BufferType::Device, BufferUsage::Index, indices.data(), indices.size(), render_manager);
+        RawGeometry geometry = split_geometry.merge();
+
+        chunk.vertices = Buffer(BufferType::Device, BufferUsage::Vertex, geometry.vertices.data(), geometry.vertices.size(), render_manager);
+        chunk.indices = Buffer(BufferType::Device, BufferUsage::Index, geometry.indices.data(), geometry.indices.size(), render_manager);
 
         tile_layer.chunks(base) = std::move(chunk);
       }
@@ -238,7 +194,7 @@ namespace gf {
     const TiledMap* map = tiled_map();
 
     for (const auto& raw_object_layer : map->object_layers) {
-      SplitGeometry split_geometry;
+      RawSplitGeometry split_geometry;
 
       for (const auto& object : raw_object_layer.objects) {
         if (object.type != MapObjectType::Tile) {
@@ -276,7 +232,7 @@ namespace gf {
       LayerBuffers buffers;
       std::size_t first = 0;
 
-      for (auto& [texture_index, geometry] : split_geometry.geometry_map) {
+      for (auto& [texture_index, geometry] : split_geometry.map) {
         BufferRange range = {};
         range.texture_index = texture_index;
         range.first = first;
@@ -285,10 +241,10 @@ namespace gf {
         buffers.ranges.push_back(range);
       }
 
-      auto vertices = split_geometry.merge_vertices();
-      buffers.vertices = Buffer(BufferType::Device, BufferUsage::Vertex, vertices.data(), vertices.size(), render_manager);
-      auto indices = split_geometry.merge_indices();
-      buffers.indices = Buffer(BufferType::Device, BufferUsage::Index, indices.data(), indices.size(), render_manager);
+      RawGeometry geometry = split_geometry.merge();
+
+      buffers.vertices = Buffer(BufferType::Device, BufferUsage::Vertex, geometry.vertices.data(), geometry.vertices.size(), render_manager);
+      buffers.indices = Buffer(BufferType::Device, BufferUsage::Index, geometry.indices.data(), geometry.indices.size(), render_manager);
 
       m_object_layers.push_back({ std::move(buffers) });
     }
