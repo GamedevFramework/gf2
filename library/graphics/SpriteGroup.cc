@@ -5,11 +5,11 @@
 
 #include <cassert>
 
+#include <gf2/core/Mat3.h>
 #include <gf2/core/ResourceManager.h>
 
 #include <gf2/graphics/Texture.h>
 #include <gf2/graphics/RawGeometry.h>
-#include "gf2/core/Mat3.h"
 
 namespace gf {
 
@@ -90,6 +90,7 @@ namespace gf {
       split_geometry.add_quad(sprite.texture_index, vertices);
     }
 
+    m_ranges.clear();
     std::size_t first = 0;
 
     for (auto& [texture_index, geometry] : split_geometry.map) {
