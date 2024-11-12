@@ -6,6 +6,7 @@
 #include <cstdint>
 
 #include <algorithm>
+#include <iterator>
 #include <map>
 #include <vector>
 
