@@ -96,7 +96,7 @@ namespace gf {
 
           // texture
 
-          object.texture = static_cast<Texture*>(command->TextureId);
+          object.texture = reinterpret_cast<Texture*>(static_cast<uintptr_t>(command->TextureId)); // NOLINT
 
           m_objects.push_back(object);
         }

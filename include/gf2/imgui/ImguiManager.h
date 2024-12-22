@@ -18,6 +18,12 @@ namespace gf {
   class GF_IMGUI_API ImguiManager {
   public:
     ImguiManager(Window* window, RenderManager* render_manager);
+    ImguiManager(const ImguiManager&) = delete;
+    ImguiManager(ImguiManager&&) = default;
+    ~ImguiManager();
+
+    ImguiManager& operator=(const ImguiManager&) = delete;
+    ImguiManager& operator=(ImguiManager&&) = default;
 
     bool process_event(const Event& event);
     void update(Time time);

@@ -77,9 +77,16 @@ namespace gf {
     const Image font_image(size, pixels, PixelFormat::Rgba32);
     m_font_texture = Texture(font_image, render_manager);
     m_font_texture.set_debug_name("[gf2] Imgui Font Texture");
-    io.Fonts->TexID = static_cast<void*>(&m_font_texture);
+    io.Fonts->TexID = reinterpret_cast<uintptr_t>(&m_font_texture); // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
 
     io.BackendRendererUserData = static_cast<void*>(render_manager);
+  }
+
+  ImguiManager::~ImguiManager()
+  {
+    ImGuiIO& io = ImGui::GetIO();
+    io.BackendRendererUserData = nullptr;
+    io.BackendPlatformUserData = nullptr;
   }
 
   bool ImguiManager::process_event(const Event& event)
