@@ -3,7 +3,7 @@ v0.1
 include::bits/attributes.adoc[]
 :toc: right
 
-`Event` is a link:https://en.wikipedia.org/wiki/Tagged_union[tagged union] to describe system events.
+`Event` describes system events i.e. events that come from a window, a keyboard, a mouse or a gamepad.
 
 xref:graphics_events.adoc[< Back to `graphics` Events]
 
@@ -15,71 +15,23 @@ xref:graphics_events.adoc[< Back to `graphics` Events]
 struct Event;
 ----
 
-The tag for the union is in the `type` field. A `timestamp` of type `uint32_t` is also given as a common field to all events. Then, the union field to address depends on `type` and is given in the following table.
+Events are generally polled from the system in a loop and handled immediately.
 
-.Example for `gf::Event`
+.Example for `gf::Event` loop
 [source,indent=0]
 ----
 include::snippets/graphics_event.cc[tag=loop]
 ----
 
+Based on the type of the event, specific event data can be retrieved using <<get>> or, better, <<from>>.
+
+.Example for `gf::Event` specific data
+[source,indent=0]
+----
+include::snippets/graphics_event.cc[tag=specific]
+----
+
 See also: xref:EventType.adoc[`EventType`]
-
-== Data members
-
-.Data members for `gf::Event`
-[cols="1,1,2"]
-|===
-| Name | Type | Tags
-
-| `window`
-| xref:graphics_events.adoc#window_event[`WindowEvent`]
-| `gf::EventType::WindowShown`, `gf::EventType::WindowHidden`, `gf::EventType::WindowExposed`, `gf::EventType::WindowMinimized`, `gf::EventType::WindowMaximized`, `gf::EventType::WindowRestored`, `gf::EventType::WindowClosed`, `gf::EventType::MouseFocusGained`, `gf::EventType::MouseFocusLost`, `gf::EventType::KeyboardFocusGained`, `gf::EventType::KeyboardFocusLost`
-
-| `resize`
-| xref:graphics_events.adoc#resize_event[`ResizeEvent`]
-| `gf::EventType::Resized`
-
-| `key`
-| xref:graphics_events.adoc#key_event[`KeyEvent`]
-| `gf::EventType::KeyPressed`, `gf::EventType::KeyRepeated`, `gf::EventType::KeyReleased`
-
-| `text`
-| xref:graphics_events.adoc#text_event[`TextEvent`]
-| `gf::EventType::TextEntered`
-
-| `mouse_button`
-| xref:graphics_events.adoc#mouse_button_event[`MouseButtonEvent`]
-| `gf::EventType::MouseButtonPressed`, `gf::EventType::MouseButtonReleased`
-
-| `mouse_motion`
-| xref:graphics_events.adoc#mouse_motion_event[`MouseMotionEvent`]
-| `gf::EventType::MouseMoved`
-
-| `mouse_wheel`
-| xref:graphics_events.adoc#mouse_wheel_event[`MouseWheelEvent`]
-| `gf::EventType::MouseWheelScrolled`
-
-| `gamepad_axis`
-| xref:graphics_events.adoc#gamepad_axis_event[`GamepadAxisEvent`]
-| `gf::EventType::GamepadAxisMoved`
-
-| `gamepad_button`
-| xref:graphics_events.adoc#gamepad_button_event[`GamepadButtonEvent`]
-| `gf::EventType::GamepadButtonPressed`, `gf::EventType::GamepadButtonReleased`
-
-| `gamepad_connection`
-| xref:graphics_events.adoc#gamepad_connection_event[`GamepadConnectionEvent`]
-| `gf::EventType::GamepadConnected`
-
-| `gamepad_disconnection`
-| xref:graphics_events.adoc#gamepad_disconnection_event[`GamepadDisconnectionEvent`]
-| `gf::EventType::GamepadDisconnected`
-
-| `touch`
-| xref:graphics_events.adoc#touch_event[`TouchEvent`]
-| `gf::EventType::TouchBegan`, `gf::EventType::TouchMoved`, `gf::EventType::TouchEnded`
-|===
 
 == Static Member Functions
 
@@ -104,3 +56,77 @@ Event wait();
 Wait for an event and return it.
 
 This function is blocking: if there's no pending event then it will wait until an event is received. This function is typically used when you have a thread that is dedicated to events handling: you want to make this thread sleep as long as no new event is received.
+
+== Member functions
+
+=== `Event` constructors
+
+[source]
+----
+Event() = default; <1>
+template<typename T>
+constexpr Event(uint64_t timestamp, T&& data); <2>
+----
+
+<1> Default constructor. The type if the event is `gf::EventType::None`.
+<2> Constructor with a timestamp and specific event data.
+
+=== `is`
+
+[source]
+----
+template<typename T>
+constexpr bool is() const;
+----
+
+Check if the specific data type is `T`.
+
+See also: <<get>>
+
+=== `from`
+
+[source]
+----
+template<EventType E>
+constexpr auto& from();
+template<EventType E>
+constexpr const auto& from() const;
+----
+
+Get the specific event data associated with the event `E`
+
+See also: <<get>>
+
+=== `get`
+
+[source]
+----
+template<typename T>
+constexpr T& as();
+template<typename T>
+constexpr const T& as() const;
+----
+
+Get the specific event data of type `T`. Generally, if the event type is `gf::EventType::Foo`, then the associated specific data type is `FooEvent`.
+
+See also: <<is>>, <<from>>
+
+=== `timestamp`
+
+[source]
+----
+constexpr uint64_t timestamp() const;
+----
+
+Get the timestamp of the event.
+
+=== `type`
+
+[source]
+----
+constexpr EventType type() const;
+----
+
+Get the type of the event.
+
+See also: xref:EventType.adoc[`EventType`]

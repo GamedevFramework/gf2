@@ -253,48 +253,51 @@ namespace gf {
 
   class GF_GRAPHICS_API Event {
   public:
-    Event() = default;
+    constexpr Event() = default;
 
     template<typename T>
-    Event(uint64_t timestamp, T&& data)
+    constexpr Event(uint64_t timestamp, T&& data)
     : m_timestamp(timestamp)
     , m_data(std::forward<T>(data))
     {
     }
 
-    uint64_t timestamp() const;
+    constexpr uint64_t timestamp() const
+    {
+      return m_timestamp;
+    }
 
-    EventType type() const
+    constexpr EventType type() const
     {
       return static_cast<EventType>(m_data.index());
     }
 
     template<typename T>
-    bool is() const
+    constexpr bool is() const
     {
       return std::holds_alternative<T>(m_data);
     }
 
     template<typename T>
-    T& as()
+    constexpr T& as()
     {
       return std::get<T>(m_data);
     }
 
     template<typename T>
-    const T& as() const
+    constexpr const T& as() const
     {
       return std::get<T>(m_data);
     }
 
     template<EventType E>
-    auto& from()
+    constexpr auto& from()
     {
       return std::get<static_cast<std::size_t>(E)>(m_data);
     }
 
     template<EventType E>
-    const auto& from() const
+    constexpr const auto& from() const
     {
       return std::get<static_cast<std::size_t>(E)>(m_data);
     }

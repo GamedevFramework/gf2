@@ -12,7 +12,7 @@ xref:graphics_events.adoc[< Back to `graphics` Events]
 [source]
 ----
 #include <gf2/graphics/Event.h>
-enum EventType : uint32_t;
+enum EventType : uint8_t;
 ----
 
 See also: xref:Event.adoc[`Event`]
@@ -24,59 +24,35 @@ See also: xref:Event.adoc[`Event`]
 |===
 | Value | Description
 
+| `gf::EventType::None`
+| No event
+
 | `gf::EventType::Quit`
 | The application is asked to quit
 
 | `gf::EventType::WindowShown`
-| The window is shown (data in `window`)
+| The window is shown
 
 | `gf::EventType::WindowHidden`
-| The window is hidden (data in `window`)
+| The window is hidden
 
 | `gf::EventType::WindowExposed`
-| The window is exposed (data in `window`)
+| The window is exposed
 
-| `gf::EventType::WindowMinimized`
-| The window is minimized (data in `window`)
-
-| `gf::EventType::WindowMaximized`
-| The window is maximized (data in `window`)
-
-| `gf::EventType::WindowRestored`
-| The window is restored (data in `window`)
-
-| `gf::EventType::WindowClosed`
-| The window is requested to be closed (data in `window`)
+| `gf::EventType::WindowMoved`
+| The window is moved
 
 | `gf::EventType::WindowResized`
-| The window was resized (data in `resize`)
+| The window was resized
 
-| `gf::EventType::KeyPressed`
-| A key was pressed (data in `key`)
+| `gf::EventType::WindowMinimized`
+| The window is minimized
 
-| `gf::EventType::KeyRepeated`
-| A key was repeated (data in `key`)
+| `gf::EventType::WindowMaximized`
+| The window is maximized
 
-| `gf::EventType::KeyReleased`
-| A key was released (data in `key`)
-
-| `gf::EventType::KeyboardFocusGained`
-| The window gained keyboard focus
-
-| `gf::EventType::KeyboardFocusLost`
-| The window lost keyboard focus
-
-| `gf::EventType::MouseButtonPressed`
-| A mouse button was pressed (data in `mouse_button`)
-
-| `gf::EventType::MouseButtonReleased`
-| A mouse button was released (data in `mouse_button`)
-
-| `gf::EventType::MouseMoved`
-| The mouse cursor was moved (data in `mouse_cursor`)
-
-| `gf::EventType::MouseWheelScrolled`
-| The mouse wheel was scrolled (data in `mouse_wheel`)
+| `gf::EventType::WindowRestored`
+| The window is restored
 
 | `gf::EventType::MouseFocusGained`
 | The window gained mouse focus
@@ -84,30 +60,60 @@ See also: xref:Event.adoc[`Event`]
 | `gf::EventType::MouseFocusLost`
 | The window lost mouse focus
 
-| `gf::EventType::GamepadAxisMoved`
-| A gamepad axis was move (data in `gamepad_axis`)
+| `gf::EventType::KeyboardFocusGained`
+| The window gained keyboard focus
 
-| `gf::EventType::GamepadButtonPressed`
-| A gamepad button was pressed (data in `gamepad_button`)
+| `gf::EventType::KeyboardFocusLost`
+| The window lost keyboard focus
 
-| `gf::EventType::GamepadButtonReleased`
-| A gamepad button was released (data in `gamepad_button`)
+| `gf::EventType::WindowCloseRequested`
+| The window is requested to be closed
 
-| `gf::EventType::GamepadConnected`
-| A gamepad was connected (data in `gamepad_connection`)
+| `gf::EventType::KeyPressed`
+| A key was pressed
 
-| `gf::EventType::GamepadDisconnected`
-| A gamepad was disconnected (data in `gamepad_disconnection`)
+| `gf::EventType::KeyRepeated`
+| A key was repeated
+
+| `gf::EventType::KeyReleased`
+| A key was released
 
 | `gf::EventType::TextEntered`
-| A text was entered (data in `text`)
+| A text was entered
 
-| `gf::EventType::TouchBegan`
-| A touch began (data in `touch`)
+| `gf::EventType::MouseMoved`
+| The mouse cursor was moved
+
+| `gf::EventType::MouseButtonPressed`
+| A mouse button was pressed
+
+| `gf::EventType::MouseButtonReleased`
+| A mouse button was released
+
+| `gf::EventType::MouseWheelScrolled`
+| The mouse wheel was scrolled
+
+| `gf::EventType::GamepadAxisMoved`
+| A gamepad axis was move
+
+| `gf::EventType::GamepadButtonPressed`
+| A gamepad button was pressed
+
+| `gf::EventType::GamepadButtonReleased`
+| A gamepad button was released
+
+| `gf::EventType::GamepadConnected`
+| A gamepad was connected
+
+| `gf::EventType::GamepadDisconnected`
+| A gamepad was disconnected
+
+| `gf::EventType::TouchPressed`
+| A touch device was pressed
+
+| `gf::EventType::TouchReleased`
+| A touch device was released
 
 | `gf::EventType::TouchMoved`
-| A touch moved (data in `touch`)
-
-| `gf::EventType::TouchEnded`
-| A touch ended (data in `touch`)
+| A touch device was moved
 |===

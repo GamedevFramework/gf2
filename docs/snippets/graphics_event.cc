@@ -16,4 +16,25 @@ void doc_Event() {
   }
   // end::loop[]
 
+  // tag::specific[]
+  while (auto event = gf::Event::poll()) {
+    switch (event->type()) {
+      case gf::EventType::Quit:
+        // close the window
+        break;
+
+      case gf::EventType::KeyPressed:
+        {
+          const auto& key_pressed_event = event->from<gf::EventType::KeyPressed>();
+          // do something with key_pressed_event
+        }
+        break;
+
+      default:
+        // do nothing
+        break;
+    }
+  }
+  // end::specific[]
+
 }
