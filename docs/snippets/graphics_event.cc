@@ -4,7 +4,7 @@ void doc_Event() {
 
   // tag::loop[]
   while (auto event = gf::Event::poll()) {
-    switch (event->type) {
+    switch (event->type()) {
       case gf::EventType::Quit:
         // close the window
         break;

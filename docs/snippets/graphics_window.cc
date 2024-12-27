@@ -9,7 +9,7 @@ void doc_Window() {
   while (!window.should_close()) {
 
     while (auto event = gf::Event::poll()) {
-      switch (event->type) {
+      switch (event->type()) {
         case gf::EventType::Quit:
           window.close(); // don't forget this!
           break;
