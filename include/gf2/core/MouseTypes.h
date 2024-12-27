@@ -24,6 +24,11 @@ namespace gf {
 
   constexpr MouseId TouchMouseId = static_cast<MouseId>(0xFFFFFFFF);
 
+  enum class MouseWheelDirection : uint32_t { // NOLINT(performance-enum-size)
+    Normal,
+    Flipped,
+  };
+
 } // namespace gf
 
 #endif // GF_MOUSE_TYPES_H

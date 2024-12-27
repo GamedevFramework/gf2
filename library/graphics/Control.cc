@@ -59,16 +59,21 @@ namespace gf {
 
   void Control::process_keycode_control(const Event& event, const KeycodeControlSettings& settings)
   {
-    auto event_modifiers = event.key.modifiers & ~SpecialModifiers;
 
-    if (event.type == EventType::KeyPressed) {
-      if (event.key.keycode == settings.keycode && event_modifiers == settings.modifiers) {
+    if (event.type() == EventType::KeyPressed) {
+      const auto& key_pressed_event = event.from<EventType::KeyPressed>();
+      auto event_modifiers = key_pressed_event.modifiers & ~SpecialModifiers;
+
+      if (key_pressed_event.keycode == settings.keycode && event_modifiers == settings.modifiers) {
         trigger();
       }
     }
 
-    if (event.type == EventType::KeyReleased) {
-      if (event.key.keycode == settings.keycode && event_modifiers == settings.modifiers) {
+    if (event.type() == EventType::KeyReleased) {
+      const auto& key_released_event = event.from<EventType::KeyReleased>();
+      auto event_modifiers = key_released_event.modifiers & ~SpecialModifiers;
+
+      if (key_released_event.keycode == settings.keycode && event_modifiers == settings.modifiers) {
         reset();
       }
     }
@@ -76,16 +81,20 @@ namespace gf {
 
   void Control::process_scancode_control(const Event& event, const ScancodeControlSettings& settings)
   {
-    auto event_modifiers = event.key.modifiers & ~SpecialModifiers;
+    if (event.type() == EventType::KeyPressed) {
+      const auto& key_pressed_event = event.from<EventType::KeyPressed>();
+      auto event_modifiers = key_pressed_event.modifiers & ~SpecialModifiers;
 
-    if (event.type == EventType::KeyPressed) {
-      if (event.key.scancode == settings.scancode && event_modifiers == settings.modifiers) {
+      if (key_pressed_event.scancode == settings.scancode && event_modifiers == settings.modifiers) {
         trigger();
       }
     }
 
-    if (event.type == EventType::KeyReleased) {
-      if (event.key.scancode == settings.scancode && event_modifiers == settings.modifiers) {
+    if (event.type() == EventType::KeyReleased) {
+      const auto& key_released_event = event.from<EventType::KeyReleased>();
+      auto event_modifiers = key_released_event.modifiers & ~SpecialModifiers;
+
+      if (key_released_event.scancode == settings.scancode && event_modifiers == settings.modifiers) {
         reset();
       }
     }
@@ -93,14 +102,18 @@ namespace gf {
 
   void Control::process_mouse_button_control(const Event& event, const MouseButtonControlSettings& settings)
   {
-    if (event.type == EventType::MouseButtonPressed) {
-      if (settings.button == AnyMouseButton || event.mouse_button.button == settings.button) {
+    if (event.type() == EventType::MouseButtonPressed) {
+      const auto& mouse_button_pressed_event = event.from<EventType::MouseButtonPressed>();
+
+      if (settings.button == AnyMouseButton || mouse_button_pressed_event.button == settings.button) {
         trigger();
       }
     }
 
-    if (event.type == EventType::MouseButtonReleased) {
-      if (settings.button == AnyMouseButton || event.mouse_button.button == settings.button) {
+    if (event.type() == EventType::MouseButtonReleased) {
+      const auto& mouse_button_released_event = event.from<EventType::MouseButtonReleased>();
+
+      if (settings.button == AnyMouseButton || mouse_button_released_event.button == settings.button) {
         reset();
       }
     }
@@ -108,14 +121,18 @@ namespace gf {
 
   void Control::process_gamepad_button_control(const Event& event, const GamepadButtonControlSettings& settings)
   {
-    if (event.type == EventType::GamepadButtonPressed) {
-      if ((settings.gamepad_id == AnyGamepad || event.gamepad_button.gamepad_id == settings.gamepad_id) && event.gamepad_button.button == settings.button) {
+    if (event.type() == EventType::GamepadButtonPressed) {
+      const auto& gamepad_button_pressed_event = event.from<EventType::GamepadButtonPressed>();
+
+      if ((settings.gamepad_id == AnyGamepad || gamepad_button_pressed_event.gamepad_id == settings.gamepad_id) && gamepad_button_pressed_event.button == settings.button) {
         trigger();
       }
     }
 
-    if (event.type == EventType::GamepadButtonReleased) {
-      if ((settings.gamepad_id == AnyGamepad || event.gamepad_button.gamepad_id == settings.gamepad_id) && event.gamepad_button.button == settings.button) {
+    if (event.type() == EventType::GamepadButtonReleased) {
+      const auto& gamepad_button_released_event = event.from<EventType::GamepadButtonReleased>();
+
+      if ((settings.gamepad_id == AnyGamepad || gamepad_button_released_event.gamepad_id == settings.gamepad_id) && gamepad_button_released_event.button == settings.button) {
         reset();
       }
     }
@@ -125,14 +142,16 @@ namespace gf {
 
   void Control::process_gamepad_axis_control(const Event& event, const GamepadAxisControlSettings& settings)
   {
-    if (event.type != EventType::GamepadAxisMoved) {
+    if (event.type() != EventType::GamepadAxisMoved) {
       return;
     }
 
-    if ((settings.gamepad_id == AnyGamepad || event.gamepad_axis.gamepad_id == settings.gamepad_id) && event.gamepad_axis.axis == settings.axis) {
+    const auto& gamepad_axis_moved_event = event.from<EventType::GamepadAxisMoved>();
+
+    if ((settings.gamepad_id == AnyGamepad || gamepad_axis_moved_event.gamepad_id == settings.gamepad_id) && gamepad_axis_moved_event.axis == settings.axis) {
       switch (settings.direction) {
         case gf::GamepadAxisDirection::Positive:
-          if (event.gamepad_axis.value > GamepadAxisThreshold) {
+          if (gamepad_axis_moved_event.value > GamepadAxisThreshold) {
             if (!m_repeated) {
               trigger();
             }
@@ -145,7 +164,7 @@ namespace gf {
 
           break;
         case gf::GamepadAxisDirection::Negative:
-          if (event.gamepad_axis.value < -GamepadAxisThreshold) {
+          if (gamepad_axis_moved_event.value < -GamepadAxisThreshold) {
             if (!m_repeated) {
               trigger();
             }

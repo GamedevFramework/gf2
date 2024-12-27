@@ -66,8 +66,8 @@ namespace home {
 
   void WorldScene::do_process_event(const gf::Event& event)
   {
-    if (event.type == gf::EventType::MouseButtonPressed) {
-      auto target = position_to_world_location(event.mouse_button.position);
+    if (event.type() == gf::EventType::MouseButtonPressed) {
+      auto target = position_to_world_location(event.from<gf::EventType::MouseButtonPressed>().position);
       gf::Log::debug("target: {}, {}", target.x, target.y);
       m_hero_entity.set_target(target);
     }

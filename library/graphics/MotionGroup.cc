@@ -87,49 +87,61 @@ namespace gf {
 
   void MotionGroup::process_event(const Event& event)
   {
-    switch (event.type) {
+    switch (event.type()) {
       case EventType::MouseMoved:
-        m_last_mouse_position = event.mouse_motion.position;
-        m_last_mouse_motion = event.mouse_motion.motion;
+        {
+          const auto& mouse_moved_event = event.from<EventType::MouseMoved>();
+          m_last_mouse_position = mouse_moved_event.position;
+          m_last_mouse_motion = mouse_moved_event.motion;
+        }
         break;
       case EventType::MouseButtonPressed:
         {
-          auto index = static_cast<std::size_t>(event.mouse_button.button);
+          const auto& mouse_button_pressed = event.from<EventType::MouseButtonPressed>();
+          auto index = static_cast<std::size_t>(mouse_button_pressed.button);
           assert(index < m_last_mouse_button_pressed_position.size());
-          m_last_mouse_button_pressed_position[index] = event.mouse_button.position; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+          m_last_mouse_button_pressed_position[index] = mouse_button_pressed.position; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
         }
         break;
       case EventType::MouseButtonReleased:
         {
-          auto index = static_cast<std::size_t>(event.mouse_button.button);
+          const auto& mouse_button_released = event.from<EventType::MouseButtonReleased>();
+          auto index = static_cast<std::size_t>(mouse_button_released.button);
           assert(index < m_last_mouse_button_released_position.size());
-          m_last_mouse_button_released_position[index] = event.mouse_button.position; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+          m_last_mouse_button_released_position[index] = mouse_button_released.position; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
         }
         break;
       case EventType::MouseWheelScrolled:
-        m_last_mouse_wheel_offset = event.mouse_wheel.offset;
+        m_last_mouse_wheel_offset = event.from<EventType::MouseWheelScrolled>().offset;
         break;
       case EventType::GamepadAxisMoved:
-        switch (event.gamepad_axis.axis) {
-          case gf::GamepadAxis::LeftX:
-            m_last_gamepad_stick_location[0].x = normalize_stick_axis_value(event.gamepad_axis.value);
-            break;
-          case gf::GamepadAxis::LeftY:
-            m_last_gamepad_stick_location[0].y = normalize_stick_axis_value(event.gamepad_axis.value);
-            break;
-          case gf::GamepadAxis::RightX:
-            m_last_gamepad_stick_location[1].x = normalize_stick_axis_value(event.gamepad_axis.value);
-            break;
-          case gf::GamepadAxis::RightY:
-            m_last_gamepad_stick_location[1].y = normalize_stick_axis_value(event.gamepad_axis.value);
-            break;
-          default:
-            break;
+        {
+          const auto& gamepad_axis_moved_event = event.from<EventType::GamepadAxisMoved>();
+
+          switch (gamepad_axis_moved_event.axis) {
+            case gf::GamepadAxis::LeftX:
+              m_last_gamepad_stick_location[0].x = normalize_stick_axis_value(gamepad_axis_moved_event.value);
+              break;
+            case gf::GamepadAxis::LeftY:
+              m_last_gamepad_stick_location[0].y = normalize_stick_axis_value(gamepad_axis_moved_event.value);
+              break;
+            case gf::GamepadAxis::RightX:
+              m_last_gamepad_stick_location[1].x = normalize_stick_axis_value(gamepad_axis_moved_event.value);
+              break;
+            case gf::GamepadAxis::RightY:
+              m_last_gamepad_stick_location[1].y = normalize_stick_axis_value(gamepad_axis_moved_event.value);
+              break;
+            default:
+              break;
+          }
         }
         break;
       case EventType::TouchMoved:
-        m_last_touch_location = event.touch.location;
-        m_last_touch_motion = event.touch.motion;
+        {
+          const auto& touch_moved_event = event.from<EventType::TouchMoved>();
+          m_last_touch_location = touch_moved_event.location;
+          m_last_touch_motion = touch_moved_event.motion;
+        }
         break;
       default:
         break;

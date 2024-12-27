@@ -93,55 +93,72 @@ namespace gf {
   {
     ImGuiIO& io = ImGui::GetIO();
 
-    switch (event.type) {
+    switch (event.type()) {
       case EventType::KeyPressed:
-        update_keyboard_key(event.key.keycode, event.key.modifiers, true);
-        return io.WantCaptureKeyboard;
+        {
+          const auto& key_pressed_event = event.from<EventType::KeyPressed>();
+          update_keyboard_key(key_pressed_event.keycode, key_pressed_event.modifiers, true);
+          return io.WantCaptureKeyboard;
+        }
 
       case EventType::KeyReleased:
-        update_keyboard_key(event.key.keycode, event.key.modifiers, false);
-        return io.WantCaptureKeyboard;
+        {
+          const auto& key_released_event = event.from<EventType::KeyReleased>();
+          update_keyboard_key(key_released_event.keycode, key_released_event.modifiers, false);
+          return io.WantCaptureKeyboard;
+        }
 
-      case gf::EventType::MouseButtonPressed:
-        io.AddMouseSourceEvent(event.mouse_button.mouse_id == TouchMouseId ? ImGuiMouseSource_TouchScreen : ImGuiMouseSource_Mouse);
-        update_mouse_button(event.mouse_button.button, true);
-        return io.WantCaptureMouse;
+      case EventType::MouseButtonPressed:
+        {
+          const auto& mouse_button_pressed_event = event.from<EventType::MouseButtonPressed>();
+          io.AddMouseSourceEvent(mouse_button_pressed_event.mouse_id == TouchMouseId ? ImGuiMouseSource_TouchScreen : ImGuiMouseSource_Mouse);
+          update_mouse_button(mouse_button_pressed_event.button, true);
+          return io.WantCaptureMouse;
+        }
 
-      case gf::EventType::MouseButtonReleased:
-        io.AddMouseSourceEvent(event.mouse_button.mouse_id == TouchMouseId ? ImGuiMouseSource_TouchScreen : ImGuiMouseSource_Mouse);
-        update_mouse_button(event.mouse_button.button, false);
-        return io.WantCaptureMouse;
+      case EventType::MouseButtonReleased:
+        {
+          const auto& mouse_button_pressed_event = event.from<EventType::MouseButtonReleased>();
+          io.AddMouseSourceEvent(mouse_button_pressed_event.mouse_id == TouchMouseId ? ImGuiMouseSource_TouchScreen : ImGuiMouseSource_Mouse);
+          update_mouse_button(mouse_button_pressed_event.button, false);
+          return io.WantCaptureMouse;
+        }
 
       case EventType::MouseMoved:
         {
-          const Vec2F coordinates = event.mouse_motion.position;
-          io.AddMouseSourceEvent(event.mouse_motion.mouse_id == TouchMouseId ? ImGuiMouseSource_TouchScreen : ImGuiMouseSource_Mouse);
+          const auto& mouse_moved_event = event.from<EventType::MouseMoved>();
+          const Vec2F coordinates = mouse_moved_event.position;
+          io.AddMouseSourceEvent(mouse_moved_event.mouse_id == TouchMouseId ? ImGuiMouseSource_TouchScreen : ImGuiMouseSource_Mouse);
           io.AddMousePosEvent(coordinates.x, coordinates.y);
           return io.WantCaptureMouse;
         }
 
       case EventType::MouseWheelScrolled:
         {
-          const Vec2F offset = event.mouse_wheel.offset;
-          io.AddMouseSourceEvent(event.mouse_wheel.mouse_id == TouchMouseId ? ImGuiMouseSource_TouchScreen : ImGuiMouseSource_Mouse);
-          io.AddMouseWheelEvent(-offset.x, offset.y);
+          const auto& mouse_wheel_scrolled_event = event.from<EventType::MouseWheelScrolled>();
+          const Vec2F offset = mouse_wheel_scrolled_event.offset;
+          io.AddMouseSourceEvent(mouse_wheel_scrolled_event.mouse_id == TouchMouseId ? ImGuiMouseSource_TouchScreen : ImGuiMouseSource_Mouse);
+          io.AddMouseWheelEvent(offset.x, offset.y);
           return io.WantCaptureMouse;
         }
 
       case EventType::GamepadButtonPressed:
-        udpate_gamepad_button(event.gamepad_button.button, true, 1.0f);
+        udpate_gamepad_button(event.from<EventType::GamepadButtonPressed>().button, true, 1.0f);
         return true;
 
       case EventType::GamepadButtonReleased:
-        udpate_gamepad_button(event.gamepad_button.button, false, 1.0f);
+        udpate_gamepad_button(event.from<EventType::GamepadButtonReleased>().button, false, 1.0f);
         return true;
 
       case EventType::GamepadAxisMoved:
-        update_gamepad_axis(event.gamepad_axis.axis, event.gamepad_axis.value);
-        return true;
+        {
+          const auto& gamepad_axis_moved_event = event.from<EventType::GamepadAxisMoved>();
+          update_gamepad_axis(gamepad_axis_moved_event.axis, gamepad_axis_moved_event.value);
+          return true;
+        }
 
       case EventType::TextEntered:
-        io.AddInputCharactersUTF8(event.text.text.data());
+        io.AddInputCharactersUTF8(event.from<EventType::TextEntered>().text.data());
         return io.WantCaptureKeyboard;
 
       default:

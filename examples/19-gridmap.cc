@@ -204,10 +204,11 @@ namespace {
   private:
     void do_process_event(const gf::Event& event) override
     {
-      switch (event.type) {
+      switch (event.type()) {
         case gf::EventType::MouseMoved:
           {
-            auto mouse_position = event.mouse_motion.position;
+            const auto& mouse_motion_event = event.from<gf::EventType::MouseMoved>();
+            auto mouse_position = mouse_motion_event.position;
             auto mouse_location = position_to_world_location(mouse_position);
             gf::Vec2I position = m_grid_entity.grid().compute_position(mouse_location);
 

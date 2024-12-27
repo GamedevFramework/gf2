@@ -271,7 +271,7 @@ namespace gf {
       // update
 
       while (auto event = gf::Event::poll()) {
-        switch (event->type) {
+        switch (event->type()) {
           case gf::EventType::Quit:
             window()->close();
             break;
@@ -364,7 +364,7 @@ namespace gf {
         // update
 
         while (auto event = gf::Event::poll()) {
-          switch (event->type) {
+          switch (event->type()) {
             case gf::EventType::Quit:
               window()->close();
               break;

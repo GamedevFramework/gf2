@@ -22,15 +22,19 @@ namespace gf {
     static constexpr float ZoomInFactor = 0.8f;
     static constexpr float ZoomOutFactor = 1.25f;
 
-    switch (event.type) {
+    switch (event.type()) {
       case EventType::MouseMoved:
-        if (m_state == State::Moving) {
-          auto old_position = m_camera->position_to_location(m_mouse_position, m_surface_size);
-          auto new_position = m_camera->position_to_location(event.mouse_motion.position, m_surface_size);
-          m_camera->move(old_position - new_position);
-        }
+        {
+          const auto& mouse_moved_event = event.from<EventType::MouseMoved>();
 
-        m_mouse_position = event.mouse_motion.position;
+          if (m_state == State::Moving) {
+            auto old_position = m_camera->position_to_location(m_mouse_position, m_surface_size);
+            auto new_position = m_camera->position_to_location(mouse_moved_event.position, m_surface_size);
+            m_camera->move(old_position - new_position);
+          }
+
+          m_mouse_position = mouse_moved_event.position;
+        }
         break;
 
       case EventType::MouseButtonPressed:
@@ -42,7 +46,7 @@ namespace gf {
         break;
 
       case EventType::MouseWheelScrolled:
-        if (event.mouse_wheel.offset.y > 0) {
+        if (event.from<EventType::MouseWheelScrolled>().offset.y > 0) {
           m_camera->zoom(ZoomInFactor, m_camera->position_to_location(m_mouse_position, m_surface_size));
         } else {
           m_camera->zoom(ZoomOutFactor, m_camera->position_to_location(m_mouse_position, m_surface_size));

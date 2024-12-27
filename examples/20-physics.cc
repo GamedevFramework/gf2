@@ -23,7 +23,7 @@ namespace {
 
   int pixel(int x, int y)
   {
-    return (ImageBitmap[(x >> 3) + y * ImageRowLength] >> (~x & 0x07)) & 1; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    return (ImageBitmap[(x >> 3) + (y * ImageRowLength)] >> (~x & 0x07)) & 1; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
   }
 
   class PhysicsEntity : public gf::Entity {
@@ -116,8 +116,8 @@ namespace {
 
     void do_process_event(const gf::Event& event) override
     {
-      if (event.type == gf::EventType::KeyPressed) {
-        if (event.key.scancode == gf::Scancode::Space) {
+      if (event.type() == gf::EventType::KeyPressed) {
+        if (event.from<gf::EventType::KeyPressed>().scancode == gf::Scancode::Space) {
           m_entity.reset_world(m_random);
         }
       }
