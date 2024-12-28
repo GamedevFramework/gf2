@@ -30,7 +30,7 @@ namespace gf {
     void add_gamepad_axis_control(GamepadId gamepad_id, GamepadAxis axis, GamepadAxisDirection direction);
 
     void add_control(const Control& control);
-    void add_control(const ControlSettings& settings);
+    void add_control_settings(const ControlSettings& settings);
 
     const Control* begin() const
     {

@@ -5,6 +5,8 @@
 
 #include <cstdint>
 
+#include <variant>
+
 #include "CoreApi.h"
 #include "GamepadTypes.h"
 #include "Keycode.h"
@@ -71,6 +73,7 @@ namespace gf {
   }
 
   enum class ControlType : uint8_t {
+    None,
     Keycode,
     Scancode,
     MouseButton,
@@ -78,69 +81,86 @@ namespace gf {
     GamepadAxis,
   };
 
-  struct GF_CORE_API ControlSettings {
+  class GF_CORE_API ControlSettings {
+  public:
     ControlSettings() = default;
 
     constexpr ControlSettings(Keycode keycode, Flags<Modifier> modifiers = None)
-    : type(ControlType::Keycode)
-    , keycode({ keycode, modifiers })
+    : m_data(KeycodeControlSettings{ keycode, modifiers })
     {
     }
 
     constexpr ControlSettings(Scancode scancode, Flags<Modifier> modifiers = None)
-    : type(ControlType::Scancode)
-    , scancode({ scancode, modifiers })
+    : m_data(ScancodeControlSettings{ scancode, modifiers })
     {
     }
 
     constexpr ControlSettings(MouseButton button)
-    : type(ControlType::MouseButton)
-    , mouse_button({ button })
+    : m_data(MouseButtonControlSettings{ button })
     {
     }
 
     constexpr ControlSettings(GamepadId gamepad_id, GamepadButton button)
-    : type(ControlType::GamepadButton)
-    , gamepad_button({ gamepad_id, button })
+    : m_data(GamepadButtonControlSettings{ gamepad_id, button })
     {
     }
 
     constexpr ControlSettings(GamepadId gamepad_id, GamepadAxis axis, GamepadAxisDirection direction)
-    : type(ControlType::GamepadAxis)
-    , gamepad_axis({ gamepad_id, axis, direction })
+    : m_data(GamepadAxisControlSettings{ gamepad_id, axis, direction })
     {
     }
 
-    ControlType type;
-    union {
-      KeycodeControlSettings keycode;
-      ScancodeControlSettings scancode;
-      MouseButtonControlSettings mouse_button;
-      GamepadButtonControlSettings gamepad_button;
-      GamepadAxisControlSettings gamepad_axis;
-    };
+    constexpr ControlType type() const
+    {
+      return static_cast<ControlType>(m_data.index());
+    }
+
+    template<typename T>
+    constexpr T& as()
+    {
+      return std::get<T>(m_data);
+    }
+
+    template<typename T>
+    constexpr const T& as() const
+    {
+      return std::get<T>(m_data);
+    }
+
+  private:
+    std::variant<
+      std::monostate,
+      KeycodeControlSettings,
+      ScancodeControlSettings,
+      MouseButtonControlSettings,
+      GamepadButtonControlSettings,
+      GamepadAxisControlSettings
+    > m_data;
   };
 
   template<typename Archive>
   inline Archive& operator|(Archive& ar, MaybeConst<ControlSettings, Archive>& settings)
   {
-    ar | settings.type;
+    ControlType type = settings.type();
+    ar | type;
 
-    switch (settings.type) {
+    switch (type) {
+      case ControlType::None:
+        break;
       case ControlType::Keycode:
-        ar | settings.keycode;
+        ar | settings.template as<KeycodeControlSettings>();
         break;
       case ControlType::Scancode:
-        ar | settings.scancode;
+        ar | settings.template as<ScancodeControlSettings>();
         break;
       case ControlType::MouseButton:
-        ar | settings.mouse_button;
+        ar | settings.template as<MouseButtonControlSettings>();
         break;
       case ControlType::GamepadButton:
-        ar | settings.gamepad_button;
+        ar | settings.template as<GamepadButtonControlSettings>();
         break;
       case ControlType::GamepadAxis:
-        ar | settings.gamepad_axis;
+        ar | settings.template as<GamepadAxisControlSettings>();
         break;
     }
 

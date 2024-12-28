@@ -38,28 +38,29 @@ namespace gf {
 
   void Control::process_event(const Event& event)
   {
-    switch (m_settings.type) {
+    switch (m_settings.type()) {
+      case gf::ControlType::None:
+        break;
       case gf::ControlType::Keycode:
-        process_keycode_control(event, m_settings.keycode);
+        process_keycode_control(event, m_settings.as<KeycodeControlSettings>());
         break;
       case gf::ControlType::Scancode:
-        process_scancode_control(event, m_settings.scancode);
+        process_scancode_control(event, m_settings.as<ScancodeControlSettings>());
         break;
       case gf::ControlType::MouseButton:
-        process_mouse_button_control(event, m_settings.mouse_button);
+        process_mouse_button_control(event, m_settings.as<MouseButtonControlSettings>());
         break;
       case gf::ControlType::GamepadButton:
-        process_gamepad_button_control(event, m_settings.gamepad_button);
+        process_gamepad_button_control(event, m_settings.as<GamepadButtonControlSettings>());
         break;
       case gf::ControlType::GamepadAxis:
-        process_gamepad_axis_control(event, m_settings.gamepad_axis);
+        process_gamepad_axis_control(event, m_settings.as<GamepadAxisControlSettings>());
         break;
     }
   }
 
   void Control::process_keycode_control(const Event& event, const KeycodeControlSettings& settings)
   {
-
     if (event.type() == EventType::KeyPressed) {
       const auto& key_pressed_event = event.from<EventType::KeyPressed>();
       auto event_modifiers = key_pressed_event.modifiers & ~SpecialModifiers;

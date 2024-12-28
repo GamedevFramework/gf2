@@ -32,7 +32,7 @@ namespace gf {
     void process_gamepad_button_control(const Event& event, const GamepadButtonControlSettings& settings);
     void process_gamepad_axis_control(const Event& event, const GamepadAxisControlSettings& settings);
 
-    ControlSettings m_settings = {};
+    ControlSettings m_settings;
     bool m_active = false;
     bool m_repeated = false;
   };
