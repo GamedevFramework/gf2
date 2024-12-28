@@ -31,30 +31,30 @@ struct Event;
 [source]
 ----
 #include <gf2/graphics/Event.h>
-enum EventType : uint32_t;
+enum EventType : uint8_t;
 ----
 
 `EventType` describes all system events that can occur. xref:EventType.adoc[*Read more...*]
 
 [#gamepad_axis_event]
-=== `gf::GamepadAxisEvent`
+=== `gf::GamepadAxisMovedEvent`
 
 [source]
 ----
 #include <gf2/graphics/Event.h>
-struct GamepadAxisEvent;
+struct GamepadAxisMovedEvent;
 ----
 
-`GamepadAxisEvent` is associated with `gf::EventType::GamepadAxisMoved` event type and can be accessed with `gamepad_axis` in `Event`.
+`GamepadAxisMovedEvent` is associated with `gf::EventType::GamepadAxisMoved` event type.
 
-.Data members for `gf::GamepadAxisEvent`
+.Data members for `gf::GamepadAxisMovedEvent`
 [cols="1,1,2"]
 |===
 | Name | Type | Description
 
-| `window_id`
-| `uint32_t`
-| Id of the window where the event occurred
+| `gamepad_id`
+| `GamepadId`
+| Id of the gamepad
 
 | `axis`
 | xref:GamepadAxis.adoc[`GamepadAxis`]
@@ -65,47 +65,68 @@ struct GamepadAxisEvent;
 | Value of the axis
 |===
 
-[#gamepad_button_event]
-=== `gf::GamepadButtonEvent`
+[#gamepad_button_pressed_event]
+=== `gf::GamepadButtonPressedEvent`
 
 [source]
 ----
 #include <gf2/graphics/Event.h>
-struct GamepadButtonEvent;
+struct GamepadButtonPressedEvent;
 ----
 
-`GamepadButtonEvent` is associated with `gf::EventType::GamepadButtonPressed` or `gf::EventType::GamepadButtonReleased` event types and can be accessed with `gamepad_button` in `Event`.
+`GamepadButtonPressedEvent` is associated with `gf::EventType::GamepadButtonPressed` event type.
 
-.Data members for `gf::GamepadButtonEvent`
+.Data members for `gf::GamepadButtonPressedEvent`
 [cols="1,1,2"]
 |===
 | Name | Type | Description
 
-| `window_id`
-| `uint32_t`
-| Id of the window where the event occurred
+| `gamepad_id`
+| `GamepadId`
+| Id of the gamepad
 
 | `button`
 | xref:GamepadButton.adoc[`GamepadButton`]
 | Button of the gamepad
-
-| `pressed`
-| `bool`
-| Status of the gamepad button
 |===
 
-[#gamepad_connection_event]
-=== `gf::GamepadConnectionEvent`
+[#gamepad_button_released_event]
+=== `gf::GamepadButtonReleasedEvent`
 
 [source]
 ----
 #include <gf2/graphics/Event.h>
-struct GamepadConnectionEvent;
+struct GamepadButtonReleasedEvent;
 ----
 
-`GamepadConnectionEvent` is associated with `gf::EventType::GamepadConnected` event type and can be accessed with `gamepad_connection` in `Event`.
+`GamepadButtonReleasedEvent` is associated with `gf::EventType::GamepadButtonReleased` event type.
 
-.Data members for `gf::GamepadConnectionEvent`
+.Data members for `gf::GamepadButtonReleasedEvent`
+[cols="1,1,2"]
+|===
+| Name | Type | Description
+
+| `gamepad_id`
+| `GamepadId`
+| Id of the gamepad
+
+| `button`
+| xref:GamepadButton.adoc[`GamepadButton`]
+| Button of the gamepad
+|===
+
+[#gamepad_connected_event]
+=== `gf::GamepadConnectedEvent`
+
+[source]
+----
+#include <gf2/graphics/Event.h>
+struct GamepadConnectedEvent;
+----
+
+`GamepadConnectedEvent` is associated with `gf::EventType::GamepadConnected` event type.
+
+.Data members for `gf::GamepadConnectedEvent`
 [cols="1,1,2"]
 |===
 | Name | Type | Description
@@ -115,18 +136,18 @@ struct GamepadConnectionEvent;
 | Hardware id of the gamepad
 |===
 
-[#gamepad_disconnection_event]
-=== `gf::GamepadDisconnectionEvent`
+[#gamepad_disconnected_event]
+=== `gf::GamepadDisconnectedEvent`
 
 [source]
 ----
 #include <gf2/graphics/Event.h>
-struct GamepadDisconnectionEvent;
+struct GamepadDisconnectedEvent;
 ----
 
-`GamepadDisconnectionEvent` is associated with `gf::EventType::GamepadDisconnected` event type and can be accessed with `gamepad_disconnection` in `Event`.
+`GamepadDisconnectedEvent` is associated with `gf::EventType::GamepadDisconnected` event type.
 
-.Data members for `gf::GamepadDisconnectionEvent`
+.Data members for `gf::GamepadDisconnectedEvent`
 [cols="1,1,2"]
 |===
 | Name | Type | Description
@@ -136,18 +157,51 @@ struct GamepadDisconnectionEvent;
 | Id of the gamepad
 |===
 
-[#key_event]
-=== `gf::KeyEvent`
+[#key_pressed_event]
+=== `gf::KeyPressedEvent`
 
 [source]
 ----
 #include <gf2/graphics/Event.h>
-struct KeyEvent;
+struct KeyPressedEvent;
 ----
 
-`KeyEvent` is associated with `gf::EventType::KeyPressed`, `gf::EventType::KeyRepeated` or `gf::EventType::KeyReleased` event types and can be accessed with `key` in `Event`.
+`KeyPressedEvent` is associated with `gf::EventType::KeyPressed` event type.
 
-.Data members for `gf::KeyEvent`
+.Data members for `gf::KeyPressedEvent`
+[cols="1,1,2"]
+|===
+| Name | Type | Description
+
+| `window_id`
+| `uint32_t`
+| Id of the window where the event occurred
+
+| `keycode`
+| xref:Keycode.adoc[`Keycode`]
+| Keycode of the key
+
+| `scancode`
+| xref:Scancode.adoc[`Scancode`]
+| Scancode of the key
+
+| `modifiers`
+| `Flags<Modifier>`
+| Modifiers of the key (see xref:Modifier.adoc[`Modifier`])
+|===
+
+[#key_repeated_event]
+=== `gf::KeyRepeatedEvent`
+
+[source]
+----
+#include <gf2/graphics/Event.h>
+struct KeyRepeatedEvent;
+----
+
+`KeyRepeatedEvent` is associated with `gf::EventType::KeyRepeated` event type.
+
+.Data members for `gf::KeyRepeatedEvent`
 [cols="1,1,2"]
 |===
 | Name | Type | Description
@@ -171,24 +225,100 @@ struct KeyEvent;
 | `repeat`
 | `uint8_t`
 | Number of repeat for this key
-
-| `pressed`
-| `bool`
-| Status of the key
 |===
 
-[#mouse_button_event]
-=== `gf::MouseButtonEvent`
+[#key_released_event]
+=== `gf::KeyReleasedEvent`
 
 [source]
 ----
 #include <gf2/graphics/Event.h>
-struct MouseButtonEvent;
+struct KeyReleasedEvent;
 ----
 
-`MouseButtonEvent` is associated with `gf::EventType::MouseButtonPressed` or `gf::EventType::MouseButtonReleased` event types and can be accessed with `mouse_button` in `Event`.
+`KeyReleasedEvent` is associated with `gf::EventType::KeyReleased` event type.
 
-.Data members for `gf::MouseButtonEvent`
+.Data members for `gf::KeyReleasedEvent`
+[cols="1,1,2"]
+|===
+| Name | Type | Description
+
+| `window_id`
+| `uint32_t`
+| Id of the window where the event occurred
+
+| `keycode`
+| xref:Keycode.adoc[`Keycode`]
+| Keycode of the key
+
+| `scancode`
+| xref:Scancode.adoc[`Scancode`]
+| Scancode of the key
+
+| `modifiers`
+| `Flags<Modifier>`
+| Modifiers of the key (see xref:Modifier.adoc[`Modifier`])
+
+| `repeat`
+| `uint8_t`
+| Number of repeat for this key
+|===
+
+
+[#keyboard_focus_gained_event]
+=== `gf::KeyboardFocusGainedEvent`
+
+[source]
+----
+#include <gf2/graphics/Event.h>
+struct KeyboardFocusGainedEvent;
+----
+
+`KeyboardFocusGainedEvent` is associated with `gf::EventType::KeyboardFocusGained` event type.
+
+.Data members for `gf::KeyboardFocusGainedEvent`
+[cols="1,1,2"]
+|===
+| Name | Type | Description
+
+| `window_id`
+| `uint32_t`
+| Id of the window where the event occurred
+|===
+
+[#keyboard_focus_lost_event]
+=== `gf::KeyboardFocusLostEvent`
+
+[source]
+----
+#include <gf2/graphics/Event.h>
+struct KeyboardFocusLostEvent;
+----
+
+`KeyboardFocusLostEvent` is associated with `gf::EventType::KeyboardFocusLost` event type.
+
+.Data members for `gf::KeyboardFocusLostEvent`
+[cols="1,1,2"]
+|===
+| Name | Type | Description
+
+| `window_id`
+| `uint32_t`
+| Id of the window where the event occurred
+|===
+
+[#mouse_button_pressed_event]
+=== `gf::MouseButtonPressedEvent`
+
+[source]
+----
+#include <gf2/graphics/Event.h>
+struct MouseButtonPressedEvent;
+----
+
+`MouseButtonPressedEvent` is associated with `gf::EventType::MouseButtonPressed` event type.
+
+.Data members for `gf::MouseButtonPressedEvent`
 [cols="1,1,2"]
 |===
 | Name | Type | Description
@@ -205,31 +335,27 @@ struct MouseButtonEvent;
 | xref:MouseButton.adoc[`MouseButton`]
 | Button of the mouse
 
-| `coordinates`
-| `Vec2<int32_t>`
+| `position`
+| `Vec2I`
 | Position of the mouse cursor
 
 | `clicks`
 | `uint8_t`
 | Number of clicks
-
-| `pressed`
-| `bool`
-| Status of the mouse button
 |===
 
-[#mouse_motion_event]
-=== `gf::MouseMotionEvent`
+[#mouse_button_released_event]
+=== `gf::MouseButtonReleasedEvent`
 
 [source]
 ----
 #include <gf2/graphics/Event.h>
-struct MouseMotionEvent;
+struct MouseButtonReleasedEvent;
 ----
 
-`MouseMotionEvent` is associated with `gf::EventType::MouseMoved` event type and can be accessed with `mouse_motion` in `Event`.
+`MouseButtonReleasedEvent` is associated with `gf::EventType::MouseButtonReleased` event type.
 
-.Data members for `gf::MouseMotionEvent`
+.Data members for `gf::MouseButtonReleasedEvent`
 [cols="1,1,2"]
 |===
 | Name | Type | Description
@@ -242,27 +368,64 @@ struct MouseMotionEvent;
 | `MouseId`
 | Id of the mouse id or `gf::TouchMouseId`
 
-| `coordinates`
-| `Vec2<int32_t>`
+| `button`
+| xref:MouseButton.adoc[`MouseButton`]
+| Button of the mouse
+
+| `position`
+| `Vec2I`
 | Position of the mouse cursor
 
-| `motion`
-| `Vec2<int32_t>`
-| Motion of the mouse cursor
+| `clicks`
+| `uint8_t`
+| Number of clicks
 |===
 
-[#mouse_wheel_event]
-=== `gf::MouseWheelEvent`
+[#mouse_moved_event]
+=== `gf::MouseMovedEvent`
 
 [source]
 ----
 #include <gf2/graphics/Event.h>
-struct MouseWheelEvent;
+struct MouseMovedEvent;
 ----
 
-`MouseWheelEvent` is associated with `gf::EventType::MouseWheelScrolled` event type and can be accessed with `mouse_wheel` in `Event`.
+`MouseMovedEvent` is associated with `gf::EventType::MouseMoved` event type.
 
-.Data members for `gf::MouseWheelEvent`
+.Data members for `gf::MouseMovedEvent`
+[cols="1,1,2"]
+|===
+| Name | Type | Description
+
+| `window_id`
+| `uint32_t`
+| Id of the window where the event occurred
+
+| `mouse_id`
+| `MouseId`
+| Id of the mouse id or `gf::TouchMouseId`
+
+| `position`
+| `Vec2I`
+| Position of the mouse cursor
+
+| `motion`
+| `Vec2I`
+| Motion of the mouse cursor
+|===
+
+[#mouse_wheel_scrolled_event]
+=== `gf::MouseWheelScrolledEvent`
+
+[source]
+----
+#include <gf2/graphics/Event.h>
+struct MouseWheelScrolledEvent;
+----
+
+`MouseWheelScrolledEvent` is associated with `gf::EventType::MouseWheelScrolled` event type.
+
+.Data members for `gf::MouseWheelScrolledEvent`
 [cols="1,1,2"]
 |===
 | Name | Type | Description
@@ -276,47 +439,39 @@ struct MouseWheelEvent;
 | Id of the mouse id or `gf::TouchMouseId`
 
 | `offset`
-| `Vec2<int32_t>`
+| `Vec2I`
 | Offset of the mouse wheel
+
+| `direction`
+| `MouseWheelDirection`
+| Normal or flipped.
 |===
 
-[#resize_event]
-=== `gf::ResizeEvent`
+[#quit_event]
+=== `gf::QuitEvent`
 
 [source]
 ----
 #include <gf2/graphics/Event.h>
-struct ResizeEvent;
+struct QuitEvent;
 ----
 
-`ResizeEvent` is associated with `gf::EventType::Resized` event type and can be accessed with `resize` in `Event`.
+`QuitEvent` is associated with `gf::EventType::Quit` event type.
 
-.Data members for `gf::ResizeEvent`
-[cols="1,1,2"]
-|===
-| Name | Type | Description
+This structure is empty.
 
-| `window_id`
-| `uint32_t`
-| Id of the window where the event occurred
-
-| `size`
-| `Vec2<int32_t>`
-| New size of the window
-|===
-
-[#text_event]
-=== `gf::TextEvent`
+[#text_entered_event]
+=== `gf::TextEnteredEvent`
 
 [source]
 ----
 #include <gf2/graphics/Event.h>
-struct TextEvent;
+struct TextEnteredEvent;
 ----
 
-`TextEvent` is associated with `gf::EventType::TextEntered` event type and can be accessed with `text` in `Event`.
+`TextEnteredEvent` is associated with `gf::EventType::TextEntered` event type.
 
-.Data members for `gf::TextEvent`
+.Data members for `gf::TextEnteredEvent`
 [cols="1,1,2"]
 |===
 | Name | Type | Description
@@ -330,18 +485,18 @@ struct TextEvent;
 | UTF-8 text that was entered
 |===
 
-[#touch_event]
-=== `gf::TouchEvent`
+[#touch_moved_event]
+=== `gf::TouchMovedEvent`
 
 [source]
 ----
 #include <gf2/graphics/Event.h>
-struct TouchEvent;
+struct TouchMovedEvent;
 ----
 
-`TouchEvent` is associated with `gf::EventType::TouchBegan`, `gf::EventType::TouchMoved` or `gf::EventType::TouchEnded` event types and can be accessed with `touch` in `Event`.
+`TouchMovedEvent` is associated with `gf::EventType::TouchMoved` event type.
 
-.Data members for `gf::TouchEvent`
+.Data members for `gf::TouchMovedEvent`
 [cols="1,1,2"]
 |===
 | Name | Type | Description
@@ -358,7 +513,7 @@ struct TouchEvent;
 | `FingerId`
 | Id of the finger that touched
 
-| `coordinates`
+| `location`
 | `Vec2F`
 | Normalized position of the touch in the range stem:[[0, 1\]]
 
@@ -371,18 +526,256 @@ struct TouchEvent;
 | Pressure in the range stem:[[0, 1\]]
 |===
 
-[#window_event]
-=== `gf::WindowEvent`
+[#touch_pressed_event]
+=== `gf::TouchPressedEvent`
 
 [source]
 ----
 #include <gf2/graphics/Event.h>
-struct WindowEvent;
+struct TouchPressedEvent;
 ----
 
-`WindowEvent` is associated with `gf::EventType::WindowShown`, `gf::EventType::WindowHidden`, `gf::EventType::WindowExposed`, `gf::EventType::WindowMinimized`, `gf::EventType::WindowMaximized`, `gf::EventType::WindowRestored`, `gf::EventType::WindowClosed`, `gf::EventType::MouseFocusGained`, `gf::EventType::MouseFocusLost`, `gf::WindowEventType::KeyboardFocusGained`, `gf::WindowEventType::KeyboardFocusLost` event types and can be accessed with `window` in `Event`.
+`TouchPressedEvent` is associated with `gf::EventType::TouchPressed` event type.
 
-.Data members for `gf::WindowEvent`
+.Data members for `gf::TouchPressedEvent`
+[cols="1,1,2"]
+|===
+| Name | Type | Description
+
+| `window_id`
+| `uint32_t`
+| Id of the window where the event occurred
+
+| `touch_id`
+| `TouchId`
+| Id of the touch or `gf::MouseTouchId`
+
+| `finger`
+| `FingerId`
+| Id of the finger that touched
+
+| `location`
+| `Vec2F`
+| Normalized position of the touch in the range stem:[[0, 1\]]
+
+| `motion`
+| `Vec2F`
+| Normalized motion of the touch in the range stem:[[-1, 1\]]
+
+| `pressure`
+| `float`
+| Pressure in the range stem:[[0, 1\]]
+|===
+
+[#touch_released_event]
+=== `gf::TouchReleasedEvent`
+
+[source]
+----
+#include <gf2/graphics/Event.h>
+struct TouchReleasedEvent;
+----
+
+`TouchReleasedEvent` is associated with `gf::EventType::TouchReleased` event type.
+
+.Data members for `gf::TouchReleasedEvent`
+[cols="1,1,2"]
+|===
+| Name | Type | Description
+
+| `window_id`
+| `uint32_t`
+| Id of the window where the event occurred
+
+| `touch_id`
+| `TouchId`
+| Id of the touch or `gf::MouseTouchId`
+
+| `finger`
+| `FingerId`
+| Id of the finger that touched
+
+| `location`
+| `Vec2F`
+| Normalized position of the touch in the range stem:[[0, 1\]]
+
+| `motion`
+| `Vec2F`
+| Normalized motion of the touch in the range stem:[[-1, 1\]]
+
+| `pressure`
+| `float`
+| Pressure in the range stem:[[0, 1\]]
+|===
+
+[#window_close_requested_event]
+=== `gf::WindowCloseRequestedEvent`
+
+[source]
+----
+#include <gf2/graphics/Event.h>
+struct WindowCloseRequestedEvent;
+----
+
+`WindowCloseRequestedEvent` is associated with `gf::EventType::WindowCloseRequested` event type.
+
+.Data members for `gf::WindowCloseRequestedEvent`
+[cols="1,1,2"]
+|===
+| Name | Type | Description
+
+| `window_id`
+| `uint32_t`
+| Id of the window where the event occurred
+|===
+
+[#window_exposed_event]
+=== `gf::WindowExposedEvent`
+
+[source]
+----
+#include <gf2/graphics/Event.h>
+struct WindowExposedEvent;
+----
+
+`WindowExposedEvent` is associated with `gf::EventType::WindowExposed` event type.
+
+.Data members for `gf::WindowExposedEvent`
+[cols="1,1,2"]
+|===
+| Name | Type | Description
+
+| `window_id`
+| `uint32_t`
+| Id of the window where the event occurred
+|===
+
+[#window_hidden_event]
+=== `gf::WindowHiddenEvent`
+
+[source]
+----
+#include <gf2/graphics/Event.h>
+struct WindowHiddenEvent;
+----
+
+`WindowHiddenEvent` is associated with `gf::EventType::WindowHidden` event type.
+
+.Data members for `gf::WindowHiddenEvent`
+[cols="1,1,2"]
+|===
+| Name | Type | Description
+
+| `window_id`
+| `uint32_t`
+| Id of the window where the event occurred
+|===
+
+[#window_maximized_event]
+=== `gf::WindowMaximizedEvent`
+
+[source]
+----
+#include <gf2/graphics/Event.h>
+struct WindowMaximizedEvent;
+----
+
+`WindowMaximizedEvent` is associated with `gf::EventType::WindowMaximized` event type.
+
+.Data members for `gf::WindowMaximizedEvent`
+[cols="1,1,2"]
+|===
+| Name | Type | Description
+
+| `window_id`
+| `uint32_t`
+| Id of the window where the event occurred
+|===
+
+[#window_minimized_event]
+=== `gf::WindowMinimizedEvent`
+
+[source]
+----
+#include <gf2/graphics/Event.h>
+struct WindowMinimizedEvent;
+----
+
+`WindowMinimizedEvent` is associated with `gf::EventType::WindowMinimized` event type.
+
+.Data members for `gf::WindowMinimizedEvent`
+[cols="1,1,2"]
+|===
+| Name | Type | Description
+
+| `window_id`
+| `uint32_t`
+| Id of the window where the event occurred
+|===
+
+[#window_moved_event]
+=== `gf::WindowMovedEvent`
+
+[source]
+----
+#include <gf2/graphics/Event.h>
+struct WindowMovedEvent;
+----
+
+`WindowMovedEvent` is associated with `gf::EventType::WindowMoved` event type.
+
+.Data members for `gf::WindowMovedEvent`
+[cols="1,1,2"]
+|===
+| Name | Type | Description
+
+| `window_id`
+| `uint32_t`
+| Id of the window where the event occurred
+
+| `position`
+| `Vec2I`
+| New position of the window
+|===
+
+
+[#window_resized_event]
+=== `gf::WindowResizedEvent`
+
+[source]
+----
+#include <gf2/graphics/Event.h>
+struct WindowResizedEvent;
+----
+
+`WindowResizedEvent` is associated with `gf::EventType::WindowResized` event type.
+
+.Data members for `gf::WindowResizedEvent`
+[cols="1,1,2"]
+|===
+| Name | Type | Description
+
+| `window_id`
+| `uint32_t`
+| Id of the window where the event occurred
+
+| `size`
+| `Vec2I`
+| New size of the window
+|===
+
+[#window_shown_event]
+=== `gf::WindowShownEvent`
+
+[source]
+----
+#include <gf2/graphics/Event.h>
+struct WindowShownEvent;
+----
+
+`WindowShownEvent` is associated with `gf::EventType::WindowShown` event type.
+
+.Data members for `gf::WindowShownEvent`
 [cols="1,1,2"]
 |===
 | Name | Type | Description

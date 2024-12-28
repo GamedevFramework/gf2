@@ -24,7 +24,7 @@ In a game loop managed by a scene manager, the following methods are called in t
 
 A scene has a *clear color* used to clear the rendering surface at the beginning.
 
-A scene have a *rank* determining its position in the stack of the scene manager (for scene managers that use a stack of scenes). It may be at the top of the stack, in the stack but not at the top or outside the stack.
+A scene has a *rank* determining its position in the stack of the scene manager (for scene managers that use a stack of scenes). It may be at the top of the stack, in the stack but not at the top or outside the stack.
 
 A scene can be either *paused* or *resumed*. A paused scene is not updated. In other words, the update step is discarded. It is the user's responsability to pause or resume a scene. An scene is always resumed when becoming the top scene.
 
