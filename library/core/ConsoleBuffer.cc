@@ -437,7 +437,7 @@ namespace gf {
         {
           const int half_width = std::min(position.x, size.w - position.x - 1);
           single_line_area.offset = { position.x - half_width, position.y };
-          single_line_area.extent = { 2 * half_width + 1, 1 };
+          single_line_area.extent = { (2 * half_width) + 1, 1 };
         }
         break;
 

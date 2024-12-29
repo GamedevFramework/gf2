@@ -33,7 +33,7 @@ namespace gf {
         return 2 * proposed * existing;
       }
 
-      return 1.0f - 2 * (1.0f - proposed) * (1.0f - existing);
+      return 1.0f - (2 * (1.0f - proposed) * (1.0f - existing));
     }
 
   }

@@ -70,7 +70,7 @@ namespace gf {
     RectI area = RectI::from_size(m_map->size());
 
     if (range_limit >= 0) {
-      RectI limited = RectI::from_position_size(origin - range_limit, vec(1, 1) * (2 * range_limit + 1));
+      const RectI limited = RectI::from_position_size(origin - range_limit, vec(1, 1) * ((2 * range_limit) + 1));
 
       auto maybe_intersection = area.intersection(limited);
 
@@ -102,7 +102,7 @@ namespace gf {
 
     for (;;) {
       if (auto maybe_current = bresenham.step(); maybe_current) {
-        Vec2I current = *maybe_current;
+        const Vec2I current = *maybe_current;
 
         if (square_distance(origin, current) > square_range_limit) {
           break;
@@ -167,7 +167,7 @@ namespace gf {
         if (x != x_limit) {
           if (is_opaque) {
             if (was_opaque == Opacity::Transparent) {
-              details::Slope new_bottom = { y * 2 + 1, x * 2 - 1 };
+              const details::Slope new_bottom = { (y * 2) + 1, (x * 2) - 1 };
 
               if (!in_range || y == bottom_y) {
                 bottom = new_bottom;
@@ -180,7 +180,7 @@ namespace gf {
             was_opaque = Opacity::Opaque;
           } else {
             if (was_opaque == Opacity::Opaque) {
-              top = { y * 2 + 1, x * 2 + 1 };
+              top = { (y * 2) + 1, (x * 2) + 1 };
             }
 
             was_opaque = Opacity::Transparent;
@@ -236,7 +236,7 @@ namespace gf {
             ++top_y;
           }
         } else {
-          if (top > details::slope(ay, x * 2 + 1)) {
+          if (top > details::slope(ay, (x * 2) + 1)) {
             ++top_y;
           }
         }
@@ -256,14 +256,14 @@ namespace gf {
 
         bool is_opaque = !in_range || !m_map->transparent(position);
 
-        if (is_opaque && ((y == top_y && top <= details::slope(y * 2 - 1, x * 2) && transparent(octant, origin, { x, y - 1 })) || (y == bottom_y && bottom >= details::slope(y * 2 + 1, x * 2) && transparent(octant, origin, { x, y + 1 })))) {
+        if (is_opaque && ((y == top_y && top <= details::slope((y * 2) - 1, x * 2) && transparent(octant, origin, { x, y - 1 })) || (y == bottom_y && bottom >= details::slope((y * 2) + 1, x * 2) && transparent(octant, origin, { x, y + 1 })))) {
           is_opaque = false;
         }
 
         if (x != x_limit) {
           if (is_opaque) {
             if (was_opaque == Opacity::Transparent) {
-              details::Slope new_bottom = { y * 2 + 1, x * 2 - 1 };
+              const details::Slope new_bottom = { (y * 2) + 1, (x * 2) - 1 };
 
               if (!in_range || y == bottom_y) {
                 bottom = new_bottom;
@@ -276,7 +276,7 @@ namespace gf {
             was_opaque = Opacity::Opaque;
           } else {
             if (was_opaque == Opacity::Opaque) {
-              top = { y * 2 + 1, x * 2 + 1 };
+              top = { (y * 2) + 1, (x * 2) + 1 };
             }
 
             was_opaque = Opacity::Transparent;
@@ -345,15 +345,15 @@ namespace gf {
       return true;
     }
 
-    Vec2I position = origin + quadrant * local;
+    const Vec2I position = origin + quadrant * local;
     m_map->add_properties(position, m_properties);
     return !m_map->transparent(position);
   }
 
   auto PermissiveVisibility::visit_square(Vec2I local, Vec2I quadrant, Vec2I origin, int range_limit, FieldIterator current_field, FieldList& active_fields) const -> FieldIterator
   {
-    Vec2I top_left = { local.x, local.y + 1 };
-    Vec2I bottom_right = { local.x + 1, local.y };
+    const Vec2I top_left = { local.x, local.y + 1 };
+    const Vec2I bottom_right = { local.x + 1, local.y };
 
     while (current_field != active_fields.end() && current_field->steep.is_below_or_contains(bottom_right)) {
       ++current_field;
@@ -455,7 +455,7 @@ namespace gf {
         top_y = ((x * 2 - 1) * top.y + top.x) / (top.x * 2);
 
         if (!transparent(octant, origin, { x, top_y })) {
-          if (top >= details::slope(top_y * 2 + 1, x * 2) && transparent(octant, origin, { x, top_y + 1 })) {
+          if (top >= details::slope((top_y * 2) + 1, x * 2) && transparent(octant, origin, { x, top_y + 1 })) {
             ++top_y;
           }
         } else {
@@ -465,7 +465,7 @@ namespace gf {
             ++ax;
           }
 
-          if (top > details::slope(top_y * 2 + 1, ax)) {
+          if (top > details::slope((top_y * 2) + 1, ax)) {
             ++top_y;
           }
         }
@@ -478,7 +478,7 @@ namespace gf {
       } else {
         bottom_y = ((x * 2 - 1) * bottom.y + bottom.x) / (bottom.x * 2);
 
-        if (bottom >= details::slope(bottom_y * 2 + 1, x * 2) && !transparent(octant, origin, { x, bottom_y }) && transparent(octant, origin, { x, bottom_y + 1 })) {
+        if (bottom >= details::slope((bottom_y * 2) + 1, x * 2) && !transparent(octant, origin, { x, bottom_y }) && transparent(octant, origin, { x, bottom_y + 1 })) {
           ++bottom_y;
         }
       }
@@ -486,11 +486,11 @@ namespace gf {
       Opacity was_opaque = Opacity::Unknown;
 
       for (int y = top_y; y >= bottom_y; --y) {
-        Vec2I local = { x, y };
+        const Vec2I local = { x, y };
 
         if (range_limit < 0 || square_length(local) <= square_range_limit) {
-          bool is_opaque = !transparent(octant, origin, local);
-          bool is_visible = is_opaque || ((y != top_y || top > details::slope(y * 4 - 1, x * 4 + 1)) && (y != bottom_y || bottom < details::slope(y * 4 + 1, x * 4 - 1)));
+          const bool is_opaque = !transparent(octant, origin, local);
+          const bool is_visible = is_opaque || ((y != top_y || top > details::slope((y * 4) - 1, (x * 4) + 1)) && (y != bottom_y || bottom < details::slope((y * 4) + 1, (x * 4) - 1)));
 
           if (is_visible) {
             set_visible(octant, origin, local);
@@ -500,7 +500,7 @@ namespace gf {
 
             if (is_opaque) {
               if (was_opaque == Opacity::Transparent) {
-                details::Slope new_bottom = { y * 2 + 1, x * 2 };
+                details::Slope new_bottom = { (y * 2) + 1, x * 2 };
 
                 if (!transparent(octant, origin, { x, y + 1 })) {
                   --new_bottom.x;
@@ -523,7 +523,7 @@ namespace gf {
               was_opaque = Opacity::Opaque;
             } else {
               if (was_opaque == Opacity::Opaque) {
-                details::Slope new_top = { y * 2 + 1, x * 2 };
+                details::Slope new_top = { (y * 2) + 1, x * 2 };
 
                 if (!transparent(octant, origin, { x + 1, y + 1 })) {
                   ++new_top.x;

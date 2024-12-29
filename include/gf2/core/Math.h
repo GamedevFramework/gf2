@@ -58,9 +58,15 @@ namespace gf {
     template<typename T>
     constexpr std::enable_if_t<std::is_arithmetic_v<T>, T> clamp(T val, T min, T max)
     {
-      // clang-format off
-      return val < min ? min : (max < val ? max : val);
-      // clang-format on
+      if (val < min) {
+        return min;
+      }
+
+      if (max < val) {
+        return max;
+      }
+
+      return val;
     }
 
   } // namespace details
@@ -126,7 +132,7 @@ namespace gf {
   template<typename T, typename U>
   constexpr T lerp(T lhs, T rhs, U t)
   {
-    return T((U(1) - t) * lhs + t * rhs);
+    return T(((U(1) - t) * lhs) + (t * rhs));
   }
 
   template<typename T>
@@ -168,13 +174,13 @@ namespace gf {
   template<typename T>
   constexpr std::enable_if_t<std::is_integral_v<T>, T> div_floor(T dividend, T divisor)
   {
-    return dividend / divisor - (dividend % divisor != 0) * ((dividend < 0) ^ (divisor < 0));
+    return (dividend / divisor) - ((dividend % divisor != 0) * ((dividend < 0) ^ (divisor < 0)));
   }
 
   template<typename T>
   constexpr std::enable_if_t<std::is_integral_v<T>, T> div_ceil(T dividend, T divisor)
   {
-    return dividend / divisor + (dividend % divisor != 0) * ((dividend > 0) ^ (divisor < 0));
+    return (dividend / divisor) + ((dividend % divisor != 0) * ((dividend > 0) ^ (divisor < 0)));
   }
 
 } // namespace gf

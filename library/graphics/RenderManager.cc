@@ -554,7 +554,7 @@ namespace gf {
       Log::fatal("Failed to select physical device ({}).", maybe_physical_device.error().message());
     }
 
-    const vkb::PhysicalDevice physical_device = maybe_physical_device.value();
+    const vkb::PhysicalDevice& physical_device = maybe_physical_device.value();
     m_physical_device = physical_device.physical_device;
 
     Log::debug("Running on: {}", physical_device.properties.deviceName);
@@ -575,7 +575,7 @@ namespace gf {
       Log::fatal("Failed to create device ({}).", maybe_device.error().message());
     }
 
-    const vkb::Device device = maybe_device.value();
+    const vkb::Device& device = maybe_device.value();
 
     m_device = device.device;
 

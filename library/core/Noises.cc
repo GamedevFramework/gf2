@@ -238,7 +238,7 @@ namespace gf {
         const double d = gf::square_length(r);
 
         if (d < 4) {
-          const double t = 1 - d / 4;
+          const double t = 1 - (d / 4);
           value += dot(at(static_cast<uint8_t>(qx + i), static_cast<uint8_t>(qy + j)), r) * t * t * t * t * (4 * t - 3);
         }
       }
@@ -398,29 +398,29 @@ namespace gf {
     const double x1 = x0 - i1 + G2;
     const double y1 = y0 - j1 + G2;
 
-    const double x2 = x0 - 1 + 2 * G2;
-    const double y2 = y0 - 1 + 2 * G2;
+    const double x2 = x0 - 1 + (2 * G2);
+    const double y2 = y0 - 1 + (2 * G2);
 
     auto ii = static_cast<uint8_t>(i);
     auto jj = static_cast<uint8_t>(j);
 
     double res = 0.0;
 
-    double d0 = 0.5 - x0 * x0 - y0 * y0;
+    double d0 = 0.5 - (x0 * x0) - (y0 * y0);
 
     if (d0 > 0) {
       d0 *= d0;
       res += d0 * d0 * dot(at(ii, jj), { x0, y0 });
     }
 
-    double d1 = 0.5 - x1 * x1 - y1 * y1;
+    double d1 = 0.5 - (x1 * x1) - (y1 * y1);
 
     if (d1 > 0) {
       d1 *= d1;
       res += d1 * d1 * dot(at(ii + i1, jj + j1), { x1, y1 });
     }
 
-    double d2 = 0.5 - x2 * x2 - y2 * y2;
+    double d2 = 0.5 - (x2 * x2) - (y2 * y2);
 
     if (d2 > 0) {
       d2 *= d2;
@@ -472,7 +472,7 @@ namespace gf {
 
     std::ptrdiff_t positive_mod(std::ptrdiff_t x, std::ptrdiff_t n)
     {
-      std::ptrdiff_t r = x % n;
+      const std::ptrdiff_t r = x % n;
       return r < 0 ? r + n : r;
     }
 
@@ -494,8 +494,8 @@ namespace gf {
       for (std::ptrdiff_t i = 0; i < n / 2; ++i) {
         double value = 0;
 
-        for (std::ptrdiff_t k = 2 * i - DownCoefficientsCount; k <= 2 * i - DownCoefficientsCount; ++k) {
-          const std::ptrdiff_t index = k - 2 * i;
+        for (std::ptrdiff_t k = (2 * i) - DownCoefficientsCount; k <= 2 * i - DownCoefficientsCount; ++k) {
+          const std::ptrdiff_t index = k - (2 * i);
           assert(-DownCoefficientsCount <= index && index < DownCoefficientsCount);
           value += coeffs[index] * from[positive_mod(k, n) * stride];
         }
@@ -518,7 +518,7 @@ namespace gf {
         double value = 0;
 
         for (std::ptrdiff_t k = i / 2; k <= i / 2 + 1; ++k) {
-          const std::ptrdiff_t index = i - 2 * k;
+          const std::ptrdiff_t index = i - (2 * k);
           assert(-UpCoefficientsCount <= index && index < UpCoefficientsCount);
           value += coeffs[index] * from[positive_mod(k, n / 2) * stride];
         }
@@ -530,7 +530,7 @@ namespace gf {
   }
 
   WaveletNoise3D::WaveletNoise3D(Random& random, std::ptrdiff_t wavelet_tile_size)
-  : m_wavelet_tile_size(wavelet_tile_size + wavelet_tile_size % 2)
+  : m_wavelet_tile_size(wavelet_tile_size + (wavelet_tile_size % 2))
   {
     const std::size_t data_size = m_wavelet_tile_size * m_wavelet_tile_size * m_wavelet_tile_size;
     m_data.resize(data_size);
@@ -551,7 +551,7 @@ namespace gf {
     for (std::ptrdiff_t iy = 0; iy < m_wavelet_tile_size; ++iy) {
       for (std::ptrdiff_t iz = 0; iz < m_wavelet_tile_size; ++iz) {
         // each x row
-        const std::ptrdiff_t i = iy * m_wavelet_tile_size + iz * m_wavelet_tile_size * m_wavelet_tile_size;
+        const std::ptrdiff_t i = (iy * m_wavelet_tile_size) + (iz * m_wavelet_tile_size * m_wavelet_tile_size);
         wavelet_downsample(&m_data[i], &tmp1[i], m_wavelet_tile_size, 1);
         wavelet_upsample(&tmp1[i], &tmp2[i], m_wavelet_tile_size, 1);
       }
@@ -560,7 +560,7 @@ namespace gf {
     for (std::ptrdiff_t ix = 0; ix < m_wavelet_tile_size; ++ix) {
       for (std::ptrdiff_t iz = 0; iz < m_wavelet_tile_size; ++iz) {
         // each y row
-        const std::ptrdiff_t i = ix + iz * m_wavelet_tile_size * m_wavelet_tile_size;
+        const std::ptrdiff_t i = ix + (iz * m_wavelet_tile_size * m_wavelet_tile_size);
         wavelet_downsample(&tmp2[i], &tmp1[i], m_wavelet_tile_size, m_wavelet_tile_size);
         wavelet_upsample(&tmp1[i], &tmp2[i], m_wavelet_tile_size, m_wavelet_tile_size);
       }
@@ -569,7 +569,7 @@ namespace gf {
     for (std::ptrdiff_t ix = 0; ix < m_wavelet_tile_size; ++ix) {
       for (std::ptrdiff_t iy = 0; iy < m_wavelet_tile_size; ++iy) {
         // each z row
-        const std::ptrdiff_t i = ix + iy * m_wavelet_tile_size;
+        const std::ptrdiff_t i = ix + (iy * m_wavelet_tile_size);
         wavelet_downsample(&tmp2[i], &tmp1[i], m_wavelet_tile_size, m_wavelet_tile_size * m_wavelet_tile_size);
         wavelet_upsample(&tmp1[i], &tmp2[i], m_wavelet_tile_size, m_wavelet_tile_size * m_wavelet_tile_size);
       }
@@ -596,8 +596,8 @@ namespace gf {
         for (std::ptrdiff_t iz = 0; iz < m_wavelet_tile_size; ++iz) {
           // clang-format off
           const std::ptrdiff_t index = positive_mod(ix + offset, m_wavelet_tile_size)
-                                     + positive_mod(iy + offset, m_wavelet_tile_size) * m_wavelet_tile_size
-                                     + positive_mod(iz + offset, m_wavelet_tile_size) * m_wavelet_tile_size * m_wavelet_tile_size;
+                                     + (positive_mod(iy + offset, m_wavelet_tile_size) * m_wavelet_tile_size)
+                                     + (positive_mod(iz + offset, m_wavelet_tile_size) * m_wavelet_tile_size * m_wavelet_tile_size);
           // clang-format on
           assert(0 <= index && index < m_wavelet_tile_size * m_wavelet_tile_size * m_wavelet_tile_size);
           tmp1[k++] = m_data[index];
@@ -647,7 +647,7 @@ namespace gf {
             // NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)
           }
 
-          value += weight * m_data[c[0] + c[1] * m_wavelet_tile_size + c[2] * m_wavelet_tile_size * m_wavelet_tile_size];
+          value += weight * m_data[c[0] + (c[1] * m_wavelet_tile_size) + (c[2] * m_wavelet_tile_size * m_wavelet_tile_size)];
         }
       }
     }

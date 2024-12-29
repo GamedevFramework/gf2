@@ -123,7 +123,7 @@ namespace gf {
 
   std::ptrdiff_t Bitmap::offset_from_position(Vec2I position) const
   {
-    return static_cast<std::ptrdiff_t>(position.x) + static_cast<std::ptrdiff_t>(position.y) * static_cast<std::ptrdiff_t>(m_size.w);
+    return static_cast<std::ptrdiff_t>(position.x) + (static_cast<std::ptrdiff_t>(position.y) * static_cast<std::ptrdiff_t>(m_size.w));
   }
 
 }

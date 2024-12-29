@@ -42,7 +42,7 @@ namespace gf {
 
     auto make_corner = [=, &buffer](Vec2F center, uint32_t corner) {
       for (uint32_t i = 0; i < corner_point_count; ++i) {
-        const float angle = Pi2 * static_cast<float>(i) / static_cast<float>(corner_point_count - 1) + static_cast<float>(corner) * Pi2 + Pi;
+        const float angle = (Pi2 * static_cast<float>(i) / static_cast<float>(corner_point_count - 1)) + (static_cast<float>(corner) * Pi2) + Pi;
         buffer.points.push_back(center + radius * unit(angle));
       }
     };
@@ -84,7 +84,7 @@ namespace gf {
     ShapeBuffer buffer = {};
 
     for (uint32_t i = 0; i < point_count; ++i) {
-      const float angle = static_cast<float>(i) * 2.0f * Pi / static_cast<float>(point_count) - Pi2;
+      const float angle = (static_cast<float>(i) * 2.0f * Pi / static_cast<float>(point_count)) - Pi2;
       buffer.points.push_back(circle.center + circle.radius * unit(angle));
     }
 
@@ -110,7 +110,7 @@ namespace gf {
     const float section = to_angle - from_angle;
 
     for (uint32_t i = 0; i < point_count - 1; ++i) {
-      const float angle = from_angle + static_cast<float>(i) * section / static_cast<float>(point_count - 1);
+      const float angle = from_angle + (static_cast<float>(i) * section / static_cast<float>(point_count - 1));
       buffer.points.push_back(circle.center + circle.radius * unit(angle));
     }
 
@@ -127,7 +127,7 @@ namespace gf {
     ShapeBuffer buffer = {};
 
     for (uint32_t i = 0; i < 2 * branches; ++i) {
-      const float angle = static_cast<float>(i) * Pi / static_cast<float>(branches) - Pi2;
+      const float angle = (static_cast<float>(i) * Pi / static_cast<float>(branches)) - Pi2;
       const float radius = (i % 2 == 0) ? max_circle.radius : min_radius;
       buffer.points.push_back(max_circle.center + radius * unit(angle));
     }

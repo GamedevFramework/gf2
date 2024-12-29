@@ -67,7 +67,7 @@ namespace gf {
 
     void initialize_corners(Heightmap& map, Span<const double> initial_values, int d)
     {
-      if (initial_values.size() == 0) {
+      if (initial_values.empty()) {
         map.set_value({ 0, 0 }, 0.0);
         map.set_value({ 0, d }, 0.0);
         map.set_value({ d, d }, 0.0);
@@ -204,7 +204,7 @@ namespace gf {
     initialize_corners(map, initial_values, d);
 
     while (d >= 2) {
-      int d2 = d / 2;
+      const int d2 = d / 2;
 
       for (int y = d2; y < actual_size; y += d) {
         for (int x = d2; x < actual_size; x += d) {

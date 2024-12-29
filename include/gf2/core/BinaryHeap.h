@@ -156,12 +156,12 @@ namespace gf {
 
     static constexpr size_type left_child_index(size_type index)
     {
-      return 2 * index + 1;
+      return (2 * index) + 1;
     }
 
     static constexpr size_type right_child_index(size_type index)
     {
-      return 2 * index + 2;
+      return (2 * index) + 2;
     }
 
     bool leaf(size_type index) const

@@ -116,7 +116,7 @@ namespace gf {
     RawOutlineCurveGeometry compute_outline_curve_geometry(const CurveBuffer& data)
     {
       RawOutlineCurveGeometry geometry;
-      compute_curve_geometry(geometry, data, data.thickness / 2.0f + data.outline_thickness, data.outline_color);
+      compute_curve_geometry(geometry, data, (data.thickness / 2.0f) + data.outline_thickness, data.outline_color);
       return geometry;
     }
 

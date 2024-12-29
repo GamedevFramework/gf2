@@ -140,7 +140,7 @@ namespace gf {
 
     std::size_t linearize(Vec2I index) const
     {
-      return static_cast<std::size_t>(index.x) + static_cast<std::size_t>(index.y) * static_cast<std::size_t>(m_size.x);
+      return static_cast<std::size_t>(index.x) + (static_cast<std::size_t>(index.y) * static_cast<std::size_t>(m_size.x));
     }
 
     Vec2I m_size;

@@ -34,8 +34,8 @@ namespace gf {
 
   RectF SpriteSheet::texture_region(const std::string& name) const
   {
-    RectI rectangle = texture_rectangle(name);
-    Vec2F texture_size = m_texture_size;
+    const RectI rectangle = texture_rectangle(name);
+    const Vec2F texture_size = m_texture_size;
     return RectF::from_position_size(rectangle.position() / texture_size, rectangle.size() / texture_size);
   }
 
@@ -64,19 +64,19 @@ namespace gf {
     }
 
     pugi::xml_document doc;
-    pugi::xml_parse_result result = doc.load(file);
+    const pugi::xml_parse_result result = doc.load(file);
 
     if (!result) {
       Log::fatal("Could not load sprite sheet: {}. Reason: {}", filename.string(), result.description());
     }
 
-    pugi::xml_node root = doc.child("TextureAtlas");
+    const pugi::xml_node root = doc.child("TextureAtlas");
 
     if (!root) {
       Log::fatal("Sprite sheet is not in the right format: {}", filename.string());
     }
 
-    std::filesystem::path texture_path = root.attribute("imagePath").as_string("");
+    const std::filesystem::path texture_path = root.attribute("imagePath").as_string("");
 
     if (texture_path.empty()) {
       Log::fatal("Image path is not set in sprite sheet: {}", filename.string());
@@ -85,7 +85,7 @@ namespace gf {
     m_texture_path = filename.parent_path() / texture_path;
     m_texture_size = image_size(m_texture_path);
 
-    for (pugi::xml_node sub : root.children("SubTexture")) {
+    for (const pugi::xml_node sub : root.children("SubTexture")) {
       assert(sub.attribute("name"));
       std::string name = sub.attribute("name").value();
 

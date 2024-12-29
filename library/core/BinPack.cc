@@ -17,7 +17,7 @@ namespace gf {
   namespace {
     int score_best_area(Vec2I size, RectI rectangle)
     {
-      return rectangle.extent.w * rectangle.extent.h - size.w * size.h;
+      return (rectangle.extent.w * rectangle.extent.h) - (size.w * size.h);
     }
 
     int score_best_short_side(Vec2I size, RectI rectangle)

@@ -11,8 +11,8 @@ namespace gf {
   {
     const float lx = location.x;
     const float ly = location.y;
-    const float ox = origin.x * bounds.extent.w + bounds.offset.x;
-    const float oy = origin.y * bounds.extent.h + bounds.offset.y;
+    const float ox = (origin.x * bounds.extent.w) + bounds.offset.x;
+    const float oy = (origin.y * bounds.extent.h) + bounds.offset.y;
     const float cos_v = std::cos(rotation);
     const float sin_v = std::sin(rotation);
     const float sx = scale.x;

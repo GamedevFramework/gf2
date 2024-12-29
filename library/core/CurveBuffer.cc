@@ -154,7 +154,7 @@ namespace gf {
       const float t3 = t2 + cattmull_rom_time_difference(p2, p3, spline_type);
 
       for (uint32_t j = 0; j < point_count; ++j) {
-        const float t = t1 + (t2 - t1) * static_cast<float>(j) / static_cast<float>(point_count);
+        const float t = t1 + ((t2 - t1) * static_cast<float>(j) / static_cast<float>(point_count));
         buffer.points.emplace_back(cattmull_rom_interpolation(p0, t0, p1, t1, p2, t2, p3, t3, t));
       }
     }

@@ -18,9 +18,9 @@ namespace gf {
     {
       switch (layout) {
         case ConsoleFontFormat::InColumn:
-          return position.x * size.h + position.y;
+          return (position.x * size.h) + position.y;
         case ConsoleFontFormat::InRow:
-          return position.y * size.w + position.x;
+          return (position.y * size.w) + position.x;
       }
 
       assert(false);
@@ -249,7 +249,7 @@ namespace gf {
 
       case ConsoleFontFormat::Grayscale:
         for (auto position : copy.position_range()) {
-          Color color = copy(position);
+          const Color color = copy(position);
           assert(color.r == color.g && color.g == color.b);
           copy.put_pixel(position, opaque(color.r));
         }

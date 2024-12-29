@@ -26,12 +26,12 @@ namespace gf {
 
       static float ease_in_out(float t)
       {
-        return t < 0.5f ? ease_in(2 * t) / 2 : 0.5f + ease_out(2 * t - 1) / 2;
+        return t < 0.5f ? ease_in(2 * t) / 2 : 0.5f + (ease_out((2 * t) - 1) / 2);
       }
 
       static float ease_out_in(float t)
       {
-        return t < 0.5f ? ease_out(2 * t) / 2 : 0.5f + ease_in(2 * t - 1) / 2;
+        return t < 0.5f ? ease_out(2 * t) / 2 : 0.5f + (ease_in((2 * t) - 1) / 2);
       }
     };
 
@@ -57,7 +57,7 @@ namespace gf {
 
     inline float circ(float t)
     {
-      return 1 - std::sqrt(1 - t * t);
+      return 1 - std::sqrt(1 - (t * t));
     }
 
     inline float sine(float t)
@@ -80,18 +80,18 @@ namespace gf {
       const float u = 1 - t;
 
       if (u < 1 * C1) {
-        return 1 - C2 * u * u;
+        return 1 - (C2 * u * u);
       }
 
       if (u < 2 * C1) {
-        return 1 - (C2 * gf::square(u - 1.5f * C1) + 0.75f);
+        return 1 - (C2 * gf::square(u - (1.5f * C1)) + 0.75f);
       }
 
       if (u < 2.5f * C1) {
-        return 1 - (C2 * gf::square(u - 2.25f * C1) + 0.9375f);
+        return 1 - (C2 * gf::square(u - (2.25f * C1)) + 0.9375f);
       }
 
-      return 1 - (C2 * gf::square(u - 2.625f * C1) + 0.984375f);
+      return 1 - (C2 * gf::square(u - (2.625f * C1)) + 0.984375f);
     }
 
     inline float elastic(float t)

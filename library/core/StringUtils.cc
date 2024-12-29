@@ -16,9 +16,9 @@ namespace gf {
     int digits = 0;
 
     if (num < 0) {
-      digits = static_cast<int>(std::fabs(num / std::pow(10, accpow) - 0.5f));
+      digits = static_cast<int>(std::fabs((num / std::pow(10, accpow)) - 0.5f));
     } else {
-      digits = static_cast<int>(std::fabs(num / std::pow(10, accpow) + 0.5f));
+      digits = static_cast<int>(std::fabs((num / std::pow(10, accpow)) + 0.5f));
     }
 
     std::string result;

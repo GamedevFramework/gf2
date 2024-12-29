@@ -29,7 +29,7 @@ namespace gf {
 
       if ((max - min) > std::numeric_limits<float>::epsilon()) {
         if (max == color.r) {
-          hue = std::fmod(60.0f * (color.g - color.b) / (max - min) + 360.0f, 360.0f);
+          hue = std::fmod((60.0f * (color.g - color.b) / (max - min)) + 360.0f, 360.0f);
         } else if (max == color.g) {
           hue = 60.0f * (color.b - color.r) / (max - min) + 120.0f;
         } else if (max == color.b) {
@@ -39,7 +39,7 @@ namespace gf {
         }
       }
 
-      const float sat = (max < std::numeric_limits<float>::epsilon()) ? 0.0f : (1.0f - min / max);
+      const float sat = (max < std::numeric_limits<float>::epsilon()) ? 0.0f : (1.0f - (min / max));
       const float val = max;
 
       return { hue, sat, val, color.a };
@@ -135,7 +135,7 @@ namespace gf {
 
     float linear_to_srgb(float c)
     {
-      return (c < 0.0031308f) ? 12.92f * c : 1.055f * std::pow(c, 1.f / 2.4f) - 0.055f;
+      return (c < 0.0031308f) ? 12.92f * c : (1.055f * std::pow(c, 1.f / 2.4f)) - 0.055f;
     }
   }
 

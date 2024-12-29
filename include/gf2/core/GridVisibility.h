@@ -90,7 +90,7 @@ namespace gf {
 
       int relative_slope(Vec2I point) const
       {
-        return (far.y - near.y) * (far.x - point.x) - (far.y - point.y) * (far.x - near.x);
+        return ((far.y - near.y) * (far.x - point.x)) - ((far.y - point.y) * (far.x - near.x));
       }
     };
 

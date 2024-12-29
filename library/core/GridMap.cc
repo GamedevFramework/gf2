@@ -436,31 +436,31 @@ namespace gf {
     switch (visibility) {
       case Visibility::RayCast:
         {
-          RayCastVisibility algorithm(this, properties);
+          const RayCastVisibility algorithm(this, properties);
           algorithm.compute_visibility(origin, range_limit);
         }
         break;
       case Visibility::ShadowCast:
         {
-          ShadowCastVisibility algorithm(this, properties);
+          const ShadowCastVisibility algorithm(this, properties);
           algorithm.compute_visibility(origin, range_limit);
         }
         break;
       case Visibility::DiamondWalls:
         {
-          DiamondWallsVisibility algorithm(this, properties);
+          const DiamondWallsVisibility algorithm(this, properties);
           algorithm.compute_visibility(origin, range_limit);
         }
         break;
       case Visibility::Permissive:
         {
-          PermissiveVisibility algorithm(this, properties);
+          const PermissiveVisibility algorithm(this, properties);
           algorithm.compute_visibility(origin, range_limit);
         }
         break;
       case Visibility::Improved:
         {
-          ImprovedVisibility algorithm(this, properties);
+          const ImprovedVisibility algorithm(this, properties);
           algorithm.compute_visibility(origin, range_limit);
         }
         break;

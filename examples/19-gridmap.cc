@@ -96,7 +96,7 @@ namespace {
     , m_grid_map(gf::GridMap::make_orthogonal(MapSize, CellSize))
     {
       for (auto position : gf::position_range(MapSize)) {
-        switch (Grid[position.y][position.x]) {
+        switch (Grid[position.y][position.x]) { // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
           case ' ':
             m_grid_map.set_properties(position, gf::CellProperty::Walkable | gf::CellProperty::Transparent);
             break;
@@ -210,7 +210,7 @@ namespace {
             const auto& mouse_motion_event = event.from<gf::EventType::MouseMoved>();
             auto mouse_position = mouse_motion_event.position;
             auto mouse_location = position_to_world_location(mouse_position);
-            gf::Vec2I position = m_grid_entity.grid().compute_position(mouse_location);
+            const gf::Vec2I position = m_grid_entity.grid().compute_position(mouse_location);
 
             if (position != m_state.light) {
               m_state.light = position;

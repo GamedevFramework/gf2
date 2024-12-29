@@ -535,12 +535,12 @@ namespace gf {
 
     const float tx = static_cast<float>(m_tile_size.w) - offset.w;
     const float qx = std::floor(location.x / tx);
-    const float rx = location.x - qx * tx;
+    const float rx = location.x - (qx * tx);
     const float nrx = rx / offset.w;
 
     const float ty = static_cast<float>(m_tile_size.h) / 2.0f;
     const float qy = std::floor(location.y / ty);
-    const float ry = location.y - qy * ty;
+    const float ry = location.y - (qy * ty);
     const float nry = ry / ty;
 
     const int x = static_cast<int>(qx);

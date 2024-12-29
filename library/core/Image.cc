@@ -268,7 +268,7 @@ namespace gf {
 
   Vec2I image_size(const std::filesystem::path& filename)
   {
-    std::unique_ptr<std::FILE, decltype(&std::fclose)> file(std::fopen(filename.string().c_str(), "rb"), std::fclose);
+    const std::unique_ptr<std::FILE, decltype(&std::fclose)> file(std::fopen(filename.string().c_str(), "rb"), std::fclose);
 
     if (!file) {
       Log::fatal("Unknwon file: {}", filename.string());

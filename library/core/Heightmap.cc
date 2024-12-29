@@ -372,7 +372,7 @@ namespace gf {
         return value / water_level * 0.5;
       }
 
-      return (value - water_level) / (1.0 - water_level) * 0.5 + 0.5;
+      return ((value - water_level) / (1.0 - water_level) * 0.5) + 0.5;
     }
 
   } // anonymous namespace
@@ -418,7 +418,7 @@ namespace gf {
         }
 
         normal = gf::normalize(normal / count);
-        const double light = gf::clamp(0.5 + 35 * gf::dot(Light, normal), 0.0, 1.0);
+        const double light = gf::clamp(0.5 + (35 * gf::dot(Light, normal)), 0.0, 1.0);
 
         const Color pixel = image(position);
 
@@ -428,7 +428,7 @@ namespace gf {
         if (light < 0.5) {
           image.put_pixel(position, gf::lerp(lo, pixel, static_cast<float>(2 * light)));
         } else {
-          image.put_pixel(position, gf::lerp(pixel, hi, static_cast<float>(2 * light - 1)));
+          image.put_pixel(position, gf::lerp(pixel, hi, static_cast<float>((2 * light) - 1)));
         }
       }
     }

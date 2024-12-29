@@ -848,7 +848,7 @@ namespace gf {
   {
     assert(m_atlas);
 
-    RichTextStyle style(data);
+    const RichTextStyle style(data);
     TextParser parser(m_atlas, &style, m_font, data);
     SimpleTextLexer lexer;
 

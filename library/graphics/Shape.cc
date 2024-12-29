@@ -63,7 +63,7 @@ namespace gf {
       for (auto i : gf::index_range(buffer.points.size())) {
         geometry.indices.push_back(0);
         geometry.indices.push_back(static_cast<uint16_t>(1 + i));
-        geometry.indices.push_back(static_cast<uint16_t>(1 + (i + 1) % buffer.points.size()));
+        geometry.indices.push_back(static_cast<uint16_t>(1 + ((i + 1) % buffer.points.size())));
       }
 
       geometry.bounds = RectF::from_min_max(min, max);

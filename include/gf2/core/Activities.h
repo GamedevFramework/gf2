@@ -307,7 +307,7 @@ namespace gf {
       template<typename Tuple, std::size_t... Indices>
       struct ActivityTupleGetters<Tuple, std::index_sequence<Indices...>> {
         using Getter = Activity& (*)(Tuple&);
-        static inline constexpr Getter Table[std::tuple_size_v<Tuple>] = { &activity_tuple_get<Tuple, Indices>... };
+        static constexpr Getter Table[std::tuple_size_v<Tuple>] = { &activity_tuple_get<Tuple, Indices>... };
       };
 
       template<typename Tuple>

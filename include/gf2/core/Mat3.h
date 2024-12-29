@@ -88,8 +88,8 @@ namespace gf {
     const float sin = std::sin(angle);
     // clang-format off
     return {{
-      {  cos,- sin, center.x * (1 - cos) + center.y * sin },
-      {  sin,  cos, center.y * (1 - cos) - center.x * sin },
+      {  cos,- sin, (center.x * (1 - cos)) + (center.y * sin) },
+      {  sin,  cos, (center.y * (1 - cos)) - (center.x * sin) },
       { 0.0f, 0.0f, 1.0f }
     }};
     // clang-format on
