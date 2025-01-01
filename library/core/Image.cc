@@ -56,6 +56,13 @@ namespace gf {
       return static_cast<int>(stream->finished());
     }
 
+    struct FileCloseDeleter {
+      void operator()(std::FILE* file) const noexcept
+      {
+        std::fclose(file);
+      }
+    };
+
   } // namespace
 
   Image::Image()
@@ -268,7 +275,7 @@ namespace gf {
 
   Vec2I image_size(const std::filesystem::path& filename)
   {
-    const std::unique_ptr<std::FILE, decltype(&std::fclose)> file(std::fopen(filename.string().c_str(), "rb"), std::fclose);
+    const std::unique_ptr<std::FILE, FileCloseDeleter> file(std::fopen(filename.string().c_str(), "rb"));
 
     if (!file) {
       Log::fatal("Unknwon file: {}", filename.string());
