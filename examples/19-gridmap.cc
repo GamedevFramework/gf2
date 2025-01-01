@@ -178,21 +178,13 @@ namespace {
   struct State {
     gf::Vec2I light = { 0, 0 };
     int radius = 6;
-    gf::Visibility visibility = gf::Visibility::ShadowCast;
   };
 
   class GridScene : public gf::Scene {
   public:
     GridScene(gf::BasicSceneManager* scene_manager)
-    : m_scene_manager(scene_manager)
-    , m_grid_entity(scene_manager)
+    : m_grid_entity(scene_manager)
     {
-      m_actions.add_action("RayCast"_id, gf::ActionSettings().add_keycode_control(gf::Keycode::Num1));
-      m_actions.add_action("ShadowCast"_id, gf::ActionSettings().add_keycode_control(gf::Keycode::Num2));
-      m_actions.add_action("DiamondWalls"_id, gf::ActionSettings().add_keycode_control(gf::Keycode::Num3));
-      m_actions.add_action("Permissive"_id, gf::ActionSettings().add_keycode_control(gf::Keycode::Num4));
-      m_actions.add_action("Improved"_id, gf::ActionSettings().add_keycode_control(gf::Keycode::Num5));
-
       m_actions.add_action("clear"_id, gf::ActionSettings().add_keycode_control(gf::Keycode::C));
 
       set_world_size(MapSize * CellSize);
@@ -215,7 +207,7 @@ namespace {
             if (position != m_state.light) {
               m_state.light = position;
               m_grid_entity.map().clear_visible();
-              m_grid_entity.map().compute_field_of_vision(m_state.light, m_state.radius, m_state.visibility);
+              m_grid_entity.map().compute_field_of_vision(m_state.light, m_state.radius);
             }
           }
           break;
@@ -228,39 +220,6 @@ namespace {
 
     void do_handle_actions() override
     {
-      gf::Visibility visibility = m_state.visibility;
-
-      if (m_actions.active("RayCast"_id)) {
-        gf::Log::info("Visibility: RayCast");
-        visibility = gf::Visibility::RayCast;
-      }
-
-      if (m_actions.active("ShadowCast"_id)) {
-        gf::Log::info("Visibility: ShadowCast");
-        visibility = gf::Visibility::ShadowCast;
-      }
-
-      if (m_actions.active("DiamondWalls"_id)) {
-        gf::Log::info("Visibility: DiamondWalls");
-        visibility = gf::Visibility::DiamondWalls;
-      }
-
-      if (m_actions.active("Permissive"_id)) {
-        gf::Log::info("Visibility: Permissive");
-        visibility = gf::Visibility::Permissive;
-      }
-
-      if (m_actions.active("Improved"_id)) {
-        gf::Log::info("Visibility: Improved");
-        visibility = gf::Visibility::Improved;
-      }
-
-      if (visibility != m_state.visibility) {
-        m_state.visibility = visibility;
-        m_grid_entity.map().clear_visible();
-        m_grid_entity.map().compute_field_of_vision(m_state.light, m_state.radius, m_state.visibility);
-      }
-
       if (m_actions.active("clear"_id)) {
         m_grid_entity.map().clear_explored();
       }
@@ -268,7 +227,6 @@ namespace {
       m_actions.reset();
     }
 
-    gf::BasicSceneManager* m_scene_manager = nullptr;
     GridEntity m_grid_entity;
     gf::ActionGroup m_actions;
     State m_state;

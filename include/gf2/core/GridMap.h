@@ -24,14 +24,6 @@ namespace gf {
     float blocked = 5.0f;
   };
 
-  enum class Visibility : uint8_t {
-    RayCast,
-    ShadowCast,
-    DiamondWalls,
-    Permissive,
-    Improved,
-  };
-
   class GF_CORE_API GridMap {
   public:
     GridMap() = default;
@@ -78,11 +70,6 @@ namespace gf {
     bool visible(Vec2I position) const;
     bool explored(Vec2I position) const;
 
-    std::vector<Vec2I> compute_route(Vec2I origin, Vec2I target, RouteCost cost = {}, Route route = Route::AStar);
-
-    void compute_field_of_vision(Vec2I origin, int range_limit, Visibility visibility);
-    void compute_local_field_of_vision(Vec2I origin, int range_limit, Visibility visibility);
-
     uint32_t tag(Vec2I position) const;
     void set_tag(Vec2I position, uint32_t tag);
 
@@ -98,10 +85,15 @@ namespace gf {
       set_tag(position, static_cast<uint32_t>(static_cast<std::underlying_type_t<E>>(tag)));
     }
 
+    std::vector<Vec2I> compute_route(Vec2I origin, Vec2I target, RouteCost cost = {}, Route route = Route::AStar);
+
+    void compute_field_of_vision(Vec2I origin, int range_limit);
+    void compute_local_field_of_vision(Vec2I origin, int range_limit);
+
   private:
     GridMap(Vec2I size, AnyGrid grid);
 
-    void raw_compute_field_of_vision(Vec2I origin, int range_limit, Flags<CellProperty> properties, Visibility visibility);
+    void raw_compute_field_of_vision(Vec2I origin, int range_limit, Flags<CellProperty> properties);
 
     Array2D<Flags<CellProperty>> m_cells;
     Array2D<uint32_t> m_tags;

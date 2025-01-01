@@ -4,12 +4,13 @@
 #include <gf2/core/GridMap.h>
 
 #include <algorithm>
+#include <queue>
 
 #include <gf2/core/BinaryHeap.h>
-#include <gf2/core/GridVisibility.h>
+#include <gf2/core/Direction.h>
 #include <gf2/core/Log.h>
-
-#include "gf2/core/GridTypes.h"
+#include <gf2/core/Range.h>
+#include <gf2/core/Rational.h>
 
 namespace gf {
   namespace {
@@ -235,6 +236,24 @@ namespace gf {
     return m_cells(position).test(CellProperty::Explored);
   }
 
+  uint32_t GridMap::tag(Vec2I position) const
+  {
+    if (!m_tags.valid(position)) {
+      return DefaultTag;
+    }
+
+    return m_tags(position);
+  }
+
+  void GridMap::set_tag(Vec2I position, uint32_t tag)
+  {
+    if (!m_tags.valid(position)) {
+      return;
+    }
+
+    m_tags(position) = tag;
+  }
+
   /*
    * route
    */
@@ -397,35 +416,180 @@ namespace gf {
     return {};
   }
 
-  void GridMap::compute_field_of_vision(Vec2I origin, int range_limit, Visibility visibility)
+  /*
+   * field of vision
+   */
+
+  void GridMap::compute_field_of_vision(Vec2I origin, int range_limit)
   {
-    raw_compute_field_of_vision(origin, range_limit, CellProperty::Visible | CellProperty::Explored, visibility);
+    raw_compute_field_of_vision(origin, range_limit, CellProperty::Visible | CellProperty::Explored);
   }
 
-  void GridMap::compute_local_field_of_vision(Vec2I origin, int range_limit, Visibility visibility)
+  void GridMap::compute_local_field_of_vision(Vec2I origin, int range_limit)
   {
-    raw_compute_field_of_vision(origin, range_limit, CellProperty::Visible, visibility);
+    raw_compute_field_of_vision(origin, range_limit, CellProperty::Visible);
   }
 
-  uint32_t GridMap::tag(Vec2I position) const
-  {
-    if (!m_tags.valid(position)) {
-      return DefaultTag;
+  /*
+   * Symmetric Shadowcasting
+   * based on https://github.com/370417/symmetric-shadowcasting
+   * License: CC0-1.0
+   */
+
+  namespace {
+    template<typename T>
+    T round_ties_up(const Rational<T>& rat)
+    {
+      T q = rat.numerator() / rat.denominator();
+      T r = rat.numerator() % rat.denominator();
+
+      while (r < 0) {
+        r += rat.denominator();
+        --q;
+      }
+
+      if (2 * r >= rat.denominator()) {
+        return q + 1;
+      }
+
+      return q;
     }
 
-    return m_tags(position);
-  }
+    template<typename T>
+    T round_ties_down(const Rational<T>& rat)
+    {
+      T q = rat.numerator() / rat.denominator();
+      T r = rat.numerator() % rat.denominator();
 
-  void GridMap::set_tag(Vec2I position, uint32_t tag)
-  {
-    if (!m_tags.valid(position)) {
-      return;
+      while (r < 0) {
+        r += rat.denominator();
+        --q;
+      }
+
+      if (2 * r > rat.denominator()) {
+        return q + 1;
+      }
+
+      return q;
     }
 
-    m_tags(position) = tag;
+    struct Quadrant {
+      Direction direction;
+      Vec2I origin;
+
+      Vec2I transform(Vec2I position) const
+      {
+        switch (direction) {
+          case Direction::Up:
+            return { origin.x + position.x, origin.y - position.y };
+          case Direction::Down:
+            return { origin.x + position.x, origin.y + position.y };
+          case Direction::Right:
+            return { origin.x + position.y, origin.y + position.x };
+          case Direction::Left:
+            return { origin.x - position.y, origin.y + position.x };
+
+          default:
+            break;
+        }
+
+        assert(false);
+        return { 0, 0 };
+      }
+    };
+
+    struct Row {
+      int32_t depth = 0;
+      Rational<int32_t> start_slope;
+      Rational<int32_t> end_slope;
+
+      PositionRange tiles() const
+      {
+        auto min_x = round_ties_down(depth * start_slope);
+        auto max_x = round_ties_up(depth * end_slope);
+        return rectangle_range(RectI::from_position_size({min_x, depth  }, { max_x - min_x + 1, 1 }));
+      }
+
+      Row next() const
+      {
+        return { depth + 1, start_slope, end_slope };
+      }
+    };
+
+    bool is_symmetric(const Row& row, Vec2I position)
+    {
+      return row.depth * row.start_slope <= position.x && position.x <= row.depth * row.end_slope;
+    }
+
+    Rational<int32_t> slope(Vec2I position)
+    {
+      return { (2 * position.x) - 1, 2 * position.y };
+    }
+
+    struct SymmetricShadowcasting {
+      GridMap* map = nullptr;
+      Flags<CellProperty> properties = None;
+
+      void compute_visibility(Vec2I origin, int range_limit) const
+      {
+        map->add_properties(origin, properties);
+
+        for (auto direction : { Direction::Up, Direction::Left, Direction::Down, Direction::Right }) {
+          const Quadrant quadrant = { direction , origin };
+          compute_visibility_in_quadrant(origin, range_limit, quadrant);
+        }
+      }
+
+      void compute_visibility_in_quadrant(Vec2I origin, int range_limit, Quadrant quadrant) const
+      {
+        const int square_range_limit = square(range_limit);
+        const Row first_row = { 1, -1, 1 };
+
+        std::queue<Row> rows;
+        rows.push(first_row);
+
+        while (!rows.empty()) {
+          auto row = rows.front();
+          rows.pop();
+
+          std::optional<Vec2I> prev_absolute;
+
+          auto range = row.tiles();
+
+          for (auto position : range) {
+            auto absolute = quadrant.transform(position);
+
+            if (square_distance(absolute, origin) > square_range_limit) {
+              continue;
+            }
+
+            if (!map->transparent(absolute) || is_symmetric(row, position)) {
+              map->add_properties(absolute, properties);
+            }
+
+            if (prev_absolute && !map->transparent(*prev_absolute) && map->transparent(absolute)) {
+              row.start_slope = slope(position);
+            }
+
+            if (prev_absolute && map->transparent(*prev_absolute) && !map->transparent(absolute)) {
+              auto next_row = row.next();
+              next_row.end_slope = slope(position);
+              rows.push(next_row);
+            }
+
+            prev_absolute = absolute;
+          }
+
+          if (prev_absolute && map->transparent(*prev_absolute)) {
+            rows.push(row.next());
+          }
+        }
+      }
+    };
+
   }
 
-  void GridMap::raw_compute_field_of_vision(Vec2I origin, int range_limit, Flags<CellProperty> properties, Visibility visibility)
+  void GridMap::raw_compute_field_of_vision(Vec2I origin, int range_limit, Flags<CellProperty> properties)
   {
     const GridOrientation orientation = m_grid.orientation();
 
@@ -433,38 +597,8 @@ namespace gf {
       Log::fatal("Unsupported orientation for field of vision.");
     }
 
-    switch (visibility) {
-      case Visibility::RayCast:
-        {
-          const RayCastVisibility algorithm(this, properties);
-          algorithm.compute_visibility(origin, range_limit);
-        }
-        break;
-      case Visibility::ShadowCast:
-        {
-          const ShadowCastVisibility algorithm(this, properties);
-          algorithm.compute_visibility(origin, range_limit);
-        }
-        break;
-      case Visibility::DiamondWalls:
-        {
-          const DiamondWallsVisibility algorithm(this, properties);
-          algorithm.compute_visibility(origin, range_limit);
-        }
-        break;
-      case Visibility::Permissive:
-        {
-          const PermissiveVisibility algorithm(this, properties);
-          algorithm.compute_visibility(origin, range_limit);
-        }
-        break;
-      case Visibility::Improved:
-        {
-          const ImprovedVisibility algorithm(this, properties);
-          algorithm.compute_visibility(origin, range_limit);
-        }
-        break;
-    }
+    SymmetricShadowcasting symmetric_shadowcasting = { this, properties };
+    symmetric_shadowcasting.compute_visibility(origin, range_limit);
   }
 
 }
