@@ -62,9 +62,9 @@ namespace gf {
     // do nothing by default
   }
 
-  void ConsoleScene::update()
+  void ConsoleScene::update(Time time)
   {
-    update_elements();
+    update_elements(time);
   }
 
   void ConsoleScene::render([[maybe_unused]] Console& buffer)
@@ -72,9 +72,9 @@ namespace gf {
     render_elements(buffer);
   }
 
-  void ConsoleScene::update_elements()
+  void ConsoleScene::update_elements(Time time)
   {
-    m_elements.update();
+    m_elements.update(time);
   }
 
   void ConsoleScene::render_elements(Console& buffer)

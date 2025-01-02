@@ -66,11 +66,11 @@ namespace gf {
     }
   }
 
-  void ConsoleSceneManager::update()
+  void ConsoleSceneManager::update(Time time)
   {
     for (ConsoleScene* scene : m_scenes) {
       if (!scene->paused()) {
-        scene->update();
+        scene->update(time);
       }
     }
   }

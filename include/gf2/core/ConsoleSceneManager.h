@@ -25,7 +25,7 @@ namespace gf {
 
     void process_event(const Event& event);
     void handle_actions();
-    void update();
+    void update(Time time);
     void render();
 
     Console& console();

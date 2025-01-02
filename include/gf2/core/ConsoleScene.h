@@ -36,11 +36,11 @@ namespace gf {
 
     virtual void process_event(const Event& event);
     virtual void handle_actions();
-    virtual void update();
+    virtual void update(Time time);
     virtual void render(Console& buffer);
 
   protected:
-    void update_elements();
+    void update_elements(Time time);
     void render_elements(Console& buffer);
 
   private:

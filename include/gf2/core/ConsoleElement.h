@@ -4,6 +4,7 @@
 #define GF_CONSOLE_ELEMENT_H
 
 #include "CoreApi.h"
+#include "Time.h"
 
 namespace gf {
   class Console;
@@ -18,7 +19,7 @@ namespace gf {
     ConsoleElement& operator=(const ConsoleElement&) = delete;
     ConsoleElement& operator=(ConsoleElement&&) noexcept = default;
 
-    virtual void update();
+    virtual void update(Time time);
     virtual void render(Console& buffer);
   };
 

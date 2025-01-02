@@ -7,7 +7,7 @@ namespace gf {
 
   ConsoleElement::~ConsoleElement() = default;
 
-  void ConsoleElement::update()
+  void ConsoleElement::update([[maybe_unused]] Time time)
   {
     // do nothing by default
   }

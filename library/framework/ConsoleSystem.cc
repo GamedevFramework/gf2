@@ -28,9 +28,9 @@ namespace gf {
     m_console_scene_manager.handle_actions();
   }
 
-  void ConsoleSystem::do_update([[maybe_unused]] Time time)
+  void ConsoleSystem::do_update(Time time)
   {
-    m_console_scene_manager.update();
+    m_console_scene_manager.update(time);
     m_console_scene_manager.render();
     m_console_entity.graphics().update(m_console_scene_manager.console(), m_render_manager);
   }

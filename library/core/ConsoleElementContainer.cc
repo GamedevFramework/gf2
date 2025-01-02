@@ -10,10 +10,10 @@ namespace gf {
     m_elements.push_back(element);
   }
 
-  void ConsoleElementContainer::update()
+  void ConsoleElementContainer::update(Time time)
   {
     for (ConsoleElement* element : m_elements) {
-      element->update();
+      element->update(time);
     }
   }
 

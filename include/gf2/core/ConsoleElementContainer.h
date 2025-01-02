@@ -16,7 +16,7 @@ namespace gf {
 
     void add_element(ConsoleElement* element);
 
-    void update();
+    void update(Time time);
     void render(Console& buffer);
 
   private:
