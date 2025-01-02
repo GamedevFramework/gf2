@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
 
-#include <gf2/graphics/Console.h>
+#include <gf2/graphics/ConsoleGraphics.h>
 
 #include <gf2/core/ResourceManager.h>
 
@@ -9,7 +9,7 @@
 
 namespace gf {
 
-  Console::Console()
+  ConsoleGraphics::ConsoleGraphics()
   : m_background_vertices(BufferType::Device, BufferUsage::Vertex)
   , m_background_indices(BufferType::Device, BufferUsage::Index)
   , m_foreground_vertices(BufferType::Device, BufferUsage::Vertex)
@@ -21,19 +21,18 @@ namespace gf {
     m_foreground_indices.set_debug_name("[gf2] Console Foreground Index Buffer");
   }
 
-  Console::Console(const ConsoleFont* font, const ConsoleBuffer& buffer, RenderManager* render_manager)
-  : Console()
+  ConsoleGraphics::ConsoleGraphics(const ConsoleFont* font)
+  : ConsoleGraphics()
   {
     m_font = font;
-    update(buffer, render_manager);
   }
 
-  Console::Console(const ConsoleResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
-  : Console(resource_manager->get<ConsoleFont>(resource.console_font), resource.buffer, render_manager)
+  ConsoleGraphics::ConsoleGraphics(const ConsoleResource& resource, ResourceManager* resource_manager)
+  : ConsoleGraphics(resource_manager->get<ConsoleFont>(resource.console_font))
   {
   }
 
-  void Console::update(const ConsoleBuffer& buffer, RenderManager* render_manager)
+  void ConsoleGraphics::update(const Console& buffer, RenderManager* render_manager)
   {
     if (m_font == nullptr) {
       return;
@@ -42,10 +41,10 @@ namespace gf {
     update_background(buffer, render_manager);
     update_foreground(buffer, render_manager);
 
-    m_bounds = RectF::from_size(buffer.cells.size() * m_font->character_size());
+    m_bounds = RectF::from_size(buffer.size() * m_font->character_size());
   }
 
-  RenderGeometry Console::background_geometry() const
+  RenderGeometry ConsoleGraphics::background_geometry() const
   {
     RenderGeometry geometry;
     geometry.vertices = &m_background_vertices.buffer();
@@ -54,7 +53,7 @@ namespace gf {
     return geometry;
   }
 
-  RenderGeometry Console::foreground_geometry() const
+  RenderGeometry ConsoleGraphics::foreground_geometry() const
   {
     RenderGeometry geometry;
     geometry.vertices = &m_foreground_vertices.buffer();
@@ -64,12 +63,12 @@ namespace gf {
     return geometry;
   }
 
-  void Console::update_background(const ConsoleBuffer& buffer, RenderManager* render_manager)
+  void ConsoleGraphics::update_background(const Console& buffer, RenderManager* render_manager)
   {
     RawGeometry geometry;
 
-    for (auto position : buffer.cells.position_range()) {
-      const auto& cell = buffer.cells(position);
+    for (auto position : buffer.raw().position_range()) {
+      const auto& cell = buffer.raw()(position);
 
       const RectF bounds = RectF::from_position_size(position * m_font->character_size(), m_font->character_size());
       const Vec2F texture_coordinates = { 0.0f, 0.0f };
@@ -97,12 +96,12 @@ namespace gf {
     m_background_indices.update(geometry.indices.data(), geometry.indices.size(), render_manager);
   }
 
-  void Console::update_foreground(const ConsoleBuffer& buffer, RenderManager* render_manager)
+  void ConsoleGraphics::update_foreground(const Console& buffer, RenderManager* render_manager)
   {
     RawGeometry geometry;
 
-    for (auto position : buffer.cells.position_range()) {
-      const auto& cell = buffer.cells(position);
+    for (auto position : buffer.raw().position_range()) {
+      const auto& cell = buffer.raw()(position);
 
       const Vec2I character_size = m_font->character_size();
       const RectI bounds = RectI::from_position_size(position * character_size, character_size);

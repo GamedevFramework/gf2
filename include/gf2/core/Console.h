@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
-#ifndef GF_CONSOLE_BUFFER_H
-#define GF_CONSOLE_BUFFER_H
+#ifndef GF_CONSOLE_H
+#define GF_CONSOLE_H
 
 #include <cstdint>
 
@@ -31,12 +31,16 @@ namespace gf {
     return ar | cell.foreground | cell.background | cell.character;
   }
 
-  struct GF_CORE_API ConsoleBuffer {
-    Array2D<ConsoleCell> cells;
-
-    ConsoleBuffer(Vec2I size = { 0, 0 })
-    : cells(size)
+  class GF_CORE_API Console {
+  public:
+    Console(Vec2I size = { 0, 0 })
+    : m_cells(size)
     {
+    }
+
+    Vec2I size() const
+    {
+      return m_cells.size();
     }
 
     void clear(const ConsoleStyle& style = ConsoleStyle());
@@ -119,7 +123,10 @@ namespace gf {
       raw_draw_frame(area, style, actual_title);
     }
 
-    void blit_to(ConsoleBuffer& console, RectI source, Vec2I destination, float foreground_alpha = 1.0f, float background_alpha = 1.0f) const;
+    void blit_to(Console& console, RectI source, Vec2I destination, float foreground_alpha = 1.0f, float background_alpha = 1.0f) const;
+
+    Array2D<ConsoleCell>& raw();
+    const Array2D<ConsoleCell>& raw() const;
 
   private:
     static constexpr uint8_t PrintSplit = 0x01;
@@ -130,25 +137,27 @@ namespace gf {
     int raw_print(RectI area, const std::string& message, ConsoleAlignment alignment, const ConsoleRichStyle& style, uint8_t flags = 0x00);
     int raw_print_multiline(RectI area, const std::string& message, ConsoleAlignment alignment, const ConsoleRichStyle& style, uint8_t flags = 0x00);
     void raw_draw_frame(RectI area, const ConsoleStyle& style, std::string_view title);
+
+    Array2D<ConsoleCell> m_cells;
   };
 
   template<typename Archive>
-  Archive& operator|(Archive& ar, MaybeConst<ConsoleBuffer, Archive>& buffer)
+  Archive& operator|(Archive& ar, MaybeConst<Console, Archive>& buffer)
   {
-    return ar | buffer.cells;
+    return ar | buffer.raw();
   }
 
   struct GF_CORE_API ConsoleResource {
     std::filesystem::path console_font;
-    ConsoleBuffer buffer;
+    Vec2I size;
   };
 
   template<typename Archive>
   Archive& operator|(Archive& ar, MaybeConst<ConsoleResource, Archive>& resource)
   {
-    return ar | resource.console_font | resource.buffer;
+    return ar | resource.console_font | resource.size;
   }
 
 }
 
-#endif // GF_CONSOLE_BUFFER_H
+#endif // GF_CONSOLE_H

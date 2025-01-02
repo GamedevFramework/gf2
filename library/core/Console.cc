@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
 
-#include <gf2/core/ConsoleBuffer.h>
+#include <gf2/core/Console.h>
 
 #include <cassert>
 
@@ -245,18 +245,18 @@ namespace gf {
 
   }
 
-  void ConsoleBuffer::clear(const ConsoleStyle& style)
+  void Console::clear(const ConsoleStyle& style)
   {
-    for (auto& cell : cells) {
+    for (auto& cell : m_cells) {
       cell.background = style.color.background;
       cell.foreground = style.color.foreground;
       cell.character = u' ';
     }
   }
 
-  void ConsoleBuffer::clear(RectI area, const ConsoleStyle& style)
+  void Console::clear(RectI area, const ConsoleStyle& style)
   {
-    auto maybe_area = area.intersection(RectI::from_size(cells.size()));
+    auto maybe_area = area.intersection(RectI::from_size(m_cells.size()));
 
     if (!maybe_area) {
       return;
@@ -266,80 +266,80 @@ namespace gf {
 
     for (auto position : position_range(area.extent)) {
       position += area.offset;
-      auto& cell = cells(position);
+      auto& cell = m_cells(position);
       cell.background = style.color.background;
       cell.foreground = style.color.foreground;
       cell.character = u' ';
     }
   }
 
-  void ConsoleBuffer::set_background(Vec2I position, Color color, ConsoleEffect effect)
+  void Console::set_background(Vec2I position, Color color, ConsoleEffect effect)
   {
-    if (!cells.valid(position)) {
+    if (!m_cells.valid(position)) {
       return;
     }
 
-    cells(position).background = effect.compute_color(cells(position).background, color);
+    m_cells(position).background = effect.compute_color(m_cells(position).background, color);
   }
 
-  Color ConsoleBuffer::background(Vec2I position) const
+  Color Console::background(Vec2I position) const
   {
-    assert(cells.valid(position));
-    return cells(position).background;
+    assert(m_cells.valid(position));
+    return m_cells(position).background;
   }
 
-  void ConsoleBuffer::set_foreground(Vec2I position, Color color)
+  void Console::set_foreground(Vec2I position, Color color)
   {
-    if (!cells.valid(position)) {
+    if (!m_cells.valid(position)) {
       return;
     }
 
-    cells(position).foreground = color;
+    m_cells(position).foreground = color;
   }
 
-  Color ConsoleBuffer::foreground(Vec2I position) const
+  Color Console::foreground(Vec2I position) const
   {
-    assert(cells.valid(position));
-    return cells(position).foreground;
+    assert(m_cells.valid(position));
+    return m_cells(position).foreground;
   }
 
-  void ConsoleBuffer::set_character(Vec2I position, char16_t character)
+  void Console::set_character(Vec2I position, char16_t character)
   {
-    if (!cells.valid(position)) {
+    if (!m_cells.valid(position)) {
       return;
     }
 
-    cells(position).character = character;
+    m_cells(position).character = character;
   }
 
-  char16_t ConsoleBuffer::character(Vec2I position) const
+  char16_t Console::character(Vec2I position) const
   {
-    assert(cells.valid(position));
-    return cells(position).character;
+    assert(m_cells.valid(position));
+    return m_cells(position).character;
   }
 
-  void ConsoleBuffer::put_character(Vec2I position, char16_t character, const ConsoleStyle& style)
+  void Console::put_character(Vec2I position, char16_t character, const ConsoleStyle& style)
   {
-    if (!cells.valid(position)) {
+    if (!m_cells.valid(position)) {
       return;
     }
 
-    auto& cell = cells(position);
+    auto& cell = m_cells(position);
     cell.foreground = style.color.foreground;
     cell.background = style.effect.compute_color(cell.background, style.color.background);
     cell.character = character;
   }
 
-  void ConsoleBuffer::put_character(Vec2I position, char16_t character, Color foreground, Color background)
+  void Console::put_character(Vec2I position, char16_t character, Color foreground, Color background)
   {
-    if (!cells.valid(position)) {
+    if (!m_cells.valid(position)) {
       return;
     }
 
-    cells(position) = { foreground, background, character };
+    m_cells(position) = { foreground, background, character };
   }
 
-  void ConsoleBuffer::draw_rectangle(RectI area, const ConsoleStyle& style)
+  void Console::draw_rectangle(RectI area, const ConsoleStyle& style)
   {
     for (int x = area.offset.x; x < area.offset.x + area.extent.w; ++x) {
       set_background({ x, area.offset.y }, style.color.background, style.effect);
@@ -352,7 +352,7 @@ namespace gf {
     }
   }
 
-  void ConsoleBuffer::draw_horizontal_line(Vec2I left, int width, const ConsoleStyle& style)
+  void Console::draw_horizontal_line(Vec2I left, int width, const ConsoleStyle& style)
   {
     for (int i = 0; i < width; ++i) {
       put_character(left, ConsoleChar::BoxDrawingsLightHorizontal, style);
@@ -360,7 +360,7 @@ namespace gf {
     }
   }
 
-  void ConsoleBuffer::draw_vertical_line(Vec2I top, int height, const ConsoleStyle& style)
+  void Console::draw_vertical_line(Vec2I top, int height, const ConsoleStyle& style)
   {
     for (int j = 0; j < height; ++j) {
       put_character(top, ConsoleChar::BoxDrawingsLightVertical, style);
@@ -368,18 +368,18 @@ namespace gf {
     }
   }
 
-  void ConsoleBuffer::blit_to(ConsoleBuffer& console, RectI source, Vec2I destination, float foreground_alpha, float background_alpha) const
+  void Console::blit_to(Console& console, RectI source, Vec2I destination, float foreground_alpha, float background_alpha) const
   {
-    const Blit blit = compute_blit(source, cells.size(), destination, console.cells.size());
+    const Blit blit = compute_blit(source, m_cells.size(), destination, console.m_cells.size());
     Vec2I offset = {};
 
     for (offset.y = 0; offset.y < blit.source_region.extent.h; ++offset.y) {
       for (offset.x = 0; offset.x < blit.source_region.extent.w; ++offset.x) {
-        assert(console.cells.valid(blit.target_offset + offset));
-        assert(cells.valid(blit.source_region.offset + offset));
+        assert(console.m_cells.valid(blit.target_offset + offset));
+        assert(m_cells.valid(blit.source_region.offset + offset));
 
-        auto& target_cell = console.cells(blit.target_offset + offset);
-        const auto& origin_cell = cells(blit.source_region.offset + offset);
+        auto& target_cell = console.m_cells(blit.target_offset + offset);
+        const auto& origin_cell = m_cells(blit.source_region.offset + offset);
 
         target_cell.background = gf::lerp(target_cell.background, origin_cell.background, background_alpha);
         target_cell.foreground = gf::lerp(target_cell.foreground, origin_cell.foreground, foreground_alpha);
@@ -388,7 +388,7 @@ namespace gf {
     }
   }
 
-  int ConsoleBuffer::put_string(Vec2I position, std::string_view message, const ConsoleStyle& style)
+  int Console::put_string(Vec2I position, std::string_view message, const ConsoleStyle& style)
   {
     int width = 0;
 
@@ -406,9 +406,9 @@ namespace gf {
     return width;
   }
 
-  int ConsoleBuffer::raw_print(RectI area, const std::string& message, ConsoleAlignment alignment, const ConsoleRichStyle& style, uint8_t flags)
+  int Console::raw_print(RectI area, const std::string& message, ConsoleAlignment alignment, const ConsoleRichStyle& style, uint8_t flags)
   {
-    auto size = cells.size();
+    auto size = m_cells.size();
     auto min = area.min();
     auto max = area.max();
 
@@ -450,9 +450,9 @@ namespace gf {
     return raw_print_multiline(single_line_area, message, alignment, style, flags);
   }
 
-  int ConsoleBuffer::raw_print_multiline(RectI area, const std::string& message, ConsoleAlignment alignment, const ConsoleRichStyle& style, uint8_t flags)
+  int Console::raw_print_multiline(RectI area, const std::string& message, ConsoleAlignment alignment, const ConsoleRichStyle& style, uint8_t flags)
   {
-    auto size = cells.size();
+    auto size = m_cells.size();
     int line_count = 0;
     int paragraph_width = area.extent.w;
 
@@ -538,7 +538,7 @@ namespace gf {
     return line_count;
   }
 
-  void ConsoleBuffer::raw_draw_frame(RectI area, const ConsoleStyle& style, std::string_view title)
+  void Console::raw_draw_frame(RectI area, const ConsoleStyle& style, std::string_view title)
   {
     draw_rectangle(area, style);
     area.extent -= 1;
@@ -563,6 +563,16 @@ namespace gf {
     std::swap(title_style.color.foreground, title_style.color.background);
     title_style.effect = ConsoleEffect::set();
     print({ min.x + 1, min.y }, ConsoleAlignment::Left, title_style, " {} ", title);
+  }
+
+  Array2D<ConsoleCell>& Console::raw()
+  {
+    return m_cells;
+  }
+
+  const Array2D<ConsoleCell>& Console::raw() const
+  {
+    return m_cells;
   }
 
 }

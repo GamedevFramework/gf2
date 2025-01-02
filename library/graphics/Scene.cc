@@ -48,36 +48,36 @@ namespace gf {
 
   void BasicScene::pause()
   {
-    m_status = Status::Paused;
+    m_status = SceneStatus::Paused;
     do_pause();
   }
 
   void BasicScene::resume()
   {
-    m_status = Status::Resumed;
+    m_status = SceneStatus::Resumed;
     do_resume();
   }
 
   bool BasicScene::paused() const
   {
-    return m_status == Status::Paused;
+    return m_status == SceneStatus::Paused;
   }
 
   void BasicScene::hide()
   {
-    m_visibility = Visibility::Hidden;
+    m_visibility = SceneVisibility::Hidden;
     do_hide();
   }
 
   void BasicScene::show()
   {
-    m_visibility = Visibility::Shown;
+    m_visibility = SceneVisibility::Shown;
     do_show();
   }
 
   bool BasicScene::hidden() const
   {
-    return m_visibility == Visibility::Hidden;
+    return m_visibility == SceneVisibility::Hidden;
   }
 
   void BasicScene::process_event(const Event& event)

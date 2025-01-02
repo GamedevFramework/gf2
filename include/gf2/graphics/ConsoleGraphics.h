@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
-#ifndef GF_CONSOLE_H
-#define GF_CONSOLE_H
+#ifndef GF_CONSOLE_GRAPHICS_H
+#define GF_CONSOLE_GRAPHICS_H
 
-#include <gf2/core/ConsoleBuffer.h>
+#include <gf2/core/Console.h>
 
 #include "ConsoleFont.h"
 #include "DynamicBuffer.h"
@@ -14,11 +14,11 @@ namespace gf {
   class RenderManager;
   class ResourceManager;
 
-  class GF_GRAPHICS_API Console {
+  class GF_GRAPHICS_API ConsoleGraphics {
   public:
-    Console();
-    Console(const ConsoleFont* font, const ConsoleBuffer& buffer, RenderManager* render_manager);
-    Console(const ConsoleResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
+    ConsoleGraphics();
+    ConsoleGraphics(const ConsoleFont* font);
+    ConsoleGraphics(const ConsoleResource& resource, ResourceManager* resource_manager);
 
     const ConsoleFont* font() const
     {
@@ -30,7 +30,7 @@ namespace gf {
       m_font = font;
     }
 
-    void update(const ConsoleBuffer& buffer, RenderManager* render_manager);
+    void update(const Console& buffer, RenderManager* render_manager);
 
     RenderGeometry background_geometry() const;
     RenderGeometry foreground_geometry() const;
@@ -41,8 +41,8 @@ namespace gf {
     }
 
   private:
-    void update_background(const ConsoleBuffer& buffer, RenderManager* render_manager);
-    void update_foreground(const ConsoleBuffer& buffer, RenderManager* render_manager);
+    void update_background(const Console& buffer, RenderManager* render_manager);
+    void update_foreground(const Console& buffer, RenderManager* render_manager);
 
     const ConsoleFont* m_font = nullptr;
     DynamicBuffer m_background_vertices;
@@ -54,4 +54,4 @@ namespace gf {
 
 }
 
-#endif // GF_CONSOLE_H
+#endif // GF_CONSOLE_GRAPHICS_H

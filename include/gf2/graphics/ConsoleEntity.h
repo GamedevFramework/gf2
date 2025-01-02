@@ -3,7 +3,7 @@
 #ifndef GF_CONSOLE_ENTITY_H
 #define GF_CONSOLE_ENTITY_H
 
-#include "Console.h"
+#include "ConsoleGraphics.h"
 #include "GraphicsApi.h"
 #include "TransformableEntity.h"
 
@@ -12,10 +12,10 @@ namespace gf {
   class GF_GRAPHICS_API ConsoleEntity : public TransformableEntity {
   public:
     ConsoleEntity() = default;
-    ConsoleEntity(const ConsoleFont* font, const ConsoleBuffer& buffer, RenderManager* render_manager);
-    ConsoleEntity(const ConsoleResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
+    ConsoleEntity(const ConsoleFont* font);
+    ConsoleEntity(const ConsoleResource& resource, ResourceManager* resource_manager);
 
-    Console& console()
+    ConsoleGraphics& graphics()
     {
       return m_console;
     }
@@ -23,7 +23,7 @@ namespace gf {
     void render(RenderRecorder& recorder) override;
 
   private:
-    Console m_console;
+    ConsoleGraphics m_console;
   };
 
 }

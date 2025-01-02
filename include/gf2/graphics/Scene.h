@@ -3,11 +3,10 @@
 #ifndef GF_SCENE_H
 #define GF_SCENE_H
 
-#include <cstdint>
-
 #include <gf2/core/Camera.h>
 #include <gf2/core/Color.h>
 #include <gf2/core/ModelContainer.h>
+#include <gf2/core/SceneTypes.h>
 #include <gf2/core/Time.h>
 
 #include "EntityContainer.h"
@@ -16,12 +15,6 @@
 
 namespace gf {
   class RenderRecorder;
-
-  enum class SceneRank : uint8_t {
-    None,
-    Active,
-    Top,
-  };
 
   class GF_GRAPHICS_API BasicScene {
   public:
@@ -78,20 +71,8 @@ namespace gf {
     virtual void do_render(RenderRecorder& recorder);
 
     SceneRank m_rank = SceneRank::None;
-
-    enum class Status : uint8_t {
-      Resumed,
-      Paused,
-    };
-
-    Status m_status = Status::Resumed;
-
-    enum class Visibility : uint8_t {
-      Shown,
-      Hidden,
-    };
-
-    Visibility m_visibility = Visibility::Shown;
+    SceneStatus m_status = SceneStatus::Resumed;
+    SceneVisibility m_visibility = SceneVisibility::Shown;
 
     Vec2I m_surface_size = { 1, 1 };
     Color m_clear_color = Black;

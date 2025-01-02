@@ -8,13 +8,13 @@
 
 namespace gf {
 
-  ConsoleEntity::ConsoleEntity(const ConsoleFont* font, const ConsoleBuffer& buffer, RenderManager* render_manager)
-  : m_console(font, buffer, render_manager)
+  ConsoleEntity::ConsoleEntity(const ConsoleFont* font)
+  : m_console(font)
   {
   }
 
-  ConsoleEntity::ConsoleEntity(const ConsoleResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
-  : m_console(resource, render_manager, resource_manager)
+  ConsoleEntity::ConsoleEntity(const ConsoleResource& resource, ResourceManager* resource_manager)
+  : m_console(resource, resource_manager)
   {
   }
 
