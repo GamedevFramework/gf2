@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Zlib
-// Copyright (c) 2023 Julien Bernard
+// Copyright (c) 2023-2025 Julien Bernard
 #ifndef GF_MODEL_H
 #define GF_MODEL_H
 

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Zlib
-// Copyright (c) 2023 Julien Bernard
+// Copyright (c) 2023-2025 Julien Bernard
 #ifndef GF_ARRAY_2D_H
 #define GF_ARRAY_2D_H
 

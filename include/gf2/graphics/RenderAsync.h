@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Zlib
-// Copyright (c) 2023 Julien Bernard
+// Copyright (c) 2023-2025 Julien Bernard
 #ifndef GF_RENDER_ASYNC_H
 #define GF_RENDER_ASYNC_H
 
