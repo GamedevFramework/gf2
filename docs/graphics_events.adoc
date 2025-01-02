@@ -20,7 +20,7 @@ xref:reference.adoc#graphics[< Back to reference]
 [source]
 ----
 #include <gf2/graphics/Event.h>
-struct Event;
+class Event;
 ----
 
 `Event` is a tagged union to describe system events. xref:Event.adoc[*Read more...*]

@@ -12,7 +12,7 @@
 #include "GraphicsApi.h"
 
 namespace gf {
-  struct Event;
+  class Event;
 
   class GF_GRAPHICS_API MotionGroup {
   public:
