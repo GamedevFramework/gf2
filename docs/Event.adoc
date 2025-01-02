@@ -23,7 +23,7 @@ Events are generally polled from the system in a loop and handled immediately.
 include::snippets/graphics_event.cc[tag=loop]
 ----
 
-Based on the type of the event, specific event data can be retrieved using <<get>> or, better, <<from>>.
+Based on the type of the event, specific event data can be retrieved using <<as>> or, better, <<from>>.
 
 .Example for `gf::Event` specific data
 [source,indent=0]
@@ -71,6 +71,20 @@ constexpr Event(uint64_t timestamp, T&& data); <2>
 <1> Default constructor. The type if the event is `gf::EventType::None`.
 <2> Constructor with a timestamp and specific event data.
 
+=== `as`
+
+[source]
+----
+template<typename T>
+constexpr T& as();
+template<typename T>
+constexpr const T& as() const;
+----
+
+Get the specific event data of type `T`. Generally, if the event type is `gf::EventType::Foo`, then the associated specific data type is `FooEvent`.
+
+See also: <<is>>, <<from>>
+
 === `is`
 
 [source]
@@ -81,7 +95,7 @@ constexpr bool is() const;
 
 Check if the specific data type is `T`.
 
-See also: <<get>>
+See also: <<as>>
 
 === `from`
 
@@ -95,21 +109,7 @@ constexpr const auto& from() const;
 
 Get the specific event data associated with the event `E`
 
-See also: <<get>>
-
-=== `get`
-
-[source]
-----
-template<typename T>
-constexpr T& as();
-template<typename T>
-constexpr const T& as() const;
-----
-
-Get the specific event data of type `T`. Generally, if the event type is `gf::EventType::Foo`, then the associated specific data type is `FooEvent`.
-
-See also: <<is>>, <<from>>
+See also: <<as>>
 
 === `timestamp`
 
