@@ -147,17 +147,6 @@ namespace gf {
     return ar | buffer.raw();
   }
 
-  struct GF_CORE_API ConsoleResource {
-    std::filesystem::path console_font;
-    Vec2I size;
-  };
-
-  template<typename Archive>
-  Archive& operator|(Archive& ar, MaybeConst<ConsoleResource, Archive>& resource)
-  {
-    return ar | resource.console_font | resource.size;
-  }
-
 }
 
 #endif // GF_CONSOLE_H

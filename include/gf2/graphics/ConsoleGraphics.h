@@ -4,6 +4,7 @@
 #define GF_CONSOLE_GRAPHICS_H
 
 #include <gf2/core/Console.h>
+#include <gf2/core/ConsoleData.h>
 
 #include "ConsoleFont.h"
 #include "DynamicBuffer.h"

@@ -18,6 +18,8 @@ namespace gf {
   struct AnimationResource;
   struct AnimationGroupResource;
   struct AudioSourceResource;
+  struct ConsoleResource;
+  struct ConsoleData;
   struct NinePatchResource;
   struct RichMapResource;
   struct RichTextResource;
@@ -38,11 +40,15 @@ namespace gf {
     void add_in_bundle(const SpriteResource& resource);
     void add_in_bundle(const TextResource& resource);
 
+    void add_in_bundle(const ConsoleResource& resource);
+
     void add_raw_texture(const std::filesystem::path& path);
     void add_raw_font(const std::filesystem::path& path);
     void add_raw_map(const std::filesystem::path& path);
     void add_raw_sound(const std::filesystem::path& path);
     void add_raw_music(const std::filesystem::path& path);
+
+    void add_raw_console_font(const std::filesystem::path& path, const ConsoleData& data);
 
     ResourceBundle make_bundle() const;
 
@@ -56,6 +62,8 @@ namespace gf {
     std::vector<std::filesystem::path> m_maps;
     std::vector<std::filesystem::path> m_sounds;
     std::vector<std::filesystem::path> m_musics;
+
+    std::vector<ConsoleResource> m_console_fonts;
   };
 
 }

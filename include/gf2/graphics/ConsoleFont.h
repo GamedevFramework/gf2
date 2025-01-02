@@ -7,41 +7,13 @@
 
 #include <filesystem>
 
+#include <gf2/core/ConsoleData.h>
 #include <gf2/core/Span.h>
 
 #include "GraphicsApi.h"
 #include "Texture.h"
 
 namespace gf {
-
-  struct GF_GRAPHICS_API ConsoleFontFormat {
-    enum Transparency : uint8_t {
-      Alpha,
-      Grayscale,
-      ColorKey,
-    };
-
-    Transparency transparency;
-
-    enum Layout : uint8_t {
-      InColumn,
-      InRow,
-    };
-
-    Layout layout;
-
-    enum Mapping : uint8_t {
-      CodePage437,
-      ModifiedCodePage437,
-      Special,
-      Custom,
-    };
-
-    Mapping mapping;
-  };
-
-  inline constexpr ConsoleFontFormat LibtcodFormat = { ConsoleFontFormat::ColorKey, ConsoleFontFormat::InRow, ConsoleFontFormat::Special };
-  inline constexpr ConsoleFontFormat DwarfFortressFormat = { ConsoleFontFormat::ColorKey, ConsoleFontFormat::InRow, ConsoleFontFormat::CodePage437 };
 
   struct GF_GRAPHICS_API ConsoleFontElement {
     char16_t character = '\0';

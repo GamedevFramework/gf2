@@ -5,6 +5,7 @@
 
 #include <gf2/core/AnimationData.h>
 #include <gf2/core/AudioSourceData.h>
+#include <gf2/core/ConsoleData.h>
 #include <gf2/core/FontFace.h>
 #include <gf2/core/NinePatchData.h>
 #include <gf2/core/RichMapResource.h>
@@ -56,6 +57,11 @@ namespace gf {
         add_raw_music(resource.filename);
         break;
     }
+  }
+
+  void BundleBuilder::add_in_bundle(const ConsoleResource& resource)
+  {
+    add_raw_console_font(resource.console_font, resource.data);
   }
 
   void BundleBuilder::add_in_bundle(const NinePatchResource& resource)
@@ -111,6 +117,12 @@ namespace gf {
     m_musics.push_back(path);
   }
 
+  void BundleBuilder::add_raw_console_font(const std::filesystem::path& path, const ConsoleData& data)
+  {
+    m_console_fonts.push_back({ path, data });
+  }
+
+
   ResourceBundle BundleBuilder::make_bundle() const
   {
     // capture 'this' by copy in case the bundle builder is a local variable
@@ -134,6 +146,11 @@ namespace gf {
       for (const std::filesystem::path& music : m_musics) {
         bundle->handle<Music>(music, m_audio_manager, resource_manager, action);
       }
+
+      for (const ConsoleResource& console_resource : m_console_fonts) {
+        bundle->handle<ConsoleFont>(console_resource.console_font, { console_resource.data.font_format, console_resource.data.font_size, m_render_manager }, resource_manager, action);
+      }
+
     });
 
     return bundle;
