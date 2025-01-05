@@ -4,6 +4,7 @@
 #define GF_CONSOLE_SCENE_H
 
 #include "ConsoleElementContainer.h"
+#include "ConsoleStyle.h"
 #include "CoreApi.h"
 #include "SceneTypes.h"
 
@@ -32,6 +33,9 @@ namespace gf {
     void show();
     bool hidden() const;
 
+    void set_clear_style(const ConsoleStyle& style);
+    const ConsoleStyle& clear_style() const;
+
     void add_element(ConsoleElement* element);
 
     virtual void process_event(const Event& event);
@@ -48,6 +52,7 @@ namespace gf {
     SceneStatus m_status = SceneStatus::Resumed;
     SceneVisibility m_visibility = SceneVisibility::Shown;
 
+    ConsoleStyle m_clear_style;
     ConsoleElementContainer m_elements;
   };
 

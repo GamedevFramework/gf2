@@ -77,6 +77,12 @@ namespace gf {
 
   void ConsoleSceneManager::render()
   {
+    if (m_scenes.empty()) {
+      return;
+    }
+
+    m_console.clear(m_scenes.back()->clear_style());
+
     for (ConsoleScene* scene : m_scenes) {
       if (!scene->hidden()) {
         scene->render(m_console);

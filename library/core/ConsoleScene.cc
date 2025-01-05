@@ -47,6 +47,16 @@ namespace gf {
     return m_visibility == SceneVisibility::Hidden;
   }
 
+  void ConsoleScene::set_clear_style(const ConsoleStyle& style)
+  {
+    m_clear_style = style;
+  }
+
+  const ConsoleStyle& ConsoleScene::clear_style() const
+  {
+    return m_clear_style;
+  }
+
   void ConsoleScene::add_element(ConsoleElement* element)
   {
     m_elements.add_element(element);
