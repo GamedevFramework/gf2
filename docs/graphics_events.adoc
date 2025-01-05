@@ -23,7 +23,7 @@ xref:reference.adoc#graphics[< Back to reference]
 class Event;
 ----
 
-`Event` is a tagged union to describe system events. xref:Event.adoc[*Read more...*]
+`Event` describes system events. xref:Event.adoc[*Read more...*]
 
 [#event_type]
 === `gf::EventType`
