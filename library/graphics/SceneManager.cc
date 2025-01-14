@@ -380,7 +380,7 @@ namespace gf {
               break;
           }
 
-          auto actual_event = *event;
+          const Event& actual_event = *event;
           std::for_each(scenes.begin(), scenes.end(), [&actual_event](auto* scene) { scene->process_event(actual_event); });
         }
 
