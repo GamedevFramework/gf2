@@ -14,7 +14,7 @@ namespace home {
 
   class GameHub;
 
-  class BackpackEntity : public gf::Entity {
+  class BackpackEntity : public gf::HudEntity {
   public:
     BackpackEntity(GameHub* hub, const WorldResources& resources);
 

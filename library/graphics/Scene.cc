@@ -16,6 +16,7 @@ namespace gf {
   void BasicScene::set_surface_size(Vec2I size)
   {
     m_surface_size = size;
+    on_resize(size);
   }
 
   Vec2I BasicScene::surface_size() const
@@ -110,11 +111,15 @@ namespace gf {
     do_render(recorder);
   }
 
-  void BasicScene::render_part(RenderRecorder& recorder, ScenePart& part)
+  void BasicScene::render_part_start(RenderRecorder& recorder, Camera& camera)
   {
-    part.camera.update(m_surface_size);
-    recorder.update_view(part.camera.compute_view_matrix(), part.camera.compute_viewport(m_surface_size));
-    part.entities.render(recorder);
+    camera.update(m_surface_size);
+    recorder.update_view(camera.compute_view_matrix(), camera.compute_viewport(m_surface_size));
+  }
+
+  void  BasicScene::on_resize([[maybe_unused]] Vec2I surface_size)
+  {
+    // do nothing by default
   }
 
   void BasicScene::on_rank_change([[maybe_unused]] SceneRank old_rank, [[maybe_unused]] SceneRank new_rank)
@@ -174,18 +179,18 @@ namespace gf {
 
   Scene::Scene()
   {
-    m_world.camera.type = CameraType::Extend;
-    m_hud.camera.type = CameraType::Window;
+    m_world_camera.type = CameraType::Extend;
+    m_hud_camera.type = CameraType::Window;
   }
 
   void Scene::set_world_center(Vec2F center)
   {
-    m_world.camera.center = center;
+    m_world_camera.center = center;
   }
 
   void Scene::set_world_size(Vec2F size)
   {
-    m_world.camera.size = size;
+    m_world_camera.size = size;
   }
 
   void Scene::add_model(Model* model)
@@ -195,39 +200,56 @@ namespace gf {
 
   void Scene::add_world_entity(Entity* entity)
   {
-    m_world.entities.add_entity(entity);
+    if (entity != nullptr) {
+      m_world_entities.push_back(entity);
+    }
   }
 
-  void Scene::add_hud_entity(Entity* entity)
+  void Scene::add_hud_entity(HudEntity* entity)
   {
-    m_hud.entities.add_entity(entity);
+    if (entity != nullptr) {
+      m_hud_entities.push_back(entity);
+    }
   }
 
   Vec2F Scene::position_to_world_location(Vec2I position)
   {
-    return m_world.camera.position_to_location(position, surface_size());
+    return m_world_camera.position_to_location(position, surface_size());
   }
 
   Vec2I Scene::world_location_to_position(Vec2F location)
   {
-    return m_world.camera.location_to_position(location, surface_size());
+    return m_world_camera.location_to_position(location, surface_size());
   }
 
   void Scene::update_entities(Time time)
   {
     m_models.update(time);
-    m_world.entities.update(time);
-    m_hud.entities.update(time);
+
+    for (Entity* entity : m_world_entities) {
+      entity->update(time);
+    }
+
+    for (HudEntity* entity : m_hud_entities) {
+      entity->update(time);
+    }
   }
 
   void Scene::render_entities(RenderRecorder& recorder)
   {
-    if (!m_world.entities.empty()) {
-      render_part(recorder, m_world);
+    if (!m_world_entities.empty()) {
+      render_part(recorder, m_world_entities, m_world_camera);
     }
 
-    if (!m_hud.entities.empty()) {
-      render_part(recorder, m_hud);
+    if (!m_hud_entities.empty()) {
+      render_part(recorder, m_hud_entities, m_hud_camera);
+    }
+  }
+
+  void Scene::on_resize(Vec2I surface_size)
+  {
+    for (HudEntity* entity : m_hud_entities) {
+      entity->resize(surface_size);
     }
   }
 

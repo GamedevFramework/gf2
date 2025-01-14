@@ -17,7 +17,7 @@ struct ImDrawData;
 
 namespace gf {
 
-  class GF_IMGUI_API ImguiEntity : public Entity {
+  class GF_IMGUI_API ImguiEntity : public HudEntity {
   public:
     ImguiEntity();
 

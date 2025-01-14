@@ -4,6 +4,7 @@
 #define GF_ENTITY_H
 
 #include <gf2/core/Time.h>
+#include <gf2/core/Vec2.h>
 
 #include "GraphicsApi.h"
 
@@ -35,6 +36,11 @@ namespace gf {
 
   private:
     int32_t m_priority = 0;
+  };
+
+  class HudEntity : public Entity {
+  public:
+    virtual void resize(Vec2I surface_size);
   };
 
 }

@@ -5,6 +5,10 @@
 
 namespace gf {
 
+  /*
+   * Entity
+   */
+
   Entity::Entity(int32_t priority)
   : m_priority(priority)
   {
@@ -18,6 +22,15 @@ namespace gf {
   }
 
   void Entity::render([[maybe_unused]] RenderRecorder& recorder)
+  {
+    // do nothing by default
+  }
+
+  /*
+   * HudEntity
+   */
+
+  void HudEntity::resize([[maybe_unused]] Vec2I surface_size)
   {
     // do nothing by default
   }

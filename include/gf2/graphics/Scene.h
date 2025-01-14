@@ -9,7 +9,7 @@
 #include <gf2/core/SceneTypes.h>
 #include <gf2/core/Time.h>
 
-#include "EntityContainer.h"
+#include "Entity.h"
 #include "Event.h"
 #include "GraphicsApi.h"
 
@@ -49,14 +49,20 @@ namespace gf {
     void render(RenderRecorder& recorder);
 
   protected:
-    struct ScenePart {
-      EntityContainer entities;
-      Camera camera;
-    };
+    template<typename EntityType>
+    void render_part(RenderRecorder& recorder, std::vector<EntityType*>& entities, Camera& camera)
+    {
+      render_part_start(recorder, camera);
 
-    void render_part(RenderRecorder& recorder, ScenePart& part);
+      for (Entity* entity : entities) {
+        entity->render(recorder);
+      }
+    }
 
   private:
+    void render_part_start(RenderRecorder& recorder, Camera& camera);
+
+    virtual void on_resize(Vec2I surface_size);
     virtual void on_rank_change(SceneRank old_rank, SceneRank new_rank);
 
     virtual void do_pause();
@@ -88,7 +94,7 @@ namespace gf {
     void add_model(Model* model);
 
     void add_world_entity(Entity* entity);
-    void add_hud_entity(Entity* entity);
+    void add_hud_entity(HudEntity* entity);
 
     Vec2F position_to_world_location(Vec2I position);
     Vec2I world_location_to_position(Vec2F location);
@@ -99,16 +105,20 @@ namespace gf {
 
     Camera* world_camera()
     {
-      return &m_world.camera;
+      return &m_world_camera;
     }
 
   private:
+    void on_resize(Vec2I surface_size) override;
+
     void do_update(Time time) override;
     void do_render(RenderRecorder& recorder) override;
 
     ModelContainer m_models;
-    ScenePart m_world;
-    ScenePart m_hud;
+    std::vector<Entity*> m_world_entities;
+    Camera m_world_camera;
+    std::vector<HudEntity*> m_hud_entities;
+    Camera m_hud_camera;
   };
 
 }
