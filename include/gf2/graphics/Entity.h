@@ -38,7 +38,7 @@ namespace gf {
     int32_t m_priority = 0;
   };
 
-  class HudEntity : public Entity {
+  class GF_GRAPHICS_API HudEntity : public Entity {
   public:
     virtual void resize(Vec2I surface_size);
   };
