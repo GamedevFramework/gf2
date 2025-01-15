@@ -508,7 +508,11 @@ namespace gf {
         .enable_validation_layers()
         .enable_extension(VK_EXT_DEBUG_UTILS_EXTENSION_NAME)
         .set_debug_callback(&debug_callback)
+#ifndef NDEBUG
+        .add_validation_feature_enable(VK_VALIDATION_FEATURE_ENABLE_GPU_ASSISTED_EXT)
         // .add_validation_feature_enable(VK_VALIDATION_FEATURE_ENABLE_BEST_PRACTICES_EXT)
+        .add_validation_feature_enable(VK_VALIDATION_FEATURE_ENABLE_SYNCHRONIZATION_VALIDATION_EXT)
+#endif
         ;
 
     // for (auto extension : extension_names) {
