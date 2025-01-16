@@ -34,13 +34,14 @@ namespace gf {
   struct GF_CORE_API MapLayer {
     uint32_t properties_index = NoIndex;
     std::string name;
+    std::string type;
     Vec2I offset = { 0, 0 };
   };
 
   template<typename Archive>
   Archive& operator|(Archive& ar, MaybeConst<MapLayer, Archive>& data)
   {
-    return ar | data.properties_index | data.name | data.offset;
+    return ar | data.properties_index | data.name | data.type | data.offset;
   }
 
   struct GF_CORE_API MapTile {
@@ -137,6 +138,7 @@ namespace gf {
   }
 
   struct GF_CORE_API MapTileset {
+    std::string type;
     uint32_t properties_index = NoIndex;
     uint32_t texture_index = NoIndex;
     uint32_t first_gid = 0;
@@ -155,10 +157,11 @@ namespace gf {
   template<typename Archive>
   Archive& operator|(Archive& ar, MaybeConst<MapTileset, Archive>& data)
   {
-    return ar | data.properties_index | data.texture_index | data.first_gid | data.tile_size | data.spacing | data.margin | data.tiles;
+    return ar | data.type | data.properties_index | data.texture_index | data.first_gid | data.tile_size | data.spacing | data.margin | data.tiles;
   }
 
   struct GF_CORE_API TiledMap {
+    std::string type;
     uint32_t properties_index = NoIndex;
     GridOrientation orientation = GridOrientation::Unknown;
     CellAxis cell_axis = CellAxis::X;
@@ -189,7 +192,7 @@ namespace gf {
   template<typename Archive>
   Archive& operator|(Archive& ar, MaybeConst<TiledMap, Archive>& map)
   {
-    return ar | map.properties_index | map.orientation | map.cell_axis | map.cell_index | map.hex_side_length | map.map_size | map.tile_size | map.properties | map.tilesets | map.tile_layers | map.object_layers | map.group_layers | map.layers | map.textures;
+    return ar | map.type | map.properties_index | map.orientation | map.cell_axis | map.cell_index | map.hex_side_length | map.map_size | map.tile_size | map.properties | map.tilesets | map.tile_layers | map.object_layers | map.group_layers | map.layers | map.textures;
   }
 
 }

@@ -201,6 +201,7 @@ namespace gf {
       MapLayer layer;
       layer.properties_index = parse_tmx_properties(node, map);
       layer.name = node.attribute("name").as_string();
+      layer.type = node.attribute("class").as_string();
       layer.offset.x = node.attribute("offsetx").as_int(0);
       layer.offset.y = node.attribute("offsety").as_int(0);
       unsupported_attribute(node, "opacity");
@@ -682,9 +683,14 @@ namespace gf {
       return tile;
     }
 
-    void parse_tmx_tileset_from_element(MapTileset& tileset, const pugi::xml_node node, TiledMap& map, const std::filesystem::path& base_directory)
+    MapTileset parse_tmx_tileset_from_element(const pugi::xml_node node, TiledMap& map, const std::filesystem::path& base_directory)
     {
       assert(node.name() == "tileset"sv);
+
+      MapTileset tileset;
+      tileset.type = node.attribute("class").as_string();
+      tileset.properties_index = parse_tmx_properties(node, map);
+      tileset.first_gid = node.attribute("firstgid").as_uint();
 
       tileset.tile_size.w = node.attribute("tilewidth").as_int();
       tileset.tile_size.h = node.attribute("tileheight").as_int();
@@ -710,9 +716,11 @@ namespace gf {
       std::sort(tileset.tiles.begin(), tileset.tiles.end(), MapTilesetTileComparator());
 
       unsupported_node(node, "wangsets");
+
+      return tileset;
     }
 
-    void parse_tmx_tileset_from_file(MapTileset& tileset, const std::filesystem::path& source, TiledMap& map, const std::filesystem::path& base_directory)
+    MapTileset parse_tmx_tileset_from_file(const std::filesystem::path& source, TiledMap& map, const std::filesystem::path& base_directory)
     {
       std::filesystem::path tileset_path = base_directory / source;
       std::ifstream tileset_file(tileset_path);
@@ -738,25 +746,19 @@ namespace gf {
         Log::warning("Attribute 'source' present in a TSX file: '{}'.", tileset_path);
       }
 
-      parse_tmx_tileset_from_element(tileset, node, map, tileset_path.parent_path());
+      return parse_tmx_tileset_from_element(node, map, tileset_path.parent_path());
     }
 
     MapTileset parse_tmx_tileset(const pugi::xml_node node, TiledMap& map, const std::filesystem::path& base_directory)
     {
       assert(node.name() == "tileset"sv);
-      MapTileset tileset;
-      tileset.properties_index = parse_tmx_properties(node, map);
-      tileset.first_gid = node.attribute("firstgid").as_uint();
-
       const std::filesystem::path source = node.attribute("source").as_string();
 
       if (!source.empty()) {
-        parse_tmx_tileset_from_file(tileset, source, map, base_directory);
-      } else {
-        parse_tmx_tileset_from_element(tileset, node, map, base_directory);
+        return parse_tmx_tileset_from_file(source, map, base_directory);
       }
 
-      return tileset;
+      return parse_tmx_tileset_from_element(node, map, base_directory);
     }
 
     /*
@@ -767,6 +769,7 @@ namespace gf {
     {
       assert(node.name() == "map"sv);
 
+      map.type = node.attribute("class").as_string();
       map.properties_index = parse_tmx_properties(node, map);
 
       std::string orientation = node.attribute("orientation").as_string();
