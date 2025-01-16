@@ -103,6 +103,9 @@ int main(int argc, char* argv[])
     gf::FileLoader file_loader;
     file_loader.add_search_directory(directory);
 
+    gf::ResourceRegistry<gf::TiledMap> tiled_map_registry;
+    tiled_map_registry.add_loader(gf::loader_for<gf::TiledMap>(file_loader));
+
     gf::ResourceRegistry<gf::Texture> texture_registry;
     texture_registry.add_loader(gf::loader_for<gf::Texture>(file_loader));
 
@@ -110,6 +113,7 @@ int main(int argc, char* argv[])
     rich_map_registry.add_loader(gf::loader_for<gf::RichMap>(file_loader));
 
     gf::ResourceManager resource_manager;
+    resource_manager.add_registry(&tiled_map_registry);
     resource_manager.add_registry(&texture_registry);
     resource_manager.add_registry(&rich_map_registry);
 

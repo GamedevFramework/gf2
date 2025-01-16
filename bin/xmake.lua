@@ -22,5 +22,6 @@ if has_config("binaries") then
         set_kind("binary")
         add_files("gf2_tmx_display.cc")
         add_deps("gf2graphics0")
+        set_rundir("$(projectdir)")
 
 end
