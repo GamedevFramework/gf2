@@ -683,14 +683,14 @@ namespace gf {
       return tile;
     }
 
-    MapTileset parse_tmx_tileset_from_element(const pugi::xml_node node, TiledMap& map, const std::filesystem::path& base_directory)
+    MapTileset parse_tmx_tileset_from_element(uint32_t first_gid, const pugi::xml_node node, TiledMap& map, const std::filesystem::path& base_directory)
     {
       assert(node.name() == "tileset"sv);
 
       MapTileset tileset;
       tileset.type = node.attribute("class").as_string();
       tileset.properties_index = parse_tmx_properties(node, map);
-      tileset.first_gid = node.attribute("firstgid").as_uint();
+      tileset.first_gid = first_gid;
 
       tileset.tile_size.w = node.attribute("tilewidth").as_int();
       tileset.tile_size.h = node.attribute("tileheight").as_int();
@@ -720,7 +720,7 @@ namespace gf {
       return tileset;
     }
 
-    MapTileset parse_tmx_tileset_from_file(const std::filesystem::path& source, TiledMap& map, const std::filesystem::path& base_directory)
+    MapTileset parse_tmx_tileset_from_file(uint32_t first_gid, const std::filesystem::path& source, TiledMap& map, const std::filesystem::path& base_directory)
     {
       std::filesystem::path tileset_path = base_directory / source;
       std::ifstream tileset_file(tileset_path);
@@ -746,7 +746,7 @@ namespace gf {
         Log::warning("Attribute 'source' present in a TSX file: '{}'.", tileset_path);
       }
 
-      return parse_tmx_tileset_from_element(node, map, tileset_path.parent_path());
+      return parse_tmx_tileset_from_element(first_gid, node, map, tileset_path.parent_path());
     }
 
     MapTileset parse_tmx_tileset(const pugi::xml_node node, TiledMap& map, const std::filesystem::path& base_directory)
@@ -754,11 +754,13 @@ namespace gf {
       assert(node.name() == "tileset"sv);
       const std::filesystem::path source = node.attribute("source").as_string();
 
+      const uint32_t first_gid = node.attribute("firstgid").as_uint();
+
       if (!source.empty()) {
-        return parse_tmx_tileset_from_file(source, map, base_directory);
+        return parse_tmx_tileset_from_file(first_gid, source, map, base_directory);
       }
 
-      return parse_tmx_tileset_from_element(node, map, base_directory);
+      return parse_tmx_tileset_from_element(first_gid, node, map, base_directory);
     }
 
     /*
