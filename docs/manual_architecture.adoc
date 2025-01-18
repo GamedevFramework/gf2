@@ -1,0 +1,25 @@
+= Architecture of a Game
+v0.1
+include::bits/attributes.adoc[]
+:toc: right
+:experimental: // for kbd
+
+As its name indicates, Gamedev Framework 2 is a link:https://en.wikipedia.org/wiki/Software_framework[framework]. It means that you have to think your game architecture to fit the framework. If you happen to fight the framework to make your game, it probably means that the framework is not for you and you should revise your choice.
+
+This section will teach you how to organize your game globally, from top to bottom. First, you have to split your game in different acts, each act having some scenes. Then you have to make your game model, it's the core of your game, where your game implements the link:https://en.wikipedia.org/wiki/Game_mechanics[game mechanics]. Finally, you have to bring your game on the screen with resources (graphics, sounds, maps) and entities in charge of using the resources.
+
+xref:manual.adoc[< Back to the manual]
+
+== Acts and scenes
+
+== Model, data and state
+
+== Resources and entities
+
+== Conclusion
+
+Of course, when you build your game, you go through every parts of the architecture. For example, if you want to add a timer, you will add a class `TimerState` in the state of your game, and update it when the model updates by adding the frame time. Then you will add an entity `TimerRenderer` to render the timer, you will probably need a font and a text resource. Finally, you will add your entity in a (potentially new) scene as an HUD entity. And so on.
+
+The next sections will revisit each part of the architecture more deeply.
+
+*Next section: xref:manual_scenes.adoc[Scenes]*

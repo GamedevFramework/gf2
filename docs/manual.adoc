@@ -9,14 +9,14 @@ xref:index.adoc[< Back to main page]
 == Basics
 
 . xref:manual_gamedev_101.adoc[Gamedev 101]
-. xref:manual_resources.adoc[Resources]
+. xref:manual_architecture.adoc[Architecture of a Game]
 . xref:manual_scenes.adoc[Scenes]
 . xref:manual_actions.adoc[Actions]
 . xref:manual_entities.adoc[Entities]
+. xref:manual_resources.adoc[Resources]
 
 == Advanced Topics
 
-// . xref:manual_cameras.adoc[Cameras]
 . xref:manual_tiled_map.adoc[Tiled Map]
 . xref:manual_audio.adoc[Audio]
 . xref:manual_physics.adoc[Physics]
@@ -25,6 +25,5 @@ xref:index.adoc[< Back to main page]
 
 == Commented Examples
 
-. xref:manual_workflow.adoc[Workflow for making a game]
 . xref:manual_sokoban.adoc[Sokoban]
 . xref:manual_roguelike.adoc[Roguelike]

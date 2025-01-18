@@ -6,7 +6,7 @@ include::bits/attributes.adoc[]
 
 link:https://tvtropes.org/pmwiki/pmwiki.php/SoYouWantTo/WriteAVideoGame[So you want to write a video game?] Well, Gamedev Framework 2 will help you on the technical side, but always keep in mind that a video game is more than just a few lines of code. Anyway, here is the beginning of the journey to learn how to write a video game.
 
-This section will teach you the very basics of game development. No code for now as the advices are very generic. If you are already familiar with the development of a video game, you can skip this section entirely and go to the xref:manual_resources.adoc[next section about resources].
+This section will teach you the very basics of game development. No code for now as the advices are very generic. If you are already familiar with the development of a video game, you can skip this section entirely and go to the xref:manual_architecture.adoc[next section].
 
 xref:manual.adoc[< Back to the manual]
 
@@ -68,6 +68,6 @@ The game loop is a variant of the well-known link:https://en.wikipedia.org/wiki/
 
 This section has presented the general principles of video game programming. The following sections will make a focus on one or more parts of this organization. It's important to be able to replace them in the big picture.
 
-*Next section: xref:manual_resources.adoc[Resources]*
+*Next section: xref:manual_architecture.adoc[Architecture of a Game]*
 
 See also: link:https://gameprogrammingpatterns.com/game-loop.html[Game Programming Patterns - Game Loop], link:https://en.wikipedia.org/wiki/Video_game_programming[Wikipedia - Video game programming]
