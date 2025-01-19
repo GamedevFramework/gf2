@@ -117,7 +117,7 @@ namespace gf {
     recorder.update_view(camera.compute_view_matrix(), camera.compute_viewport(m_surface_size));
   }
 
-  void  BasicScene::on_resize([[maybe_unused]] Vec2I surface_size)
+  void BasicScene::on_resize([[maybe_unused]] Vec2I surface_size)
   {
     // do nothing by default
   }

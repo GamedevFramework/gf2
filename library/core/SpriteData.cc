@@ -9,7 +9,7 @@ namespace gf {
 
   uint32_t SpriteGroupResource::add_texture(const std::filesystem::path& texture_path)
   {
-    for (auto [ index, known_texture_path ] : enumerate(textures)) {
+    for (auto [index, known_texture_path] : enumerate(textures)) {
       if (texture_path == known_texture_path) {
         return uint32_t(index);
       }

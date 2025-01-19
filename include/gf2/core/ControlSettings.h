@@ -128,6 +128,7 @@ namespace gf {
     }
 
   private:
+    // clang-format off
     std::variant<
       std::monostate,
       KeycodeControlSettings,
@@ -136,6 +137,7 @@ namespace gf {
       GamepadButtonControlSettings,
       GamepadAxisControlSettings
     > m_data;
+    // clang-format on
   };
 
   template<typename Archive>

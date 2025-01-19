@@ -850,7 +850,7 @@ namespace gf {
 
     VkDescriptorPoolSize pool_sizes[] = {
       { VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 64 },
-      {         VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 64 },
+      { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,         64 },
     };
 
     VkDescriptorPoolCreateInfo descriptor_pool_info = {};

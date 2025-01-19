@@ -9,7 +9,7 @@
 
 namespace gf {
 
-  template<typename Enum, typename ... Args>
+  template<typename Enum, typename... Args>
   class TaggedVariant {
   public:
     TaggedVariant() = default;
@@ -79,13 +79,13 @@ namespace gf {
 
   }
 
-  template<typename Archive, typename Enum, typename ... Args>
+  template<typename Archive, typename Enum, typename... Args>
   inline Archive& operator|(Archive& ar, TaggedVariant<Enum, Args...>& variant)
   {
     return details::handle_tagged_variant_serialization(ar, variant);
   }
 
-  template<typename Archive, typename Enum, typename ... Args>
+  template<typename Archive, typename Enum, typename... Args>
   inline Archive& operator|(Archive& ar, const TaggedVariant<Enum, Args...>& variant)
   {
     return details::handle_tagged_variant_serialization(ar, variant);

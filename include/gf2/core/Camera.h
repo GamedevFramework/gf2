@@ -28,9 +28,7 @@ namespace gf {
     Vec2F center = { 0.0f, 0.0f };
     Vec2F size = { 2.0f, 2.0f };
     float rotation = 0.0f;
-    // clang-format off
-    RectF viewport = {{ 0.0f, 0.0f }, { 1.0f, 1.0f }};
-    // clang-format on
+    RectF viewport = RectF::from_size({ 1.0f, 1.0f });
     // NOLINTEND(cppcoreguidelines-non-private-member-variables-in-classes)
 
     Camera() = default;
@@ -57,9 +55,7 @@ namespace gf {
 
   private:
     Vec2F m_computed_size = { 2.0f, 2.0f };
-    // clang-format off
-    RectF m_computed_viewport = {{ 0.0f, 0.0f }, { 1.0f, 1.0f }};
-    // clang-format on
+    RectF m_computed_viewport = RectF::from_size({ 1.0f, 1.0f });
   };
 
 }

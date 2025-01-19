@@ -65,8 +65,10 @@ namespace gf {
     TouchMoved,
   };
 
+  // clang-format off
   struct GF_GRAPHICS_API QuitEvent {
   };
+  // clang-format on
 
   struct GF_GRAPHICS_API WindowShownEvent {
     uint32_t window_id;
@@ -148,7 +150,6 @@ namespace gf {
     Scancode scancode;
     Flags<Modifier> modifiers;
   };
-
 
   // struct GF_GRAPHICS_API TextEditedEvent {
   //   uint32_t window_id;
@@ -308,6 +309,7 @@ namespace gf {
   private:
     uint64_t m_timestamp = 0;
 
+    // clang-format off
     std::variant<
       std::monostate,
       QuitEvent,
@@ -350,6 +352,7 @@ namespace gf {
       TouchReleasedEvent,
       TouchMovedEvent
     > m_data;
+    // clang-format on
   };
 
 } // namespace gf

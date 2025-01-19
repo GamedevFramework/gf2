@@ -507,7 +507,7 @@ namespace gf {
       {
         auto min_x = round_ties_down(depth * start_slope);
         auto max_x = round_ties_up(depth * end_slope);
-        return rectangle_range(RectI::from_position_size({min_x, depth  }, { max_x - min_x + 1, 1 }));
+        return rectangle_range(RectI::from_position_size({ min_x, depth }, { max_x - min_x + 1, 1 }));
       }
 
       Row next() const
@@ -535,7 +535,7 @@ namespace gf {
         map->add_properties(origin, properties);
 
         for (auto direction : { Direction::Up, Direction::Left, Direction::Down, Direction::Right }) {
-          const Quadrant quadrant = { direction , origin };
+          const Quadrant quadrant = { direction, origin };
           compute_visibility_in_quadrant(origin, range_limit, quadrant);
         }
       }

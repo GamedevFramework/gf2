@@ -14,7 +14,7 @@ int main()
   gf::SingleSceneManager scene_manager("14-curve | gf2", gf::vec(1600, 900));
 
   constexpr gf::Vec2F SplinePoints[] = {
-    {  50.0f, 500.0f },
+    { 50.0f,  500.0f },
     { 150.0f, 550.0f },
     { 150.0f, 450.0f },
     { 300.0f, 500.0f },

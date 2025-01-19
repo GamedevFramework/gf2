@@ -331,14 +331,16 @@ namespace gf {
       T q;
       T r;
 
-      void normalize() {
+      void normalize()
+      {
         while (r < T(0)) {
           r += d;
           --q;
         }
       }
 
-      void step() {
+      void step()
+      {
         n = r;
         d = r;
         q = n / d;

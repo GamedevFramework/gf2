@@ -1,7 +1,7 @@
 # format style for gf2
 AccessModifierOffset: -2
 AlignAfterOpenBracket: DontAlign
-AlignArrayOfStructures: Right
+AlignArrayOfStructures: Left
 AlignEscapedNewlines: Left
 AllowShortBlocksOnASingleLine: Never
 AlwaysBreakAfterReturnType: None

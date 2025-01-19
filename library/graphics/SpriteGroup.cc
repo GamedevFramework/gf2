@@ -8,8 +8,8 @@
 #include <gf2/core/Mat3.h>
 #include <gf2/core/ResourceManager.h>
 
-#include <gf2/graphics/Texture.h>
 #include <gf2/graphics/RawGeometry.h>
+#include <gf2/graphics/Texture.h>
 
 namespace gf {
 
