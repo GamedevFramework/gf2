@@ -18,7 +18,7 @@ xref:reference.adoc#core[< Back to reference]
 constexpr Color Black;
 ----
 
-The link:https://en.wikipedia.org/wiki/Black[black] predefined color: image:colors/black.png[Black,32,role=th]
+The link:https://en.wikipedia.org/wiki/Black[black] stem:[(0.0, 0.0, 0.0)] predefined color: image:colors/black.png[Black,32,role=th]
 
 [#gray0]
 === `gf::Gray`
@@ -29,9 +29,9 @@ The link:https://en.wikipedia.org/wiki/Black[black] predefined color: image:colo
 constexpr Color Gray;
 ----
 
-The link:https://en.wikipedia.org/wiki/Gray[gray] predefined color: image:colors/gray.png[Gray,32,role=th]
+The link:https://en.wikipedia.org/wiki/Gray[gray] stem:[(0.5, 0.5, 0.5)] predefined color: image:colors/gray.png[Gray,32,role=th]
 
-
+See also: <<gray1>>
 
 [#white]
 === `gf::White`
@@ -42,7 +42,7 @@ The link:https://en.wikipedia.org/wiki/Gray[gray] predefined color: image:colors
 constexpr Color White;
 ----
 
-The link:https://en.wikipedia.org/wiki/White[white] predefined color: image:colors/white.png[White,32,role=th]
+The link:https://en.wikipedia.org/wiki/White[white] stem:[(1.0, 1.0, 1.0)] predefined color: image:colors/white.png[White,32,role=th]
 
 
 === Other predefined colors
@@ -53,104 +53,176 @@ The link:https://en.wikipedia.org/wiki/White[white] predefined color: image:colo
 ----
 
 .Predefined `gf::Color` colors
-[cols="4a,4,^1a"]
+[cols="4a,4,^1,^1,^1,^1a"]
 |===
-| Name | Variable | Color
+| Name | Variable | R | G | B | Color
 
 | link:https://en.wikipedia.org/wiki/Red[Red]
 | `gf::Red`
+| stem:[1.0]
+| stem:[0.0]
+| stem:[0.0]
 | image::colors/red.png[Red,32]
 
 | link:https://en.wikipedia.org/wiki/Vermilion[Vermilion]
 | `gf::Vermilion`
+| stem:[1.0]
+| stem:[0.25]
+| stem:[0.0]
 | image::colors/vermilion.png[Vermilion,32]
 
 | link:https://en.wikipedia.org/wiki/Orange_(colour)[Orange]
 | `gf::Orange`
+| stem:[1.0]
+| stem:[0.5]
+| stem:[0.0]
 | image::colors/orange.png[Orange,32]
 
 | link:https://en.wikipedia.org/wiki/Amber_(color)[Amber]
 | `gf::Amber`
+| stem:[1.0]
+| stem:[0.75]
+| stem:[0.0]
 | image::colors/amber.png[Amber,32]
 
 | link:https://en.wikipedia.org/wiki/Yellow[Yellow]
 | `gf::Yellow`
+| stem:[1.0]
+| stem:[1.0]
+| stem:[0.0]
 | image::colors/yellow.png[Yellow,32]
 
 | link:https://en.wikipedia.org/wiki/Lime_(color)[Lime]
 | `gf::Lime`
+| stem:[0.75]
+| stem:[1.0]
+| stem:[0.0]
 | image::colors/lime.png[Lime,32]
 
 | link:https://en.wikipedia.org/wiki/Chartreuse_(color)[Chartreuse]
 | `gf::Chartreuse`
+| stem:[0.5]
+| stem:[1.0]
+| stem:[0.0]
 | image::colors/chartreuse.png[Chartreuse,32]
 
 | link:https://en.wikipedia.org/wiki/Harlequin_(color)[Harlequin]
 | `gf::Harlequin`
+| stem:[0.25]
+| stem:[1.0]
+| stem:[0.0]
 | image::colors/harlequin.png[Harlequin,32]
 
 | link:https://en.wikipedia.org/wiki/Green[Green]
 | `gf::Green`
+| stem:[0.0]
+| stem:[1.0]
+| stem:[0.0]
 | image::colors/green.png[Green,32]
 
 | link:https://en.wikipedia.org/wiki/Erin_(color)[Erin]
 | `gf::Erin`
+| stem:[0.0]
+| stem:[1.0]
+| stem:[0.25]
 | image::colors/erin.png[Erin,32]
 
 | link:https://en.wikipedia.org/wiki/Spring_green[Spring]
 | `gf::Spring`
+| stem:[0.0]
+| stem:[1.0]
+| stem:[0.5]
 | image::colors/spring.png[Spring,32]
 
 | link:https://en.wikipedia.org/wiki/Aquamarine_(color)[Aquamarine]
 | `gf::Aquamarine`
+| stem:[0.0]
+| stem:[1.0]
+| stem:[0.75]
 | image::colors/aquamarine.png[Aquamarine,32]
 
 | link:https://en.wikipedia.org/wiki/Cyan[Cyan]
 | `gf::Cyan`
+| stem:[0.0]
+| stem:[1.0]
+| stem:[1.0]
 | image::colors/cyan.png[Cyan,32]
 
 | link:https://en.wikipedia.org/wiki/Capri_(color)[Capri]
 | `gf::Capri`
+| stem:[0.0]
+| stem:[0.75]
+| stem:[1.0]
 | image::colors/capri.png[Capri,32]
 
 | link:https://en.wikipedia.org/wiki/Azure_(color)[Azure]
 | `gf::Azure`
+| stem:[0.0]
+| stem:[0.5]
+| stem:[1.0]
 | image::colors/azure.png[Azure,32]
 
 | link:https://en.wikipedia.org/wiki/Cerulean[Cerulean]
 | `gf::Cerulean`
+| stem:[0.0]
+| stem:[0.25]
+| stem:[1.0]
 | image::colors/cerulean.png[Cerulean,32]
 
 | link:https://en.wikipedia.org/wiki/Blue[Blue]
 | `gf::Blue`
+| stem:[0.0]
+| stem:[0.0]
+| stem:[1.0]
 | image::colors/blue.png[Blue,32]
 
 | link:https://en.wikipedia.org/wiki/Indigo[Indigo]
 | `gf::Indigo`
+| stem:[0.25]
+| stem:[0.0]
+| stem:[1.0]
 | image::colors/indigo.png[Indigo,32]
 
 | link:https://en.wikipedia.org/wiki/Violet_(color)[Violet]
 | `gf::Violet`
+| stem:[0.5]
+| stem:[0.0]
+| stem:[1.0]
 | image::colors/violet.png[Violet,32]
 
 | link:https://en.wikipedia.org/wiki/Purple[Purple]
 | `gf::Purple`
+| stem:[0.75]
+| stem:[0.0]
+| stem:[1.0]
 | image::colors/purple.png[Purple,32]
 
 | link:https://en.wikipedia.org/wiki/Magenta[Magenta]
 | `gf::Magenta`
+| stem:[1.0]
+| stem:[0.0]
+| stem:[1.0]
 | image::colors/magenta.png[Magenta,32]
 
 | link:https://en.wikipedia.org/wiki/Cerise_(color)[Cerise]
 | `gf::Cerise`
+| stem:[1.0]
+| stem:[0.0]
+| stem:[0.75]
 | image::colors/cerise.png[Cerise,32]
 
 | link:https://en.wikipedia.org/wiki/Rose_(color)[Rose]
 | `gf::Rose`
+| stem:[1.0]
+| stem:[0.0]
+| stem:[0.5]
 | image::colors/rose.png[Rose,32]
 
 | link:https://en.wikipedia.org/wiki/Crimson[Crimson]
 | `gf::Crimson`
+| stem:[1.0]
+| stem:[0.0]
+| stem:[0.25]
 | image::colors/crimson.png[Crimson,32]
 |===
 
