@@ -7,6 +7,12 @@ if has_config("examples") then
     set_configvar("GF_EXAMPLE_ASSETS_DIRECTORY", "$(projectdir)/examples/assets")
     add_configfiles("config.h.in", {pattern = "@(.-)@"})
 
+    target("01-colors")
+        set_kind("binary")
+        add_files("01-colors.cc")
+        add_deps("gf2core0")
+        set_rundir("$(projectdir)/docs/assets/colors")
+
     target("10-sprite")
         set_kind("binary")
         add_files("10-sprite.cc")

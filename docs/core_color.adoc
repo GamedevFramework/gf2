@@ -9,17 +9,6 @@ xref:reference.adoc#core[< Back to reference]
 
 == Variables
 
-[#azure]
-=== `gf::Azure`
-
-[source]
-----
-#include <gf2/core/Color.h>
-constexpr Color Azure;
-----
-
-The azure predefined color.
-
 [#black]
 === `gf::Black`
 
@@ -29,40 +18,7 @@ The azure predefined color.
 constexpr Color Black;
 ----
 
-The black predefined color.
-
-[#blue]
-=== `gf::Blue`
-
-[source]
-----
-#include <gf2/core/Color.h>
-constexpr Color Blue;
-----
-
-The blue predefined color.
-
-[#chartreuse]
-=== `gf::Chartreuse`
-
-[source]
-----
-#include <gf2/core/Color.h>
-constexpr Color Chartreuse;
-----
-
-The chartreuse predefined color.
-
-[#cyan]
-=== `gf::Cyan`
-
-[source]
-----
-#include <gf2/core/Color.h>
-constexpr Color Cyan;
-----
-
-The cyan predefined color.
+The link:https://en.wikipedia.org/wiki/Black[black] predefined color: image:colors/black.png[Black,32,role=th]
 
 [#gray0]
 === `gf::Gray`
@@ -73,84 +29,9 @@ The cyan predefined color.
 constexpr Color Gray;
 ----
 
-The gray predefined color.
+The link:https://en.wikipedia.org/wiki/Gray[gray] predefined color: image:colors/gray.png[Gray,32,role=th]
 
-[#green]
-=== `gf::Green`
 
-[source]
-----
-#include <gf2/core/Color.h>
-constexpr Color Green;
-----
-
-The green predefined color.
-
-[#magenta]
-=== `gf::Magenta`
-
-[source]
-----
-#include <gf2/core/Color.h>
-constexpr Color Magenta;
-----
-
-The magenta predefined color.
-
-[#orange]
-=== `gf::Orange`
-
-[source]
-----
-#include <gf2/core/Color.h>
-constexpr Color Orange;
-----
-
-The orange predefined color.
-
-[#red]
-=== `gf::Red`
-
-[source]
-----
-#include <gf2/core/Color.h>
-constexpr Color Red;
-----
-
-The red predefined color.
-
-[#rose]
-=== `gf::Rose`
-
-[source]
-----
-#include <gf2/core/Color.h>
-constexpr Color Rose;
-----
-
-The rose predefined color.
-
-[#spring]
-=== `gf::Spring`
-
-[source]
-----
-#include <gf2/core/Color.h>
-constexpr Color Spring;
-----
-
-The spring predefined color.
-
-[#violet]
-=== `gf::Violet`
-
-[source]
-----
-#include <gf2/core/Color.h>
-constexpr Color Violet;
-----
-
-The violet predefined color.
 
 [#white]
 === `gf::White`
@@ -161,18 +42,118 @@ The violet predefined color.
 constexpr Color White;
 ----
 
-The white predefined color.
+The link:https://en.wikipedia.org/wiki/White[white] predefined color: image:colors/white.png[White,32,role=th]
 
-[#yellow]
-=== `gf::Yellow`
+
+=== Other predefined colors
 
 [source]
 ----
 #include <gf2/core/Color.h>
-constexpr Color Yellow;
 ----
 
-The yellow predefined color.
+.Predefined `gf::Color` colors
+[cols="4a,4,^1a"]
+|===
+| Name | Variable | Color
+
+| link:https://en.wikipedia.org/wiki/Red[Red]
+| `gf::Red`
+| image::colors/red.png[Red,32]
+
+| link:https://en.wikipedia.org/wiki/Vermilion[Vermilion]
+| `gf::Vermilion`
+| image::colors/vermilion.png[Vermilion,32]
+
+| link:https://en.wikipedia.org/wiki/Orange_(colour)[Orange]
+| `gf::Orange`
+| image::colors/orange.png[Orange,32]
+
+| link:https://en.wikipedia.org/wiki/Amber_(color)[Amber]
+| `gf::Amber`
+| image::colors/amber.png[Amber,32]
+
+| link:https://en.wikipedia.org/wiki/Yellow[Yellow]
+| `gf::Yellow`
+| image::colors/yellow.png[Yellow,32]
+
+| link:https://en.wikipedia.org/wiki/Lime_(color)[Lime]
+| `gf::Lime`
+| image::colors/lime.png[Lime,32]
+
+| link:https://en.wikipedia.org/wiki/Chartreuse_(color)[Chartreuse]
+| `gf::Chartreuse`
+| image::colors/chartreuse.png[Chartreuse,32]
+
+| link:https://en.wikipedia.org/wiki/Harlequin_(color)[Harlequin]
+| `gf::Harlequin`
+| image::colors/harlequin.png[Harlequin,32]
+
+| link:https://en.wikipedia.org/wiki/Green[Green]
+| `gf::Green`
+| image::colors/green.png[Green,32]
+
+| link:https://en.wikipedia.org/wiki/Erin_(color)[Erin]
+| `gf::Erin`
+| image::colors/erin.png[Erin,32]
+
+| link:https://en.wikipedia.org/wiki/Spring_green[Spring]
+| `gf::Spring`
+| image::colors/spring.png[Spring,32]
+
+| link:https://en.wikipedia.org/wiki/Aquamarine_(color)[Aquamarine]
+| `gf::Aquamarine`
+| image::colors/aquamarine.png[Aquamarine,32]
+
+| link:https://en.wikipedia.org/wiki/Cyan[Cyan]
+| `gf::Cyan`
+| image::colors/cyan.png[Cyan,32]
+
+| link:https://en.wikipedia.org/wiki/Capri_(color)[Capri]
+| `gf::Capri`
+| image::colors/capri.png[Capri,32]
+
+| link:https://en.wikipedia.org/wiki/Azure_(color)[Azure]
+| `gf::Azure`
+| image::colors/azure.png[Azure,32]
+
+| link:https://en.wikipedia.org/wiki/Cerulean[Cerulean]
+| `gf::Cerulean`
+| image::colors/cerulean.png[Cerulean,32]
+
+| link:https://en.wikipedia.org/wiki/Blue[Blue]
+| `gf::Blue`
+| image::colors/blue.png[Blue,32]
+
+| link:https://en.wikipedia.org/wiki/Indigo[Indigo]
+| `gf::Indigo`
+| image::colors/indigo.png[Indigo,32]
+
+| link:https://en.wikipedia.org/wiki/Violet_(color)[Violet]
+| `gf::Violet`
+| image::colors/violet.png[Violet,32]
+
+| link:https://en.wikipedia.org/wiki/Purple[Purple]
+| `gf::Purple`
+| image::colors/purple.png[Purple,32]
+
+| link:https://en.wikipedia.org/wiki/Magenta[Magenta]
+| `gf::Magenta`
+| image::colors/magenta.png[Magenta,32]
+
+| link:https://en.wikipedia.org/wiki/Cerise_(color)[Cerise]
+| `gf::Cerise`
+| image::colors/cerise.png[Cerise,32]
+
+| link:https://en.wikipedia.org/wiki/Rose_(color)[Rose]
+| `gf::Rose`
+| image::colors/rose.png[Rose,32]
+
+| link:https://en.wikipedia.org/wiki/Crimson[Crimson]
+| `gf::Crimson`
+| image::colors/crimson.png[Crimson,32]
+|===
+
 
 == Types
 
