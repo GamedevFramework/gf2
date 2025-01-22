@@ -11,7 +11,7 @@
 int main(int argc, char* argv[])
 {
   if (argc != 2) {
-    std::cerr << "gf2_play_sound <sound>\n";
+    std::cerr << "Usage: gf2_play_sound <sound>\n";
     return EXIT_FAILURE;
   }
 

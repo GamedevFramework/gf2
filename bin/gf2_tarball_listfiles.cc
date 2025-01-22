@@ -9,7 +9,7 @@
 int main(int argc, char* argv[])
 {
   if (argc != 2) {
-    std::cerr << "gf2_tarball_listfiles <tarball>\n";
+    std::cerr << "Usage: gf2_tarball_listfiles <tarball>\n";
     return EXIT_FAILURE;
   }
 
