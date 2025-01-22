@@ -157,6 +157,8 @@ namespace gf {
       return std::nullopt;
     }
 
+    const gf::Vec2I point = { m_x, m_y };
+
     if (m_d >= 2 * m_x) {
       m_d = m_d - 2 * m_x - 1;
       ++m_x;
@@ -169,7 +171,7 @@ namespace gf {
       --m_y;
     }
 
-    return gf::vec(m_x, m_y);
+    return point;
   }
 
   std::vector<Vec2I> generate_circle(Vec2I center, int32_t radius)
@@ -188,8 +190,6 @@ namespace gf {
       circle.emplace_back(center.x - point.x, center.y - point.y);
       circle.emplace_back(center.x - point.y, center.y - point.x);
     };
-
-    plot_8_pixels({ 0, radius });
 
     for (;;) {
       if (auto maybe_next = andres.step(); maybe_next) {
