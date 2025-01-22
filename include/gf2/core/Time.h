@@ -7,6 +7,7 @@
 
 #include <chrono>
 #include <ratio>
+#include <type_traits>
 
 #include "CoreApi.h"
 
@@ -18,6 +19,7 @@ namespace gf {
     using ClockType = std::conditional_t<std::chrono::high_resolution_clock::is_steady, std::chrono::high_resolution_clock, std::chrono::steady_clock>;
     using DurationType = ClockType::duration;
     using TimePointType = ClockType::time_point;
+    using RepType = DurationType::rep;
   }
 
   class GF_CORE_API Time {
@@ -138,6 +140,37 @@ namespace gf {
   constexpr Time operator-(Time lhs, Time rhs)
   {
     return Time(lhs.as_duration() - rhs.as_duration());
+  }
+
+  template<typename T>
+  constexpr Time operator*(Time lhs, std::enable_if_t<std::is_arithmetic_v<T>, T> rhs)
+  {
+    auto duration = lhs * rhs;
+    return Time(std::chrono::duration_cast<details::DurationType>(duration));
+  }
+
+  template<typename T>
+  constexpr Time operator*(std::enable_if_t<std::is_arithmetic_v<T>, T> lhs, Time rhs)
+  {
+    auto duration = lhs * rhs;
+    return Time(std::chrono::duration_cast<details::DurationType>(duration));
+  }
+
+  template<typename T>
+  constexpr Time operator/(Time lhs, std::enable_if_t<std::is_arithmetic_v<T>, T> rhs)
+  {
+    auto duration = lhs / rhs;
+    return Time(std::chrono::duration_cast<details::DurationType>(duration));
+  }
+
+  constexpr details::RepType operator/(Time lhs, Time rhs)
+  {
+    return lhs.as_duration() / rhs.as_duration();
+  }
+
+  constexpr Time operator%(Time lhs, details::RepType rhs)
+  {
+    return Time(lhs.as_duration() % rhs);
   }
 
   GF_CORE_API Serializer& operator|(Serializer& archive, Time time);
