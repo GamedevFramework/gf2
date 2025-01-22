@@ -183,7 +183,7 @@ namespace gf {
   {
   }
 
-  std::optional<std::string> NamegenManager::generate_single(Random& random, const NamegenSettings& settings)
+  std::optional<std::string> NamegenManager::generate_single(Random& random, const NamegenSettings& settings) const
   {
     std::string name = m_generator.generate(random);
     name.erase(std::remove(name.begin(), name.end(), WordLimit), name.end());
@@ -195,7 +195,7 @@ namespace gf {
     return std::nullopt;
   }
 
-  std::vector<std::string> NamegenManager::generate_multiple(Random& random, std::size_t count, Time max_time_per_name, const NamegenSettings& settings)
+  std::vector<std::string> NamegenManager::generate_multiple(Random& random, std::size_t count, Time max_time_per_name, const NamegenSettings& settings) const
   {
     std::vector<std::string> names;
     Clock clock;

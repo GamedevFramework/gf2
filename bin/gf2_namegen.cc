@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
 
   gf::Random random;
 
-  gf::NamegenManager namegen(data, 3, 0.001, true);
+  const gf::NamegenManager namegen(data, 3, 0.001, true);
   auto names = namegen.generate_multiple(random, 20, gf::seconds(0.5), settings);
 
   for (const std::string& name : names) {

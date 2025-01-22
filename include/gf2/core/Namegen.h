@@ -62,8 +62,8 @@ namespace gf {
   public:
     NamegenManager(const std::vector<std::string>& data, std::size_t order, double prior, bool backoff);
 
-    std::optional<std::string> generate_single(Random& random, const NamegenSettings& settings = {});
-    std::vector<std::string> generate_multiple(Random& random, std::size_t count, Time max_time_per_name, const NamegenSettings& settings = {});
+    std::optional<std::string> generate_single(Random& random, const NamegenSettings& settings = {}) const;
+    std::vector<std::string> generate_multiple(Random& random, std::size_t count, Time max_time_per_name, const NamegenSettings& settings = {}) const;
 
   private:
     NamegenGenerator m_generator;
