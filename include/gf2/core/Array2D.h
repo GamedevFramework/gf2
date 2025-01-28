@@ -117,7 +117,6 @@ namespace gf {
       return square_range(position, 2);
     }
 
-  private:
     NeighborSquareRange<int> square_range(Vec2I position, int radius) const noexcept
     {
       assert(valid(position));
@@ -138,6 +137,7 @@ namespace gf {
       return { dx, dy, position, radius };
     }
 
+  private:
     std::size_t linearize(Vec2I index) const
     {
       return static_cast<std::size_t>(index.x) + (static_cast<std::size_t>(index.y) * static_cast<std::size_t>(m_size.x));
