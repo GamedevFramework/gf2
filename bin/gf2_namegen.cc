@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
 
   gf::NamegenSettings settings = {};
   settings.min_length = 3;
-  settings.max_length = 15;
+  settings.max_length = 12;
 
   gf::Random random;
 

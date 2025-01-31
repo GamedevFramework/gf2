@@ -17,30 +17,30 @@ namespace gf {
 
   class GF_CORE_API NamegenModel {
   public:
-    NamegenModel(const std::vector<std::string>& data, std::size_t order, double prior, std::string alphabet);
+    NamegenModel(const std::vector<std::u32string>& data, std::size_t order, double prior, std::u32string alphabet);
 
-    std::optional<char> generate(const std::string& context, Random& random) const;
-    void retrain(const std::vector<std::string>& data);
+    std::optional<char32_t> generate(const std::u32string& context, Random& random) const;
+    void retrain(const std::vector<std::u32string>& data);
 
   private:
-    void train(const std::vector<std::string>& data);
+    void train(const std::vector<std::u32string>& data);
     void build_chains();
 
     std::size_t m_order = 1;
     double m_prior = 0.0;
-    std::string m_alphabet;
-    std::map<std::string, std::string> m_observations;
-    std::map<std::string, std::vector<double>> m_chains;
+    std::u32string m_alphabet;
+    std::map<std::u32string, std::u32string> m_observations;
+    std::map<std::u32string, std::vector<double>> m_chains;
   };
 
   class GF_CORE_API NamegenGenerator {
   public:
-    NamegenGenerator(const std::vector<std::string>& data, std::size_t order, double prior, bool backoff);
+    NamegenGenerator(const std::vector<std::u32string>& data, std::size_t order, double prior, bool backoff);
 
-    std::string generate(Random& random) const;
+    std::u32string generate(Random& random) const;
 
   private:
-    std::optional<char> compute_letter(const std::string& word, Random& random) const;
+    std::optional<char32_t> compute_letter(const std::u32string& word, Random& random) const;
 
     std::size_t m_order = 1;
     double m_prior = 0.0;

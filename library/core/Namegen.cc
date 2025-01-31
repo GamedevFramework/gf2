@@ -6,16 +6,18 @@
 #include <cassert>
 
 #include <algorithm>
+#include <iterator>
 #include <random>
 #include <set>
 
 #include <gf2/core/Clock.h>
+#include <gf2/core/StringUtils.h>
 
 namespace gf {
 
   namespace {
 
-    constexpr char WordLimit = '#';
+    constexpr char32_t WordLimit = '#';
 
   }
 
@@ -23,7 +25,7 @@ namespace gf {
    * NameGeneratorModel
    */
 
-  NamegenModel::NamegenModel(const std::vector<std::string>& data, std::size_t order, double prior, std::string alphabet)
+  NamegenModel::NamegenModel(const std::vector<std::u32string>& data, std::size_t order, double prior, std::u32string alphabet)
   : m_order(order)
   , m_prior(prior)
   , m_alphabet(std::move(alphabet))
@@ -33,7 +35,7 @@ namespace gf {
     build_chains();
   }
 
-  std::optional<char> NamegenModel::generate(const std::string& context, Random& random) const
+  std::optional<char32_t> NamegenModel::generate(const std::u32string& context, Random& random) const
   {
     assert(context.size() == m_order);
     auto iterator = m_chains.find(context);
@@ -50,21 +52,21 @@ namespace gf {
     return m_alphabet[index];
   }
 
-  void NamegenModel::retrain(const std::vector<std::string>& data)
+  void NamegenModel::retrain(const std::vector<std::u32string>& data)
   {
     train(data);
     build_chains();
   }
 
-  void NamegenModel::train(const std::vector<std::string>& data)
+  void NamegenModel::train(const std::vector<std::u32string>& data)
   {
-    for (const std::string& item : data) {
-      std::string d = std::string(m_order, WordLimit) + item + WordLimit;
+    for (const std::u32string& item : data) {
+      const std::u32string sequence = std::u32string(m_order, WordLimit) + item + WordLimit;
 
-      for (std::size_t i = 0; i < d.size() - m_order; ++i) {
-        const std::string key = d.substr(i, m_order);
-        assert(i + m_order < d.size());
-        m_observations[key].push_back(d[i + m_order]);
+      for (std::size_t i = 0; i < sequence.size() - m_order; ++i) {
+        const std::u32string key = sequence.substr(i, m_order);
+        assert(i + m_order < sequence.size());
+        m_observations[key].push_back(sequence[i + m_order]);
       }
     }
   }
@@ -76,7 +78,7 @@ namespace gf {
     for (auto& [ context, observation ] : m_observations) {
       std::vector<double>& values = m_chains[context];
 
-      for (char prediction : m_alphabet) {
+      for (char32_t prediction : m_alphabet) {
         values.push_back(m_prior + static_cast<double>(std::count(observation.begin(), observation.end(), prediction)));
       }
     }
@@ -86,20 +88,20 @@ namespace gf {
    * NamegenGenerator
    */
 
-  NamegenGenerator::NamegenGenerator(const std::vector<std::string>& data, std::size_t order, double prior, bool backoff)
+  NamegenGenerator::NamegenGenerator(const std::vector<std::u32string>& data, std::size_t order, double prior, bool backoff)
   : m_order(order)
   , m_prior(prior)
   , m_backoff(backoff)
   {
-    std::set<char> letters;
+    std::set<char32_t> letters;
 
-    for (const std::string& item : data) {
-      for (const char c : item) {
+    for (const std::u32string& item : data) {
+      for (const char32_t c : item) {
         letters.insert(c);
       }
     }
 
-    std::string alphabet(letters.begin(), letters.end());
+    std::u32string alphabet(letters.begin(), letters.end());
     alphabet.push_back(WordLimit);
 
     if (backoff) {
@@ -111,9 +113,9 @@ namespace gf {
     }
   }
 
-  std::string NamegenGenerator::generate(Random& random) const
+  std::u32string NamegenGenerator::generate(Random& random) const
   {
-    std::string word(m_order, WordLimit);
+    std::u32string word(m_order, WordLimit);
 
     auto maybe_letter = compute_letter(word, random);
 
@@ -125,11 +127,11 @@ namespace gf {
     return word;
   }
 
-  std::optional<char> NamegenGenerator::compute_letter(const std::string& word, Random& random) const
+  std::optional<char32_t> NamegenGenerator::compute_letter(const std::u32string& word, Random& random) const
   {
     assert(word.size() >= m_order);
 
-    std::string context = word.substr(word.size() - m_order);
+    std::u32string context = word.substr(word.size() - m_order);
     assert(context.size() == m_order);
 
     for (const NamegenModel& model : m_models) {
@@ -150,13 +152,20 @@ namespace gf {
    */
 
   namespace {
+    std::vector<std::u32string> to_utf32_strings(const std::vector<std::string>& data)
+    {
+      std::vector<std::u32string> utf32_data;
+      std::transform(data.begin(), data.end(), std::back_inserter(utf32_data), to_utf32);
+      return utf32_data;
+    }
+
+    bool satisfy_size_settings(const std::u32string& word, const NamegenSettings& settings)
+    {
+      return settings.min_length <= word.size() &&  word.size() <= settings.max_length;
+    }
 
     bool satisfy_settings(const std::string& word, const NamegenSettings& settings)
     {
-      if (word.size() < settings.min_length || word.size() > settings.max_length) {
-        return false;
-      }
-
       if (settings.starts_with.size() > word.size() || word.substr(0, settings.starts_with.size()) != settings.starts_with) {
         return false;
       }
@@ -179,17 +188,23 @@ namespace gf {
   }
 
   NamegenManager::NamegenManager(const std::vector<std::string>& data, std::size_t order, double prior, bool backoff)
-  : m_generator(data, order, prior, backoff)
+  : m_generator(to_utf32_strings(data), order, prior, backoff)
   {
   }
 
   std::optional<std::string> NamegenManager::generate_single(Random& random, const NamegenSettings& settings) const
   {
-    std::string name = m_generator.generate(random);
+    std::u32string name = m_generator.generate(random);
     name.erase(std::remove(name.begin(), name.end(), WordLimit), name.end());
 
-    if (satisfy_settings(name, settings)) {
-      return name;
+    if (!satisfy_size_settings(name, settings)) {
+      return std::nullopt;
+    }
+
+    std::string utf8_name = to_utf8(name);
+
+    if (satisfy_settings(utf8_name, settings)) {
+      return utf8_name;
     }
 
     return std::nullopt;
