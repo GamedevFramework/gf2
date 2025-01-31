@@ -123,3 +123,43 @@ TEST(StringUtilsTest, Codepoints) {
     EXPECT_EQ(*cp.begin(), U'\U0001F3AE');
   }
 }
+
+TEST(StringUtilsTest, ToUtf32) {
+  auto str1 = gf::to_utf32("");
+  EXPECT_EQ(str1.size(), 0u);
+  EXPECT_EQ(str1, U"");
+
+  auto str2 = gf::to_utf32("abc");
+  EXPECT_EQ(str2.size(), 3u);
+  EXPECT_EQ(str2, U"abc");
+
+  auto str3 = gf::to_utf32("éçù€");
+  EXPECT_EQ(str3.size(), 4u);
+  EXPECT_EQ(str3, U"éçù€");
+
+  auto str4 = gf::to_utf32("東京");
+  EXPECT_EQ(str4.size(), 2u);
+  EXPECT_EQ(str4, U"東京");
+
+  auto str5 = gf::to_utf32("🎮");
+  EXPECT_EQ(str5.size(), 1u);
+  EXPECT_EQ(str5, U"🎮");
+}
+
+
+TEST(StringUtilsTest, ToUtf8) {
+  auto str1 = gf::to_utf8(U"");
+  EXPECT_EQ(str1, "");
+
+  auto str2 = gf::to_utf8(U"abc");
+  EXPECT_EQ(str2, "abc");
+
+  auto str3 = gf::to_utf8(U"éçù€");
+  EXPECT_EQ(str3, "éçù€");
+
+  auto str4 = gf::to_utf8(U"東京");
+  EXPECT_EQ(str4, "東京");
+
+  auto str5 = gf::to_utf8(U"🎮");
+  EXPECT_EQ(str5, "🎮");
+}

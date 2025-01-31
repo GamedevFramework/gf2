@@ -127,4 +127,37 @@ namespace gf {
     return result;
   }
 
+  std::u32string to_utf32(std::string_view utf8)
+  {
+    CodepointRange range = codepoints(utf8);
+    return { range.begin(), range.end() };
+  }
+
+  std::string to_utf8(std::u32string_view utf32)
+  {
+    std::string utf8;
+
+    for (char32_t c : utf32) {
+      if (c < 0x80) {
+        utf8.push_back(static_cast<char>(c & 0x7F));
+      } else if (c < 0x800) {
+        utf8.push_back(static_cast<char>(((c >> 6) & 0x1F) | 0xC0));
+        utf8.push_back(static_cast<char>(((c >> 0) & 0x3F) | 0x80));
+      } else if (c < 0x10000) {
+        utf8.push_back(static_cast<char>(((c >> 12) & 0x0F) | 0xE0));
+        utf8.push_back(static_cast<char>(((c >>  6) & 0x3F) | 0x80));
+        utf8.push_back(static_cast<char>(((c >>  0) & 0x3F) | 0x80));
+      } else if (c < 0x110000) {
+        utf8.push_back(static_cast<char>(((c >> 18) & 0x07) | 0xF0));
+        utf8.push_back(static_cast<char>(((c >> 12) & 0x3F) | 0x80));
+        utf8.push_back(static_cast<char>(((c >>  6) & 0x3F) | 0x80));
+        utf8.push_back(static_cast<char>(((c >>  0) & 0x3F) | 0x80));
+      } else {
+        assert(false);
+      }
+    }
+
+    return utf8;
+  }
+
 }

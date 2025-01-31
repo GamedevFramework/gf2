@@ -138,6 +138,9 @@ namespace gf {
     return { string };
   }
 
+  GF_CORE_API std::u32string to_utf32(std::string_view utf8);
+  GF_CORE_API std::string to_utf8(std::u32string_view utf32);
+
 }
 
 #endif // GF_STRING_UTILS_H
