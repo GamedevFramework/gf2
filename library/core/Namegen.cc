@@ -198,9 +198,10 @@ namespace gf {
   std::vector<std::string> NamegenManager::generate_multiple(Random& random, std::size_t count, Time max_time_per_name, const NamegenSettings& settings) const
   {
     std::vector<std::string> names;
+    const Time max_time = count * max_time_per_name;
     Clock clock;
 
-    while (names.size() < count && clock.restart() < max_time_per_name) {
+    while (names.size() < count && clock.elapsed_time() < max_time) {
       if (auto maybe_name = generate_single(random, settings); maybe_name) {
         names.push_back(std::move(maybe_name).value());
       }

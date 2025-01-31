@@ -49,7 +49,7 @@ namespace gf {
 
   };
 
-  struct NamegenSettings {
+  struct GF_CORE_API NamegenSettings {
     std::size_t min_length = 0;
     std::size_t max_length = std::numeric_limits<std::size_t>::max();
     std::string starts_with;

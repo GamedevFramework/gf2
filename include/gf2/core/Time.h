@@ -142,24 +142,24 @@ namespace gf {
     return Time(lhs.as_duration() - rhs.as_duration());
   }
 
-  template<typename T>
-  constexpr Time operator*(Time lhs, std::enable_if_t<std::is_arithmetic_v<T>, T> rhs)
+  template<typename T, std::enable_if_t<std::is_arithmetic_v<T>, bool> = true>
+  constexpr Time operator*(Time lhs, T rhs)
   {
-    auto duration = lhs * rhs;
+    auto duration = lhs.as_duration() * rhs;
     return Time(std::chrono::duration_cast<details::DurationType>(duration));
   }
 
-  template<typename T>
-  constexpr Time operator*(std::enable_if_t<std::is_arithmetic_v<T>, T> lhs, Time rhs)
+  template<typename T, std::enable_if_t<std::is_arithmetic_v<T>, bool> = true>
+  constexpr Time operator*(T lhs, Time rhs)
   {
-    auto duration = lhs * rhs;
+    auto duration = lhs * rhs.as_duration();
     return Time(std::chrono::duration_cast<details::DurationType>(duration));
   }
 
-  template<typename T>
-  constexpr Time operator/(Time lhs, std::enable_if_t<std::is_arithmetic_v<T>, T> rhs)
+  template<typename T, std::enable_if_t<std::is_arithmetic_v<T>, bool> = true>
+  constexpr Time operator/(Time lhs, T rhs)
   {
-    auto duration = lhs / rhs;
+    auto duration = lhs.as_duration() / rhs;
     return Time(std::chrono::duration_cast<details::DurationType>(duration));
   }
 
