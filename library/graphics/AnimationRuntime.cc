@@ -35,6 +35,20 @@ namespace gf::details {
       vertices.push_back({ bounds.position_at(Orientation::NorthWest), frame_data.texture_region.position_at(Orientation::NorthWest), color });
       vertices.push_back({ bounds.position_at(Orientation::SouthWest), frame_data.texture_region.position_at(Orientation::SouthWest), color });
 
+      if (frame_data.flip.test(AnimationFrameFlip::Diagonally)) {
+        std::swap(vertices[index + 0].tex_coords, vertices[index + 3].tex_coords);
+      }
+
+      if (frame_data.flip.test(AnimationFrameFlip::Horizontally)) {
+        std::swap(vertices[index + 0].tex_coords, vertices[index + 2].tex_coords);
+        std::swap(vertices[index + 1].tex_coords, vertices[index + 3].tex_coords);
+      }
+
+      if (frame_data.flip.test(AnimationFrameFlip::Vertically)) {
+        std::swap(vertices[index + 0].tex_coords, vertices[index + 1].tex_coords);
+        std::swap(vertices[index + 2].tex_coords, vertices[index + 3].tex_coords);
+      }
+
       // first triangle
       indices.push_back(index);
       indices.push_back(index + 1);
