@@ -1,14 +1,15 @@
 #include "SupplyEntity.h"
 
+#include <algorithm>
+
 #include <gf2/core/Color.h>
 #include <gf2/core/Math.h>
 
 #include <gf2/graphics/RenderObject.h>
 #include <gf2/graphics/RenderRecorder.h>
+#include <gf2/graphics/SpriteEntity.h>
 
 #include "GameHub.h"
-
-#include "gf2/graphics/SpriteEntity.h"
 
 namespace home {
 
