@@ -3,6 +3,7 @@
 
 #include <gf2/graphics/Window.h>
 
+#include <type_traits>
 #include <utility>
 
 #include <SDL2/SDL.h>
@@ -11,6 +12,8 @@
 #include <gf2/core/Log.h>
 
 namespace gf {
+
+  static_assert(std::is_same_v<std::underlying_type_t<WindowId>, uint32_t>); // TODO: [SDL3] use SDL_WindowID
 
   namespace {
     Uint32 to_flags(Flags<WindowHints> hints)
@@ -68,7 +71,7 @@ namespace gf {
     return *this;
   }
 
-  uint32_t Window::id()
+  WindowId Window::id()
   {
     assert(m_window);
     const uint32_t id = SDL_GetWindowID(m_window);
@@ -77,7 +80,7 @@ namespace gf {
       Log::warning("Failed to get the window id: {}", SDL_GetError());
     }
 
-    return id;
+    return WindowId{id};
   }
 
   bool Window::should_close() const

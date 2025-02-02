@@ -9,6 +9,7 @@
 #include <gf2/core/Flags.h>
 #include <gf2/core/Time.h>
 #include <gf2/core/Vec2.h>
+#include <gf2/core/WindowId.h>
 
 #include "GraphicsApi.h"
 
@@ -36,7 +37,7 @@ namespace gf {
     Window& operator=(const Window&) = delete;
     Window& operator=(Window&& other) noexcept;
 
-    uint32_t id();
+    WindowId id();
 
     bool should_close() const;
     void close();

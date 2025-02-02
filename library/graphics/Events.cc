@@ -19,7 +19,7 @@ namespace gf {
     {
       assert(raw_event.type == SDL_WINDOWEVENT);
       const uint64_t timestamp = raw_event.window.timestamp;
-      const uint32_t window_id = raw_event.window.windowID;
+      const auto window_id = WindowId{raw_event.window.windowID};
 
       switch (raw_event.window.event) {
         case SDL_WINDOWEVENT_SHOWN:
@@ -128,7 +128,7 @@ namespace gf {
 
           if (raw_event.key.repeat > 0) {
             KeyRepeatedEvent data = {};
-            data.window_id = raw_event.key.windowID;
+            data.window_id = WindowId{raw_event.key.windowID};
             data.keycode = static_cast<Keycode>(raw_event.key.keysym.sym);
             data.scancode = static_cast<Scancode>(raw_event.key.keysym.scancode);
             data.modifiers = static_cast<Modifier>(raw_event.key.keysym.mod);
@@ -138,7 +138,7 @@ namespace gf {
 
           {
             KeyPressedEvent data = {};
-            data.window_id = raw_event.key.windowID;
+            data.window_id = WindowId{raw_event.key.windowID};
             data.keycode = static_cast<Keycode>(raw_event.key.keysym.sym);
             data.scancode = static_cast<Scancode>(raw_event.key.keysym.scancode);
             data.modifiers = static_cast<Modifier>(raw_event.key.keysym.mod);
@@ -149,7 +149,7 @@ namespace gf {
           assert(raw_event.key.state == SDL_RELEASED);
           {
             KeyReleasedEvent data = {};
-            data.window_id = raw_event.key.windowID;
+            data.window_id = WindowId{raw_event.key.windowID};
             data.keycode = static_cast<Keycode>(raw_event.key.keysym.sym);
             data.scancode = static_cast<Scancode>(raw_event.key.keysym.scancode);
             data.modifiers = static_cast<Modifier>(raw_event.key.keysym.mod);
@@ -159,7 +159,7 @@ namespace gf {
         case SDL_TEXTINPUT:
           {
             TextEnteredEvent data = {};
-            data.window_id = raw_event.text.windowID;
+            data.window_id = WindowId{raw_event.text.windowID};
             static_assert(std::tuple_size_v<decltype(data.text)> == std::extent_v<decltype(raw_event.text.text)>, "Buffer size mismatch.");
             std::copy_n(std::begin(raw_event.text.text), data.text.size(), data.text.data());
             return Event(timestamp, data);
@@ -168,7 +168,7 @@ namespace gf {
         case SDL_MOUSEMOTION:
           {
             MouseMovedEvent data = {};
-            data.window_id = raw_event.motion.windowID;
+            data.window_id = WindowId{raw_event.motion.windowID};
             data.mouse_id = static_cast<MouseId>(raw_event.motion.which);
             data.position.x = raw_event.motion.x;
             data.position.y = raw_event.motion.y;
@@ -181,7 +181,7 @@ namespace gf {
           assert(raw_event.button.state == SDL_PRESSED);
           {
             MouseButtonPressedEvent data = {};
-            data.window_id = raw_event.button.windowID;
+            data.window_id = WindowId{raw_event.button.windowID};
             data.mouse_id = static_cast<MouseId>(raw_event.button.which);
             data.button = static_cast<MouseButton>(raw_event.button.button);
             data.position.x = raw_event.button.x;
@@ -194,7 +194,7 @@ namespace gf {
           assert(raw_event.button.state == SDL_RELEASED);
           {
             MouseButtonReleasedEvent data = {};
-            data.window_id = raw_event.button.windowID;
+            data.window_id = WindowId{raw_event.button.windowID};
             data.mouse_id = static_cast<MouseId>(raw_event.button.which);
             data.button = static_cast<MouseButton>(raw_event.button.button);
             data.position.x = raw_event.button.x;
@@ -206,7 +206,7 @@ namespace gf {
         case SDL_MOUSEWHEEL:
           {
             MouseWheelScrolledEvent data = {};
-            data.window_id = raw_event.wheel.windowID;
+            data.window_id = WindowId{raw_event.wheel.windowID};
             data.mouse_id = static_cast<MouseId>(raw_event.wheel.which);
             data.offset.x = raw_event.wheel.x;
             data.offset.y = raw_event.wheel.y;
@@ -259,7 +259,7 @@ namespace gf {
         case SDL_FINGERDOWN:
           {
             TouchPressedEvent data = {};
-            data.window_id = raw_event.tfinger.windowID;
+            data.window_id = WindowId{raw_event.tfinger.windowID};
             data.touch_id = static_cast<TouchId>(raw_event.tfinger.touchId);
             data.finger = static_cast<FingerId>(raw_event.tfinger.fingerId);
             data.location.x = raw_event.tfinger.x;
@@ -273,7 +273,7 @@ namespace gf {
         case SDL_FINGERUP:
           {
             TouchReleasedEvent data = {};
-            data.window_id = raw_event.tfinger.windowID;
+            data.window_id = WindowId{raw_event.tfinger.windowID};
             data.touch_id = static_cast<TouchId>(raw_event.tfinger.touchId);
             data.finger = static_cast<FingerId>(raw_event.tfinger.fingerId);
             data.location.x = raw_event.tfinger.x;
@@ -287,7 +287,7 @@ namespace gf {
         case SDL_FINGERMOTION:
           {
             TouchMovedEvent data = {};
-            data.window_id = raw_event.tfinger.windowID;
+            data.window_id = WindowId{raw_event.tfinger.windowID};
             data.touch_id = static_cast<TouchId>(raw_event.tfinger.touchId);
             data.finger = static_cast<FingerId>(raw_event.tfinger.fingerId);
             data.location.x = raw_event.tfinger.x;

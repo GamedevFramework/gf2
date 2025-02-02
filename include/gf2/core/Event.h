@@ -6,18 +6,17 @@
 #include <cstdint>
 
 #include <array>
-#include <optional>
 #include <variant>
 
-#include <gf2/core/GamepadTypes.h>
-#include <gf2/core/Keycode.h>
-#include <gf2/core/Modifier.h>
-#include <gf2/core/MouseTypes.h>
-#include <gf2/core/Scancode.h>
-#include <gf2/core/TouchTypes.h>
-#include <gf2/core/Vec2.h>
-
 #include "CoreApi.h"
+#include "GamepadTypes.h"
+#include "Keycode.h"
+#include "Modifier.h"
+#include "MouseTypes.h"
+#include "Scancode.h"
+#include "TouchTypes.h"
+#include "Vec2.h"
+#include "WindowId.h"
 
 namespace gf {
 
@@ -71,73 +70,73 @@ namespace gf {
   // clang-format on
 
   struct GF_CORE_API WindowShownEvent {
-    uint32_t window_id;
+    WindowId window_id;
   };
 
   struct GF_CORE_API WindowHiddenEvent {
-    uint32_t window_id;
+    WindowId window_id;
   };
 
   struct GF_CORE_API WindowExposedEvent {
-    uint32_t window_id;
+    WindowId window_id;
   };
 
   struct GF_CORE_API WindowMovedEvent {
-    uint32_t window_id;
+    WindowId window_id;
     Vec2I position;
   };
 
   struct GF_CORE_API WindowResizedEvent {
-    uint32_t window_id;
+    WindowId window_id;
     Vec2I size;
   };
 
   // struct GF_CORE_API WindowPixelSizeChangedEvent {
-  //   uint32_t window_id;
+  //   WindowId window_id;
   //   Vec2I size;
   // };
 
   struct GF_CORE_API WindowMinimizedEvent {
-    uint32_t window_id;
+    WindowId window_id;
   };
 
   struct GF_CORE_API WindowMaximizedEvent {
-    uint32_t window_id;
+    WindowId window_id;
   };
 
   struct GF_CORE_API WindowRestoredEvent {
-    uint32_t window_id;
+    WindowId window_id;
   };
 
   struct GF_CORE_API MouseFocusGainedEvent {
-    uint32_t window_id;
+    WindowId window_id;
   };
 
   struct GF_CORE_API MouseFocusLostEvent {
-    uint32_t window_id;
+    WindowId window_id;
   };
 
   struct GF_CORE_API KeyboardFocusGainedEvent {
-    uint32_t window_id;
+    WindowId window_id;
   };
 
   struct GF_CORE_API KeyboardFocusLostEvent {
-    uint32_t window_id;
+    WindowId window_id;
   };
 
   struct GF_CORE_API WindowCloseRequestedEvent {
-    uint32_t window_id;
+    WindowId window_id;
   };
 
   struct GF_CORE_API KeyPressedEvent {
-    uint32_t window_id;
+    WindowId window_id;
     Keycode keycode;
     Scancode scancode;
     Flags<Modifier> modifiers;
   };
 
   struct GF_CORE_API KeyRepeatedEvent {
-    uint32_t window_id;
+    WindowId window_id;
     Keycode keycode;
     Scancode scancode;
     Flags<Modifier> modifiers;
@@ -145,26 +144,26 @@ namespace gf {
   };
 
   struct GF_CORE_API KeyReleasedEvent {
-    uint32_t window_id;
+    WindowId window_id;
     Keycode keycode;
     Scancode scancode;
     Flags<Modifier> modifiers;
   };
 
   // struct GF_CORE_API TextEditedEvent {
-  //   uint32_t window_id;
+  //   WindowId window_id;
   //   std::string_view text;
   //   int32_t start;
   //   int32_t length;
   // };
 
   struct GF_CORE_API TextEnteredEvent {
-    uint32_t window_id;
+    WindowId window_id;
     std::array<char, 32> text; // TODO: SDL3: changed to a std::string_view
   };
 
   // struct GF_CORE_API TextCandidatesShownEvent {
-  //   uint32_t window_id;
+  //   WindowId window_id;
   //   std::array<std::string_view, 10> candidates;
   //   int32_t count;
   //   int32_t selected;
@@ -172,14 +171,14 @@ namespace gf {
   // };
 
   struct GF_CORE_API MouseMovedEvent {
-    uint32_t window_id;
+    WindowId window_id;
     MouseId mouse_id;
     Vec2I position;
     Vec2I motion;
   };
 
   struct GF_CORE_API MouseButtonPressedEvent {
-    uint32_t window_id;
+    WindowId window_id;
     MouseId mouse_id;
     MouseButton button;
     Vec2I position;
@@ -187,7 +186,7 @@ namespace gf {
   };
 
   struct GF_CORE_API MouseButtonReleasedEvent {
-    uint32_t window_id;
+    WindowId window_id;
     MouseId mouse_id;
     MouseButton button;
     Vec2I position;
@@ -195,7 +194,7 @@ namespace gf {
   };
 
   struct GF_CORE_API MouseWheelScrolledEvent {
-    uint32_t window_id;
+    WindowId window_id;
     MouseId mouse_id;
     Vec2I offset;
     MouseWheelDirection direction;
@@ -226,7 +225,7 @@ namespace gf {
   };
 
   struct GF_CORE_API TouchPressedEvent {
-    uint32_t window_id;
+    WindowId window_id;
     TouchId touch_id;
     FingerId finger;
     Vec2F location;
@@ -235,7 +234,7 @@ namespace gf {
   };
 
   struct GF_CORE_API TouchReleasedEvent {
-    uint32_t window_id;
+    WindowId window_id;
     TouchId touch_id;
     FingerId finger;
     Vec2F location;
@@ -244,7 +243,7 @@ namespace gf {
   };
 
   struct GF_CORE_API TouchMovedEvent {
-    uint32_t window_id;
+    WindowId window_id;
     TouchId touch_id;
     FingerId finger;
     Vec2F location;
