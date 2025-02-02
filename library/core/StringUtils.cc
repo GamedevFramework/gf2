@@ -129,7 +129,7 @@ namespace gf {
 
   std::u32string to_utf32(std::string_view utf8)
   {
-    CodepointRange range = codepoints(utf8);
+    const CodepointRange range = codepoints(utf8);
     return { range.begin(), range.end() };
   }
 
@@ -137,7 +137,7 @@ namespace gf {
   {
     std::string utf8;
 
-    for (char32_t c : utf32) {
+    for (const char32_t c : utf32) {
       if (c < 0x80) {
         utf8.push_back(static_cast<char>(c & 0x7F));
       } else if (c < 0x800) {

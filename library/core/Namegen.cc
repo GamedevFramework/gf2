@@ -78,7 +78,7 @@ namespace gf {
     for (auto& [ context, observation ] : m_observations) {
       std::vector<double>& values = m_chains[context];
 
-      for (char32_t prediction : m_alphabet) {
+      for (const char32_t prediction : m_alphabet) {
         values.push_back(m_prior + static_cast<double>(std::count(observation.begin(), observation.end(), prediction)));
       }
     }
@@ -214,7 +214,7 @@ namespace gf {
   {
     std::vector<std::string> names;
     const Time max_time = count * max_time_per_name;
-    Clock clock;
+    const Clock clock;
 
     while (names.size() < count && clock.elapsed_time() < max_time) {
       if (auto maybe_name = generate_single(random, settings); maybe_name) {

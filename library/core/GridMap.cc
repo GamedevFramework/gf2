@@ -597,7 +597,7 @@ namespace gf {
       Log::fatal("Unsupported orientation for field of vision.");
     }
 
-    SymmetricShadowcasting symmetric_shadowcasting = { this, properties };
+    const SymmetricShadowcasting symmetric_shadowcasting = { this, properties };
     symmetric_shadowcasting.compute_visibility(origin, range_limit);
   }
 
