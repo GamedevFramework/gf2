@@ -3,14 +3,13 @@
 #ifndef GF_CONTROL_H
 #define GF_CONTROL_H
 
-#include <gf2/core/ControlSettings.h>
-
+#include "ControlSettings.h"
+#include "CoreApi.h"
 #include "Event.h"
-#include "GraphicsApi.h"
 
 namespace gf {
 
-  class GF_GRAPHICS_API Control {
+  class GF_CORE_API Control {
   public:
     Control(const ControlSettings& settings);
 

@@ -1,9 +1,9 @@
-#include <gf2/graphics/Event.h>
+#include <gf2/graphics/Events.h>
 
 void doc_Event() {
 
   // tag::loop[]
-  while (auto event = gf::Event::poll()) {
+  while (auto event = gf::Events::poll()) {
     switch (event->type()) {
       case gf::EventType::Quit:
         // close the window
@@ -17,7 +17,7 @@ void doc_Event() {
   // end::loop[]
 
   // tag::specific[]
-  while (auto event = gf::Event::poll()) {
+  while (auto event = gf::Events::poll()) {
     switch (event->type()) {
       case gf::EventType::Quit:
         // close the window

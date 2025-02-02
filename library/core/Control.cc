@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
 
-#include <gf2/graphics/Control.h>
+#include <gf2/core/Control.h>
 
 #include <gf2/core/ControlSettings.h>
 #include <gf2/core/GamepadTypes.h>

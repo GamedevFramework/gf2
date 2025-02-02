@@ -10,6 +10,7 @@
 
 #include <gf2/core/Clock.h>
 
+#include <gf2/graphics/Events.h>
 #include <gf2/graphics/RenderObject.h>
 #include <gf2/graphics/RenderRecorder.h>
 #include <gf2/graphics/Scene.h>
@@ -270,7 +271,7 @@ namespace gf {
     while (!window()->should_close()) {
       // update
 
-      while (auto event = gf::Event::poll()) {
+      while (auto event = gf::Events::poll()) {
         switch (event->type()) {
           case gf::EventType::Quit:
             window()->close();
@@ -363,7 +364,7 @@ namespace gf {
       while (!m_scenes_changed && !window()->should_close()) {
         // update
 
-        while (auto event = gf::Event::poll()) {
+        while (auto event = gf::Events::poll()) {
           switch (event->type()) {
             case gf::EventType::Quit:
               window()->close();

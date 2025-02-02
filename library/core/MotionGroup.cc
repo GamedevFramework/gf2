@@ -1,15 +1,13 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
 
-#include <gf2/graphics/MotionGroup.h>
+#include <gf2/core/MotionGroup.h>
 
 #include <cassert>
 
 #include <algorithm>
 
-#include <gf2/graphics/Event.h>
-
-#include "gf2/core/GamepadTypes.h"
+#include <gf2/core/Event.h>
 
 namespace gf {
 

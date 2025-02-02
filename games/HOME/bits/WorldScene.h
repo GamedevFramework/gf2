@@ -1,12 +1,12 @@
 #ifndef HOME_WORLD_SCENE_H
 #define HOME_WORLD_SCENE_H
 
+#include <gf2/core/ActionGroup.h>
 #include <gf2/core/ResourceBundle.h>
 
 #include <gf2/audio/Music.h>
 #include <gf2/audio/Sound.h>
 #include <gf2/framework/GraphicsPhysicsDebug.h>
-#include <gf2/graphics/ActionGroup.h>
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/TextEntity.h>
 #include <gf2/physics/PhysicsWorld.h>

@@ -5,15 +5,14 @@
 
 #include <string_view>
 
-#include <gf2/core/ActionSettings.h>
-#include <gf2/core/Id.h>
-
 #include "Action.h"
-#include "GraphicsApi.h"
+#include "ActionSettings.h"
+#include "CoreApi.h"
+#include "Id.h"
 
 namespace gf {
 
-  class GF_GRAPHICS_API ActionGroup {
+  class GF_CORE_API ActionGroup {
   public:
     ActionGroup() = default;
     ActionGroup(const ActionGroupSettings& settings);

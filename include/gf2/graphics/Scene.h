@@ -5,12 +5,12 @@
 
 #include <gf2/core/Camera.h>
 #include <gf2/core/Color.h>
+#include <gf2/core/Event.h>
 #include <gf2/core/ModelContainer.h>
 #include <gf2/core/SceneTypes.h>
 #include <gf2/core/Time.h>
 
 #include "Entity.h"
-#include "Event.h"
 #include "GraphicsApi.h"
 
 namespace gf {

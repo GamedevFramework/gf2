@@ -3,10 +3,10 @@
 #ifndef GF_IMGUI_MANAGER_H
 #define GF_IMGUI_MANAGER_H
 
+#include <gf2/core/Event.h>
 #include <gf2/core/Time.h>
 
 #include <gf2/graphics/Cursor.h>
-#include <gf2/graphics/Event.h>
 #include <gf2/graphics/RenderManager.h>
 #include <gf2/graphics/Texture.h>
 #include <gf2/graphics/Window.h>

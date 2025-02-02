@@ -5,14 +5,13 @@
 
 #include <vector>
 
-#include <gf2/core/ActionSettings.h>
-
+#include "ActionSettings.h"
 #include "Control.h"
-#include "GraphicsApi.h"
+#include "CoreApi.h"
 
 namespace gf {
 
-  class GF_GRAPHICS_API Action {
+  class GF_CORE_API Action {
   public:
     Action(ActionType type = ActionType::Instantaneous);
     Action(const ActionSettings& settings);

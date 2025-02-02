@@ -10,6 +10,7 @@
 #include <gf2/core/ResourceRegistry.h>
 #include <gf2/core/RichMapResource.h>
 #include <gf2/core/TiledMap.h>
+#include <gf2/core/Zoom.h>
 
 #include <gf2/graphics/Entity.h>
 #include <gf2/graphics/RenderManager.h>
@@ -18,7 +19,6 @@
 #include <gf2/graphics/RichMapRenderer.h>
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/SceneManager.h>
-#include <gf2/graphics/Zoom.h>
 
 namespace {
   constexpr auto ViewSize = gf::vec(1600, 900);

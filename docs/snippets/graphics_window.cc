@@ -1,5 +1,5 @@
 #include <gf2/graphics/Window.h>
-#include <gf2/graphics/Event.h>
+#include <gf2/graphics/Events.h>
 
 void doc_Window() {
 
@@ -8,7 +8,7 @@ void doc_Window() {
 
   while (!window.should_close()) {
 
-    while (auto event = gf::Event::poll()) {
+    while (auto event = gf::Events::poll()) {
       switch (event->type()) {
         case gf::EventType::Quit:
           window.close(); // don't forget this!

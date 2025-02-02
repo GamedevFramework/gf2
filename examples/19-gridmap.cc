@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
 
+#include <gf2/core/ActionGroup.h>
 #include <gf2/core/Color.h>
 #include <gf2/core/GridMap.h>
 #include <gf2/core/Log.h>
 #include <gf2/core/Range.h>
 #include <gf2/core/ShapeBuffer.h>
 
-#include <gf2/graphics/ActionGroup.h>
 #include <gf2/graphics/Entity.h>
 #include <gf2/graphics/RenderObject.h>
 #include <gf2/graphics/RenderRecorder.h>

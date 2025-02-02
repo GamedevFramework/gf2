@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
 
-#include <gf2/graphics/Zoom.h>
+#include <gf2/core/Zoom.h>
 
 namespace gf {
 

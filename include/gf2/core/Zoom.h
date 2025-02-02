@@ -5,14 +5,13 @@
 
 #include <cstdint>
 
-#include <gf2/core/Camera.h>
-
+#include "Camera.h"
+#include "CoreApi.h"
 #include "Event.h"
-#include "GraphicsApi.h"
 
 namespace gf {
 
-  class GF_GRAPHICS_API Zoom {
+  class GF_CORE_API Zoom {
   public:
     Zoom(Camera* camera);
 

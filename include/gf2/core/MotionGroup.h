@@ -5,16 +5,15 @@
 
 #include <array>
 
-#include <gf2/core/GamepadTypes.h>
-#include <gf2/core/MouseTypes.h>
-#include <gf2/core/Vec2.h>
-
-#include "GraphicsApi.h"
+#include "CoreApi.h"
+#include "GamepadTypes.h"
+#include "MouseTypes.h"
+#include "Vec2.h"
 
 namespace gf {
   class Event;
 
-  class GF_GRAPHICS_API MotionGroup {
+  class GF_CORE_API MotionGroup {
   public:
 
     Vec2I last_mouse_position() const;
