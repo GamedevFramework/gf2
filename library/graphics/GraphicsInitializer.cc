@@ -4,6 +4,7 @@
 #include <gf2/graphics/GraphicsInitializer.h>
 
 #include <atomic>
+#include <memory>
 
 #include <SDL3/SDL.h>
 #include <volk.h>
@@ -16,6 +17,14 @@ namespace gf {
 
   namespace {
     std::atomic_bool g_graphics_loaded = false; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
+
+    struct JoystickIdDeleter {
+      void operator()(SDL_JoystickID* list)
+      {
+        SDL_free(list);
+      }
+    };
+
   }
 
   GraphicsInitializer::GraphicsInitializer()
@@ -34,12 +43,14 @@ namespace gf {
 
       // open already plugged controllers
 
-      // TODO: [SDL3] read migration guide for gamepads
-      // for (int index = 0; index < SDL_NumJoysticks(); ++index) {
-      //   if (SDL_IsGameController(index) == SDL_TRUE) {
-      //     Gamepad::open(static_cast<GamepadHwId>(index));
-      //   }
-      // }
+      if (SDL_HasGamepad()) {
+        int count = 0;
+        std::unique_ptr<SDL_JoystickID[], JoystickIdDeleter> gamepads(SDL_GetGamepads(&count));
+
+        for (int i = 0; i < count; ++i) {
+          Gamepad::open(GamepadId{gamepads[i]});
+        }
+      }
 
       // initialize volk
 

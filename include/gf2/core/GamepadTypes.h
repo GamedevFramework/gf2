@@ -10,7 +10,7 @@
 
 namespace gf {
 
-  enum class GamepadButton : int32_t { // NOLINT(performance-enum-size)
+  enum class GamepadButton { // NOLINT(performance-enum-size)
     Invalid = -1,
     South,
     East,
@@ -29,14 +29,14 @@ namespace gf {
     DPadRight,
   };
 
-  constexpr GamepadButton AnyGamepadButton = static_cast<GamepadButton>(0x7FFFFFFF);
+  constexpr GamepadButton AnyGamepadButton = GamepadButton{ std::numeric_limits<std::underlying_type_t<GamepadButton>>::max() };
 
   enum class GamepadStick : uint8_t {
     Left,
     Right,
   };
 
-  enum class GamepadAxis : int32_t { // NOLINT(performance-enum-size)
+  enum class GamepadAxis { // NOLINT(performance-enum-size)
     Invalid = -1,
     LeftX,
     LeftY,
@@ -46,7 +46,7 @@ namespace gf {
     TriggerRight,
   };
 
-  constexpr GamepadAxis AnyGamepadAxis = static_cast<GamepadAxis>(0x7FFFFFFF);
+  constexpr GamepadAxis AnyGamepadAxis = GamepadAxis{ std::numeric_limits<std::underlying_type_t<GamepadAxis>>::max() };
 
   enum class GamepadAxisDirection : uint8_t {
     Positive,
@@ -57,6 +57,39 @@ namespace gf {
   };
 
   constexpr GamepadId AnyGamepad = static_cast<GamepadId>(std::numeric_limits<std::underlying_type_t<GamepadId>>::max());
+
+  enum class GamepadType : unsigned { // NOLINT(performance-enum-size)
+    Unknown,
+    Standard,
+    XBox360,
+    XBoxOne,
+    Ps3,
+    Ps4,
+    Ps5,
+    NintendoSwitchPro,
+    NintendoSwitchJoyconLeft,
+    NintendoSwitchJoyconRight,
+    NintendoSwitchJoyconPair,
+  };
+
+  enum class GamepadButtonLabel : unsigned { // NOLINT(performance-enum-size)
+    Unknown,
+    A,
+    B,
+    X,
+    Y,
+    Cross,
+    Circle,
+    Square,
+    Triangle,
+  };
+
+  enum class GamepadConnectionState { // NOLINT(performance-enum-size)
+    Invalid = -1,
+    Unknown,
+    Wired,
+    Wireless,
+  };
 
 }
 
