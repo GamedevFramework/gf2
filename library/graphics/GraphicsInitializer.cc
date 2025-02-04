@@ -5,7 +5,7 @@
 
 #include <atomic>
 
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 #include <volk.h>
 
 #include <gf2/core/Log.h>
@@ -23,7 +23,7 @@ namespace gf {
     if (!g_graphics_loaded.exchange(true)) { // we are the first
       // initialize SDL
 
-      if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER) != 0) {
+      if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD)) {
         Log::error("Unable to initialize SDL: '{}'", SDL_GetError());
         return;
       }
@@ -34,11 +34,12 @@ namespace gf {
 
       // open already plugged controllers
 
-      for (int index = 0; index < SDL_NumJoysticks(); ++index) {
-        if (SDL_IsGameController(index) == SDL_TRUE) {
-          Gamepad::open(static_cast<GamepadHwId>(index));
-        }
-      }
+      // TODO: [SDL3] read migration guide for gamepads
+      // for (int index = 0; index < SDL_NumJoysticks(); ++index) {
+      //   if (SDL_IsGameController(index) == SDL_TRUE) {
+      //     Gamepad::open(static_cast<GamepadHwId>(index));
+      //   }
+      // }
 
       // initialize volk
 
@@ -54,7 +55,7 @@ namespace gf {
 
   GraphicsInitializer::~GraphicsInitializer()
   {
-    SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER);
+    SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD);
     g_graphics_loaded = false;
 
     if (SDL_WasInit(0) == 0) {

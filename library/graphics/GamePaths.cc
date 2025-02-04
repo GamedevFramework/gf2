@@ -5,7 +5,7 @@
 
 #include <memory>
 
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 
 namespace gf {
 
@@ -28,8 +28,7 @@ namespace gf {
 
   std::filesystem::path application_base_path()
   {
-    std::unique_ptr<char[], StringDeleter> base_path(SDL_GetBasePath());
-    return base_path.get();
+    return SDL_GetBasePath();
   }
 
 }

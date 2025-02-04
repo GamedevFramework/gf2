@@ -12,18 +12,18 @@ struct SDL_Cursor;
 namespace gf {
 
   enum class CursorType : uint8_t {
-    Arrow,
+    Default,
     Text,
     Wait,
     Cross,
-    ArrowWait,
+    Progress,
     SizeTopLeftBottomRight,
     SizeBottomLeftTopRight,
     SizeHorizontal,
     SizeVertical,
-    SizeAll,
+    Move,
     NotAllowed,
-    Hand,
+    Pointer,
   };
 
   class GF_GRAPHICS_API Cursor {

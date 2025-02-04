@@ -3,28 +3,39 @@
 
 #include <gf2/graphics/Clipboard.h>
 
-#include <SDL2/SDL.h>
+#include <memory>
+
+#include <SDL3/SDL.h>
 
 #include <gf2/core/Log.h>
 
 namespace gf {
 
+  namespace {
+
+    struct ClipboardStringDeleter {
+      void operator()(char* str) const noexcept
+      {
+        SDL_free(str);
+      }
+    };
+
+  }
+
   std::string Clipboard::text()
   {
-    if (SDL_HasClipboardText() == SDL_FALSE) {
+    if (!SDL_HasClipboardText()) {
       return "";
     }
 
-    char* raw_text = SDL_GetClipboardText();
+    std::unique_ptr<char[], ClipboardStringDeleter> raw_text(SDL_GetClipboardText());
 
     if (raw_text == nullptr) {
       Log::error("Unable to get clipboard text: {}.", SDL_GetError());
       return "";
     }
 
-    std::string result(raw_text);
-    SDL_free(raw_text);
-    return result;
+    return raw_text.get();
   }
 
   void Clipboard::set_text(const std::string& text)

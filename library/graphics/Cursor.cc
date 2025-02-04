@@ -5,7 +5,7 @@
 
 #include <utility>
 
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 
 #include <gf2/core/Log.h>
 
@@ -21,18 +21,18 @@ namespace gf {
 
     [[maybe_unused]] constexpr void cursor_check()
     {
-      cursor_type_check<CursorType::Arrow, SDL_SYSTEM_CURSOR_ARROW>();
-      cursor_type_check<CursorType::Text, SDL_SYSTEM_CURSOR_IBEAM>();
+      cursor_type_check<CursorType::Default, SDL_SYSTEM_CURSOR_DEFAULT>();
+      cursor_type_check<CursorType::Text, SDL_SYSTEM_CURSOR_TEXT>();
       cursor_type_check<CursorType::Wait, SDL_SYSTEM_CURSOR_WAIT>();
       cursor_type_check<CursorType::Cross, SDL_SYSTEM_CURSOR_CROSSHAIR>();
-      cursor_type_check<CursorType::ArrowWait, SDL_SYSTEM_CURSOR_WAITARROW>();
-      cursor_type_check<CursorType::SizeTopLeftBottomRight, SDL_SYSTEM_CURSOR_SIZENWSE>();
-      cursor_type_check<CursorType::SizeBottomLeftTopRight, SDL_SYSTEM_CURSOR_SIZENESW>();
-      cursor_type_check<CursorType::SizeHorizontal, SDL_SYSTEM_CURSOR_SIZEWE>();
-      cursor_type_check<CursorType::SizeVertical, SDL_SYSTEM_CURSOR_SIZENS>();
-      cursor_type_check<CursorType::SizeAll, SDL_SYSTEM_CURSOR_SIZEALL>();
-      cursor_type_check<CursorType::Hand, SDL_SYSTEM_CURSOR_HAND>();
-      cursor_type_check<CursorType::NotAllowed, SDL_SYSTEM_CURSOR_NO>();
+      cursor_type_check<CursorType::Progress, SDL_SYSTEM_CURSOR_PROGRESS>();
+      cursor_type_check<CursorType::SizeTopLeftBottomRight, SDL_SYSTEM_CURSOR_NWSE_RESIZE>();
+      cursor_type_check<CursorType::SizeBottomLeftTopRight, SDL_SYSTEM_CURSOR_NESW_RESIZE>();
+      cursor_type_check<CursorType::SizeHorizontal, SDL_SYSTEM_CURSOR_EW_RESIZE>();
+      cursor_type_check<CursorType::SizeVertical, SDL_SYSTEM_CURSOR_NS_RESIZE>();
+      cursor_type_check<CursorType::Move, SDL_SYSTEM_CURSOR_MOVE>();
+      cursor_type_check<CursorType::Pointer, SDL_SYSTEM_CURSOR_POINTER>();
+      cursor_type_check<CursorType::NotAllowed, SDL_SYSTEM_CURSOR_NOT_ALLOWED>();
     }
 
   }
@@ -53,7 +53,7 @@ namespace gf {
   Cursor::~Cursor()
   {
     if (m_cursor != nullptr) {
-      SDL_FreeCursor(m_cursor);
+      SDL_DestroyCursor(m_cursor);
     }
   }
 
@@ -65,7 +65,12 @@ namespace gf {
 
   void Cursor::set_mouse_cursor_visible(bool visible)
   {
-    SDL_ShowCursor(visible ? SDL_ENABLE : SDL_DISABLE);
+    // TODO: [SDL3] check return
+    if (visible) {
+      SDL_ShowCursor();
+    } else {
+      SDL_HideCursor();
+    }
   }
 
   void Cursor::set_mouse_cursor(const Cursor* cursor)

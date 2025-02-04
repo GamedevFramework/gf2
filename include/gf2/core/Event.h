@@ -6,6 +6,7 @@
 #include <cstdint>
 
 #include <array>
+#include <string_view>
 #include <variant>
 
 #include "CoreApi.h"
@@ -30,7 +31,7 @@ namespace gf {
     WindowExposed,
     WindowMoved,
     WindowResized,
-    // WindowPixelSizeChanged, // TODO: SDL3
+    WindowPixelSizeChanged,
     WindowMinimized,
     WindowMaximized,
     WindowRestored,
@@ -45,7 +46,7 @@ namespace gf {
     KeyReleased,
 
     // TextEdited, // TODO: SDL3
-    TextEntered,
+    TextInput,
     // TextCandidatesShown, // TODO: SDL3
 
     MouseMoved,
@@ -91,10 +92,10 @@ namespace gf {
     Vec2I size;
   };
 
-  // struct GF_CORE_API WindowPixelSizeChangedEvent {
-  //   WindowId window_id;
-  //   Vec2I size;
-  // };
+  struct GF_CORE_API WindowPixelSizeChangedEvent {
+    WindowId window_id;
+    Vec2I size;
+  };
 
   struct GF_CORE_API WindowMinimizedEvent {
     WindowId window_id;
@@ -157,9 +158,9 @@ namespace gf {
   //   int32_t length;
   // };
 
-  struct GF_CORE_API TextEnteredEvent {
+  struct GF_CORE_API TextInputEvent {
     WindowId window_id;
-    std::array<char, 32> text; // TODO: SDL3: changed to a std::string_view
+    std::string_view text;
   };
 
   // struct GF_CORE_API TextCandidatesShownEvent {
@@ -181,7 +182,7 @@ namespace gf {
     WindowId window_id;
     MouseId mouse_id;
     MouseButton button;
-    Vec2I position;
+    Vec2F position;
     uint8_t clicks;
   };
 
@@ -189,15 +190,16 @@ namespace gf {
     WindowId window_id;
     MouseId mouse_id;
     MouseButton button;
-    Vec2I position;
+    Vec2F position;
     uint8_t clicks;
   };
 
   struct GF_CORE_API MouseWheelScrolledEvent {
     WindowId window_id;
     MouseId mouse_id;
-    Vec2I offset;
+    Vec2F offset;
     MouseWheelDirection direction;
+    Vec2F position;
   };
 
   struct GF_CORE_API GamepadAxisMovedEvent {
@@ -217,7 +219,7 @@ namespace gf {
   };
 
   struct GF_CORE_API GamepadConnectedEvent {
-    GamepadHwId gamepad_hw_id;
+    GamepadId gamepad_id;
   };
 
   struct GF_CORE_API GamepadDisconnectedEvent {
@@ -315,7 +317,7 @@ namespace gf {
       WindowExposedEvent,
       WindowMovedEvent,
       WindowResizedEvent,
-      // WindowPixelSizeChangedEvent,
+      WindowPixelSizeChangedEvent,
       WindowMinimizedEvent,
       WindowMaximizedEvent,
       WindowRestoredEvent,
@@ -330,7 +332,7 @@ namespace gf {
       KeyReleasedEvent,
 
       // TextEditedEvent,
-      TextEnteredEvent,
+      TextInputEvent,
       // TextCandidatesShownEvent,
 
       MouseMovedEvent,

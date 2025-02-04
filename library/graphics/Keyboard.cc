@@ -3,7 +3,7 @@
 
 #include <gf2/graphics/Keyboard.h>
 
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 
 namespace gf {
 
@@ -12,39 +12,39 @@ namespace gf {
     template<Modifier Mod, SDL_Keymod Value>
     constexpr void modifier_check()
     {
-      static_assert(static_cast<SDL_Keymod>(Mod) == Value, "Check gf::Modifier");
+      static_assert(static_cast<SDL_Keymod>(Mod) == Value);
     }
 
     template<Scancode Code, SDL_Scancode Value>
     constexpr void scancode_check()
     {
-      static_assert(static_cast<SDL_Scancode>(Code) == Value, "Check gf::Scancode");
+      static_assert(static_cast<SDL_Scancode>(Code) == Value);
     }
 
     template<Keycode Code, SDL_Keycode Value>
     constexpr void keycode_check()
     {
-      static_assert(static_cast<SDL_Keycode>(Code) == Value, "Check gf::Keycode");
+      static_assert(static_cast<SDL_Keycode>(Code) == Value);
     }
 
     [[maybe_unused]] constexpr void keyboard_check()
     {
-      modifier_check<Modifier::None, KMOD_NONE>();
-      modifier_check<Modifier::LeftShift, KMOD_LSHIFT>();
-      modifier_check<Modifier::RightShift, KMOD_RSHIFT>();
-      modifier_check<Modifier::LeftCtrl, KMOD_LCTRL>();
-      modifier_check<Modifier::RightCtrl, KMOD_RCTRL>();
-      modifier_check<Modifier::LeftAlt, KMOD_LALT>();
-      modifier_check<Modifier::RightAlt, KMOD_RALT>();
-      modifier_check<Modifier::LeftGui, KMOD_LGUI>();
-      modifier_check<Modifier::RightGui, KMOD_RGUI>();
-      modifier_check<Modifier::Num, KMOD_NUM>();
-      modifier_check<Modifier::Caps, KMOD_CAPS>();
-      modifier_check<Modifier::Mode, KMOD_MODE>();
-      modifier_check<Modifier::Shift, KMOD_SHIFT>();
-      modifier_check<Modifier::Ctrl, KMOD_CTRL>();
-      modifier_check<Modifier::Alt, KMOD_ALT>();
-      modifier_check<Modifier::Gui, KMOD_GUI>();
+      modifier_check<Modifier::None, SDL_KMOD_NONE>();
+      modifier_check<Modifier::LeftShift, SDL_KMOD_LSHIFT>();
+      modifier_check<Modifier::RightShift, SDL_KMOD_RSHIFT>();
+      modifier_check<Modifier::LeftCtrl, SDL_KMOD_LCTRL>();
+      modifier_check<Modifier::RightCtrl, SDL_KMOD_RCTRL>();
+      modifier_check<Modifier::LeftAlt, SDL_KMOD_LALT>();
+      modifier_check<Modifier::RightAlt, SDL_KMOD_RALT>();
+      modifier_check<Modifier::LeftGui, SDL_KMOD_LGUI>();
+      modifier_check<Modifier::RightGui, SDL_KMOD_RGUI>();
+      modifier_check<Modifier::Num, SDL_KMOD_NUM>();
+      modifier_check<Modifier::Caps, SDL_KMOD_CAPS>();
+      modifier_check<Modifier::Mode, SDL_KMOD_MODE>();
+      modifier_check<Modifier::Shift, SDL_KMOD_SHIFT>();
+      modifier_check<Modifier::Ctrl, SDL_KMOD_CTRL>();
+      modifier_check<Modifier::Alt, SDL_KMOD_ALT>();
+      modifier_check<Modifier::Gui, SDL_KMOD_GUI>();
 
       scancode_check<Scancode::Unknown, SDL_SCANCODE_UNKNOWN>();
       scancode_check<Scancode::A, SDL_SCANCODE_A>();
@@ -266,12 +266,12 @@ namespace gf {
       keycode_check<Keycode::Tab, SDLK_TAB>();
       keycode_check<Keycode::Space, SDLK_SPACE>();
       keycode_check<Keycode::Exclaim, SDLK_EXCLAIM>();
-      keycode_check<Keycode::QuoteDbl, SDLK_QUOTEDBL>();
+      keycode_check<Keycode::DoubleApostrophe, SDLK_DBLAPOSTROPHE>();
       keycode_check<Keycode::Hash, SDLK_HASH>();
       keycode_check<Keycode::Percent, SDLK_PERCENT>();
       keycode_check<Keycode::Dollar, SDLK_DOLLAR>();
       keycode_check<Keycode::Ampersand, SDLK_AMPERSAND>();
-      keycode_check<Keycode::Quote, SDLK_QUOTE>();
+      keycode_check<Keycode::Quote, SDLK_APOSTROPHE>();
       keycode_check<Keycode::LeftParen, SDLK_LEFTPAREN>();
       keycode_check<Keycode::RightParen, SDLK_RIGHTPAREN>();
       keycode_check<Keycode::Asterisk, SDLK_ASTERISK>();
@@ -302,33 +302,33 @@ namespace gf {
       keycode_check<Keycode::RightBracket, SDLK_RIGHTBRACKET>();
       keycode_check<Keycode::Caret, SDLK_CARET>();
       keycode_check<Keycode::Underscore, SDLK_UNDERSCORE>();
-      keycode_check<Keycode::Backquote, SDLK_BACKQUOTE>();
-      keycode_check<Keycode::A, SDLK_a>();
-      keycode_check<Keycode::B, SDLK_b>();
-      keycode_check<Keycode::C, SDLK_c>();
-      keycode_check<Keycode::D, SDLK_d>();
-      keycode_check<Keycode::E, SDLK_e>();
-      keycode_check<Keycode::F, SDLK_f>();
-      keycode_check<Keycode::G, SDLK_g>();
-      keycode_check<Keycode::H, SDLK_h>();
-      keycode_check<Keycode::I, SDLK_i>();
-      keycode_check<Keycode::J, SDLK_j>();
-      keycode_check<Keycode::K, SDLK_k>();
-      keycode_check<Keycode::L, SDLK_l>();
-      keycode_check<Keycode::M, SDLK_m>();
-      keycode_check<Keycode::N, SDLK_n>();
-      keycode_check<Keycode::O, SDLK_o>();
-      keycode_check<Keycode::P, SDLK_p>();
-      keycode_check<Keycode::Q, SDLK_q>();
-      keycode_check<Keycode::R, SDLK_r>();
-      keycode_check<Keycode::S, SDLK_s>();
-      keycode_check<Keycode::T, SDLK_t>();
-      keycode_check<Keycode::U, SDLK_u>();
-      keycode_check<Keycode::V, SDLK_v>();
-      keycode_check<Keycode::W, SDLK_w>();
-      keycode_check<Keycode::X, SDLK_x>();
-      keycode_check<Keycode::Y, SDLK_y>();
-      keycode_check<Keycode::Z, SDLK_z>();
+      keycode_check<Keycode::Grave, SDLK_GRAVE>();
+      keycode_check<Keycode::A, SDLK_A>();
+      keycode_check<Keycode::B, SDLK_B>();
+      keycode_check<Keycode::C, SDLK_C>();
+      keycode_check<Keycode::D, SDLK_D>();
+      keycode_check<Keycode::E, SDLK_E>();
+      keycode_check<Keycode::F, SDLK_F>();
+      keycode_check<Keycode::G, SDLK_G>();
+      keycode_check<Keycode::H, SDLK_H>();
+      keycode_check<Keycode::I, SDLK_I>();
+      keycode_check<Keycode::J, SDLK_J>();
+      keycode_check<Keycode::K, SDLK_K>();
+      keycode_check<Keycode::L, SDLK_L>();
+      keycode_check<Keycode::M, SDLK_M>();
+      keycode_check<Keycode::N, SDLK_N>();
+      keycode_check<Keycode::O, SDLK_O>();
+      keycode_check<Keycode::P, SDLK_P>();
+      keycode_check<Keycode::Q, SDLK_Q>();
+      keycode_check<Keycode::R, SDLK_R>();
+      keycode_check<Keycode::S, SDLK_S>();
+      keycode_check<Keycode::T, SDLK_T>();
+      keycode_check<Keycode::U, SDLK_U>();
+      keycode_check<Keycode::V, SDLK_V>();
+      keycode_check<Keycode::W, SDLK_W>();
+      keycode_check<Keycode::X, SDLK_X>();
+      keycode_check<Keycode::Y, SDLK_Y>();
+      keycode_check<Keycode::Z, SDLK_Z>();
       keycode_check<Keycode::CapsLock, SDLK_CAPSLOCK>();
       keycode_check<Keycode::F1, SDLK_F1>();
       keycode_check<Keycode::F2, SDLK_F2>();
@@ -495,12 +495,12 @@ namespace gf {
 
   Keycode Keyboard::localize(Scancode scancode)
   {
-    return static_cast<Keycode>(SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(scancode)));
+    return static_cast<Keycode>(SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(scancode), SDL_KMOD_NONE, true));
   }
 
   Scancode Keyboard::unlocalize(Keycode keycode)
   {
-    return static_cast<Scancode>(SDL_GetScancodeFromKey(static_cast<SDL_Keycode>(keycode)));
+    return static_cast<Scancode>(SDL_GetScancodeFromKey(static_cast<SDL_Keycode>(keycode), nullptr));
   }
 
 } // namespace gf

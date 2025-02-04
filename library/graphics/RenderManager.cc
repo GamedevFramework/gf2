@@ -7,7 +7,8 @@
 #include <thread>
 #include <utility>
 
-#include <SDL2/SDL_vulkan.h>
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_vulkan.h>
 #include <VkBootstrap.h>
 #include <volk.h>
 #include <vulkan/vulkan_core.h>
@@ -58,7 +59,7 @@ namespace gf {
   , m_thread_id(std::this_thread::get_id())
   {
     Vec2I size = {};
-    SDL_Vulkan_GetDrawableSize(m_window, &size.w, &size.h);
+    SDL_GetWindowSizeInPixels(m_window, &size.w, &size.h);
 
     construct_device();
     construct_allocator();
@@ -470,7 +471,7 @@ namespace gf {
   void RenderManager::recreate_swapchain()
   {
     Vec2I size = {};
-    SDL_Vulkan_GetDrawableSize(m_window, &size.w, &size.h);
+    SDL_GetWindowSizeInPixels(m_window, &size.w, &size.h);
     recreate_swapchain(size);
   }
 
@@ -489,15 +490,10 @@ namespace gf {
   {
     // instance
 
-    unsigned int extension_count = 0;
+    Uint32 extension_count = 0;
+    const auto* extensions = SDL_Vulkan_GetInstanceExtensions(&extension_count);
 
-    if (SDL_Vulkan_GetInstanceExtensions(m_window, &extension_count, nullptr) == SDL_FALSE) {
-      Log::fatal("Failed to get extensions.");
-    }
-
-    std::vector<const char*> extension_names(extension_count, nullptr);
-
-    if (SDL_Vulkan_GetInstanceExtensions(m_window, &extension_count, extension_names.data()) == SDL_FALSE) {
+    if (extensions == nullptr) {
       Log::fatal("Failed to get extensions.");
     }
 
@@ -515,10 +511,10 @@ namespace gf {
 #endif
         ;
 
-    // for (auto extension : extension_names) {
-    //   Log::info("Required extension: {}", extension);
-    //   instance_builder.enable_extension(extension);
-    // }
+    for (Uint32 i = 0; i < extension_count; ++i) {
+      Log::debug("Required extension: {}", extensions[i]);
+      instance_builder.enable_extension(extensions[i]);
+    }
 
     auto maybe_instance = instance_builder.build();
 
@@ -537,7 +533,7 @@ namespace gf {
 
     // surface
 
-    if (SDL_Vulkan_CreateSurface(m_window, m_instance, &m_surface) == SDL_FALSE) {
+    if (!SDL_Vulkan_CreateSurface(m_window, m_instance, nullptr, &m_surface)) {
       Log::fatal("Failed to create window surface.");
     }
 

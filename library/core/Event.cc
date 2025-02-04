@@ -26,6 +26,7 @@ namespace gf {
       event_data_check<gf::WindowExposedEvent, gf::EventType::WindowExposed>();
       event_data_check<gf::WindowMovedEvent, gf::EventType::WindowMoved>();
       event_data_check<gf::WindowResizedEvent, gf::EventType::WindowResized>();
+      event_data_check<gf::WindowPixelSizeChangedEvent, gf::EventType::WindowPixelSizeChanged>();
       event_data_check<gf::WindowMinimizedEvent, gf::EventType::WindowMinimized>();
       event_data_check<gf::WindowMaximizedEvent, gf::EventType::WindowMaximized>();
       event_data_check<gf::WindowRestoredEvent, gf::EventType::WindowRestored>();
@@ -37,7 +38,7 @@ namespace gf {
       event_data_check<gf::KeyPressedEvent, gf::EventType::KeyPressed>();
       event_data_check<gf::KeyRepeatedEvent, gf::EventType::KeyRepeated>();
       event_data_check<gf::KeyReleasedEvent, gf::EventType::KeyReleased>();
-      event_data_check<gf::TextEnteredEvent, gf::EventType::TextEntered>();
+      event_data_check<gf::TextInputEvent, gf::EventType::TextInput>();
       event_data_check<gf::MouseMovedEvent, gf::EventType::MouseMoved>();
       event_data_check<gf::MouseButtonPressedEvent, gf::EventType::MouseButtonPressed>();
       event_data_check<gf::MouseButtonReleasedEvent, gf::EventType::MouseButtonReleased>();

@@ -27,11 +27,11 @@ namespace gf {
     {
       switch (cursor) {
         case ImGuiMouseCursor_Arrow:
-          return CursorType::Arrow;
+          return CursorType::Default;
         case ImGuiMouseCursor_TextInput:
           return CursorType::Text;
         case ImGuiMouseCursor_ResizeAll:
-          return CursorType::SizeAll;
+          return CursorType::Move;
         case ImGuiMouseCursor_ResizeNS:
           return CursorType::SizeVertical;
         case ImGuiMouseCursor_ResizeEW:
@@ -41,14 +41,14 @@ namespace gf {
         case ImGuiMouseCursor_ResizeNWSE:
           return CursorType::SizeTopLeftBottomRight;
         case ImGuiMouseCursor_Hand:
-          return CursorType::Hand;
+          return CursorType::Pointer;
         case ImGuiMouseCursor_NotAllowed:
           return CursorType::NotAllowed;
         default:
           break;
       }
 
-      return CursorType::Arrow;
+      return CursorType::Default;
     }
 
   }
@@ -157,8 +157,8 @@ namespace gf {
           return true;
         }
 
-      case EventType::TextEntered:
-        io.AddInputCharactersUTF8(event.from<EventType::TextEntered>().text.data());
+      case EventType::TextInput:
+        io.AddInputCharactersUTF8(event.from<EventType::TextInput>().text.data());
         return io.WantCaptureKeyboard;
 
       default:
@@ -301,16 +301,16 @@ namespace gf {
     }
 
     switch (button) {
-      case GamepadButton::A:
+      case GamepadButton::South:
         io.AddKeyAnalogEvent(ImGuiKey_GamepadFaceDown, pressed, value);
         break;
-      case GamepadButton::B:
+      case GamepadButton::East:
         io.AddKeyAnalogEvent(ImGuiKey_GamepadFaceRight, pressed, value);
         break;
-      case GamepadButton::X:
+      case GamepadButton::West:
         io.AddKeyAnalogEvent(ImGuiKey_GamepadFaceLeft, pressed, value);
         break;
-      case GamepadButton::Y:
+      case GamepadButton::North:
         io.AddKeyAnalogEvent(ImGuiKey_GamepadFaceUp, pressed, value);
         break;
       case GamepadButton::DPadLeft:

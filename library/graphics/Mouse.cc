@@ -3,7 +3,7 @@
 
 #include <type_traits>
 
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 
 #include <gf2/core/MouseTypes.h>
 

@@ -15,7 +15,7 @@ namespace gf {
     static const char* button_name(GamepadButton button);
     static const char* gamepad_name(GamepadId id);
 
-    static GamepadId open(GamepadHwId hwid);
+    static void open(GamepadId hwid);
     static bool attached(GamepadId id);
     static void close(GamepadId id);
   };

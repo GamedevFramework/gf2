@@ -5,13 +5,16 @@
 
 #include <cstdint>
 
+#include <limits>
+#include <type_traits>
+
 namespace gf {
 
-  enum class TouchId : int64_t;
+  enum class TouchId : uint64_t;
 
-  constexpr TouchId MouseTouchId = TouchId{ -1 };
+  constexpr TouchId MouseTouchId = TouchId{ std::numeric_limits<std::underlying_type_t<TouchId>>::max() };
 
-  enum class FingerId : int64_t;
+  enum class FingerId : uint64_t;
 
 } // namespace gf
 

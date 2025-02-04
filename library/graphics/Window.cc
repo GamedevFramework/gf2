@@ -6,8 +6,8 @@
 #include <type_traits>
 #include <utility>
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_vulkan.h>
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_vulkan.h>
 
 #include <gf2/core/Log.h>
 
@@ -18,15 +18,13 @@ namespace gf {
   namespace {
     Uint32 to_flags(Flags<WindowHints> hints)
     {
-      Uint32 flags = SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_VULKAN;
+      Uint32 flags = SDL_WINDOW_HIGH_PIXEL_DENSITY | SDL_WINDOW_VULKAN;
 
       if (hints.test(WindowHints::Resizable)) {
         flags |= SDL_WINDOW_RESIZABLE;
       }
 
-      if (hints.test(WindowHints::Visible)) {
-        flags |= SDL_WINDOW_SHOWN;
-      } else {
+      if (!hints.test(WindowHints::Visible)) {
         flags |= SDL_WINDOW_HIDDEN;
       }
 
@@ -42,7 +40,7 @@ namespace gf {
   Window::Window(const std::string& title, Vec2I size, Flags<WindowHints> hints)
   {
     auto flags = to_flags(hints);
-    m_window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, size.w, size.h, flags);
+    m_window = SDL_CreateWindow(title.c_str(), size.w, size.h, flags);
 
     if (m_window == nullptr) {
       Log::fatal("Failed to create a window: {}", SDL_GetError());
@@ -142,8 +140,8 @@ namespace gf {
   {
     assert(m_window);
     Vec2I size = {};
-    SDL_Vulkan_GetDrawableSize(m_window, &size.w, &size.h);
-    // TODO: [SDL3] use SDL_GetWindowSizeInPixels
+    SDL_GetWindowSizeInPixels(m_window, &size.w, &size.h);
+    // TODO: [SDL3] check return
     return size;
   }
 
@@ -208,13 +206,8 @@ namespace gf {
   void Window::set_fullscreen(bool fullscreen)
   {
     assert(m_window);
-
-    if (fullscreen) {
-      SDL_SetWindowFullscreen(m_window, SDL_WINDOW_FULLSCREEN_DESKTOP);
-    } else {
-      SDL_SetWindowFullscreen(m_window, 0);
-    }
-
+    SDL_SetWindowFullscreen(m_window, fullscreen);
+    // TODO: [SDL3] check return
     m_fullscreen = fullscreen;
   }
 
@@ -231,7 +224,7 @@ namespace gf {
   void Window::set_resizable(bool resizable)
   {
     assert(m_window);
-    SDL_SetWindowResizable(m_window, resizable ? SDL_TRUE : SDL_FALSE);
+    SDL_SetWindowResizable(m_window, resizable);
   }
 
   bool Window::resizable()
@@ -255,13 +248,13 @@ namespace gf {
   bool Window::visible()
   {
     auto flags = SDL_GetWindowFlags(m_window);
-    return (flags & SDL_WINDOW_SHOWN) != 0;
+    return (flags & SDL_WINDOW_HIDDEN) == 0;
   }
 
   void Window::set_decorated(bool decorated)
   {
     assert(m_window);
-    SDL_SetWindowBordered(m_window, decorated ? SDL_TRUE : SDL_FALSE);
+    SDL_SetWindowBordered(m_window, decorated);
   }
 
   bool Window::decorated()

@@ -5,14 +5,17 @@
 
 #include <cstdint>
 
+#include <limits>
+#include <type_traits>
+
 namespace gf {
 
   enum class GamepadButton : int32_t { // NOLINT(performance-enum-size)
     Invalid = -1,
-    A,
-    B,
-    X,
-    Y,
+    South,
+    East,
+    West,
+    North,
     Back,
     Guide,
     Start,
@@ -50,13 +53,10 @@ namespace gf {
     Negative,
   };
 
-  enum class GamepadHwId : int { // NOLINT(performance-enum-size)
+  enum class GamepadId : uint32_t { // NOLINT(performance-enum-size)
   };
 
-  enum class GamepadId : int32_t { // NOLINT(performance-enum-size)
-  };
-
-  constexpr GamepadId AnyGamepad = static_cast<GamepadId>(INT32_C(-1));
+  constexpr GamepadId AnyGamepad = static_cast<GamepadId>(std::numeric_limits<std::underlying_type_t<GamepadId>>::max());
 
 }
 
