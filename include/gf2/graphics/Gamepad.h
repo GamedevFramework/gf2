@@ -15,7 +15,7 @@ using SDL_Gamepad = struct SDL_Gamepad;
 
 namespace gf {
 
-  class GamepadDevice {
+  class GF_GRAPHICS_API GamepadDevice {
   public:
     operator bool()
     {
