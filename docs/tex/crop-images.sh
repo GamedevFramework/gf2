@@ -60,3 +60,7 @@ mv "${WORKING_DIR}/grids-31.png" "${OUTPUT_DIR}/hexagonal_x_1_neighbors.png"
 mv "${WORKING_DIR}/grids-32.png" "${OUTPUT_DIR}/hexagonal_x_0_neighbors.png"
 mv "${WORKING_DIR}/grids-33.png" "${OUTPUT_DIR}/hexagonal_y_1_neighbors.png"
 mv "${WORKING_DIR}/grids-34.png" "${OUTPUT_DIR}/hexagonal_y_0_neighbors.png"
+
+# architecture
+
+mv "${WORKING_DIR}/architecture-1.png" "${OUTPUT_DIR}/acts_scenes.png"

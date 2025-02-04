@@ -10,11 +10,54 @@ This section will teach you how to organize your game globally, from top to bott
 
 xref:manual.adoc[< Back to the manual]
 
-== Acts and scenes
+== Acts and Scenes
 
-== Model, data and state
+In this section, we see how to split a game into several components called acts. Each act can then be split into scenes. Figure <<acts_scenes>> gives an overview of a game with two acts: _Kickoff_ and _World_.
 
-== Resources and entities
+[#acts_scenes]
+.Acts and Scenes
+image::fig/acts_scenes.png[Acts and Scenes]
+
+=== Acts
+
+A *game* is represented by a class that derives from a scene manager. Generally, xref:SceneSystem.adoc[`gf::SceneSystem`] is the scene manager you want. It provides a random engine, a resource manager, a font manager and an audio manager. A game is composed of one or several acts. For simple games, a single act is enough. For more complex games, with an initial menu with several features, and then one or several large levels, you may need several acts.
+
+In order to define the game represented in the previous figure, you can declare the `Game` class. In this case, the _World_ act (`WorldAct`) is associated with a model (`WorldModel`), but not the _Kickoff_ act (`KickoffAct`) because the _Kickoff_ act does not need data or state.
+
+.Definition of a game
+[source,indent=0]
+----
+include::snippets/manual_arch.cc[tag=game_h]
+----
+
+An *act* is a set of one or more consistent scenes. Each act is associated with its own resources (see <<resources-and-entities>>) and it can be associated with a model (see <<model-data-and-state>>). An act can be loaded asynchronously if its loading time needs a beautiful loading scene, but the first act must be loaded as fast as possible.
+
+An act generally needs the game class (`Game`) and the relevant resources to initialize all the scenes. The _World_ act (`WorldAct`) has two scenes: the _Map_ scene (`MapScene`) and the _Options_ scene (`OptionsScene`) that are initialized in the act's contructor.
+
+.Definition of an act
+[source,indent=0]
+----
+include::snippets/manual_arch.cc[tag=act_h]
+----
+
+=== Scenes
+
+A *scene* is a game loop that is split into different steps. In the scene manager, scenes are organized in a stack at runtime. You can push a scene, pop a scene or completely replace all the scenes (generally when you go through the next act). When multiple scenes are in the stack, the different steps are called for every scenes, from the bottom of the stack to the top of the stack. The scope of a scene can vary according to the game and inside a game. Generally, when you need a new set of actions (keyboard, mouse, etc) and/or a new set of entities to render elements of the game, you need a new scene.
+
+A scene class derives from xref:BasicScene.adoc[`gf::BasicScene`] that provides only basic features. For a general purpose scene, you may want to derive from xref:Scene.adoc[`gf::Scene`]. This scene is built around two set of entities: the world entities that are meant to be in the world of the game; the hud entities that are meant to display link:HUD[https://en.wikipedia.org/wiki/HUD_(video_games)] elements.
+
+.Definition of a scene
+[source,indent=0]
+----
+include::snippets/manual_arch.cc[tag=scene_h]
+----
+
+
+To go deeper in scenes, you can check the xref:manual_scenes.adoc[Scenes] section.
+
+== Model, Data and State
+
+== Resources and Entities
 
 == Conclusion
 

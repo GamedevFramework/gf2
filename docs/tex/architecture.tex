@@ -1,0 +1,44 @@
+\documentclass[a4paper]{article}
+
+% packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{libertine}
+\usepackage{xcolor}
+\usepackage{tikz}
+
+\definecolor{tilecolor}{rgb}{0,0.5,1}
+
+\newenvironment{onepagefig}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}\clearpage}
+
+\begin{document}
+
+\pagestyle{empty}
+
+\begin{onepagefig}
+  \node[draw,rectangle,rounded corners=3pt,minimum height=4cm,minimum width=12.5cm] (Game) at (0,0) { } ;
+  \draw (Game.north) node [below] { Game } ;
+
+  \node[draw,rectangle,rounded corners=3pt,minimum height=3cm,minimum width=5cm] (Act1) at (-3,0) { } ;
+  \draw (Act1.north) node [below] { Act \#1: Kickoff } ;
+
+  \node[draw,rectangle,rounded corners=3pt,minimum height=2cm,minimum width=2cm] (SceneA) at (-4, 0) { } ;
+  \draw (SceneA.north) node [below] { Menu } ;
+
+  \node[draw,rectangle,rounded corners=3pt,minimum height=2cm,minimum width=2cm] (SceneB) at (-2, 0) { } ;
+  \draw (SceneB.north) node [below] { Credits } ;
+
+  \node[draw,rectangle,rounded corners=3pt,minimum height=3cm,minimum width=5cm] (Act2) at (3,0) { } ;
+  \draw (Act2.north) node [below] { Act \#2: World } ;
+
+  \node[draw,rectangle,rounded corners=3pt,minimum height=2cm,minimum width=2cm] (SceneC) at (2, 0) { } ;
+  \draw (SceneC.north) node [below] { Map } ;
+
+  \node[draw,rectangle,rounded corners=3pt,minimum height=2cm,minimum width=2cm] (SceneD) at (4, 0) { } ;
+  \draw (SceneD.north) node [below] { Options } ;
+
+\end{onepagefig}
+
+
+\end{document}
