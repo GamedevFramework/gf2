@@ -3,6 +3,9 @@
 #ifndef GF_KEYBOARD_H
 #define GF_KEYBOARD_H
 
+#include <tuple>
+
+#include <gf2/core/Flags.h>
 #include <gf2/core/Keycode.h>
 #include <gf2/core/Modifier.h>
 #include <gf2/core/Scancode.h>
@@ -18,8 +21,8 @@ namespace gf {
     static const char* keycode_name(Keycode keycode);
     static Keycode keycode_from_name(const char* name);
 
-    static Keycode localize(Scancode scancode);
-    static Scancode unlocalize(Keycode keycode);
+    static Keycode localize(Scancode scancode, Flags<Modifier> modifiers);
+    static std::tuple<Scancode, Flags<Modifier>> unlocalize(Keycode keycode);
   };
 
 } // namespace gf

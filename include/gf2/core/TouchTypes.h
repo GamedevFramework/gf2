@@ -14,6 +14,13 @@ namespace gf {
 
   constexpr TouchId MouseTouchId = TouchId{ std::numeric_limits<std::underlying_type_t<TouchId>>::max() };
 
+  enum class TouchDeviceType { // NOLINT(performance-enum-size)
+    Invalid = -1,
+    Direct,
+    IndirectAbsolute,
+    IndirectRelative,
+  };
+
   enum class FingerId : uint64_t;
 
 } // namespace gf

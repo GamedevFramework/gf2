@@ -5,9 +5,12 @@
 
 #include <cstdint>
 
+#include <limits>
+#include <type_traits>
+
 namespace gf {
 
-  enum class MouseButton : uint32_t { // NOLINT(performance-enum-size)
+  enum class MouseButton : uint8_t {
     None,
     Left,
     Middle,
@@ -18,13 +21,13 @@ namespace gf {
     Touch2,
   };
 
-  constexpr MouseButton AnyMouseButton = static_cast<MouseButton>(0xFFFFFFFF);
+  constexpr MouseButton AnyMouseButton = MouseButton{ std::numeric_limits<std::underlying_type_t<MouseButton>>::max() };
 
   enum class MouseId : uint32_t;
 
-  constexpr MouseId TouchMouseId = static_cast<MouseId>(0xFFFFFFFF);
+  constexpr MouseId TouchMouseId = MouseId{ std::numeric_limits<std::underlying_type_t<MouseId>>::max() };
 
-  enum class MouseWheelDirection : uint32_t { // NOLINT(performance-enum-size)
+  enum class MouseWheelDirection { // NOLINT(performance-enum-size)
     Normal,
     Flipped,
   };

@@ -5,7 +5,6 @@
 
 #include <cstdint>
 
-#include <array>
 #include <string_view>
 #include <variant>
 
@@ -174,24 +173,24 @@ namespace gf {
   struct GF_CORE_API MouseMovedEvent {
     WindowId window_id;
     MouseId mouse_id;
-    Vec2I position;
-    Vec2I motion;
+    Vec2F position;
+    Vec2F motion;
   };
 
   struct GF_CORE_API MouseButtonPressedEvent {
     WindowId window_id;
     MouseId mouse_id;
     MouseButton button;
-    Vec2F position;
     uint8_t clicks;
+    Vec2F position;
   };
 
   struct GF_CORE_API MouseButtonReleasedEvent {
     WindowId window_id;
     MouseId mouse_id;
     MouseButton button;
-    Vec2F position;
     uint8_t clicks;
+    Vec2F position;
   };
 
   struct GF_CORE_API MouseWheelScrolledEvent {

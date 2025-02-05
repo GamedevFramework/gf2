@@ -3,11 +3,16 @@
 
 #include <gf2/graphics/Keyboard.h>
 
+#include <type_traits>
+
 #include <SDL3/SDL.h>
+#include "gf2/core/Modifier.h"
 
 namespace gf {
 
   namespace {
+
+    static_assert(std::is_same_v<std::underlying_type_t<Modifier>, SDL_Keymod>);
 
     template<Modifier Mod, SDL_Keymod Value>
     constexpr void modifier_check()
@@ -493,14 +498,16 @@ namespace gf {
     return static_cast<Keycode>(SDL_GetKeyFromName(name));
   }
 
-  Keycode Keyboard::localize(Scancode scancode)
+  Keycode Keyboard::localize(Scancode scancode, Flags<Modifier> modifiers)
   {
-    return static_cast<Keycode>(SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(scancode), SDL_KMOD_NONE, true));
+    return static_cast<Keycode>(SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(scancode), modifiers.value(), true));
   }
 
-  Scancode Keyboard::unlocalize(Keycode keycode)
+  std::tuple<Scancode, Flags<Modifier>> Keyboard::unlocalize(Keycode keycode)
   {
-    return static_cast<Scancode>(SDL_GetScancodeFromKey(static_cast<SDL_Keycode>(keycode), nullptr));
+    SDL_Keymod modifiers = 0;
+    SDL_Scancode scancode = SDL_GetScancodeFromKey(static_cast<SDL_Keycode>(keycode), &modifiers);
+    return { static_cast<Scancode>(scancode), static_cast<Modifier>(modifiers) };
   }
 
 } // namespace gf

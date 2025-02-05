@@ -47,13 +47,12 @@ namespace gf {
     void close();
 
   private:
-    friend class Gamepad;
+    friend struct Gamepad;
     GamepadDevice(SDL_Gamepad* gamepad);
     SDL_Gamepad* m_gamepad = nullptr;
   };
 
-  class GF_GRAPHICS_API Gamepad {
-  public:
+  struct GF_GRAPHICS_API Gamepad {
     static GamepadDevice open(GamepadId id);
     static GamepadDevice from_id(GamepadId id);
 
