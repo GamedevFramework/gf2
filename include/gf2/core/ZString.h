@@ -14,54 +14,54 @@ namespace gf {
   public:
     constexpr ZString() = default;
 
-    constexpr ZString(const char* string)
+    constexpr ZString(const char* string) noexcept
     : m_data(string)
     , m_size(string == nullptr ? 0 : std::char_traits<char>::length(string))
     {
     }
 
-    constexpr bool empty() const
+    constexpr bool empty() const noexcept
     {
       return m_size == 0;
     }
 
-    constexpr std::size_t size() const
+    constexpr std::size_t size() const noexcept
     {
       return m_size;
     }
 
-    constexpr const char* data() const
+    constexpr const char* data() const noexcept
     {
       return m_data;
     }
 
-    constexpr const char* c_str() const
+    constexpr const char* c_str() const noexcept
     {
       return m_data;
     }
 
-    constexpr const char* begin() const
+    constexpr const char* begin() const noexcept
     {
       return m_data;
     }
 
-    constexpr const char* end() const
+    constexpr const char* end() const noexcept
     {
       return m_data + m_size;
     }
 
-    constexpr char operator[](std::size_t index) const
+    constexpr char operator[](std::size_t index) const noexcept
     {
       assert(index < m_size);
       return m_data[index];
     }
 
-    constexpr operator std::string_view() const
+    constexpr operator std::string_view() const noexcept
     {
       return { m_data, m_size };
     }
 
-    std::string to_string() const
+    std::string to_string() const noexcept
     {
       return { m_data, m_size };
     }
