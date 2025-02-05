@@ -83,11 +83,4 @@ namespace gf {
     SDL_SetCursor(cursor->m_cursor);
   }
 
-  void capture_mouse(bool captured)
-  {
-    if (!SDL_CaptureMouse(captured)) {
-      Log::error("Failed to capture the mouse: {}", SDL_GetError());
-    }
-  }
-
 }

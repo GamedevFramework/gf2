@@ -1,10 +1,14 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
 
+#include <gf2/graphics/Touch.h>
+
+#include <memory>
 #include <type_traits>
 
 #include <SDL3/SDL.h>
 
+#include <gf2/core/Log.h>
 #include <gf2/core/TouchTypes.h>
 
 namespace gf {
@@ -30,6 +34,43 @@ namespace gf {
       touch_device_type_check<TouchDeviceType::IndirectRelative, SDL_TOUCH_DEVICE_INDIRECT_RELATIVE>();
     }
 
+    struct TouchIdDeleter {
+      void operator()(SDL_TouchID* ids)
+      {
+        SDL_free(ids);
+      }
+    };
+
   } // namespace
+
+  std::vector<TouchId> Touch::devices()
+  {
+    int count = 0;
+    std::unique_ptr<SDL_TouchID[], TouchIdDeleter> raw_devices(SDL_GetTouchDevices(&count));
+
+    std::vector<TouchId> devices;
+    devices.reserve(count);
+
+    for (int i = 0; i < count; ++i) {
+      devices.push_back(TouchId{ raw_devices[i] });
+    }
+
+    return devices;
+  }
+
+  ZString Touch::name(TouchId id)
+  {
+    if (const char* name = SDL_GetTouchDeviceName(static_cast<SDL_TouchID>(id)); name != nullptr) {
+      return name;
+    }
+
+    Log::error("Failed to get touch name: {}", SDL_GetError());
+    return "";
+  }
+
+  TouchDeviceType Touch::type(TouchId id)
+  {
+    return TouchDeviceType{ SDL_GetTouchDeviceType(static_cast<SDL_TouchID>(id)) };
+  }
 
 } // namespace gf

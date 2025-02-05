@@ -1,10 +1,14 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
 
+#include <gf2/graphics/Mouse.h>
+
+#include <memory>
 #include <type_traits>
 
 #include <SDL3/SDL.h>
 
+#include <gf2/core/Log.h>
 #include <gf2/core/MouseTypes.h>
 
 namespace gf {
@@ -30,6 +34,50 @@ namespace gf {
       mouse_button_check<MouseButton::XButton2, SDL_BUTTON_X2>();
     }
 
+    struct MouseIdDeleter {
+      void operator()(SDL_MouseID* ids)
+      {
+        SDL_free(ids);
+      }
+    };
+
   } // namespace
+
+  bool Mouse::connected()
+  {
+    return SDL_HasMouse();
+  }
+
+  std::vector<MouseId> Mouse::devices()
+  {
+    int count = 0;
+    std::unique_ptr<SDL_MouseID[], MouseIdDeleter> raw_devices(SDL_GetMice(&count));
+
+    std::vector<MouseId> devices;
+    devices.reserve(count);
+
+    for (int i = 0; i < count; ++i) {
+      devices.push_back(MouseId{raw_devices[i]});
+    }
+
+    return devices;
+  }
+
+  ZString Mouse::name(MouseId id)
+  {
+    if (const char* name = SDL_GetMouseNameForID(static_cast<SDL_MouseID>(id)); name != nullptr) {
+      return name;
+    }
+
+    Log::error("Failed to get mouse name: {}", SDL_GetError());
+    return "";
+  }
+
+  void Mouse::capture(bool captured)
+  {
+    if (!SDL_CaptureMouse(captured)) {
+      Log::error("Failed to capture the mouse: {}", SDL_GetError());
+    }
+  }
 
 } // namespace gf

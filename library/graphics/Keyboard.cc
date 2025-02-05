@@ -3,14 +3,19 @@
 
 #include <gf2/graphics/Keyboard.h>
 
+#include <memory>
 #include <type_traits>
 
 #include <SDL3/SDL.h>
+
+#include <gf2/core/KeyboardTypes.h>
+#include <gf2/core/Log.h>
 
 namespace gf {
 
   namespace {
 
+    static_assert(std::is_same_v<std::underlying_type_t<KeyboardId>, SDL_KeyboardID>);
     static_assert(std::is_same_v<std::underlying_type_t<Modifier>, SDL_Keymod>);
     static_assert(std::is_same_v<std::underlying_type_t<Keycode>, SDL_Keycode>);
     static_assert(std::is_same_v<std::underlying_type_t<Scancode>, std::make_unsigned_t<SDL_Scancode>>);
@@ -477,7 +482,44 @@ namespace gf {
       keycode_check<Keycode::Mode, SDLK_MODE>();
     }
 
+    struct KeyboardIdDeleter {
+      void operator()(SDL_KeyboardID* ids)
+      {
+        SDL_free(ids);
+      }
+    };
+
   } // namespace
+
+  bool Keyboard::connected()
+  {
+    return SDL_HasKeyboard();
+  }
+
+  std::vector<KeyboardId> Keyboard::devices()
+  {
+    int count = 0;
+    std::unique_ptr<SDL_KeyboardID[], KeyboardIdDeleter> raw_devices(SDL_GetKeyboards(&count));
+
+    std::vector<KeyboardId> devices;
+    devices.reserve(count);
+
+    for (int i = 0; i < count; ++i) {
+      devices.push_back(KeyboardId{ raw_devices[i] });
+    }
+
+    return devices;
+  }
+
+  ZString Keyboard::name(KeyboardId id)
+  {
+    if (const char* name = SDL_GetKeyboardNameForID(static_cast<SDL_KeyboardID>(id)); name != nullptr) {
+      return name;
+    }
+
+    Log::error("Failed to get keyboard name: {}", SDL_GetError());
+    return "";
+  }
 
   const char* Keyboard::scancode_name(Scancode scancode)
   {

@@ -44,8 +44,6 @@ namespace gf {
     SDL_Cursor* m_cursor = nullptr;
   };
 
-  void capture_mouse(bool captured = true);
-
 }
 
 #endif // GF_CURSOR_H
