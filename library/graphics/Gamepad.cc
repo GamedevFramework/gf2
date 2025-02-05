@@ -237,7 +237,8 @@ namespace gf {
     if (gamepad == nullptr) {
       Log::error("Could not open gamepad with id {}: {}", uint32_t(id), SDL_GetError());
     } else {
-      Log::debug("\tserial: {:016X}", uint64_t(GamepadDevice(gamepad).serial_id()));
+      auto device = GamepadDevice(gamepad);
+      Log::debug("\tserial: {:016X} ({})", uint64_t(device.serial_id()), device.serial().c_str());
     }
 
     return { gamepad };
