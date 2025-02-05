@@ -16,8 +16,8 @@ namespace gf {
     static_assert(std::is_same_v<std::underlying_type_t<GamepadButton>, std::underlying_type_t<SDL_GamepadButton>>);
     static_assert(std::is_same_v<std::underlying_type_t<GamepadAxis>, std::underlying_type_t<SDL_GamepadAxis>>);
     static_assert(std::is_same_v<std::underlying_type_t<GamepadId>, SDL_JoystickID>);
-    static_assert(std::is_same_v<std::underlying_type_t<GamepadType>, std::underlying_type_t<SDL_GamepadType>>);
-    static_assert(std::is_same_v<std::underlying_type_t<GamepadButtonLabel>, std::underlying_type_t<SDL_GamepadButtonLabel>>);
+    static_assert(std::is_same_v<std::underlying_type_t<GamepadType>, std::make_signed_t<SDL_GamepadType>>);
+    static_assert(std::is_same_v<std::underlying_type_t<GamepadButtonLabel>, std::make_signed_t<SDL_GamepadButtonLabel>>);
     static_assert(std::is_same_v<std::underlying_type_t<GamepadConnectionState>, std::underlying_type_t<SDL_JoystickConnectionState>>);
 
     template<GamepadButton Button, SDL_GamepadButton Value>

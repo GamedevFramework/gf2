@@ -58,7 +58,7 @@ namespace gf {
 
   constexpr GamepadId AnyGamepad = static_cast<GamepadId>(std::numeric_limits<std::underlying_type_t<GamepadId>>::max());
 
-  enum class GamepadType : unsigned { // NOLINT(performance-enum-size)
+  enum class GamepadType { // NOLINT(performance-enum-size)
     Unknown,
     Standard,
     XBox360,
@@ -72,7 +72,7 @@ namespace gf {
     NintendoSwitchJoyconPair,
   };
 
-  enum class GamepadButtonLabel : unsigned { // NOLINT(performance-enum-size)
+  enum class GamepadButtonLabel { // NOLINT(performance-enum-size)
     Unknown,
     A,
     B,
