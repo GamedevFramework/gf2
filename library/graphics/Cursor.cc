@@ -24,12 +24,12 @@ namespace gf {
       cursor_type_check<CursorType::Default, SDL_SYSTEM_CURSOR_DEFAULT>();
       cursor_type_check<CursorType::Text, SDL_SYSTEM_CURSOR_TEXT>();
       cursor_type_check<CursorType::Wait, SDL_SYSTEM_CURSOR_WAIT>();
-      cursor_type_check<CursorType::Cross, SDL_SYSTEM_CURSOR_CROSSHAIR>();
+      cursor_type_check<CursorType::Crosshair, SDL_SYSTEM_CURSOR_CROSSHAIR>();
       cursor_type_check<CursorType::Progress, SDL_SYSTEM_CURSOR_PROGRESS>();
-      cursor_type_check<CursorType::SizeTopLeftBottomRight, SDL_SYSTEM_CURSOR_NWSE_RESIZE>();
-      cursor_type_check<CursorType::SizeBottomLeftTopRight, SDL_SYSTEM_CURSOR_NESW_RESIZE>();
-      cursor_type_check<CursorType::SizeHorizontal, SDL_SYSTEM_CURSOR_EW_RESIZE>();
-      cursor_type_check<CursorType::SizeVertical, SDL_SYSTEM_CURSOR_NS_RESIZE>();
+      cursor_type_check<CursorType::NorthWestSouthEastResize, SDL_SYSTEM_CURSOR_NWSE_RESIZE>();
+      cursor_type_check<CursorType::NorthEastSouthWestResize, SDL_SYSTEM_CURSOR_NESW_RESIZE>();
+      cursor_type_check<CursorType::EastWestResize, SDL_SYSTEM_CURSOR_EW_RESIZE>();
+      cursor_type_check<CursorType::NorthSouthResize, SDL_SYSTEM_CURSOR_NS_RESIZE>();
       cursor_type_check<CursorType::Move, SDL_SYSTEM_CURSOR_MOVE>();
       cursor_type_check<CursorType::Pointer, SDL_SYSTEM_CURSOR_POINTER>();
       cursor_type_check<CursorType::NotAllowed, SDL_SYSTEM_CURSOR_NOT_ALLOWED>();

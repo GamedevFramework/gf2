@@ -5,6 +5,9 @@
 
 #include <cstdint>
 
+#include <limits>
+#include <type_traits>
+
 namespace gf {
 
   enum class Scancode : uint32_t { // NOLINT(performance-enum-size)
@@ -224,7 +227,7 @@ namespace gf {
     Mode = 257,
   };
 
-  constexpr Scancode AnyScancode = static_cast<Scancode>(0xFFFFFFFF);
+  constexpr Scancode AnyScancode = Scancode{ std::numeric_limits<std::underlying_type_t<Scancode>>::max() };
 
 }
 

@@ -6,13 +6,14 @@
 #include <type_traits>
 
 #include <SDL3/SDL.h>
-#include "gf2/core/Modifier.h"
 
 namespace gf {
 
   namespace {
 
     static_assert(std::is_same_v<std::underlying_type_t<Modifier>, SDL_Keymod>);
+    static_assert(std::is_same_v<std::underlying_type_t<Keycode>, SDL_Keycode>);
+    static_assert(std::is_same_v<std::underlying_type_t<Scancode>, std::make_unsigned_t<SDL_Scancode>>);
 
     template<Modifier Mod, SDL_Keymod Value>
     constexpr void modifier_check()

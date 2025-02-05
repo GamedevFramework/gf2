@@ -33,13 +33,13 @@ namespace gf {
         case ImGuiMouseCursor_ResizeAll:
           return CursorType::Move;
         case ImGuiMouseCursor_ResizeNS:
-          return CursorType::SizeVertical;
+          return CursorType::NorthSouthResize;
         case ImGuiMouseCursor_ResizeEW:
-          return CursorType::SizeHorizontal;
+          return CursorType::EastWestResize;
         case ImGuiMouseCursor_ResizeNESW:
-          return CursorType::SizeBottomLeftTopRight;
+          return CursorType::NorthEastSouthWestResize;
         case ImGuiMouseCursor_ResizeNWSE:
-          return CursorType::SizeTopLeftBottomRight;
+          return CursorType::NorthEastSouthWestResize;
         case ImGuiMouseCursor_Hand:
           return CursorType::Pointer;
         case ImGuiMouseCursor_NotAllowed:

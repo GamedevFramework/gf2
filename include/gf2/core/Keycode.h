@@ -230,7 +230,7 @@ namespace gf {
     Mode = details::to_keycode(Scancode::Mode),
   };
 
-  constexpr Keycode AnyKeycode = static_cast<Keycode>(0xFFFFFFFF);
+  constexpr Keycode AnyKeycode = Keycode{ std::numeric_limits<std::underlying_type_t<Keycode>>::max() };
 
 }
 
