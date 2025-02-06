@@ -145,7 +145,7 @@ namespace gf {
 
     // model matrix
 
-    command_buffer.push_constant(&m_default_pipeline_layout, gf::ShaderStage::Vertex, object.transform);
+    command_buffer.push_constant(&m_default_pipeline_layout, ShaderStage::Vertex, object.transform);
 
     assert(object.geometry.vertices != nullptr);
 
@@ -271,15 +271,15 @@ namespace gf {
     while (!window()->should_close()) {
       // update
 
-      while (auto event = gf::Events::poll()) {
+      while (auto event = Events::poll()) {
         switch (event->type()) {
-          case gf::EventType::Quit:
+          case EventType::Quit:
             window()->close();
             break;
 
-          case gf::EventType::WindowResized:
+          case EventType::WindowResized:
             {
-              auto surface_size = window()->surface_size();
+              auto surface_size = event->from<EventType::WindowResized>().size;
               render_manager()->update_surface_size(surface_size);
               m_scene->set_surface_size(surface_size);
             }
@@ -364,14 +364,14 @@ namespace gf {
       while (!m_scenes_changed && !window()->should_close()) {
         // update
 
-        while (auto event = gf::Events::poll()) {
+        while (auto event = Events::poll()) {
           switch (event->type()) {
-            case gf::EventType::Quit:
+            case EventType::Quit:
               window()->close();
               break;
 
-            case gf::EventType::WindowResized:
-              surface_size = window()->surface_size();
+            case EventType::WindowPixelSizeChanged:
+              surface_size = event->from<EventType::WindowPixelSizeChanged>().size;
               render_manager()->update_surface_size(surface_size);
               std::for_each(scenes.begin(), scenes.end(), [surface_size](auto* scene) { scene->set_surface_size(surface_size); });
               break;
