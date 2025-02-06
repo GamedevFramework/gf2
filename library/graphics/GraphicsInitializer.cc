@@ -32,6 +32,10 @@ namespace gf {
     if (!g_graphics_loaded.exchange(true)) { // we are the first
       // initialize SDL
 
+#ifdef SDL_PLATFORM_LINUX
+      SDL_SetHint(SDL_HINT_VIDEO_DRIVER, "wayland,x11");
+#endif
+
       if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD)) {
         Log::error("Unable to initialize SDL: '{}'", SDL_GetError());
         return;
