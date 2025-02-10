@@ -277,9 +277,9 @@ namespace gf {
             window()->close();
             break;
 
-          case EventType::WindowResized:
+          case EventType::WindowPixelSizeChanged:
             {
-              auto surface_size = event->from<EventType::WindowResized>().size;
+              auto surface_size = event->from<EventType::WindowPixelSizeChanged>().size;
               render_manager()->update_surface_size(surface_size);
               m_scene->set_surface_size(surface_size);
             }
