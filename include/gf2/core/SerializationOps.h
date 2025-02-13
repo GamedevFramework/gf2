@@ -125,7 +125,7 @@ namespace gf {
 
   inline Serializer& operator|(Serializer& ar, const std::filesystem::path& path)
   {
-    return ar | path.string();
+    return ar | path.generic_string();
   }
 
   template<typename T, typename E = std::enable_if_t<std::is_enum_v<T>, T>>
