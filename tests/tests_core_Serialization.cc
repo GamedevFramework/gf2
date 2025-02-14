@@ -22,18 +22,26 @@ namespace {
   void save_and_load(const T& in, T& out)
   {
     std::vector<uint8_t> bytes;
+    gf::SecureHash::Hash input_hash;
+    gf::SecureHash::Hash output_hash;
 
     {
       gf::BufferOutputStream ostream(&bytes);
-      gf::Serializer serializer(&ostream);
+      gf::HashedOutputStream hashed_ostream(&ostream);
+      gf::Serializer serializer(&hashed_ostream);
       serializer | in;
+      input_hash = hashed_ostream.hash();
     }
 
     {
       gf::BufferInputStream istream(&bytes);
-      gf::Deserializer deserializer(&istream);
+      gf::HashedInputStream hashed_istream(&istream);
+      gf::Deserializer deserializer(&hashed_istream);
       deserializer | out;
+      output_hash = hashed_istream.hash();
     }
+
+    EXPECT_EQ(input_hash, output_hash);
   }
 
   struct SizeWrapper {

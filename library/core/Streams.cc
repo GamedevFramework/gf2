@@ -297,6 +297,42 @@ namespace gf {
   }
 
   /*
+   * HashedInputStream
+   */
+
+  HashedInputStream::HashedInputStream(InputStream* stream)
+  : m_stream(stream)
+  {
+  }
+
+  SecureHash::Hash HashedInputStream::hash()
+  {
+    return m_hash.result();
+  }
+
+  std::size_t HashedInputStream::read(Span<uint8_t> buffer)
+  {
+    auto result = m_stream->read(buffer);
+    m_hash.input(buffer);
+    return result;
+  }
+
+  void HashedInputStream::seek([[maybe_unused]] std::ptrdiff_t position)
+  {
+    Log::fatal("Not supported");
+  }
+
+  void HashedInputStream::skip([[maybe_unused]] std::ptrdiff_t position)
+  {
+    Log::fatal("Not supported");
+  }
+
+  bool HashedInputStream::finished()
+  {
+    return m_stream->finished();
+  }
+
+  /*
    * FileOutputStream
    */
 
@@ -511,6 +547,31 @@ namespace gf {
   std::size_t BufferOutputStream::written_bytes() const
   {
     return m_bytes->size();
+  }
+
+  /*
+   * HashedOutputStream
+   */
+
+  HashedOutputStream::HashedOutputStream(OutputStream* stream)
+  : m_stream(stream)
+  {
+  }
+
+  SecureHash::Hash HashedOutputStream::hash()
+  {
+    return m_hash.result();
+  }
+
+  std::size_t HashedOutputStream::write(Span<const uint8_t> buffer)
+  {
+    m_hash.input(buffer);
+    return m_stream->write(buffer);
+  }
+
+  std::size_t HashedOutputStream::written_bytes() const
+  {
+    return m_stream->written_bytes();
   }
 
 } // namespace gf

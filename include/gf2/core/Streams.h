@@ -12,6 +12,7 @@
 #include <zlib.h>
 
 #include "CoreApi.h"
+#include "SecureHash.h"
 #include "Stream.h"
 
 namespace gf {
@@ -93,6 +94,22 @@ namespace gf {
     std::size_t m_offset = 0;
   };
 
+  class GF_CORE_API HashedInputStream : public InputStream {
+  public:
+    HashedInputStream(InputStream* stream);
+
+    SecureHash::Hash hash();
+
+    std::size_t read(Span<uint8_t> buffer) override;
+    void seek(std::ptrdiff_t position) override;
+    void skip(std::ptrdiff_t position) override;
+    bool finished() override;
+
+  private:
+    InputStream* m_stream = nullptr;
+    SecureHash m_hash;
+  };
+
   class GF_CORE_API FileOutputStream : public OutputStream {
   public:
     enum class Mode : uint8_t {
@@ -161,6 +178,20 @@ namespace gf {
 
   private:
     std::vector<uint8_t>* m_bytes;
+  };
+
+  class GF_CORE_API HashedOutputStream : public OutputStream {
+  public:
+    HashedOutputStream(OutputStream* stream);
+
+    SecureHash::Hash hash();
+
+    std::size_t write(Span<const uint8_t> buffer) override;
+    std::size_t written_bytes() const override;
+
+  private:
+    OutputStream* m_stream;
+    SecureHash m_hash;
   };
 
 } // namespace gf
