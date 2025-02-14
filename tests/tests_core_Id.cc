@@ -1,9 +1,11 @@
 #include <gf2/core/Id.h>
 
+#include <string_view>
+
 #include "gtest/gtest.h"
 
 struct FNVTestCase {
-  const char* input;
+  std::string_view input;
   uint64_t expected;
 };
 
@@ -26,7 +28,7 @@ TEST(IdTest, FNV) {
     { "foobar", UINT64_C(0x85944171f73967e8) },
   };
 
-  for (auto& test : TestVectors) {
+  for (const auto& test : TestVectors) {
     EXPECT_EQ(gf::hash_string(test.input), gf::id(test.expected));
   }
 }
