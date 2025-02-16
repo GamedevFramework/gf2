@@ -301,7 +301,7 @@ namespace gf {
     m_scene->set_window_size(window_size);
 
     while (!window()->should_close()) {
-      // update
+      // events
 
       while (auto event = Events::poll()) {
         switch (event->type()) {
@@ -402,7 +402,7 @@ namespace gf {
       current_scene->resume();
 
       while (!m_scenes_changed && !window()->should_close()) {
-        // update
+        // events
 
         while (auto event = Events::poll()) {
           switch (event->type()) {
