@@ -3,6 +3,7 @@
 #ifndef GF_MATH_H
 #define GF_MATH_H
 
+#include <cassert>
 #include <cmath>
 
 #include <limits>
@@ -127,6 +128,13 @@ namespace gf {
   inline T cosine_step(T t)
   {
     return (T(1) - std::cos(constants::Pi<T> * t)) * T(0.5);
+  }
+
+  template<typename T>
+  inline T smooth(T x, T lo, T hi, Step<T> func = cubic_step)
+  {
+    assert(!almost_equals(lo, hi));
+    return func(details::min(T(1), details::max(T(0), (x - lo) / (hi - lo))));
   }
 
   template<typename T, typename U>
