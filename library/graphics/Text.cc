@@ -859,6 +859,9 @@ namespace gf {
     m_vertices.update(geometry.vertices.data(), geometry.vertices.size(), render_manager);
     m_indices.update(geometry.indices.data(), geometry.indices.size(), render_manager);
 
+    m_effects.outline_color = data.outline_color;
+    m_effects.outline_thickness = data.outline_thickness;
+
     m_bounds = geometry.compute_bounds();
     fix_bounds(data.alignment, data.paragraph_width, m_bounds);
   }
@@ -921,6 +924,9 @@ namespace gf {
 
     m_vertices.update(geometry.vertices.data(), geometry.vertices.size(), render_manager);
     m_indices.update(geometry.indices.data(), geometry.indices.size(), render_manager);
+
+    m_effects.outline_color = data.outline_color;
+    m_effects.outline_thickness = data.outline_thickness;
 
     m_bounds = geometry.compute_bounds().shrink_by(static_cast<float>(FontManager::spread()));
     fix_bounds(data.alignment, data.paragraph_width, m_bounds);

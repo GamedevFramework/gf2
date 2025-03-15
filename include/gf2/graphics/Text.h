@@ -12,6 +12,7 @@
 #include "FontAtlas.h"
 #include "GraphicsApi.h"
 #include "RenderObject.h"
+#include "TextEffect.h"
 
 namespace gf {
   class RenderManager;
@@ -31,6 +32,11 @@ namespace gf {
       return m_atlas->texture();
     }
 
+    TextEffect effects()
+    {
+      return m_effects;
+    }
+
     RectF bounds() const
     {
       return m_bounds;
@@ -42,6 +48,7 @@ namespace gf {
     FontFace* m_font = nullptr;
     DynamicBuffer m_vertices;
     DynamicBuffer m_indices;
+    TextEffect m_effects = {};
     RectF m_bounds = {};
   };
 
@@ -59,6 +66,11 @@ namespace gf {
       return m_atlas->texture();
     }
 
+    TextEffect effects()
+    {
+      return m_effects;
+    }
+
     RectF bounds() const
     {
       return m_bounds;
@@ -73,6 +85,7 @@ namespace gf {
     FontFace* m_bold_italic_font = nullptr;
     DynamicBuffer m_vertices;
     DynamicBuffer m_indices;
+    TextEffect m_effects = {};
     RectF m_bounds = {};
   };
 

@@ -26,8 +26,8 @@ namespace gf {
     std::string content;
     float character_size = 0.0f;
     Color color = Black;
-    // float outline_thickness = 0.0f;
-    // Color outline_color = White;
+    Color outline_color = Transparent;
+    float outline_thickness = 0.0f;
     Alignment alignment = Alignment::None;
     float paragraph_width = 0.0f;
     float line_spacing_factor = 1.0f;
@@ -37,7 +37,7 @@ namespace gf {
   template<typename Archive>
   Archive& operator|(Archive& ar, MaybeConst<TextData, Archive>& data)
   {
-    return ar | data.content | data.character_size | data.color | data.alignment | data.paragraph_width | data.line_spacing_factor | data.letter_spacing_factor;
+    return ar | data.content | data.character_size | data.color | data.outline_color | data.outline_thickness | data.alignment | data.paragraph_width | data.line_spacing_factor | data.letter_spacing_factor;
   }
 
   struct GF_CORE_API TextResource {

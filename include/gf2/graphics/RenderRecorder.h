@@ -7,12 +7,14 @@
 
 #include <vector>
 
+#include <gf2/core/Color.h>
 #include <gf2/core/Mat4.h>
 #include <gf2/core/Rect.h>
 
 #include "Buffer.h"
 #include "GraphicsApi.h"
 #include "RenderObject.h"
+#include "TextEffect.h"
 
 namespace gf {
   class RenderManager;
@@ -33,6 +35,7 @@ namespace gf {
 
     void update_view(const Mat3F& view_matrix, const RectF& viewport);
     void update_scissor(const RectI& scissor);
+    void update_text_effect(const TextEffect& effect);
     void record(const RenderObject& object);
 
     void sort();
@@ -44,6 +47,7 @@ namespace gf {
     enum class RecordType : uint8_t {
       View,
       Scissor,
+      Text,
       Object,
     };
 
@@ -61,16 +65,24 @@ namespace gf {
       RectI scissor;
     };
 
+    struct TextRecord {
+      uint32_t text_effect_buffer_index = 0;
+    };
+
     RenderManager* m_render_manager;
 
     std::vector<Record> m_records;
 
     std::vector<ViewRecord> m_views;
     std::vector<ScissorRecord> m_scissors;
+    std::vector<TextRecord> m_texts;
     std::vector<RenderObject> m_objects;
 
     uint32_t m_next_view_matrix_index = 0;
     std::vector<Buffer> m_view_matrix_buffers;
+
+    uint32_t m_next_text_effect_index = 0;
+    std::vector<Buffer> m_text_effect_buffers;
   };
 
 }

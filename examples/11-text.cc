@@ -31,7 +31,7 @@ int main()
   text_data.character_size = 64;
   text_data.color = gf::darker(gf::Azure, 0.2f);
   // text_data.outline_color = gf::Gray;
-  // text_data.outline_thickness = 2.0f;
+  // text_data.outline_thickness = 0.2f;
 
   gf::TextEntity text_entity(&atlas, &face, text_data, scene_manager.render_manager());
   text_entity.set_location({ 1000.0f, 1000.0f });

@@ -23,6 +23,8 @@ namespace gf {
 
   void TextEntity::render(RenderRecorder& recorder)
   {
+    recorder.update_text_effect(m_text.effects());
+
     RenderObject object = {};
     object.priority = priority();
     object.geometry = m_text.geometry();
@@ -46,6 +48,8 @@ namespace gf {
 
   void RichTextEntity::render(RenderRecorder& recorder)
   {
+    recorder.update_text_effect(m_text.effects());
+
     RenderObject object = {};
     object.priority = priority();
     object.geometry = m_text.geometry();

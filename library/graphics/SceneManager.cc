@@ -15,6 +15,7 @@
 #include <gf2/graphics/RenderRecorder.h>
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/Vertex.h>
+#include "gf2/graphics/Descriptor.h"
 
 namespace gf {
 
@@ -115,6 +116,13 @@ namespace gf {
       } else if (record.type == RenderRecorder::RecordType::Scissor) {
         assert(record.index < recorder.m_scissors.size());
         command_buffer.set_scissor(recorder.m_scissors[record.index].scissor);
+      } else if (record.type == RenderRecorder::RecordType::Text) {
+        assert(record.index < recorder.m_texts.size());
+        auto text = recorder.m_texts[record.index];
+
+        auto text_descriptor = m_render_manager.allocate_descriptor_for_layout(&m_text_descriptor_layout);
+        text_descriptor.write(0, &recorder.m_text_effect_buffers[text.text_effect_buffer_index]);
+        command_buffer.bind_descriptor(&m_text_pipeline_layout, 2, text_descriptor);
       } else if (record.type == RenderRecorder::RecordType::Object) {
         assert(record.index < recorder.m_objects.size());
         render_object(command_buffer, recorder.m_objects[record.index]);
@@ -182,6 +190,14 @@ namespace gf {
 
     m_sampler_descriptor_layout = DescriptorLayout(sampler_binding, render_manager());
 
+    // text_descriptor_layout
+
+    const DescriptorBinding text_binding[] = {
+      { 0, DescriptorType::Buffer, ShaderStage::Fragment }
+    };
+
+    m_text_descriptor_layout = DescriptorLayout(text_binding, render_manager());
+
     // default pipeline layout
 
     RenderPipelineLayoutBuilder default_pipeline_layout_builder;
@@ -192,6 +208,18 @@ namespace gf {
 
     m_default_pipeline_layout = default_pipeline_layout_builder.build(render_manager());
     m_default_pipeline_layout.set_debug_name("[gf2] Default Pipeline Layout");
+
+    // text pipeline layout
+
+    RenderPipelineLayoutBuilder text_pipeline_layout_builder;
+
+    text_pipeline_layout_builder.set_push_constant_parameters(ShaderStage::Vertex, sizeof(float) * 16)
+        .add_descriptor_layout(&m_camera_descriptor_layout)
+        .add_descriptor_layout(&m_sampler_descriptor_layout)
+        .add_descriptor_layout(&m_text_descriptor_layout);
+
+    m_text_pipeline_layout = text_pipeline_layout_builder.build(render_manager());
+    m_text_pipeline_layout.set_debug_name("[gf2] Text Pipeline Layout");
 
     // fullscreen pipeline layout
 
@@ -219,7 +247,7 @@ namespace gf {
     text_pipeline_builder.set_vertex_input(Vertex::compute_input())
         .add_shader(ShaderStage::Vertex, gf::span(default_vert_shader_code))
         .add_shader(ShaderStage::Fragment, gf::span(text_frag_shader_code))
-        .set_pipeline_layout(&m_default_pipeline_layout);
+        .set_pipeline_layout(&m_text_pipeline_layout);
 
     m_text_pipeline = text_pipeline_builder.build(render_manager());
     m_text_pipeline.set_debug_name("[gf2] Text Pipeline");

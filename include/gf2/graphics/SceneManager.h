@@ -50,8 +50,10 @@ namespace gf {
 
     DescriptorLayout m_camera_descriptor_layout;
     DescriptorLayout m_sampler_descriptor_layout;
+    DescriptorLayout m_text_descriptor_layout;
 
     RenderPipelineLayout m_default_pipeline_layout;
+    RenderPipelineLayout m_text_pipeline_layout;
     RenderPipelineLayout m_fullscreen_pipeline_layout;
 
     RenderPipeline m_default_pipeline;
