@@ -7,6 +7,7 @@
 #include <gf2/core/AudioSourceData.h>
 #include <gf2/core/ConsoleData.h>
 #include <gf2/core/FontFace.h>
+#include <gf2/core/FontResource.h>
 #include <gf2/core/NinePatchData.h>
 #include <gf2/core/RichMapResource.h>
 #include <gf2/core/SpriteData.h>
@@ -62,6 +63,11 @@ namespace gf {
   void BundleBuilder::add_in_bundle(const ConsoleResource& resource)
   {
     add_raw_console_font(resource.console_font, resource.data);
+  }
+
+  void BundleBuilder::add_in_bundle(const FontResource& resource)
+  {
+    add_raw_font(resource.path);
   }
 
   void BundleBuilder::add_in_bundle(const NinePatchResource& resource)

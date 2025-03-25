@@ -20,6 +20,7 @@ namespace gf {
   struct AudioSourceResource;
   struct ConsoleResource;
   struct ConsoleData;
+  struct FontResource;
   struct NinePatchResource;
   struct RichMapResource;
   struct RichTextResource;
@@ -41,6 +42,7 @@ namespace gf {
     void add_in_bundle(const TextResource& resource);
 
     void add_in_bundle(const ConsoleResource& resource);
+    void add_in_bundle(const FontResource& resource);
 
     void add_raw_texture(const std::filesystem::path& path);
     void add_raw_font(const std::filesystem::path& path);
