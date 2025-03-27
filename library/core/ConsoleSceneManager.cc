@@ -52,6 +52,11 @@ namespace gf {
     push_scene(scene);
   }
 
+  bool ConsoleSceneManager::empty() const
+  {
+    return m_scenes.empty();
+  }
+
   void ConsoleSceneManager::process_event(const Event& event)
   {
     for (ConsoleScene* scene : m_scenes) {

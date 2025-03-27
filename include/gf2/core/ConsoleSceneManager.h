@@ -23,6 +23,8 @@ namespace gf {
 
     void replace_scene(ConsoleScene* scene);
 
+    bool empty() const;
+
     void process_event(const Event& event);
     void handle_actions();
     void update(Time time);
