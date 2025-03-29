@@ -227,6 +227,39 @@ TEST(SerialTest, Unsigned64) {
   }
 }
 
+TEST(SerialTest, Char16) {
+  char16_t tests[] = {
+    u'\0',
+    u'a',
+    u'é',
+    u'木',
+  };
+
+  char16_t out = 0;
+
+  for (auto in : tests) {
+    save_and_load(in, out);
+    EXPECT_EQ(in, out);
+  }
+}
+
+TEST(SerialTest, Char32) {
+  char32_t tests[] = {
+    U'\0',
+    U'a',
+    U'é',
+    U'木',
+    U'🎮',
+  };
+
+  char32_t out = 0;
+
+  for (auto in : tests) {
+    save_and_load(in, out);
+    EXPECT_EQ(in, out);
+  }
+}
+
 TEST(SerialTest, Enum) {
   enum class Foo : uint8_t {
     Bar,
