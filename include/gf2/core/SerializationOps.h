@@ -117,6 +117,18 @@ namespace gf {
     return ar;
   }
 
+  inline Serializer& operator|(Serializer& ar, char16_t data)
+  {
+    ar.write_u16(data);
+    return ar;
+  }
+
+  inline Serializer& operator|(Serializer& ar, char32_t data)
+  {
+    ar.write_u32(data);
+    return ar;
+  }
+
   inline Serializer& operator|(Serializer& ar, const std::string& str)
   {
     ar.write_raw_string(str.data(), str.length());
@@ -381,6 +393,22 @@ namespace gf {
   inline Deserializer& operator|(Deserializer& ar, double& data)
   {
     ar.read_f64(&data);
+    return ar;
+  }
+
+  inline Deserializer& operator|(Deserializer& ar, char16_t& data)
+  {
+    uint16_t tmp = 0;
+    ar.read_u16(&tmp);
+    data = tmp;
+    return ar;
+  }
+
+  inline Deserializer& operator|(Deserializer& ar, char32_t& data)
+  {
+    uint32_t tmp = 0;
+    ar.read_u32(&tmp);
+    data = tmp;
     return ar;
   }
 
