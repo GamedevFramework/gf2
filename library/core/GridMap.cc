@@ -291,20 +291,15 @@ namespace gf {
       {
       }
 
-      std::vector<Vec2I> operator()(Vec2I origin, Vec2I target, RouteCost cost)
+      std::vector<Vec2I> operator()(Vec2I origin, Vec2I target, RouteCostFunction& cost_function, Flags<CellNeighborQuery> flags)
       {
-        Flags<CellNeighborQuery> flags = CellNeighborQuery::Valid;
-
-        if (cost.diagonal > 0) {
-          flags |= CellNeighborQuery::Diagonal;
-        }
 
         initialize(origin);
 
         while (!m_heap.empty()) {
           const DijkstraHeapData data = m_heap.top();
           m_heap.pop();
-          compute_node(data, cost, flags);
+          compute_node(data, cost_function, flags);
         }
 
         return compute_route(origin, target);
@@ -330,20 +325,20 @@ namespace gf {
         }
       }
 
-      void compute_node(DijkstraHeapData heap_data, RouteCost cost, Flags<CellNeighborQuery> flags)
+      void compute_node(DijkstraHeapData heap_data, RouteCostFunction& cost_function, Flags<CellNeighborQuery> flags)
       {
         auto neighbors = m_grid.compute_neighbors(heap_data.position, flags);
 
         for (auto position : neighbors) {
           assert(position != heap_data.position);
 
-          const Flags<CellProperty>& cell = m_cells(position);
+          const Flags<CellProperty> cell = m_cells(position);
 
           if (!cell.test(CellProperty::Walkable)) {
             continue;
           }
 
-          const float updated_distance = m_data(heap_data.position).distance + compute_cost(heap_data.position, position, cost);
+          const float updated_distance = m_data(heap_data.position).distance + cost_function(heap_data.position, position, cell, m_grid);
 
           if (updated_distance < m_data(position).distance) {
             auto& data = m_data(position);
@@ -355,20 +350,6 @@ namespace gf {
             m_heap.increase(data.handle);
           }
         }
-      }
-
-      float compute_cost(Vec2I current, Vec2I neighbor, RouteCost cost)
-      {
-        const bool is_diagonal = m_grid.are_diagonal_neighbors(current, neighbor);
-        assert(cost.diagonal > 0 || !is_diagonal);
-
-        float neighbor_cost = is_diagonal ? cost.diagonal : cost.cardinal;
-
-        if (m_cells(neighbor).test(CellProperty::Blocked)) {
-          neighbor_cost += cost.blocked;
-        }
-
-        return neighbor_cost;
       }
 
       std::vector<Vec2I> compute_route(Vec2I origin, Vec2I target) const
@@ -398,19 +379,207 @@ namespace gf {
       DijkstraData m_data;
       DijkstraHeap m_heap;
     };
+
+    // AStar
+
+    struct AStarHeapData {
+      Vec2I position = {};
+      float priority = 0.0f;
+    };
+
+    bool operator<(const AStarHeapData& lhs, const AStarHeapData& rhs)
+    {
+      return lhs.priority > rhs.priority;
+    }
+
+    using AStarHeap = BinaryHeap<AStarHeapData>;
+
+    enum class AStarState : uint8_t {
+      None,
+      Open,
+      Closed,
+    };
+
+    struct AStarCellData {
+      float distance = std::numeric_limits<float>::infinity();
+      Vec2I previous = vec(-1, -1);
+      AStarState state = AStarState::None;
+      AStarHeap::handle_type handle = {};
+    };
+
+    using AStarData = Array2D<AStarCellData>;
+
+    class AStarAlgorithm {
+    public:
+      AStarAlgorithm(const Array2D<Flags<CellProperty>>& cells, const AnyGrid& grid)
+      : m_cells(cells)
+      , m_grid(grid)
+      , m_data(cells.size())
+      {
+      }
+
+      std::vector<Vec2I> operator()(Vec2I origin, Vec2I target, RouteCostFunction& cost_function, Flags<CellNeighborQuery> flags)
+      {
+        initialize(origin);
+
+        while (!m_heap.empty()) {
+          const AStarHeapData data = m_heap.top();
+          m_heap.pop();
+          assert(m_data(data.position).state == AStarState::Open);
+
+          if (data.position == target) {
+            break;
+          }
+
+          compute_node(data, cost_function, flags);
+        }
+
+        return compute_route(origin, target);
+      }
+
+    private:
+      void initialize(Vec2I origin)
+      {
+        m_data(origin).distance = 0.0f;
+        m_data(origin).state = AStarState::Open;
+
+        // for (auto position : m_cells.position_range()) {
+        //   const auto cell = m_cells(position);
+        //
+        //   if (!cell.test(CellProperty::Walkable)) {
+        //     continue;
+        //   }
+        //
+        //   AStarHeapData data = {};
+        //   data.position = position;
+        //   data.distance = m_data(position).distance;
+        //
+        //   m_data(position).handle = m_heap.push(data);
+        // }
+      }
+
+      void compute_node(AStarHeapData heap_data, RouteCostFunction& cost_function, Flags<CellNeighborQuery> flags)
+      {
+        m_data(heap_data.position).state = AStarState::Closed;
+
+        auto neighbors = m_grid.compute_neighbors(heap_data.position, flags);
+
+        for (auto position : neighbors) {
+          assert(position != heap_data.position);
+
+          const Flags<CellProperty> cell = m_cells(position);
+
+          if (!cell.test(CellProperty::Walkable)) {
+            continue;
+          }
+
+          if (m_data(position).state == AStarState::Closed) {
+            continue;
+          }
+
+          const float updated_distance = m_data(heap_data.position).distance + cost_function(heap_data.position, position, cell, m_grid);
+
+          if (updated_distance < m_data(position).distance) {
+            auto& data = m_data(position);
+            data.distance = updated_distance;
+            data.previous = heap_data.position;
+
+            const float priority = updated_distance + (compute_heuristic(heap_data.position, position, flags) * 1.001f);
+
+            if (data.state == AStarState::Open) {
+              assert(m_heap(data.handle).position == position);
+
+              if (m_heap(data.handle).priority != priority) {
+                m_heap(data.handle).priority = priority;
+                m_heap.increase(data.handle);
+              }
+            } else {
+              assert(data.state == AStarState::None);
+              data.handle = m_heap.push({ position, priority });
+              data.state = AStarState::Open;
+            }
+          }
+        }
+      }
+
+      static float compute_heuristic(Vec2I position, Vec2I neighbor, Flags<CellNeighborQuery> flags)
+      {
+        if (!flags.test(CellNeighborQuery::Diagonal)) {
+          return 1.0f * static_cast<float>(manhattan_distance(position, neighbor));
+        }
+
+        Vec2F d = gf::abs(position - neighbor);
+        return (1.0f * (d.x + d.y)) + ((Sqrt2 - 2.0f) * std::min(d.x, d.y));
+      }
+
+      std::vector<Vec2I> compute_route(Vec2I origin, Vec2I target) const
+      {
+        std::vector<Vec2I> route;
+        Vec2I current = target;
+
+        while (current != origin) {
+          if (current.x == -1 || current.y == -1) {
+            return {};
+          }
+
+          route.push_back(current);
+          current = m_data(current).previous;
+        }
+
+        route.push_back(origin);
+        std::reverse(route.begin(), route.end());
+
+        assert(!route.empty());
+        return route;
+      }
+
+      const Array2D<Flags<CellProperty>>& m_cells; // NOLINT
+      const AnyGrid& m_grid;                       // NOLINT
+
+      AStarData m_data;
+      AStarHeap m_heap;
+    };
+
   }
 
   std::vector<Vec2I> GridMap::compute_route(Vec2I origin, Vec2I target, RouteCost cost, Route route)
   {
+    Flags<CellNeighborQuery> flags = CellNeighborQuery::Valid;
+
+    if (cost.diagonal > 0) {
+      flags |= CellNeighborQuery::Diagonal;
+    }
+
+    auto cost_function = [cost](Vec2I position, Vec2I neighbor, Flags<CellProperty> neighbor_properties, const AnyGrid& grid)
+    {
+      const bool is_diagonal = grid.are_diagonal_neighbors(position, neighbor);
+      assert(cost.diagonal > 0 || !is_diagonal);
+
+      float neighbor_cost = is_diagonal ? cost.diagonal : cost.cardinal;
+
+      if (neighbor_properties.test(CellProperty::Blocked)) {
+        neighbor_cost += cost.blocked;
+      }
+
+      return neighbor_cost;
+    };
+
+    return compute_route(origin, target, cost_function, flags, route);
+  }
+
+  std::vector<Vec2I> GridMap::compute_route(Vec2I origin, Vec2I target, RouteCostFunction cost_function, Flags<CellNeighborQuery> flags,  Route route)
+  {
     switch (route) {
+      case Route::AStar:
+        {
+          AStarAlgorithm algorithm(m_cells, m_grid);
+          return algorithm(origin, target, cost_function, flags);
+        }
       case Route::Dijkstra:
         {
           DijkstraAlgorithm algorithm(m_cells, m_grid);
-          return algorithm(origin, target, cost);
+          return algorithm(origin, target, cost_function, flags);
         }
-
-      default:
-        break;
     }
 
     return {};

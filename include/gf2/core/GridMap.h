@@ -3,6 +3,7 @@
 #ifndef GF_GRID_MAP_H
 #define GF_GRID_MAP_H
 
+#include <functional>
 #include <vector>
 
 #include "AnyGrid.h"
@@ -18,11 +19,13 @@ namespace gf {
     Dijkstra,
   };
 
-  struct RouteCost {
+  struct GF_CORE_API RouteCost {
     float cardinal = 1.0f;
     float diagonal = Sqrt2;
     float blocked = 5.0f;
   };
+
+  using RouteCostFunction = std::function<float(Vec2I position, Vec2I neighbor, Flags<CellProperty> neighbor_properties, const AnyGrid& grid)>;
 
   class GF_CORE_API GridMap {
   public:
@@ -86,6 +89,7 @@ namespace gf {
     }
 
     std::vector<Vec2I> compute_route(Vec2I origin, Vec2I target, RouteCost cost = {}, Route route = Route::AStar);
+    std::vector<Vec2I> compute_route(Vec2I origin, Vec2I target, RouteCostFunction function, Flags<CellNeighborQuery> flags = CellNeighborQuery::Valid, Route route = Route::AStar);
 
     void compute_field_of_vision(Vec2I origin, int range_limit);
     void compute_local_field_of_vision(Vec2I origin, int range_limit);
