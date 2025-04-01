@@ -162,19 +162,15 @@ namespace gf {
 
   Vec2F Random::compute_position(const RectF& area)
   {
-    std::uniform_real_distribution<float> dist_x(area.offset.x, area.offset.x + area.extent.x);
-    std::uniform_real_distribution<float> dist_y(area.offset.y, area.offset.y + area.extent.y);
-    const float x = dist_x(m_engine);
-    const float y = dist_y(m_engine);
+    const float x = compute_uniform_float(area.offset.x, area.offset.x + area.extent.w);
+    const float y = compute_uniform_float(area.offset.y, area.offset.y + area.extent.h);
     return { x, y };
   }
 
   Vec2I Random::compute_position(const RectI& area)
   {
-    std::uniform_int_distribution<int> dist_x(area.offset.x, area.offset.x + area.extent.x - 1);
-    std::uniform_int_distribution<int> dist_y(area.offset.y, area.offset.y + area.extent.y - 1);
-    const int x = dist_x(m_engine);
-    const int y = dist_y(m_engine);
+    const int x = compute_uniform_integer(area.offset.x, area.offset.x + area.extent.w);
+    const int y = compute_uniform_integer(area.offset.y, area.offset.y + area.extent.h);
     return { x, y };
   }
 
@@ -187,22 +183,47 @@ namespace gf {
 
   float Random::compute_radius(float radius_min, float radius_max)
   {
-    std::uniform_real_distribution<float> dist(gf::square(radius_min), gf::square(radius_max));
-    return std::sqrt(dist(m_engine));
+    return std::sqrt(compute_uniform_float(gf::square(radius_min), gf::square(radius_max)));
   }
 
   float Random::compute_angle()
   {
-    std::uniform_real_distribution<float> dist(0.0f, 2.0f * gf::Pi);
-    return dist(m_engine);
+    return compute_uniform_float(2.0f * gf::Pi);
   }
 
   Id Random::compute_id()
   {
-    using Type = std::underlying_type_t<Id>;
-    const Type lo = std::numeric_limits<Type>::min() + 1;
-    const Type hi = std::numeric_limits<Type>::max();
-    return static_cast<Id>(compute_uniform_integer(lo, hi));
+    uint64_t id = m_engine();
+
+    while (id == 0) {
+      id = m_engine();
+    }
+
+    return Id{ id };
+  }
+
+  // using "Debiased Modulo (Once) — Java's Method" from
+  // https://www.pcg-random.org/posts/bounded-rands.html
+  uint64_t Random::compute_raw_integer(uint64_t max)
+  {
+    assert(max > 0);
+
+    uint64_t x = 0;
+    uint64_t r = 0;
+    const uint64_t threshold = std::numeric_limits<uint64_t>::max() - max + 1;
+
+    do { // NOLINT(cppcoreguidelines-avoid-do-while)
+      x = m_engine();
+      r = x % max;
+    } while (x - r > threshold);
+
+    return r;
+  }
+
+  double Random::compute_raw_float()
+  {
+    const uint64_t value = m_engine();
+    return double(value >> 11) * 0x1.0p-53;
   }
 
 } // namespace gf

@@ -7,6 +7,7 @@
 
 #include <limits>
 #include <random>
+#include <type_traits>
 
 #include "Circ.h"
 #include "CoreApi.h"
@@ -55,17 +56,36 @@ namespace gf {
     }
 
     template<typename T>
-    T compute_uniform_integer(T min, T max)
+    std::enable_if_t<std::is_integral_v<T>, T> compute_uniform_integer(T max)
     {
-      std::uniform_int_distribution<T> dist(min, max);
-      return dist(m_engine);
+      assert(max > 0);
+      return static_cast<T>(compute_raw_integer(max));
     }
 
     template<typename T>
-    T compute_uniform_float(T min, T max)
+    std::enable_if_t<std::is_integral_v<T>, T> compute_uniform_integer(T min, T max)
     {
-      std::uniform_real_distribution<T> dist(min, max);
-      return dist(m_engine);
+      assert(min < max);
+      using U = std::make_unsigned_t<T>;
+      return min + static_cast<T>(compute_raw_integer(U(max) - U(min)));
+    }
+
+    template<typename T>
+    std::enable_if_t<std::is_floating_point_v<T>, T> compute_uniform_float()
+    {
+      return static_cast<T>(compute_raw_float());
+    }
+
+    template<typename T>
+    std::enable_if_t<std::is_floating_point_v<T>, T> compute_uniform_float(T max)
+    {
+      return static_cast<T>(compute_raw_float() * max);
+    }
+
+    template<typename T>
+    std::enable_if_t<std::is_floating_point_v<T>, T> compute_uniform_float(T min, T max)
+    {
+      return min + static_cast<T>(compute_raw_float() * (max - min));
     }
 
     template<typename T>
@@ -97,6 +117,9 @@ namespace gf {
     {
       return m_engine;
     }
+
+    uint64_t compute_raw_integer(uint64_t max);
+    double compute_raw_float();
 
   private:
     RandomEngine m_engine;
