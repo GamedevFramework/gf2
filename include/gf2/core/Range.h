@@ -150,6 +150,133 @@ namespace gf {
   }
 
   /*
+   * RangeId
+   */
+
+  template<typename Id>
+  class RangeId {
+  public:
+    class Iterator {
+    public:
+      using difference_type = std::ptrdiff_t;
+      using value_type = Id;
+      using pointer = value_type;
+      using reference = value_type;
+      using iterator_category = std::bidirectional_iterator_tag;
+
+      constexpr Iterator(std::size_t index)
+      : m_index(index)
+      {
+      }
+
+      constexpr void swap(Iterator& other) noexcept
+      {
+        std::swap(m_index, other.m_index);
+      }
+
+      constexpr reference operator*() noexcept
+      {
+        return Id{ m_index };
+      }
+
+      constexpr pointer operator->() noexcept
+      {
+        return Id{ m_index };
+      }
+
+      constexpr Iterator& operator++() noexcept
+      {
+        ++m_index;
+        return *this;
+      }
+
+      constexpr Iterator operator++(int) noexcept
+      {
+        Iterator copy = *this;
+        ++m_index;
+        return copy;
+      }
+
+      constexpr Iterator& operator--() noexcept
+      {
+        --m_index;
+        return *this;
+      }
+
+      constexpr bool operator!=(const Iterator& other) const noexcept
+      {
+        return m_index != other.m_index;
+      }
+
+      constexpr bool operator==(const Iterator& other) const noexcept
+      {
+        return m_index == other.m_index;
+      }
+
+    private:
+      std::size_t m_index;
+    };
+
+    constexpr RangeId(std::size_t size)
+    : m_size(size)
+    {
+    }
+
+    constexpr Iterator begin() const noexcept
+    {
+      return Iterator{ 0 };
+    }
+
+    constexpr Iterator end() const noexcept
+    {
+      return Iterator{ m_size };
+    }
+
+    constexpr std::size_t size() const noexcept
+    {
+      return m_size;
+    }
+
+  private:
+    std::size_t m_size;
+  };
+
+  template<typename Id>
+  inline void swap(typename RangeId<Id>::Iterator& lhs, typename RangeId<Id>::Iterator& rhs) noexcept
+  {
+    lhs.swap(rhs);
+  }
+
+  /*
+   * IteratorRange
+   */
+
+  template<typename Iterator>
+  class IteratorRange {
+  public:
+    IteratorRange(Iterator begin, Iterator end)
+    : m_begin(begin)
+    , m_end(end)
+    {
+    }
+
+    Iterator begin() const noexcept
+    {
+      return m_begin;
+    }
+
+    Iterator end() const noexcept
+    {
+      return m_end;
+    }
+
+  private:
+    Iterator m_begin;
+    Iterator m_end;
+  };
+
+
+  /*
    * Range2D
    */
 
