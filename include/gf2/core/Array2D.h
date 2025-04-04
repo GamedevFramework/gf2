@@ -9,6 +9,7 @@
 
 #include "Range.h"
 #include "Vec2.h"
+#include "gf2/core/Serialization.h"
 
 namespace gf {
 

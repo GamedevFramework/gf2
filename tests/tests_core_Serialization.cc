@@ -3,13 +3,17 @@
 
 #include <limits>
 #include <numeric>
+#include <queue>
 
 #include <gf2/core/Array2D.h>
 #include <gf2/core/Color.h>
 #include <gf2/core/Flags.h>
 #include <gf2/core/Property.h>
 #include <gf2/core/PropertyMap.h>
+#include <gf2/core/SerializationAdapter.h>
+#include <gf2/core/SerializationContainer.h>
 #include <gf2/core/SerializationOps.h>
+#include <gf2/core/SerializationUtilities.h>
 #include <gf2/core/Streams.h>
 #include <gf2/core/Vec2.h>
 #include <gf2/core/Vec3.h>
@@ -466,6 +470,78 @@ TEST(SerialTest, Array) {
   for (int i = 0; i < 4; ++i) {
     EXPECT_EQ(in3[i], out3[i]);
   }
+}
+
+namespace {
+
+  template<typename T>
+  bool underlying_equals(const std::priority_queue<T>& lhs, std::priority_queue<T>& rhs)
+  {
+    return gf::details::underlying_container(lhs) == gf::details::underlying_container(rhs);
+  }
+
+}
+
+
+TEST(SerialTest, Queue) {
+  std::queue<std::string> tests1[] = {
+    {},
+    {},
+    {},
+    {},
+    {},
+  };
+
+  tests1[1].emplace("First");
+
+  for (int32_t i = 0; i < 16; ++i) {
+    tests1[2].emplace(std::to_string(i));
+  }
+
+  for (int32_t i = 0; i < 17; ++i) {
+    tests1[3].emplace(std::to_string(i));
+  }
+
+  for (int32_t i = 0; i < UINT8_MAX + 1; ++i) {
+    tests1[4].emplace(std::to_string(i));
+  }
+
+  std::queue<std::string> out1;
+
+  for (auto& in1 : tests1) {
+    save_and_load(in1, out1);
+    EXPECT_EQ(in1, out1);
+  }
+
+  std::priority_queue<std::string> tests2[] = {
+    {},
+    {},
+    {},
+    {},
+    {},
+  };
+
+  tests2[1].emplace("First");
+
+  for (int32_t i = 0; i < 16; ++i) {
+    tests2[2].emplace(std::to_string(i));
+  }
+
+  for (int32_t i = 0; i < 17; ++i) {
+    tests2[3].emplace(std::to_string(i));
+  }
+
+  for (int32_t i = 0; i < UINT8_MAX + 1; ++i) {
+    tests2[4].emplace(std::to_string(i));
+  }
+
+  std::priority_queue<std::string> out2;
+
+  for (auto& in2 : tests2) {
+    save_and_load(in2, out2);
+    EXPECT_TRUE(underlying_equals(in2, out2));
+  }
+
 }
 
 TEST(SerialTest, Set) {
