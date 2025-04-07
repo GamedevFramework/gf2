@@ -9,9 +9,18 @@
 
 #include "Range.h"
 #include "Vec2.h"
-#include "gf2/core/Serialization.h"
 
 namespace gf {
+
+  namespace details {
+
+    template<typename Archive, typename Self>
+    Archive& handle_array2d_serialization(Archive& ar, Self& self)
+    {
+      return ar | self.m_size | self.m_data;
+    }
+
+  }
 
   template<typename T>
   class Array2D {
@@ -144,6 +153,9 @@ namespace gf {
       return static_cast<std::size_t>(index.x) + (static_cast<std::size_t>(index.y) * static_cast<std::size_t>(m_size.x));
     }
 
+    template<typename Archive, typename Self>
+    friend Archive& details::handle_array2d_serialization(Archive& ar, Self& self);
+
     Vec2I m_size;
     std::vector<T> m_data;
   };
@@ -162,6 +174,18 @@ namespace gf {
     }
 
     return true;
+  }
+
+  template<typename Archive, typename T>
+  inline Archive& operator|(Archive& ar, Array2D<T>& vec)
+  {
+    return details::handle_array2d_serialization(ar, vec);
+  }
+
+  template<typename Archive, typename T>
+  inline Archive& operator|(Archive& ar, const Array2D<T>& vec)
+  {
+    return details::handle_array2d_serialization(ar, vec);
   }
 
 } // namespace gf

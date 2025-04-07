@@ -10,7 +10,6 @@
 #include <string>
 #include <type_traits>
 
-#include "Array2D.h"
 #include "Flags.h"
 #include "Serialization.h"
 
@@ -116,33 +115,20 @@ namespace gf {
   }
 
   template<typename T, typename E = std::enable_if_t<std::is_enum_v<T>, T>>
-  inline Serializer& operator|(Serializer& ar, T data)
+  Serializer& operator|(Serializer& ar, T data)
   {
     using U = std::underlying_type_t<T>;
     return ar | static_cast<U>(data);
   }
 
   template<typename E>
-  inline Serializer& operator|(Serializer& ar, Flags<E> data)
+  Serializer& operator|(Serializer& ar, Flags<E> data)
   {
     return ar | data.m_data;
   }
 
-  template<typename T>
-  inline Serializer& operator|(Serializer& ar, const Array2D<T>& array)
-  {
-    const Vec2I size = array.size();
-    ar | size.w | size.h;
-
-    for (auto& item : array) {
-      ar | item;
-    }
-
-    return ar;
-  }
-
   template<typename K, typename V>
-  inline Serializer& operator|(Serializer& ar, const std::pair<K, V>& pair)
+  Serializer& operator|(Serializer& ar, const std::pair<K, V>& pair)
   {
     return ar | pair.first | pair.second;
   }
@@ -257,7 +243,7 @@ namespace gf {
   }
 
   template<typename T, typename E = std::enable_if_t<std::is_enum_v<T>, T>>
-  inline Deserializer& operator|(Deserializer& ar, T& data)
+  Deserializer& operator|(Deserializer& ar, T& data)
   {
     using U = std::underlying_type_t<T>;
     U underlying;
@@ -267,29 +253,13 @@ namespace gf {
   }
 
   template<typename E>
-  inline Deserializer& operator|(Deserializer& ar, Flags<E>& data)
+  Deserializer& operator|(Deserializer& ar, Flags<E>& data)
   {
     return ar | data.m_data;
   }
 
-  template<typename T>
-  inline Deserializer& operator|(Deserializer& ar, Array2D<T>& array)
-  {
-    Vec2I size(0, 0);
-    ar | size.w | size.h;
-
-    Array2D<T> tmp(size);
-
-    for (auto& item : tmp) {
-      ar | item;
-    }
-
-    array = std::move(tmp);
-    return ar;
-  }
-
   template<typename K, typename V>
-  inline Deserializer& operator|(Deserializer& ar, std::pair<K, V>& pair)
+  Deserializer& operator|(Deserializer& ar, std::pair<K, V>& pair)
   {
     return ar | pair.first | pair.second;
   }
