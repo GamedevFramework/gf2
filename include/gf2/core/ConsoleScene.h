@@ -6,6 +6,7 @@
 #include "ConsoleElementContainer.h"
 #include "ConsoleStyle.h"
 #include "CoreApi.h"
+#include "ModelContainer.h"
 #include "SceneTypes.h"
 
 namespace gf {
@@ -36,6 +37,7 @@ namespace gf {
     void set_clear_style(const ConsoleStyle& style);
     const ConsoleStyle& clear_style() const;
 
+    void add_model(Model* model);
     void add_element(ConsoleElement* element);
 
     virtual void process_event(const Event& event);
@@ -54,6 +56,7 @@ namespace gf {
 
     ConsoleStyle m_clear_style;
     ConsoleElementContainer m_elements;
+    ModelContainer m_models;
   };
 
 }

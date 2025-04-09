@@ -84,6 +84,7 @@ namespace gf {
 
   void ConsoleScene::update_elements(Time time)
   {
+    m_models.update(time);
     m_elements.update(time);
   }
 
