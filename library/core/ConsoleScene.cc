@@ -57,6 +57,11 @@ namespace gf {
     return m_clear_style;
   }
 
+  void ConsoleScene::add_model(Model* model)
+  {
+    m_models.add_model(model);
+  }
+
   void ConsoleScene::add_element(ConsoleElement* element)
   {
     m_elements.add_element(element);
