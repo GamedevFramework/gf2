@@ -73,19 +73,25 @@ namespace gf {
     template<typename T>
     std::enable_if_t<std::is_floating_point_v<T>, T> compute_uniform_float()
     {
-      return static_cast<T>(compute_raw_float());
+      if constexpr (std::is_same_v<T, double>) {
+        return compute_raw_double();
+      } else if constexpr (std::is_same_v<T, float>) {
+        return compute_raw_float();
+      } else {
+        return static_cast<T>(compute_raw_float());
+      }
     }
 
     template<typename T>
     std::enable_if_t<std::is_floating_point_v<T>, T> compute_uniform_float(T max)
     {
-      return static_cast<T>(compute_raw_float() * max);
+      return compute_uniform_float<T>() * max;
     }
 
     template<typename T>
     std::enable_if_t<std::is_floating_point_v<T>, T> compute_uniform_float(T min, T max)
     {
-      return min + static_cast<T>(compute_raw_float() * (max - min));
+      return min + compute_uniform_float<T>() * (max - min);
     }
 
     template<typename T>
@@ -119,7 +125,8 @@ namespace gf {
     }
 
     uint64_t compute_raw_integer(uint64_t max);
-    double compute_raw_float();
+    double compute_raw_double();
+    float compute_raw_float();
 
   private:
     RandomEngine m_engine;
