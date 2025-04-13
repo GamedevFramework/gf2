@@ -25,7 +25,7 @@ namespace gf {
     float blocked = 5.0f;
   };
 
-  using RouteCostFunction = std::function<float(Vec2I position, Vec2I neighbor, Flags<CellProperty> neighbor_properties, const AnyGrid& grid)>;
+  using RouteCostFunction = std::function<float(Vec2I position, Vec2I neighbor)>;
 
   class GF_CORE_API GridMap {
   public:

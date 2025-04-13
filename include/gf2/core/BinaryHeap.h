@@ -76,7 +76,7 @@ namespace gf {
 
       if (has_available_index()) {
         index = available_index();
-        ElementIndex& ei = element_index(index);
+        ElementIndex& ei = m_elements[index];
         ei.element = value;
         ei.heap_index = m_size;
       } else {
@@ -97,7 +97,7 @@ namespace gf {
 
       if (has_available_index()) {
         index = available_index();
-        ElementIndex& ei = element_index(index);
+        ElementIndex& ei = m_elements[index];
         ei.element = std::move(value);
         ei.heap_index = m_size;
       } else {

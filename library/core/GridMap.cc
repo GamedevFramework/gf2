@@ -338,7 +338,7 @@ namespace gf {
             continue;
           }
 
-          const float updated_distance = m_data(heap_data.position).distance + cost_function(heap_data.position, position, cell, m_grid);
+          const float updated_distance = m_data(heap_data.position).distance + cost_function(heap_data.position, position);
 
           if (updated_distance < m_data(position).distance) {
             auto& data = m_data(position);
@@ -443,19 +443,7 @@ namespace gf {
         m_data(origin).distance = 0.0f;
         m_data(origin).state = AStarState::Open;
 
-        // for (auto position : m_cells.position_range()) {
-        //   const auto cell = m_cells(position);
-        //
-        //   if (!cell.test(CellProperty::Walkable)) {
-        //     continue;
-        //   }
-        //
-        //   AStarHeapData data = {};
-        //   data.position = position;
-        //   data.distance = m_data(position).distance;
-        //
-        //   m_data(position).handle = m_heap.push(data);
-        // }
+        m_heap.push({ origin, 0.0f });
       }
 
       void compute_node(AStarHeapData heap_data, RouteCostFunction& cost_function, Flags<CellNeighborQuery> flags)
@@ -477,7 +465,7 @@ namespace gf {
             continue;
           }
 
-          const float updated_distance = m_data(heap_data.position).distance + cost_function(heap_data.position, position, cell, m_grid);
+          const float updated_distance = m_data(heap_data.position).distance + cost_function(heap_data.position, position);
 
           if (updated_distance < m_data(position).distance) {
             auto& data = m_data(position);
@@ -550,14 +538,14 @@ namespace gf {
       flags |= CellNeighborQuery::Diagonal;
     }
 
-    auto cost_function = [cost](Vec2I position, Vec2I neighbor, Flags<CellProperty> neighbor_properties, const AnyGrid& grid)
+    auto cost_function = [cost,this](Vec2I position, Vec2I neighbor)
     {
-      const bool is_diagonal = grid.are_diagonal_neighbors(position, neighbor);
+      const bool is_diagonal = m_grid.are_diagonal_neighbors(position, neighbor);
       assert(cost.diagonal > 0 || !is_diagonal);
 
       float neighbor_cost = is_diagonal ? cost.diagonal : cost.cardinal;
 
-      if (neighbor_properties.test(CellProperty::Blocked)) {
+      if (m_cells(neighbor).test(CellProperty::Blocked)) {
         neighbor_cost += cost.blocked;
       }
 
