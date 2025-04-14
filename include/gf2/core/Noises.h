@@ -20,7 +20,7 @@ namespace gf {
   public:
     ValueNoise2D(Random& random, Step<double> step);
 
-    double value(double x, double y) override;
+    double value(double x, double y) final;
 
   private:
     double at(uint8_t i, uint8_t j) const;
@@ -34,7 +34,7 @@ namespace gf {
   public:
     GradientNoise2D(Random& random, Step<double> step);
 
-    double value(double x, double y) override;
+    double value(double x, double y) final;
 
   private:
     Vec2D at(uint8_t i, uint8_t j) const;
@@ -48,7 +48,7 @@ namespace gf {
   public:
     GradientNoise3D(Random& random, Step<double> step);
 
-    double value(double x, double y, double z) override;
+    double value(double x, double y, double z) final;
 
   private:
     Vec3D at(uint8_t i, uint8_t j, uint8_t k) const;
@@ -62,7 +62,7 @@ namespace gf {
   public:
     BetterGradientNoise2D(Random& random);
 
-    double value(double x, double y) override;
+    double value(double x, double y) final;
 
   private:
     Vec2D at(uint8_t i, uint8_t j) const;
@@ -76,7 +76,7 @@ namespace gf {
   public:
     FractalNoise2D(Noise2D* noise, double scale, int octaves = 8, double lacunarity = 2.0, double persistence = 0.5, double dimension = 1.0);
 
-    double value(double x, double y) override;
+    double value(double x, double y) final;
 
   private:
     Noise2D* m_noise = nullptr;
@@ -91,7 +91,7 @@ namespace gf {
   public:
     FractalNoise3D(Noise3D* noise, double scale, int octaves = 8, double lacunarity = 2.0, double persistence = 0.5, double dimension = 1.0);
 
-    double value(double x, double y, double z) override;
+    double value(double x, double y, double z) final;
 
   private:
     Noise3D* m_noise = nullptr;
@@ -106,7 +106,7 @@ namespace gf {
   public:
     PerlinNoise2D(Random& random, double scale, int octaves = 8);
 
-    double value(double x, double y) override;
+    double value(double x, double y) final;
 
   private:
     GradientNoise2D m_gradient_noise;
@@ -117,7 +117,7 @@ namespace gf {
   public:
     PerlinNoise3D(Random& random, double scale, int octaves = 8);
 
-    double value(double x, double y, double z) override;
+    double value(double x, double y, double z) final;
 
   private:
     GradientNoise3D m_gradient_noise;
@@ -128,7 +128,7 @@ namespace gf {
   public:
     SimplexNoise2D(Random& random);
 
-    double value(double x, double y) override;
+    double value(double x, double y) final;
 
   private:
     Vec2D at(uint8_t i, uint8_t j) const;
@@ -140,7 +140,7 @@ namespace gf {
   public:
     WaveletNoise3D(Random& random, std::ptrdiff_t wavelet_tile_size = 32);
 
-    double value(double x, double y, double z) override;
+    double value(double x, double y, double z) final;
 
   private:
     std::ptrdiff_t m_wavelet_tile_size;
@@ -151,7 +151,7 @@ namespace gf {
   public:
     WorleyNoise2D(Random& random, std::size_t points_count, Distance2<double> distance, std::vector<double> coefficients);
 
-    double value(double x, double y) override;
+    double value(double x, double y) final;
 
   private:
     std::size_t m_points_count;
@@ -164,7 +164,7 @@ namespace gf {
   public:
     Multifractal2D(Noise2D* noise, double scale, int octaves = 8, double lacunarity = 2.0, double persistence = 0.5, double dimension = 1.0);
 
-    double value(double x, double y) override;
+    double value(double x, double y) final;
 
   private:
     Noise2D* m_noise = nullptr;
@@ -179,7 +179,7 @@ namespace gf {
   public:
     HeteroTerrain2D(Noise2D* noise, double scale, double offset = 0.0, int octaves = 8, double lacunarity = 2.0, double persistence = 0.5, double dimension = 1.0);
 
-    double value(double x, double y) override;
+    double value(double x, double y) final;
 
   private:
     Noise2D* m_noise = nullptr;
@@ -195,7 +195,7 @@ namespace gf {
   public:
     HybridMultifractal2D(Noise2D* noise, double scale, double offset = 0.0, int octaves = 8, double lacunarity = 2.0, double persistence = 0.5, double dimension = 1.0);
 
-    double value(double x, double y) override;
+    double value(double x, double y) final;
 
   private:
     Noise2D* m_noise = nullptr;
@@ -211,7 +211,7 @@ namespace gf {
   public:
     RidgedMultifractal2D(Noise2D* noise, double scale, double offset = 1.0, double gain = 1.0, int octaves = 8, double lacunarity = 2.0, double persistence = 0.5, double dimension = 1.0);
 
-    double value(double x, double y) override;
+    double value(double x, double y) final;
 
   private:
     Noise2D* m_noise = nullptr;
@@ -228,7 +228,7 @@ namespace gf {
   public:
     Noise3DTo2DAdapter(Noise3D* noise, Vec3D normal = { 0.0, 0.0, 1.0 }, Vec3D point = { 0.0, 0.0, 0.0 });
 
-    double value(double x, double y) override;
+    double value(double x, double y) final;
 
   private:
     Noise3D* m_noise;
