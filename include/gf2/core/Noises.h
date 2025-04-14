@@ -18,7 +18,7 @@ namespace gf {
 
   class GF_CORE_API ValueNoise2D : public Noise2D {
   public:
-    ValueNoise2D(Random& random, Step<double> step);
+    ValueNoise2D(Random* random, Step<double> step);
 
     double value(double x, double y) final;
 
@@ -32,7 +32,7 @@ namespace gf {
 
   class GF_CORE_API GradientNoise2D : public Noise2D {
   public:
-    GradientNoise2D(Random& random, Step<double> step);
+    GradientNoise2D(Random* random, Step<double> step);
 
     double value(double x, double y) final;
 
@@ -46,7 +46,7 @@ namespace gf {
 
   class GF_CORE_API GradientNoise3D : public Noise3D {
   public:
-    GradientNoise3D(Random& random, Step<double> step);
+    GradientNoise3D(Random* random, Step<double> step);
 
     double value(double x, double y, double z) final;
 
@@ -60,7 +60,7 @@ namespace gf {
 
   class GF_CORE_API BetterGradientNoise2D : public Noise2D {
   public:
-    BetterGradientNoise2D(Random& random);
+    BetterGradientNoise2D(Random* random);
 
     double value(double x, double y) final;
 
@@ -104,7 +104,7 @@ namespace gf {
 
   class GF_CORE_API PerlinNoise2D : public Noise2D {
   public:
-    PerlinNoise2D(Random& random, double scale, int octaves = 8);
+    PerlinNoise2D(Random* random, double scale, int octaves = 8);
 
     double value(double x, double y) final;
 
@@ -115,7 +115,7 @@ namespace gf {
 
   class GF_CORE_API PerlinNoise3D : public Noise3D {
   public:
-    PerlinNoise3D(Random& random, double scale, int octaves = 8);
+    PerlinNoise3D(Random* random, double scale, int octaves = 8);
 
     double value(double x, double y, double z) final;
 
@@ -126,7 +126,7 @@ namespace gf {
 
   class GF_CORE_API SimplexNoise2D : public Noise2D {
   public:
-    SimplexNoise2D(Random& random);
+    SimplexNoise2D(Random* random);
 
     double value(double x, double y) final;
 
@@ -138,7 +138,7 @@ namespace gf {
 
   class GF_CORE_API WaveletNoise3D : public Noise3D {
   public:
-    WaveletNoise3D(Random& random, std::ptrdiff_t wavelet_tile_size = 32);
+    WaveletNoise3D(Random* random, std::ptrdiff_t wavelet_tile_size = 32);
 
     double value(double x, double y, double z) final;
 
@@ -149,7 +149,7 @@ namespace gf {
 
   class GF_CORE_API WorleyNoise2D : public Noise2D {
   public:
-    WorleyNoise2D(Random& random, std::size_t points_count, Distance2<double> distance, std::vector<double> coefficients);
+    WorleyNoise2D(Random* random, std::size_t points_count, Distance2<double> distance, std::vector<double> coefficients);
 
     double value(double x, double y) final;
 

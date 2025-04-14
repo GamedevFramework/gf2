@@ -13,10 +13,10 @@ namespace gf {
 
   namespace {
 
-    void generate_permutation(Random& random, std::array<uint8_t, 256>& permutation)
+    void generate_permutation(Random* random, std::array<uint8_t, 256>& permutation)
     {
       std::iota(permutation.begin(), permutation.end(), 0);
-      std::shuffle(permutation.begin(), permutation.end(), random.engine());
+      std::shuffle(permutation.begin(), permutation.end(), random->engine());
     }
 
   }
@@ -25,7 +25,7 @@ namespace gf {
    * ValueNoise2D
    */
 
-  ValueNoise2D::ValueNoise2D(Random& random, Step<double> step)
+  ValueNoise2D::ValueNoise2D(Random* random, Step<double> step)
   : m_step(step)
   {
     // initialize permutation
@@ -34,21 +34,21 @@ namespace gf {
 
     // generate values
 
-    std::uniform_real_distribution<double> distribution_value(0.0, 1.0);
-
     for (auto& value : m_values) {
-      value = distribution_value(random.engine());
+      value = random->compute_uniform_float<double>();
     }
   }
 
   double ValueNoise2D::value(double x, double y)
   {
-    auto qx = static_cast<uint8_t>(std::fmod(x, 256));
-    const double rx = std::fmod(x, 1);
+    double dummy = 0.0;
+
+    auto qx = static_cast<uint8_t>(x);
+    const double rx = std::modf(x, &dummy);
     assert(rx >= 0.0 && rx <= 1.0);
 
-    auto qy = static_cast<uint8_t>(std::fmod(y, 256));
-    const double ry = std::fmod(y, 1);
+    auto qy = static_cast<uint8_t>(y);
+    const double ry = std::modf(y, &dummy);
     assert(ry >= 0.0 && ry <= 1.0);
 
     // clang-format off
@@ -75,7 +75,7 @@ namespace gf {
    * GradientNoise2D
    */
 
-  GradientNoise2D::GradientNoise2D(Random& random, Step<double> step)
+  GradientNoise2D::GradientNoise2D(Random* random, Step<double> step)
   : m_step(step)
   {
     // initialize permutation
@@ -84,22 +84,22 @@ namespace gf {
 
     // generate 2D gradients
 
-    std::uniform_real_distribution<double> distribution_angle(0.0, 2.0 * constants::Pi<double>);
-
     for (auto& gradient : m_gradients) {
-      const double angle = distribution_angle(random.engine());
+      const double angle = random->compute_uniform_float(2.0 * constants::Pi<double>);
       gradient = gf::unit(angle);
     }
   }
 
   double GradientNoise2D::value(double x, double y)
   {
-    auto qx = static_cast<uint8_t>(std::fmod(x, 256));
-    const double rx = std::fmod(x, 1);
+    double dummy = 0.0;
+
+    auto qx = static_cast<uint8_t>(x);
+    const double rx = std::modf(x, &dummy);
     assert(rx >= 0.0 && rx <= 1.0);
 
-    auto qy = static_cast<uint8_t>(std::fmod(y, 256));
-    const double ry = std::fmod(y, 1);
+    auto qy = static_cast<uint8_t>(y);
+    const double ry = std::modf(y, &dummy);
     assert(ry >= 0.0 && ry <= 1.0);
 
     // clang-format off
@@ -130,7 +130,7 @@ namespace gf {
    * GradientNoise3D
    */
 
-  GradientNoise3D::GradientNoise3D(Random& random, Step<double> step)
+  GradientNoise3D::GradientNoise3D(Random* random, Step<double> step)
   : m_step(step)
   {
     // initialize permutation
@@ -139,28 +139,27 @@ namespace gf {
 
     // generate 3D gradients
 
-    std::uniform_real_distribution<double> distribution_phi(0.0, 2.0 * constants::Pi<double>);
-    std::uniform_real_distribution<double> distribution_theta(0.0, 2.0 * constants::Pi<double>);
-
     for (auto& gradient : m_gradients) {
-      const double phi = distribution_phi(random.engine());
-      const double theta = distribution_theta(random.engine());
+      const double phi = random->compute_uniform_float(2.0 * constants::Pi<double>);
+      const double theta = random->compute_uniform_float(2.0 * constants::Pi<double>);
       gradient = { std::cos(phi) * std::sin(theta), std::sin(phi) * std::sin(theta), std::cos(theta) };
     }
   }
 
   double GradientNoise3D::value(double x, double y, double z)
   {
-    auto qx = static_cast<uint8_t>(std::fmod(x, 256));
-    const double rx = std::fmod(x, 1);
+    double dummy = 0.0;
+
+    auto qx = static_cast<uint8_t>(x);
+    const double rx = std::modf(x, &dummy);
     assert(rx >= 0.0 && rx <= 1.0);
 
-    auto qy = static_cast<uint8_t>(std::fmod(y, 256));
-    const double ry = std::fmod(y, 1);
+    auto qy = static_cast<uint8_t>(y);
+    const double ry = std::modf(y, &dummy);
     assert(ry >= 0.0 && ry <= 1.0);
 
-    auto qz = static_cast<uint8_t>(std::fmod(z, 256));
-    const double rz = std::fmod(z, 1);
+    auto qz = static_cast<uint8_t>(z);
+    const double rz = std::modf(z, &dummy);
     assert(rz >= 0.0 && rz <= 1.0);
 
     // clang-format off
@@ -203,7 +202,7 @@ namespace gf {
    * BetterGradientNoise2D
    */
 
-  BetterGradientNoise2D::BetterGradientNoise2D(Random& random)
+  BetterGradientNoise2D::BetterGradientNoise2D(Random* random)
   {
     // initialize permutation
 
@@ -212,22 +211,22 @@ namespace gf {
 
     // generate 2D gradients
 
-    std::uniform_real_distribution<double> distribution_angle(0.0, 2.0 * constants::Pi<double>);
-
     for (auto& gradient : m_gradients) {
-      const double angle = distribution_angle(random.engine());
+      const double angle = random->compute_uniform_float(2.0 * constants::Pi<double>);
       gradient = gf::unit(angle);
     }
   }
 
   double BetterGradientNoise2D::value(double x, double y)
   {
-    auto qx = static_cast<uint8_t>(std::fmod(x, 256));
-    const double rx = std::fmod(x, 1);
+    double dummy = 0.0;
+
+    auto qx = static_cast<uint8_t>(x);
+    const double rx = std::modf(x, &dummy);
     assert(rx >= 0.0 && rx <= 1.0);
 
-    auto qy = static_cast<uint8_t>(std::fmod(y, 256));
-    const double ry = std::fmod(y, 1);
+    auto qy = static_cast<uint8_t>(y);
+    const double ry = std::modf(y, &dummy);
     assert(ry >= 0.0 && ry <= 1.0);
 
     double value = 0.0f;
@@ -332,7 +331,7 @@ namespace gf {
    * PerlinNoise2D
    */
 
-  PerlinNoise2D::PerlinNoise2D(Random& random, double scale, int octaves)
+  PerlinNoise2D::PerlinNoise2D(Random* random, double scale, int octaves)
   : m_gradient_noise(random, gf::quintic_step)
   , m_fractal_noise(&m_gradient_noise, scale, octaves)
   {
@@ -347,7 +346,7 @@ namespace gf {
    * PerlinNoise3D
    */
 
-  PerlinNoise3D::PerlinNoise3D(Random& random, double scale, int octaves)
+  PerlinNoise3D::PerlinNoise3D(Random* random, double scale, int octaves)
   : m_gradient_noise(random, gf::quintic_step)
   , m_fractal_noise(&m_gradient_noise, scale, octaves)
   {
@@ -362,7 +361,7 @@ namespace gf {
    * SimplexNoise2D
    */
 
-  SimplexNoise2D::SimplexNoise2D(Random& random)
+  SimplexNoise2D::SimplexNoise2D(Random* random)
   {
     generate_permutation(random, m_permutation);
   }
@@ -529,7 +528,7 @@ namespace gf {
 
   }
 
-  WaveletNoise3D::WaveletNoise3D(Random& random, std::ptrdiff_t wavelet_tile_size)
+  WaveletNoise3D::WaveletNoise3D(Random* random, std::ptrdiff_t wavelet_tile_size)
   : m_wavelet_tile_size(wavelet_tile_size + (wavelet_tile_size % 2))
   {
     const std::size_t data_size = m_wavelet_tile_size * m_wavelet_tile_size * m_wavelet_tile_size;
@@ -540,10 +539,8 @@ namespace gf {
 
     // step 1: fill the tile with numbers in the range -1 to 1
 
-    std::uniform_real_distribution<double> distribution_value(-1.0, 1.0);
-
     for (auto& value : m_data) {
-      value = distribution_value(random.engine());
+      value = random->compute_uniform_float(-1.0, +1.0);
     }
 
     // step 2 and 3: downsample and upsample the tile
@@ -659,7 +656,7 @@ namespace gf {
    * WorleyNoise2D
    */
 
-  WorleyNoise2D::WorleyNoise2D(Random& random, std::size_t points_count, Distance2<double> distance, std::vector<double> coefficients)
+  WorleyNoise2D::WorleyNoise2D(Random* random, std::size_t points_count, Distance2<double> distance, std::vector<double> coefficients)
   : m_points_count(points_count)
   , m_distance(distance)
   , m_coefficients(std::move(coefficients))
@@ -668,11 +665,9 @@ namespace gf {
 
     m_cells.reserve(m_points_count * 4);
 
-    std::uniform_real_distribution<double> distribution_coordinate(0.0, 1.0);
-
     for (std::size_t i = 0; i < m_points_count; ++i) {
-      auto x = distribution_coordinate(random.engine());
-      auto y = distribution_coordinate(random.engine());
+      auto x = random->compute_uniform_float<double>();
+      auto y = random->compute_uniform_float<double>();
 
       m_cells.emplace_back(x, y);
 

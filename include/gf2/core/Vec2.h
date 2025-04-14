@@ -285,7 +285,7 @@ namespace gf {
   template<typename T>
   constexpr T manhattan_distance(Vec2<T> lhs, Vec2<T> rhs)
   {
-    return manhattan_length(lhs - rhs);
+    return details::abs(lhs.x - rhs.x) + details::abs(lhs.y - rhs.y);
   }
 
   template<typename T>
@@ -297,7 +297,7 @@ namespace gf {
   template<typename T>
   constexpr T square_distance(Vec2<T> lhs, Vec2<T> rhs)
   {
-    return square_length(lhs - rhs);
+    return square(lhs.x - rhs.x) + square(lhs.y - rhs.y);
   }
 
   template<typename T>
@@ -309,7 +309,7 @@ namespace gf {
   template<typename T>
   inline auto euclidean_distance(Vec2<T> lhs, Vec2<T> rhs)
   {
-    return euclidean_length(lhs - rhs);
+    return std::sqrt(square_distance(lhs, rhs));
   }
 
   template<typename T>
@@ -321,7 +321,7 @@ namespace gf {
   template<typename T>
   constexpr T chebyshev_distance(Vec2<T> lhs, Vec2<T> rhs)
   {
-    return chebyshev_length(lhs - rhs);
+    return details::max(details::abs(lhs.x - rhs.x), details::abs(lhs.y - rhs.y));
   }
 
   template<typename T>
