@@ -438,6 +438,12 @@ namespace gf {
     return { clamp(vec.x, lo, hi), clamp(vec.y, lo, hi) };
   }
 
+  template<typename T>
+  constexpr Vec2<T> sign(Vec2<T> vec)
+  {
+    return { sign(vec.x), sign(vec.y) };
+  }
+
   namespace details {
 
     template<typename Archive, typename Self>
