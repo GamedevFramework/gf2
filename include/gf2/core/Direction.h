@@ -21,6 +21,7 @@ namespace gf {
   GF_CORE_API Vec2F unit(Direction direction);
   GF_CORE_API Vec2I displacement(Direction direction);
   GF_CORE_API float angle(Direction direction);
+  GF_CORE_API Direction direction(float angle);
   GF_CORE_API Direction opposite(Direction direction);
 
 } // namespace gf

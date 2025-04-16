@@ -58,6 +58,34 @@ namespace gf {
     return static_cast<float>(direction) * Pi / 2;
   }
 
+  Direction direction(float angle)
+  {
+    float normalized = std::fmod(angle, 2 * Pi);
+
+    if (angle < 0) {
+      assert(normalized < 0);
+      normalized += 2 * Pi;
+    }
+
+    assert(0.0f <= normalized && normalized < 2 * Pi);
+
+    static constexpr float Pi4 = Pi / 4.0f;
+
+    if (normalized < 1 * Pi4) {
+      return Direction::Right;
+    }
+    if (normalized < 3 * Pi4) {
+      return Direction::Down;
+    }
+    if (normalized < 5 * Pi4) {
+      return Direction::Right;
+    }
+    if (normalized < 7 * Pi4) {
+      return Direction::Up;
+    }
+    return Direction::Right;
+  }
+
   Direction opposite(Direction direction)
   {
     if (direction == Direction::Center) {
