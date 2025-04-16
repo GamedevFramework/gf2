@@ -78,7 +78,7 @@ namespace gf {
       return Direction::Down;
     }
     if (normalized < 5 * Pi4) {
-      return Direction::Right;
+      return Direction::Left;
     }
     if (normalized < 7 * Pi4) {
       return Direction::Up;
