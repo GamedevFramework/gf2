@@ -29,6 +29,9 @@ namespace gf {
     void set_surface_size(Vec2I size);
     Vec2I surface_size() const;
 
+    void set_window_size(Vec2I size);
+    Vec2I window_size() const;
+
     void set_clear_color(Color color);
     Color clear_color() const;
 
@@ -81,6 +84,7 @@ namespace gf {
     SceneVisibility m_visibility = SceneVisibility::Shown;
 
     Vec2I m_surface_size = { 1, 1 };
+    Vec2I m_window_size = { 1, 1 };
     Color m_clear_color = Black;
   };
 

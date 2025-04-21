@@ -24,6 +24,16 @@ namespace gf {
     return m_surface_size;
   }
 
+  void BasicScene::set_window_size(Vec2I size)
+  {
+    m_window_size = size;
+  }
+
+  Vec2I BasicScene::window_size() const
+  {
+    return m_window_size;
+  }
+
   void BasicScene::set_clear_color(Color color)
   {
     m_clear_color = gf::srgb_to_linear(color);
@@ -214,12 +224,12 @@ namespace gf {
 
   Vec2F Scene::position_to_world_location(Vec2I position)
   {
-    return m_world_camera.position_to_location(position, surface_size());
+    return m_world_camera.position_to_location(position, window_size());
   }
 
   Vec2I Scene::world_location_to_position(Vec2F location)
   {
-    return m_world_camera.location_to_position(location, surface_size());
+    return m_world_camera.location_to_position(location, window_size());
   }
 
   void Scene::update_entities(Time time)

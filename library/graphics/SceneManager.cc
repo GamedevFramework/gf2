@@ -381,9 +381,14 @@ namespace gf {
     while (!m_curr_scenes.empty() && !window()->should_close()) {
       std::vector<BasicScene*> scenes = m_curr_scenes; // make a copy to avoid iterator invalidation
       m_scenes_changed = false;
-      auto surface_size = window()->surface_size();
 
-      std::for_each(scenes.begin(), scenes.end(), [surface_size](auto* scene) { scene->set_surface_size(surface_size); });
+      auto surface_size = window()->surface_size();
+      auto window_size = window()->size();
+
+      std::for_each(scenes.begin(), scenes.end(), [surface_size, window_size](auto* scene) {
+        scene->set_surface_size(surface_size);
+        scene->set_window_size(window_size);
+      });
 
       auto* current_scene = scenes.back();
       current_scene->show();
@@ -396,6 +401,11 @@ namespace gf {
           switch (event->type()) {
             case EventType::Quit:
               window()->close();
+              break;
+
+            case EventType::WindowResized:
+              window_size = event->from<EventType::WindowResized>().size;
+              std::for_each(scenes.begin(), scenes.end(), [window_size](auto* scene) { scene->set_window_size(window_size); });
               break;
 
             case EventType::WindowPixelSizeChanged:
