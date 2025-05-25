@@ -12,7 +12,7 @@ namespace gf {
    * ValueActivity
    */
 
-  ValueActivity::ValueActivity(float origin, float target, float* value, Time duration, Easing easing)
+  ValueActivity::ValueActivity(float origin, float target, float* value, Time duration, EasingF easing)
   : m_tween(origin, target, value, duration, easing)
   {
   }
@@ -36,7 +36,7 @@ namespace gf {
    * RotateToActivity
    */
 
-  RotationActivity::RotationActivity(float origin, float target, float* angle, Time duration, Easing easing)
+  RotationActivity::RotationActivity(float origin, float target, float* angle, Time duration, EasingF easing)
   : m_tween(origin, target, angle, duration, easing)
   {
     normalize();
@@ -72,7 +72,7 @@ namespace gf {
    * MoveToActivity
    */
 
-  MotionActivity::MotionActivity(Vec2F origin, Vec2F target, Vec2F* position, Time duration, Easing easing)
+  MotionActivity::MotionActivity(Vec2F origin, Vec2F target, Vec2F* position, Time duration, EasingF easing)
   : m_tween(origin, target, position, duration, easing)
   {
   }
@@ -96,7 +96,7 @@ namespace gf {
    * ColorActivity
    */
 
-  ColorActivity::ColorActivity(Color origin, Color target, Color* color, Time duration, Easing easing)
+  ColorActivity::ColorActivity(Color origin, Color target, Color* color, Time duration, EasingF easing)
   : m_tween(origin, target, color, duration, easing)
   {
   }

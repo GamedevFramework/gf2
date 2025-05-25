@@ -16,7 +16,7 @@ namespace gf {
   public:
     using Setter = std::function<void(const T&)>;
 
-    Tween(T origin, T target, Setter setter, Time duration, Easing easing = ease_linear)
+    Tween(T origin, T target, Setter setter, Time duration, EasingF easing = ease_linear)
     : m_origin(origin)
     , m_target(target)
     , m_setter(setter)
@@ -25,7 +25,7 @@ namespace gf {
     {
     }
 
-    Tween(T origin, T target, T* value, Time duration, Easing easing = ease_linear)
+    Tween(T origin, T target, T* value, Time duration, EasingF easing = ease_linear)
     : m_origin(origin)
     , m_target(target)
     , m_setter([value](const T& new_value) { if (value != nullptr) { *value = new_value; } })
@@ -92,7 +92,7 @@ namespace gf {
     Setter m_setter;
     Time m_elapsed;
     Time m_duration;
-    Easing m_easing = ease_linear;
+    EasingF m_easing = ease_linear;
   };
 
 }

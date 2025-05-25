@@ -18,7 +18,7 @@ namespace gf {
 
   class GF_CORE_API ValueActivity : public Activity {
   public:
-    ValueActivity(float origin, float target, float* value, Time duration, Easing easing = ease_linear);
+    ValueActivity(float origin, float target, float* value, Time duration, EasingF easing = ease_linear);
 
     void set_origin(float origin)
     {
@@ -59,7 +59,7 @@ namespace gf {
 
   class GF_CORE_API RotationActivity : public Activity {
   public:
-    RotationActivity(float origin, float target, float* angle, Time duration, Easing easing = ease_linear);
+    RotationActivity(float origin, float target, float* angle, Time duration, EasingF easing = ease_linear);
 
     void set_origin(float origin)
     {
@@ -104,7 +104,7 @@ namespace gf {
 
   class GF_CORE_API MotionActivity : public Activity {
   public:
-    MotionActivity(Vec2F origin, Vec2F target, Vec2F* position, Time duration, Easing easing = ease_linear);
+    MotionActivity(Vec2F origin, Vec2F target, Vec2F* position, Time duration, EasingF easing = ease_linear);
 
     void set_origin(Vec2F origin)
     {
@@ -145,7 +145,7 @@ namespace gf {
 
   class GF_CORE_API ColorActivity : public Activity {
   public:
-    ColorActivity(Color origin, Color target, Color* color, Time duration, Easing easing = ease_linear);
+    ColorActivity(Color origin, Color target, Color* color, Time duration, EasingF easing = ease_linear);
 
     void set_origin(Color origin)
     {
@@ -261,22 +261,22 @@ namespace gf {
 
   namespace activity {
 
-    inline ValueActivity value(float origin, float target, float* value, Time duration, Easing easing = ease_linear)
+    inline ValueActivity value(float origin, float target, float* value, Time duration, EasingF easing = ease_linear)
     {
       return { origin, target, value, duration, easing };
     }
 
-    inline RotationActivity rotation(float origin, float target, float* value, Time duration, Easing easing = ease_linear)
+    inline RotationActivity rotation(float origin, float target, float* value, Time duration, EasingF easing = ease_linear)
     {
       return { origin, target, value, duration, easing };
     }
 
-    inline MotionActivity motion(Vec2F origin, Vec2F target, Vec2F* value, Time duration, Easing easing = ease_linear)
+    inline MotionActivity motion(Vec2F origin, Vec2F target, Vec2F* value, Time duration, EasingF easing = ease_linear)
     {
       return { origin, target, value, duration, easing };
     }
 
-    inline ColorActivity color(Color origin, Color target, Color* value, Time duration, Easing easing = ease_linear)
+    inline ColorActivity color(Color origin, Color target, Color* value, Time duration, EasingF easing = ease_linear)
     {
       return { origin, target, value, duration, easing };
     }
