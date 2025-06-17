@@ -3,7 +3,7 @@ option("examples", { description = "Build examples", default = true })
 if has_config("examples") then
     set_group("Examples")
 
-    set_configdir("$(buildir)/config/examples")
+    set_configdir("$(builddir)/config/examples")
     set_configvar("GF_EXAMPLE_ASSETS_DIRECTORY", "$(projectdir)/examples/assets")
     add_configfiles("config.h.in", {pattern = "@(.-)@"})
 
@@ -17,25 +17,25 @@ if has_config("examples") then
         set_kind("binary")
         add_files("10-sprite.cc")
         add_deps("gf2graphics0")
-        add_includedirs("$(buildir)/config/examples")
+        add_includedirs("$(builddir)/config/examples")
 
     target("ninepatch")
         set_kind("binary")
         add_files("ninepatch.cc")
         add_deps("gf2graphics0")
-        add_includedirs("$(buildir)/config/examples")
+        add_includedirs("$(builddir)/config/examples")
 
     target("11-text")
         set_kind("binary")
         add_files("11-text.cc")
         add_deps("gf2graphics0")
-        add_includedirs("$(buildir)/config/examples")
+        add_includedirs("$(builddir)/config/examples")
 
     target("12-animation")
         set_kind("binary")
         add_files("12-animation.cc")
         add_deps("gf2graphics0")
-        add_includedirs("$(buildir)/config/examples")
+        add_includedirs("$(builddir)/config/examples")
 
     target("13-shape")
         set_kind("binary")
@@ -51,19 +51,19 @@ if has_config("examples") then
         set_kind("binary")
         add_files("15-imgui.cc")
         add_deps("gf2imgui0")
-        add_includedirs("$(buildir)/config/examples")
+        add_includedirs("$(builddir)/config/examples")
 
     target("16-richtext")
         set_kind("binary")
         add_files("16-richtext.cc")
         add_deps("gf2graphics0")
-        add_includedirs("$(buildir)/config/examples")
+        add_includedirs("$(builddir)/config/examples")
 
     target("17-console")
         set_kind("binary")
         add_files("17-console.cc")
         add_deps("gf2graphics0")
-        add_includedirs("$(buildir)/config/examples")
+        add_includedirs("$(builddir)/config/examples")
 
     target("18-activities")
         set_kind("binary")

@@ -9,10 +9,10 @@ if has_config("tests") then
         add_files("tests_core_*.cc", "main_core.cc")
         add_deps("gf2core0")
         add_packages("gtest")
-        set_configdir("$(buildir)/config/core_tests")
+        set_configdir("$(builddir)/config/core_tests")
         set_configvar("GF_TEST_ASSETS_DIRECTORY", "$(projectdir)/tests/assets")
         add_configfiles("config.h.in", {pattern = "@(.-)@"})
-        add_includedirs("$(buildir)/config/core_tests")
+        add_includedirs("$(builddir)/config/core_tests")
         add_tests("default")
 
     target("gf2_network_tests")
@@ -29,10 +29,10 @@ if has_config("tests") then
         add_files("tests_audio_*.cc", "main_audio.cc")
         add_deps("gf2audio0")
         add_packages("gtest")
-        set_configdir("$(buildir)/config/audio_tests")
+        set_configdir("$(builddir)/config/audio_tests")
         set_configvar("GF_TEST_ASSETS_DIRECTORY", "$(projectdir)/tests/assets")
         add_configfiles("config.h.in", {pattern = "@(.-)@"})
-        add_includedirs("$(buildir)/config/audio_tests")
+        add_includedirs("$(builddir)/config/audio_tests")
         add_tests("default")
 
 end
