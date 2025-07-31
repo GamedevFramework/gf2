@@ -294,7 +294,11 @@ namespace gf {
     Clock clock;
     RenderRecorder recorder(render_manager());
 
-    m_scene->set_surface_size(window()->surface_size());
+    Vec2I surface_size = window()->surface_size();
+    Vec2I window_size = window()->size();
+
+    m_scene->set_surface_size(surface_size);
+    m_scene->set_window_size(window_size);
 
     while (!window()->should_close()) {
       // update
@@ -305,12 +309,15 @@ namespace gf {
             window()->close();
             break;
 
+          case EventType::WindowResized:
+            window_size = event->from<EventType::WindowResized>().size;
+            m_scene->set_window_size(window_size);
+            break;
+
           case EventType::WindowPixelSizeChanged:
-            {
-              auto surface_size = event->from<EventType::WindowPixelSizeChanged>().size;
-              render_manager()->update_surface_size(surface_size);
-              m_scene->set_surface_size(surface_size);
-            }
+            surface_size = event->from<EventType::WindowPixelSizeChanged>().size;
+            render_manager()->update_surface_size(surface_size);
+            m_scene->set_surface_size(surface_size);
             break;
 
           default:
@@ -382,8 +389,8 @@ namespace gf {
       std::vector<BasicScene*> scenes = m_curr_scenes; // make a copy to avoid iterator invalidation
       m_scenes_changed = false;
 
-      auto surface_size = window()->surface_size();
-      auto window_size = window()->size();
+      Vec2I surface_size = window()->surface_size();
+      Vec2I window_size = window()->size();
 
       std::for_each(scenes.begin(), scenes.end(), [surface_size, window_size](auto* scene) {
         scene->set_surface_size(surface_size);

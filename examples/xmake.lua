@@ -13,6 +13,18 @@ if has_config("examples") then
         add_deps("gf2core0")
         set_rundir("$(projectdir)/docs/assets/colors")
 
+    target("events")
+        set_kind("binary")
+        add_files("events.cc")
+        add_deps("gf2graphics0")
+        add_includedirs("$(builddir)/config/examples")
+
+    target("hud")
+        set_kind("binary")
+        add_files("hud.cc")
+        add_deps("gf2graphics0")
+        add_includedirs("$(builddir)/config/examples")
+
     target("10-sprite")
         set_kind("binary")
         add_files("10-sprite.cc")

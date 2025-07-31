@@ -3,6 +3,9 @@
 #ifndef GF_IMGUI_ENTITY_H
 #define GF_IMGUI_ENTITY_H
 
+#include <memory>
+#include <vector>
+
 #include <gf2/core/Rect.h>
 #include <gf2/core/Transform.h>
 #include <gf2/core/Vec2.h>
@@ -14,8 +17,10 @@
 #include "ImguiApi.h"
 
 struct ImDrawData;
+struct ImTextureData;
 
 namespace gf {
+  class RenderManager;
 
   class GF_IMGUI_API ImguiEntity : public HudEntity {
   public:
@@ -26,6 +31,10 @@ namespace gf {
     void render(RenderRecorder& recorder) override;
 
   private:
+    void update_texture(ImTextureData* texture_data, RenderManager* render_manager);
+
+    std::vector<std::unique_ptr<Texture>> m_textures;
+
     DynamicBuffer m_vertices;
     DynamicBuffer m_indices;
 

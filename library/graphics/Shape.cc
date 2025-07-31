@@ -220,7 +220,7 @@ namespace gf {
 
   RenderGeometry ShapeGroup::geometry() const
   {
-    RenderGeometry geometry;
+    RenderGeometry geometry = {};
     geometry.vertices = &m_vertices.buffer();
     geometry.indices = &m_indices.buffer();
     geometry.size = m_indices.buffer().size();

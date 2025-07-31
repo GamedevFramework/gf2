@@ -36,7 +36,6 @@ namespace gf {
 
     void update_mouse_cursor();
 
-    Texture m_font_texture;
     CursorType m_cursor_type = CursorType::Default;
     Cursor m_cursor;
   };

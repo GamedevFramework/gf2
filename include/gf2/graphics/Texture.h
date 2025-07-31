@@ -58,6 +58,7 @@ namespace gf {
 
     void update(const Image& image, RenderManager* render_manager);
     void update(const Bitmap& bitmap, RenderManager* render_manager);
+    void update(std::size_t size, const uint8_t* data, RenderManager* render_manager);
 
     Vec2I size() const
     {

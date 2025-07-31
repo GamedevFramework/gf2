@@ -3,13 +3,20 @@
 
 #include <gf2/imgui/ImguiEntity.h>
 
+#include <cassert>
 #include <cstdint>
 
+#include <algorithm>
+#include <memory>
 #include <type_traits>
 
 #include <imgui.h>
 
+#include <gf2/core/Log.h>
+
+#include <gf2/graphics/RenderManager.h>
 #include <gf2/graphics/RenderRecorder.h>
+#include <gf2/graphics/Texture.h>
 
 namespace gf {
 
@@ -31,6 +38,16 @@ namespace gf {
     // initialize
 
     m_objects.clear();
+
+    // update textures
+
+    if (data->Textures != nullptr) {
+      for (ImTextureData* texture_data : *data->Textures) {
+        if (texture_data->Status != ImTextureStatus_OK) {
+          update_texture(texture_data, render_manager);
+        }
+      }
+    }
 
     // merge all buffers
 
@@ -78,12 +95,17 @@ namespace gf {
         if (command->UserCallback != nullptr) {
           command->UserCallback(list, command);
         } else {
-          ImguiObject object = {};
-
           // compute scissor
 
           const Vec2F min((command->ClipRect.x - position.x) * scale.x, (command->ClipRect.y - position.y) * scale.y);
           const Vec2F max((command->ClipRect.z - position.x) * scale.x, (command->ClipRect.w - position.y) * scale.y);
+
+          if (max.x <= min.x || max.y <= min.y) {
+            continue;
+          }
+
+          ImguiObject object = {};
+
           object.scissor = RectI::from_min_max(min, max);
 
           object.scissor.offset = gf::max(object.scissor.offset, { 0, 0 }); // because VUID-vkCmdSetScissor-x-00595
@@ -96,7 +118,7 @@ namespace gf {
 
           // texture
 
-          object.texture = reinterpret_cast<Texture*>(static_cast<uintptr_t>(command->TextureId)); // NOLINT
+          object.texture = reinterpret_cast<Texture*>(static_cast<uintptr_t>(command->GetTexID())); // NOLINT
 
           m_objects.push_back(object);
         }
@@ -124,6 +146,61 @@ namespace gf {
       object.transform = Identity3F;
 
       recorder.record(object);
+    }
+  }
+
+  void ImguiEntity::update_texture(ImTextureData* data, RenderManager* render_manager)
+  {
+    assert(data->Format == ImTextureFormat_RGBA32);
+    using namespace gf::operators;
+
+    switch (data->Status) {
+      case ImTextureStatus_WantCreate:
+        {
+          Log::debug("Creating a texture for imgui.");
+
+          const Vec2I size = { data->Width, data->Height };
+          auto texture = std::make_unique<Texture>(size, TextureUsage::TransferDestination | TextureUsage::Sampled, Format::Color8S, render_manager);
+          texture->update(static_cast<std::size_t>(data->GetSizeInBytes()), static_cast<const uint8_t*>(data->GetPixels()), render_manager);
+
+          data->SetTexID(reinterpret_cast<uintptr_t>(texture.get())); // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
+          data->SetStatus(ImTextureStatus_OK);
+          data->BackendUserData = texture.get();
+
+          m_textures.push_back(std::move(texture));
+        }
+        break;
+
+      case ImTextureStatus_WantUpdates:
+        {
+          Log::debug("Updating a texture for imgui.");
+
+          auto* texture = static_cast<Texture*>(data->BackendUserData);
+          texture->update(static_cast<std::size_t>(data->GetSizeInBytes()), static_cast<const uint8_t*>(data->GetPixels()), render_manager);
+
+          data->SetStatus(ImTextureStatus_OK);
+        }
+        break;
+
+      case ImTextureStatus_WantDestroy:
+        {
+          Log::debug("Destroying a texture for imgui.");
+
+          auto* texture = static_cast<Texture*>(data->BackendUserData);
+
+          auto iterator = std::find_if(m_textures.begin(), m_textures.end(), [texture](const std::unique_ptr<Texture>& other) { return other.get() == texture; });
+          assert(iterator != m_textures.end());
+          m_textures.erase(iterator);
+
+          data->SetTexID(ImTextureID_Invalid);
+          data->SetStatus(ImTextureStatus_Destroyed);
+        }
+        break;
+
+      case ImTextureStatus_OK:
+      case ImTextureStatus_Destroyed:
+        assert(false);
+        break;
     }
   }
 

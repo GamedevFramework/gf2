@@ -1,7 +1,7 @@
 set_project("gf2")
 set_version("0.1.0", { soname = true })
 
-add_requires("libsdl3", "freetype", "harfbuzz", "imgui >= 1.91.4", "pugixml", "zlib")
+add_requires("libsdl3", "freetype", "harfbuzz", "imgui >= 1.92.0", "pugixml", "zlib")
 add_requires("chipmunk2d")
 add_requires("fmt")
 add_requires("gtest", { configs = { gmock = false }})

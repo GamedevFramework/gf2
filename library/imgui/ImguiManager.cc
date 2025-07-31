@@ -39,7 +39,7 @@ namespace gf {
         case ImGuiMouseCursor_ResizeNESW:
           return CursorType::NorthEastSouthWestResize;
         case ImGuiMouseCursor_ResizeNWSE:
-          return CursorType::NorthEastSouthWestResize;
+          return CursorType::NorthWestSouthEastResize;
         case ImGuiMouseCursor_Hand:
           return CursorType::Pointer;
         case ImGuiMouseCursor_NotAllowed:
@@ -60,6 +60,7 @@ namespace gf {
     io.BackendFlags |= ImGuiBackendFlags_HasGamepad;
     io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
     io.BackendFlags |= ImGuiBackendFlags_RendererHasVtxOffset;
+    io.BackendFlags |= ImGuiBackendFlags_RendererHasTextures;
 
     io.BackendPlatformName = "imgui_impl_gf2";
 
@@ -70,14 +71,7 @@ namespace gf {
     io.BackendPlatformUserData = static_cast<void*>(window);
 
     io.BackendRendererName = "imgui_impl_gf2";
-
-    Vec2I size = {};
-    unsigned char* pixels = nullptr;
-    io.Fonts->GetTexDataAsRGBA32(&pixels, &size.w, &size.h);
-    const Image font_image(size, pixels, PixelFormat::Rgba32);
-    m_font_texture = Texture(font_image, render_manager);
-    m_font_texture.set_debug_name("[gf2] Imgui Font Texture");
-    io.Fonts->TexID = reinterpret_cast<uintptr_t>(&m_font_texture); // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
+    io.Fonts->AddFontDefault();
 
     io.BackendRendererUserData = static_cast<void*>(render_manager);
   }
@@ -92,6 +86,7 @@ namespace gf {
   bool ImguiManager::process_event(const Event& event)
   {
     ImGuiIO& io = ImGui::GetIO();
+    auto* window = static_cast<Window*>(io.BackendPlatformUserData);
 
     switch (event.type()) {
       case EventType::KeyPressed:
@@ -127,7 +122,11 @@ namespace gf {
       case EventType::MouseMoved:
         {
           const auto& mouse_moved_event = event.from<EventType::MouseMoved>();
-          const Vec2F coordinates = mouse_moved_event.position;
+
+          const Vec2F window_size = window->size();
+          const Vec2F surface_size = window->surface_size();
+          const Vec2F coordinates = mouse_moved_event.position * surface_size / window_size; // HACK: imgui does not handle DPI very well
+
           io.AddMouseSourceEvent(mouse_moved_event.mouse_id == TouchMouseId ? ImGuiMouseSource_TouchScreen : ImGuiMouseSource_Mouse);
           io.AddMousePosEvent(coordinates.x, coordinates.y);
           return io.WantCaptureMouse;
@@ -174,13 +173,13 @@ namespace gf {
     ImGuiIO& io = ImGui::GetIO();
     auto* window = static_cast<Window*>(io.BackendPlatformUserData);
 
-    const Vec2F size = window->size();
+    const Vec2F size = window->surface_size();
     io.DisplaySize = ImVec2(size.x, size.y);
 
-    if (size.x > 0 && size.y > 0) {
-      const Vec2F scale = window->surface_size() / size;
-      io.DisplayFramebufferScale = ImVec2(scale.x, scale.y);
-    }
+    // if (size.x > 0 && size.y > 0) {
+    //   const Vec2F scale =  size / window->size();
+    //   io.DisplayFramebufferScale = ImVec2(scale.x, scale.y);
+    // }
 
     io.DeltaTime = time.as_seconds();
 

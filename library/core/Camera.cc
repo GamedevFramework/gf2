@@ -131,7 +131,8 @@ namespace gf {
           const Vec2F viewport_size = target_size * viewport.extent;
 
           m_computed_size = viewport_size;
-          center = viewport_size / 2.0f;
+          center = viewport.offset + viewport_size / 2.0f;
+          size = viewport_size;
           break;
         }
       case CameraType::Stretch:

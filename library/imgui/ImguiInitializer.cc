@@ -9,6 +9,7 @@ namespace gf {
 
   ImguiInitializer::ImguiInitializer()
   {
+    IMGUI_CHECKVERSION();
     ImGui::CreateContext();
   }
 

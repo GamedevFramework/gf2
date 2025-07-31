@@ -3,10 +3,6 @@
 
 #include <gf2/graphics/Events.h>
 
-#include <algorithm>
-#include <tuple>
-#include <type_traits>
-
 #include <SDL3/SDL.h>
 
 #include <gf2/core/Log.h>

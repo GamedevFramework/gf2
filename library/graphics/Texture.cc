@@ -25,21 +25,13 @@ namespace gf {
   Texture::Texture(const Image& image, RenderManager* render_manager)
   : Texture(image.size(), TextureUsage::TransferDestination | TextureUsage::Sampled, Format::Color8S, render_manager)
   {
-    auto raw_size = image.raw_size();
-    const auto* raw_data = image.raw_data();
-
-    auto staging = create_staging_buffer(raw_size, raw_data);
-    compute_memory_operations(staging, render_manager);
+    update(image.raw_size(), image.raw_data(), render_manager);
   }
 
   Texture::Texture(const Bitmap& bitmap, RenderManager* render_manager)
   : Texture(bitmap.size(), TextureUsage::TransferDestination | TextureUsage::Sampled, Format::Gray8U, render_manager)
   {
-    auto raw_size = bitmap.raw_size();
-    const auto* raw_data = bitmap.raw_data();
-
-    auto staging = create_staging_buffer(raw_size, raw_data);
-    compute_memory_operations(staging, render_manager);
+    update(bitmap.raw_size(), bitmap.raw_data(), render_manager);
   }
 
   Texture::Texture(Vec2I size, RenderManager* render_manager)
@@ -159,11 +151,7 @@ namespace gf {
     assert(m_format == Format::Color8S);
     assert(m_usage.test(TextureUsage::TransferDestination));
 
-    auto raw_size = image.raw_size();
-    const auto* raw_data = image.raw_data();
-
-    auto staging = create_staging_buffer(raw_size, raw_data);
-    compute_memory_operations(staging, render_manager);
+    update(image.raw_size(), image.raw_data(), render_manager);
   }
 
   void Texture::update(const Bitmap& bitmap, RenderManager* render_manager)
@@ -172,10 +160,12 @@ namespace gf {
     assert(m_format == Format::Gray8U);
     assert(m_usage.test(TextureUsage::TransferDestination));
 
-    auto raw_size = bitmap.raw_size();
-    const auto* raw_data = bitmap.raw_data();
+    update(bitmap.raw_size(), bitmap.raw_data(), render_manager);
+  }
 
-    auto staging = create_staging_buffer(raw_size, raw_data);
+  void Texture::update(std::size_t size, const uint8_t* data, RenderManager* render_manager)
+  {
+    auto staging = create_staging_buffer(size, data);
     compute_memory_operations(staging, render_manager);
   }
 

@@ -15,8 +15,10 @@ namespace gf {
 
   void BasicScene::set_surface_size(Vec2I size)
   {
-    m_surface_size = size;
-    on_resize(size);
+    if (m_surface_size != size) {
+      m_surface_size = size;
+      on_resize(size);
+    }
   }
 
   Vec2I BasicScene::surface_size() const
@@ -123,7 +125,6 @@ namespace gf {
 
   void BasicScene::render_part_start(RenderRecorder& recorder, Camera& camera)
   {
-    camera.update(m_surface_size);
     recorder.update_view(camera.compute_view_matrix(), camera.compute_viewport(m_surface_size));
   }
 
@@ -247,9 +248,13 @@ namespace gf {
 
   void Scene::render_entities(RenderRecorder& recorder)
   {
+    m_world_camera.update(surface_size());
+
     if (!m_world_entities.empty()) {
       render_part(recorder, m_world_entities, m_world_camera);
     }
+
+    m_hud_camera.update(surface_size());
 
     if (!m_hud_entities.empty()) {
       render_part(recorder, m_hud_entities, m_hud_camera);
