@@ -64,7 +64,7 @@ int main()
   io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
   io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
   io.IniFilename = nullptr;
-  io.Fonts->AddFontFromFileTTF(font_file.string().c_str());
+  io.Fonts->AddFontFromFileTTF(font_file.string().c_str(), 32.0f);
 
   ImguiScene scene(&scene_manager);
   return scene_manager.run(&scene);

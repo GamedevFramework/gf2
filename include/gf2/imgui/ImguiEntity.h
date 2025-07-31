@@ -34,6 +34,7 @@ namespace gf {
     void update_texture(ImTextureData* texture_data, RenderManager* render_manager);
 
     std::vector<std::unique_ptr<Texture>> m_textures;
+    std::vector<std::unique_ptr<Texture>> m_unused_textures;
 
     DynamicBuffer m_vertices;
     DynamicBuffer m_indices;

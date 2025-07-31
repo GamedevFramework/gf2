@@ -12,8 +12,6 @@
 
 #include <imgui.h>
 
-#include <gf2/core/Log.h>
-
 #include <gf2/graphics/RenderManager.h>
 #include <gf2/graphics/RenderRecorder.h>
 #include <gf2/graphics/Texture.h>
@@ -40,6 +38,8 @@ namespace gf {
     m_objects.clear();
 
     // update textures
+
+    m_unused_textures.clear(); // these textures are not used anymore
 
     if (data->Textures != nullptr) {
       for (ImTextureData* texture_data : *data->Textures) {
@@ -157,7 +157,7 @@ namespace gf {
     switch (data->Status) {
       case ImTextureStatus_WantCreate:
         {
-          Log::debug("Creating a texture for imgui.");
+          // Log::debug("Creating a texture for imgui.");
 
           const Vec2I size = { data->Width, data->Height };
           auto texture = std::make_unique<Texture>(size, TextureUsage::TransferDestination | TextureUsage::Sampled, Format::Color8S, render_manager);
@@ -173,7 +173,7 @@ namespace gf {
 
       case ImTextureStatus_WantUpdates:
         {
-          Log::debug("Updating a texture for imgui.");
+          // Log::debug("Updating a texture for imgui.");
 
           auto* texture = static_cast<Texture*>(data->BackendUserData);
           texture->update(static_cast<std::size_t>(data->GetSizeInBytes()), static_cast<const uint8_t*>(data->GetPixels()), render_manager);
@@ -184,12 +184,13 @@ namespace gf {
 
       case ImTextureStatus_WantDestroy:
         {
-          Log::debug("Destroying a texture for imgui.");
+          // Log::debug("Destroying a texture for imgui.");
 
           auto* texture = static_cast<Texture*>(data->BackendUserData);
 
           auto iterator = std::find_if(m_textures.begin(), m_textures.end(), [texture](const std::unique_ptr<Texture>& other) { return other.get() == texture; });
           assert(iterator != m_textures.end());
+          m_unused_textures.push_back(std::move(*iterator)); // do not remove now, texture may still be in use for the current frame
           m_textures.erase(iterator);
 
           data->SetTexID(ImTextureID_Invalid);
