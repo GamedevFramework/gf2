@@ -18,72 +18,72 @@ namespace gf {
 
     Flags() = default;
 
-    constexpr Flags(NoneType /* unused */)
+    constexpr Flags(NoneType /* unused */) noexcept
     : m_data(0)
     {
     }
 
-    constexpr Flags(AllType /* unused */)
+    constexpr Flags(AllType /* unused */) noexcept
     : m_data(0)
     {
       m_data = ~m_data;
     }
 
-    constexpr Flags(E e)
+    constexpr Flags(E e) noexcept
     : m_data(static_cast<Type>(e))
     {
     }
 
-    constexpr Flags operator~() const
+    constexpr Flags operator~() const noexcept
     {
       return Flags(~m_data);
     }
 
-    constexpr Flags operator|(Flags flags) const
+    constexpr Flags operator|(Flags flags) const noexcept
     {
       return Flags(m_data | flags.m_data);
     }
 
-    Flags& operator|=(Flags flags)
+    constexpr Flags& operator|=(Flags flags) noexcept
     {
       m_data |= flags.m_data;
       return *this;
     }
 
-    constexpr Flags operator&(Flags flags) const
+    constexpr Flags operator&(Flags flags) const noexcept
     {
       return Flags(m_data & flags.m_data);
     }
 
-    Flags& operator&=(Flags flags)
+    constexpr Flags& operator&=(Flags flags) noexcept
     {
       m_data &= flags.m_data;
       return *this;
     }
 
-    constexpr operator bool() const
+    constexpr operator bool() const noexcept
     {
       return m_data != 0;
     }
 
-    constexpr bool test(E flag) const
+    constexpr bool test(E flag) const noexcept
     {
       return (m_data & static_cast<Type>(flag)) != 0;
     }
 
-    void set(E flag)
+    constexpr void set(E flag) noexcept
     {
       m_data |= static_cast<Type>(flag);
     }
 
-    void reset(E flag)
+    constexpr void reset(E flag) noexcept
     {
       m_data &= ~static_cast<Type>(flag);
     }
 
     using Type = std::underlying_type_t<E>;
 
-    constexpr Type value() const
+    constexpr Type value() const noexcept
     {
       return m_data;
     }
