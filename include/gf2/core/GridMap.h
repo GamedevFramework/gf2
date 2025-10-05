@@ -10,7 +10,9 @@
 #include "Array2D.h"
 #include "CoreApi.h"
 #include "Flags.h"
+#include "GridTypes.h"
 #include "Math.h"
+#include "Vec2.h"
 
 namespace gf {
 
@@ -99,7 +101,21 @@ namespace gf {
 
     void raw_compute_field_of_vision(Vec2I origin, int range_limit, Flags<CellProperty> properties);
 
-    Array2D<Flags<CellProperty>> m_cells;
+    struct Cell {
+      Flags<CellProperty> flags;
+
+      bool walkable() const
+      {
+        return flags.test(CellProperty::Walkable);
+      }
+
+      bool transparent() const
+      {
+        return flags.test(CellProperty::Transparent);
+      }
+    };
+
+    Array2D<Cell> m_cells;
     Array2D<uint32_t> m_tags;
     AnyGrid m_grid;
   };

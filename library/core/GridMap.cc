@@ -3,14 +3,9 @@
 
 #include <gf2/core/GridMap.h>
 
-#include <algorithm>
-#include <queue>
-
-#include <gf2/core/BinaryHeap.h>
-#include <gf2/core/Direction.h>
+#include <gf2/core/FieldOfVision.h>
 #include <gf2/core/Log.h>
-#include <gf2/core/Range.h>
-#include <gf2/core/Rational.h>
+#include <gf2/core/PathFinding.h>
 
 namespace gf {
   namespace {
@@ -22,7 +17,7 @@ namespace gf {
   using namespace operators;
 
   GridMap::GridMap(Vec2I size, AnyGrid grid)
-  : m_cells(size, CellProperty::Transparent | CellProperty::Walkable)
+  : m_cells(size, { CellProperty::Transparent | CellProperty::Walkable })
   , m_tags(size, DefaultTag)
   , m_grid(grid)
   {
@@ -96,7 +91,7 @@ namespace gf {
   void GridMap::reset(Flags<CellProperty> properties)
   {
     for (auto& cell : m_cells) {
-      cell = properties;
+      cell.flags = properties;
     }
   }
 
@@ -106,7 +101,7 @@ namespace gf {
       return;
     }
 
-    m_cells(position) = properties;
+    m_cells(position).flags = properties;
   }
 
   void GridMap::add_properties(Vec2I position, Flags<CellProperty> properties)
@@ -115,7 +110,7 @@ namespace gf {
       return;
     }
 
-    m_cells(position) |= properties;
+    m_cells(position).flags |= properties;
   }
 
   bool GridMap::transparent(Vec2I position) const
@@ -124,7 +119,7 @@ namespace gf {
       return false;
     }
 
-    return m_cells(position).test(CellProperty::Transparent);
+    return m_cells(position).flags.test(CellProperty::Transparent);
   }
 
   void GridMap::set_transparent(Vec2I position, bool transparent)
@@ -134,9 +129,9 @@ namespace gf {
     }
 
     if (transparent) {
-      m_cells(position).set(CellProperty::Transparent);
+      m_cells(position).flags.set(CellProperty::Transparent);
     } else {
-      m_cells(position).reset(CellProperty::Transparent);
+      m_cells(position).flags.reset(CellProperty::Transparent);
     }
   }
 
@@ -146,7 +141,7 @@ namespace gf {
       return false;
     }
 
-    return m_cells(position).test(CellProperty::Walkable);
+    return m_cells(position).flags.test(CellProperty::Walkable);
   }
 
   void GridMap::set_walkable(Vec2I position, bool walkable)
@@ -156,9 +151,9 @@ namespace gf {
     }
 
     if (walkable) {
-      m_cells(position).set(CellProperty::Walkable);
+      m_cells(position).flags.set(CellProperty::Walkable);
     } else {
-      m_cells(position).reset(CellProperty::Walkable);
+      m_cells(position).flags.reset(CellProperty::Walkable);
     }
   }
 
@@ -168,7 +163,7 @@ namespace gf {
       return;
     }
 
-    m_cells(position) |= (CellProperty::Transparent | CellProperty::Walkable);
+    m_cells(position).flags |= (CellProperty::Transparent | CellProperty::Walkable);
   }
 
   bool GridMap::blocked(Vec2I position) const
@@ -177,7 +172,7 @@ namespace gf {
       return false;
     }
 
-    return m_cells(position).test(CellProperty::Blocked);
+    return m_cells(position).flags.test(CellProperty::Blocked);
   }
 
   void GridMap::set_blocked(Vec2I position, bool blocked)
@@ -187,16 +182,16 @@ namespace gf {
     }
 
     if (blocked) {
-      m_cells(position).set(CellProperty::Blocked);
+      m_cells(position).flags.set(CellProperty::Blocked);
     } else {
-      m_cells(position).reset(CellProperty::Blocked);
+      m_cells(position).flags.reset(CellProperty::Blocked);
     }
   }
 
   void GridMap::clear_blocks()
   {
     for (auto& cell : m_cells) {
-      cell.reset(CellProperty::Blocked);
+      cell.flags.reset(CellProperty::Blocked);
     }
   }
 
@@ -207,14 +202,14 @@ namespace gf {
   void GridMap::clear_visible()
   {
     for (auto& cell : m_cells) {
-      cell.reset(CellProperty::Visible);
+      cell.flags.reset(CellProperty::Visible);
     }
   }
 
   void GridMap::clear_explored()
   {
     for (auto& cell : m_cells) {
-      cell.reset(CellProperty::Explored);
+      cell.flags.reset(CellProperty::Explored);
     }
   }
 
@@ -224,7 +219,7 @@ namespace gf {
       return false;
     }
 
-    return m_cells(position).test(CellProperty::Visible);
+    return m_cells(position).flags.test(CellProperty::Visible);
   }
 
   bool GridMap::explored(Vec2I position) const
@@ -233,7 +228,7 @@ namespace gf {
       return false;
     }
 
-    return m_cells(position).test(CellProperty::Explored);
+    return m_cells(position).flags.test(CellProperty::Explored);
   }
 
   uint32_t GridMap::tag(Vec2I position) const
@@ -258,278 +253,6 @@ namespace gf {
    * route
    */
 
-  namespace {
-
-    // Dijkstra
-
-    struct DijkstraHeapData {
-      Vec2I position = {};
-      float distance = 0.0f;
-    };
-
-    bool operator<(const DijkstraHeapData& lhs, const DijkstraHeapData& rhs)
-    {
-      return lhs.distance > rhs.distance;
-    }
-
-    using DijkstraHeap = BinaryHeap<DijkstraHeapData>;
-
-    struct DijkstraCellData {
-      float distance = std::numeric_limits<float>::infinity();
-      Vec2I previous = vec(-1, -1);
-      DijkstraHeap::handle_type handle = {};
-    };
-
-    using DijkstraData = Array2D<DijkstraCellData>;
-
-    class DijkstraAlgorithm {
-    public:
-      DijkstraAlgorithm(const Array2D<Flags<CellProperty>>& cells, const AnyGrid& grid)
-      : m_cells(cells)
-      , m_grid(grid)
-      , m_data(cells.size())
-      {
-      }
-
-      std::vector<Vec2I> operator()(Vec2I origin, Vec2I target, RouteCostFunction& cost_function, Flags<CellNeighborQuery> flags)
-      {
-
-        initialize(origin);
-
-        while (!m_heap.empty()) {
-          const DijkstraHeapData data = m_heap.top();
-          m_heap.pop();
-          compute_node(data, cost_function, flags);
-        }
-
-        return compute_route(origin, target);
-      }
-
-    private:
-      void initialize(Vec2I origin)
-      {
-        m_data(origin).distance = 0.0f;
-
-        for (auto position : m_cells.position_range()) {
-          const auto cell = m_cells(position);
-
-          if (!cell.test(CellProperty::Walkable)) {
-            continue;
-          }
-
-          DijkstraHeapData data = {};
-          data.position = position;
-          data.distance = m_data(position).distance;
-
-          m_data(position).handle = m_heap.push(data);
-        }
-      }
-
-      void compute_node(DijkstraHeapData heap_data, RouteCostFunction& cost_function, Flags<CellNeighborQuery> flags)
-      {
-        auto neighbors = m_grid.compute_neighbors(heap_data.position, flags);
-
-        for (auto position : neighbors) {
-          assert(position != heap_data.position);
-
-          const Flags<CellProperty> cell = m_cells(position);
-
-          if (!cell.test(CellProperty::Walkable)) {
-            continue;
-          }
-
-          const float updated_distance = m_data(heap_data.position).distance + cost_function(heap_data.position, position);
-
-          if (updated_distance < m_data(position).distance) {
-            auto& data = m_data(position);
-            data.distance = updated_distance;
-            data.previous = heap_data.position;
-
-            assert(m_heap(data.handle).position == position);
-            m_heap(data.handle).distance = updated_distance;
-            m_heap.increase(data.handle);
-          }
-        }
-      }
-
-      std::vector<Vec2I> compute_route(Vec2I origin, Vec2I target) const
-      {
-        std::vector<Vec2I> route;
-        Vec2I current = target;
-
-        while (current != origin) {
-          if (current.x == -1 || current.y == -1) {
-            return {};
-          }
-
-          route.push_back(current);
-          current = m_data(current).previous;
-        }
-
-        route.push_back(origin);
-        std::reverse(route.begin(), route.end());
-
-        assert(!route.empty());
-        return route;
-      }
-
-      const Array2D<Flags<CellProperty>>& m_cells; // NOLINT
-      const AnyGrid& m_grid;                       // NOLINT
-
-      DijkstraData m_data;
-      DijkstraHeap m_heap;
-    };
-
-    // AStar
-
-    struct AStarHeapData {
-      Vec2I position = {};
-      float priority = 0.0f;
-    };
-
-    bool operator<(const AStarHeapData& lhs, const AStarHeapData& rhs)
-    {
-      return lhs.priority > rhs.priority;
-    }
-
-    using AStarHeap = BinaryHeap<AStarHeapData>;
-
-    enum class AStarState : uint8_t {
-      None,
-      Open,
-      Closed,
-    };
-
-    struct AStarCellData {
-      float distance = std::numeric_limits<float>::infinity();
-      Vec2I previous = vec(-1, -1);
-      AStarState state = AStarState::None;
-      AStarHeap::handle_type handle = {};
-    };
-
-    using AStarData = Array2D<AStarCellData>;
-
-    class AStarAlgorithm {
-    public:
-      AStarAlgorithm(const Array2D<Flags<CellProperty>>& cells, const AnyGrid& grid)
-      : m_cells(cells)
-      , m_grid(grid)
-      , m_data(cells.size())
-      {
-      }
-
-      std::vector<Vec2I> operator()(Vec2I origin, Vec2I target, RouteCostFunction& cost_function, Flags<CellNeighborQuery> flags)
-      {
-        initialize(origin);
-
-        while (!m_heap.empty()) {
-          const AStarHeapData data = m_heap.top();
-          m_heap.pop();
-          assert(m_data(data.position).state == AStarState::Open);
-
-          if (data.position == target) {
-            break;
-          }
-
-          compute_node(data, cost_function, flags);
-        }
-
-        return compute_route(origin, target);
-      }
-
-    private:
-      void initialize(Vec2I origin)
-      {
-        m_data(origin).distance = 0.0f;
-        m_data(origin).state = AStarState::Open;
-
-        m_heap.push({ origin, 0.0f });
-      }
-
-      void compute_node(AStarHeapData heap_data, RouteCostFunction& cost_function, Flags<CellNeighborQuery> flags)
-      {
-        m_data(heap_data.position).state = AStarState::Closed;
-
-        auto neighbors = m_grid.compute_neighbors(heap_data.position, flags);
-
-        for (auto position : neighbors) {
-          assert(position != heap_data.position);
-
-          const Flags<CellProperty> cell = m_cells(position);
-
-          if (!cell.test(CellProperty::Walkable)) {
-            continue;
-          }
-
-          if (m_data(position).state == AStarState::Closed) {
-            continue;
-          }
-
-          const float updated_distance = m_data(heap_data.position).distance + cost_function(heap_data.position, position);
-
-          if (updated_distance < m_data(position).distance) {
-            auto& data = m_data(position);
-            data.distance = updated_distance;
-            data.previous = heap_data.position;
-
-            const float priority = updated_distance + (compute_heuristic(heap_data.position, position, flags) * 1.001f);
-
-            if (data.state == AStarState::Open) {
-              assert(m_heap(data.handle).position == position);
-
-              if (m_heap(data.handle).priority != priority) {
-                m_heap(data.handle).priority = priority;
-                m_heap.increase(data.handle);
-              }
-            } else {
-              assert(data.state == AStarState::None);
-              data.handle = m_heap.push({ position, priority });
-              data.state = AStarState::Open;
-            }
-          }
-        }
-      }
-
-      static float compute_heuristic(Vec2I position, Vec2I neighbor, Flags<CellNeighborQuery> flags)
-      {
-        if (!flags.test(CellNeighborQuery::Diagonal)) {
-          return 1.0f * static_cast<float>(manhattan_distance(position, neighbor));
-        }
-
-        Vec2F d = gf::abs(position - neighbor);
-        return (1.0f * (d.x + d.y)) + ((Sqrt2 - 2.0f) * std::min(d.x, d.y));
-      }
-
-      std::vector<Vec2I> compute_route(Vec2I origin, Vec2I target) const
-      {
-        std::vector<Vec2I> route;
-        Vec2I current = target;
-
-        while (current != origin) {
-          if (current.x == -1 || current.y == -1) {
-            return {};
-          }
-
-          route.push_back(current);
-          current = m_data(current).previous;
-        }
-
-        route.push_back(origin);
-        std::reverse(route.begin(), route.end());
-
-        assert(!route.empty());
-        return route;
-      }
-
-      const Array2D<Flags<CellProperty>>& m_cells; // NOLINT
-      const AnyGrid& m_grid;                       // NOLINT
-
-      AStarData m_data;
-      AStarHeap m_heap;
-    };
-
-  }
-
   std::vector<Vec2I> GridMap::compute_route(Vec2I origin, Vec2I target, RouteCost cost, Route route)
   {
     Flags<CellNeighborQuery> flags = CellNeighborQuery::Valid;
@@ -545,7 +268,7 @@ namespace gf {
 
       float neighbor_cost = is_diagonal ? cost.diagonal : cost.cardinal;
 
-      if (m_cells(neighbor).test(CellProperty::Blocked)) {
+      if (m_cells(neighbor).flags.test(CellProperty::Blocked)) {
         neighbor_cost += cost.blocked;
       }
 
@@ -559,15 +282,9 @@ namespace gf {
   {
     switch (route) {
       case Route::AStar:
-        {
-          AStarAlgorithm algorithm(m_cells, m_grid);
-          return algorithm(origin, target, cost_function, flags);
-        }
+        return compute_route_astar(m_cells, m_grid, origin, target, std::move(cost_function), flags);
       case Route::Dijkstra:
-        {
-          DijkstraAlgorithm algorithm(m_cells, m_grid);
-          return algorithm(origin, target, cost_function, flags);
-        }
+        return compute_route_dijkstra(m_cells, m_grid, origin, target, std::move(cost_function), flags);
     }
 
     return {};
@@ -587,165 +304,6 @@ namespace gf {
     raw_compute_field_of_vision(origin, range_limit, CellProperty::Visible);
   }
 
-  /*
-   * Symmetric Shadowcasting
-   * based on https://github.com/370417/symmetric-shadowcasting
-   * License: CC0-1.0
-   */
-
-  namespace {
-    template<typename T>
-    T round_ties_up(const Rational<T>& rat)
-    {
-      T q = rat.numerator() / rat.denominator();
-      T r = rat.numerator() % rat.denominator();
-
-      while (r < 0) {
-        r += rat.denominator();
-        --q;
-      }
-
-      if (2 * r >= rat.denominator()) {
-        return q + 1;
-      }
-
-      return q;
-    }
-
-    template<typename T>
-    T round_ties_down(const Rational<T>& rat)
-    {
-      T q = rat.numerator() / rat.denominator();
-      T r = rat.numerator() % rat.denominator();
-
-      while (r < 0) {
-        r += rat.denominator();
-        --q;
-      }
-
-      if (2 * r > rat.denominator()) {
-        return q + 1;
-      }
-
-      return q;
-    }
-
-    struct Quadrant {
-      Direction direction;
-      Vec2I origin;
-
-      Vec2I transform(Vec2I position) const
-      {
-        switch (direction) {
-          case Direction::Up:
-            return { origin.x + position.x, origin.y - position.y };
-          case Direction::Down:
-            return { origin.x + position.x, origin.y + position.y };
-          case Direction::Right:
-            return { origin.x + position.y, origin.y + position.x };
-          case Direction::Left:
-            return { origin.x - position.y, origin.y + position.x };
-
-          default:
-            break;
-        }
-
-        assert(false);
-        return { 0, 0 };
-      }
-    };
-
-    struct Row {
-      int32_t depth = 0;
-      Rational<int32_t> start_slope;
-      Rational<int32_t> end_slope;
-
-      PositionRange tiles() const
-      {
-        auto min_x = round_ties_down(depth * start_slope);
-        auto max_x = round_ties_up(depth * end_slope);
-        return rectangle_range(RectI::from_position_size({ min_x, depth }, { max_x - min_x + 1, 1 }));
-      }
-
-      Row next() const
-      {
-        return { depth + 1, start_slope, end_slope };
-      }
-    };
-
-    bool is_symmetric(const Row& row, Vec2I position)
-    {
-      return row.depth * row.start_slope <= position.x && position.x <= row.depth * row.end_slope;
-    }
-
-    Rational<int32_t> slope(Vec2I position)
-    {
-      return { (2 * position.x) - 1, 2 * position.y };
-    }
-
-    struct SymmetricShadowcasting {
-      GridMap* map = nullptr;
-      Flags<CellProperty> properties = None;
-
-      void compute_visibility(Vec2I origin, int range_limit) const
-      {
-        map->add_properties(origin, properties);
-
-        for (auto direction : { Direction::Up, Direction::Left, Direction::Down, Direction::Right }) {
-          const Quadrant quadrant = { direction, origin };
-          compute_visibility_in_quadrant(origin, range_limit, quadrant);
-        }
-      }
-
-      void compute_visibility_in_quadrant(Vec2I origin, int range_limit, Quadrant quadrant) const
-      {
-        const int square_range_limit = square(range_limit);
-        const Row first_row = { 1, -1, 1 };
-
-        std::queue<Row> rows;
-        rows.push(first_row);
-
-        while (!rows.empty()) {
-          auto row = rows.front();
-          rows.pop();
-
-          std::optional<Vec2I> prev_absolute;
-
-          auto range = row.tiles();
-
-          for (auto position : range) {
-            auto absolute = quadrant.transform(position);
-
-            if (square_distance(absolute, origin) > square_range_limit) {
-              continue;
-            }
-
-            if (!map->transparent(absolute) || is_symmetric(row, position)) {
-              map->add_properties(absolute, properties);
-            }
-
-            if (prev_absolute && !map->transparent(*prev_absolute) && map->transparent(absolute)) {
-              row.start_slope = slope(position);
-            }
-
-            if (prev_absolute && map->transparent(*prev_absolute) && !map->transparent(absolute)) {
-              auto next_row = row.next();
-              next_row.end_slope = slope(position);
-              rows.push(next_row);
-            }
-
-            prev_absolute = absolute;
-          }
-
-          if (prev_absolute && map->transparent(*prev_absolute)) {
-            rows.push(row.next());
-          }
-        }
-      }
-    };
-
-  }
-
   void GridMap::raw_compute_field_of_vision(Vec2I origin, int range_limit, Flags<CellProperty> properties)
   {
     const GridOrientation orientation = m_grid.orientation();
@@ -754,8 +312,7 @@ namespace gf {
       Log::fatal("Unsupported orientation for field of vision.");
     }
 
-    const SymmetricShadowcasting symmetric_shadowcasting = { this, properties };
-    symmetric_shadowcasting.compute_visibility(origin, range_limit);
+    compute_symmetric_shadowcasting(m_cells,  m_cells, origin, range_limit, [properties](Cell& cell) { cell.flags |= properties; });
   }
 
 }
