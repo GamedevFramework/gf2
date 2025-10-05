@@ -174,7 +174,10 @@ namespace gf {
   void compute_symmetric_shadowcasting(const Array2D<InputCell>& input_cells, Array2D<OutputCell>& output_cells, Vec2I origin, int range_limit, Function set_visible)
   {
     assert(input_cells.size() == output_cells.size());
-    assert(output_cells.valid(origin));
+
+    if (!output_cells.valid(origin)) {
+      return;
+    }
 
     OutputCell& cell = output_cells(origin);
     set_visible(cell);
