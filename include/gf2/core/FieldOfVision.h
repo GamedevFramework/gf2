@@ -142,7 +142,7 @@ namespace gf {
           OutputCell& output_cell = output_cells(absolute);
 
           if (!input_cell.transparent() || is_symmetric(row, position)) {
-            set_visible(output_cell);
+            set_visible(absolute, output_cell);
           }
 
           if (prev_absolute) {
@@ -180,7 +180,7 @@ namespace gf {
     }
 
     OutputCell& cell = output_cells(origin);
-    set_visible(cell);
+    set_visible(origin, cell);
 
     for (auto direction : { Direction::Up, Direction::Left, Direction::Down, Direction::Right }) {
       const details::Quadrant quadrant = { direction, origin };

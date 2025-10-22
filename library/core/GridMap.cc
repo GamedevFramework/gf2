@@ -312,7 +312,7 @@ namespace gf {
       Log::fatal("Unsupported orientation for field of vision.");
     }
 
-    compute_symmetric_shadowcasting(m_cells,  m_cells, origin, range_limit, [properties](Cell& cell) { cell.flags |= properties; });
+    compute_symmetric_shadowcasting(m_cells,  m_cells, origin, range_limit, [properties]([[maybe_unused]] Vec2I position, Cell& cell) { cell.flags |= properties; });
   }
 
 }
