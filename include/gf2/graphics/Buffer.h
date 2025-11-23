@@ -8,9 +8,6 @@
 #include <string>
 #include <type_traits>
 
-#include <vk_mem_alloc.h>
-#include <vulkan/vulkan.h>
-
 #include "GraphicsApi.h"
 
 namespace gf {
@@ -22,11 +19,11 @@ namespace gf {
   };
 
   // NOLINTNEXTLINE(performance-enum-size)
-  enum class BufferUsage : std::underlying_type_t<VkBufferUsageFlagBits> {
-    Storage = VK_BUFFER_USAGE_STORAGE_BUFFER_BIT,
-    Uniform = VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
-    Index = VK_BUFFER_USAGE_INDEX_BUFFER_BIT,
-    Vertex = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
+  enum class BufferUsage {
+    Storage,
+    Uniform,
+    Index,
+    Vertex,
   };
 
   class GF_GRAPHICS_API Buffer {
@@ -40,13 +37,6 @@ namespace gf {
     : Buffer(type, usage, size, sizeof(T), static_cast<const void*>(data), render_manager)
     {
     }
-
-    Buffer(const Buffer&) = delete;
-    Buffer(Buffer&& other) noexcept;
-    ~Buffer();
-
-    Buffer& operator=(const Buffer&) = delete;
-    Buffer& operator=(Buffer&& other) noexcept;
 
     std::size_t size() const
     {
@@ -83,9 +73,6 @@ namespace gf {
     void update_host_buffer(std::size_t total_size, const void* data);
     void update_device_buffer(std::size_t total_size, const void* data, RenderManager* render_manager);
 
-    VmaAllocator m_allocator = nullptr; // non-owning
-    VkBuffer m_buffer = VK_NULL_HANDLE;
-    VmaAllocation m_allocation = nullptr;
     std::size_t m_size = 0;
     std::size_t m_memory_size = 0;
     BufferType m_type = BufferType::Device;

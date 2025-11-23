@@ -7,9 +7,6 @@
 #include <string>
 #include <type_traits>
 
-#include <vk_mem_alloc.h>
-#include <vulkan/vulkan.h>
-
 #include <gf2/core/Bitmap.h>
 #include <gf2/core/Flags.h>
 #include <gf2/core/Image.h>
@@ -24,12 +21,12 @@ namespace gf {
   class RenderManager;
 
   // NOLINTNEXTLINE(performance-enum-size)
-  enum class TextureUsage : std::underlying_type_t<VkImageUsageFlagBits> {
-    TransferSource = VK_IMAGE_USAGE_TRANSFER_SRC_BIT,
-    TransferDestination = VK_IMAGE_USAGE_TRANSFER_DST_BIT,
-    Sampled = VK_IMAGE_USAGE_SAMPLED_BIT,
-    Storage = VK_IMAGE_USAGE_STORAGE_BIT,
-    ColorTarget = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
+  enum class TextureUsage {
+    TransferSource,
+    TransferDestination,
+    Sampled,
+    Storage,
+    ColorTarget,
   };
 
   template<>
@@ -46,13 +43,6 @@ namespace gf {
     Texture(const Bitmap& bitmap, RenderManager* render_manager);
     Texture(Vec2I size, RenderManager* render_manager);
     Texture(Vec2I size, Flags<TextureUsage> usage, Format format, RenderManager* render_manager);
-
-    Texture(const Texture&) = delete;
-    Texture(Texture&& other) noexcept;
-    ~Texture();
-
-    Texture& operator=(const Texture&) = delete;
-    Texture& operator=(Texture&& other) noexcept;
 
     void set_debug_name(const std::string& name) const;
 
@@ -77,11 +67,6 @@ namespace gf {
     void compute_memory_operations(StagingBufferReference staging, RenderManager* render_manager);
 
     Vec2I m_image_size = { 0, 0 };
-    VmaAllocator m_allocator = nullptr; // non-owning
-    VmaAllocation m_allocation = nullptr;
-    VkImage m_image = VK_NULL_HANDLE;
-    VkImageView m_image_view = VK_NULL_HANDLE;
-    VkSampler m_sampler = VK_NULL_HANDLE;
     Flags<TextureUsage> m_usage = None;
     Format m_format = Format::Undefined;
   };

@@ -16,7 +16,7 @@ namespace gf {
 
     Vec2<uint32_t> extent() const
     {
-      return { m_extent.width, m_extent.height };
+      return { 0, 0 };
     }
 
   private:
@@ -24,14 +24,6 @@ namespace gf {
     friend class CommandBuffer;
     friend class Texture;
 
-    RenderTarget(VkImageView image_view, VkExtent2D extent)
-    : m_image_view(image_view)
-    , m_extent(extent)
-    {
-    }
-
-    VkImageView m_image_view = VK_NULL_HANDLE;
-    VkExtent2D m_extent = { 0, 0 };
   };
 
 }

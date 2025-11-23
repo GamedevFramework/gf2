@@ -5,8 +5,6 @@
 
 #include <type_traits>
 
-#include <vulkan/vulkan.h>
-
 #include <gf2/core/Span.h>
 
 #include "GraphicsApi.h"
@@ -18,9 +16,9 @@ namespace gf {
   class RenderManager;
 
   // NOLINTNEXTLINE(performance-enum-size)
-  enum class DescriptorType : std::underlying_type_t<VkDescriptorType> {
-    Sampler = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER,
-    Buffer = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
+  enum class DescriptorType {
+    Sampler,
+    Buffer,
   };
 
   struct GF_GRAPHICS_API DescriptorBinding {
@@ -33,19 +31,10 @@ namespace gf {
   public:
     DescriptorLayout() = default;
     DescriptorLayout(Span<const DescriptorBinding> bindings, RenderManager* render_manager);
-    DescriptorLayout(const DescriptorLayout&) = delete;
-    DescriptorLayout(DescriptorLayout&& other) noexcept;
-    ~DescriptorLayout();
-
-    DescriptorLayout& operator=(const DescriptorLayout&) = delete;
-    DescriptorLayout& operator=(DescriptorLayout&& other) noexcept;
 
   private:
     friend class RenderManager;
     friend class RenderPipelineLayoutBuilder;
-
-    VkDevice m_device = VK_NULL_HANDLE; // non-owning
-    VkDescriptorSetLayout m_layout = VK_NULL_HANDLE;
   };
 
   class GF_GRAPHICS_API Descriptor {
@@ -58,14 +47,6 @@ namespace gf {
     friend class RenderManager;
     friend class RenderCommandBuffer;
 
-    Descriptor(VkDevice device, VkDescriptorSet descriptor)
-    : m_device(device)
-    , m_descriptor(descriptor)
-    {
-    }
-
-    VkDevice m_device = VK_NULL_HANDLE;
-    VkDescriptorSet m_descriptor = VK_NULL_HANDLE;
   };
 
 }

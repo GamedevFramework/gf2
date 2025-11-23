@@ -13,13 +13,6 @@ namespace gf {
   private:
     friend class MemoryCommandBuffer;
     friend class Texture;
-
-    TextureReference(VkImage image)
-    : m_image(image)
-    {
-    }
-
-    VkImage m_image = VK_NULL_HANDLE;
   };
 
 }
