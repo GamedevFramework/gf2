@@ -3,8 +3,6 @@
 
 #include <cstdint>
 
-#include <vulkan/vulkan.h>
-
 #include <gf2/core/Color.h>
 #include <gf2/core/Mat3.h>
 #include <gf2/core/Rect.h>
@@ -42,12 +40,6 @@ namespace gf {
   private:
     friend class CommandBuffer;
 
-    RenderCommandBuffer(VkCommandBuffer buffer)
-    : m_command_buffer(buffer)
-    {
-    }
-
-    VkCommandBuffer m_command_buffer = VK_NULL_HANDLE; // non-owning
   };
 
   enum class Layout : uint8_t {
@@ -70,12 +62,6 @@ namespace gf {
     friend class RenderManager;
     friend class CommandBuffer;
 
-    MemoryCommandBuffer(VkCommandBuffer buffer)
-    : m_command_buffer(buffer)
-    {
-    }
-
-    VkCommandBuffer m_command_buffer = VK_NULL_HANDLE; // non-owning
   };
 
   class GF_GRAPHICS_API CommandBuffer {
@@ -90,12 +76,6 @@ namespace gf {
   private:
     friend class RenderManager;
 
-    CommandBuffer(VkCommandBuffer buffer)
-    : m_command_buffer(buffer)
-    {
-    }
-
-    VkCommandBuffer m_command_buffer = VK_NULL_HANDLE; // non-owning
   };
 
 }

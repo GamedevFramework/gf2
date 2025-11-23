@@ -7,8 +7,6 @@
 
 #include <vector>
 
-#include <vulkan/vulkan.h>
-
 #include "Format.h"
 #include "GraphicsApi.h"
 

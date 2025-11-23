@@ -7,7 +7,6 @@
 #include <memory>
 
 #include <SDL3/SDL.h>
-#include <volk.h>
 
 #include <gf2/core/Log.h>
 
@@ -56,12 +55,6 @@ namespace gf {
         }
       }
 
-      // initialize volk
-
-      if (volkInitialize() != VK_SUCCESS) {
-        Log::error("Unable to initialize volk.");
-        return;
-      }
 
     } else {
       Log::warning("You are trying to load SDL multiple times. Do not do that!");
