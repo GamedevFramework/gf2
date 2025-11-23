@@ -74,6 +74,41 @@ namespace gf::details {
     T* m_handle = nullptr;
   };
 
+
+  template<typename T>
+  class GraphicsViewHandle {
+  public:
+    GraphicsViewHandle() = default;
+
+    GraphicsViewHandle(T* handle)
+    : m_handle(handle)
+    {
+    }
+
+    T* get()
+    {
+      return m_handle;
+    }
+
+    const T* get() const
+    {
+      return m_handle;
+    }
+
+    operator T*()
+    {
+      return m_handle;
+    }
+
+    operator const T *() const
+    {
+      return m_handle;
+    }
+
+  private:
+    T* m_handle = nullptr;
+  };
+
 }
 
 
