@@ -73,7 +73,7 @@ namespace gf {
     m_current_frame = (m_current_frame + 1) % FramesInFlight;
   }
 
-  MemoryCommandBuffer RenderManager::current_memory_command_buffer()
+  CopyPass RenderManager::current_copy_pass()
   {
     if (m_thread_id == std::this_thread::get_id()) {
       return { };

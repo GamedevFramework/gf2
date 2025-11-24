@@ -64,7 +64,7 @@ namespace gf {
     void set_debug_name(const std::string& name) const;
 
   private:
-    friend class RenderCommandBuffer;
+    friend class RenderPass;
     friend class Descriptor;
 
     void create_host_buffer(BufferUsage usage, std::size_t total_size, const void* data);
