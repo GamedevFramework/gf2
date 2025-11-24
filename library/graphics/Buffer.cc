@@ -82,7 +82,7 @@ namespace gf {
 
     // commands
 
-    auto command_buffer = render_manager->current_memory_command_buffer();
+    auto command_buffer = render_manager->current_copy_pass();
 
 
     // destroy staging buffer

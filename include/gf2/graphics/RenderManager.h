@@ -33,7 +33,7 @@ namespace gf {
     std::optional<CommandBuffer> begin_command_buffer();
     void end_command_buffer(CommandBuffer buffer);
 
-    MemoryCommandBuffer current_memory_command_buffer();
+    CopyPass current_copy_pass();
     void defer_release_staging_buffer(StagingBufferReference buffer);
 
     void prepare_asynchronous_load();

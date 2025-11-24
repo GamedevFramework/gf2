@@ -25,7 +25,7 @@ namespace gf {
   private:
     friend class RenderPipelineBuilder;
     friend class RenderPipelineLayoutBuilder;
-    friend class RenderCommandBuffer;
+    friend class RenderPass;
 
   };
 
@@ -63,7 +63,7 @@ namespace gf {
 
   private:
     friend class RenderPipelineBuilder;
-    friend class RenderCommandBuffer;
+    friend class RenderPass;
     friend class RenderManager;
 
   };

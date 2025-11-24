@@ -96,7 +96,7 @@ namespace gf {
 
   void Texture::compute_memory_operations(StagingBufferReference staging, RenderManager* render_manager)
   {
-    auto command_buffer = render_manager->current_memory_command_buffer();
+    auto command_buffer = render_manager->current_copy_pass();
 
     render_manager->defer_release_staging_buffer(staging);
   }

@@ -3,6 +3,8 @@
 
 #include <cstdint>
 
+#include <SDL3/SDL_gpu.h>
+
 #include <gf2/core/Color.h>
 #include <gf2/core/Mat3.h>
 #include <gf2/core/Rect.h>
@@ -19,8 +21,9 @@ namespace gf {
   class RenderPipeline;
   class RenderPipelineLayout;
 
-  class GF_GRAPHICS_API RenderCommandBuffer {
+  class GF_GRAPHICS_API RenderPass {
   public:
+    RenderPass() = default;
 
     void set_viewport(RectF viewport) const;
     void set_scissor(RectI scissor) const;
@@ -40,42 +43,53 @@ namespace gf {
   private:
     friend class CommandBuffer;
 
+    RenderPass(SDL_GPURenderPass* render_pass)
+    : m_render_pass(render_pass)
+    {
+    }
+
+    SDL_GPURenderPass* m_render_pass = nullptr;
   };
 
-  enum class Layout : uint8_t {
-    Undefined,
-    Upload,
-    Shader,
-    Target,
-  };
-
-  class GF_GRAPHICS_API MemoryCommandBuffer {
+  class GF_GRAPHICS_API CopyPass {
   public:
+    CopyPass() = default;
 
     void copy_buffer_to_buffer(BufferReference source, BufferReference destination, std::size_t size);
     void copy_buffer_to_texture(BufferReference source, TextureReference destination, Vec2I size);
-
-    void texture_layout_transition(TextureReference texture, Layout from, Layout to);
 
   private:
     friend class MemoryAllocator;
     friend class RenderManager;
     friend class CommandBuffer;
 
+    CopyPass(SDL_GPUCopyPass* copy_pass)
+    : m_copy_pass(copy_pass)
+    {
+    }
+
+    SDL_GPUCopyPass* m_copy_pass = nullptr;
   };
 
   class GF_GRAPHICS_API CommandBuffer {
   public:
+    CommandBuffer() = default;
 
-    RenderCommandBuffer begin_rendering(RenderTarget target, Color clear_color = Black) const;
-    void end_rendering(RenderCommandBuffer buffer) const;
+    RenderPass begin_render_pass(RenderTarget target, Color clear_color = Black) const;
+    void end_render_pass(RenderPass pass) const;
 
-    MemoryCommandBuffer begin_memory() const;
-    void end_memory(MemoryCommandBuffer buffer) const;
+    CopyPass begin_copy_pass() const;
+    void end_copy_pass(CopyPass pass) const;
 
   private:
     friend class RenderManager;
 
+    CommandBuffer(SDL_GPUCommandBuffer* command_buffer)
+    : m_command_buffer(command_buffer)
+    {
+    }
+
+    SDL_GPUCommandBuffer* m_command_buffer = nullptr;
   };
 
 }

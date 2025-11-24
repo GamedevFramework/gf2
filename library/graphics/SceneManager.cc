@@ -92,7 +92,7 @@ namespace gf {
     return nullptr;
   }
 
-  void BasicSceneManager::render_records(RenderCommandBuffer command_buffer, const RenderRecorder& recorder)
+  void BasicSceneManager::render_records(RenderPass render_pass, const RenderRecorder& recorder)
   {
     m_last_pipeline = nullptr;
     m_last_object = {};
@@ -102,41 +102,41 @@ namespace gf {
         assert(record.index < recorder.m_views.size());
         auto view = recorder.m_views[record.index];
 
-        command_buffer.set_viewport(view.viewport);
+        render_pass.set_viewport(view.viewport);
 
         RectI scissor = {};
         scissor.offset = view.viewport.offset;
         scissor.extent = view.viewport.extent;
-        command_buffer.set_scissor(scissor);
+        render_pass.set_scissor(scissor);
 
         auto camera_descriptor = m_render_manager.allocate_descriptor_for_layout(&m_camera_descriptor_layout);
         camera_descriptor.write(0, &recorder.m_view_matrix_buffers[view.view_matrix_buffer_index]);
-        command_buffer.bind_descriptor(&m_default_pipeline_layout, 0, camera_descriptor);
+        render_pass.bind_descriptor(&m_default_pipeline_layout, 0, camera_descriptor);
 
       } else if (record.type == RenderRecorder::RecordType::Scissor) {
         assert(record.index < recorder.m_scissors.size());
-        command_buffer.set_scissor(recorder.m_scissors[record.index].scissor);
+        render_pass.set_scissor(recorder.m_scissors[record.index].scissor);
       } else if (record.type == RenderRecorder::RecordType::Text) {
         assert(record.index < recorder.m_texts.size());
         auto text = recorder.m_texts[record.index];
 
         auto text_descriptor = m_render_manager.allocate_descriptor_for_layout(&m_text_descriptor_layout);
         text_descriptor.write(0, &recorder.m_text_effect_buffers[text.text_effect_buffer_index]);
-        command_buffer.bind_descriptor(&m_text_pipeline_layout, 2, text_descriptor);
+        render_pass.bind_descriptor(&m_text_pipeline_layout, 2, text_descriptor);
       } else if (record.type == RenderRecorder::RecordType::Object) {
         assert(record.index < recorder.m_objects.size());
-        render_object(command_buffer, recorder.m_objects[record.index]);
+        render_object(render_pass, recorder.m_objects[record.index]);
       }
     }
   }
 
-  void BasicSceneManager::render_object(RenderCommandBuffer command_buffer, RenderObject object)
+  void BasicSceneManager::render_object(RenderPass render_pass, RenderObject object)
   {
     // pipeline
 
     if (m_last_pipeline == nullptr || object.geometry.pipeline != m_last_object.geometry.pipeline) {
       m_last_pipeline = render_pipeline(object.geometry.pipeline);
-      command_buffer.bind_pipeline(m_last_pipeline);
+      render_pass.bind_pipeline(m_last_pipeline);
     }
 
     // sampler
@@ -148,26 +148,26 @@ namespace gf {
     if (object.geometry.texture != m_last_object.geometry.texture) {
       auto sampler_descriptor = m_render_manager.allocate_descriptor_for_layout(&m_sampler_descriptor_layout);
       sampler_descriptor.write(0, object.geometry.texture);
-      command_buffer.bind_descriptor(&m_default_pipeline_layout, 1, sampler_descriptor);
+      render_pass.bind_descriptor(&m_default_pipeline_layout, 1, sampler_descriptor);
     }
 
     // model matrix
 
-    command_buffer.push_constant(&m_default_pipeline_layout, ShaderStage::Vertex, object.transform);
+    render_pass.push_constant(&m_default_pipeline_layout, ShaderStage::Vertex, object.transform);
 
     assert(object.geometry.vertices != nullptr);
 
     if (object.geometry.vertices != m_last_object.geometry.vertices) {
-      command_buffer.bind_vertex_buffer(object.geometry.vertices);
+      render_pass.bind_vertex_buffer(object.geometry.vertices);
     }
 
     assert(object.geometry.indices != nullptr);
 
     if (object.geometry.indices != m_last_object.geometry.indices) {
-      command_buffer.bind_index_buffer(object.geometry.indices);
+      render_pass.bind_index_buffer(object.geometry.indices);
     }
 
-    command_buffer.draw_indexed(object.geometry.size, object.geometry.first, object.geometry.offset);
+    render_pass.draw_indexed(object.geometry.size, object.geometry.first, object.geometry.offset);
 
     m_last_object = object;
   }
@@ -342,13 +342,13 @@ namespace gf {
         m_scene->render(recorder);
         recorder.sort();
 
-        auto command_buffer = *maybe_command_buffer;
-        auto target = render_manager()->current_render_target();
-        auto render_command_buffer = command_buffer.begin_rendering(target, m_scene->clear_color());
+        CommandBuffer command_buffer = *maybe_command_buffer;
+        RenderTarget target = render_manager()->current_render_target();
+        RenderPass render_pass = command_buffer.begin_render_pass(target, m_scene->clear_color());
 
-        render_records(render_command_buffer, recorder);
+        render_records(render_pass, recorder);
 
-        command_buffer.end_rendering(render_command_buffer);
+        command_buffer.end_render_pass(render_pass);
         render_manager()->end_command_buffer(command_buffer);
       }
     }
@@ -444,13 +444,13 @@ namespace gf {
           std::for_each(scenes.begin(), scenes.end(), [&recorder](auto* scene) { scene->render(recorder); });
           recorder.sort();
 
-          auto command_buffer = *maybe_command_buffer;
-          auto target = render_manager()->current_render_target();
-          auto render_command_buffer = command_buffer.begin_rendering(target, current_scene->clear_color());
+          CommandBuffer command_buffer = *maybe_command_buffer;
+          RenderTarget target = render_manager()->current_render_target();
+          RenderPass render_pass = command_buffer.begin_render_pass(target, current_scene->clear_color());
 
-          render_records(render_command_buffer, recorder);
+          render_records(render_pass, recorder);
 
-          command_buffer.end_rendering(render_command_buffer);
+          command_buffer.end_render_pass(render_pass);
           render_manager()->end_command_buffer(command_buffer);
         }
       }
