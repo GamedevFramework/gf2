@@ -24,7 +24,7 @@ namespace gf {
   FontAtlas::FontAtlas(Vec2I size, RenderManager* render_manager)
   : m_bin_pack(size)
   , m_bitmap(size, 0x00)
-  , m_texture(size, TextureUsage::TransferDestination | TextureUsage::Sampled, Format::Gray8U, render_manager)
+  , m_texture(size, TextureUsage::Sampler, Format::R8_UNorm, render_manager)
   {
   }
 

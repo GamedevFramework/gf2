@@ -6,19 +6,19 @@
 #include <limits>
 #include <type_traits>
 
-#include <vulkan/vulkan.h>
+#include <SDL3/SDL_gpu.h>
 
 namespace gf {
 
   // NOLINTNEXTLINE(performance-enum-size)
-  enum class Format : std::underlying_type_t<VkFormat> {
-    Undefined = VK_FORMAT_UNDEFINED,
-    Color8S = VK_FORMAT_R8G8B8A8_SRGB,
-    Color8U = VK_FORMAT_R8G8B8A8_UNORM,
-    Color32F = VK_FORMAT_R32G32B32A32_SFLOAT,
-    Gray8U = VK_FORMAT_R8_UNORM,
-    Vec2F = VK_FORMAT_R32G32_SFLOAT,
-    RenderManager = std::numeric_limits<std::underlying_type_t<VkFormat>>::max(),
+  enum class Format : std::underlying_type_t<SDL_GPUTextureFormat> {
+    Undefined = SDL_GPU_TEXTUREFORMAT_INVALID,
+    R8G8B8A8_SNorm = SDL_GPU_TEXTUREFORMAT_R8G8B8A8_SNORM,
+    R8G8B8A8_UNorm = SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM,
+    R32G32B32A32_Float = SDL_GPU_TEXTUREFORMAT_R32G32B32A32_FLOAT,
+    R8_UNorm = SDL_GPU_TEXTUREFORMAT_R8_UNORM,
+    R32G32_Float = SDL_GPU_TEXTUREFORMAT_R32G32_FLOAT,
+    RenderManager = std::numeric_limits<std::underlying_type_t<SDL_GPUTextureFormat>>::max(),
   };
 
 }

@@ -64,6 +64,11 @@ namespace gf::details {
       return m_handle;
     }
 
+    explicit operator bool() const
+    {
+      return m_handle != nullptr;
+    }
+
     SDL_GPUDevice* device() const
     {
       return m_device;
