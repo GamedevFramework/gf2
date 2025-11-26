@@ -16,9 +16,11 @@
 #include "Buffer.h"
 #include "CommandBuffer.h"
 #include "Descriptor.h"
+#include "Device.h"
 #include "GraphicsApi.h"
 #include "RenderPipeline.h"
 #include "RenderTarget.h"
+#include "TransferBuffer.h"
 #include "Window.h"
 
 namespace gf {
@@ -34,7 +36,7 @@ namespace gf {
     void end_command_buffer(CommandBuffer buffer);
 
     CopyPass current_copy_pass();
-    void defer_release_staging_buffer(StagingBufferReference buffer);
+    void defer_release_transfer_buffer(TransferBuffer buffer);
 
     void prepare_asynchronous_load();
     void begin_asynchronous_load();
@@ -45,6 +47,8 @@ namespace gf {
     RenderTarget current_render_target() const;
 
     void wait_idle() const;
+
+    Device& device();
 
   private:
     friend class Buffer;
@@ -60,6 +64,8 @@ namespace gf {
     std::thread::id m_thread_id;
 
     // device stuff
+
+    Device m_device;
 
     // swapchain stuff
 
@@ -80,7 +86,7 @@ namespace gf {
 
     // memory stuff
 
-    std::vector<std::vector<StagingBufferReference>> m_staging_buffers;
+    std::vector<std::vector<TransferBuffer>> m_transfer_buffers;
 
     // descriptor set stuff
 
@@ -88,7 +94,7 @@ namespace gf {
     // asynchronous load objects
 
     bool m_async_loading = false;
-    std::vector<StagingBufferReference> m_async_staging_buffers;
+    std::vector<TransferBuffer> m_async_staging_buffers;
   };
 
 }

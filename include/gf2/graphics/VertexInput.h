@@ -20,7 +20,7 @@ namespace gf {
   struct GF_GRAPHICS_API VertexAttribute {
     uint32_t location = 0;
     uint32_t binding = 0;
-    Format format = Format::Vec2F;
+    Format format = Format::R32G32_Float;
     std::size_t offset = 0;
   };
 

@@ -7,26 +7,26 @@
 #include <string>
 #include <type_traits>
 
+#include <SDL3/SDL_gpu.h>
+
 #include <gf2/core/Bitmap.h>
 #include <gf2/core/Flags.h>
 #include <gf2/core/Image.h>
 
-#include "BufferReference.h"
 #include "Format.h"
 #include "GraphicsApi.h"
+#include "GraphicsHandle.h"
 #include "RenderTarget.h"
 #include "TextureReference.h"
+#include "TransferBuffer.h"
 
 namespace gf {
   class RenderManager;
 
   // NOLINTNEXTLINE(performance-enum-size)
-  enum class TextureUsage {
-    TransferSource,
-    TransferDestination,
-    Sampled,
-    Storage,
-    ColorTarget,
+  enum class TextureUsage : SDL_GPUTextureUsageFlags {
+    Sampler = SDL_GPU_TEXTUREUSAGE_SAMPLER,
+    ColorTarget = SDL_GPU_TEXTUREUSAGE_COLOR_TARGET,
   };
 
   template<>
@@ -44,7 +44,7 @@ namespace gf {
     Texture(Vec2I size, RenderManager* render_manager);
     Texture(Vec2I size, Flags<TextureUsage> usage, Format format, RenderManager* render_manager);
 
-    void set_debug_name(const std::string& name) const;
+    void set_debug_name(const std::string& name);
 
     void update(const Image& image, RenderManager* render_manager);
     void update(const Bitmap& bitmap, RenderManager* render_manager);
@@ -55,20 +55,19 @@ namespace gf {
       return m_image_size;
     }
 
-    RenderTarget as_render_target() const;
+    RenderTarget as_render_target();
 
-    operator TextureReference() const;
+    operator TextureReference();
 
   private:
     friend class Descriptor;
 
-    StagingBufferReference create_staging_buffer(std::size_t raw_size, const void* raw_data);
-    void create_image_view_and_sampler(Format format, RenderManager* render_manager);
-    void compute_memory_operations(StagingBufferReference staging, RenderManager* render_manager);
-
     Vec2I m_image_size = { 0, 0 };
     Flags<TextureUsage> m_usage = None;
     Format m_format = Format::Undefined;
+
+    details::GraphicsHandle<SDL_GPUTexture, SDL_ReleaseGPUTexture> m_texture_handle;
+    details::GraphicsHandle<SDL_GPUSampler, SDL_ReleaseGPUSampler> m_sampler_handle;
   };
 
 }

@@ -13,6 +13,7 @@
 #include <gf2/core/Mat3.h>
 
 #include <gf2/graphics/Vertex.h>
+#include "gf2/graphics/TransferBuffer.h"
 
 // #define GF_USE_LLVMPIPE
 
@@ -83,15 +84,15 @@ namespace gf {
     return { };
   }
 
-  void RenderManager::defer_release_staging_buffer(StagingBufferReference buffer)
+  void RenderManager::defer_release_transfer_buffer(TransferBuffer buffer)
   {
     if (m_thread_id == std::this_thread::get_id()) {
-      m_staging_buffers[m_current_memops].push_back(buffer);
+      m_transfer_buffers[m_current_memops].push_back(std::move(buffer));
       return;
     }
 
     assert(m_async_loading);
-    m_async_staging_buffers.push_back(buffer);
+    m_async_staging_buffers.push_back(std::move(buffer));
   }
 
   void RenderManager::prepare_asynchronous_load()
@@ -136,11 +137,14 @@ namespace gf {
   {
   }
 
+  Device& RenderManager::device()
+  {
+    return m_device;
+  }
+
   void RenderManager::finish_staging_buffers()
   {
-    for (auto& staging_buffers : m_staging_buffers) {
-      for (auto staging_buffer : staging_buffers) {
-      }
+    for (auto& staging_buffers : m_transfer_buffers) {
     }
   }
 

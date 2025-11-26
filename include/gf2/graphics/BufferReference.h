@@ -6,22 +6,14 @@
 #include "GraphicsApi.h"
 
 namespace gf {
+  class Buffer;
 
   class GF_GRAPHICS_API BufferReference {
   public:
+    BufferReference(Buffer& buffer);
 
   private:
     friend class MemoryCommandBuffer;
-    friend class Buffer;
-    friend class Texture;
-
-  };
-
-  class GF_GRAPHICS_API StagingBufferReference {
-  public:
-
-  private:
-    friend class RenderManager;
     friend class Buffer;
     friend class Texture;
 

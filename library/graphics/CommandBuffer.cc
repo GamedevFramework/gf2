@@ -129,13 +129,13 @@ namespace gf {
    * MemoryCommandBuffer
    */
 
-  void CopyPass::copy_buffer_to_buffer(BufferReference source, BufferReference destination, std::size_t size)
+  void CopyPass::copy_buffer_to_buffer(TransferBuffer* source, Buffer* destination, std::size_t size)
   {
     assert(m_copy_pass);
     // TODO
   }
 
-  void CopyPass::copy_buffer_to_texture(BufferReference source, TextureReference destination, Vec2I size)
+  void CopyPass::copy_buffer_to_texture(TransferBuffer* source, Texture* destination, Vec2I size)
   {
     assert(m_copy_pass);
     // TODO

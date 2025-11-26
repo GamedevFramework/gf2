@@ -26,6 +26,8 @@ namespace gf {
 
   private:
     friend class RenderManager;
+    friend class Texture;
+    friend class TransferBuffer;
 
     Device(SDL_GPUDevice* device)
     : m_device(device)

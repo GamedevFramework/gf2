@@ -10,16 +10,15 @@
 #include <gf2/core/Rect.h>
 #include <gf2/core/Vec2.h>
 
-#include "BufferReference.h"
 #include "Descriptor.h"
 #include "GraphicsApi.h"
 #include "RenderTarget.h"
-#include "TextureReference.h"
 
 namespace gf {
   class Buffer;
   class RenderPipeline;
   class RenderPipelineLayout;
+  class TransferBuffer;
 
   class GF_GRAPHICS_API RenderPass {
   public:
@@ -55,8 +54,8 @@ namespace gf {
   public:
     CopyPass() = default;
 
-    void copy_buffer_to_buffer(BufferReference source, BufferReference destination, std::size_t size);
-    void copy_buffer_to_texture(BufferReference source, TextureReference destination, Vec2I size);
+    void copy_buffer_to_buffer(TransferBuffer* source, Buffer* destination, std::size_t size);
+    void copy_buffer_to_texture(TransferBuffer* source, Texture* destination, Vec2I size);
 
   private:
     friend class MemoryAllocator;

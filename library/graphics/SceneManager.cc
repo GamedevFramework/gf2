@@ -52,9 +52,9 @@ namespace gf {
 
         input.bindings.push_back({ 0, sizeof(ImguiVertex) });
 
-        input.attributes.push_back({ 0, 0, Format::Vec2F, offsetof(ImguiVertex, pos) });
-        input.attributes.push_back({ 1, 0, Format::Vec2F, offsetof(ImguiVertex, uv) });
-        input.attributes.push_back({ 2, 0, Format::Color8U, offsetof(ImguiVertex, col) });
+        input.attributes.push_back({ 0, 0, Format::R32G32_Float, offsetof(ImguiVertex, pos) });
+        input.attributes.push_back({ 1, 0, Format::R32G32_Float, offsetof(ImguiVertex, uv) });
+        input.attributes.push_back({ 2, 0, Format::R8G8B8A8_UNorm, offsetof(ImguiVertex, col) });
 
         return input;
       }
