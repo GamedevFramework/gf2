@@ -17,7 +17,7 @@
 
 namespace gf {
   class GpuTexture;
-  class Buffer;
+  class GpuBuffer;
   class RenderPipeline;
   class RenderPipelineLayout;
   class TransferBuffer;
@@ -30,8 +30,8 @@ namespace gf {
     void set_scissor(RectI scissor) const;
 
     void bind_pipeline(const RenderPipeline* pipeline) const;
-    void bind_vertex_buffer(const Buffer* buffer, std::size_t offset = 0) const;
-    void bind_index_buffer(const Buffer* buffer, std::size_t offset = 0) const;
+    void bind_vertex_buffer(const GpuBuffer* buffer, std::size_t offset = 0) const;
+    void bind_index_buffer(const GpuBuffer* buffer, std::size_t offset = 0) const;
 
     void bind_descriptor(const RenderPipelineLayout* pipeline, uint32_t set, Descriptor descriptor) const;
 
@@ -56,7 +56,7 @@ namespace gf {
   public:
     GpuCopyPass() = default;
 
-    void copy_buffer_to_buffer(TransferBuffer* source, Buffer* destination, std::size_t size);
+    void copy_buffer_to_buffer(TransferBuffer* source, GpuBuffer* destination, std::size_t size);
     void copy_buffer_to_texture(TransferBuffer* source, GpuTexture* destination, Vec2I size);
 
   private:

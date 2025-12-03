@@ -11,7 +11,7 @@
 #include "GraphicsApi.h"
 
 namespace gf {
-  class Buffer;
+  class GpuBuffer;
   class GpuTexture;
   class RenderManager;
 
@@ -41,7 +41,7 @@ namespace gf {
   public:
 
     void write(uint32_t binding, const GpuTexture* texture);
-    void write(uint32_t binding, const Buffer* buffer);
+    void write(uint32_t binding, const GpuBuffer* buffer);
 
   private:
     friend class RenderManager;

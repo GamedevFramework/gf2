@@ -8,8 +8,8 @@
 #include <gf2/core/Rect.h>
 #include <gf2/core/ShapeBuffer.h>
 
-#include "Buffer.h"
 #include "DynamicBuffer.h"
+#include "GpuBuffer.h"
 #include "GraphicsApi.h"
 #include "RenderObject.h"
 
@@ -37,10 +37,10 @@ namespace gf {
 
   private:
     const GpuTexture* m_texture = nullptr;
-    Buffer m_vertices;
-    Buffer m_indices;
-    std::optional<Buffer> m_outline_vertices;
-    std::optional<Buffer> m_outline_indices;
+    GpuBuffer m_vertices;
+    GpuBuffer m_indices;
+    std::optional<GpuBuffer> m_outline_vertices;
+    std::optional<GpuBuffer> m_outline_indices;
     RectF m_bounds = {};
   };
 

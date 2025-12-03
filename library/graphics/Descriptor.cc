@@ -29,7 +29,7 @@ namespace gf {
   {
   }
 
-  void Descriptor::write(uint32_t binding, const Buffer* buffer)
+  void Descriptor::write(uint32_t binding, const GpuBuffer* buffer)
   {
   }
 

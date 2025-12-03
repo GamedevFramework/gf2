@@ -13,8 +13,8 @@
 #include <gf2/core/Color.h>
 #include <gf2/core/Span.h>
 
-#include "Buffer.h"
 #include "Descriptor.h"
+#include "GpuBuffer.h"
 #include "GpuCommandBuffer.h"
 #include "GpuDevice.h"
 #include "GraphicsApi.h"
@@ -51,13 +51,6 @@ namespace gf {
     GpuDevice* device();
 
   private:
-    friend class Buffer;
-    friend class DescriptorLayout;
-    friend class RenderPipelineBuilder;
-    friend class RenderPipelineLayoutBuilder;
-    friend class Shader;
-    friend class Texture;
-
     void finish_staging_buffers();
 
     SDL_Window* m_window = nullptr; // non-owning

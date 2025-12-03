@@ -2,7 +2,7 @@
 
 # Gamedev Framework 2
 
-**Gamedev Framework 2** (gf2) is a modern framework to build 2D games in C++17. It is based on [SDL 3](https://libsdl.org/) and [Vulkan 1.3](https://www.vulkan.org/) and provides high-level constructions to easily build games.
+**Gamedev Framework 2** (gf2) is a modern framework to build 2D games in C++17. It is based on [SDL 3](https://libsdl.org/) and provides high-level constructions to easily build games.
 
 > [!CAUTION]
 > This project is in **alpha stage**. The API is not stabilized and may change during the development.
@@ -21,7 +21,7 @@ int main()
 {
   gf::SingleSceneManager scene_manager("my game", gf::vec(1600, 900));
 
-  const gf::Texture texture("logo.png", scene_manager.render_manager());
+  const gf::GpuTexture texture("logo.png", scene_manager.render_manager());
   gf::SpriteEntity sprite_entity(&texture, scene_manager.render_manager());
   sprite_entity.set_location({ 100.0f, 100.0f });
   sprite_entity.set_origin({ 0.5f, 0.5f });

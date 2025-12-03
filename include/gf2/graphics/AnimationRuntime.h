@@ -9,11 +9,11 @@
 #include <gf2/core/ResourceManager.h>
 #include <gf2/core/Time.h>
 
+#include "GpuBuffer.h"
 #include "GpuTexture.h"
 #include "Vertex.h"
 
 namespace gf {
-  class Buffer;
   class RenderManager;
 
   namespace details {
@@ -34,8 +34,8 @@ namespace gf {
 
     struct AnimationBuilder {
       AnimationGraphicsRuntime append_data(const std::vector<const GpuTexture*>& textures, const AnimationData& data);
-      Buffer create_vertices(RenderManager* render_manager);
-      Buffer create_indices(RenderManager* render_manager);
+      GpuBuffer create_vertices(RenderManager* render_manager);
+      GpuBuffer create_indices(RenderManager* render_manager);
 
       RectF global_bounds = RectF::from_size({ 0.0f, 0.0f });
       std::vector<Vertex> vertices;

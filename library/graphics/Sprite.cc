@@ -25,7 +25,7 @@ namespace gf {
       { m_bounds.position_at(Orientation::SouthWest), texture_region.position_at(Orientation::SouthWest), color },
     };
 
-    m_vertices = Buffer(BufferType::Device, BufferUsage::Vertex, std::begin(vertices), std::size(vertices), render_manager);
+    m_vertices = GpuBuffer(GpuBufferType::Device, GpuBufferUsage::Vertex, std::begin(vertices), std::size(vertices), render_manager);
 
     // clang-format off
     const uint16_t indices[] = {
@@ -34,7 +34,7 @@ namespace gf {
     };
     // clang-format on
 
-    m_indices = Buffer(BufferType::Device, BufferUsage::Index, std::begin(indices), std::size(indices), render_manager);
+    m_indices = GpuBuffer(GpuBufferType::Device, GpuBufferUsage::Index, std::begin(indices), std::size(indices), render_manager);
   }
 
   Sprite::Sprite(const GpuTexture* texture, RectF texture_region, RenderManager* render_manager)

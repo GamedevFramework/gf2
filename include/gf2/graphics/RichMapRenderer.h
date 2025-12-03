@@ -13,7 +13,7 @@
 #include <gf2/core/Span.h>
 #include <gf2/core/Vec2.h>
 
-#include "Buffer.h"
+#include "GpuBuffer.h"
 #include "GraphicsApi.h"
 #include "RenderObject.h"
 #include "RichMap.h"
@@ -78,8 +78,8 @@ namespace gf {
 
     struct LayerBuffers {
       std::vector<BufferRange> ranges;
-      Buffer vertices;
-      Buffer indices;
+      GpuBuffer vertices;
+      GpuBuffer indices;
     };
 
     struct TileLayer {

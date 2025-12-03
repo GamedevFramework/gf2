@@ -28,7 +28,7 @@ namespace gf {
     auto aligned_view_matrix = compute_aligned(view_matrix);
 
     if (m_next_view_matrix_index == m_view_matrix_buffers.size()) {
-      Buffer buffer(BufferType::Device, BufferUsage::Uniform, aligned_view_matrix.size(), sizeof(float), aligned_view_matrix.data(), m_render_manager);
+      GpuBuffer buffer(GpuBufferType::Device, GpuBufferUsage::Uniform, aligned_view_matrix.size(), sizeof(float), aligned_view_matrix.data(), m_render_manager);
       buffer.set_debug_name("[gf2] View Matrix Buffer #" + std::to_string(m_next_view_matrix_index));
       m_view_matrix_buffers.push_back(std::move(buffer));
     } else {
@@ -55,7 +55,7 @@ namespace gf {
     auto effect_data = compute_raw(effect);
 
     if (m_next_text_effect_index == m_text_effect_buffers.size()) {
-      Buffer buffer(BufferType::Device, BufferUsage::Uniform, effect_data.size(), sizeof(float), effect_data.data(), m_render_manager);
+      GpuBuffer buffer(GpuBufferType::Device, GpuBufferUsage::Uniform, effect_data.size(), sizeof(float), effect_data.data(), m_render_manager);
       buffer.set_debug_name("[gf2] Text Effect Buffer #" + std::to_string(m_next_text_effect_index));
       m_text_effect_buffers.push_back(std::move(buffer));
     } else {

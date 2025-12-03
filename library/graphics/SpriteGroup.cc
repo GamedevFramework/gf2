@@ -31,8 +31,8 @@ namespace gf {
 
   SpriteGroup::SpriteGroup(std::vector<const GpuTexture*> textures, const SpriteGroupData& data, RenderManager* render_manager)
   : m_textures(std::move(textures))
-  , m_vertices(BufferType::Device, BufferUsage::Vertex)
-  , m_indices(BufferType::Device, BufferUsage::Index)
+  , m_vertices(GpuBufferType::Device, GpuBufferUsage::Vertex)
+  , m_indices(GpuBufferType::Device, GpuBufferUsage::Index)
   {
     update(data, render_manager);
   }

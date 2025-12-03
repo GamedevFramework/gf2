@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
 
-#include <gf2/graphics/Buffer.h>
+#include <gf2/graphics/GpuBuffer.h>
 
 #include <cstring>
 
@@ -13,7 +13,7 @@
 
 namespace gf {
 
-  Buffer::Buffer(BufferType type, BufferUsage usage, std::size_t size, std::size_t member_size, const void* data, RenderManager* render_manager)
+  GpuBuffer::GpuBuffer(GpuBufferType type, GpuBufferUsage usage, std::size_t size, std::size_t member_size, const void* data, RenderManager* render_manager)
   : m_size(size)
   , m_memory_size(size * member_size)
   , m_type(type)
@@ -24,16 +24,16 @@ namespace gf {
     }
 
     switch (type) {
-      case BufferType::Host:
+      case GpuBufferType::Host:
         create_host_buffer(usage, m_memory_size, data);
         break;
-      case BufferType::Device:
+      case GpuBufferType::Device:
         create_device_buffer(usage, m_memory_size, data, render_manager);
         break;
     }
   }
 
-  void Buffer::update(std::size_t size, std::size_t member_size, const void* data, RenderManager* render_manager)
+  void GpuBuffer::update(std::size_t size, std::size_t member_size, const void* data, RenderManager* render_manager)
   {
     const std::size_t total_size = size * member_size;
     assert(total_size <= m_memory_size);
@@ -44,38 +44,38 @@ namespace gf {
     }
 
     switch (m_type) {
-      case BufferType::Host:
+      case GpuBufferType::Host:
         update_host_buffer(total_size, data);
         break;
-      case BufferType::Device:
+      case GpuBufferType::Device:
         update_device_buffer(total_size, data, render_manager);
         break;
     }
   }
 
-  void Buffer::set_debug_name(const std::string& name) const
+  void GpuBuffer::set_debug_name(const std::string& name) const
   {
   }
 
-  void Buffer::create_host_buffer(BufferUsage usage, std::size_t total_size, const void* data)
+  void GpuBuffer::create_host_buffer(GpuBufferUsage usage, std::size_t total_size, const void* data)
   {
     // create buffer
 
     update_host_buffer(total_size, data);
   }
 
-  void Buffer::create_device_buffer(BufferUsage usage, std::size_t total_size, const void* data, RenderManager* render_manager)
+  void GpuBuffer::create_device_buffer(GpuBufferUsage usage, std::size_t total_size, const void* data, RenderManager* render_manager)
   {
     // create buffer
 
     update_device_buffer(total_size, data, render_manager);
   }
 
-  void Buffer::update_host_buffer(std::size_t total_size, const void* data)
+  void GpuBuffer::update_host_buffer(std::size_t total_size, const void* data)
   {
   }
 
-  void Buffer::update_device_buffer(std::size_t total_size, const void* data, RenderManager* render_manager)
+  void GpuBuffer::update_device_buffer(std::size_t total_size, const void* data, RenderManager* render_manager)
   {
     // staging buffer
 

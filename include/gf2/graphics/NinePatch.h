@@ -8,7 +8,7 @@
 #include <gf2/core/Rect.h>
 #include <gf2/core/Transform.h>
 
-#include "Buffer.h"
+#include "GpuBuffer.h"
 #include "GraphicsApi.h"
 #include "RenderObject.h"
 
@@ -39,8 +39,8 @@ namespace gf {
 
   private:
     const GpuTexture* m_texture;
-    Buffer m_vertices;
-    Buffer m_indices;
+    GpuBuffer m_vertices;
+    GpuBuffer m_indices;
     RectF m_bounds = {};
   };
 
