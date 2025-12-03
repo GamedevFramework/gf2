@@ -7,8 +7,8 @@
 
 #include <gf2/core/Log.h>
 
+#include <gf2/graphics/GpuTexture.h>
 #include <gf2/graphics/RenderManager.h>
-#include <gf2/graphics/Texture.h>
 
 namespace gf {
 
@@ -25,7 +25,7 @@ namespace gf {
    * Descriptor
    */
 
-  void Descriptor::write(uint32_t binding, const Texture* texture)
+  void Descriptor::write(uint32_t binding, const GpuTexture* texture)
   {
   }
 

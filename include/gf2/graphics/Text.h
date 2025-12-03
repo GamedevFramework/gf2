@@ -27,7 +27,7 @@ namespace gf {
 
     RenderGeometry geometry() const;
 
-    const Texture* texture() const
+    const GpuTexture* texture() const
     {
       return m_atlas->texture();
     }
@@ -61,7 +61,7 @@ namespace gf {
 
     RenderGeometry geometry() const;
 
-    const Texture* texture() const
+    const GpuTexture* texture() const
     {
       return m_atlas->texture();
     }

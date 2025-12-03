@@ -11,10 +11,10 @@
 #include "GraphicsApi.h"
 
 namespace gf {
+  class GpuTexture;
   class RenderManager;
   class ResourceManager;
   class ResourceBundle;
-  class Texture;
 
   struct GF_GRAPHICS_API RichMapContext {
     RenderManager* render_manager;
@@ -27,18 +27,18 @@ namespace gf {
     using Primitive = TiledMap;
 
     RichMap() = default;
-    RichMap(const TiledMap* map, std::vector<const Texture*> textures);
+    RichMap(const TiledMap* map, std::vector<const GpuTexture*> textures);
     RichMap(const RichMapResource& resource, ResourceManager* resource_manager);
     RichMap(const std::filesystem::path& filename, RichMapContext context);
 
     static ResourceBundle bundle(const std::filesystem::path& filename, RichMapContext context);
 
-    const Texture* texture(uint32_t i) const;
+    const GpuTexture* texture(uint32_t i) const;
     const TiledMap* tiled_map() const;
 
   private:
     const TiledMap* m_tiled_map = nullptr;
-    std::vector<const Texture*> m_textures;
+    std::vector<const GpuTexture*> m_textures;
   };
 
 }

@@ -17,8 +17,8 @@ namespace gf {
 
   private:
     friend class RenderManager;
-    friend class CommandBuffer;
-    friend class Texture;
+    friend class GpuCommandBuffer;
+    friend class GpuTexture;
 
     RenderTarget(SDL_GPUTexture* texture)
     : m_texture(texture)

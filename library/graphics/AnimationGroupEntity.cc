@@ -12,7 +12,7 @@ namespace gf {
    * AnimationGroupEntity
    */
 
-  AnimationGroupEntity::AnimationGroupEntity(std::vector<const Texture*> textures, const AnimationGroupData& data, RenderManager* render_manager)
+  AnimationGroupEntity::AnimationGroupEntity(std::vector<const GpuTexture*> textures, const AnimationGroupData& data, RenderManager* render_manager)
   : m_animation_group(std::move(textures), data, render_manager)
   {
   }

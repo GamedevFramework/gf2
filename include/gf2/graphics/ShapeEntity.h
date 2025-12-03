@@ -3,9 +3,9 @@
 #ifndef GF_SHAPE_ENTITY_H
 #define GF_SHAPE_ENTITY_H
 
+#include "GpuTexture.h"
 #include "GraphicsApi.h"
 #include "Shape.h"
-#include "Texture.h"
 #include "TransformableEntity.h"
 
 namespace gf {
@@ -13,7 +13,7 @@ namespace gf {
 
   class GF_GRAPHICS_API ShapeEntity : public TransformableEntity {
   public:
-    ShapeEntity(const Texture* texture, const ShapeBuffer& buffer, RenderManager* render_manager);
+    ShapeEntity(const GpuTexture* texture, const ShapeBuffer& buffer, RenderManager* render_manager);
     ShapeEntity(const ShapeResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
     void render(RenderRecorder& recorder) override;

@@ -135,7 +135,7 @@ namespace gf {
     // TODO
   }
 
-  void GpuCopyPass::copy_buffer_to_texture(TransferBuffer* source, Texture* destination, Vec2I size)
+  void GpuCopyPass::copy_buffer_to_texture(TransferBuffer* source, GpuTexture* destination, Vec2I size)
   {
     assert(m_copy_pass);
     // TODO

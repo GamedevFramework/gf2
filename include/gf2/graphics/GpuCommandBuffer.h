@@ -16,6 +16,7 @@
 #include "GpuShader.h"
 
 namespace gf {
+  class GpuTexture;
   class Buffer;
   class RenderPipeline;
   class RenderPipelineLayout;
@@ -41,7 +42,7 @@ namespace gf {
     void draw_indexed(std::size_t index_count, std::size_t first_index = 0, std::ptrdiff_t vertex_offset = 0) const;
 
   private:
-    friend class CommandBuffer;
+    friend class GpuCommandBuffer;
 
     GpuRenderPass(SDL_GPURenderPass* render_pass)
     : m_render_pass(render_pass)
@@ -56,12 +57,12 @@ namespace gf {
     GpuCopyPass() = default;
 
     void copy_buffer_to_buffer(TransferBuffer* source, Buffer* destination, std::size_t size);
-    void copy_buffer_to_texture(TransferBuffer* source, Texture* destination, Vec2I size);
+    void copy_buffer_to_texture(TransferBuffer* source, GpuTexture* destination, Vec2I size);
 
   private:
     friend class MemoryAllocator;
     friend class RenderManager;
-    friend class CommandBuffer;
+    friend class GpuCommandBuffer;
 
     GpuCopyPass(SDL_GPUCopyPass* copy_pass)
     : m_copy_pass(copy_pass)

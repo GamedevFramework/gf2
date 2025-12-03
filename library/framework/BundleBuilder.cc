@@ -15,7 +15,7 @@
 
 #include <gf2/audio/Music.h>
 #include <gf2/audio/Sound.h>
-#include <gf2/graphics/Texture.h>
+#include <gf2/graphics/GpuTexture.h>
 #include <gf2/graphics/RichMap.h>
 #include <gf2/framework/SceneSystem.h>
 
@@ -134,7 +134,7 @@ namespace gf {
     // capture 'this' by copy in case the bundle builder is a local variable
     ResourceBundle bundle([*this](ResourceBundle* bundle, ResourceManager* resource_manager, ResourceAction action) {
       for (const std::filesystem::path& texture : m_textures) {
-        bundle->handle<Texture>(texture, m_render_manager, resource_manager, action);
+        bundle->handle<GpuTexture>(texture, m_render_manager, resource_manager, action);
       }
 
       for (const std::filesystem::path& font : m_fonts) {

@@ -14,9 +14,9 @@
 #include "RenderObject.h"
 
 namespace gf {
+  class GpuTexture;
   class RenderManager;
   class ResourceManager;
-  class Texture;
 
   struct GF_GRAPHICS_API ShapeGeometry {
     RenderGeometry shape;
@@ -25,7 +25,7 @@ namespace gf {
 
   class GF_GRAPHICS_API Shape {
   public:
-    Shape(const Texture* texture, const ShapeBuffer& buffer, RenderManager* render_manager);
+    Shape(const GpuTexture* texture, const ShapeBuffer& buffer, RenderManager* render_manager);
     Shape(const ShapeResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
     ShapeGeometry geometry() const;
@@ -36,7 +36,7 @@ namespace gf {
     }
 
   private:
-    const Texture* m_texture = nullptr;
+    const GpuTexture* m_texture = nullptr;
     Buffer m_vertices;
     Buffer m_indices;
     std::optional<Buffer> m_outline_vertices;

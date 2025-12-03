@@ -25,16 +25,16 @@ int main()
 
   gf::SingleSceneManager scene_manager("12-animation | gf2", gf::vec(1600, 900));
 
-  const gf::Texture texture0(texture_file0, scene_manager.render_manager());
-  const gf::Texture texture1(texture_file1, scene_manager.render_manager());
-  const gf::Texture texture2(texture_file2, scene_manager.render_manager());
-  const gf::Texture texture3(texture_file3, scene_manager.render_manager());
-  const gf::Texture texture4(texture_file4, scene_manager.render_manager());
-  const gf::Texture texture5(texture_file5, scene_manager.render_manager());
-  const gf::Texture texture6(texture_file6, scene_manager.render_manager());
-  const gf::Texture texture7(texture_file7, scene_manager.render_manager());
+  const gf::GpuTexture texture0(texture_file0, scene_manager.render_manager());
+  const gf::GpuTexture texture1(texture_file1, scene_manager.render_manager());
+  const gf::GpuTexture texture2(texture_file2, scene_manager.render_manager());
+  const gf::GpuTexture texture3(texture_file3, scene_manager.render_manager());
+  const gf::GpuTexture texture4(texture_file4, scene_manager.render_manager());
+  const gf::GpuTexture texture5(texture_file5, scene_manager.render_manager());
+  const gf::GpuTexture texture6(texture_file6, scene_manager.render_manager());
+  const gf::GpuTexture texture7(texture_file7, scene_manager.render_manager());
 
-  const std::vector<const gf::Texture*> textures = { &texture0, &texture1, &texture2, &texture3, &texture4, &texture5, &texture6, &texture7 };
+  const std::vector<const gf::GpuTexture*> textures = { &texture0, &texture1, &texture2, &texture3, &texture4, &texture5, &texture6, &texture7 };
 
   gf::AnimationData data = {};
   data.properties = gf::AnimationProperties::Loop;

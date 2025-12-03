@@ -8,9 +8,9 @@
 #include <gf2/core/Span.h>
 
 #include "Descriptor.h"
+#include "GpuShader.h"
 #include "GraphicsApi.h"
 #include "RenderStates.h"
-#include "Shader.h"
 #include "VertexInput.h"
 
 namespace gf {

@@ -8,20 +8,20 @@
 #include <gf2/core/Mat3.h>
 #include <gf2/core/ResourceManager.h>
 
+#include <gf2/graphics/GpuTexture.h>
 #include <gf2/graphics/RawGeometry.h>
-#include <gf2/graphics/Texture.h>
 
 namespace gf {
 
   namespace {
 
-    std::vector<const Texture*> load_textures(const SpriteGroupResource& resource, ResourceManager* resource_manager)
+    std::vector<const GpuTexture*> load_textures(const SpriteGroupResource& resource, ResourceManager* resource_manager)
     {
-      std::vector<const Texture*> textures;
+      std::vector<const GpuTexture*> textures;
       textures.reserve(resource.textures.size());
 
       for (const std::filesystem::path& texture : resource.textures) {
-        textures.push_back(resource_manager->get<Texture>(texture));
+        textures.push_back(resource_manager->get<GpuTexture>(texture));
       }
 
       return textures;
@@ -29,7 +29,7 @@ namespace gf {
 
   }
 
-  SpriteGroup::SpriteGroup(std::vector<const Texture*> textures, const SpriteGroupData& data, RenderManager* render_manager)
+  SpriteGroup::SpriteGroup(std::vector<const GpuTexture*> textures, const SpriteGroupData& data, RenderManager* render_manager)
   : m_textures(std::move(textures))
   , m_vertices(BufferType::Device, BufferUsage::Vertex)
   , m_indices(BufferType::Device, BufferUsage::Index)
@@ -68,7 +68,7 @@ namespace gf {
 
     for (const auto& sprite : data.sprites) {
       assert(sprite.texture_index < m_textures.size());
-      const Texture* texture = m_textures[sprite.texture_index];
+      const GpuTexture* texture = m_textures[sprite.texture_index];
 
       const Vec2F size = texture->size() * sprite.texture_region.size();
       const RectF bounds = RectF::from_size(size);

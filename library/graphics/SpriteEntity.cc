@@ -8,12 +8,12 @@
 
 namespace gf {
 
-  SpriteEntity::SpriteEntity(const Texture* texture, RenderManager* render_manager)
+  SpriteEntity::SpriteEntity(const GpuTexture* texture, RenderManager* render_manager)
   : m_sprite(texture, render_manager)
   {
   }
 
-  SpriteEntity::SpriteEntity(const Texture* texture, const SpriteData& data, RenderManager* render_manager)
+  SpriteEntity::SpriteEntity(const GpuTexture* texture, const SpriteData& data, RenderManager* render_manager)
   : m_sprite(texture, data, render_manager)
   {
   }

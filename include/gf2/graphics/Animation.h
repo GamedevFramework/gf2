@@ -18,7 +18,7 @@
 #include "RenderObject.h"
 
 namespace gf {
-  class Texture;
+  class GpuTexture;
   class RenderManager;
   class ResourceManager;
 
@@ -43,7 +43,7 @@ namespace gf {
 
   class GF_GRAPHICS_API AnimationGraphics {
   public:
-    AnimationGraphics(std::vector<const Texture*> textures, const AnimationData& data, RenderManager* render_manager);
+    AnimationGraphics(std::vector<const GpuTexture*> textures, const AnimationData& data, RenderManager* render_manager);
     AnimationGraphics(const AnimationResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
     RenderGeometry geometry(std::size_t frame_index) const;
@@ -54,7 +54,7 @@ namespace gf {
     }
 
   private:
-    std::vector<const Texture*> m_textures;
+    std::vector<const GpuTexture*> m_textures;
     Buffer m_vertices;
     Buffer m_indices;
     RectF m_bounds = RectF::from_size({ 0.0f, 0.0f });
@@ -63,7 +63,7 @@ namespace gf {
 
   class GF_GRAPHICS_API Animation {
   public:
-    Animation(std::vector<const Texture*> textures, const AnimationData& data, RenderManager* render_manager);
+    Animation(std::vector<const GpuTexture*> textures, const AnimationData& data, RenderManager* render_manager);
     Animation(const AnimationResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
     void update(Time time)

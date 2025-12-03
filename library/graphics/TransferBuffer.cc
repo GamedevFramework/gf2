@@ -18,10 +18,10 @@ namespace gf {
     info.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD;
     info.size = static_cast<Uint32>(size);
 
-    GpuDevice& device = render_manager->device();
+    GpuDevice* device = render_manager->device();
 
-    SDL_GPUTransferBuffer* buffer = SDL_CreateGPUTransferBuffer(device, &info);
-    m_handle = { device, buffer };
+    SDL_GPUTransferBuffer* buffer = SDL_CreateGPUTransferBuffer(*device, &info);
+    m_handle = { *device, buffer };
   }
 
   void TransferBuffer::update(std::size_t size, std::size_t member_size, const void* data)

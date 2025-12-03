@@ -39,7 +39,7 @@ namespace gf {
     return { 0, 0 };
   }
 
-  std::optional<CommandBuffer> RenderManager::begin_command_buffer()
+  std::optional<GpuCommandBuffer> RenderManager::begin_command_buffer()
   {
     const RenderSynchronizationObjects& sync = m_render_synchronization[m_current_frame];
     assert(m_current_frame == m_current_memops);
@@ -60,7 +60,7 @@ namespace gf {
     return { };
   }
 
-  void RenderManager::end_command_buffer([[maybe_unused]] CommandBuffer buffer)
+  void RenderManager::end_command_buffer([[maybe_unused]] GpuCommandBuffer buffer)
   {
     const RenderSynchronizationObjects& sync = m_render_synchronization[m_current_frame];
 
@@ -74,7 +74,7 @@ namespace gf {
     m_current_frame = (m_current_frame + 1) % FramesInFlight;
   }
 
-  CopyPass RenderManager::current_copy_pass()
+  GpuCopyPass RenderManager::current_copy_pass()
   {
     if (m_thread_id == std::this_thread::get_id()) {
       return { };

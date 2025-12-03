@@ -14,8 +14,8 @@
 #include <gf2/core/Span.h>
 
 #include "Buffer.h"
-#include "CommandBuffer.h"
 #include "Descriptor.h"
+#include "GpuCommandBuffer.h"
 #include "GpuDevice.h"
 #include "GraphicsApi.h"
 #include "RenderPipeline.h"
@@ -32,10 +32,10 @@ namespace gf {
     void update_surface_size(Vec2I size);
     Vec2I surface_size() const;
 
-    std::optional<CommandBuffer> begin_command_buffer();
-    void end_command_buffer(CommandBuffer buffer);
+    std::optional<GpuCommandBuffer> begin_command_buffer();
+    void end_command_buffer(GpuCommandBuffer buffer);
 
-    CopyPass current_copy_pass();
+    GpuCopyPass current_copy_pass();
     void defer_release_transfer_buffer(TransferBuffer buffer);
 
     void prepare_asynchronous_load();

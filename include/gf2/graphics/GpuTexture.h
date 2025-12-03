@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
-#ifndef GF_TEXTURE_H
-#define GF_TEXTURE_H
+#ifndef GF_GPU_TEXTURE_H
+#define GF_GPU_TEXTURE_H
 
 #include <filesystem>
 #include <string>
@@ -17,32 +17,30 @@
 #include "GraphicsApi.h"
 #include "GraphicsHandle.h"
 #include "RenderTarget.h"
-#include "TextureReference.h"
-#include "TransferBuffer.h"
 
 namespace gf {
   class RenderManager;
 
   // NOLINTNEXTLINE(performance-enum-size)
-  enum class TextureUsage : SDL_GPUTextureUsageFlags {
+  enum class GpuTextureUsage : SDL_GPUTextureUsageFlags {
     Sampler = SDL_GPU_TEXTUREUSAGE_SAMPLER,
     ColorTarget = SDL_GPU_TEXTUREUSAGE_COLOR_TARGET,
   };
 
   template<>
-  struct EnableBitmaskOperators<TextureUsage> : std::true_type {
+  struct EnableBitmaskOperators<GpuTextureUsage> : std::true_type {
   };
 
-  class GF_GRAPHICS_API Texture {
+  class GF_GRAPHICS_API GpuTexture {
   public:
     using Context = RenderManager*;
 
-    Texture() = default;
-    Texture(const std::filesystem::path& filename, RenderManager* render_manager);
-    Texture(const Image& image, RenderManager* render_manager);
-    Texture(const Bitmap& bitmap, RenderManager* render_manager);
-    Texture(Vec2I size, RenderManager* render_manager);
-    Texture(Vec2I size, Flags<TextureUsage> usage, Format format, RenderManager* render_manager);
+    GpuTexture() = default;
+    GpuTexture(const std::filesystem::path& filename, RenderManager* render_manager);
+    GpuTexture(const Image& image, RenderManager* render_manager);
+    GpuTexture(const Bitmap& bitmap, RenderManager* render_manager);
+    GpuTexture(Vec2I size, RenderManager* render_manager);
+    GpuTexture(Vec2I size, Flags<GpuTextureUsage> usage, Format format, RenderManager* render_manager);
 
     void set_debug_name(const std::string& name);
 
@@ -57,13 +55,11 @@ namespace gf {
 
     RenderTarget as_render_target();
 
-    operator TextureReference();
-
   private:
     friend class Descriptor;
 
     Vec2I m_image_size = { 0, 0 };
-    Flags<TextureUsage> m_usage = None;
+    Flags<GpuTextureUsage> m_usage = None;
     Format m_format = Format::Undefined;
 
     details::GraphicsHandle<SDL_GPUTexture, SDL_ReleaseGPUTexture> m_texture_handle;
@@ -72,4 +68,4 @@ namespace gf {
 
 }
 
-#endif // GF_TEXTURE_H
+#endif // GF_GPU_TEXTURE_H

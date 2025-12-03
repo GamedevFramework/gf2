@@ -11,7 +11,7 @@
 #include <gf2/core/Span.h>
 
 #include "GraphicsApi.h"
-#include "Texture.h"
+#include "GpuTexture.h"
 
 namespace gf {
 
@@ -58,7 +58,7 @@ namespace gf {
 
     RectF texture_region(char16_t character) const;
 
-    const Texture* texture() const
+    const GpuTexture* texture() const
     {
       return &m_texture;
     }
@@ -70,7 +70,7 @@ namespace gf {
     ConsoleFontFormat m_format;
     Vec2I m_size;
     Vec2I m_character_size;
-    Texture m_texture;
+    GpuTexture m_texture;
   };
 
 }

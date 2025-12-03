@@ -9,7 +9,7 @@
 #include <gf2/core/ResourceManager.h>
 #include <gf2/core/Time.h>
 
-#include "Texture.h"
+#include "GpuTexture.h"
 #include "Vertex.h"
 
 namespace gf {
@@ -33,7 +33,7 @@ namespace gf {
     };
 
     struct AnimationBuilder {
-      AnimationGraphicsRuntime append_data(const std::vector<const Texture*>& textures, const AnimationData& data);
+      AnimationGraphicsRuntime append_data(const std::vector<const GpuTexture*>& textures, const AnimationData& data);
       Buffer create_vertices(RenderManager* render_manager);
       Buffer create_indices(RenderManager* render_manager);
 
@@ -43,13 +43,13 @@ namespace gf {
     };
 
     template<typename Resource>
-    std::vector<const Texture*> load_animation_resources(const Resource& resource, ResourceManager* resource_manager)
+    std::vector<const GpuTexture*> load_animation_resources(const Resource& resource, ResourceManager* resource_manager)
     {
-      std::vector<const Texture*> resources;
+      std::vector<const GpuTexture*> resources;
       resources.reserve(resource.textures.size());
 
       for (const auto& texture : resource.textures) {
-        resources.push_back(resource_manager->get<Texture>(texture));
+        resources.push_back(resource_manager->get<GpuTexture>(texture));
       }
 
       return resources;

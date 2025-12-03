@@ -12,13 +12,13 @@
 #include "RenderObject.h"
 
 namespace gf {
-  class Texture;
+  class GpuTexture;
   class RenderManager;
   class ResourceManager;
 
   class GF_GRAPHICS_API SpriteGroup {
   public:
-    SpriteGroup(std::vector<const Texture*> textures, const SpriteGroupData& data, RenderManager* render_manager);
+    SpriteGroup(std::vector<const GpuTexture*> textures, const SpriteGroupData& data, RenderManager* render_manager);
     SpriteGroup(const SpriteGroupResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
     std::vector<RenderGeometry> geometry();
@@ -26,7 +26,7 @@ namespace gf {
     void update(const SpriteGroupData& data, RenderManager* render_manager);
 
   private:
-    std::vector<const Texture*> m_textures;
+    std::vector<const GpuTexture*> m_textures;
     DynamicBuffer m_vertices;
     DynamicBuffer m_indices;
 

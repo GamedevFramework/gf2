@@ -14,7 +14,6 @@
 
 #include <gf2/graphics/RenderManager.h>
 #include <gf2/graphics/RenderRecorder.h>
-#include <gf2/graphics/Texture.h>
 
 namespace gf {
 
@@ -118,7 +117,7 @@ namespace gf {
 
           // texture
 
-          object.texture = reinterpret_cast<Texture*>(static_cast<uintptr_t>(command->GetTexID())); // NOLINT
+          object.texture = reinterpret_cast<GpuTexture*>(static_cast<uintptr_t>(command->GetTexID())); // NOLINT
 
           m_objects.push_back(object);
         }
@@ -160,7 +159,7 @@ namespace gf {
           // Log::debug("Creating a texture for imgui.");
 
           const Vec2I size = { data->Width, data->Height };
-          auto texture = std::make_unique<Texture>(size, TextureUsage::Sampler, Format::R8G8B8A8_SNorm, render_manager);
+          auto texture = std::make_unique<GpuTexture>(size, GpuTextureUsage::Sampler, Format::R8G8B8A8_SNorm, render_manager);
           texture->update(static_cast<std::size_t>(data->GetSizeInBytes()), static_cast<const uint8_t*>(data->GetPixels()), render_manager);
 
           data->SetTexID(reinterpret_cast<uintptr_t>(texture.get())); // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
@@ -175,7 +174,7 @@ namespace gf {
         {
           // Log::debug("Updating a texture for imgui.");
 
-          auto* texture = static_cast<Texture*>(data->BackendUserData);
+          auto* texture = static_cast<GpuTexture*>(data->BackendUserData);
           texture->update(static_cast<std::size_t>(data->GetSizeInBytes()), static_cast<const uint8_t*>(data->GetPixels()), render_manager);
 
           data->SetStatus(ImTextureStatus_OK);
@@ -186,9 +185,9 @@ namespace gf {
         {
           // Log::debug("Destroying a texture for imgui.");
 
-          auto* texture = static_cast<Texture*>(data->BackendUserData);
+          auto* texture = static_cast<GpuTexture*>(data->BackendUserData);
 
-          auto iterator = std::find_if(m_textures.begin(), m_textures.end(), [texture](const std::unique_ptr<Texture>& other) { return other.get() == texture; });
+          auto iterator = std::find_if(m_textures.begin(), m_textures.end(), [texture](const std::unique_ptr<GpuTexture>& other) { return other.get() == texture; });
           assert(iterator != m_textures.end());
           m_unused_textures.push_back(std::move(*iterator)); // do not remove now, texture may still be in use for the current frame
           m_textures.erase(iterator);

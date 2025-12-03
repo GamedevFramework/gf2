@@ -13,21 +13,21 @@
 #include "RenderObject.h"
 
 namespace gf {
+  class GpuTexture;
   class RenderManager;
   class ResourceManager;
-  class Texture;
 
   class GF_GRAPHICS_API Sprite {
   public:
-    Sprite(const Texture* texture, RectF texture_region, Color color, RenderManager* render_manager);
-    Sprite(const Texture* texture, RectF texture_region, RenderManager* render_manager);
-    Sprite(const Texture* texture, RenderManager* render_manager);
-    Sprite(const Texture* texture, const SpriteData& data, RenderManager* render_manager);
+    Sprite(const GpuTexture* texture, RectF texture_region, Color color, RenderManager* render_manager);
+    Sprite(const GpuTexture* texture, RectF texture_region, RenderManager* render_manager);
+    Sprite(const GpuTexture* texture, RenderManager* render_manager);
+    Sprite(const GpuTexture* texture, const SpriteData& data, RenderManager* render_manager);
     Sprite(const SpriteResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
     RenderGeometry geometry() const;
 
-    const Texture* texture() const
+    const GpuTexture* texture() const
     {
       return m_texture;
     }
@@ -38,7 +38,7 @@ namespace gf {
     }
 
   private:
-    const Texture* m_texture;
+    const GpuTexture* m_texture;
     Buffer m_vertices;
     Buffer m_indices;
     RectF m_bounds = {};

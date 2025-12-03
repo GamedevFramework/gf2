@@ -28,9 +28,9 @@ namespace gf {
 
   private:
     friend class RenderManager;
-    friend class Texture;
-    friend class TransferBuffer;
+    friend class GpuTexture;
     friend class GpuShader;
+    friend class TransferBuffer;
 
     GpuDevice(SDL_GPUDevice* device)
     : m_device(device)

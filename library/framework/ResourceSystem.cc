@@ -14,7 +14,7 @@ namespace gf {
     m_sprite_sheet_registry.add_loader(loader_for<SpriteSheet>(m_file_loader));
     m_tiled_map_registry.add_loader(loader_for<TiledMap>(m_file_loader));
     m_console_font_registry.add_loader(loader_for<ConsoleFont>(m_file_loader));
-    m_texture_registry.add_loader(loader_for<Texture>(m_file_loader));
+    m_texture_registry.add_loader(loader_for<GpuTexture>(m_file_loader));
     m_rich_map_registry.add_loader(loader_for<RichMap>(m_file_loader));
     m_sound_registry.add_loader(loader_for<Sound>(m_file_loader));
     m_music_registry.add_loader(loader_for<Music>(m_file_loader));

@@ -5,8 +5,8 @@
 
 #include <gf2/core/ResourceManager.h>
 
+#include <gf2/graphics/GpuTexture.h>
 #include <gf2/graphics/RenderManager.h>
-#include <gf2/graphics/Texture.h>
 #include <gf2/graphics/Vertex.h>
 
 namespace gf {
@@ -51,7 +51,7 @@ namespace gf {
 
   }
 
-  NinePatch::NinePatch(const Texture* texture, Vec2F size, NinePatchLimits limits, RectF texture_region, Color color, RenderManager* render_manager)
+  NinePatch::NinePatch(const GpuTexture* texture, Vec2F size, NinePatchLimits limits, RectF texture_region, Color color, RenderManager* render_manager)
   : m_texture(texture)
   , m_bounds(RectF::from_size(size))
   {
@@ -102,23 +102,23 @@ namespace gf {
     m_indices = Buffer(BufferType::Device, BufferUsage::Index, std::begin(Indices), std::size(Indices), render_manager);
   }
 
-  NinePatch::NinePatch(const Texture* texture, Vec2F size, NinePatchLimits limits, RectF texture_region, RenderManager* render_manager)
+  NinePatch::NinePatch(const GpuTexture* texture, Vec2F size, NinePatchLimits limits, RectF texture_region, RenderManager* render_manager)
   : NinePatch(texture, size, limits, texture_region, White, render_manager)
   {
   }
 
-  NinePatch::NinePatch(const Texture* texture, Vec2F size, NinePatchLimits limits, RenderManager* render_manager)
+  NinePatch::NinePatch(const GpuTexture* texture, Vec2F size, NinePatchLimits limits, RenderManager* render_manager)
   : NinePatch(texture, size, limits, RectF::from_size({ 1.0f, 1.0f }), White, render_manager)
   {
   }
 
-  NinePatch::NinePatch(const Texture* texture, const NinePatchData& data, RenderManager* render_manager)
+  NinePatch::NinePatch(const GpuTexture* texture, const NinePatchData& data, RenderManager* render_manager)
   : NinePatch(texture, data.size, data.limits, data.texture_region, data.color, render_manager)
   {
   }
 
   NinePatch::NinePatch(const NinePatchResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
-  : NinePatch(resource_manager->get<Texture>(resource.texture), resource.data, render_manager)
+  : NinePatch(resource_manager->get<GpuTexture>(resource.texture), resource.data, render_manager)
   {
   }
 

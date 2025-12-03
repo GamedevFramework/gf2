@@ -13,9 +13,9 @@
 #include <gf2/core/TiledMap.h>
 #include <gf2/core/Transform.h>
 
+#include <gf2/graphics/GpuTexture.h>
 #include <gf2/graphics/RawGeometry.h>
 #include <gf2/graphics/RenderRecorder.h>
-#include <gf2/graphics/Texture.h>
 #include <gf2/graphics/Vertex.h>
 
 namespace gf {
@@ -144,7 +144,7 @@ namespace gf {
           assert(tileset != nullptr);
           const uint32_t gid = tile.gid - tileset->first_gid;
 
-          const Texture* texture = rich_map()->texture(tileset->texture_index);
+          const GpuTexture* texture = rich_map()->texture(tileset->texture_index);
           const RectF texture_region = tileset->compute_texture_region(gid, texture->size());
 
           RectI bounds = m_grid.compute_cell_bounds(position);
@@ -206,7 +206,7 @@ namespace gf {
         assert(tileset != nullptr);
         const uint32_t gid = tile.gid - tileset->first_gid;
 
-        const Texture* texture = rich_map()->texture(tileset->texture_index);
+        const GpuTexture* texture = rich_map()->texture(tileset->texture_index);
         const RectF texture_region = tileset->compute_texture_region(gid, texture->size());
 
         const RectF bounds = RectF::from_size(tileset->tile_size);
