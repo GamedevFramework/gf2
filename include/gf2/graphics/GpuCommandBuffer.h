@@ -13,6 +13,7 @@
 #include "Descriptor.h"
 #include "GraphicsApi.h"
 #include "RenderTarget.h"
+#include "GpuShader.h"
 
 namespace gf {
   class Buffer;
@@ -20,9 +21,9 @@ namespace gf {
   class RenderPipelineLayout;
   class TransferBuffer;
 
-  class GF_GRAPHICS_API RenderPass {
+  class GF_GRAPHICS_API GpuRenderPass {
   public:
-    RenderPass() = default;
+    GpuRenderPass() = default;
 
     void set_viewport(RectF viewport) const;
     void set_scissor(RectI scissor) const;
@@ -33,8 +34,8 @@ namespace gf {
 
     void bind_descriptor(const RenderPipelineLayout* pipeline, uint32_t set, Descriptor descriptor) const;
 
-    void push_constant(const RenderPipelineLayout* pipeline, ShaderStage stage, std::size_t size, const void* data) const;
-    void push_constant(const RenderPipelineLayout* pipeline, ShaderStage stage, const Mat3F& data) const;
+    void push_constant(const RenderPipelineLayout* pipeline, GpuShaderStage stage, std::size_t size, const void* data) const;
+    void push_constant(const RenderPipelineLayout* pipeline, GpuShaderStage stage, const Mat3F& data) const;
 
     void draw(std::size_t vertex_count, std::size_t first_vertex = 0) const;
     void draw_indexed(std::size_t index_count, std::size_t first_index = 0, std::ptrdiff_t vertex_offset = 0) const;
@@ -42,7 +43,7 @@ namespace gf {
   private:
     friend class CommandBuffer;
 
-    RenderPass(SDL_GPURenderPass* render_pass)
+    GpuRenderPass(SDL_GPURenderPass* render_pass)
     : m_render_pass(render_pass)
     {
     }
@@ -50,9 +51,9 @@ namespace gf {
     SDL_GPURenderPass* m_render_pass = nullptr;
   };
 
-  class GF_GRAPHICS_API CopyPass {
+  class GF_GRAPHICS_API GpuCopyPass {
   public:
-    CopyPass() = default;
+    GpuCopyPass() = default;
 
     void copy_buffer_to_buffer(TransferBuffer* source, Buffer* destination, std::size_t size);
     void copy_buffer_to_texture(TransferBuffer* source, Texture* destination, Vec2I size);
@@ -62,7 +63,7 @@ namespace gf {
     friend class RenderManager;
     friend class CommandBuffer;
 
-    CopyPass(SDL_GPUCopyPass* copy_pass)
+    GpuCopyPass(SDL_GPUCopyPass* copy_pass)
     : m_copy_pass(copy_pass)
     {
     }
@@ -70,20 +71,20 @@ namespace gf {
     SDL_GPUCopyPass* m_copy_pass = nullptr;
   };
 
-  class GF_GRAPHICS_API CommandBuffer {
+  class GF_GRAPHICS_API GpuCommandBuffer {
   public:
-    CommandBuffer() = default;
+    GpuCommandBuffer() = default;
 
-    RenderPass begin_render_pass(RenderTarget target, Color clear_color = Black) const;
-    void end_render_pass(RenderPass pass) const;
+    GpuRenderPass begin_render_pass(RenderTarget target, Color clear_color = Black) const;
+    void end_render_pass(GpuRenderPass pass) const;
 
-    CopyPass begin_copy_pass() const;
-    void end_copy_pass(CopyPass pass) const;
+    GpuCopyPass begin_copy_pass() const;
+    void end_copy_pass(GpuCopyPass pass) const;
 
   private:
     friend class RenderManager;
 
-    CommandBuffer(SDL_GPUCommandBuffer* command_buffer)
+    GpuCommandBuffer(SDL_GPUCommandBuffer* command_buffer)
     : m_command_buffer(command_buffer)
     {
     }

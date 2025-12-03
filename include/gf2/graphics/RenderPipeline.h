@@ -10,7 +10,7 @@
 #include "Descriptor.h"
 #include "GraphicsApi.h"
 #include "RenderStates.h"
-#include "ShaderStage.h"
+#include "Shader.h"
 #include "VertexInput.h"
 
 namespace gf {
@@ -38,7 +38,7 @@ namespace gf {
       return *this;
     }
 
-    RenderPipelineLayoutBuilder& set_push_constant_parameters(ShaderStage stage, std::size_t size)
+    RenderPipelineLayoutBuilder& set_push_constant_parameters(GpuShaderStage stage, std::size_t size)
     {
       m_push_constant.stage = stage;
       m_push_constant.size = size;
@@ -50,7 +50,7 @@ namespace gf {
   private:
     std::vector<DescriptorLayout*> m_descriptor_layouts;
     struct {
-      ShaderStage stage = ShaderStage::Vertex;
+      GpuShaderStage stage = GpuShaderStage::Vertex;
       std::size_t size = 0;
     } m_push_constant;
   };
@@ -72,7 +72,7 @@ namespace gf {
   public:
     RenderPipelineBuilder() = default;
 
-    RenderPipelineBuilder& add_shader(ShaderStage stage, Span<const uint32_t> bytecode)
+    RenderPipelineBuilder& add_shader(GpuShaderStage stage, Span<const uint32_t> bytecode)
     {
       m_shaders.push_back({ stage, bytecode });
       return *this;
@@ -108,7 +108,7 @@ namespace gf {
     friend class RenderPipeline;
 
     struct Shader {
-      ShaderStage stage = ShaderStage::Vertex;
+      GpuShaderStage stage = GpuShaderStage::Vertex;
       Span<const uint32_t> bytecode;
     };
 

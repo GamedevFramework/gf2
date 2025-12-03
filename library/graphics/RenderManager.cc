@@ -137,9 +137,9 @@ namespace gf {
   {
   }
 
-  Device& RenderManager::device()
+  GpuDevice* RenderManager::device()
   {
-    return m_device;
+    return &m_device;
   }
 
   void RenderManager::finish_staging_buffers()

@@ -8,7 +8,7 @@
 #include <gf2/core/Span.h>
 
 #include "GraphicsApi.h"
-#include "ShaderStage.h"
+#include "Shader.h"
 
 namespace gf {
   class Buffer;
@@ -24,7 +24,7 @@ namespace gf {
   struct GF_GRAPHICS_API DescriptorBinding {
     uint32_t binding = 0;
     DescriptorType type = DescriptorType::Sampler;
-    ShaderStage stage = ShaderStage::Vertex;
+    GpuShaderStage stage = GpuShaderStage::Vertex;
   };
 
   class GF_GRAPHICS_API DescriptorLayout {

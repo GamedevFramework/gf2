@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
 
-#include <gf2/graphics/CommandBuffer.h>
+#include <gf2/graphics/GpuCommandBuffer.h>
 
 #include <cassert>
 #include <cstddef>
@@ -15,7 +15,7 @@ namespace gf {
    * CommandBuffer
    */
 
-  RenderPass CommandBuffer::begin_render_pass(RenderTarget target, Color clear_color) const
+  GpuRenderPass GpuCommandBuffer::begin_render_pass(RenderTarget target, Color clear_color) const
   {
     assert(m_command_buffer);
 
@@ -30,13 +30,13 @@ namespace gf {
   }
 
   // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
-  void CommandBuffer::end_render_pass(RenderPass pass) const
+  void GpuCommandBuffer::end_render_pass(GpuRenderPass pass) const
   {
     assert(m_command_buffer);
     SDL_EndGPURenderPass(pass.m_render_pass);
   }
 
-  CopyPass CommandBuffer::begin_copy_pass() const
+  GpuCopyPass GpuCommandBuffer::begin_copy_pass() const
   {
     assert(m_command_buffer);
     SDL_GPUCopyPass* copy_pass = SDL_BeginGPUCopyPass(m_command_buffer);
@@ -44,7 +44,7 @@ namespace gf {
   }
 
   // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
-  void CommandBuffer::end_copy_pass([[maybe_unused]] CopyPass pass) const
+  void GpuCommandBuffer::end_copy_pass([[maybe_unused]] GpuCopyPass pass) const
   {
     assert(m_command_buffer);
     SDL_EndGPUCopyPass(pass.m_copy_pass);
@@ -54,28 +54,28 @@ namespace gf {
    * RenderCommandBuffer
    */
 
-  void RenderPass::set_viewport(RectF viewport) const
+  void GpuRenderPass::set_viewport(RectF viewport) const
   {
     assert(m_render_pass);
     const SDL_GPUViewport raw_viewport = { viewport.offset.x, viewport.offset.y, viewport.extent.w, viewport.extent.h, 0.0f, 0.0f };
     SDL_SetGPUViewport(m_render_pass, &raw_viewport);
   }
 
-  void RenderPass::set_scissor(RectI scissor) const
+  void GpuRenderPass::set_scissor(RectI scissor) const
   {
     assert(m_render_pass);
     const SDL_Rect raw_scissor = { scissor.offset.x, scissor.offset.y, scissor.extent.w, scissor.extent.h };
     SDL_SetGPUScissor(m_render_pass, &raw_scissor);
   }
 
-  void RenderPass::bind_pipeline(const RenderPipeline* pipeline) const
+  void GpuRenderPass::bind_pipeline(const RenderPipeline* pipeline) const
   {
     assert(m_render_pass);
     assert(pipeline);
     // TODO
   }
 
-  void RenderPass::bind_vertex_buffer(const Buffer* buffer, std::size_t offset) const
+  void GpuRenderPass::bind_vertex_buffer(const Buffer* buffer, std::size_t offset) const
   {
     assert(m_render_pass);
     assert(buffer);
@@ -83,7 +83,7 @@ namespace gf {
     SDL_BindGPUVertexBuffers(m_render_pass, 0, &binding, 1);
   }
 
-  void RenderPass::bind_index_buffer(const Buffer* buffer, std::size_t offset) const
+  void GpuRenderPass::bind_index_buffer(const Buffer* buffer, std::size_t offset) const
   {
     assert(m_render_pass);
     assert(buffer);
@@ -91,14 +91,14 @@ namespace gf {
     SDL_BindGPUIndexBuffer(m_render_pass, &binding, SDL_GPU_INDEXELEMENTSIZE_16BIT);
   }
 
-  void RenderPass::bind_descriptor(const RenderPipelineLayout* pipeline, uint32_t set, Descriptor descriptor) const
+  void GpuRenderPass::bind_descriptor(const RenderPipelineLayout* pipeline, uint32_t set, Descriptor descriptor) const
   {
     assert(m_render_pass);
     assert(pipeline);
     // TODO
   }
 
-  void RenderPass::push_constant(const RenderPipelineLayout* pipeline, ShaderStage stage, std::size_t size, const void* data) const
+  void GpuRenderPass::push_constant(const RenderPipelineLayout* pipeline, GpuShaderStage stage, std::size_t size, const void* data) const
   {
     assert(m_render_pass);
     assert(pipeline);
@@ -106,20 +106,20 @@ namespace gf {
     // TODO
   }
 
-  void RenderPass::push_constant(const RenderPipelineLayout* pipeline, ShaderStage stage, const Mat3F& data) const
+  void GpuRenderPass::push_constant(const RenderPipelineLayout* pipeline, GpuShaderStage stage, const Mat3F& data) const
   {
     assert(m_render_pass);
     auto aligned_data = compute_aligned(data);
     push_constant(pipeline, stage, sizeof(float) * aligned_data.size(), aligned_data.data());
   }
 
-  void RenderPass::draw(std::size_t vertex_count, std::size_t first_vertex) const
+  void GpuRenderPass::draw(std::size_t vertex_count, std::size_t first_vertex) const
   {
     assert(m_render_pass);
     SDL_DrawGPUPrimitives(m_render_pass, vertex_count, 1, first_vertex, 0);
   }
 
-  void RenderPass::draw_indexed(std::size_t index_count, std::size_t first_index, std::ptrdiff_t vertex_offset) const
+  void GpuRenderPass::draw_indexed(std::size_t index_count, std::size_t first_index, std::ptrdiff_t vertex_offset) const
   {
     assert(m_render_pass);
     SDL_DrawGPUIndexedPrimitives(m_render_pass, index_count, 1, first_index, static_cast<Sint32>(vertex_offset), 0);
@@ -129,13 +129,13 @@ namespace gf {
    * MemoryCommandBuffer
    */
 
-  void CopyPass::copy_buffer_to_buffer(TransferBuffer* source, Buffer* destination, std::size_t size)
+  void GpuCopyPass::copy_buffer_to_buffer(TransferBuffer* source, Buffer* destination, std::size_t size)
   {
     assert(m_copy_pass);
     // TODO
   }
 
-  void CopyPass::copy_buffer_to_texture(TransferBuffer* source, Texture* destination, Vec2I size)
+  void GpuCopyPass::copy_buffer_to_texture(TransferBuffer* source, Texture* destination, Vec2I size)
   {
     assert(m_copy_pass);
     // TODO

@@ -16,7 +16,7 @@
 #include "Buffer.h"
 #include "CommandBuffer.h"
 #include "Descriptor.h"
-#include "Device.h"
+#include "GpuDevice.h"
 #include "GraphicsApi.h"
 #include "RenderPipeline.h"
 #include "RenderTarget.h"
@@ -48,7 +48,7 @@ namespace gf {
 
     void wait_idle() const;
 
-    Device& device();
+    GpuDevice* device();
 
   private:
     friend class Buffer;
@@ -65,7 +65,7 @@ namespace gf {
 
     // device stuff
 
-    Device m_device;
+    GpuDevice m_device;
 
     // swapchain stuff
 

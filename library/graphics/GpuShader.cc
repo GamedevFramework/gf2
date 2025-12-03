@@ -1,31 +1,13 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
 
-#include <gf2/graphics/GpuDevice.h>
+#include <gf2/graphics/GpuShader.h>
 
-#include <utility>
+#include <gf2/graphics/GpuDevice.h>
 
 namespace gf {
 
-  GpuDevice::GpuDevice(GpuDevice&& other) noexcept
-  : m_device(std::exchange(other.m_device, nullptr))
-  {
-  }
-
-  GpuDevice::~GpuDevice()
-  {
-    if (m_device != nullptr) {
-      SDL_DestroyGPUDevice(m_device);
-    }
-  }
-
-  GpuDevice& GpuDevice::operator=(GpuDevice&& other) noexcept
-  {
-    std::swap(other.m_device, m_device);
-    return *this;
-  }
-
-  GpuShader GpuDevice::create_shader(GpuShaderStage stage, gf::Span<uint8_t> binary, const GpuShaderInput& input)
+  GpuShader::GpuShader(GpuShaderStage stage, gf::Span<uint8_t> binary, const GpuShaderInput& input, GpuDevice* device)
   {
     SDL_GPUShaderCreateInfo info = {};
     info.code_size = binary.size();
@@ -38,9 +20,8 @@ namespace gf {
     info.num_storage_buffers = static_cast<Uint32>(input.storage_textures);
     info.num_uniform_buffers = static_cast<Uint32>(input.uniform_buffers);
 
-    SDL_GPUShader* shader = SDL_CreateGPUShader(m_device, &info);
-
-    return { m_device, shader };
+    SDL_GPUShader* shader = SDL_CreateGPUShader(*device, &info);
+    m_handle = { *device, shader };
   }
 
 
