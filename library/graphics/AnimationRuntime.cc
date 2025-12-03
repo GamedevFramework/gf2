@@ -6,11 +6,11 @@
 #include <limits>
 
 #include <gf2/graphics/Buffer.h>
-#include <gf2/graphics/Texture.h>
+#include <gf2/graphics/GpuTexture.h>
 
 namespace gf::details {
 
-  AnimationGraphicsRuntime AnimationBuilder::append_data(const std::vector<const Texture*>& textures, const AnimationData& data)
+  AnimationGraphicsRuntime AnimationBuilder::append_data(const std::vector<const GpuTexture*>& textures, const AnimationData& data)
   {
     const Color color = srgb_to_linear(data.color);
 

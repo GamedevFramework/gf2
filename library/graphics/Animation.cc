@@ -5,7 +5,7 @@
 
 #include <gf2/core/ResourceManager.h>
 
-#include <gf2/graphics/Texture.h>
+#include <gf2/graphics/GpuTexture.h>
 #include <gf2/graphics/Vertex.h>
 
 namespace gf {
@@ -64,7 +64,7 @@ namespace gf {
    * AnimationGraphics
    */
 
-  AnimationGraphics::AnimationGraphics(std::vector<const Texture*> textures, const AnimationData& data, RenderManager* render_manager)
+  AnimationGraphics::AnimationGraphics(std::vector<const GpuTexture*> textures, const AnimationData& data, RenderManager* render_manager)
   : m_textures(std::move(textures))
   {
     details::AnimationBuilder builder;
@@ -106,7 +106,7 @@ namespace gf {
    * Animation
    */
 
-  Animation::Animation(std::vector<const Texture*> textures, const AnimationData& data, RenderManager* render_manager)
+  Animation::Animation(std::vector<const GpuTexture*> textures, const AnimationData& data, RenderManager* render_manager)
   : m_state(data)
   , m_graphics(std::move(textures), data, render_manager)
   {

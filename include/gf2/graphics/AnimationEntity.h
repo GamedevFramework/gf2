@@ -12,7 +12,7 @@ namespace gf {
 
   class GF_GRAPHICS_API AnimationEntity : public TransformableEntity {
   public:
-    AnimationEntity(std::vector<const Texture*> textures, const AnimationData& data, RenderManager* render_manager);
+    AnimationEntity(std::vector<const GpuTexture*> textures, const AnimationData& data, RenderManager* render_manager);
     AnimationEntity(const AnimationResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
     void update(Time time) override;

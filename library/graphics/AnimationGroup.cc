@@ -102,7 +102,7 @@ namespace gf {
    * AnimationGroupGraphics
    */
 
-  AnimationGroupGraphics::AnimationGroupGraphics(std::vector<const Texture*> textures, const AnimationGroupData& data, RenderManager* render_manager)
+  AnimationGroupGraphics::AnimationGroupGraphics(std::vector<const GpuTexture*> textures, const AnimationGroupData& data, RenderManager* render_manager)
   : m_textures(std::move(textures))
   {
     details::AnimationBuilder builder;
@@ -149,7 +149,7 @@ namespace gf {
    * AnimationGroup
    */
 
-  AnimationGroup::AnimationGroup(std::vector<const Texture*> textures, const AnimationGroupData& data, RenderManager* render_manager)
+  AnimationGroup::AnimationGroup(std::vector<const GpuTexture*> textures, const AnimationGroupData& data, RenderManager* render_manager)
   : m_state(data)
   , m_graphics(std::move(textures), data, render_manager)
   {

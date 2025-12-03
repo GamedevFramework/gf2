@@ -6,11 +6,11 @@
 #include <gf2/core/ResourceBundle.h>
 #include <gf2/core/ResourceManager.h>
 
-#include <gf2/graphics/Texture.h>
+#include <gf2/graphics/GpuTexture.h>
 
 namespace gf {
 
-  RichMap::RichMap(const TiledMap* map, std::vector<const Texture*> textures)
+  RichMap::RichMap(const TiledMap* map, std::vector<const GpuTexture*> textures)
   : m_tiled_map(map)
   , m_textures(std::move(textures))
   {
@@ -18,13 +18,13 @@ namespace gf {
 
   namespace {
 
-    std::vector<const Texture*> load_resources(const TiledMap* resource, ResourceManager* resource_manager)
+    std::vector<const GpuTexture*> load_resources(const TiledMap* resource, ResourceManager* resource_manager)
     {
-      std::vector<const Texture*> resources;
+      std::vector<const GpuTexture*> resources;
       resources.reserve(resource->textures.size());
 
       for (const auto& texture : resource->textures) {
-        resources.push_back(resource_manager->get<Texture>(texture));
+        resources.push_back(resource_manager->get<GpuTexture>(texture));
       }
 
       return resources;
@@ -50,7 +50,7 @@ namespace gf {
 
     return ResourceBundle([map, context](ResourceBundle* bundle, ResourceManager* resource_manager, ResourceAction action) {
       for (const std::filesystem::path& texture : map->textures) {
-        bundle->handle<Texture>(texture, context.render_manager, resource_manager, action);
+        bundle->handle<GpuTexture>(texture, context.render_manager, resource_manager, action);
       }
     });
   }
@@ -60,7 +60,7 @@ namespace gf {
     return m_tiled_map;
   }
 
-  const Texture* RichMap::texture(uint32_t i) const
+  const GpuTexture* RichMap::texture(uint32_t i) const
   {
     assert(i < m_textures.size());
     return m_textures[i];

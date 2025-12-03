@@ -7,7 +7,7 @@
 
 #include "GraphicsApi.h"
 #include "Sprite.h"
-#include "Texture.h"
+#include "GpuTexture.h"
 #include "TransformableEntity.h"
 
 namespace gf {
@@ -15,8 +15,8 @@ namespace gf {
 
   class GF_GRAPHICS_API SpriteEntity : public TransformableEntity {
   public:
-    SpriteEntity(const Texture* texture, RenderManager* render_manager);
-    SpriteEntity(const Texture* texture, const SpriteData& data, RenderManager* render_manager);
+    SpriteEntity(const GpuTexture* texture, RenderManager* render_manager);
+    SpriteEntity(const GpuTexture* texture, const SpriteData& data, RenderManager* render_manager);
     SpriteEntity(const SpriteResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
     const Sprite& sprite() const

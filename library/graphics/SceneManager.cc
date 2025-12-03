@@ -92,7 +92,7 @@ namespace gf {
     return nullptr;
   }
 
-  void BasicSceneManager::render_records(RenderPass render_pass, const RenderRecorder& recorder)
+  void BasicSceneManager::render_records(GpuRenderPass render_pass, const RenderRecorder& recorder)
   {
     m_last_pipeline = nullptr;
     m_last_object = {};
@@ -130,7 +130,7 @@ namespace gf {
     }
   }
 
-  void BasicSceneManager::render_object(RenderPass render_pass, RenderObject object)
+  void BasicSceneManager::render_object(GpuRenderPass render_pass, RenderObject object)
   {
     // pipeline
 
@@ -342,9 +342,9 @@ namespace gf {
         m_scene->render(recorder);
         recorder.sort();
 
-        CommandBuffer command_buffer = *maybe_command_buffer;
+        GpuCommandBuffer command_buffer = *maybe_command_buffer;
         RenderTarget target = render_manager()->current_render_target();
-        RenderPass render_pass = command_buffer.begin_render_pass(target, m_scene->clear_color());
+        GpuRenderPass render_pass = command_buffer.begin_render_pass(target, m_scene->clear_color());
 
         render_records(render_pass, recorder);
 
@@ -444,9 +444,9 @@ namespace gf {
           std::for_each(scenes.begin(), scenes.end(), [&recorder](auto* scene) { scene->render(recorder); });
           recorder.sort();
 
-          CommandBuffer command_buffer = *maybe_command_buffer;
+          GpuCommandBuffer command_buffer = *maybe_command_buffer;
           RenderTarget target = render_manager()->current_render_target();
-          RenderPass render_pass = command_buffer.begin_render_pass(target, current_scene->clear_color());
+          GpuRenderPass render_pass = command_buffer.begin_render_pass(target, current_scene->clear_color());
 
           render_records(render_pass, recorder);
 

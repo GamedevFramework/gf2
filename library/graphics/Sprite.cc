@@ -5,13 +5,13 @@
 
 #include <gf2/core/ResourceManager.h>
 
+#include <gf2/graphics/GpuTexture.h>
 #include <gf2/graphics/RenderManager.h>
-#include <gf2/graphics/Texture.h>
 #include <gf2/graphics/Vertex.h>
 
 namespace gf {
 
-  Sprite::Sprite(const Texture* texture, RectF texture_region, Color color, RenderManager* render_manager)
+  Sprite::Sprite(const GpuTexture* texture, RectF texture_region, Color color, RenderManager* render_manager)
   : m_texture(texture)
   {
     const Vec2F size = texture->size() * texture_region.size();
@@ -37,23 +37,23 @@ namespace gf {
     m_indices = Buffer(BufferType::Device, BufferUsage::Index, std::begin(indices), std::size(indices), render_manager);
   }
 
-  Sprite::Sprite(const Texture* texture, RectF texture_region, RenderManager* render_manager)
+  Sprite::Sprite(const GpuTexture* texture, RectF texture_region, RenderManager* render_manager)
   : Sprite(texture, texture_region, White, render_manager)
   {
   }
 
-  Sprite::Sprite(const Texture* texture, RenderManager* render_manager)
+  Sprite::Sprite(const GpuTexture* texture, RenderManager* render_manager)
   : Sprite(texture, RectF::from_size({ 1.0f, 1.0f }), White, render_manager)
   {
   }
 
-  Sprite::Sprite(const Texture* texture, const SpriteData& data, RenderManager* render_manager)
+  Sprite::Sprite(const GpuTexture* texture, const SpriteData& data, RenderManager* render_manager)
   : Sprite(texture, data.texture_region, data.color, render_manager)
   {
   }
 
   Sprite::Sprite(const SpriteResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
-  : Sprite(resource_manager->get<Texture>(resource.texture), resource.data, render_manager)
+  : Sprite(resource_manager->get<GpuTexture>(resource.texture), resource.data, render_manager)
   {
   }
 

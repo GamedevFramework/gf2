@@ -11,7 +11,7 @@
 
 namespace gf {
   class Buffer;
-  class Texture;
+  class GpuTexture;
 
   enum class RenderPipelineType : uint8_t {
     Default,
@@ -26,7 +26,7 @@ namespace gf {
     std::size_t size = 0;
     std::size_t first = 0;
     std::ptrdiff_t offset = 0;
-    const Texture* texture = nullptr;
+    const GpuTexture* texture = nullptr;
   };
 
   struct GF_GRAPHICS_API RenderObject {

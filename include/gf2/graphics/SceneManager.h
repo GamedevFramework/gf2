@@ -9,12 +9,12 @@
 #include <gf2/core/Span.h>
 #include <gf2/core/Vec2.h>
 
-#include "CommandBuffer.h"
+#include "GpuCommandBuffer.h"
+#include "GpuTexture.h"
 #include "GraphicsApi.h"
 #include "GraphicsInitializer.h"
 #include "RenderManager.h"
 #include "RenderObject.h"
-#include "Texture.h"
 #include "Window.h"
 
 namespace gf {
@@ -46,7 +46,7 @@ namespace gf {
     GraphicsInitializer m_initializer;
     Window m_window;
     RenderManager m_render_manager;
-    Texture m_white;
+    GpuTexture m_white;
 
     DescriptorLayout m_camera_descriptor_layout;
     DescriptorLayout m_sampler_descriptor_layout;

@@ -5,7 +5,6 @@
 
 #include "Curve.h"
 #include "GraphicsApi.h"
-#include "Texture.h"
 #include "TransformableEntity.h"
 
 namespace gf {

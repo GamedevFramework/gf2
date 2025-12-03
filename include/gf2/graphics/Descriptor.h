@@ -7,12 +7,12 @@
 
 #include <gf2/core/Span.h>
 
+#include "GpuShader.h"
 #include "GraphicsApi.h"
-#include "Shader.h"
 
 namespace gf {
   class Buffer;
-  class Texture;
+  class GpuTexture;
   class RenderManager;
 
   // NOLINTNEXTLINE(performance-enum-size)
@@ -40,7 +40,7 @@ namespace gf {
   class GF_GRAPHICS_API Descriptor {
   public:
 
-    void write(uint32_t binding, const Texture* texture);
+    void write(uint32_t binding, const GpuTexture* texture);
     void write(uint32_t binding, const Buffer* buffer);
 
   private:

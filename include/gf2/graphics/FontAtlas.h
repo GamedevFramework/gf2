@@ -13,8 +13,8 @@
 #include <gf2/core/Span.h>
 #include <gf2/core/Vec2.h>
 
+#include "GpuTexture.h"
 #include "GraphicsApi.h"
-#include "Texture.h"
 
 namespace gf {
   class RenderManager;
@@ -30,7 +30,7 @@ namespace gf {
 
     void update_texture(RenderManager* render_manager);
 
-    const Texture* texture() const
+    const GpuTexture* texture() const
     {
       return &m_texture;
     }
@@ -38,7 +38,7 @@ namespace gf {
   private:
     BinPack m_bin_pack;
     Bitmap m_bitmap;
-    Texture m_texture;
+    GpuTexture m_texture;
 
     using AtlasKey = std::pair<uint32_t, FontFace*>;
 

@@ -15,7 +15,7 @@ int main()
 
   gf::SingleSceneManager scene_manager("nine patch | gf2", gf::vec(1600, 900));
 
-  const gf::Texture texture(texture_file, scene_manager.render_manager());
+  const gf::GpuTexture texture(texture_file, scene_manager.render_manager());
 
   gf::NinePatchData data;
   data.size = texture.size();

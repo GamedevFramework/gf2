@@ -8,12 +8,12 @@
 
 namespace gf {
 
-  NinePatchEntity::NinePatchEntity(const Texture* texture, Vec2F size, NinePatchLimits limits, RenderManager* render_manager)
+  NinePatchEntity::NinePatchEntity(const GpuTexture* texture, Vec2F size, NinePatchLimits limits, RenderManager* render_manager)
   : m_nine_patch(texture, size, limits, render_manager)
   {
   }
 
-  NinePatchEntity::NinePatchEntity(const Texture* texture, const NinePatchData& data, RenderManager* render_manager)
+  NinePatchEntity::NinePatchEntity(const GpuTexture* texture, const NinePatchData& data, RenderManager* render_manager)
   : m_nine_patch(texture, data, render_manager)
   {
   }

@@ -10,8 +10,8 @@
 #include <gf2/core/Range.h>
 #include <gf2/core/ResourceManager.h>
 
+#include <gf2/graphics/GpuTexture.h>
 #include <gf2/graphics/RawGeometry.h>
-#include <gf2/graphics/Texture.h>
 #include <gf2/graphics/Vertex.h>
 
 namespace gf {
@@ -124,17 +124,17 @@ namespace gf {
 
     using RawShapeGeometry = RawGeometry;
 
-    const Texture* load_resource(const ShapeResource& resource, ResourceManager* resource_manager)
+    const GpuTexture* load_resource(const ShapeResource& resource, ResourceManager* resource_manager)
     {
       if (resource.texture.empty()) {
         return nullptr;
       }
 
-      return resource_manager->get<Texture>(resource.texture);
+      return resource_manager->get<GpuTexture>(resource.texture);
     }
   }
 
-  Shape::Shape(const Texture* texture, const ShapeBuffer& buffer, RenderManager* render_manager)
+  Shape::Shape(const GpuTexture* texture, const ShapeBuffer& buffer, RenderManager* render_manager)
   : m_texture(texture)
   {
     auto raw_interior = compute_interior_shape_geometry(buffer);

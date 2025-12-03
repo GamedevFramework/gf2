@@ -8,7 +8,6 @@
 
 #include <gf2/graphics/Cursor.h>
 #include <gf2/graphics/RenderManager.h>
-#include <gf2/graphics/Texture.h>
 #include <gf2/graphics/Window.h>
 
 #include "ImguiApi.h"
