@@ -131,14 +131,14 @@ namespace gf {
   Curve::Curve(const CurveBuffer& buffer, RenderManager* render_manager)
   {
     auto raw_interior = compute_interior_curve_geometry(buffer);
-    m_vertices = Buffer(BufferType::Device, BufferUsage::Vertex, raw_interior.vertices.data(), raw_interior.vertices.size(), render_manager);
-    m_indices = Buffer(BufferType::Device, BufferUsage::Index, raw_interior.indices.data(), raw_interior.indices.size(), render_manager);
+    m_vertices = GpuBuffer(GpuBufferType::Device, GpuBufferUsage::Vertex, raw_interior.vertices.data(), raw_interior.vertices.size(), render_manager);
+    m_indices = GpuBuffer(GpuBufferType::Device, GpuBufferUsage::Index, raw_interior.indices.data(), raw_interior.indices.size(), render_manager);
     m_bounds = raw_interior.bounds;
 
     if (buffer.outline_thickness > 0.0f) {
       auto raw_outline = compute_outline_curve_geometry(buffer);
-      m_outline_vertices = Buffer(BufferType::Device, BufferUsage::Vertex, raw_outline.vertices.data(), raw_outline.vertices.size(), render_manager);
-      m_outline_indices = Buffer(BufferType::Device, BufferUsage::Index, raw_outline.indices.data(), raw_outline.indices.size(), render_manager);
+      m_outline_vertices = GpuBuffer(GpuBufferType::Device, GpuBufferUsage::Vertex, raw_outline.vertices.data(), raw_outline.vertices.size(), render_manager);
+      m_outline_indices = GpuBuffer(GpuBufferType::Device, GpuBufferUsage::Index, raw_outline.indices.data(), raw_outline.indices.size(), render_manager);
     }
   }
 
@@ -174,8 +174,8 @@ namespace gf {
    */
 
   CurveGroup::CurveGroup()
-  : m_vertices(BufferType::Host, BufferUsage::Vertex)
-  , m_indices(BufferType::Host, BufferUsage::Index)
+  : m_vertices(GpuBufferType::Host, GpuBufferUsage::Vertex)
+  , m_indices(GpuBufferType::Host, GpuBufferUsage::Index)
   {
     m_vertices.set_debug_name("[gf2] Curve Group Vertex Buffer");
     m_indices.set_debug_name("[gf2] Curve Group Index Buffer");

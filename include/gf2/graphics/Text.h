@@ -7,7 +7,6 @@
 #include <gf2/core/TextData.h>
 #include <gf2/core/TextStyle.h>
 
-#include "Buffer.h"
 #include "DynamicBuffer.h"
 #include "FontAtlas.h"
 #include "GraphicsApi.h"

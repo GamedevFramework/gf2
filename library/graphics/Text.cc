@@ -817,8 +817,8 @@ namespace gf {
   Text::Text(FontAtlas* atlas, FontFace* default_font, const TextData& data, RenderManager* render_manager)
   : m_atlas(atlas)
   , m_font(default_font)
-  , m_vertices(BufferType::Device, BufferUsage::Vertex)
-  , m_indices(BufferType::Device, BufferUsage::Index)
+  , m_vertices(GpuBufferType::Device, GpuBufferUsage::Vertex)
+  , m_indices(GpuBufferType::Device, GpuBufferUsage::Index)
   {
     update(data, render_manager);
   }
@@ -826,8 +826,8 @@ namespace gf {
   Text::Text(FontAtlas* atlas, const TextResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
   : m_atlas(atlas)
   , m_font(resource_manager->get<FontFace>(resource.font))
-  , m_vertices(BufferType::Device, BufferUsage::Vertex)
-  , m_indices(BufferType::Device, BufferUsage::Index)
+  , m_vertices(GpuBufferType::Device, GpuBufferUsage::Vertex)
+  , m_indices(GpuBufferType::Device, GpuBufferUsage::Index)
   {
     update(resource.data, render_manager);
   }
@@ -877,8 +877,8 @@ namespace gf {
   , m_bold_font(bold_font)
   , m_italic_font(italic_font)
   , m_bold_italic_font(bold_italic_font)
-  , m_vertices(BufferType::Device, BufferUsage::Vertex)
-  , m_indices(BufferType::Device, BufferUsage::Index)
+  , m_vertices(GpuBufferType::Device, GpuBufferUsage::Vertex)
+  , m_indices(GpuBufferType::Device, GpuBufferUsage::Index)
   {
     update(data, render_manager);
   }
@@ -890,8 +890,8 @@ namespace gf {
   , m_bold_font(resource.bold_font.empty() ? nullptr : resource_manager->get<FontFace>(resource.bold_font))
   , m_italic_font(resource.italic_font.empty() ? nullptr : resource_manager->get<FontFace>(resource.italic_font))
   , m_bold_italic_font(resource.bold_italic_font.empty() ? nullptr : resource_manager->get<FontFace>(resource.bold_italic_font))
-  , m_vertices(BufferType::Device, BufferUsage::Vertex)
-  , m_indices(BufferType::Device, BufferUsage::Index)
+  , m_vertices(GpuBufferType::Device, GpuBufferUsage::Vertex)
+  , m_indices(GpuBufferType::Device, GpuBufferUsage::Index)
   {
     update(resource.data, render_manager);
   }

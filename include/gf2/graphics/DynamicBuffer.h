@@ -5,21 +5,21 @@
 
 #include <string>
 
-#include "Buffer.h"
+#include "GpuBuffer.h"
 #include "GraphicsApi.h"
 
 namespace gf {
 
   class GF_GRAPHICS_API DynamicBuffer {
   public:
-    DynamicBuffer(BufferType type, BufferUsage usage);
+    DynamicBuffer(GpuBufferType type, GpuBufferUsage usage);
 
-    Buffer& buffer()
+    GpuBuffer& buffer()
     {
       return m_buffers[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     }
 
-    const Buffer& buffer() const
+    const GpuBuffer& buffer() const
     {
       return m_buffers[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     }
@@ -37,10 +37,10 @@ namespace gf {
   private:
     static constexpr std::size_t FramesInFlight = 3;
 
-    BufferType m_type;
-    BufferUsage m_usage;
+    GpuBufferType m_type;
+    GpuBufferUsage m_usage;
     std::size_t m_current_buffer = 0;
-    Buffer m_buffers[FramesInFlight];
+    GpuBuffer m_buffers[FramesInFlight];
     std::string m_debug_name;
   };
 

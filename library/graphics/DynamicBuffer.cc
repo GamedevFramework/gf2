@@ -5,7 +5,7 @@
 
 namespace gf {
 
-  DynamicBuffer::DynamicBuffer(BufferType type, BufferUsage usage)
+  DynamicBuffer::DynamicBuffer(GpuBufferType type, GpuBufferUsage usage)
   : m_type(type)
   , m_usage(usage)
   {
@@ -17,7 +17,7 @@ namespace gf {
     auto& current_buffer = m_buffers[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
 
     if (size > current_buffer.size()) {
-      current_buffer = Buffer(m_type, m_usage, size, member_size, data, render_manager);
+      current_buffer = GpuBuffer(m_type, m_usage, size, member_size, data, render_manager);
 
       if (!m_debug_name.empty()) {
         current_buffer.set_debug_name(m_debug_name + " #" + std::to_string(m_current_buffer));

@@ -13,7 +13,7 @@
 #include <gf2/core/Time.h>
 
 #include "AnimationRuntime.h"
-#include "Buffer.h"
+#include "GpuBuffer.h"
 #include "GraphicsApi.h"
 #include "RenderObject.h"
 
@@ -55,8 +55,8 @@ namespace gf {
 
   private:
     std::vector<const GpuTexture*> m_textures;
-    Buffer m_vertices;
-    Buffer m_indices;
+    GpuBuffer m_vertices;
+    GpuBuffer m_indices;
     RectF m_bounds = RectF::from_size({ 0.0f, 0.0f });
     details::AnimationGraphicsRuntime m_animation;
   };

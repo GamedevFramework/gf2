@@ -6,7 +6,7 @@
 #include <cassert>
 #include <cstddef>
 
-#include <gf2/graphics/Buffer.h>
+#include <gf2/graphics/GpuBuffer.h>
 #include <gf2/graphics/RenderPipeline.h>
 
 namespace gf {
@@ -75,7 +75,7 @@ namespace gf {
     // TODO
   }
 
-  void GpuRenderPass::bind_vertex_buffer(const Buffer* buffer, std::size_t offset) const
+  void GpuRenderPass::bind_vertex_buffer(const GpuBuffer* buffer, std::size_t offset) const
   {
     assert(m_render_pass);
     assert(buffer);
@@ -83,7 +83,7 @@ namespace gf {
     SDL_BindGPUVertexBuffers(m_render_pass, 0, &binding, 1);
   }
 
-  void GpuRenderPass::bind_index_buffer(const Buffer* buffer, std::size_t offset) const
+  void GpuRenderPass::bind_index_buffer(const GpuBuffer* buffer, std::size_t offset) const
   {
     assert(m_render_pass);
     assert(buffer);
@@ -129,7 +129,7 @@ namespace gf {
    * MemoryCommandBuffer
    */
 
-  void GpuCopyPass::copy_buffer_to_buffer(TransferBuffer* source, Buffer* destination, std::size_t size)
+  void GpuCopyPass::copy_buffer_to_buffer(TransferBuffer* source, GpuBuffer* destination, std::size_t size)
   {
     assert(m_copy_pass);
     // TODO

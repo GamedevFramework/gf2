@@ -11,7 +11,7 @@
 #include <gf2/core/Mat4.h>
 #include <gf2/core/Rect.h>
 
-#include "Buffer.h"
+#include "GpuBuffer.h"
 #include "GraphicsApi.h"
 #include "RenderObject.h"
 #include "TextEffect.h"
@@ -79,10 +79,10 @@ namespace gf {
     std::vector<RenderObject> m_objects;
 
     uint32_t m_next_view_matrix_index = 0;
-    std::vector<Buffer> m_view_matrix_buffers;
+    std::vector<GpuBuffer> m_view_matrix_buffers;
 
     uint32_t m_next_text_effect_index = 0;
-    std::vector<Buffer> m_text_effect_buffers;
+    std::vector<GpuBuffer> m_text_effect_buffers;
   };
 
 }

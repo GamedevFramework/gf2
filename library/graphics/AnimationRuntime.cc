@@ -5,9 +5,6 @@
 
 #include <limits>
 
-#include <gf2/graphics/Buffer.h>
-#include <gf2/graphics/GpuTexture.h>
-
 namespace gf::details {
 
   AnimationGraphicsRuntime AnimationBuilder::append_data(const std::vector<const GpuTexture*>& textures, const AnimationData& data)
@@ -65,14 +62,14 @@ namespace gf::details {
     return runtime;
   }
 
-  Buffer AnimationBuilder::create_vertices(RenderManager* render_manager)
+  GpuBuffer AnimationBuilder::create_vertices(RenderManager* render_manager)
   {
-    return { BufferType::Device, BufferUsage::Vertex, vertices.data(), vertices.size(), render_manager };
+    return { GpuBufferType::Device, GpuBufferUsage::Vertex, vertices.data(), vertices.size(), render_manager };
   }
 
-  Buffer AnimationBuilder::create_indices(RenderManager* render_manager)
+  GpuBuffer AnimationBuilder::create_indices(RenderManager* render_manager)
   {
-    return { BufferType::Device, BufferUsage::Index, indices.data(), indices.size(), render_manager };
+    return { GpuBufferType::Device, GpuBufferUsage::Index, indices.data(), indices.size(), render_manager };
   }
 
 }

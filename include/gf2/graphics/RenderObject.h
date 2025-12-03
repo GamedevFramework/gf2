@@ -10,7 +10,7 @@
 #include "GraphicsApi.h"
 
 namespace gf {
-  class Buffer;
+  class GpuBuffer;
   class GpuTexture;
 
   enum class RenderPipelineType : uint8_t {
@@ -21,8 +21,8 @@ namespace gf {
 
   struct GF_GRAPHICS_API RenderGeometry {
     RenderPipelineType pipeline = RenderPipelineType::Default;
-    const Buffer* vertices = nullptr;
-    const Buffer* indices = nullptr;
+    const GpuBuffer* vertices = nullptr;
+    const GpuBuffer* indices = nullptr;
     std::size_t size = 0;
     std::size_t first = 0;
     std::ptrdiff_t offset = 0;

@@ -10,10 +10,10 @@
 namespace gf {
 
   ConsoleGraphics::ConsoleGraphics()
-  : m_background_vertices(BufferType::Device, BufferUsage::Vertex)
-  , m_background_indices(BufferType::Device, BufferUsage::Index)
-  , m_foreground_vertices(BufferType::Device, BufferUsage::Vertex)
-  , m_foreground_indices(BufferType::Device, BufferUsage::Index)
+  : m_background_vertices(GpuBufferType::Device, GpuBufferUsage::Vertex)
+  , m_background_indices(GpuBufferType::Device, GpuBufferUsage::Index)
+  , m_foreground_vertices(GpuBufferType::Device, GpuBufferUsage::Vertex)
+  , m_foreground_indices(GpuBufferType::Device, GpuBufferUsage::Index)
   {
     m_background_vertices.set_debug_name("[gf2] Console Background Vertex Buffer");
     m_background_indices.set_debug_name("[gf2] Console Background Index Buffer");
