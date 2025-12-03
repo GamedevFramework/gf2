@@ -1,23 +1,25 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
-#ifndef GF_DEVICE_H
-#define GF_DEVICE_H
+#ifndef GF_GPU_DEVICE_H
+#define GF_GPU_DEVICE_H
 
 #include <SDL3/SDL_gpu.h>
+
+#include <gf2/core/Span.h>
 
 #include "GraphicsApi.h"
 
 namespace gf {
 
-  class GF_GRAPHICS_API Device {
+  class GF_GRAPHICS_API GpuDevice {
   public:
-    Device() = default;
-    Device(const Device&) = delete;
-    Device(Device&& other) noexcept;
-    ~Device();
+    GpuDevice() = default;
+    GpuDevice(const GpuDevice&) = delete;
+    GpuDevice(GpuDevice&& other) noexcept;
+    ~GpuDevice();
 
-    Device& operator=(const Device&) = delete;
-    Device& operator=(Device&& other) noexcept;
+    GpuDevice& operator=(const GpuDevice&) = delete;
+    GpuDevice& operator=(GpuDevice&& other) noexcept;
 
     explicit operator bool() const
     {
@@ -28,8 +30,9 @@ namespace gf {
     friend class RenderManager;
     friend class Texture;
     friend class TransferBuffer;
+    friend class GpuShader;
 
-    Device(SDL_GPUDevice* device)
+    GpuDevice(SDL_GPUDevice* device)
     : m_device(device)
     {
     }
@@ -45,4 +48,4 @@ namespace gf {
 }
 
 
-#endif // GF_DEVICE_H
+#endif // GF_GPU_DEVICE_H

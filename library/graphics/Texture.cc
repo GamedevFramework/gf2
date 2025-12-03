@@ -40,7 +40,7 @@ namespace gf {
   , m_usage(usage)
   , m_format(format)
   {
-    Device& device = render_manager->device();
+    GpuDevice& device = render_manager->device();
 
     SDL_GPUTextureCreateInfo texture_info = { };
     texture_info.type = SDL_GPU_TEXTURETYPE_2D;

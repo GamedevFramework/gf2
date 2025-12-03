@@ -153,7 +153,7 @@ namespace gf {
 
     // model matrix
 
-    render_pass.push_constant(&m_default_pipeline_layout, ShaderStage::Vertex, object.transform);
+    render_pass.push_constant(&m_default_pipeline_layout, GpuShaderStage::Vertex, object.transform);
 
     assert(object.geometry.vertices != nullptr);
 
@@ -177,7 +177,7 @@ namespace gf {
     // view matrix descriptor
 
     const DescriptorBinding camera_binding[] = {
-      { 0, DescriptorType::Buffer, ShaderStage::Vertex }
+      { 0, DescriptorType::Buffer, GpuShaderStage::Vertex }
     };
 
     m_camera_descriptor_layout = DescriptorLayout(camera_binding, render_manager());
@@ -185,7 +185,7 @@ namespace gf {
     // sampler descriptor
 
     const DescriptorBinding sampler_binding[] = {
-      { 0, DescriptorType::Sampler, ShaderStage::Fragment }
+      { 0, DescriptorType::Sampler, GpuShaderStage::Fragment }
     };
 
     m_sampler_descriptor_layout = DescriptorLayout(sampler_binding, render_manager());
@@ -193,7 +193,7 @@ namespace gf {
     // text_descriptor_layout
 
     const DescriptorBinding text_binding[] = {
-      { 0, DescriptorType::Buffer, ShaderStage::Fragment }
+      { 0, DescriptorType::Buffer, GpuShaderStage::Fragment }
     };
 
     m_text_descriptor_layout = DescriptorLayout(text_binding, render_manager());
@@ -202,7 +202,7 @@ namespace gf {
 
     RenderPipelineLayoutBuilder default_pipeline_layout_builder;
 
-    default_pipeline_layout_builder.set_push_constant_parameters(ShaderStage::Vertex, sizeof(float) * 16)
+    default_pipeline_layout_builder.set_push_constant_parameters(GpuShaderStage::Vertex, sizeof(float) * 16)
         .add_descriptor_layout(&m_camera_descriptor_layout)
         .add_descriptor_layout(&m_sampler_descriptor_layout);
 
@@ -213,7 +213,7 @@ namespace gf {
 
     RenderPipelineLayoutBuilder text_pipeline_layout_builder;
 
-    text_pipeline_layout_builder.set_push_constant_parameters(ShaderStage::Vertex, sizeof(float) * 16)
+    text_pipeline_layout_builder.set_push_constant_parameters(GpuShaderStage::Vertex, sizeof(float) * 16)
         .add_descriptor_layout(&m_camera_descriptor_layout)
         .add_descriptor_layout(&m_sampler_descriptor_layout)
         .add_descriptor_layout(&m_text_descriptor_layout);
@@ -233,8 +233,8 @@ namespace gf {
     RenderPipelineBuilder default_pipeline_builder;
 
     default_pipeline_builder.set_vertex_input(Vertex::compute_input())
-        .add_shader(ShaderStage::Vertex, gf::span(default_vert_shader_code))
-        .add_shader(ShaderStage::Fragment, gf::span(default_frag_shader_code))
+        .add_shader(GpuShaderStage::Vertex, gf::span(default_vert_shader_code))
+        .add_shader(GpuShaderStage::Fragment, gf::span(default_frag_shader_code))
         .set_pipeline_layout(&m_default_pipeline_layout);
 
     m_default_pipeline = default_pipeline_builder.build(render_manager());
@@ -245,8 +245,8 @@ namespace gf {
     RenderPipelineBuilder text_pipeline_builder;
 
     text_pipeline_builder.set_vertex_input(Vertex::compute_input())
-        .add_shader(ShaderStage::Vertex, gf::span(default_vert_shader_code))
-        .add_shader(ShaderStage::Fragment, gf::span(text_frag_shader_code))
+        .add_shader(GpuShaderStage::Vertex, gf::span(default_vert_shader_code))
+        .add_shader(GpuShaderStage::Fragment, gf::span(text_frag_shader_code))
         .set_pipeline_layout(&m_text_pipeline_layout);
 
     m_text_pipeline = text_pipeline_builder.build(render_manager());
@@ -256,8 +256,8 @@ namespace gf {
 
     RenderPipelineBuilder fullscreen_pipeline_builder;
 
-    fullscreen_pipeline_builder.add_shader(ShaderStage::Vertex, gf::span(fullscreen_vert_shader_code))
-        .add_shader(ShaderStage::Fragment, gf::span(fullscreen_frag_shader_code))
+    fullscreen_pipeline_builder.add_shader(GpuShaderStage::Vertex, gf::span(fullscreen_vert_shader_code))
+        .add_shader(GpuShaderStage::Fragment, gf::span(fullscreen_frag_shader_code))
         .set_pipeline_layout(&m_fullscreen_pipeline_layout);
 
     m_fullscreen_pipeline = fullscreen_pipeline_builder.build(render_manager());
@@ -268,8 +268,8 @@ namespace gf {
     RenderPipelineBuilder imgui_pipeline_builder;
 
     imgui_pipeline_builder.set_vertex_input(ImguiVertex::compute_input())
-        .add_shader(ShaderStage::Vertex, gf::span(default_vert_shader_code))
-        .add_shader(ShaderStage::Fragment, gf::span(default_frag_shader_code))
+        .add_shader(GpuShaderStage::Vertex, gf::span(default_vert_shader_code))
+        .add_shader(GpuShaderStage::Fragment, gf::span(default_frag_shader_code))
         .set_pipeline_layout(&m_default_pipeline_layout);
 
     m_imgui_pipeline = imgui_pipeline_builder.build(render_manager());

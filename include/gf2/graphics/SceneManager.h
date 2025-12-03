@@ -37,8 +37,8 @@ namespace gf {
 
   protected:
     const RenderPipeline* render_pipeline(RenderPipelineType type) const;
-    void render_records(RenderPass render_pass, const RenderRecorder& recorder);
-    void render_object(RenderPass render_pass, RenderObject object);
+    void render_records(GpuRenderPass render_pass, const RenderRecorder& recorder);
+    void render_object(GpuRenderPass render_pass, RenderObject object);
 
   private:
     void build_default_pipelines();
