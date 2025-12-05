@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
-#ifndef GF_TRANSFER_BUFFER_H
-#define GF_TRANSFER_BUFFER_H
+#ifndef GF_GPU_TRANSFER_BUFFER_H
+#define GF_GPU_TRANSFER_BUFFER_H
 
 #include <type_traits>
 
@@ -14,20 +14,20 @@ namespace gf {
   class RenderManager;
 
   // NOLINTNEXTLINE(performance-enum-size)
-  enum class TransferBufferUsage : std::underlying_type_t<SDL_GPUTransferBufferUsage> {
+  enum class GpuTransferBufferUsage : std::underlying_type_t<SDL_GPUTransferBufferUsage> {
     Upload = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD,
     Download = SDL_GPU_TRANSFERBUFFERUSAGE_DOWNLOAD,
   };
 
-  class GF_GRAPHICS_API TransferBuffer {
+  class GF_GRAPHICS_API GpuTransferBuffer {
   public:
-    TransferBuffer() = default;
-    TransferBuffer(std::size_t size, RenderManager* render_manager);
+    GpuTransferBuffer() = default;
+    GpuTransferBuffer(std::size_t size, RenderManager* render_manager);
 
     void update(std::size_t size, const void* data);
 
   private:
-    TransferBuffer(SDL_GPUDevice* device, SDL_GPUTransferBuffer* buffer)
+    GpuTransferBuffer(SDL_GPUDevice* device, SDL_GPUTransferBuffer* buffer)
     : m_handle(device, buffer)
     {
     }
@@ -37,4 +37,4 @@ namespace gf {
 
 }
 
-#endif // GF_TRANSFER_BUFFER_H
+#endif // GF_GPU_TRANSFER_BUFFER_H

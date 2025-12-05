@@ -13,14 +13,11 @@
 #include <gf2/core/Color.h>
 #include <gf2/core/Span.h>
 
-#include "Descriptor.h"
-#include "GpuBuffer.h"
 #include "GpuCommandBuffer.h"
 #include "GpuDevice.h"
+#include "GpuTransferBuffer.h"
 #include "GraphicsApi.h"
-#include "RenderPipeline.h"
 #include "RenderTarget.h"
-#include "TransferBuffer.h"
 #include "Window.h"
 
 namespace gf {
@@ -36,14 +33,13 @@ namespace gf {
     void end_command_buffer(GpuCommandBuffer buffer);
 
     GpuCopyPass current_copy_pass();
-    void defer_release_transfer_buffer(TransferBuffer buffer);
+    void defer_release_transfer_buffer(GpuTransferBuffer buffer);
 
     void prepare_asynchronous_load();
     void begin_asynchronous_load();
     void end_asynchronous_load();
     void finish_asynchronous_load();
 
-    Descriptor allocate_descriptor_for_layout(const DescriptorLayout* layout) const;
     RenderTarget current_render_target() const;
 
     void wait_idle() const;
@@ -79,7 +75,7 @@ namespace gf {
 
     // memory stuff
 
-    std::vector<std::vector<TransferBuffer>> m_transfer_buffers;
+    std::vector<std::vector<GpuTransferBuffer>> m_transfer_buffers;
 
     // descriptor set stuff
 
@@ -87,7 +83,7 @@ namespace gf {
     // asynchronous load objects
 
     bool m_async_loading = false;
-    std::vector<TransferBuffer> m_async_staging_buffers;
+    std::vector<GpuTransferBuffer> m_async_staging_buffers;
   };
 
 }

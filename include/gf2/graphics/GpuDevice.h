@@ -31,7 +31,7 @@ namespace gf {
     friend class GpuBuffer;
     friend class GpuTexture;
     friend class GpuShader;
-    friend class TransferBuffer;
+    friend class GpuTransferBuffer;
 
     GpuDevice(SDL_GPUDevice* device)
     : m_device(device)

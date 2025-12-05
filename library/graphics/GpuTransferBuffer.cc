@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
 
-#include <gf2/graphics/TransferBuffer.h>
+#include <gf2/graphics/GpuTransferBuffer.h>
 
 #include <cassert>
 #include <cstring>
@@ -12,7 +12,7 @@
 
 namespace gf {
 
-  TransferBuffer::TransferBuffer(std::size_t size, RenderManager* render_manager)
+  GpuTransferBuffer::GpuTransferBuffer(std::size_t size, RenderManager* render_manager)
   {
     SDL_GPUTransferBufferCreateInfo info = { };
     info.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD;
@@ -24,7 +24,7 @@ namespace gf {
     m_handle = { *device, buffer };
   }
 
-  void TransferBuffer::update(std::size_t size, const void* data)
+  void GpuTransferBuffer::update(std::size_t size, const void* data)
   {
     assert(m_handle);
     void* destination = SDL_MapGPUTransferBuffer(m_handle.device(), m_handle, false);
