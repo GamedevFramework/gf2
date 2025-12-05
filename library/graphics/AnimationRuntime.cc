@@ -64,12 +64,12 @@ namespace gf::details {
 
   GpuBuffer AnimationBuilder::create_vertices(RenderManager* render_manager)
   {
-    return { GpuBufferType::Device, GpuBufferUsage::Vertex, vertices.data(), vertices.size(), render_manager };
+    return { GpuBufferUsage::Vertex, vertices.data(), vertices.size(), render_manager };
   }
 
   GpuBuffer AnimationBuilder::create_indices(RenderManager* render_manager)
   {
-    return { GpuBufferType::Device, GpuBufferUsage::Index, indices.data(), indices.size(), render_manager };
+    return { GpuBufferUsage::Index, indices.data(), indices.size(), render_manager };
   }
 
 }

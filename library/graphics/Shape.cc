@@ -138,14 +138,14 @@ namespace gf {
   : m_texture(texture)
   {
     auto raw_interior = compute_interior_shape_geometry(buffer);
-    m_vertices = GpuBuffer(GpuBufferType::Device, GpuBufferUsage::Vertex, raw_interior.vertices.data(), raw_interior.vertices.size(), render_manager);
-    m_indices = GpuBuffer(GpuBufferType::Device, GpuBufferUsage::Index, raw_interior.indices.data(), raw_interior.indices.size(), render_manager);
+    m_vertices = GpuBuffer(GpuBufferUsage::Vertex, raw_interior.vertices.data(), raw_interior.vertices.size(), render_manager);
+    m_indices = GpuBuffer(GpuBufferUsage::Index, raw_interior.indices.data(), raw_interior.indices.size(), render_manager);
     m_bounds = raw_interior.bounds;
 
     if (buffer.outline_thickness > 0.0f) {
       auto raw_outline = compute_outline_shape_geometry(buffer, raw_interior.center);
-      m_outline_vertices = GpuBuffer(GpuBufferType::Device, GpuBufferUsage::Vertex, raw_outline.vertices.data(), raw_outline.vertices.size(), render_manager);
-      m_outline_indices = GpuBuffer(GpuBufferType::Device, GpuBufferUsage::Index, raw_outline.indices.data(), raw_outline.indices.size(), render_manager);
+      m_outline_vertices = GpuBuffer(GpuBufferUsage::Vertex, raw_outline.vertices.data(), raw_outline.vertices.size(), render_manager);
+      m_outline_indices = GpuBuffer(GpuBufferUsage::Index, raw_outline.indices.data(), raw_outline.indices.size(), render_manager);
     }
   }
 
@@ -186,8 +186,8 @@ namespace gf {
    */
 
   ShapeGroup::ShapeGroup()
-  : m_vertices(GpuBufferType::Host, GpuBufferUsage::Vertex)
-  , m_indices(GpuBufferType::Host, GpuBufferUsage::Index)
+  : m_vertices(GpuBufferUsage::Vertex)
+  , m_indices(GpuBufferUsage::Index)
   {
     m_vertices.set_debug_name("[gf2] Shape Group Vertex Buffer");
     m_indices.set_debug_name("[gf2] Shape Group Index Buffer");

@@ -28,11 +28,11 @@ namespace gf {
     auto aligned_view_matrix = compute_aligned(view_matrix);
 
     if (m_next_view_matrix_index == m_view_matrix_buffers.size()) {
-      GpuBuffer buffer(GpuBufferType::Device, GpuBufferUsage::Uniform, aligned_view_matrix.size(), sizeof(float), aligned_view_matrix.data(), m_render_manager);
+      GpuBuffer buffer(GpuBufferUsage::GraphicsStorageRead, aligned_view_matrix.size() * sizeof(float), aligned_view_matrix.data(), m_render_manager);
       buffer.set_debug_name("[gf2] View Matrix Buffer #" + std::to_string(m_next_view_matrix_index));
       m_view_matrix_buffers.push_back(std::move(buffer));
     } else {
-      m_view_matrix_buffers[m_next_view_matrix_index].update(aligned_view_matrix.size(), sizeof(float), aligned_view_matrix.data(), m_render_manager);
+      m_view_matrix_buffers[m_next_view_matrix_index].update(aligned_view_matrix.size() * sizeof(float), aligned_view_matrix.data(), m_render_manager);
     }
 
     const Record record = { RecordType::View, m_views.size() };
@@ -55,11 +55,11 @@ namespace gf {
     auto effect_data = compute_raw(effect);
 
     if (m_next_text_effect_index == m_text_effect_buffers.size()) {
-      GpuBuffer buffer(GpuBufferType::Device, GpuBufferUsage::Uniform, effect_data.size(), sizeof(float), effect_data.data(), m_render_manager);
+      GpuBuffer buffer(GpuBufferUsage::GraphicsStorageRead, effect_data.size() * sizeof(float), effect_data.data(), m_render_manager);
       buffer.set_debug_name("[gf2] Text Effect Buffer #" + std::to_string(m_next_text_effect_index));
       m_text_effect_buffers.push_back(std::move(buffer));
     } else {
-      m_text_effect_buffers[m_next_text_effect_index].update(effect_data.size(), sizeof(float), effect_data.data(), m_render_manager);
+      m_text_effect_buffers[m_next_text_effect_index].update(effect_data.size() * sizeof(float), effect_data.data(), m_render_manager);
     }
 
     const Record record = { RecordType::Text, m_texts.size() };

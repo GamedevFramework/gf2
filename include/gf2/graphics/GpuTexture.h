@@ -25,6 +25,11 @@ namespace gf {
   enum class GpuTextureUsage : SDL_GPUTextureUsageFlags {
     Sampler = SDL_GPU_TEXTUREUSAGE_SAMPLER,
     ColorTarget = SDL_GPU_TEXTUREUSAGE_COLOR_TARGET,
+    DepthStencilTarget = SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET,
+    GraphicsStorageRead = SDL_GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ,
+    ComputeStorageRead = SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ,
+    ComputeStorageWrite = SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_WRITE,
+    ComputeStorageSimultaneousReadWrite = SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_SIMULTANEOUS_READ_WRITE,
   };
 
   template<>
@@ -58,12 +63,12 @@ namespace gf {
   private:
     friend class Descriptor;
 
+    details::GraphicsHandle<SDL_GPUTexture, SDL_ReleaseGPUTexture> m_texture_handle;
+    details::GraphicsHandle<SDL_GPUSampler, SDL_ReleaseGPUSampler> m_sampler_handle;
+
     Vec2I m_image_size = { 0, 0 };
     Flags<GpuTextureUsage> m_usage = None;
     Format m_format = Format::Undefined;
-
-    details::GraphicsHandle<SDL_GPUTexture, SDL_ReleaseGPUTexture> m_texture_handle;
-    details::GraphicsHandle<SDL_GPUSampler, SDL_ReleaseGPUSampler> m_sampler_handle;
   };
 
 }

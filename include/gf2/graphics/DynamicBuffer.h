@@ -12,7 +12,7 @@ namespace gf {
 
   class GF_GRAPHICS_API DynamicBuffer {
   public:
-    DynamicBuffer(GpuBufferType type, GpuBufferUsage usage);
+    DynamicBuffer(Flags<GpuBufferUsage> usage);
 
     GpuBuffer& buffer()
     {
@@ -24,12 +24,12 @@ namespace gf {
       return m_buffers[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     }
 
-    void update(std::size_t size, std::size_t member_size, const void* data, RenderManager* render_manager);
+    void update(std::size_t size, const void* data, RenderManager* render_manager);
 
     template<typename T>
     void update(const T* data, std::size_t size, RenderManager* render_manager)
     {
-      update(size, sizeof(T), static_cast<const void*>(data), render_manager);
+      update(size * sizeof(T), static_cast<const void*>(data), render_manager);
     }
 
     void set_debug_name(const std::string& name);
@@ -37,8 +37,7 @@ namespace gf {
   private:
     static constexpr std::size_t FramesInFlight = 3;
 
-    GpuBufferType m_type;
-    GpuBufferUsage m_usage;
+    Flags<GpuBufferUsage> m_usage;
     std::size_t m_current_buffer = 0;
     GpuBuffer m_buffers[FramesInFlight];
     std::string m_debug_name;

@@ -98,8 +98,8 @@ namespace gf {
       { { x3, y3 }, { u3, v3 }, color },
     };
 
-    m_vertices = GpuBuffer(GpuBufferType::Device, GpuBufferUsage::Vertex, std::begin(vertices), std::size(vertices), render_manager);
-    m_indices = GpuBuffer(GpuBufferType::Device, GpuBufferUsage::Index, std::begin(Indices), std::size(Indices), render_manager);
+    m_vertices = GpuBuffer(GpuBufferUsage::Vertex, std::begin(vertices), std::size(vertices), render_manager);
+    m_indices = GpuBuffer(GpuBufferUsage::Index, std::begin(Indices), std::size(Indices), render_manager);
   }
 
   NinePatch::NinePatch(const GpuTexture* texture, Vec2F size, NinePatchLimits limits, RectF texture_region, RenderManager* render_manager)

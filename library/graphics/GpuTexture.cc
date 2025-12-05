@@ -94,7 +94,7 @@ namespace gf {
   void GpuTexture::update(std::size_t size, const uint8_t* data, RenderManager* render_manager)
   {
     TransferBuffer buffer(size * sizeof(uint8_t), render_manager);
-    buffer.update(data, size);
+    buffer.update(size, data);
 
     GpuCopyPass copy_pass = render_manager->current_copy_pass();
     copy_pass.copy_buffer_to_texture(&buffer, this, m_image_size);

@@ -13,80 +13,50 @@
 
 namespace gf {
 
-  GpuBuffer::GpuBuffer(GpuBufferType type, GpuBufferUsage usage, std::size_t size, std::size_t member_size, const void* data, RenderManager* render_manager)
+  GpuBuffer::GpuBuffer(Flags<GpuBufferUsage> usage, std::size_t size, const void* data, RenderManager* render_manager)
   : m_size(size)
-  , m_memory_size(size * member_size)
-  , m_type(type)
   , m_usage(usage)
   {
     if (m_size == 0) {
       return;
     }
 
-    switch (type) {
-      case GpuBufferType::Host:
-        create_host_buffer(usage, m_memory_size, data);
-        break;
-      case GpuBufferType::Device:
-        create_device_buffer(usage, m_memory_size, data, render_manager);
-        break;
-    }
+    SDL_GPUBufferCreateInfo info = {};
+    info.usage = usage.value();
+    info.size = size;
+
+    GpuDevice* device = render_manager->device();
+
+    SDL_GPUBuffer* buffer = SDL_CreateGPUBuffer(*device, &info);
+    m_handle = { *device, buffer };
+
+    update_device_buffer(size, data, render_manager);
   }
 
-  void GpuBuffer::update(std::size_t size, std::size_t member_size, const void* data, RenderManager* render_manager)
+  void GpuBuffer::update(std::size_t size, const void* data, RenderManager* render_manager)
   {
-    const std::size_t total_size = size * member_size;
-    assert(total_size <= m_memory_size);
     m_size = size;
 
     if (size == 0) {
       return;
     }
 
-    switch (m_type) {
-      case GpuBufferType::Host:
-        update_host_buffer(total_size, data);
-        break;
-      case GpuBufferType::Device:
-        update_device_buffer(total_size, data, render_manager);
-        break;
-    }
+    update_device_buffer(size, data, render_manager);
   }
 
-  void GpuBuffer::set_debug_name(const std::string& name) const
+  void GpuBuffer::set_debug_name(const std::string& name)
   {
+    SDL_SetGPUBufferName(m_handle.device(), m_handle.get(), name.c_str());
   }
 
-  void GpuBuffer::create_host_buffer(GpuBufferUsage usage, std::size_t total_size, const void* data)
+  void GpuBuffer::update_device_buffer(std::size_t size, const void* data, RenderManager* render_manager)
   {
-    // create buffer
+    TransferBuffer buffer(size, render_manager);
+    buffer.update(size, data);
 
-    update_host_buffer(total_size, data);
-  }
-
-  void GpuBuffer::create_device_buffer(GpuBufferUsage usage, std::size_t total_size, const void* data, RenderManager* render_manager)
-  {
-    // create buffer
-
-    update_device_buffer(total_size, data, render_manager);
-  }
-
-  void GpuBuffer::update_host_buffer(std::size_t total_size, const void* data)
-  {
-  }
-
-  void GpuBuffer::update_device_buffer(std::size_t total_size, const void* data, RenderManager* render_manager)
-  {
-    // staging buffer
-
-
-    // commands
-
-    auto command_buffer = render_manager->current_copy_pass();
-
-
-    // destroy staging buffer
-
+    GpuCopyPass copy_pass = render_manager->current_copy_pass();
+    copy_pass.copy_buffer_to_buffer(&buffer, this, size);
+    render_manager->defer_release_transfer_buffer(std::move(buffer));
   }
 
 }

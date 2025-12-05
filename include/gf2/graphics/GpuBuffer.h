@@ -3,38 +3,41 @@
 #ifndef GF_BUFFER_H
 #define GF_BUFFER_H
 
-#include <cstdint>
-
 #include <string>
-#include <type_traits>
+
+#include <SDL3/SDL_gpu.h>
+
+#include <gf2/core/Flags.h>
 
 #include "GraphicsApi.h"
+#include "GraphicsHandle.h"
 
 namespace gf {
   class RenderManager;
 
-  enum class GpuBufferType : uint8_t {
-    Device,
-    Host,
+  // NOLINTNEXTLINE(performance-enum-size)
+  enum class GpuBufferUsage : SDL_GPUBufferUsageFlags {
+    Vertex = SDL_GPU_BUFFERUSAGE_VERTEX,
+    Index = SDL_GPU_BUFFERUSAGE_INDEX,
+    Indirect = SDL_GPU_BUFFERUSAGE_INDIRECT,
+    GraphicsStorageRead = SDL_GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ,
+    ComputeStorageRead = SDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ,
+    ComputeStorageWrite = SDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE,
   };
 
-  // NOLINTNEXTLINE(performance-enum-size)
-  enum class GpuBufferUsage {
-    Storage,
-    Uniform,
-    Index,
-    Vertex,
+  template<>
+  struct EnableBitmaskOperators<GpuBufferUsage> : std::true_type {
   };
 
   class GF_GRAPHICS_API GpuBuffer {
   public:
     GpuBuffer() = default;
 
-    GpuBuffer(GpuBufferType type, GpuBufferUsage usage, std::size_t size, std::size_t member_size, const void* data, RenderManager* render_manager);
+    GpuBuffer(Flags<GpuBufferUsage> usage, std::size_t size, const void* data, RenderManager* render_manager);
 
     template<typename T>
-    GpuBuffer(GpuBufferType type, GpuBufferUsage usage, const T* data, std::size_t size, RenderManager* render_manager)
-    : GpuBuffer(type, usage, size, sizeof(T), static_cast<const void*>(data), render_manager)
+    GpuBuffer(Flags<GpuBufferUsage> usage, const T* data, std::size_t size, RenderManager* render_manager)
+    : GpuBuffer(usage, size * sizeof(T), static_cast<const void*>(data), render_manager)
     {
     }
 
@@ -43,40 +46,31 @@ namespace gf {
       return m_size;
     }
 
-    std::size_t memory_size() const
-    {
-      return m_memory_size;
-    }
-
     bool empty() const
     {
       return m_size == 0;
     }
 
-    void update(std::size_t size, std::size_t member_size, const void* data, RenderManager* render_manager);
+    void update(std::size_t size, const void* data, RenderManager* render_manager);
 
     template<typename T>
     void update(const T* data, std::size_t size, RenderManager* render_manager)
     {
-      update(size, sizeof(T), static_cast<const void*>(data), render_manager);
+      update(size * sizeof(T), static_cast<const void*>(data), render_manager);
     }
 
-    void set_debug_name(const std::string& name) const;
+    void set_debug_name(const std::string& name);
 
   private:
     friend class GpuRenderPass;
     friend class Descriptor;
 
-    void create_host_buffer(GpuBufferUsage usage, std::size_t total_size, const void* data);
-    void create_device_buffer(GpuBufferUsage usage, std::size_t total_size, const void* data, RenderManager* render_manager);
+    void update_device_buffer(std::size_t size, const void* data, RenderManager* render_manager);
 
-    void update_host_buffer(std::size_t total_size, const void* data);
-    void update_device_buffer(std::size_t total_size, const void* data, RenderManager* render_manager);
+    details::GraphicsHandle<SDL_GPUBuffer, SDL_ReleaseGPUBuffer> m_handle;
 
     std::size_t m_size = 0;
-    std::size_t m_memory_size = 0;
-    GpuBufferType m_type = GpuBufferType::Device;
-    GpuBufferUsage m_usage = GpuBufferUsage::Vertex;
+    Flags<GpuBufferUsage> m_usage = GpuBufferUsage::Vertex;
   };
 
 }

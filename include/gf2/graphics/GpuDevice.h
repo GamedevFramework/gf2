@@ -28,6 +28,7 @@ namespace gf {
 
   private:
     friend class RenderManager;
+    friend class GpuBuffer;
     friend class GpuTexture;
     friend class GpuShader;
     friend class TransferBuffer;

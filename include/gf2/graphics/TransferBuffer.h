@@ -24,13 +24,7 @@ namespace gf {
     TransferBuffer() = default;
     TransferBuffer(std::size_t size, RenderManager* render_manager);
 
-    void update(std::size_t size, std::size_t member_size, const void* data);
-
-    template<typename T>
-    void update(const T* data, std::size_t size)
-    {
-      update(size, sizeof(T), static_cast<const void*>(data));
-    }
+    void update(std::size_t size, const void* data);
 
   private:
     TransferBuffer(SDL_GPUDevice* device, SDL_GPUTransferBuffer* buffer)
