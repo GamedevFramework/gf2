@@ -179,8 +179,8 @@ namespace gf {
 
         RawGeometry geometry = split_geometry.merge();
 
-        chunk.vertices = GpuBuffer(GpuBufferType::Device, GpuBufferUsage::Vertex, geometry.vertices.data(), geometry.vertices.size(), render_manager);
-        chunk.indices = GpuBuffer(GpuBufferType::Device, GpuBufferUsage::Index, geometry.indices.data(), geometry.indices.size(), render_manager);
+        chunk.vertices = GpuBuffer(GpuBufferUsage::Vertex, geometry.vertices.data(), geometry.vertices.size(), render_manager);
+        chunk.indices = GpuBuffer(GpuBufferUsage::Index, geometry.indices.data(), geometry.indices.size(), render_manager);
 
         tile_layer.chunks(base) = std::move(chunk);
       }
@@ -243,8 +243,8 @@ namespace gf {
 
       RawGeometry geometry = split_geometry.merge();
 
-      buffers.vertices = GpuBuffer(GpuBufferType::Device, GpuBufferUsage::Vertex, geometry.vertices.data(), geometry.vertices.size(), render_manager);
-      buffers.indices = GpuBuffer(GpuBufferType::Device, GpuBufferUsage::Index, geometry.indices.data(), geometry.indices.size(), render_manager);
+      buffers.vertices = GpuBuffer(GpuBufferUsage::Vertex, geometry.vertices.data(), geometry.vertices.size(), render_manager);
+      buffers.indices = GpuBuffer(GpuBufferUsage::Index, geometry.indices.data(), geometry.indices.size(), render_manager);
 
       m_object_layers.push_back({ std::move(buffers) });
     }

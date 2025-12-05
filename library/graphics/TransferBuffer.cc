@@ -24,7 +24,7 @@ namespace gf {
     m_handle = { *device, buffer };
   }
 
-  void TransferBuffer::update(std::size_t size, std::size_t member_size, const void* data)
+  void TransferBuffer::update(std::size_t size, const void* data)
   {
     assert(m_handle);
     void* destination = SDL_MapGPUTransferBuffer(m_handle.device(), m_handle, false);
@@ -33,7 +33,8 @@ namespace gf {
       Log::fatal("Could not map transfer buffer: {}", SDL_GetError());
     }
 
-    std::memcpy(destination, data, size * member_size);
+    std::memcpy(destination, data, size);
+    SDL_UnmapGPUTransferBuffer(m_handle.device(), m_handle);
   }
 
 }

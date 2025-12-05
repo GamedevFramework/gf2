@@ -20,8 +20,8 @@ namespace gf {
   static_assert(std::is_same_v<ImDrawIdx, uint16_t>);
 
   ImguiEntity::ImguiEntity()
-  : m_vertices(GpuBufferType::Host, GpuBufferUsage::Vertex)
-  , m_indices(GpuBufferType::Host, GpuBufferUsage::Index)
+  : m_vertices(GpuBufferUsage::Vertex)
+  , m_indices(GpuBufferUsage::Index)
   {
     m_vertices.set_debug_name("[gf2] Imgui Vertex Buffer");
     m_indices.set_debug_name("[gf2] Imgui Index Buffer");
