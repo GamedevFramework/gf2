@@ -14,6 +14,7 @@
 #include "GraphicsApi.h"
 #include "GraphicsInitializer.h"
 #include "RenderManager.h"
+#include "RenderPipeline.h"
 #include "RenderObject.h"
 #include "Window.h"
 
@@ -47,14 +48,6 @@ namespace gf {
     Window m_window;
     RenderManager m_render_manager;
     GpuTexture m_white;
-
-    DescriptorLayout m_camera_descriptor_layout;
-    DescriptorLayout m_sampler_descriptor_layout;
-    DescriptorLayout m_text_descriptor_layout;
-
-    RenderPipelineLayout m_default_pipeline_layout;
-    RenderPipelineLayout m_text_pipeline_layout;
-    RenderPipelineLayout m_fullscreen_pipeline_layout;
 
     RenderPipeline m_default_pipeline;
     RenderPipeline m_text_pipeline;

@@ -14,29 +14,6 @@
 #include <gf2/graphics/RenderManager.h>
 
 namespace gf {
-  /*
-   * RenderPipelineLayout
-   */
-
-
-  void RenderPipelineLayout::set_debug_name(const std::string& name) const
-  {
-  }
-
-  /*
-   * RenderPipelineLayoutBuilder
-   */
-
-  RenderPipelineLayout RenderPipelineLayoutBuilder::build(RenderManager* render_manager)
-  {
-    // descriptor set layout
-
-    // push constant
-
-    // pipeline layout
-
-    return { };
-  }
 
   /*
    * RenderPipeline

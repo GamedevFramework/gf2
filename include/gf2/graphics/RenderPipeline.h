@@ -7,7 +7,6 @@
 
 #include <gf2/core/Span.h>
 
-#include "Descriptor.h"
 #include "GpuShader.h"
 #include "GraphicsApi.h"
 #include "RenderStates.h"
@@ -15,45 +14,6 @@
 
 namespace gf {
   class RenderManager;
-
-  class GF_GRAPHICS_API RenderPipelineLayout {
-  public:
-    RenderPipelineLayout() = default;
-
-    void set_debug_name(const std::string& name) const;
-
-  private:
-    friend class RenderPipelineBuilder;
-    friend class RenderPipelineLayoutBuilder;
-    friend class RenderPass;
-
-  };
-
-  class GF_GRAPHICS_API RenderPipelineLayoutBuilder {
-  public:
-
-    RenderPipelineLayoutBuilder& add_descriptor_layout(DescriptorLayout* descriptor_layout)
-    {
-      m_descriptor_layouts.push_back(descriptor_layout);
-      return *this;
-    }
-
-    RenderPipelineLayoutBuilder& set_push_constant_parameters(GpuShaderStage stage, std::size_t size)
-    {
-      m_push_constant.stage = stage;
-      m_push_constant.size = size;
-      return *this;
-    }
-
-    RenderPipelineLayout build(RenderManager* render_manager);
-
-  private:
-    std::vector<DescriptorLayout*> m_descriptor_layouts;
-    struct {
-      GpuShaderStage stage = GpuShaderStage::Vertex;
-      std::size_t size = 0;
-    } m_push_constant;
-  };
 
   class GF_GRAPHICS_API RenderPipeline {
   public:
@@ -96,12 +56,6 @@ namespace gf {
       return *this;
     }
 
-    RenderPipelineBuilder& set_pipeline_layout(RenderPipelineLayout* pipeline_layout)
-    {
-      m_pipeline_layout = pipeline_layout;
-      return *this;
-    }
-
     RenderPipeline build(RenderManager* render_manager);
 
   private:
@@ -116,7 +70,6 @@ namespace gf {
     Blend m_blend = AlphaBlending;
     VertexInput m_vertex_input;
     std::vector<Shader> m_shaders;
-    RenderPipelineLayout* m_pipeline_layout = nullptr;
   };
 
 }

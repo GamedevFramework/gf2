@@ -44,12 +44,12 @@ namespace gf::details {
       return *this;
     }
 
-    T* get()
+    T* object()
     {
       return m_handle;
     }
 
-    const T* get() const
+    const T* object() const
     {
       return m_handle;
     }

@@ -1,5 +1,5 @@
-#ifndef GF_COMMAND_BUFFER_H
-#define GF_COMMAND_BUFFER_H
+#ifndef GF_GPU_COMMAND_BUFFER_H
+#define GF_GPU_COMMAND_BUFFER_H
 
 #include <cstdint>
 
@@ -10,17 +10,16 @@
 #include <gf2/core/Rect.h>
 #include <gf2/core/Vec2.h>
 
-#include "Descriptor.h"
+#include "GpuShader.h"
 #include "GraphicsApi.h"
 #include "RenderTarget.h"
-#include "GpuShader.h"
 
 namespace gf {
   class GpuTexture;
   class GpuBuffer;
   class RenderPipeline;
   class RenderPipelineLayout;
-  class TransferBuffer;
+  class GpuTransferBuffer;
 
   class GF_GRAPHICS_API GpuRenderPass {
   public:
@@ -33,10 +32,8 @@ namespace gf {
     void bind_vertex_buffer(const GpuBuffer* buffer, std::size_t offset = 0) const;
     void bind_index_buffer(const GpuBuffer* buffer, std::size_t offset = 0) const;
 
-    void bind_descriptor(const RenderPipelineLayout* pipeline, uint32_t set, Descriptor descriptor) const;
-
-    void push_constant(const RenderPipelineLayout* pipeline, GpuShaderStage stage, std::size_t size, const void* data) const;
-    void push_constant(const RenderPipelineLayout* pipeline, GpuShaderStage stage, const Mat3F& data) const;
+    void bind_texture(GpuShaderStage stage, uint32_t slot_index, GpuTexture* buffer);
+    void bind_storage_buffer(GpuShaderStage stage, uint32_t slot_index, GpuBuffer* buffer);
 
     void draw(std::size_t vertex_count, std::size_t first_vertex = 0) const;
     void draw_indexed(std::size_t index_count, std::size_t first_index = 0, std::ptrdiff_t vertex_offset = 0) const;
@@ -56,8 +53,8 @@ namespace gf {
   public:
     GpuCopyPass() = default;
 
-    void copy_buffer_to_buffer(TransferBuffer* source, GpuBuffer* destination, std::size_t size);
-    void copy_buffer_to_texture(TransferBuffer* source, GpuTexture* destination, Vec2I size);
+    void copy_buffer_to_buffer(GpuTransferBuffer* source, GpuBuffer* destination, std::size_t size);
+    void copy_buffer_to_texture(GpuTransferBuffer* source, GpuTexture* destination, Vec2I size);
 
   private:
     friend class MemoryAllocator;
@@ -95,4 +92,4 @@ namespace gf {
 
 }
 
-#endif // GF_COMMAND_BUFFER_H
+#endif // GF_GPU_COMMAND_BUFFER_H

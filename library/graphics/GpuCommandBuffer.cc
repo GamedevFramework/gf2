@@ -91,26 +91,16 @@ namespace gf {
     SDL_BindGPUIndexBuffer(m_render_pass, &binding, SDL_GPU_INDEXELEMENTSIZE_16BIT);
   }
 
-  void GpuRenderPass::bind_descriptor(const RenderPipelineLayout* pipeline, uint32_t set, Descriptor descriptor) const
+  void GpuRenderPass::bind_texture(GpuShaderStage stage, uint32_t slot_index, GpuTexture* buffer)
   {
     assert(m_render_pass);
-    assert(pipeline);
-    // TODO
+
   }
 
-  void GpuRenderPass::push_constant(const RenderPipelineLayout* pipeline, GpuShaderStage stage, std::size_t size, const void* data) const
+  void GpuRenderPass::bind_storage_buffer(GpuShaderStage stage, uint32_t slot_index, GpuBuffer* buffer)
   {
     assert(m_render_pass);
-    assert(pipeline);
-    assert(size % 4 == 0);
-    // TODO
-  }
 
-  void GpuRenderPass::push_constant(const RenderPipelineLayout* pipeline, GpuShaderStage stage, const Mat3F& data) const
-  {
-    assert(m_render_pass);
-    auto aligned_data = compute_aligned(data);
-    push_constant(pipeline, stage, sizeof(float) * aligned_data.size(), aligned_data.data());
   }
 
   void GpuRenderPass::draw(std::size_t vertex_count, std::size_t first_vertex) const
@@ -129,13 +119,13 @@ namespace gf {
    * MemoryCommandBuffer
    */
 
-  void GpuCopyPass::copy_buffer_to_buffer(TransferBuffer* source, GpuBuffer* destination, std::size_t size)
+  void GpuCopyPass::copy_buffer_to_buffer(GpuTransferBuffer* source, GpuBuffer* destination, std::size_t size)
   {
     assert(m_copy_pass);
     // TODO
   }
 
-  void GpuCopyPass::copy_buffer_to_texture(TransferBuffer* source, GpuTexture* destination, Vec2I size)
+  void GpuCopyPass::copy_buffer_to_texture(GpuTransferBuffer* source, GpuTexture* destination, Vec2I size)
   {
     assert(m_copy_pass);
     // TODO

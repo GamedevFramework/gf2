@@ -46,12 +46,12 @@ namespace gf {
 
   void GpuBuffer::set_debug_name(const std::string& name)
   {
-    SDL_SetGPUBufferName(m_handle.device(), m_handle.get(), name.c_str());
+    SDL_SetGPUBufferName(m_handle.device(), m_handle.object(), name.c_str());
   }
 
   void GpuBuffer::update_device_buffer(std::size_t size, const void* data, RenderManager* render_manager)
   {
-    TransferBuffer buffer(size, render_manager);
+    GpuTransferBuffer buffer(size, render_manager);
     buffer.update(size, data);
 
     GpuCopyPass copy_pass = render_manager->current_copy_pass();

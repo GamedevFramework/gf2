@@ -13,7 +13,6 @@
 #include <gf2/core/Mat3.h>
 
 #include <gf2/graphics/Vertex.h>
-#include "gf2/graphics/TransferBuffer.h"
 
 // #define GF_USE_LLVMPIPE
 
@@ -84,7 +83,7 @@ namespace gf {
     return { };
   }
 
-  void RenderManager::defer_release_transfer_buffer(TransferBuffer buffer)
+  void RenderManager::defer_release_transfer_buffer(GpuTransferBuffer buffer)
   {
     if (m_thread_id == std::this_thread::get_id()) {
       m_transfer_buffers[m_current_memops].push_back(std::move(buffer));
@@ -120,12 +119,6 @@ namespace gf {
   {
     assert(m_async_loading);
     m_async_loading = false;
-  }
-
-  Descriptor RenderManager::allocate_descriptor_for_layout(const DescriptorLayout* layout) const
-  {
-
-    return { };
   }
 
   RenderTarget RenderManager::current_render_target() const
