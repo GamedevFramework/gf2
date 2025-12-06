@@ -19,23 +19,23 @@ namespace gf {
   }
 
   GpuTexture::GpuTexture(const Image& image, RenderManager* render_manager)
-  : GpuTexture(image.size(), GpuTextureUsage::Sampler, Format::R8G8B8A8_SNorm, render_manager)
+  : GpuTexture(image.size(), GpuTextureUsage::Sampler, GpuTextureFormat::R8G8B8A8_SNorm, render_manager)
   {
     update(image.raw_size(), image.raw_data(), render_manager);
   }
 
   GpuTexture::GpuTexture(const Bitmap& bitmap, RenderManager* render_manager)
-  : GpuTexture(bitmap.size(), GpuTextureUsage::Sampler, Format::R8_UNorm, render_manager)
+  : GpuTexture(bitmap.size(), GpuTextureUsage::Sampler, GpuTextureFormat::R8_UNorm, render_manager)
   {
     update(bitmap.raw_size(), bitmap.raw_data(), render_manager);
   }
 
   GpuTexture::GpuTexture(Vec2I size, RenderManager* render_manager)
-  : GpuTexture(size, GpuTextureUsage::ColorTarget | GpuTextureUsage::Sampler, Format::RenderManager, render_manager)
+  : GpuTexture(size, GpuTextureUsage::ColorTarget | GpuTextureUsage::Sampler, GpuTextureFormat::RenderManager, render_manager)
   {
   }
 
-  GpuTexture::GpuTexture(Vec2I size, Flags<GpuTextureUsage> usage, Format format, RenderManager* render_manager)
+  GpuTexture::GpuTexture(Vec2I size, Flags<GpuTextureUsage> usage, GpuTextureFormat format, RenderManager* render_manager)
   : m_image_size(size)
   , m_usage(usage)
   , m_format(format)

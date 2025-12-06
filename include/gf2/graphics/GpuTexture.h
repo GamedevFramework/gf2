@@ -13,13 +13,23 @@
 #include <gf2/core/Flags.h>
 #include <gf2/core/Image.h>
 
-#include "Format.h"
 #include "GraphicsApi.h"
 #include "GraphicsHandle.h"
 #include "RenderTarget.h"
 
 namespace gf {
   class RenderManager;
+
+  // NOLINTNEXTLINE(performance-enum-size)
+  enum class GpuTextureFormat : std::underlying_type_t<SDL_GPUTextureFormat> {
+    Undefined = SDL_GPU_TEXTUREFORMAT_INVALID,
+    R8G8B8A8_SNorm = SDL_GPU_TEXTUREFORMAT_R8G8B8A8_SNORM,
+    R8G8B8A8_UNorm = SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM,
+    R32G32B32A32_Float = SDL_GPU_TEXTUREFORMAT_R32G32B32A32_FLOAT,
+    R8_UNorm = SDL_GPU_TEXTUREFORMAT_R8_UNORM,
+    R32G32_Float = SDL_GPU_TEXTUREFORMAT_R32G32_FLOAT,
+    RenderManager = std::numeric_limits<std::underlying_type_t<SDL_GPUTextureFormat>>::max(),
+  };
 
   // NOLINTNEXTLINE(performance-enum-size)
   enum class GpuTextureUsage : SDL_GPUTextureUsageFlags {
@@ -45,7 +55,7 @@ namespace gf {
     GpuTexture(const Image& image, RenderManager* render_manager);
     GpuTexture(const Bitmap& bitmap, RenderManager* render_manager);
     GpuTexture(Vec2I size, RenderManager* render_manager);
-    GpuTexture(Vec2I size, Flags<GpuTextureUsage> usage, Format format, RenderManager* render_manager);
+    GpuTexture(Vec2I size, Flags<GpuTextureUsage> usage, GpuTextureFormat format, RenderManager* render_manager);
 
     void set_debug_name(const std::string& name);
 
@@ -68,7 +78,7 @@ namespace gf {
 
     Vec2I m_image_size = { 0, 0 };
     Flags<GpuTextureUsage> m_usage = None;
-    Format m_format = Format::Undefined;
+    GpuTextureFormat m_format = GpuTextureFormat::Undefined;
   };
 
 }
