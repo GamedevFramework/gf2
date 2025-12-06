@@ -74,7 +74,7 @@ namespace gf {
     build_default_pipelines();
   }
 
-  const RenderPipeline* BasicSceneManager::render_pipeline(RenderPipelineType type) const
+  const GpuGraphicsPipeline* BasicSceneManager::render_pipeline(RenderPipelineType type) const
   {
     switch (type) {
       case RenderPipelineType::Default:
@@ -175,7 +175,7 @@ namespace gf {
   {
     // default pipeline
 
-    RenderPipelineBuilder default_pipeline_builder;
+    GpuGraphicsPipelineBuilder default_pipeline_builder;
 
     default_pipeline_builder.set_vertex_input(Vertex::compute_input())
         .add_shader(GpuShaderStage::Vertex, gf::span(default_vert_shader_code))
@@ -187,7 +187,7 @@ namespace gf {
 
     // text pipeline
 
-    RenderPipelineBuilder text_pipeline_builder;
+    GpuGraphicsPipelineBuilder text_pipeline_builder;
 
     text_pipeline_builder.set_vertex_input(Vertex::compute_input())
         .add_shader(GpuShaderStage::Vertex, gf::span(default_vert_shader_code))
@@ -199,7 +199,7 @@ namespace gf {
 
     // fullscreen pipeline
 
-    RenderPipelineBuilder fullscreen_pipeline_builder;
+    GpuGraphicsPipelineBuilder fullscreen_pipeline_builder;
 
     fullscreen_pipeline_builder.add_shader(GpuShaderStage::Vertex, gf::span(fullscreen_vert_shader_code))
         .add_shader(GpuShaderStage::Fragment, gf::span(fullscreen_frag_shader_code))
@@ -210,7 +210,7 @@ namespace gf {
 
     // imgui pipeline
 
-    RenderPipelineBuilder imgui_pipeline_builder;
+    GpuGraphicsPipelineBuilder imgui_pipeline_builder;
 
     imgui_pipeline_builder.set_vertex_input(ImguiVertex::compute_input())
         .add_shader(GpuShaderStage::Vertex, gf::span(default_vert_shader_code))

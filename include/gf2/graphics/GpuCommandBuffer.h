@@ -17,8 +17,7 @@
 namespace gf {
   class GpuTexture;
   class GpuBuffer;
-  class RenderPipeline;
-  class RenderPipelineLayout;
+  class GpuGraphicsPipeline;
   class GpuTransferBuffer;
 
   class GF_GRAPHICS_API GpuRenderPass {
@@ -28,7 +27,7 @@ namespace gf {
     void set_viewport(RectF viewport) const;
     void set_scissor(RectI scissor) const;
 
-    void bind_pipeline(const RenderPipeline* pipeline) const;
+    void bind_pipeline(const GpuGraphicsPipeline* pipeline) const;
     void bind_vertex_buffer(const GpuBuffer* buffer, std::size_t offset = 0) const;
     void bind_index_buffer(const GpuBuffer* buffer, std::size_t offset = 0) const;
 

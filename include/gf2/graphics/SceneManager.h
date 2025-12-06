@@ -10,11 +10,11 @@
 #include <gf2/core/Vec2.h>
 
 #include "GpuCommandBuffer.h"
+#include "GpuGraphicsPipeline.h"
 #include "GpuTexture.h"
 #include "GraphicsApi.h"
 #include "GraphicsInitializer.h"
 #include "RenderManager.h"
-#include "RenderPipeline.h"
 #include "RenderObject.h"
 #include "Window.h"
 
@@ -37,7 +37,7 @@ namespace gf {
     }
 
   protected:
-    const RenderPipeline* render_pipeline(RenderPipelineType type) const;
+    const GpuGraphicsPipeline* render_pipeline(RenderPipelineType type) const;
     void render_records(GpuRenderPass render_pass, const RenderRecorder& recorder);
     void render_object(GpuRenderPass render_pass, RenderObject object);
 
@@ -49,12 +49,12 @@ namespace gf {
     RenderManager m_render_manager;
     GpuTexture m_white;
 
-    RenderPipeline m_default_pipeline;
-    RenderPipeline m_text_pipeline;
-    RenderPipeline m_fullscreen_pipeline;
-    RenderPipeline m_imgui_pipeline;
+    GpuGraphicsPipeline m_default_pipeline;
+    GpuGraphicsPipeline m_text_pipeline;
+    GpuGraphicsPipeline m_fullscreen_pipeline;
+    GpuGraphicsPipeline m_imgui_pipeline;
 
-    const RenderPipeline* m_last_pipeline = nullptr;
+    const GpuGraphicsPipeline* m_last_pipeline = nullptr;
     RenderObject m_last_object = {};
   };
 

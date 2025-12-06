@@ -7,7 +7,7 @@
 #include <cstddef>
 
 #include <gf2/graphics/GpuBuffer.h>
-#include <gf2/graphics/RenderPipeline.h>
+#include <gf2/graphics/GpuGraphicsPipeline.h>
 
 namespace gf {
 
@@ -68,7 +68,7 @@ namespace gf {
     SDL_SetGPUScissor(m_render_pass, &raw_scissor);
   }
 
-  void GpuRenderPass::bind_pipeline(const RenderPipeline* pipeline) const
+  void GpuRenderPass::bind_pipeline(const GpuGraphicsPipeline* pipeline) const
   {
     assert(m_render_pass);
     assert(pipeline);
