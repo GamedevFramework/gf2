@@ -5,13 +5,15 @@
 
 #include <string>
 
+#include <SDL3/SDL_gpu.h>
+
 #include <gf2/core/Span.h>
 
 #include "GpuShader.h"
 #include "GraphicsApi.h"
 #include "GraphicsHandle.h"
 #include "GpuStates.h"
-#include "VertexInput.h"
+#include "GpuVertexInput.h"
 
 namespace gf {
   class RenderManager;
@@ -34,9 +36,17 @@ namespace gf {
   public:
     GpuGraphicsPipelineBuilder() = default;
 
-    GpuGraphicsPipelineBuilder& add_shader(GpuShaderStage stage, Span<const uint32_t> bytecode)
+    GpuGraphicsPipelineBuilder& add_shader(GpuShaderStage stage, GpuShader* shader)
     {
-      m_shaders.push_back({ stage, bytecode });
+      switch (stage) {
+        case gf::GpuShaderStage::Vertex:
+          m_vertex_shader = shader;
+          break;
+        case gf::GpuShaderStage::Fragment:
+          m_fragment_shader = shader;
+          break;
+      }
+
       return *this;
     }
 
@@ -52,7 +62,7 @@ namespace gf {
       return *this;
     }
 
-    GpuGraphicsPipelineBuilder& set_vertex_input(VertexInput vertex_input)
+    GpuGraphicsPipelineBuilder& set_vertex_input(GpuVertexInput vertex_input)
     {
       m_vertex_input = std::move(vertex_input);
       return *this;
@@ -63,15 +73,11 @@ namespace gf {
   private:
     friend class GpuGraphicsPipeline;
 
-    struct Shader {
-      GpuShaderStage stage = GpuShaderStage::Vertex;
-      Span<const uint32_t> bytecode;
-    };
-
+    GpuShader* m_vertex_shader = nullptr;
+    GpuShader* m_fragment_shader = nullptr;
+    GpuVertexInput m_vertex_input;
     GpuPrimitiveTopology m_primitive_topology = GpuPrimitiveTopology::TriangleList;
     GpuBlend m_blend = AlphaBlending;
-    VertexInput m_vertex_input;
-    std::vector<Shader> m_shaders;
   };
 
 }

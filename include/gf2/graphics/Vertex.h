@@ -7,7 +7,7 @@
 #include <gf2/core/Vec2.h>
 
 #include "GraphicsApi.h"
-#include "VertexInput.h"
+#include "GpuVertexInput.h"
 
 namespace gf {
 
@@ -16,7 +16,7 @@ namespace gf {
     Vec2F tex_coords = { 0.0f, 0.0f };
     Color color = White;
 
-    static VertexInput compute_input();
+    static GpuVertexInput compute_input();
   };
 
 }

@@ -5,9 +5,9 @@
 
 namespace gf {
 
-  VertexInput Vertex::compute_input()
+  GpuVertexInput Vertex::compute_input()
   {
-    VertexInput input;
+    GpuVertexInput input;
 
     input.bindings.push_back({ 0, sizeof(Vertex) });
 
