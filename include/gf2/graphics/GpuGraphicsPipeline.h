@@ -9,7 +9,8 @@
 
 #include "GpuShader.h"
 #include "GraphicsApi.h"
-#include "RenderStates.h"
+#include "GraphicsHandle.h"
+#include "GpuStates.h"
 #include "VertexInput.h"
 
 namespace gf {
@@ -26,6 +27,7 @@ namespace gf {
     friend class RenderPass;
     friend class RenderManager;
 
+    details::GraphicsHandle<SDL_GPUGraphicsPipeline, SDL_ReleaseGPUGraphicsPipeline> m_handle;
   };
 
   class GF_GRAPHICS_API GpuGraphicsPipelineBuilder {
@@ -38,13 +40,13 @@ namespace gf {
       return *this;
     }
 
-    GpuGraphicsPipelineBuilder& set_primitive_topology(PrimitiveTopology primitive_topology)
+    GpuGraphicsPipelineBuilder& set_primitive_topology(GpuPrimitiveTopology primitive_topology)
     {
       m_primitive_topology = primitive_topology;
       return *this;
     }
 
-    GpuGraphicsPipelineBuilder& set_blend(Blend blend)
+    GpuGraphicsPipelineBuilder& set_blend(GpuBlend blend)
     {
       m_blend = blend;
       return *this;
@@ -66,8 +68,8 @@ namespace gf {
       Span<const uint32_t> bytecode;
     };
 
-    PrimitiveTopology m_primitive_topology = PrimitiveTopology::TriangleList;
-    Blend m_blend = AlphaBlending;
+    GpuPrimitiveTopology m_primitive_topology = GpuPrimitiveTopology::TriangleList;
+    GpuBlend m_blend = AlphaBlending;
     VertexInput m_vertex_input;
     std::vector<Shader> m_shaders;
   };
