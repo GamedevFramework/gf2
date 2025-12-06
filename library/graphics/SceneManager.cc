@@ -49,11 +49,11 @@ namespace gf {
       {
         GpuVertexInput input;
 
-        input.bindings.push_back({ 0, sizeof(ImguiVertex) });
+        input.buffer_descriptions.push_back({ 0, sizeof(ImguiVertex) });
 
-        input.attributes.push_back({ 0, 0, Format::R32G32_Float, offsetof(ImguiVertex, pos) });
-        input.attributes.push_back({ 1, 0, Format::R32G32_Float, offsetof(ImguiVertex, uv) });
-        input.attributes.push_back({ 2, 0, Format::R8G8B8A8_UNorm, offsetof(ImguiVertex, col) });
+        input.attributes.push_back({ 0, 0, GpuVertexElementFormat::Float2, offsetof(ImguiVertex, pos) });
+        input.attributes.push_back({ 1, 0, GpuVertexElementFormat::Float2, offsetof(ImguiVertex, uv) });
+        input.attributes.push_back({ 2, 0, GpuVertexElementFormat::UByte4_Norm, offsetof(ImguiVertex, col) });
 
         return input;
       }
@@ -183,7 +183,7 @@ namespace gf {
     ;
 
     m_default_pipeline = default_pipeline_builder.build(render_manager());
-    m_default_pipeline.set_debug_name("[gf2] Default Pipeline");
+    // m_default_pipeline.set_debug_name("[gf2] Default Pipeline");
 
     // text pipeline
 
@@ -195,7 +195,7 @@ namespace gf {
     ;
 
     m_text_pipeline = text_pipeline_builder.build(render_manager());
-    m_text_pipeline.set_debug_name("[gf2] Text Pipeline");
+    // m_text_pipeline.set_debug_name("[gf2] Text Pipeline");
 
     // fullscreen pipeline
 
@@ -206,7 +206,7 @@ namespace gf {
     // ;
 
     m_fullscreen_pipeline = fullscreen_pipeline_builder.build(render_manager());
-    m_fullscreen_pipeline.set_debug_name("[gf2] Fullscreen Pipeline");
+    // m_fullscreen_pipeline.set_debug_name("[gf2] Fullscreen Pipeline");
 
     // imgui pipeline
 
@@ -218,7 +218,7 @@ namespace gf {
     ;
 
     m_imgui_pipeline = imgui_pipeline_builder.build(render_manager());
-    m_imgui_pipeline.set_debug_name("[gf2] Imgui Pipeline");
+    // m_imgui_pipeline.set_debug_name("[gf2] Imgui Pipeline");
   }
 
   /*

@@ -35,6 +35,7 @@ namespace gf {
 
   private:
     friend class GpuDevice;
+    friend class GpuGraphicsPipelineBuilder;
 
     GpuShader(SDL_GPUDevice* device, SDL_GPUShader* shader)
     : m_handle(device, shader)

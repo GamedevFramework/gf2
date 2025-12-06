@@ -9,11 +9,11 @@ namespace gf {
   {
     GpuVertexInput input;
 
-    input.bindings.push_back({ 0, sizeof(Vertex) });
+    input.buffer_descriptions.push_back({ 0, sizeof(Vertex) });
 
-    input.attributes.push_back({ 0, 0, Format::R32G32_Float, offsetof(Vertex, location) });
-    input.attributes.push_back({ 1, 0, Format::R32G32_Float, offsetof(Vertex, tex_coords) });
-    input.attributes.push_back({ 2, 0, Format::R32G32B32A32_Float, offsetof(Vertex, color) });
+    input.attributes.push_back({ 0, 0, GpuVertexElementFormat::Float2, offsetof(Vertex, location) });
+    input.attributes.push_back({ 1, 0, GpuVertexElementFormat::Float2, offsetof(Vertex, tex_coords) });
+    input.attributes.push_back({ 2, 0, GpuVertexElementFormat::Float4, offsetof(Vertex, color) });
 
     return input;
   }
