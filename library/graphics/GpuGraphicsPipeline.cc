@@ -3,16 +3,11 @@
 
 #include <gf2/graphics/GpuGraphicsPipeline.h>
 
-#include <algorithm>
-#include <array>
-#include <iterator>
-#include <utility>
 #include <vector>
 
 #include <gf2/core/Log.h>
 
 #include <gf2/graphics/RenderManager.h>
-#include "SDL3/SDL_gpu.h"
 
 namespace gf {
 
