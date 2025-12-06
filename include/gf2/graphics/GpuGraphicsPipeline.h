@@ -22,12 +22,15 @@ namespace gf {
   public:
     GpuGraphicsPipeline() = default;
 
-    void set_debug_name(const std::string& name) const;
-
   private:
     friend class GpuGraphicsPipelineBuilder;
     friend class RenderPass;
     friend class RenderManager;
+
+    GpuGraphicsPipeline(SDL_GPUDevice* device, SDL_GPUGraphicsPipeline* pipeline)
+    : m_handle(device, pipeline)
+    {
+    }
 
     details::GraphicsHandle<SDL_GPUGraphicsPipeline, SDL_ReleaseGPUGraphicsPipeline> m_handle;
   };
