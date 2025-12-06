@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
 
-#include <gf2/graphics/RenderPipeline.h>
+#include <gf2/graphics/GpuGraphicsPipeline.h>
 
 #include <algorithm>
 #include <array>
@@ -19,7 +19,7 @@ namespace gf {
    * RenderPipeline
    */
 
-  void RenderPipeline::set_debug_name(const std::string& name) const
+  void GpuGraphicsPipeline::set_debug_name(const std::string& name) const
   {
   }
 
@@ -27,7 +27,7 @@ namespace gf {
    * RenderPipelineBuilder
    */
 
-  RenderPipeline RenderPipelineBuilder::build(RenderManager* render_manager)
+  GpuGraphicsPipeline GpuGraphicsPipelineBuilder::build(RenderManager* render_manager)
   {
     // shaders
 
