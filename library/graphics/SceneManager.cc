@@ -45,9 +45,9 @@ namespace gf {
       Vec2F uv;
       uint32_t col;
 
-      static VertexInput compute_input()
+      static GpuVertexInput compute_input()
       {
-        VertexInput input;
+        GpuVertexInput input;
 
         input.bindings.push_back({ 0, sizeof(ImguiVertex) });
 
@@ -178,8 +178,8 @@ namespace gf {
     GpuGraphicsPipelineBuilder default_pipeline_builder;
 
     default_pipeline_builder.set_vertex_input(Vertex::compute_input())
-        .add_shader(GpuShaderStage::Vertex, gf::span(default_vert_shader_code))
-        .add_shader(GpuShaderStage::Fragment, gf::span(default_frag_shader_code))
+        // .add_shader(GpuShaderStage::Vertex, gf::span(default_vert_shader_code))
+        // .add_shader(GpuShaderStage::Fragment, gf::span(default_frag_shader_code))
     ;
 
     m_default_pipeline = default_pipeline_builder.build(render_manager());
@@ -190,8 +190,8 @@ namespace gf {
     GpuGraphicsPipelineBuilder text_pipeline_builder;
 
     text_pipeline_builder.set_vertex_input(Vertex::compute_input())
-        .add_shader(GpuShaderStage::Vertex, gf::span(default_vert_shader_code))
-        .add_shader(GpuShaderStage::Fragment, gf::span(text_frag_shader_code))
+        // .add_shader(GpuShaderStage::Vertex, gf::span(default_vert_shader_code))
+        // .add_shader(GpuShaderStage::Fragment, gf::span(text_frag_shader_code))
     ;
 
     m_text_pipeline = text_pipeline_builder.build(render_manager());
@@ -201,9 +201,9 @@ namespace gf {
 
     GpuGraphicsPipelineBuilder fullscreen_pipeline_builder;
 
-    fullscreen_pipeline_builder.add_shader(GpuShaderStage::Vertex, gf::span(fullscreen_vert_shader_code))
-        .add_shader(GpuShaderStage::Fragment, gf::span(fullscreen_frag_shader_code))
-    ;
+    // fullscreen_pipeline_builder.add_shader(GpuShaderStage::Vertex, gf::span(fullscreen_vert_shader_code))
+    //     .add_shader(GpuShaderStage::Fragment, gf::span(fullscreen_frag_shader_code))
+    // ;
 
     m_fullscreen_pipeline = fullscreen_pipeline_builder.build(render_manager());
     m_fullscreen_pipeline.set_debug_name("[gf2] Fullscreen Pipeline");
@@ -213,8 +213,8 @@ namespace gf {
     GpuGraphicsPipelineBuilder imgui_pipeline_builder;
 
     imgui_pipeline_builder.set_vertex_input(ImguiVertex::compute_input())
-        .add_shader(GpuShaderStage::Vertex, gf::span(default_vert_shader_code))
-        .add_shader(GpuShaderStage::Fragment, gf::span(default_frag_shader_code))
+        // .add_shader(GpuShaderStage::Vertex, gf::span(default_vert_shader_code))
+        // .add_shader(GpuShaderStage::Fragment, gf::span(default_frag_shader_code))
     ;
 
     m_imgui_pipeline = imgui_pipeline_builder.build(render_manager());

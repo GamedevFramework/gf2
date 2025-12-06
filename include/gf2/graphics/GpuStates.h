@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
-#ifndef GF_RENDER_STATES_H
-#define GF_RENDER_STATES_H
+#ifndef GF_GPU_STATES_H
+#define GF_GPU_STATES_H
 
 #include <type_traits>
 
@@ -64,4 +64,4 @@ namespace gf {
 
 }
 
-#endif // GF_RENDER_STATES_H
+#endif // GF_GPU_STATES_H
