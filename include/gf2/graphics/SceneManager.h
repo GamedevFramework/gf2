@@ -11,6 +11,7 @@
 
 #include "GpuCommandBuffer.h"
 #include "GpuGraphicsPipeline.h"
+#include "GpuShader.h"
 #include "GpuTexture.h"
 #include "GraphicsApi.h"
 #include "GraphicsInitializer.h"
@@ -42,12 +43,19 @@ namespace gf {
     void render_object(GpuRenderPass render_pass, RenderObject object);
 
   private:
+    void compile_shaders();
     void build_default_pipelines();
 
     GraphicsInitializer m_initializer;
     Window m_window;
     RenderManager m_render_manager;
     GpuTexture m_white;
+
+    GpuShader m_default_vertex_shader;
+    GpuShader m_default_fragment_shader;
+    GpuShader m_text_fragment_shader;
+    GpuShader m_fullscreen_vertex_shader;
+    GpuShader m_fullscreen_fragment_shader;
 
     GpuGraphicsPipeline m_default_pipeline;
     GpuGraphicsPipeline m_text_pipeline;

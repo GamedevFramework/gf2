@@ -20,23 +20,23 @@ namespace gf {
 
   namespace {
 
-    const uint32_t default_vert_shader_code[] = {
+    const uint8_t default_vert_shader_code[] = {
 #include "default.vert.h"
     };
 
-    const uint32_t default_frag_shader_code[] = {
+    const uint8_t default_frag_shader_code[] = {
 #include "default.frag.h"
     };
 
-    const uint32_t text_frag_shader_code[] = {
+    const uint8_t text_frag_shader_code[] = {
 #include "text.frag.h"
     };
 
-    const uint32_t fullscreen_vert_shader_code[] = {
+    const uint8_t fullscreen_vert_shader_code[] = {
 #include "fullscreen.vert.h"
     };
 
-    const uint32_t fullscreen_frag_shader_code[] = {
+    const uint8_t fullscreen_frag_shader_code[] = {
 #include "fullscreen.frag.h"
     };
 
@@ -71,6 +71,7 @@ namespace gf {
   , m_white(Image({ 1, 1 }, White), &m_render_manager)
   {
     m_white.set_debug_name("[gf2] White Default 1x1 Texture");
+    compile_shaders();
     build_default_pipelines();
   }
 
@@ -171,6 +172,46 @@ namespace gf {
     m_last_object = object;
   }
 
+  void BasicSceneManager::compile_shaders()
+  {
+    GpuDevice* device = m_render_manager.device();
+
+    // default vertex shader
+
+    GpuShaderInput default_vertex_shader_input = {};
+    default_vertex_shader_input.uniform_buffers = 2;
+
+    m_default_vertex_shader = GpuShader(GpuShaderStage::Vertex, gf::span(default_vert_shader_code), default_vertex_shader_input, device);
+
+    // default fragment shader
+
+    GpuShaderInput default_fragment_shader_input = {};
+    default_fragment_shader_input.samplers = 1;
+
+    m_default_fragment_shader = GpuShader(GpuShaderStage::Fragment, gf::span(default_frag_shader_code), default_fragment_shader_input, device);
+
+    // text fragment shader
+
+    GpuShaderInput text_fragment_shader_input = {};
+    text_fragment_shader_input.samplers = 1;
+    text_fragment_shader_input.uniform_buffers = 1;
+
+    m_text_fragment_shader = GpuShader(GpuShaderStage::Fragment, gf::span(text_frag_shader_code), text_fragment_shader_input, device);
+
+    // fullscreen vertex shader
+
+    GpuShaderInput fullscreen_vertex_shader_input = {};
+
+    m_fullscreen_vertex_shader = GpuShader(GpuShaderStage::Vertex, gf::span(fullscreen_vert_shader_code), fullscreen_vertex_shader_input, device);
+
+    // fullscreen fragment shader
+
+    GpuShaderInput fullscreen_fragment_shader_input = {};
+    default_fragment_shader_input.samplers = 1;
+
+    m_fullscreen_fragment_shader = GpuShader(GpuShaderStage::Fragment, gf::span(fullscreen_frag_shader_code), fullscreen_fragment_shader_input, device);
+  }
+
   void BasicSceneManager::build_default_pipelines()
   {
     // default pipeline
@@ -178,8 +219,8 @@ namespace gf {
     GpuGraphicsPipelineBuilder default_pipeline_builder;
 
     default_pipeline_builder.set_vertex_input(Vertex::compute_input())
-        // .add_shader(GpuShaderStage::Vertex, gf::span(default_vert_shader_code))
-        // .add_shader(GpuShaderStage::Fragment, gf::span(default_frag_shader_code))
+        .add_shader(GpuShaderStage::Vertex, &m_default_vertex_shader)
+        .add_shader(GpuShaderStage::Fragment, &m_default_fragment_shader)
     ;
 
     m_default_pipeline = default_pipeline_builder.build(render_manager());
@@ -190,8 +231,8 @@ namespace gf {
     GpuGraphicsPipelineBuilder text_pipeline_builder;
 
     text_pipeline_builder.set_vertex_input(Vertex::compute_input())
-        // .add_shader(GpuShaderStage::Vertex, gf::span(default_vert_shader_code))
-        // .add_shader(GpuShaderStage::Fragment, gf::span(text_frag_shader_code))
+        .add_shader(GpuShaderStage::Vertex, &m_default_vertex_shader)
+        .add_shader(GpuShaderStage::Fragment, &m_text_fragment_shader)
     ;
 
     m_text_pipeline = text_pipeline_builder.build(render_manager());
@@ -201,9 +242,9 @@ namespace gf {
 
     GpuGraphicsPipelineBuilder fullscreen_pipeline_builder;
 
-    // fullscreen_pipeline_builder.add_shader(GpuShaderStage::Vertex, gf::span(fullscreen_vert_shader_code))
-    //     .add_shader(GpuShaderStage::Fragment, gf::span(fullscreen_frag_shader_code))
-    // ;
+    fullscreen_pipeline_builder.add_shader(GpuShaderStage::Vertex, &m_fullscreen_vertex_shader)
+        .add_shader(GpuShaderStage::Fragment, &m_fullscreen_fragment_shader)
+    ;
 
     m_fullscreen_pipeline = fullscreen_pipeline_builder.build(render_manager());
     // m_fullscreen_pipeline.set_debug_name("[gf2] Fullscreen Pipeline");
@@ -213,8 +254,8 @@ namespace gf {
     GpuGraphicsPipelineBuilder imgui_pipeline_builder;
 
     imgui_pipeline_builder.set_vertex_input(ImguiVertex::compute_input())
-        // .add_shader(GpuShaderStage::Vertex, gf::span(default_vert_shader_code))
-        // .add_shader(GpuShaderStage::Fragment, gf::span(default_frag_shader_code))
+        .add_shader(GpuShaderStage::Vertex, &m_default_vertex_shader)
+        .add_shader(GpuShaderStage::Fragment, &m_default_fragment_shader)
     ;
 
     m_imgui_pipeline = imgui_pipeline_builder.build(render_manager());

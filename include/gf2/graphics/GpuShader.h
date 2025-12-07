@@ -31,7 +31,7 @@ namespace gf {
   class GF_GRAPHICS_API GpuShader {
   public:
     GpuShader() = default;
-    GpuShader(GpuShaderStage stage, gf::Span<uint8_t> binary, const GpuShaderInput& input, GpuDevice* device);
+    GpuShader(GpuShaderStage stage, gf::Span<const uint8_t> binary, const GpuShaderInput& input, GpuDevice* device);
 
   private:
     friend class GpuDevice;
