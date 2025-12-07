@@ -1,18 +1,15 @@
 #!/bin/sh
 
-#
-# For now, use this script to generate shader code in text form.
-# When support will be available in xmake (https://github.com/xmake-io/xmake/issues/4099),
-# we will do it in build files.
-#
+SOURCES="default.vert default.frag text.frag fullscreen.vert fullscreen.frag"
 
-glslc -c --target-env=vulkan1.3 -mfmt=num simple.vert -o simple.vert.h
-glslc -c --target-env=vulkan1.3 -mfmt=num simple.frag -o simple.frag.h
+for SOURCE in ${SOURCES}
+do
+  BINARY="${SOURCE}.bin"
+  glslc -c --target-env=vulkan1.0 -mfmt=bin "${SOURCE}" -o "${BINARY}"
 
-glslc -c --target-env=vulkan1.3 -mfmt=num default.vert -o default.vert.h
-glslc -c --target-env=vulkan1.3 -mfmt=num default.frag -o default.frag.h
+  HEADER="${SOURCE}.h"
+  hexdump -ve '1/1 "0x%.2x, "' "${BINARY}" > "${HEADER}"
+  echo >> "${HEADER}"
 
-glslc -c --target-env=vulkan1.3 -mfmt=num text.frag -o text.frag.h
-
-glslc -c --target-env=vulkan1.3 -mfmt=num fullscreen.vert -o fullscreen.vert.h
-glslc -c --target-env=vulkan1.3 -mfmt=num fullscreen.frag -o fullscreen.frag.h
+  rm -f ${BINARY}
+done

@@ -1,8 +1,8 @@
 #version 450
 
-layout(set = 1, binding = 0) uniform sampler2D u_texture;
+layout(set = 2, binding = 0) uniform sampler2D u_texture;
 
-layout(set = 2, binding = 0) uniform Text {
+layout(set = 3, binding = 1) uniform Text {
   vec4 u_outline_color;
   float u_outline_thickness;
 };

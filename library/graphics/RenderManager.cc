@@ -14,8 +14,6 @@
 
 #include <gf2/graphics/Vertex.h>
 
-// #define GF_USE_LLVMPIPE
-
 namespace gf {
 
   constexpr std::size_t FramesInFlight = 3;
