@@ -102,7 +102,7 @@ namespace gf {
    * AnimationGroupGraphics
    */
 
-  AnimationGroupGraphics::AnimationGroupGraphics(std::vector<const GpuTexture*> textures, const AnimationGroupData& data, RenderManager* render_manager)
+  AnimationGroupGraphics::AnimationGroupGraphics(std::vector<GpuTexture*> textures, const AnimationGroupData& data, RenderManager* render_manager)
   : m_textures(std::move(textures))
   {
     details::AnimationBuilder builder;
@@ -122,7 +122,7 @@ namespace gf {
   {
   }
 
-  RenderGeometry AnimationGroupGraphics::geometry(Id animation_id, std::size_t frame_index) const
+  RenderGeometry AnimationGroupGraphics::geometry(Id animation_id, std::size_t frame_index)
   {
     auto iterator = m_animations.find(animation_id);
 
@@ -149,7 +149,7 @@ namespace gf {
    * AnimationGroup
    */
 
-  AnimationGroup::AnimationGroup(std::vector<const GpuTexture*> textures, const AnimationGroupData& data, RenderManager* render_manager)
+  AnimationGroup::AnimationGroup(std::vector<GpuTexture*> textures, const AnimationGroupData& data, RenderManager* render_manager)
   : m_state(data)
   , m_graphics(std::move(textures), data, render_manager)
   {

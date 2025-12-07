@@ -124,7 +124,7 @@ namespace gf {
 
     using RawShapeGeometry = RawGeometry;
 
-    const GpuTexture* load_resource(const ShapeResource& resource, ResourceManager* resource_manager)
+    GpuTexture* load_resource(const ShapeResource& resource, ResourceManager* resource_manager)
     {
       if (resource.texture.empty()) {
         return nullptr;
@@ -134,7 +134,7 @@ namespace gf {
     }
   }
 
-  Shape::Shape(const GpuTexture* texture, const ShapeBuffer& buffer, RenderManager* render_manager)
+  Shape::Shape(GpuTexture* texture, const ShapeBuffer& buffer, RenderManager* render_manager)
   : m_texture(texture)
   {
     auto raw_interior = compute_interior_shape_geometry(buffer);
@@ -154,7 +154,7 @@ namespace gf {
   {
   }
 
-  ShapeGeometry Shape::geometry() const
+  ShapeGeometry Shape::geometry()
   {
     ShapeGeometry geometry;
 
@@ -218,7 +218,7 @@ namespace gf {
     m_bounds = geometry.compute_bounds();
   }
 
-  RenderGeometry ShapeGroup::geometry() const
+  RenderGeometry ShapeGroup::geometry()
   {
     RenderGeometry geometry = {};
     geometry.vertices = &m_vertices.buffer();

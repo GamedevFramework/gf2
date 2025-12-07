@@ -8,6 +8,8 @@
 
 #include <gf2/graphics/GpuBuffer.h>
 #include <gf2/graphics/GpuGraphicsPipeline.h>
+#include <gf2/graphics/GpuTexture.h>
+#include <gf2/graphics/GpuTransferBuffer.h>
 
 namespace gf {
 
@@ -68,39 +70,62 @@ namespace gf {
     SDL_SetGPUScissor(m_render_pass, &raw_scissor);
   }
 
-  void GpuRenderPass::bind_pipeline(const GpuGraphicsPipeline* pipeline) const
+  void GpuRenderPass::bind_pipeline(GpuGraphicsPipeline* pipeline) const
   {
     assert(m_render_pass);
     assert(pipeline);
-    // TODO
+    SDL_BindGPUGraphicsPipeline(m_render_pass, pipeline->m_handle);
   }
 
-  void GpuRenderPass::bind_vertex_buffer(const GpuBuffer* buffer, std::size_t offset) const
+  void GpuRenderPass::bind_vertex_buffer(GpuBuffer* buffer, std::size_t offset) const
   {
     assert(m_render_pass);
     assert(buffer);
-    const SDL_GPUBufferBinding binding = { nullptr /* TODO */, static_cast<Uint32>(offset) };
+    const SDL_GPUBufferBinding binding = { buffer->m_handle, static_cast<Uint32>(offset) };
     SDL_BindGPUVertexBuffers(m_render_pass, 0, &binding, 1);
   }
 
-  void GpuRenderPass::bind_index_buffer(const GpuBuffer* buffer, std::size_t offset) const
+  void GpuRenderPass::bind_index_buffer(GpuBuffer* buffer, std::size_t offset) const
   {
     assert(m_render_pass);
     assert(buffer);
-    const SDL_GPUBufferBinding binding = { nullptr /* TODO */, static_cast<Uint32>(offset) };
+    const SDL_GPUBufferBinding binding = { buffer->m_handle, static_cast<Uint32>(offset) };
     SDL_BindGPUIndexBuffer(m_render_pass, &binding, SDL_GPU_INDEXELEMENTSIZE_16BIT);
   }
 
-  void GpuRenderPass::bind_texture(GpuShaderStage stage, uint32_t slot_index, GpuTexture* buffer)
+  void GpuRenderPass::bind_texture(GpuShaderStage stage, uint32_t slot_index, GpuTexture* texture)
   {
     assert(m_render_pass);
+    assert(texture->m_usage.test(GpuTextureUsage::Sampler));
+
+    const SDL_GPUTextureSamplerBinding binding = { texture->m_texture_handle, texture->m_sampler_handle };
+
+    switch (stage) {
+      case GpuShaderStage::Vertex:
+        SDL_BindGPUVertexSamplers(m_render_pass, slot_index, &binding, 1);
+        break;
+      case GpuShaderStage::Fragment:
+        SDL_BindGPUFragmentSamplers(m_render_pass, slot_index, &binding, 1);
+        break;
+    }
 
   }
 
   void GpuRenderPass::bind_storage_buffer(GpuShaderStage stage, uint32_t slot_index, GpuBuffer* buffer)
   {
     assert(m_render_pass);
+    assert(buffer->m_usage.test(GpuBufferUsage::GraphicsStorageRead));
 
+    SDL_GPUBuffer *storage_buffer = buffer->m_handle;
+
+    switch (stage) {
+      case GpuShaderStage::Vertex:
+        SDL_BindGPUVertexStorageBuffers(m_render_pass, slot_index, &storage_buffer, 1);
+        break;
+      case GpuShaderStage::Fragment:
+        SDL_BindGPUFragmentStorageBuffers(m_render_pass, slot_index, &storage_buffer, 1);
+        break;
+    }
   }
 
   void GpuRenderPass::draw(std::size_t vertex_count, std::size_t first_vertex) const
@@ -122,13 +147,19 @@ namespace gf {
   void GpuCopyPass::copy_buffer_to_buffer(GpuTransferBuffer* source, GpuBuffer* destination, std::size_t size)
   {
     assert(m_copy_pass);
-    // TODO
+
+    const SDL_GPUTransferBufferLocation source_buffer = { source->m_handle, 0 };
+    const SDL_GPUBufferRegion destination_buffer = { destination->m_handle, 0, static_cast<Uint32>(size) };
+    SDL_UploadToGPUBuffer(m_copy_pass, &source_buffer, &destination_buffer, false);
   }
 
   void GpuCopyPass::copy_buffer_to_texture(GpuTransferBuffer* source, GpuTexture* destination, Vec2I size)
   {
     assert(m_copy_pass);
-    // TODO
+
+    const SDL_GPUTextureTransferInfo source_buffer = { source->m_handle, 0, static_cast<Uint32>(size.w), static_cast<Uint32>(size.h) };
+    const SDL_GPUTextureRegion destination_texture = { destination->m_texture_handle, 1, 1, 0, 0, 0, static_cast<Uint32>(size.w), static_cast<Uint32>(size.h), 1 };
+    SDL_UploadToGPUTexture(m_copy_pass, &source_buffer, &destination_texture, false);
   }
 
 }

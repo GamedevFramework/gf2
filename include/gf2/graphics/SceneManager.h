@@ -37,7 +37,7 @@ namespace gf {
     }
 
   protected:
-    const GpuGraphicsPipeline* render_pipeline(RenderPipelineType type) const;
+    GpuGraphicsPipeline* render_pipeline(RenderPipelineType type);
     void render_records(GpuRenderPass render_pass, const RenderRecorder& recorder);
     void render_object(GpuRenderPass render_pass, RenderObject object);
 
@@ -54,7 +54,7 @@ namespace gf {
     GpuGraphicsPipeline m_fullscreen_pipeline;
     GpuGraphicsPipeline m_imgui_pipeline;
 
-    const GpuGraphicsPipeline* m_last_pipeline = nullptr;
+    GpuGraphicsPipeline* m_last_pipeline = nullptr;
     RenderObject m_last_object = {};
   };
 

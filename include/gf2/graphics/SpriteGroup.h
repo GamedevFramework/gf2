@@ -18,7 +18,7 @@ namespace gf {
 
   class GF_GRAPHICS_API SpriteGroup {
   public:
-    SpriteGroup(std::vector<const GpuTexture*> textures, const SpriteGroupData& data, RenderManager* render_manager);
+    SpriteGroup(std::vector<GpuTexture*> textures, const SpriteGroupData& data, RenderManager* render_manager);
     SpriteGroup(const SpriteGroupResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
     std::vector<RenderGeometry> geometry();
@@ -26,7 +26,7 @@ namespace gf {
     void update(const SpriteGroupData& data, RenderManager* render_manager);
 
   private:
-    std::vector<const GpuTexture*> m_textures;
+    std::vector<GpuTexture*> m_textures;
     DynamicBuffer m_vertices;
     DynamicBuffer m_indices;
 

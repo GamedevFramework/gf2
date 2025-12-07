@@ -15,9 +15,9 @@ namespace gf {
 
   namespace {
 
-    std::vector<const GpuTexture*> load_textures(const SpriteGroupResource& resource, ResourceManager* resource_manager)
+    std::vector<GpuTexture*> load_textures(const SpriteGroupResource& resource, ResourceManager* resource_manager)
     {
-      std::vector<const GpuTexture*> textures;
+      std::vector<GpuTexture*> textures;
       textures.reserve(resource.textures.size());
 
       for (const std::filesystem::path& texture : resource.textures) {
@@ -29,7 +29,7 @@ namespace gf {
 
   }
 
-  SpriteGroup::SpriteGroup(std::vector<const GpuTexture*> textures, const SpriteGroupData& data, RenderManager* render_manager)
+  SpriteGroup::SpriteGroup(std::vector<GpuTexture*> textures, const SpriteGroupData& data, RenderManager* render_manager)
   : m_textures(std::move(textures))
   , m_vertices(GpuBufferUsage::Vertex)
   , m_indices(GpuBufferUsage::Index)

@@ -31,7 +31,7 @@ int main()
   font_context.format = { gf::ConsoleFontFormat::Grayscale, gf::ConsoleFontFormat::InRow, gf::ConsoleFontFormat::ModifiedCodePage437 };
   font_context.render_manager = scene_manager.render_manager();
 
-  const gf::ConsoleFont console_font(font_file, font_context);
+  gf::ConsoleFont console_font(font_file, font_context);
 
   gf::ConsoleStyle style;
   style.color.background = gf::gray(0.25f);

@@ -27,6 +27,8 @@ namespace gf {
     void update(std::size_t size, const void* data);
 
   private:
+    friend class GpuCopyPass;
+
     GpuTransferBuffer(SDL_GPUDevice* device, SDL_GPUTransferBuffer* buffer)
     : m_handle(device, buffer)
     {

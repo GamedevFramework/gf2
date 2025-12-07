@@ -19,15 +19,15 @@ namespace gf {
 
   class GF_GRAPHICS_API Sprite {
   public:
-    Sprite(const GpuTexture* texture, RectF texture_region, Color color, RenderManager* render_manager);
-    Sprite(const GpuTexture* texture, RectF texture_region, RenderManager* render_manager);
-    Sprite(const GpuTexture* texture, RenderManager* render_manager);
-    Sprite(const GpuTexture* texture, const SpriteData& data, RenderManager* render_manager);
+    Sprite(GpuTexture* texture, RectF texture_region, Color color, RenderManager* render_manager);
+    Sprite(GpuTexture* texture, RectF texture_region, RenderManager* render_manager);
+    Sprite(GpuTexture* texture, RenderManager* render_manager);
+    Sprite(GpuTexture* texture, const SpriteData& data, RenderManager* render_manager);
     Sprite(const SpriteResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
-    RenderGeometry geometry() const;
+    RenderGeometry geometry();
 
-    const GpuTexture* texture() const
+    GpuTexture* texture()
     {
       return m_texture;
     }
@@ -38,7 +38,7 @@ namespace gf {
     }
 
   private:
-    const GpuTexture* m_texture;
+    GpuTexture* m_texture;
     GpuBuffer m_vertices;
     GpuBuffer m_indices;
     RectF m_bounds = {};

@@ -21,12 +21,12 @@ namespace gf {
 
   struct GF_GRAPHICS_API RenderGeometry {
     RenderPipelineType pipeline = RenderPipelineType::Default;
-    const GpuBuffer* vertices = nullptr;
-    const GpuBuffer* indices = nullptr;
+    GpuBuffer* vertices = nullptr;
+    GpuBuffer* indices = nullptr;
     std::size_t size = 0;
     std::size_t first = 0;
     std::ptrdiff_t offset = 0;
-    const GpuTexture* texture = nullptr;
+    GpuTexture* texture = nullptr;
   };
 
   struct GF_GRAPHICS_API RenderObject {

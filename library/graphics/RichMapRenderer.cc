@@ -60,7 +60,7 @@ namespace gf {
 
   }
 
-  RichMapRenderer::RichMapRenderer(const RichMap* map, RenderManager* render_manager)
+  RichMapRenderer::RichMapRenderer(RichMap* map, RenderManager* render_manager)
   : m_map(map)
   , m_grid(compute_grid(m_map->tiled_map()))
   {
@@ -251,7 +251,7 @@ namespace gf {
   }
 
   // NOLINTNEXTLINE(misc-no-recursion)
-  void RichMapRenderer::compute_geometries(RectI view, Flags<RichMapQuery> query, Span<const MapLayerStructure> structure, std::vector<RenderGeometry>& geometries) const
+  void RichMapRenderer::compute_geometries(RectI view, Flags<RichMapQuery> query, Span<const MapLayerStructure> structure, std::vector<RenderGeometry>& geometries)
   {
     const TiledMap* map = tiled_map();
 
@@ -279,13 +279,13 @@ namespace gf {
     }
   }
 
-  void RichMapRenderer::compute_tile_geometry(RectI view, const TileLayer& tile_layer, std::vector<RenderGeometry>& geometries) const
+  void RichMapRenderer::compute_tile_geometry(RectI view, TileLayer& tile_layer, std::vector<RenderGeometry>& geometries)
   {
     if (auto maybe_view = view.intersection(RectI::from_size(tile_layer.chunks.size()))) {
       for (auto xy : gf::position_range(maybe_view->size())) {
         xy += maybe_view->position();
         assert(tile_layer.chunks.valid(xy));
-        const auto& chunk = tile_layer.chunks(xy);
+        auto& chunk = tile_layer.chunks(xy);
 
         if (chunk.vertices.empty() || chunk.indices.empty()) {
           continue;
@@ -307,7 +307,7 @@ namespace gf {
     }
   }
 
-  void RichMapRenderer::compute_object_geometry(const ObjectLayer& object_layer, std::vector<RenderGeometry>& geometries) const
+  void RichMapRenderer::compute_object_geometry(ObjectLayer& object_layer, std::vector<RenderGeometry>& geometries)
   {
     RenderGeometry geometry = {};
     geometry.pipeline = RenderPipelineType::Default;

@@ -74,7 +74,7 @@ namespace gf {
     build_default_pipelines();
   }
 
-  const GpuGraphicsPipeline* BasicSceneManager::render_pipeline(RenderPipelineType type) const
+  GpuGraphicsPipeline* BasicSceneManager::render_pipeline(RenderPipelineType type)
   {
     switch (type) {
       case RenderPipelineType::Default:

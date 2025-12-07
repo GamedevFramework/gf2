@@ -62,8 +62,8 @@ namespace gf {
     void set_debug_name(const std::string& name);
 
   private:
+    friend class GpuCopyPass;
     friend class GpuRenderPass;
-    friend class Descriptor;
 
     void update_device_buffer(std::size_t size, const void* data, RenderManager* render_manager);
 

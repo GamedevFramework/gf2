@@ -25,7 +25,7 @@ namespace gf {
   public:
     Curve(const CurveBuffer& buffer, RenderManager* render_manager);
 
-    CurveGeometry geometry() const;
+    CurveGeometry geometry();
 
     RectF bounds() const
     {
@@ -47,7 +47,7 @@ namespace gf {
 
     void update(const CurveGroupBuffer& buffer, RenderManager* render_manager);
 
-    RenderGeometry geometry() const;
+    RenderGeometry geometry();
 
   private:
     DynamicBuffer m_vertices;

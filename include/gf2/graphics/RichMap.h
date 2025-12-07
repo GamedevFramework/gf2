@@ -27,18 +27,18 @@ namespace gf {
     using Primitive = TiledMap;
 
     RichMap() = default;
-    RichMap(const TiledMap* map, std::vector<const GpuTexture*> textures);
+    RichMap(const TiledMap* map, std::vector<GpuTexture*> textures);
     RichMap(const RichMapResource& resource, ResourceManager* resource_manager);
     RichMap(const std::filesystem::path& filename, RichMapContext context);
 
     static ResourceBundle bundle(const std::filesystem::path& filename, RichMapContext context);
 
-    const GpuTexture* texture(uint32_t i) const;
+    GpuTexture* texture(uint32_t i);
     const TiledMap* tiled_map() const;
 
   private:
     const TiledMap* m_tiled_map = nullptr;
-    std::vector<const GpuTexture*> m_textures;
+    std::vector<GpuTexture*> m_textures;
   };
 
 }

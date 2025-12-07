@@ -12,7 +12,7 @@ namespace gf {
    * AnimationEntity
    */
 
-  AnimationEntity::AnimationEntity(std::vector<const GpuTexture*> textures, const AnimationData& data, RenderManager* render_manager)
+  AnimationEntity::AnimationEntity(std::vector<GpuTexture*> textures, const AnimationData& data, RenderManager* render_manager)
   : m_animation(std::move(textures), data, render_manager)
   {
   }

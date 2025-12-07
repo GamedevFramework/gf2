@@ -13,7 +13,7 @@ namespace gf {
 
   class GF_GRAPHICS_API ShapeEntity : public TransformableEntity {
   public:
-    ShapeEntity(const GpuTexture* texture, const ShapeBuffer& buffer, RenderManager* render_manager);
+    ShapeEntity(GpuTexture* texture, const ShapeBuffer& buffer, RenderManager* render_manager);
     ShapeEntity(const ShapeResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
     void render(RenderRecorder& recorder) override;

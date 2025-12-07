@@ -18,23 +18,23 @@ namespace gf {
   class GF_GRAPHICS_API ConsoleGraphics {
   public:
     ConsoleGraphics();
-    ConsoleGraphics(const ConsoleFont* font);
+    ConsoleGraphics(ConsoleFont* font);
     ConsoleGraphics(const ConsoleResource& resource, ResourceManager* resource_manager);
 
-    const ConsoleFont* font() const
+    ConsoleFont* font()
     {
       return m_font;
     }
 
-    void set_font(const ConsoleFont* font)
+    void set_font(ConsoleFont* font)
     {
       m_font = font;
     }
 
     void update(const Console& buffer, RenderManager* render_manager);
 
-    RenderGeometry background_geometry() const;
-    RenderGeometry foreground_geometry() const;
+    RenderGeometry background_geometry();
+    RenderGeometry foreground_geometry();
 
     RectF bounds() const
     {
@@ -45,7 +45,7 @@ namespace gf {
     void update_background(const Console& buffer, RenderManager* render_manager);
     void update_foreground(const Console& buffer, RenderManager* render_manager);
 
-    const ConsoleFont* m_font = nullptr;
+    ConsoleFont* m_font = nullptr;
     DynamicBuffer m_background_vertices;
     DynamicBuffer m_background_indices;
     DynamicBuffer m_foreground_vertices;

@@ -832,7 +832,7 @@ namespace gf {
     update(resource.data, render_manager);
   }
 
-  RenderGeometry Text::geometry() const
+  RenderGeometry Text::geometry()
   {
     RenderGeometry geometry;
     geometry.pipeline = RenderPipelineType::Text;
@@ -896,7 +896,7 @@ namespace gf {
     update(resource.data, render_manager);
   }
 
-  RenderGeometry RichText::geometry() const
+  RenderGeometry RichText::geometry()
   {
     RenderGeometry geometry;
     geometry.pipeline = RenderPipelineType::Text;

@@ -10,7 +10,7 @@
 
 namespace gf {
 
-  RichMap::RichMap(const TiledMap* map, std::vector<const GpuTexture*> textures)
+  RichMap::RichMap(const TiledMap* map, std::vector<GpuTexture*> textures)
   : m_tiled_map(map)
   , m_textures(std::move(textures))
   {
@@ -18,9 +18,9 @@ namespace gf {
 
   namespace {
 
-    std::vector<const GpuTexture*> load_resources(const TiledMap* resource, ResourceManager* resource_manager)
+    std::vector<GpuTexture*> load_resources(const TiledMap* resource, ResourceManager* resource_manager)
     {
-      std::vector<const GpuTexture*> resources;
+      std::vector<GpuTexture*> resources;
       resources.reserve(resource->textures.size());
 
       for (const auto& texture : resource->textures) {
@@ -60,7 +60,7 @@ namespace gf {
     return m_tiled_map;
   }
 
-  const GpuTexture* RichMap::texture(uint32_t i) const
+  GpuTexture* RichMap::texture(uint32_t i)
   {
     assert(i < m_textures.size());
     return m_textures[i];

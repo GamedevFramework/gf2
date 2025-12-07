@@ -7,7 +7,7 @@
 
 namespace gf::details {
 
-  AnimationGraphicsRuntime AnimationBuilder::append_data(const std::vector<const GpuTexture*>& textures, const AnimationData& data)
+  AnimationGraphicsRuntime AnimationBuilder::append_data(const std::vector<GpuTexture*>& textures, const AnimationData& data)
   {
     const Color color = srgb_to_linear(data.color);
 

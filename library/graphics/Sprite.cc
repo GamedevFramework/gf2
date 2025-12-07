@@ -11,7 +11,7 @@
 
 namespace gf {
 
-  Sprite::Sprite(const GpuTexture* texture, RectF texture_region, Color color, RenderManager* render_manager)
+  Sprite::Sprite(GpuTexture* texture, RectF texture_region, Color color, RenderManager* render_manager)
   : m_texture(texture)
   {
     const Vec2F size = texture->size() * texture_region.size();
@@ -37,17 +37,17 @@ namespace gf {
     m_indices = GpuBuffer(GpuBufferUsage::Index, std::begin(indices), std::size(indices), render_manager);
   }
 
-  Sprite::Sprite(const GpuTexture* texture, RectF texture_region, RenderManager* render_manager)
+  Sprite::Sprite(GpuTexture* texture, RectF texture_region, RenderManager* render_manager)
   : Sprite(texture, texture_region, White, render_manager)
   {
   }
 
-  Sprite::Sprite(const GpuTexture* texture, RenderManager* render_manager)
+  Sprite::Sprite(GpuTexture* texture, RenderManager* render_manager)
   : Sprite(texture, RectF::from_size({ 1.0f, 1.0f }), White, render_manager)
   {
   }
 
-  Sprite::Sprite(const GpuTexture* texture, const SpriteData& data, RenderManager* render_manager)
+  Sprite::Sprite(GpuTexture* texture, const SpriteData& data, RenderManager* render_manager)
   : Sprite(texture, data.texture_region, data.color, render_manager)
   {
   }
@@ -57,7 +57,7 @@ namespace gf {
   {
   }
 
-  RenderGeometry Sprite::geometry() const
+  RenderGeometry Sprite::geometry()
   {
     RenderGeometry geometry = {};
     geometry.vertices = &m_vertices;

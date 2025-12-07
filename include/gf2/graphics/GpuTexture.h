@@ -71,7 +71,8 @@ namespace gf {
     RenderTarget as_render_target();
 
   private:
-    friend class Descriptor;
+    friend class GpuCopyPass;
+    friend class GpuRenderPass;
 
     details::GraphicsHandle<SDL_GPUTexture, SDL_ReleaseGPUTexture> m_texture_handle;
     details::GraphicsHandle<SDL_GPUSampler, SDL_ReleaseGPUSampler> m_sampler_handle;

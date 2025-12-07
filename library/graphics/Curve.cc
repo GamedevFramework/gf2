@@ -142,7 +142,7 @@ namespace gf {
     }
   }
 
-  CurveGeometry Curve::geometry() const
+  CurveGeometry Curve::geometry()
   {
     CurveGeometry geometry;
 
@@ -205,7 +205,7 @@ namespace gf {
     m_indices.update(geometry.indices.data(), geometry.indices.size(), render_manager);
   }
 
-  RenderGeometry CurveGroup::geometry() const
+  RenderGeometry CurveGroup::geometry()
   {
     RenderGeometry geometry;
     geometry.vertices = &m_vertices.buffer();

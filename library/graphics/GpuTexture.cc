@@ -78,7 +78,7 @@ namespace gf {
   void GpuTexture::update(const Image& image, RenderManager* render_manager)
   {
     assert(image.size() == m_image_size);
-    assert(m_format == Format::R8G8B8A8_SNorm);
+    assert(m_format == GpuTextureFormat::R8G8B8A8_SNorm);
 
     update(image.raw_size(), image.raw_data(), render_manager);
   }
@@ -86,7 +86,7 @@ namespace gf {
   void GpuTexture::update(const Bitmap& bitmap, RenderManager* render_manager)
   {
     assert(bitmap.size() == m_image_size);
-    assert(m_format == Format::R8_UNorm);
+    assert(m_format == GpuTextureFormat::R8_UNorm);
 
     update(bitmap.raw_size(), bitmap.raw_data(), render_manager);
   }
