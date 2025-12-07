@@ -52,10 +52,10 @@ namespace gf {
 
   class GF_GRAPHICS_API AnimationGroupGraphics {
   public:
-    AnimationGroupGraphics(std::vector<const GpuTexture*> textures, const AnimationGroupData& data, RenderManager* render_manager);
+    AnimationGroupGraphics(std::vector<GpuTexture*> textures, const AnimationGroupData& data, RenderManager* render_manager);
     AnimationGroupGraphics(const AnimationGroupResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
-    RenderGeometry geometry(Id animation_id, std::size_t frame_index) const;
+    RenderGeometry geometry(Id animation_id, std::size_t frame_index);
 
     RectF bounds() const
     {
@@ -63,7 +63,7 @@ namespace gf {
     }
 
   private:
-    std::vector<const GpuTexture*> m_textures;
+    std::vector<GpuTexture*> m_textures;
     GpuBuffer m_vertices;
     GpuBuffer m_indices;
     RectF m_bounds = RectF::from_size({ 0.0f, 0.0f });
@@ -73,7 +73,7 @@ namespace gf {
 
   class GF_GRAPHICS_API AnimationGroup {
   public:
-    AnimationGroup(std::vector<const GpuTexture*> textures, const AnimationGroupData& data, RenderManager* render_manager);
+    AnimationGroup(std::vector<GpuTexture*> textures, const AnimationGroupData& data, RenderManager* render_manager);
     AnimationGroup(const AnimationGroupResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
     void select(std::string_view animation_name)
@@ -101,7 +101,7 @@ namespace gf {
       return m_state.finished();
     }
 
-    RenderGeometry geometry() const
+    RenderGeometry geometry()
     {
       return m_graphics.geometry(m_state.current_animation_id(), m_state.current_frame());
     }

@@ -24,9 +24,9 @@ namespace gf {
 
     void update(const TextData& data, RenderManager* render_manager);
 
-    RenderGeometry geometry() const;
+    RenderGeometry geometry();
 
-    const GpuTexture* texture() const
+    GpuTexture* texture()
     {
       return m_atlas->texture();
     }
@@ -58,9 +58,9 @@ namespace gf {
 
     void update(const TextData& data, RenderManager* render_manager);
 
-    RenderGeometry geometry() const;
+    RenderGeometry geometry();
 
-    const GpuTexture* texture() const
+    GpuTexture* texture()
     {
       return m_atlas->texture();
     }

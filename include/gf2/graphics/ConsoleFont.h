@@ -58,7 +58,7 @@ namespace gf {
 
     RectF texture_region(char16_t character) const;
 
-    const GpuTexture* texture() const
+    GpuTexture* texture()
     {
       return &m_texture;
     }

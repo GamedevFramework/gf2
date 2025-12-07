@@ -19,15 +19,15 @@ namespace gf {
 
   class GF_GRAPHICS_API NinePatch {
   public:
-    NinePatch(const GpuTexture* texture, Vec2F size, NinePatchLimits limits, RectF texture_region, Color color, RenderManager* render_manager);
-    NinePatch(const GpuTexture* texture, Vec2F size, NinePatchLimits limits, RectF texture_region, RenderManager* render_manager);
-    NinePatch(const GpuTexture* texture, Vec2F size, NinePatchLimits limits, RenderManager* render_manager);
-    NinePatch(const GpuTexture* texture, const NinePatchData& data, RenderManager* render_manager);
+    NinePatch(GpuTexture* texture, Vec2F size, NinePatchLimits limits, RectF texture_region, Color color, RenderManager* render_manager);
+    NinePatch(GpuTexture* texture, Vec2F size, NinePatchLimits limits, RectF texture_region, RenderManager* render_manager);
+    NinePatch(GpuTexture* texture, Vec2F size, NinePatchLimits limits, RenderManager* render_manager);
+    NinePatch(GpuTexture* texture, const NinePatchData& data, RenderManager* render_manager);
     NinePatch(const NinePatchResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
-    RenderGeometry geometry() const;
+    RenderGeometry geometry();
 
-    const GpuTexture* texture() const
+    GpuTexture* texture()
     {
       return m_texture;
     }
@@ -38,7 +38,7 @@ namespace gf {
     }
 
   private:
-    const GpuTexture* m_texture;
+    GpuTexture* m_texture;
     GpuBuffer m_vertices;
     GpuBuffer m_indices;
     RectF m_bounds = {};

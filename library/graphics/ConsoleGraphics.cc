@@ -21,7 +21,7 @@ namespace gf {
     m_foreground_indices.set_debug_name("[gf2] Console Foreground Index Buffer");
   }
 
-  ConsoleGraphics::ConsoleGraphics(const ConsoleFont* font)
+  ConsoleGraphics::ConsoleGraphics(ConsoleFont* font)
   : ConsoleGraphics()
   {
     m_font = font;
@@ -44,7 +44,7 @@ namespace gf {
     m_bounds = RectF::from_size(buffer.size() * m_font->character_size());
   }
 
-  RenderGeometry ConsoleGraphics::background_geometry() const
+  RenderGeometry ConsoleGraphics::background_geometry()
   {
     RenderGeometry geometry;
     geometry.vertices = &m_background_vertices.buffer();
@@ -53,7 +53,7 @@ namespace gf {
     return geometry;
   }
 
-  RenderGeometry ConsoleGraphics::foreground_geometry() const
+  RenderGeometry ConsoleGraphics::foreground_geometry()
   {
     RenderGeometry geometry;
     geometry.vertices = &m_foreground_vertices.buffer();

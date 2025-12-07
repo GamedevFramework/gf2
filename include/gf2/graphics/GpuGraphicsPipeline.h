@@ -24,7 +24,7 @@ namespace gf {
 
   private:
     friend class GpuGraphicsPipelineBuilder;
-    friend class RenderPass;
+    friend class GpuRenderPass;
     friend class RenderManager;
 
     GpuGraphicsPipeline(SDL_GPUDevice* device, SDL_GPUGraphicsPipeline* pipeline)

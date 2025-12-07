@@ -51,7 +51,7 @@ namespace gf {
 
   }
 
-  NinePatch::NinePatch(const GpuTexture* texture, Vec2F size, NinePatchLimits limits, RectF texture_region, Color color, RenderManager* render_manager)
+  NinePatch::NinePatch(GpuTexture* texture, Vec2F size, NinePatchLimits limits, RectF texture_region, Color color, RenderManager* render_manager)
   : m_texture(texture)
   , m_bounds(RectF::from_size(size))
   {
@@ -102,17 +102,17 @@ namespace gf {
     m_indices = GpuBuffer(GpuBufferUsage::Index, std::begin(Indices), std::size(Indices), render_manager);
   }
 
-  NinePatch::NinePatch(const GpuTexture* texture, Vec2F size, NinePatchLimits limits, RectF texture_region, RenderManager* render_manager)
+  NinePatch::NinePatch(GpuTexture* texture, Vec2F size, NinePatchLimits limits, RectF texture_region, RenderManager* render_manager)
   : NinePatch(texture, size, limits, texture_region, White, render_manager)
   {
   }
 
-  NinePatch::NinePatch(const GpuTexture* texture, Vec2F size, NinePatchLimits limits, RenderManager* render_manager)
+  NinePatch::NinePatch(GpuTexture* texture, Vec2F size, NinePatchLimits limits, RenderManager* render_manager)
   : NinePatch(texture, size, limits, RectF::from_size({ 1.0f, 1.0f }), White, render_manager)
   {
   }
 
-  NinePatch::NinePatch(const GpuTexture* texture, const NinePatchData& data, RenderManager* render_manager)
+  NinePatch::NinePatch(GpuTexture* texture, const NinePatchData& data, RenderManager* render_manager)
   : NinePatch(texture, data.size, data.limits, data.texture_region, data.color, render_manager)
   {
   }
@@ -122,7 +122,7 @@ namespace gf {
   {
   }
 
-  RenderGeometry NinePatch::geometry() const
+  RenderGeometry NinePatch::geometry()
   {
     RenderGeometry geometry = {};
     geometry.vertices = &m_vertices;

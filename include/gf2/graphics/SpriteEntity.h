@@ -15,11 +15,11 @@ namespace gf {
 
   class GF_GRAPHICS_API SpriteEntity : public TransformableEntity {
   public:
-    SpriteEntity(const GpuTexture* texture, RenderManager* render_manager);
-    SpriteEntity(const GpuTexture* texture, const SpriteData& data, RenderManager* render_manager);
+    SpriteEntity(GpuTexture* texture, RenderManager* render_manager);
+    SpriteEntity(GpuTexture* texture, const SpriteData& data, RenderManager* render_manager);
     SpriteEntity(const SpriteResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
-    const Sprite& sprite() const
+    Sprite& sprite()
     {
       return m_sprite;
     }

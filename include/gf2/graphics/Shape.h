@@ -25,10 +25,10 @@ namespace gf {
 
   class GF_GRAPHICS_API Shape {
   public:
-    Shape(const GpuTexture* texture, const ShapeBuffer& buffer, RenderManager* render_manager);
+    Shape(GpuTexture* texture, const ShapeBuffer& buffer, RenderManager* render_manager);
     Shape(const ShapeResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
-    ShapeGeometry geometry() const;
+    ShapeGeometry geometry();
 
     RectF bounds() const
     {
@@ -36,7 +36,7 @@ namespace gf {
     }
 
   private:
-    const GpuTexture* m_texture = nullptr;
+    GpuTexture* m_texture = nullptr;
     GpuBuffer m_vertices;
     GpuBuffer m_indices;
     std::optional<GpuBuffer> m_outline_vertices;
@@ -51,7 +51,7 @@ namespace gf {
 
     void update(const ShapeGroupBuffer& buffer, RenderManager* render_manager);
 
-    RenderGeometry geometry() const;
+    RenderGeometry geometry();
 
     RectF bounds() const
     {

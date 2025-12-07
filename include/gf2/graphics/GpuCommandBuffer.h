@@ -27,11 +27,11 @@ namespace gf {
     void set_viewport(RectF viewport) const;
     void set_scissor(RectI scissor) const;
 
-    void bind_pipeline(const GpuGraphicsPipeline* pipeline) const;
-    void bind_vertex_buffer(const GpuBuffer* buffer, std::size_t offset = 0) const;
-    void bind_index_buffer(const GpuBuffer* buffer, std::size_t offset = 0) const;
+    void bind_pipeline(GpuGraphicsPipeline* pipeline) const;
+    void bind_vertex_buffer(GpuBuffer* buffer, std::size_t offset = 0) const;
+    void bind_index_buffer(GpuBuffer* buffer, std::size_t offset = 0) const;
 
-    void bind_texture(GpuShaderStage stage, uint32_t slot_index, GpuTexture* buffer);
+    void bind_texture(GpuShaderStage stage, uint32_t slot_index, GpuTexture* texture);
     void bind_storage_buffer(GpuShaderStage stage, uint32_t slot_index, GpuBuffer* buffer);
 
     void draw(std::size_t vertex_count, std::size_t first_vertex = 0) const;
@@ -56,7 +56,6 @@ namespace gf {
     void copy_buffer_to_texture(GpuTransferBuffer* source, GpuTexture* destination, Vec2I size);
 
   private:
-    friend class MemoryAllocator;
     friend class RenderManager;
     friend class GpuCommandBuffer;
 

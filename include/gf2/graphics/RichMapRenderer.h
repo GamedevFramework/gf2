@@ -33,7 +33,7 @@ namespace gf {
 
   class GF_GRAPHICS_API RichMapRenderer {
   public:
-    RichMapRenderer(const RichMap* map, RenderManager* render_manager);
+    RichMapRenderer(RichMap* map, RenderManager* render_manager);
     RichMapRenderer(const RichMapResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
     RichMapRenderer(const RichMapRenderer&) = delete;
@@ -56,7 +56,7 @@ namespace gf {
       return m_grid;
     }
 
-    const RichMap* rich_map() const
+    RichMap* rich_map()
     {
       return m_map;
     }
@@ -90,11 +90,11 @@ namespace gf {
       LayerBuffers buffers;
     };
 
-    void compute_geometries(RectI view, Flags<RichMapQuery> query, Span<const MapLayerStructure> structure, std::vector<RenderGeometry>& geometries) const;
-    void compute_tile_geometry(RectI view, const TileLayer& tile_layer, std::vector<RenderGeometry>& geometries) const;
-    void compute_object_geometry(const ObjectLayer& object_layer, std::vector<RenderGeometry>& geometries) const;
+    void compute_geometries(RectI view, Flags<RichMapQuery> query, Span<const MapLayerStructure> structure, std::vector<RenderGeometry>& geometries);
+    void compute_tile_geometry(RectI view, TileLayer& tile_layer, std::vector<RenderGeometry>& geometries);
+    void compute_object_geometry(ObjectLayer& object_layer, std::vector<RenderGeometry>& geometries);
 
-    const RichMap* m_map;
+    RichMap* m_map;
     AnyGrid m_grid;
     std::vector<TileLayer> m_tile_layers;
     std::vector<ObjectLayer> m_object_layers;

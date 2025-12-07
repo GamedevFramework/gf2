@@ -15,8 +15,8 @@ namespace gf {
 
   class GF_GRAPHICS_API NinePatchEntity : public TransformableEntity {
   public:
-    NinePatchEntity(const GpuTexture* texture, Vec2F size, NinePatchLimits limits, RenderManager* render_manager);
-    NinePatchEntity(const GpuTexture* texture, const NinePatchData& data, RenderManager* render_manager);
+    NinePatchEntity(GpuTexture* texture, Vec2F size, NinePatchLimits limits, RenderManager* render_manager);
+    NinePatchEntity(GpuTexture* texture, const NinePatchData& data, RenderManager* render_manager);
     NinePatchEntity(const NinePatchResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
     const NinePatch& nine_patch() const

@@ -12,7 +12,7 @@ namespace gf {
    * ShapeEntity
    */
 
-  ShapeEntity::ShapeEntity(const GpuTexture* texture, const ShapeBuffer& buffer, RenderManager* render_manager)
+  ShapeEntity::ShapeEntity(GpuTexture* texture, const ShapeBuffer& buffer, RenderManager* render_manager)
   : m_shape(texture, buffer, render_manager)
   {
   }

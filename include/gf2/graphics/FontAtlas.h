@@ -30,7 +30,7 @@ namespace gf {
 
     void update_texture(RenderManager* render_manager);
 
-    const GpuTexture* texture() const
+    GpuTexture* texture()
     {
       return &m_texture;
     }

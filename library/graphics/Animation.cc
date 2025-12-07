@@ -64,7 +64,7 @@ namespace gf {
    * AnimationGraphics
    */
 
-  AnimationGraphics::AnimationGraphics(std::vector<const GpuTexture*> textures, const AnimationData& data, RenderManager* render_manager)
+  AnimationGraphics::AnimationGraphics(std::vector<GpuTexture*> textures, const AnimationData& data, RenderManager* render_manager)
   : m_textures(std::move(textures))
   {
     details::AnimationBuilder builder;
@@ -85,7 +85,7 @@ namespace gf {
   {
   }
 
-  RenderGeometry AnimationGraphics::geometry(std::size_t frame_index) const
+  RenderGeometry AnimationGraphics::geometry(std::size_t frame_index)
   {
     assert(frame_index < m_animation.frames.size());
 
@@ -106,7 +106,7 @@ namespace gf {
    * Animation
    */
 
-  Animation::Animation(std::vector<const GpuTexture*> textures, const AnimationData& data, RenderManager* render_manager)
+  Animation::Animation(std::vector<GpuTexture*> textures, const AnimationData& data, RenderManager* render_manager)
   : m_state(data)
   , m_graphics(std::move(textures), data, render_manager)
   {

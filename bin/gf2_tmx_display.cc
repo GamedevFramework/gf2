@@ -25,7 +25,7 @@ namespace {
 
   class MapEntity : public gf::Entity {
   public:
-    MapEntity(const gf::RichMap* map, gf::RenderManager* render_manager)
+    MapEntity(gf::RichMap* map, gf::RenderManager* render_manager)
     : m_renderer(map, render_manager)
     {
     }
@@ -58,7 +58,7 @@ namespace {
 
   class TmxScene : public gf::Scene {
   public:
-    TmxScene(const gf::RichMap* map, gf::RenderManager* render_manager)
+    TmxScene(gf::RichMap* map, gf::RenderManager* render_manager)
     : m_zoom(world_camera())
     , m_map_entity(map, render_manager)
     {

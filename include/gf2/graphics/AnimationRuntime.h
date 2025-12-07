@@ -33,7 +33,7 @@ namespace gf {
     };
 
     struct AnimationBuilder {
-      AnimationGraphicsRuntime append_data(const std::vector<const GpuTexture*>& textures, const AnimationData& data);
+      AnimationGraphicsRuntime append_data(const std::vector<GpuTexture*>& textures, const AnimationData& data);
       GpuBuffer create_vertices(RenderManager* render_manager);
       GpuBuffer create_indices(RenderManager* render_manager);
 
@@ -43,9 +43,9 @@ namespace gf {
     };
 
     template<typename Resource>
-    std::vector<const GpuTexture*> load_animation_resources(const Resource& resource, ResourceManager* resource_manager)
+    std::vector<GpuTexture*> load_animation_resources(const Resource& resource, ResourceManager* resource_manager)
     {
-      std::vector<const GpuTexture*> resources;
+      std::vector<GpuTexture*> resources;
       resources.reserve(resource.textures.size());
 
       for (const auto& texture : resource.textures) {
