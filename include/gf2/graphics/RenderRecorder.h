@@ -41,6 +41,39 @@ namespace gf {
     void sort();
     void clear();
 
+    template<typename ViewFunc, typename ScissorFunc, typename TextFunc, typename ObjectFunc>
+    void iterate_records(ViewFunc on_view, ScissorFunc on_scissor, TextFunc on_text, ObjectFunc on_object)
+    {
+      for (const Record& record : m_records) {
+        switch (record.type) {
+          case RecordType::View:
+            {
+              ViewRecord& view = m_views[record.index];
+              on_view(&m_view_matrix_buffers[view.view_matrix_buffer_index], view.viewport);
+            }
+            break;
+          case RecordType::Scissor:
+            {
+              ScissorRecord& scissor = m_scissors[record.index];
+              on_scissor(scissor.scissor);
+            }
+            break;
+          case RecordType::Text:
+            {
+              TextRecord& text = m_texts[record.index];
+              on_text(&m_text_effect_buffers[text.text_effect_buffer_index]);
+            }
+            break;
+          case RecordType::Object:
+            {
+              ObjectRecord& object = m_objects[record.index];
+              on_object(object.object, &m_model_matrix_buffers[object.model_matrix_index]);
+            }
+            break;
+        }
+      }
+    }
+
   private:
     friend class BasicSceneManager;
 
