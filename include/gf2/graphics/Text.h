@@ -7,8 +7,8 @@
 #include <gf2/core/TextData.h>
 #include <gf2/core/TextStyle.h>
 
-#include "DynamicBuffer.h"
 #include "FontAtlas.h"
+#include "GpuDynamicBuffer.h"
 #include "GraphicsApi.h"
 #include "RenderObject.h"
 #include "TextEffect.h"
@@ -45,8 +45,8 @@ namespace gf {
 
     FontAtlas* m_atlas = nullptr;
     FontFace* m_font = nullptr;
-    DynamicBuffer m_vertices;
-    DynamicBuffer m_indices;
+    GpuDynamicBuffer m_vertices;
+    GpuDynamicBuffer m_indices;
     TextEffect m_effects = {};
     RectF m_bounds = {};
   };
@@ -82,8 +82,8 @@ namespace gf {
     FontFace* m_bold_font = nullptr;
     FontFace* m_italic_font = nullptr;
     FontFace* m_bold_italic_font = nullptr;
-    DynamicBuffer m_vertices;
-    DynamicBuffer m_indices;
+    GpuDynamicBuffer m_vertices;
+    GpuDynamicBuffer m_indices;
     TextEffect m_effects = {};
     RectF m_bounds = {};
   };
