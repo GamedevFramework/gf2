@@ -8,8 +8,8 @@
 #include <gf2/core/Rect.h>
 #include <gf2/core/ShapeBuffer.h>
 
-#include "DynamicBuffer.h"
 #include "GpuBuffer.h"
+#include "GpuDynamicBuffer.h"
 #include "GraphicsApi.h"
 #include "RenderObject.h"
 
@@ -59,8 +59,8 @@ namespace gf {
     }
 
   private:
-    DynamicBuffer m_vertices;
-    DynamicBuffer m_indices;
+    GpuDynamicBuffer m_vertices;
+    GpuDynamicBuffer m_indices;
     RectF m_bounds = {};
   };
 

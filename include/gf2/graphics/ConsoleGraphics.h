@@ -7,7 +7,7 @@
 #include <gf2/core/ConsoleData.h>
 
 #include "ConsoleFont.h"
-#include "DynamicBuffer.h"
+#include "GpuDynamicBuffer.h"
 #include "GraphicsApi.h"
 #include "RenderObject.h"
 
@@ -46,10 +46,10 @@ namespace gf {
     void update_foreground(const Console& buffer, RenderManager* render_manager);
 
     ConsoleFont* m_font = nullptr;
-    DynamicBuffer m_background_vertices;
-    DynamicBuffer m_background_indices;
-    DynamicBuffer m_foreground_vertices;
-    DynamicBuffer m_foreground_indices;
+    GpuDynamicBuffer m_background_vertices;
+    GpuDynamicBuffer m_background_indices;
+    GpuDynamicBuffer m_foreground_vertices;
+    GpuDynamicBuffer m_foreground_indices;
     RectF m_bounds = {};
   };
 

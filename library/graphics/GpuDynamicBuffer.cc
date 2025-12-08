@@ -1,16 +1,16 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
 
-#include <gf2/graphics/DynamicBuffer.h>
+#include <gf2/graphics/GpuDynamicBuffer.h>
 
 namespace gf {
 
-  DynamicBuffer::DynamicBuffer(Flags<GpuBufferUsage> usage)
+  GpuDynamicBuffer::GpuDynamicBuffer(Flags<GpuBufferUsage> usage)
   : m_usage(usage)
   {
   }
 
-  void DynamicBuffer::update(std::size_t size, const void* data, RenderManager* render_manager)
+  void GpuDynamicBuffer::update(std::size_t size, const void* data, RenderManager* render_manager)
   {
     m_current_buffer = (m_current_buffer + 1) % FramesInFlight;
     auto& current_buffer = m_buffers[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
@@ -26,7 +26,7 @@ namespace gf {
     }
   }
 
-  void DynamicBuffer::set_debug_name(const std::string& name)
+  void GpuDynamicBuffer::set_debug_name(const std::string& name)
   {
     m_debug_name = name;
   }

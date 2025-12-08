@@ -10,8 +10,8 @@
 #include <gf2/core/Transform.h>
 #include <gf2/core/Vec2.h>
 
-#include <gf2/graphics/DynamicBuffer.h>
 #include <gf2/graphics/Entity.h>
+#include <gf2/graphics/GpuDynamicBuffer.h>
 #include <gf2/graphics/GpuTexture.h>
 
 #include "ImguiApi.h"
@@ -36,8 +36,8 @@ namespace gf {
     std::vector<std::unique_ptr<GpuTexture>> m_textures;
     std::vector<std::unique_ptr<GpuTexture>> m_unused_textures;
 
-    DynamicBuffer m_vertices;
-    DynamicBuffer m_indices;
+    GpuDynamicBuffer m_vertices;
+    GpuDynamicBuffer m_indices;
 
     struct ImguiObject {
       RectI scissor = {};

@@ -7,7 +7,7 @@
 
 #include <gf2/core/SpriteData.h>
 
-#include "DynamicBuffer.h"
+#include "GpuDynamicBuffer.h"
 #include "GraphicsApi.h"
 #include "RenderObject.h"
 
@@ -27,8 +27,8 @@ namespace gf {
 
   private:
     std::vector<GpuTexture*> m_textures;
-    DynamicBuffer m_vertices;
-    DynamicBuffer m_indices;
+    GpuDynamicBuffer m_vertices;
+    GpuDynamicBuffer m_indices;
 
     struct BufferRange {
       uint32_t texture_index = 0;

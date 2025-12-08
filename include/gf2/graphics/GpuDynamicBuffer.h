@@ -10,9 +10,9 @@
 
 namespace gf {
 
-  class GF_GRAPHICS_API DynamicBuffer {
+  class GF_GRAPHICS_API GpuDynamicBuffer {
   public:
-    DynamicBuffer(Flags<GpuBufferUsage> usage);
+    GpuDynamicBuffer(Flags<GpuBufferUsage> usage);
 
     GpuBuffer& buffer()
     {
