@@ -69,6 +69,11 @@ namespace gf {
       uint32_t text_effect_buffer_index = 0;
     };
 
+    struct ObjectRecord {
+      RenderObject object;
+      uint32_t model_matrix_index = 0;
+    };
+
     RenderManager* m_render_manager;
 
     std::vector<Record> m_records;
@@ -76,13 +81,16 @@ namespace gf {
     std::vector<ViewRecord> m_views;
     std::vector<ScissorRecord> m_scissors;
     std::vector<TextRecord> m_texts;
-    std::vector<RenderObject> m_objects;
+    std::vector<ObjectRecord> m_objects;
 
     uint32_t m_next_view_matrix_index = 0;
     std::vector<GpuBuffer> m_view_matrix_buffers;
 
     uint32_t m_next_text_effect_index = 0;
     std::vector<GpuBuffer> m_text_effect_buffers;
+
+    uint32_t m_next_model_matrix_index = 0;
+    std::vector<GpuBuffer> m_model_matrix_buffers;
   };
 
 }
