@@ -121,18 +121,6 @@ namespace gf {
   GF_CORE_API Vec2F transform_vector(const Mat3F& mat, Vec2F vec);
   GF_CORE_API Mat3F inverse(const Mat3F& mat);
 
-  inline std::array<float, 16> compute_aligned(const Mat3F& mat)
-  {
-    // clang-format off
-    return {
-      mat(0, 0), mat(0, 1), mat(0, 2), 0.0f,
-      mat(1, 0), mat(1, 1), mat(1, 2), 0.0f,
-      mat(2, 0), mat(2, 1), mat(2, 2), 0.0f,
-      0.0f,      0.0f,      0.0f,      0.0f
-    };
-    // clang-format on
-  }
-
 } // namespace gf
 
 #endif // GF_MAT3_H

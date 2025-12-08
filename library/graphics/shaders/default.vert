@@ -4,11 +4,11 @@ layout(location = 0) in vec2 in_position;
 layout(location = 1) in vec2 in_texcoords;
 layout(location = 2) in vec4 in_color;
 
-layout(set = 1, binding = 0) uniform Camera {
+layout(set = 0, binding = 0) buffer Camera {
   mat4 u_camera;
 };
 
-layout(set = 1, binding = 1) uniform Transform {
+layout(set = 0, binding = 1) buffer Transform {
   mat4 u_transform;
 };
 
