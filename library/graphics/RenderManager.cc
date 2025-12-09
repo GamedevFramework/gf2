@@ -71,14 +71,15 @@ namespace gf {
     // synchronize and acquire the next image
 
     if (sync.render_fence != nullptr) {
-      SDL_WaitForGPUFences(m_device, true, &sync.render_fence, 1);
+      SDL_GPUFence* render_fence = sync.render_fence;
+      SDL_WaitForGPUFences(m_device, true, &render_fence, 1);
     }
 
     // submit memory command buffer
 
     MemOps& memops = m_memops[m_current_memops];
     SDL_EndGPUCopyPass(memops.copy_pass);
-    sync.memops_fence = SDL_SubmitGPUCommandBufferAndAcquireFence(memops.command_buffer);
+    sync.memops_fence = { m_device, SDL_SubmitGPUCommandBufferAndAcquireFence(memops.command_buffer) };
 
     // begin next memory command buffer
 
@@ -110,7 +111,8 @@ namespace gf {
 
     // wait for memops end
 
-    SDL_WaitForGPUFences(m_device, true, &sync.memops_fence, 1);
+    SDL_GPUFence* memops_fence = sync.memops_fence;
+    SDL_WaitForGPUFences(m_device, true, &memops_fence, 1);
 
     // delete staging buffers
 
@@ -118,7 +120,7 @@ namespace gf {
 
     // submit render command buffer
 
-    sync.render_fence = SDL_SubmitGPUCommandBufferAndAcquireFence(m_command_buffers[m_current_frame]);
+    sync.render_fence = { m_device, SDL_SubmitGPUCommandBufferAndAcquireFence(m_command_buffers[m_current_frame]) };
 
     m_current_frame = (m_current_frame + 1) % FramesInFlight;
   }

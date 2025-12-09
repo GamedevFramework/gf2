@@ -18,6 +18,7 @@
 #include "GraphicsApi.h"
 #include "RenderTarget.h"
 #include "Window.h"
+#include "gf2/graphics/GraphicsHandle.h"
 
 namespace gf {
 
@@ -79,9 +80,11 @@ namespace gf {
 
     // synchronization stuff
 
+    using GpuFence = details::GraphicsHandle<SDL_GPUFence, SDL_ReleaseGPUFence>;
+
     struct RenderSynchronizationObjects {
-      SDL_GPUFence* render_fence = nullptr;
-      SDL_GPUFence* memops_fence = nullptr;
+      GpuFence render_fence;
+      GpuFence memops_fence;
     };
 
     std::array<RenderSynchronizationObjects, FramesInFlight> m_render_synchronization = {};

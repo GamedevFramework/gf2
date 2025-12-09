@@ -23,7 +23,7 @@ namespace gf::details {
     GraphicsHandle(const GraphicsHandle&) = delete;
 
     GraphicsHandle(GraphicsHandle&& other) noexcept
-    : m_device(other.m_device)
+    : m_device(std::exchange(other.m_device, nullptr))
     , m_handle(std::exchange(other.m_handle, nullptr))
     {
     }
@@ -39,8 +39,12 @@ namespace gf::details {
 
     GraphicsHandle& operator=(GraphicsHandle&& other) noexcept
     {
-      std::swap(other.m_device, m_device);
-      std::swap(other.m_handle, m_handle);
+      if (m_handle != nullptr) {
+        Destructor(m_device, m_handle);
+      }
+
+      m_device = std::exchange(other.m_device, nullptr);
+      m_handle = std::exchange(other.m_handle, nullptr);
       return *this;
     }
 
