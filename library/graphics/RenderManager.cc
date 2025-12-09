@@ -22,6 +22,30 @@ namespace gf {
   {
     Vec2I size = {};
     SDL_GetWindowSizeInPixels(m_window, &size.w, &size.h);
+
+    m_device = SDL_CreateGPUDevice(SDL_GPU_SHADERFORMAT_SPIRV, true, "vulkan");
+
+    if (!m_device) {
+      Log::fatal("Could not create device: {}", SDL_GetError());
+    }
+
+    if (!SDL_ClaimWindowForGPUDevice(m_device, m_window)) {
+      Log::fatal("Could not claim window: {}", SDL_GetError());
+    }
+
+    MemOps& next_memops = m_memops[m_current_memops];
+    next_memops.command_buffer = SDL_AcquireGPUCommandBuffer(m_device);
+
+    if (next_memops.command_buffer == nullptr) {
+      Log::fatal("Could not acquire command buffer: {}", SDL_GetError());
+    }
+
+    next_memops.copy_pass = SDL_BeginGPUCopyPass(next_memops.command_buffer);
+
+    if (next_memops.copy_pass == nullptr) {
+      Log::fatal("Could not begin copy pass: {}", SDL_GetError());
+    }
+
   }
 
   void RenderManager::update_surface_size(Vec2I size)

@@ -19,8 +19,14 @@ namespace gf {
     info.size = static_cast<Uint32>(size);
 
     GpuDevice* device = render_manager->device();
+    assert(device);
 
     SDL_GPUTransferBuffer* buffer = SDL_CreateGPUTransferBuffer(*device, &info);
+
+    if (buffer == nullptr) {
+      Log::fatal("Could not create transfer buffer: {}", SDL_GetError());
+    }
+
     m_handle = { *device, buffer };
   }
 

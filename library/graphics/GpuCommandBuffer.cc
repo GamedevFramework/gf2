@@ -149,7 +149,9 @@ namespace gf {
     assert(m_copy_pass);
 
     const SDL_GPUTransferBufferLocation source_buffer = { source->m_handle, 0 };
+    assert(source_buffer.transfer_buffer != nullptr);
     const SDL_GPUBufferRegion destination_buffer = { destination->m_handle, 0, static_cast<Uint32>(size) };
+    assert(destination_buffer.buffer != nullptr);
     SDL_UploadToGPUBuffer(m_copy_pass, &source_buffer, &destination_buffer, false);
   }
 
@@ -158,7 +160,9 @@ namespace gf {
     assert(m_copy_pass);
 
     const SDL_GPUTextureTransferInfo source_buffer = { source->m_handle, 0, static_cast<Uint32>(size.w), static_cast<Uint32>(size.h) };
+    assert(source_buffer.transfer_buffer != nullptr);
     const SDL_GPUTextureRegion destination_texture = { destination->m_texture_handle, 1, 1, 0, 0, 0, static_cast<Uint32>(size.w), static_cast<Uint32>(size.h), 1 };
+    assert(destination_texture.texture != nullptr);
     SDL_UploadToGPUTexture(m_copy_pass, &source_buffer, &destination_texture, false);
   }
 

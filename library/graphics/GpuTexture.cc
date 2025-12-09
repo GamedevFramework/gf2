@@ -46,6 +46,8 @@ namespace gf {
     texture_info.usage = static_cast<SDL_GPUTextureUsageFlags>(m_usage);
     texture_info.width = static_cast<uint32_t>(size.w);
     texture_info.height = static_cast<uint32_t>(size.h);
+    texture_info.layer_count_or_depth = 1;
+    texture_info.num_levels = 1;
 
     GpuDevice* device = render_manager->device();
     m_texture_handle = { *device, SDL_CreateGPUTexture(*device, &texture_info) };
