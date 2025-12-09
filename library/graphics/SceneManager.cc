@@ -272,7 +272,7 @@ namespace gf {
     while (!window()->should_close()) {
       // events
 
-      while (auto event = Events::poll()) {
+      while (std::optional<Event> event = Events::poll()) {
         switch (event->type()) {
           case EventType::Quit:
             window()->close();
@@ -306,20 +306,19 @@ namespace gf {
 
       // render
 
-      if (auto maybe_command_buffer = render_manager()->begin_command_buffer(); maybe_command_buffer) {
-        recorder.clear();
-        m_scene->render(recorder);
-        recorder.sort();
+      GpuCommandBuffer command_buffer = render_manager()->begin_command_buffer();
 
-        GpuCommandBuffer command_buffer = *maybe_command_buffer;
-        RenderTarget target = render_manager()->current_render_target();
-        GpuRenderPass render_pass = command_buffer.begin_render_pass(target, m_scene->clear_color());
+      recorder.clear();
+      m_scene->render(recorder);
+      recorder.sort();
 
-        render_records(render_pass, recorder);
+      RenderTarget target = render_manager()->current_render_target();
+      GpuRenderPass render_pass = command_buffer.begin_render_pass(target, m_scene->clear_color());
 
-        command_buffer.end_render_pass(render_pass);
-        render_manager()->end_command_buffer(command_buffer);
-      }
+      render_records(render_pass, recorder);
+
+      command_buffer.end_render_pass(render_pass);
+      render_manager()->end_command_buffer(command_buffer);
     }
 
     render_manager()->wait_idle();
@@ -361,19 +360,19 @@ namespace gf {
       Vec2I surface_size = window()->surface_size();
       Vec2I window_size = window()->size();
 
-      std::for_each(scenes.begin(), scenes.end(), [surface_size, window_size](auto* scene) {
+      std::for_each(scenes.begin(), scenes.end(), [surface_size, window_size](BasicScene* scene) {
         scene->set_surface_size(surface_size);
         scene->set_window_size(window_size);
       });
 
-      auto* current_scene = scenes.back();
+      BasicScene* current_scene = scenes.back();
       current_scene->show();
       current_scene->resume();
 
       while (!m_scenes_changed && !window()->should_close()) {
         // events
 
-        while (auto event = Events::poll()) {
+        while (std::optional<Event> event = Events::poll()) {
           switch (event->type()) {
             case EventType::Quit:
               window()->close();
@@ -381,13 +380,13 @@ namespace gf {
 
             case EventType::WindowResized:
               window_size = event->from<EventType::WindowResized>().size;
-              std::for_each(scenes.begin(), scenes.end(), [window_size](auto* scene) { scene->set_window_size(window_size); });
+              std::for_each(scenes.begin(), scenes.end(), [window_size](BasicScene* scene) { scene->set_window_size(window_size); });
               break;
 
             case EventType::WindowPixelSizeChanged:
               surface_size = event->from<EventType::WindowPixelSizeChanged>().size;
               render_manager()->update_surface_size(surface_size);
-              std::for_each(scenes.begin(), scenes.end(), [surface_size](auto* scene) { scene->set_surface_size(surface_size); });
+              std::for_each(scenes.begin(), scenes.end(), [surface_size](BasicScene* scene) { scene->set_surface_size(surface_size); });
               break;
 
             default:
@@ -396,32 +395,31 @@ namespace gf {
           }
 
           const Event& actual_event = *event;
-          std::for_each(scenes.begin(), scenes.end(), [&actual_event](auto* scene) { scene->process_event(actual_event); });
+          std::for_each(scenes.begin(), scenes.end(), [&actual_event](BasicScene* scene) { scene->process_event(actual_event); });
         }
 
-        std::for_each(scenes.begin(), scenes.end(), [](auto* scene) { scene->handle_actions(); });
+        std::for_each(scenes.begin(), scenes.end(), [](BasicScene* scene) { scene->handle_actions(); });
 
         // update
 
         const Time time = clock.restart();
-        std::for_each(scenes.begin(), scenes.end(), [time](auto* scene) { scene->update(time); });
+        std::for_each(scenes.begin(), scenes.end(), [time](BasicScene* scene) { scene->update(time); });
 
         // render
 
-        if (auto maybe_command_buffer = render_manager()->begin_command_buffer(); maybe_command_buffer) {
-          recorder.clear();
-          std::for_each(scenes.begin(), scenes.end(), [&recorder](auto* scene) { scene->render(recorder); });
-          recorder.sort();
+        GpuCommandBuffer command_buffer = render_manager()->begin_command_buffer();
 
-          GpuCommandBuffer command_buffer = *maybe_command_buffer;
-          RenderTarget target = render_manager()->current_render_target();
-          GpuRenderPass render_pass = command_buffer.begin_render_pass(target, current_scene->clear_color());
+        recorder.clear();
+        std::for_each(scenes.begin(), scenes.end(), [&recorder](BasicScene* scene) { scene->render(recorder); });
+        recorder.sort();
 
-          render_records(render_pass, recorder);
+        RenderTarget target = render_manager()->current_render_target();
+        GpuRenderPass render_pass = command_buffer.begin_render_pass(target, current_scene->clear_color());
 
-          command_buffer.end_render_pass(render_pass);
-          render_manager()->end_command_buffer(command_buffer);
-        }
+        render_records(render_pass, recorder);
+
+        command_buffer.end_render_pass(render_pass);
+        render_manager()->end_command_buffer(command_buffer);
       }
     }
 
@@ -453,7 +451,7 @@ namespace gf {
       m_curr_scenes.back()->set_rank(SceneRank::Active);
     }
 
-    for (auto* scene : scenes) {
+    for (BasicScene* scene : scenes) {
       if (scene == nullptr) {
         continue;
       }
@@ -482,7 +480,7 @@ namespace gf {
     m_scenes_changed = true;
     assert(!m_curr_scenes.empty());
 
-    for (auto* scene : m_curr_scenes) {
+    for (BasicScene* scene : m_curr_scenes) {
       scene->set_rank(SceneRank::None);
     }
 
