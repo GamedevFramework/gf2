@@ -3,10 +3,8 @@
 #ifndef GF_RENDER_MANAGER_H
 #define GF_RENDER_MANAGER_H
 
-#include <mutex>
-#include <optional>
+#include <array>
 #include <thread>
-#include <type_traits>
 #include <vector>
 
 #include <gf2/core/Camera.h>
@@ -29,7 +27,7 @@ namespace gf {
     void update_surface_size(Vec2I size);
     Vec2I surface_size() const;
 
-    std::optional<GpuCommandBuffer> begin_command_buffer();
+    GpuCommandBuffer begin_command_buffer();
     void end_command_buffer(GpuCommandBuffer buffer);
 
     GpuCopyPass current_copy_pass();
@@ -42,11 +40,13 @@ namespace gf {
 
     RenderTarget current_render_target() const;
 
-    void wait_idle() const;
+    void wait_idle();
 
     GpuDevice* device();
 
   private:
+    static constexpr std::size_t FramesInFlight = 3;
+
     void finish_staging_buffers();
 
     SDL_Window* m_window = nullptr; // non-owning
@@ -58,31 +58,40 @@ namespace gf {
 
     // swapchain stuff
 
+    SDL_GPUTexture* m_swapchain_texture = nullptr;
+    Vec2I m_swapchain_texture_size = { 0, 0 };
+
     // commands stuff
 
     uint32_t m_current_frame = 0;
+    std::array<SDL_GPUCommandBuffer*, FramesInFlight> m_command_buffers = {};
 
     uint32_t m_current_memops = 0;
+
+    struct MemOps {
+      SDL_GPUCommandBuffer* command_buffer;
+      SDL_GPUCopyPass* copy_pass;
+    };
+
+    std::array<MemOps, FramesInFlight> m_memops;
 
     // synchronization stuff
 
     struct RenderSynchronizationObjects {
-      // VkFence render_fence = VK_NULL_HANDLE;
-      // VkFence memops_fence = VK_NULL_HANDLE;
+      SDL_GPUFence* render_fence = nullptr;
+      SDL_GPUFence* memops_fence = nullptr;
     };
 
-    std::vector<RenderSynchronizationObjects> m_render_synchronization;
+    std::array<RenderSynchronizationObjects, FramesInFlight> m_render_synchronization = {};
 
     // memory stuff
 
-    std::vector<std::vector<GpuTransferBuffer>> m_transfer_buffers;
-
-    // descriptor set stuff
-
+    std::array<std::vector<GpuTransferBuffer>, FramesInFlight> m_transfer_buffers;
 
     // asynchronous load objects
 
     bool m_async_loading = false;
+    MemOps m_async_memops = {};
     std::vector<GpuTransferBuffer> m_async_staging_buffers;
   };
 
