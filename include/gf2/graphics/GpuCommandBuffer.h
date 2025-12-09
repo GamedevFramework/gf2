@@ -1,6 +1,7 @@
 #ifndef GF_GPU_COMMAND_BUFFER_H
 #define GF_GPU_COMMAND_BUFFER_H
 
+#include <cassert>
 #include <cstdint>
 
 #include <SDL3/SDL_gpu.h>
@@ -43,6 +44,7 @@ namespace gf {
     GpuRenderPass(SDL_GPURenderPass* render_pass)
     : m_render_pass(render_pass)
     {
+      assert(render_pass != nullptr);
     }
 
     SDL_GPURenderPass* m_render_pass = nullptr;
@@ -62,6 +64,7 @@ namespace gf {
     GpuCopyPass(SDL_GPUCopyPass* copy_pass)
     : m_copy_pass(copy_pass)
     {
+      assert(copy_pass != nullptr);
     }
 
     SDL_GPUCopyPass* m_copy_pass = nullptr;
@@ -83,6 +86,7 @@ namespace gf {
     GpuCommandBuffer(SDL_GPUCommandBuffer* command_buffer)
     : m_command_buffer(command_buffer)
     {
+      assert(command_buffer != nullptr);
     }
 
     SDL_GPUCommandBuffer* m_command_buffer = nullptr;

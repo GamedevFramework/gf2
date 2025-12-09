@@ -51,6 +51,8 @@ namespace gf {
 
   void GpuBuffer::update_device_buffer(std::size_t size, const void* data, RenderManager* render_manager)
   {
+    Log::info("Size: {}", size);
+
     GpuTransferBuffer buffer(size, render_manager);
     buffer.update(size, data);
 
