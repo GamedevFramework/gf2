@@ -80,7 +80,7 @@ namespace gf {
     // target
 
     SDL_GPUColorTargetDescription target_description = {};
-    // target_description.format = ??;
+    target_description.format = static_cast<SDL_GPUTextureFormat>(render_manager->surface_format());
     target_description.blend_state.src_color_blendfactor = static_cast<SDL_GPUBlendFactor>(m_blend.color_src);
     target_description.blend_state.dst_color_blendfactor = static_cast<SDL_GPUBlendFactor>(m_blend.color_dst);
     target_description.blend_state.color_blend_op = static_cast<SDL_GPUBlendOp>(m_blend.color_op);

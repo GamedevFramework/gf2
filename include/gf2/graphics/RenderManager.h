@@ -14,6 +14,7 @@
 #include "GpuCommandBuffer.h"
 #include "GpuDevice.h"
 #include "GpuTransferBuffer.h"
+#include "GpuTexture.h"
 #include "GraphicsApi.h"
 #include "RenderTarget.h"
 #include "Window.h"
@@ -26,6 +27,7 @@ namespace gf {
 
     void update_surface_size(Vec2I size);
     Vec2I surface_size() const;
+    GpuTextureFormat surface_format();
 
     GpuCommandBuffer begin_command_buffer();
     void end_command_buffer(GpuCommandBuffer buffer);

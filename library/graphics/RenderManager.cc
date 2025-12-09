@@ -58,6 +58,11 @@ namespace gf {
     return m_swapchain_texture_size;
   }
 
+  GpuTextureFormat RenderManager::surface_format()
+  {
+    return static_cast<GpuTextureFormat>(SDL_GetGPUSwapchainTextureFormat(m_device, m_window));
+  }
+
   GpuCommandBuffer RenderManager::begin_command_buffer()
   {
     RenderSynchronizationObjects& sync = m_render_synchronization[m_current_frame];
@@ -65,7 +70,9 @@ namespace gf {
 
     // synchronize and acquire the next image
 
-    SDL_WaitForGPUFences(m_device, true, &sync.render_fence, 1);
+    if (sync.render_fence != nullptr) {
+      SDL_WaitForGPUFences(m_device, true, &sync.render_fence, 1);
+    }
 
     // submit memory command buffer
 
