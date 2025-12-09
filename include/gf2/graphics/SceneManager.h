@@ -39,8 +39,7 @@ namespace gf {
 
   protected:
     GpuGraphicsPipeline* render_pipeline(RenderPipelineType type);
-    void render_records(GpuRenderPass render_pass, const RenderRecorder& recorder);
-    void render_object(GpuRenderPass render_pass, RenderObject object);
+    void render_records(GpuRenderPass render_pass, RenderRecorder& recorder);
 
   private:
     void compile_shaders();

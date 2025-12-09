@@ -3,6 +3,7 @@
 #ifndef GF_SCENE_RECORDER_H
 #define GF_SCENE_RECORDER_H
 
+#include <cassert>
 #include <cstdint>
 
 #include <vector>
@@ -48,24 +49,28 @@ namespace gf {
         switch (record.type) {
           case RecordType::View:
             {
+              assert(record.index < m_views.size());
               ViewRecord& view = m_views[record.index];
               on_view(&m_view_matrix_buffers[view.view_matrix_buffer_index], view.viewport);
             }
             break;
           case RecordType::Scissor:
             {
+              assert(record.index < m_scissors.size());
               ScissorRecord& scissor = m_scissors[record.index];
               on_scissor(scissor.scissor);
             }
             break;
           case RecordType::Text:
             {
+              assert(record.index < m_texts.size());
               TextRecord& text = m_texts[record.index];
               on_text(&m_text_effect_buffers[text.text_effect_buffer_index]);
             }
             break;
           case RecordType::Object:
             {
+              assert(record.index < m_objects.size());
               ObjectRecord& object = m_objects[record.index];
               on_object(object.object, &m_model_matrix_buffers[object.model_matrix_index]);
             }
