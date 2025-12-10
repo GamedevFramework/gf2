@@ -25,6 +25,12 @@ namespace gf {
   class GF_GRAPHICS_API RenderManager {
   public:
     RenderManager(Window* window);
+    RenderManager(const RenderManager&) = delete;
+    RenderManager(RenderManager&&) = default;
+    ~RenderManager();
+
+    RenderManager& operator=(const RenderManager&) = delete;
+    RenderManager& operator=(RenderManager&&) = default;
 
     void update_surface_size(Vec2I size);
     Vec2I surface_size() const;
