@@ -111,7 +111,7 @@ namespace gf {
 
           // count, first, offset
 
-          object.size = command->ElemCount;
+          object.count = command->ElemCount;
           object.first = command->IdxOffset + indices_offset;
           object.offset = command->VtxOffset + vertices_offset;
 
@@ -139,7 +139,7 @@ namespace gf {
       object.geometry.vertices = &m_vertices.buffer();
       object.geometry.indices = &m_indices.buffer();
       object.geometry.first = raw_object.first;
-      object.geometry.size = raw_object.size;
+      object.geometry.count = raw_object.count;
       object.geometry.offset = raw_object.offset;
       object.geometry.texture = raw_object.texture;
       object.transform = Identity3F;

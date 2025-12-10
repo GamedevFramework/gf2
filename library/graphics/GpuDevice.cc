@@ -15,6 +15,7 @@ namespace gf {
   GpuDevice::~GpuDevice()
   {
     if (m_device != nullptr) {
+      SDL_WaitForGPUIdle(m_device);
       SDL_DestroyGPUDevice(m_device);
     }
   }

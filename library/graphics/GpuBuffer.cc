@@ -13,11 +13,14 @@
 
 namespace gf {
 
-  GpuBuffer::GpuBuffer(Flags<GpuBufferUsage> usage, std::size_t size, const void* data, RenderManager* render_manager)
-  : m_size(size)
+  GpuBuffer::GpuBuffer(Flags<GpuBufferUsage> usage, std::size_t member_size, std::size_t member_count, const void* data, RenderManager* render_manager)
+  : m_member_size(member_size)
+  , m_member_count(member_count)
   , m_usage(usage)
   {
-    if (m_size == 0) {
+    const std::size_t size = member_size * member_count;
+
+    if (size == 0) {
       return;
     }
 
@@ -33,9 +36,12 @@ namespace gf {
     update_device_buffer(size, data, render_manager);
   }
 
-  void GpuBuffer::update(std::size_t size, const void* data, RenderManager* render_manager)
+  void GpuBuffer::update(std::size_t member_size, std::size_t member_count, const void* data, RenderManager* render_manager)
   {
-    m_size = size;
+    m_member_size = member_size;
+    m_member_count = member_count;
+
+    const std::size_t size = member_size * member_count;
 
     if (size == 0) {
       return;
@@ -51,8 +57,6 @@ namespace gf {
 
   void GpuBuffer::update_device_buffer(std::size_t size, const void* data, RenderManager* render_manager)
   {
-    Log::info("Size: {}", size);
-
     GpuTransferBuffer buffer(size, render_manager);
     buffer.update(size, data);
 

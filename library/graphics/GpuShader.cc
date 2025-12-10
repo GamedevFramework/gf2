@@ -17,7 +17,7 @@ namespace gf {
     info.stage = static_cast<SDL_GPUShaderStage>(stage);
     info.num_samplers = static_cast<Uint32>(input.samplers);
     info.num_storage_textures = static_cast<Uint32>(input.storage_textures);
-    info.num_storage_buffers = static_cast<Uint32>(input.storage_textures);
+    info.num_storage_buffers = static_cast<Uint32>(input.storage_buffers);
     info.num_uniform_buffers = static_cast<Uint32>(input.uniform_buffers);
 
     SDL_GPUShader* shader = SDL_CreateGPUShader(*device, &info);

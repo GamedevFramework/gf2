@@ -148,7 +148,7 @@ namespace gf {
           render_pass.bind_index_buffer(object.geometry.indices);
         }
 
-        render_pass.draw_indexed(object.geometry.size, object.geometry.first, object.geometry.offset);
+        render_pass.draw_indexed(object.geometry.count, object.geometry.first, object.geometry.offset);
 
         m_last_object = object;
       }
@@ -190,7 +190,7 @@ namespace gf {
     // fullscreen fragment shader
 
     GpuShaderInput fullscreen_fragment_shader_input = {};
-    default_fragment_shader_input.samplers = 1;
+    fullscreen_fragment_shader_input.samplers = 1;
 
     m_fullscreen_fragment_shader = GpuShader(GpuShaderStage::Fragment, gf::span(fullscreen_frag_shader_code), fullscreen_fragment_shader_input, device);
   }

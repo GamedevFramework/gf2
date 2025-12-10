@@ -839,7 +839,7 @@ namespace gf {
     geometry.texture = m_atlas->texture();
     geometry.vertices = &m_vertices.buffer();
     geometry.indices = &m_indices.buffer();
-    geometry.size = m_indices.buffer().size();
+    geometry.count = m_indices.buffer().member_count();
 
     return geometry;
   }
@@ -903,7 +903,7 @@ namespace gf {
     geometry.texture = m_atlas->texture();
     geometry.vertices = &m_vertices.buffer();
     geometry.indices = &m_indices.buffer();
-    geometry.size = m_indices.buffer().size();
+    geometry.count = m_indices.buffer().member_count();
 
     return geometry;
   }

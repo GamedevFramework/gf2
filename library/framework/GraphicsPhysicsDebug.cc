@@ -116,13 +116,13 @@ namespace gf {
 
     object.geometry = m_shape_group.geometry();
 
-    if (object.geometry.size > 0) {
+    if (object.geometry.count > 0) {
       recorder.record(object);
     }
 
     object.geometry = m_curve_group.geometry();
 
-    if (object.geometry.size > 0) {
+    if (object.geometry.count > 0) {
       recorder.record(object);
     }
   }

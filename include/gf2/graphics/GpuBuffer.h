@@ -33,30 +33,35 @@ namespace gf {
   public:
     GpuBuffer() = default;
 
-    GpuBuffer(Flags<GpuBufferUsage> usage, std::size_t size, const void* data, RenderManager* render_manager);
+    GpuBuffer(Flags<GpuBufferUsage> usage, std::size_t member_size, std::size_t member_count, const void* data, RenderManager* render_manager);
 
     template<typename T>
-    GpuBuffer(Flags<GpuBufferUsage> usage, const T* data, std::size_t size, RenderManager* render_manager)
-    : GpuBuffer(usage, size * sizeof(T), static_cast<const void*>(data), render_manager)
+    GpuBuffer(Flags<GpuBufferUsage> usage, const T* data, std::size_t count, RenderManager* render_manager)
+    : GpuBuffer(usage, sizeof(T), count, static_cast<const void*>(data), render_manager)
     {
     }
 
-    std::size_t size() const
+    std::size_t member_size() const
     {
-      return m_size;
+      return m_member_size;
+    }
+
+    std::size_t member_count() const
+    {
+      return m_member_count;
     }
 
     bool empty() const
     {
-      return m_size == 0;
+      return m_member_count == 0;
     }
 
-    void update(std::size_t size, const void* data, RenderManager* render_manager);
+    void update(std::size_t member_size, std::size_t member_count, const void* data, RenderManager* render_manager);
 
     template<typename T>
-    void update(const T* data, std::size_t size, RenderManager* render_manager)
+    void update(const T* data, std::size_t count, RenderManager* render_manager)
     {
-      update(size * sizeof(T), static_cast<const void*>(data), render_manager);
+      update(sizeof(T), count, static_cast<const void*>(data), render_manager);
     }
 
     void set_debug_name(const std::string& name);
@@ -69,7 +74,8 @@ namespace gf {
 
     details::GraphicsHandle<SDL_GPUBuffer, SDL_ReleaseGPUBuffer> m_handle;
 
-    std::size_t m_size = 0;
+    std::size_t m_member_size = 0;
+    std::size_t m_member_count = 0;
     Flags<GpuBufferUsage> m_usage = GpuBufferUsage::Vertex;
   };
 

@@ -54,7 +54,7 @@ namespace gf {
       geometry.vertices = &m_vertices.buffer();
       geometry.indices = &m_indices.buffer();
       geometry.first = buffer.first;
-      geometry.size = buffer.size;
+      geometry.count = buffer.size;
 
       geometries.push_back(geometry);
     }

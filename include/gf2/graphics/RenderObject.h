@@ -23,7 +23,7 @@ namespace gf {
     RenderPipelineType pipeline = RenderPipelineType::Default;
     GpuBuffer* vertices = nullptr;
     GpuBuffer* indices = nullptr;
-    std::size_t size = 0;
+    std::size_t count = 0;
     std::size_t first = 0;
     std::ptrdiff_t offset = 0;
     GpuTexture* texture = nullptr;
