@@ -39,7 +39,7 @@ namespace gf {
     }
 
     info.vertex_input_state.vertex_buffer_descriptions = vertex_buffer_descriptions.data();
-    info.vertex_input_state.num_vertex_attributes = static_cast<Uint32>(vertex_buffer_descriptions.size());
+    info.vertex_input_state.num_vertex_buffers = static_cast<Uint32>(vertex_buffer_descriptions.size());
 
     std::vector<SDL_GPUVertexAttribute> vertex_attributes;
 
@@ -96,8 +96,14 @@ namespace gf {
 
     // pipeline
 
-    GpuDevice* device = render_manager->device();
-    return { *device, SDL_CreateGPUGraphicsPipeline(*device, &info) };
+    SDL_GPUDevice* device = *render_manager->device();
+    SDL_GPUGraphicsPipeline* pipeline = SDL_CreateGPUGraphicsPipeline(device, &info);
+
+    if (pipeline == nullptr) {
+      Log::fatal("Could not create pipeline: {}", SDL_GetError());
+    }
+
+    return { device, pipeline };
   }
 
 }
