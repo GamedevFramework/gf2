@@ -157,7 +157,7 @@ namespace home {
 
     auto geometry = m_shapes.geometry();
 
-    if (geometry.size > 0) {
+    if (geometry.count > 0) {
       gf::RenderObject object = {};
       object.priority = priority();
       object.geometry = geometry;

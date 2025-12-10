@@ -41,7 +41,7 @@ namespace gf {
 
     struct ImguiObject {
       RectI scissor = {};
-      std::size_t size = 0;
+      std::size_t count = 0;
       std::size_t first = 0;
       std::ptrdiff_t offset = 0;
       GpuTexture* texture = nullptr;

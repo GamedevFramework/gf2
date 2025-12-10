@@ -154,7 +154,7 @@ namespace {
       gf::RenderObject object;
       object.geometry = m_grid_display.geometry();
 
-      if (object.geometry.size > 0) {
+      if (object.geometry.count > 0) {
         recorder.record(object);
       }
     }

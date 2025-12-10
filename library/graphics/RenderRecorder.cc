@@ -43,11 +43,11 @@ namespace gf {
     const RawMat3F raw_view_matrix = compute_raw(view_matrix);
 
     if (m_next_view_matrix_index == m_view_matrix_buffers.size()) {
-      GpuBuffer buffer(GpuBufferUsage::GraphicsStorageRead, sizeof(RawMat3F), raw_view_matrix.data(), m_render_manager);
+      GpuBuffer buffer(GpuBufferUsage::GraphicsStorageRead, raw_view_matrix.data(), raw_view_matrix.size(), m_render_manager);
       buffer.set_debug_name("[gf2] View Matrix Buffer #" + std::to_string(m_next_view_matrix_index));
       m_view_matrix_buffers.push_back(std::move(buffer));
     } else {
-      m_view_matrix_buffers[m_next_view_matrix_index].update(sizeof(RawMat3F), raw_view_matrix.data(), m_render_manager);
+      m_view_matrix_buffers[m_next_view_matrix_index].update(raw_view_matrix.data(), raw_view_matrix.size(), m_render_manager);
     }
 
     const Record record = { RecordType::View, m_views.size() };
@@ -70,11 +70,11 @@ namespace gf {
     const RawTextEffect raw_effect_data = compute_raw(effect);
 
     if (m_next_text_effect_index == m_text_effect_buffers.size()) {
-      GpuBuffer buffer(GpuBufferUsage::GraphicsStorageRead, sizeof(RawTextEffect), raw_effect_data.data(), m_render_manager);
+      GpuBuffer buffer(GpuBufferUsage::GraphicsStorageRead, raw_effect_data.data(), raw_effect_data.size(), m_render_manager);
       buffer.set_debug_name("[gf2] Text Effect Buffer #" + std::to_string(m_next_text_effect_index));
       m_text_effect_buffers.push_back(std::move(buffer));
     } else {
-      m_text_effect_buffers[m_next_text_effect_index].update(raw_effect_data.size() * sizeof(float), raw_effect_data.data(), m_render_manager);
+      m_text_effect_buffers[m_next_text_effect_index].update(raw_effect_data.data(), raw_effect_data.size(), m_render_manager);
     }
 
     const Record record = { RecordType::Text, m_texts.size() };
@@ -89,11 +89,11 @@ namespace gf {
     const RawMat3F raw_model_matrix = compute_raw(object.transform);
 
     if (m_next_model_matrix_index == m_model_matrix_buffers.size()) {
-      GpuBuffer buffer(GpuBufferUsage::GraphicsStorageRead, sizeof(RawMat3F), raw_model_matrix.data(), m_render_manager);
+      GpuBuffer buffer(GpuBufferUsage::GraphicsStorageRead, raw_model_matrix.data(), raw_model_matrix.size(), m_render_manager);
       buffer.set_debug_name("[gf2] View Matrix Buffer #" + std::to_string(m_next_model_matrix_index));
       m_model_matrix_buffers.push_back(std::move(buffer));
     } else {
-      m_model_matrix_buffers[m_next_model_matrix_index].update(sizeof(RawMat3F), raw_model_matrix.data(), m_render_manager);
+      m_model_matrix_buffers[m_next_model_matrix_index].update(raw_model_matrix.data(), raw_model_matrix.size(), m_render_manager);
     }
 
     const Record record = { RecordType::Object, m_objects.size() };

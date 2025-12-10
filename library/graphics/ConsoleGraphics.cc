@@ -49,7 +49,7 @@ namespace gf {
     RenderGeometry geometry;
     geometry.vertices = &m_background_vertices.buffer();
     geometry.indices = &m_background_indices.buffer();
-    geometry.size = m_background_indices.buffer().size();
+    geometry.count = m_background_indices.buffer().member_count();
     return geometry;
   }
 
@@ -58,7 +58,7 @@ namespace gf {
     RenderGeometry geometry;
     geometry.vertices = &m_foreground_vertices.buffer();
     geometry.indices = &m_foreground_indices.buffer();
-    geometry.size = m_foreground_indices.buffer().size();
+    geometry.count = m_foreground_indices.buffer().member_count();
     geometry.texture = m_font->texture();
     return geometry;
   }

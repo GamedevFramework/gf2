@@ -299,7 +299,7 @@ namespace gf {
         for (auto range : chunk.ranges) {
           geometry.texture = rich_map()->texture(range.texture_index);
           geometry.first = range.first;
-          geometry.size = range.size;
+          geometry.count = range.size;
 
           geometries.push_back(geometry);
         }
@@ -317,7 +317,7 @@ namespace gf {
     for (auto range : object_layer.buffers.ranges) {
       geometry.texture = rich_map()->texture(range.texture_index);
       geometry.first = range.first;
-      geometry.size = range.size;
+      geometry.count = range.size;
 
       geometries.push_back(geometry);
     }

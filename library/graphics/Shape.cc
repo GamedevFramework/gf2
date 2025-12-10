@@ -162,7 +162,7 @@ namespace gf {
     shape.texture = m_texture;
     shape.vertices = &m_vertices;
     shape.indices = &m_indices;
-    shape.size = m_indices.size();
+    shape.count = m_indices.member_count();
 
     geometry.shape = shape;
 
@@ -173,7 +173,7 @@ namespace gf {
       outline.texture = nullptr;
       outline.vertices = &m_outline_vertices.value();
       outline.indices = &m_outline_indices.value();
-      outline.size = m_outline_indices.value().size();
+      outline.count = m_outline_indices.value().member_count();
 
       geometry.outline = outline;
     }
@@ -223,7 +223,7 @@ namespace gf {
     RenderGeometry geometry = {};
     geometry.vertices = &m_vertices.buffer();
     geometry.indices = &m_indices.buffer();
-    geometry.size = m_indices.buffer().size();
+    geometry.count = m_indices.buffer().member_count();
     return geometry;
   }
 

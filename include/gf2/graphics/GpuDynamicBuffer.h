@@ -24,12 +24,12 @@ namespace gf {
       return m_buffers[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     }
 
-    void update(std::size_t size, const void* data, RenderManager* render_manager);
+    void update(std::size_t member_size, std::size_t member_count, const void* data, RenderManager* render_manager);
 
     template<typename T>
-    void update(const T* data, std::size_t size, RenderManager* render_manager)
+    void update(const T* data, std::size_t count, RenderManager* render_manager)
     {
-      update(size * sizeof(T), static_cast<const void*>(data), render_manager);
+      update(sizeof(T), count, static_cast<const void*>(data), render_manager);
     }
 
     void set_debug_name(const std::string& name);

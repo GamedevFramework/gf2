@@ -127,7 +127,7 @@ namespace gf {
     RenderGeometry geometry = {};
     geometry.vertices = &m_vertices;
     geometry.indices = &m_indices;
-    geometry.size = m_indices.size();
+    geometry.count = m_indices.member_count();
     geometry.texture = m_texture;
     return geometry;
   }
