@@ -48,6 +48,11 @@ namespace gf {
 
   }
 
+  RenderManager::~RenderManager()
+  {
+    SDL_ReleaseWindowFromGPUDevice(m_device, m_window);
+  }
+
   void RenderManager::update_surface_size(Vec2I size)
   {
     // still needed?
