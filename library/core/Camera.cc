@@ -154,7 +154,7 @@ namespace gf {
   Mat3F Camera::compute_view_matrix() const
   {
     const float sx = 2.0f / m_computed_size.w;
-    const float sy = 2.0f / m_computed_size.h;
+    const float sy = -2.0f / m_computed_size.h;
     const float cos_v = std::cos(rotation);
     const float sin_v = std::sin(rotation);
     const float tx = center.x;
@@ -176,14 +176,15 @@ namespace gf {
     /* simulate inverse projection transform
      * i.e. compute normalized device coordinates from screen coordinates
      *
-     * 0 +---------+     -1 +---------+
+     * 0 +---------+      1 +---------+
      *   |         |        |         |
      *   |         | ===>   |         |
      *   |         |        |         |
-     * h +---------+      1 +---------+
+     * h +---------+     -1 +---------+
      *   0         w       -1         1
      */
-    const Vec2F normalized = 2 * (position - actual_viewport.offset) / actual_viewport.extent - 1;
+    Vec2F normalized = 2 * (position - actual_viewport.offset) / actual_viewport.extent - 1;
+    normalized.y = -normalized.y;
 
     /* apply inverse view transform
      * i.e. compute world coordinates from normalized device coordinates
@@ -198,18 +199,19 @@ namespace gf {
     /* apply view transform
      * i.e. compute normalized device coordinates from world coordinates
      */
-    const Vec2F normalized = transform_point(compute_view_matrix(), location);
+    Vec2F normalized = transform_point(compute_view_matrix(), location);
 
     /* simulate projection transform
      * i.e. compute screen coordinates from normalized device coordinates
      *
-     * -1 +---------+     0 +---------+
+     *  1 +---------+     0 +---------+
      *    |         |       |         |
      *    |         | ===>  |         |
      *    |         |       |         |
-     *  1 +---------+     h +---------+
+     * -1 +---------+     h +---------+
      *   -1         1       0         w
      */
+    normalized.y = -normalized.y;
     return (1 + normalized) / 2 * actual_viewport.extent + actual_viewport.offset;
   }
 
