@@ -162,7 +162,7 @@ namespace gf {
     // default vertex shader
 
     GpuShaderInput default_vertex_shader_input = {};
-    default_vertex_shader_input.uniform_buffers = 2;
+    default_vertex_shader_input.storage_buffers = 2;
 
     m_default_vertex_shader = GpuShader(GpuShaderStage::Vertex, gf::span(default_vert_shader_code), default_vertex_shader_input, device);
 
@@ -177,7 +177,7 @@ namespace gf {
 
     GpuShaderInput text_fragment_shader_input = {};
     text_fragment_shader_input.samplers = 1;
-    text_fragment_shader_input.uniform_buffers = 1;
+    text_fragment_shader_input.storage_buffers = 1;
 
     m_text_fragment_shader = GpuShader(GpuShaderStage::Fragment, gf::span(text_frag_shader_code), text_fragment_shader_input, device);
 
