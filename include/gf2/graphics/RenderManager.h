@@ -18,7 +18,6 @@
 #include "GraphicsApi.h"
 #include "RenderTarget.h"
 #include "Window.h"
-#include "gf2/graphics/GraphicsHandle.h"
 
 namespace gf {
 
@@ -32,7 +31,6 @@ namespace gf {
     RenderManager& operator=(const RenderManager&) = delete;
     RenderManager& operator=(RenderManager&&) = default;
 
-    void update_surface_size(Vec2I size);
     Vec2I surface_size() const;
     GpuTextureFormat surface_format();
 
@@ -55,8 +53,6 @@ namespace gf {
 
   private:
     static constexpr std::size_t FramesInFlight = 3;
-
-    void finish_staging_buffers();
 
     SDL_Window* m_window = nullptr; // non-owning
     std::thread::id m_thread_id;

@@ -33,16 +33,16 @@ namespace gf {
       Log::fatal("Could not claim window: {}", SDL_GetError());
     }
 
-    MemOps& next_memops = m_memops[m_current_memops];
-    next_memops.command_buffer = SDL_AcquireGPUCommandBuffer(m_device);
+    MemOps& memops = m_memops[m_current_memops];
+    memops.command_buffer = SDL_AcquireGPUCommandBuffer(m_device);
 
-    if (next_memops.command_buffer == nullptr) {
+    if (memops.command_buffer == nullptr) {
       Log::fatal("Could not acquire command buffer: {}", SDL_GetError());
     }
 
-    next_memops.copy_pass = SDL_BeginGPUCopyPass(next_memops.command_buffer);
+    memops.copy_pass = SDL_BeginGPUCopyPass(memops.command_buffer);
 
-    if (next_memops.copy_pass == nullptr) {
+    if (memops.copy_pass == nullptr) {
       Log::fatal("Could not begin copy pass: {}", SDL_GetError());
     }
 
@@ -50,12 +50,20 @@ namespace gf {
 
   RenderManager::~RenderManager()
   {
-    SDL_ReleaseWindowFromGPUDevice(m_device, m_window);
-  }
+    assert(m_current_frame == m_current_memops);
+    RenderSynchronizationObjects& sync = m_render_synchronization[m_current_frame];
 
-  void RenderManager::update_surface_size(Vec2I size)
-  {
-    // still needed?
+    if (sync.render_fence != nullptr) {
+      SDL_GPUFence* render_fence = sync.render_fence;
+      SDL_WaitForGPUFences(m_device, true, &render_fence, 1);
+    }
+
+    MemOps& memops = m_memops[m_current_memops];
+    SDL_EndGPUCopyPass(memops.copy_pass);
+
+    SDL_CancelGPUCommandBuffer(memops.command_buffer);
+
+    SDL_ReleaseWindowFromGPUDevice(m_device, m_window);
   }
 
   Vec2I RenderManager::surface_size() const
@@ -70,8 +78,8 @@ namespace gf {
 
   GpuCommandBuffer RenderManager::begin_command_buffer()
   {
-    RenderSynchronizationObjects& sync = m_render_synchronization[m_current_frame];
     assert(m_current_frame == m_current_memops);
+    RenderSynchronizationObjects& sync = m_render_synchronization[m_current_frame];
 
     // synchronize and acquire the next image
 
@@ -196,12 +204,6 @@ namespace gf {
   GpuDevice* RenderManager::device()
   {
     return &m_device;
-  }
-
-  void RenderManager::finish_staging_buffers()
-  {
-    for (auto& staging_buffers : m_transfer_buffers) {
-    }
   }
 
 }
