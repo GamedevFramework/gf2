@@ -4,11 +4,11 @@ layout(location = 0) in vec2 in_position;
 layout(location = 1) in vec2 in_texcoords;
 layout(location = 2) in vec4 in_color;
 
-layout(set = 0, binding = 0) readonly buffer Camera {
+layout(std140, set = 0, binding = 0) readonly buffer Camera {
   mat4 u_camera;
 };
 
-layout(set = 0, binding = 1) readonly buffer Transform {
+layout(std140, set = 0, binding = 1) readonly buffer Transform {
   mat4 u_transform;
 };
 

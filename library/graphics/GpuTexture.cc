@@ -19,7 +19,7 @@ namespace gf {
   }
 
   GpuTexture::GpuTexture(const Image& image, RenderManager* render_manager)
-  : GpuTexture(image.size(), GpuTextureUsage::Sampler, GpuTextureFormat::R8G8B8A8_SNorm, render_manager)
+  : GpuTexture(image.size(), GpuTextureUsage::Sampler, GpuTextureFormat::R8G8B8A8_UNorm, render_manager)
   {
     update(image.raw_size(), image.raw_data(), render_manager);
   }

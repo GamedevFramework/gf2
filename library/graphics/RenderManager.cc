@@ -12,7 +12,6 @@
 #include <gf2/core/Mat3.h>
 
 #include <gf2/graphics/Vertex.h>
-#include "SDL3/SDL_gpu.h"
 
 namespace gf {
 

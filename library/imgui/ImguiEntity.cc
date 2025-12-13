@@ -159,7 +159,7 @@ namespace gf {
           // Log::debug("Creating a texture for imgui.");
 
           const Vec2I size = { data->Width, data->Height };
-          auto texture = std::make_unique<GpuTexture>(size, GpuTextureUsage::Sampler, GpuTextureFormat::R8G8B8A8_SNorm, render_manager);
+          auto texture = std::make_unique<GpuTexture>(size, GpuTextureUsage::Sampler, GpuTextureFormat::R8G8B8A8_UNorm, render_manager);
           texture->update(static_cast<std::size_t>(data->GetSizeInBytes()), static_cast<const uint8_t*>(data->GetPixels()), render_manager);
 
           data->SetTexID(reinterpret_cast<uintptr_t>(texture.get())); // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
