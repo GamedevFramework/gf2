@@ -28,7 +28,7 @@ namespace gf {
     R32G32B32A32_Float = SDL_GPU_TEXTUREFORMAT_R32G32B32A32_FLOAT,
     R8_UNorm = SDL_GPU_TEXTUREFORMAT_R8_UNORM,
     R32G32_Float = SDL_GPU_TEXTUREFORMAT_R32G32_FLOAT,
-    RenderManager = std::numeric_limits<std::underlying_type_t<SDL_GPUTextureFormat>>::max(),
+    R8G8B8A8_UNorm_Srgb = SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM_SRGB,
   };
 
   // NOLINTNEXTLINE(performance-enum-size)

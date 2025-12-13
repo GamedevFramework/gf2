@@ -19,7 +19,7 @@ namespace gf {
   }
 
   GpuTexture::GpuTexture(const Image& image, RenderManager* render_manager)
-  : GpuTexture(image.size(), GpuTextureUsage::Sampler, GpuTextureFormat::R8G8B8A8_UNorm, render_manager)
+  : GpuTexture(image.size(), GpuTextureUsage::Sampler, GpuTextureFormat::R8G8B8A8_UNorm_Srgb, render_manager)
   {
     update(image.raw_size(), image.raw_data(), render_manager);
   }
@@ -31,7 +31,7 @@ namespace gf {
   }
 
   GpuTexture::GpuTexture(Vec2I size, RenderManager* render_manager)
-  : GpuTexture(size, GpuTextureUsage::ColorTarget | GpuTextureUsage::Sampler, GpuTextureFormat::RenderManager, render_manager)
+  : GpuTexture(size, GpuTextureUsage::ColorTarget | GpuTextureUsage::Sampler, GpuTextureFormat::R8G8B8A8_UNorm, render_manager)
   {
   }
 

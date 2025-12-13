@@ -7,6 +7,7 @@
 #include <utility>
 
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_gpu.h>
 
 #include <gf2/core/Log.h>
 #include <gf2/core/Mat3.h>
@@ -31,6 +32,24 @@ namespace gf {
     if (!SDL_ClaimWindowForGPUDevice(m_device, m_window)) {
       Log::fatal("Could not claim window: {}", SDL_GetError());
     }
+
+    // swapchain configuration
+
+    SDL_GPUSwapchainComposition composition = SDL_GPU_SWAPCHAINCOMPOSITION_SDR;
+
+    if (SDL_WindowSupportsGPUSwapchainComposition(m_device, m_window, SDL_GPU_SWAPCHAINCOMPOSITION_SDR_LINEAR)) {
+      composition = SDL_GPU_SWAPCHAINCOMPOSITION_SDR_LINEAR;
+    }
+
+    SDL_GPUPresentMode present_mode = SDL_GPU_PRESENTMODE_VSYNC;
+
+    if (SDL_WindowSupportsGPUPresentMode(m_device, m_window, SDL_GPU_PRESENTMODE_MAILBOX)) {
+      present_mode = SDL_GPU_PRESENTMODE_MAILBOX;
+    }
+
+    SDL_SetGPUSwapchainParameters(m_device, m_window, composition, present_mode);
+
+    // first copy pass
 
     MemOps& memops = m_memops[m_current_memops];
     memops.command_buffer = SDL_AcquireGPUCommandBuffer(m_device);
@@ -180,6 +199,7 @@ namespace gf {
     SDL_GPUFence* fence = SDL_SubmitGPUCommandBufferAndAcquireFence(m_async_memops.command_buffer);
 
     SDL_WaitForGPUFences(m_device, true, &fence, 1);
+    SDL_ReleaseGPUFence(m_device, fence);
 
     m_async_staging_buffers.clear();
   }
