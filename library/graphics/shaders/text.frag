@@ -2,7 +2,7 @@
 
 layout(set = 2, binding = 0) uniform sampler2D u_texture;
 
-layout(set = 2, binding = 1) readonly buffer Text {
+layout(std140, set = 2, binding = 1) readonly buffer Text {
   vec4 u_outline_color;
   float u_outline_thickness;
 };

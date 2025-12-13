@@ -112,7 +112,9 @@ namespace gf {
         render_pass.set_scissor(scissor);
       },
       [&](GpuBuffer* text_effect) {
-        render_pass.bind_storage_buffer(GpuShaderStage::Fragment, 1, text_effect);
+        // see https://github.com/libsdl-org/SDL/issues/13018
+        // to understand why index is 0 and not 1
+        render_pass.bind_storage_buffer(GpuShaderStage::Fragment, 0, text_effect);
       },
       [&](RenderObject& object, GpuBuffer* model_matrix) {
         // pipeline

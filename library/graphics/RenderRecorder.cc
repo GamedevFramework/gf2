@@ -90,7 +90,7 @@ namespace gf {
 
     if (m_next_model_matrix_index == m_model_matrix_buffers.size()) {
       GpuBuffer buffer(GpuBufferUsage::GraphicsStorageRead, raw_model_matrix.data(), raw_model_matrix.size(), m_render_manager);
-      buffer.set_debug_name("[gf2] View Matrix Buffer #" + std::to_string(m_next_model_matrix_index));
+      buffer.set_debug_name("[gf2] Model Matrix Buffer #" + std::to_string(m_next_model_matrix_index));
       m_model_matrix_buffers.push_back(std::move(buffer));
     } else {
       m_model_matrix_buffers[m_next_model_matrix_index].update(raw_model_matrix.data(), raw_model_matrix.size(), m_render_manager);
