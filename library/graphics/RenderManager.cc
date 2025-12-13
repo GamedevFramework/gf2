@@ -25,7 +25,7 @@ namespace gf {
 
     m_device = SDL_CreateGPUDevice(SDL_GPU_SHADERFORMAT_SPIRV, true, "vulkan");
 
-    if (!m_device) {
+    if (!m_device.valid()) {
       Log::fatal("Could not create device: {}", SDL_GetError());
     }
 

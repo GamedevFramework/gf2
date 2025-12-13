@@ -74,11 +74,11 @@ namespace gf {
     uint32_t m_current_memops = 0;
 
     struct MemOps {
-      SDL_GPUCommandBuffer* command_buffer;
-      SDL_GPUCopyPass* copy_pass;
+      SDL_GPUCommandBuffer* command_buffer = nullptr;
+      SDL_GPUCopyPass* copy_pass = nullptr;
     };
 
-    std::array<MemOps, FramesInFlight> m_memops;
+    std::array<MemOps, FramesInFlight> m_memops = {};
 
     // synchronization stuff
 

@@ -21,7 +21,7 @@ namespace gf {
     GpuDevice& operator=(const GpuDevice&) = delete;
     GpuDevice& operator=(GpuDevice&& other) noexcept;
 
-    explicit operator bool() const
+    bool valid() const
     {
       return m_device != nullptr;
     }
