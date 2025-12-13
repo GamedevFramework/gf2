@@ -285,7 +285,6 @@ namespace gf {
 
           case EventType::WindowPixelSizeChanged:
             surface_size = event->from<EventType::WindowPixelSizeChanged>().size;
-            render_manager()->update_surface_size(surface_size);
             m_scene->set_surface_size(surface_size);
             break;
 
@@ -385,7 +384,6 @@ namespace gf {
 
             case EventType::WindowPixelSizeChanged:
               surface_size = event->from<EventType::WindowPixelSizeChanged>().size;
-              render_manager()->update_surface_size(surface_size);
               std::for_each(scenes.begin(), scenes.end(), [surface_size](BasicScene* scene) { scene->set_surface_size(surface_size); });
               break;
 
