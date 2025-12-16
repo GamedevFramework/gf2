@@ -94,10 +94,17 @@ namespace gf {
     info.target_info.color_target_descriptions = &target_description;
     info.target_info.num_color_targets = 1;
 
+    // name
+
+    info.props = SDL_CreateProperties();
+    SDL_SetStringProperty(info.props, SDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING, m_name.c_str());
+
     // pipeline
 
     SDL_GPUDevice* device = *render_manager->device();
     SDL_GPUGraphicsPipeline* pipeline = SDL_CreateGPUGraphicsPipeline(device, &info);
+
+    SDL_DestroyProperties(info.props);
 
     if (pipeline == nullptr) {
       Log::fatal("Could not create pipeline: {}", SDL_GetError());

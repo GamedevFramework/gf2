@@ -37,7 +37,10 @@ namespace gf {
 
   class GF_GRAPHICS_API GpuGraphicsPipelineBuilder {
   public:
-    GpuGraphicsPipelineBuilder() = default;
+    GpuGraphicsPipelineBuilder(std::string name)
+    : m_name(std::move(name))
+    {
+    }
 
     GpuGraphicsPipelineBuilder& add_shader(GpuShaderStage stage, GpuShader* shader)
     {
@@ -76,6 +79,7 @@ namespace gf {
   private:
     friend class GpuGraphicsPipeline;
 
+    std::string m_name;
     GpuShader* m_vertex_shader = nullptr;
     GpuShader* m_fragment_shader = nullptr;
     GpuVertexInput m_vertex_input;

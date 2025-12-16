@@ -166,14 +166,14 @@ namespace gf {
     GpuShaderInput default_vertex_shader_input = {};
     default_vertex_shader_input.storage_buffers = 2;
 
-    m_default_vertex_shader = GpuShader(GpuShaderStage::Vertex, gf::span(default_vert_shader_code), default_vertex_shader_input, device);
+    m_default_vertex_shader = GpuShader(GpuShaderStage::Vertex, gf::span(default_vert_shader_code), default_vertex_shader_input, device, "[gf2] Default vertex shader");
 
     // default fragment shader
 
     GpuShaderInput default_fragment_shader_input = {};
     default_fragment_shader_input.samplers = 1;
 
-    m_default_fragment_shader = GpuShader(GpuShaderStage::Fragment, gf::span(default_frag_shader_code), default_fragment_shader_input, device);
+    m_default_fragment_shader = GpuShader(GpuShaderStage::Fragment, gf::span(default_frag_shader_code), default_fragment_shader_input, device, "[gf2] Default fragment shader");
 
     // text fragment shader
 
@@ -181,27 +181,27 @@ namespace gf {
     text_fragment_shader_input.samplers = 1;
     text_fragment_shader_input.storage_buffers = 1;
 
-    m_text_fragment_shader = GpuShader(GpuShaderStage::Fragment, gf::span(text_frag_shader_code), text_fragment_shader_input, device);
+    m_text_fragment_shader = GpuShader(GpuShaderStage::Fragment, gf::span(text_frag_shader_code), text_fragment_shader_input, device, "[gf2] Text fragment shader");
 
     // fullscreen vertex shader
 
     GpuShaderInput fullscreen_vertex_shader_input = {};
 
-    m_fullscreen_vertex_shader = GpuShader(GpuShaderStage::Vertex, gf::span(fullscreen_vert_shader_code), fullscreen_vertex_shader_input, device);
+    m_fullscreen_vertex_shader = GpuShader(GpuShaderStage::Vertex, gf::span(fullscreen_vert_shader_code), fullscreen_vertex_shader_input, device, "[gf2] Fullscreen vertex shader");
 
     // fullscreen fragment shader
 
     GpuShaderInput fullscreen_fragment_shader_input = {};
     fullscreen_fragment_shader_input.samplers = 1;
 
-    m_fullscreen_fragment_shader = GpuShader(GpuShaderStage::Fragment, gf::span(fullscreen_frag_shader_code), fullscreen_fragment_shader_input, device);
+    m_fullscreen_fragment_shader = GpuShader(GpuShaderStage::Fragment, gf::span(fullscreen_frag_shader_code), fullscreen_fragment_shader_input, device, "[gf2] Fullscreen fragment shader");
   }
 
   void BasicSceneManager::build_default_pipelines()
   {
     // default pipeline
 
-    GpuGraphicsPipelineBuilder default_pipeline_builder;
+    GpuGraphicsPipelineBuilder default_pipeline_builder("[gf2] Default Pipeline");
 
     default_pipeline_builder.set_vertex_input(Vertex::compute_input())
         .add_shader(GpuShaderStage::Vertex, &m_default_vertex_shader)
@@ -209,11 +209,10 @@ namespace gf {
     ;
 
     m_default_pipeline = default_pipeline_builder.build(render_manager());
-    // m_default_pipeline.set_debug_name("[gf2] Default Pipeline");
 
     // text pipeline
 
-    GpuGraphicsPipelineBuilder text_pipeline_builder;
+    GpuGraphicsPipelineBuilder text_pipeline_builder("[gf2] Text Pipeline");
 
     text_pipeline_builder.set_vertex_input(Vertex::compute_input())
         .add_shader(GpuShaderStage::Vertex, &m_default_vertex_shader)
@@ -221,22 +220,20 @@ namespace gf {
     ;
 
     m_text_pipeline = text_pipeline_builder.build(render_manager());
-    // m_text_pipeline.set_debug_name("[gf2] Text Pipeline");
 
     // fullscreen pipeline
 
-    GpuGraphicsPipelineBuilder fullscreen_pipeline_builder;
+    GpuGraphicsPipelineBuilder fullscreen_pipeline_builder("[gf2] Fullscreen Pipeline");
 
     fullscreen_pipeline_builder.add_shader(GpuShaderStage::Vertex, &m_fullscreen_vertex_shader)
         .add_shader(GpuShaderStage::Fragment, &m_fullscreen_fragment_shader)
     ;
 
     m_fullscreen_pipeline = fullscreen_pipeline_builder.build(render_manager());
-    // m_fullscreen_pipeline.set_debug_name("[gf2] Fullscreen Pipeline");
 
     // imgui pipeline
 
-    GpuGraphicsPipelineBuilder imgui_pipeline_builder;
+    GpuGraphicsPipelineBuilder imgui_pipeline_builder("[gf2] Imgui Pipeline");
 
     imgui_pipeline_builder.set_vertex_input(ImguiVertex::compute_input())
         .add_shader(GpuShaderStage::Vertex, &m_default_vertex_shader)
@@ -244,7 +241,6 @@ namespace gf {
     ;
 
     m_imgui_pipeline = imgui_pipeline_builder.build(render_manager());
-    // m_imgui_pipeline.set_debug_name("[gf2] Imgui Pipeline");
   }
 
   /*
