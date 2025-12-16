@@ -13,7 +13,7 @@ namespace gf {
   {
   }
 
-  ConsoleEntity::ConsoleEntity(ConsoleResource& resource, ResourceManager* resource_manager)
+  ConsoleEntity::ConsoleEntity(const ConsoleResource& resource, ResourceManager* resource_manager)
   : m_console(resource, resource_manager)
   {
   }
