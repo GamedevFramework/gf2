@@ -8,7 +8,7 @@
 
 #include <stdexcept>
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include "CoreApi.h"
 
