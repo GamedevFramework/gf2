@@ -31,16 +31,32 @@ namespace gf {
     if (!g_graphics_loaded.exchange(true)) { // we are the first
       // initialize SDL
 
+#ifndef NDEBUG
+      SDL_SetLogPriorities(SDL_LOG_PRIORITY_TRACE);
+#endif
+
+#ifndef NDEBUG
+      Log::info("Available video drivers:");
+      const int video_drivers_count = SDL_GetNumVideoDrivers();
+
+      for (int i = 0; i <video_drivers_count; ++i) {
+        Log::info("\t- '{}'", SDL_GetVideoDriver(i));
+      }
+#endif
+
 #ifdef SDL_PLATFORM_LINUX
       SDL_SetHint(SDL_HINT_VIDEO_DRIVER, "wayland,x11");
 #endif
 
       if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD)) {
-        Log::error("Unable to initialize SDL: '{}'", SDL_GetError());
-        return;
+        Log::fatal("Unable to initialize SDL: {}", SDL_GetError());
       }
 
       SDL_ClearError();
+
+#ifndef NDEBUG
+      Log::info("Current video driver: '{}'", SDL_GetCurrentVideoDriver());
+#endif
 
       // add game controller db
 
