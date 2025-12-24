@@ -3,7 +3,6 @@
 #include <gf2/core/Log.h>
 
 #include <gf2/graphics/RichMap.h>
-#include <gf2/physics/PhysicsArbiter.h>
 
 #include "GameHub.h"
 
@@ -53,17 +52,30 @@ namespace home {
       assert(false);
       return { 0.0f, 0.0f };
     }
+
+    gf::PhysicsShapeData compute_hero_shape_data()
+    {
+      gf::PhysicsShapeData data;
+      data.density = HeroMass;
+      return data;
+    }
+
+    gf::PhysicsBodyData compute_hero_body_data(gf::Vec2F initial_position)
+    {
+      gf::PhysicsBodyData data;
+      data.location = initial_position;
+      data.type = gf::PhysicsBodyType::Dynamic;
+      data.motion_locks.angular_z = true;
+      return data;
+    }
   }
 
   using namespace gf::literals;
 
   HeroEntity::HeroEntity(GameHub* hub, const WorldResources& resources, gf::PhysicsWorld* physics_world)
-  : m_controller(gf::PhysicsBody::make_kinematic())
-  , m_body(gf::PhysicsBody::make_dynamic(HeroMass, gf::compute_moment_for_circle(HeroMass, 0.0f, HeroRadius, { 0.0f, 0.0f })))
-  , m_pivot(gf::PhysicsConstraint::make_pivot_joint(&m_controller, &m_body, { 0.0f, 0.0f }, { 0.0f, 0.0f }))
-  , m_gear(gf::PhysicsConstraint::make_gear_joint(&m_controller, &m_body, 0.0f, 1.0f))
-  , m_shape(gf::PhysicsShape::make_circle(&m_body, HeroRadius, { 0.0f, 0.0f }))
-  , m_target(compute_initial_location(resources, hub->resource_manager()))
+  : m_body(physics_world, compute_hero_body_data(compute_initial_location(resources, hub->resource_manager())))
+  , m_shape(gf::PhysicsShape::create_circle(&m_body, compute_hero_shape_data(), gf::CircF::from_radius(HeroRadius)))
+  , m_target(m_body.location())
   , m_hero_animations(resources.hero_animations, hub->render_manager(), hub->resource_manager())
   , m_crosshair(resources.crosshair, hub->render_manager(), hub->resource_manager())
   , m_jet_engine_sound(hub->resource_manager()->get<gf::Sound>(resources.jet_engine_sound.filename))
@@ -72,22 +84,6 @@ namespace home {
     set_origin({ 0.5f, 0.5f });
     set_scale(0.75f);
     m_hero_animations.select("pause_south_east"_id);
-
-    physics_world->add_body(m_controller);
-    physics_world->add_body(m_body);
-
-    m_pivot.set_max_bias(0.0f);
-    m_pivot.set_max_force(1'000.0f);
-    physics_world->add_constraint(m_pivot);
-
-    m_gear.set_error_bias(0.0f);
-    m_gear.set_max_bias(1.2f);
-    m_gear.set_max_force(5'000.0f);
-    physics_world->add_constraint(m_gear);
-
-    physics_world->add_shape(m_shape);
-
-    m_body.set_location(m_target);
 
     m_crosshair.set_scale({ 0.5f, 0.25f });
     m_crosshair.set_origin({ 0.5f, 0.5f });
@@ -150,7 +146,7 @@ namespace home {
 
     update_location.emit(location());
 
-    m_controller.set_velocity(m_velocity);
+    m_body.set_linear_velocity(m_velocity);
 
     m_activity = Activity::Walking;
   }

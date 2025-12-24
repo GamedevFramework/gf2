@@ -47,7 +47,7 @@ namespace gf {
     constexpr uint32_t to_hex() const
     {
       const auto rgba = to_rgba32();
-      return (rgba[0] << 24) + (rgba[1] << 16) + (rgba[2] << 8) + (rgba[3] << 0);
+      return (uint32_t(rgba[0]) << 24) + (uint32_t(rgba[1]) << 16) + (uint32_t(rgba[2]) << 8) + (uint32_t(rgba[3]) << 0);
     }
   };
 

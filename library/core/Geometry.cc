@@ -15,11 +15,11 @@ namespace gf {
     std::tuple<Iterator, bool> find_next_segment(Iterator begin, Iterator end, Vec2I end_point)
     {
       for (auto iterator = begin; iterator != end; ++iterator) {
-        if (iterator->front() == end_point) {
+        if (iterator->p0 == end_point) {
           return std::make_tuple(iterator, false);
         }
 
-        if (iterator->back() == end_point) {
+        if (iterator->p1 == end_point) {
           return std::make_tuple(iterator, true);
         }
       }
@@ -34,7 +34,7 @@ namespace gf {
     std::vector<Polyline> lines;
 
     auto segment_comparator = [](const SegmentI& lhs, const SegmentI& rhs) {
-      return std::tie(lhs[0].x, lhs[0].y, lhs[1].x, lhs[1].y) < std::tie(rhs[0].x, rhs[0].y, rhs[1].x, rhs[1].y);
+      return std::tie(lhs.p0.x, lhs.p0.y, lhs.p1.x, lhs.p1.y) < std::tie(rhs.p0.x, rhs.p0.y, rhs.p1.x, rhs.p1.y);
     };
 
     std::multiset<SegmentI, decltype(segment_comparator)> remaining(segments.begin(), segments.end(), segment_comparator);
@@ -43,10 +43,10 @@ namespace gf {
       // start a new polyline
       Polyline polyline;
 
-      const Vec2I first_point = iterator->front();
+      const Vec2I first_point = iterator->p0;
       polyline.points.emplace_back(first_point);
 
-      Vec2I current_point = iterator->back();
+      Vec2I current_point = iterator->p1;
 
       for (;;) {
         polyline.points.emplace_back(current_point);
@@ -62,11 +62,11 @@ namespace gf {
         remaining.erase(next_iterator);
 
         if (reverse) {
-          std::swap(next_segment[0], next_segment[1]);
+          std::swap(next_segment.p0, next_segment.p1);
         }
 
-        assert(next_segment[0] == current_point);
-        current_point = next_segment[1];
+        assert(next_segment.p0 == current_point);
+        current_point = next_segment.p1;
 
         if (current_point == first_point) {
           polyline.type = PolylineType::Loop;
@@ -160,13 +160,13 @@ namespace gf {
     const gf::Vec2I point = { m_x, m_y };
 
     if (m_d >= 2 * m_x) {
-      m_d = m_d - 2 * m_x - 1;
+      m_d = m_d - (2 * m_x) - 1;
       ++m_x;
     } else if (m_d < 2 * (m_radius - m_y)) {
-      m_d = m_d + 2 * m_y - 1;
+      m_d = m_d + (2 * m_y) - 1;
       --m_y;
     } else {
-      m_d = m_d + 2 * (m_y - m_x + 1);
+      m_d = m_d + (2 * (m_y - m_x + 1));
       ++m_x;
       --m_y;
     }

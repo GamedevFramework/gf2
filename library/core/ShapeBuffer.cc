@@ -91,6 +91,36 @@ namespace gf {
     return buffer;
   }
 
+  ShapeBuffer ShapeBuffer::make_capsule(Vec2F center0, Vec2F center1, float radius, uint32_t point_count)
+  {
+    point_count = std::max<uint32_t>(point_count, 4);
+
+    const Vec2F normal = perp(center1 - center0);
+    const float start_angle1 = angle(normal);
+    const uint32_t point_count1 = point_count / 2;
+    const float start_angle0 = start_angle1 + Pi;
+    const uint32_t point_count0 = point_count - point_count1;
+
+    ShapeBuffer buffer = {};
+
+    for (uint32_t i = 0; i <= point_count0; ++i) {
+      const float angle = start_angle0 + (static_cast<float>(i) * Pi / static_cast<float>(point_count0));
+      buffer.points.push_back(center0 + radius * unit(angle));
+    }
+
+    for (uint32_t i = 0; i <= point_count1; ++i) {
+      const float angle = start_angle1 + (static_cast<float>(i) * Pi / static_cast<float>(point_count1));
+      buffer.points.push_back(center1 + radius * unit(angle));
+    }
+
+    return buffer;
+  }
+
+  ShapeBuffer ShapeBuffer::make_capsule(CapsuleF capsule, uint32_t point_count)
+  {
+    return make_capsule(capsule.center0, capsule.center1, capsule.radius, point_count);
+  }
+
   ShapeBuffer ShapeBuffer::make_pie(float radius, float from_angle, float to_angle, uint32_t point_count)
   {
     return make_pie(CircF::from_radius(radius), from_angle, to_angle, point_count);

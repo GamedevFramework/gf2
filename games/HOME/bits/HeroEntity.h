@@ -10,7 +10,6 @@
 #include <gf2/graphics/SpriteEntity.h>
 #include <gf2/graphics/TransformableEntity.h>
 #include <gf2/physics/PhysicsBody.h>
-#include <gf2/physics/PhysicsConstraint.h>
 #include <gf2/physics/PhysicsShape.h>
 
 #include "WorldResources.h"
@@ -52,10 +51,7 @@ namespace home {
 
     Activity m_activity = Activity::Walking;
 
-    gf::PhysicsBody m_controller;
     gf::PhysicsBody m_body;
-    gf::PhysicsConstraint m_pivot;
-    gf::PhysicsConstraint m_gear;
     gf::PhysicsShape m_shape;
 
     gf::Vec2F m_target = { 0.0f, 0.0f };

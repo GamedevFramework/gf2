@@ -852,7 +852,7 @@ namespace gf {
     TextParser parser(m_atlas, &style, m_font, data);
     SimpleTextLexer lexer;
 
-    auto geometry = parser.parse_with(lexer);
+    const RawGeometry geometry = parser.parse_with(lexer);
 
     m_atlas->update_texture(render_manager);
 
@@ -918,7 +918,7 @@ namespace gf {
     TextParser parser(m_atlas, m_style, m_default_font, m_bold_font, m_italic_font, m_bold_italic_font, data);
     RichTextLexer lexer;
 
-    auto geometry = parser.parse_with(lexer);
+    const RawGeometry geometry = parser.parse_with(lexer);
 
     m_atlas->update_texture(render_manager);
 

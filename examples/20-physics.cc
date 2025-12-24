@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
 
-#include <limits>
-
 #include <gf2/core/Random.h>
 
 #include <gf2/graphics/Scene.h>
@@ -36,28 +34,41 @@ namespace {
 
     void update(gf::Time time) override
     {
-      m_world.update(time);
+      static constexpr gf::Time StepTime = gf::seconds(1.0f / 60.0f);
+
+      m_time += time;
+
+      while (m_time > StepTime) {
+        m_world.update(StepTime);
+        m_time -= StepTime;
+      }
+
       m_ball_entity.update(time);
     }
 
     void render(gf::RenderRecorder& recorder) override
     {
-      m_world.each_body([&](gf::PhysicsBody body) { // NOLINT(performance-unnecessary-value-param)
+      for (const gf::PhysicsBody& body : m_bodies) {
         m_ball_entity.set_location(body.location());
         m_ball_entity.render(recorder);
-      });
+      }
     }
 
     void reset_world(gf::Random& random)
     {
-      m_world.clear();
+      m_shapes.clear();
+      m_bodies.clear();
       setup_world(random);
     }
 
   private:
     void setup_world(gf::Random& random)
     {
-      m_world.use_spatial_hash(2.0, 10000);
+      gf::PhysicsWorldData world_data;
+      world_data.gravity = { 0.0f, 0.0f };
+      // world_data.enable_continuous = true;
+
+      m_world = { world_data };
 
       const gf::Vec2I center = gf::vec(ImageWidth, ImageHeight) / 2;
 
@@ -73,31 +84,42 @@ namespace {
           const float y_jitter = random.compute_uniform_float(0.0f, 0.05f);
           const gf::Vec2F jitter = gf::vec(x_jitter, y_jitter);
 
-          gf::PhysicsBody body = gf::PhysicsBody::make_dynamic(1.0f, std::numeric_limits<float>::infinity());
-          body.set_location(2 * (position - center + jitter));
+          gf::PhysicsBodyData body_data;
+          body_data.type = gf::PhysicsBodyType::Dynamic;
+          body_data.location = 2 * (position - center + jitter);
 
-          gf::PhysicsShape shape = gf::PhysicsShape::make_circle(&body, 0.95f, { 0.0f, 0.0f });
-          shape.set_elasticity(0.0f);
-          shape.set_friction(0.0f);
+          gf::PhysicsBody body(&m_world, body_data);
 
-          m_world.add_body(std::move(body));
-          m_world.add_shape(std::move(shape));
+          gf::PhysicsShapeData shape_data;
+          shape_data.density = 1.0f;
+
+          gf::PhysicsShape shape = gf::PhysicsShape::create_circle(&body, shape_data, gf::CircF::from_radius(0.95f));
+
+          m_bodies.push_back(std::move(body));
+          m_shapes.push_back(std::move(shape));
         }
       }
 
-      gf::PhysicsBody body = gf::PhysicsBody::make_dynamic(1e9f, std::numeric_limits<float>::infinity());
-      body.set_location({ -1000.0f, -10.0f });
-      body.set_velocity({ 400.0f, 0.0f });
+      gf::PhysicsBodyData body_data;
+      body_data.type = gf::PhysicsBodyType::Dynamic;
+      body_data.location = { -1000.0f, -10.0f };
+      body_data.linear_velocity = { 400.0f, 0.0f };
 
-      gf::PhysicsShape shape = gf::PhysicsShape::make_circle(&body, 10.0f, { 0.0f, 0.0f });
-      shape.set_elasticity(0.0f);
-      shape.set_friction(0.0f);
+      gf::PhysicsBody body(&m_world, body_data);
 
-      m_world.add_body(std::move(body));
-      m_world.add_shape(std::move(shape));
+      gf::PhysicsShapeData shape_data;
+      shape_data.density = 1000.0f;
+
+      gf::PhysicsShape shape = gf::PhysicsShape::create_circle(&body, shape_data, gf::CircF::from_radius(10.0f));
+
+      m_bodies.push_back(std::move(body));
+      m_shapes.push_back(std::move(shape));
     }
 
+    gf::Time m_time;
     gf::PhysicsWorld m_world;
+    std::vector<gf::PhysicsBody> m_bodies;
+    std::vector<gf::PhysicsShape> m_shapes;
     gf::ShapeEntity m_ball_entity;
   };
 

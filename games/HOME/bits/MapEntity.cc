@@ -11,8 +11,8 @@
 
 #include <gf2/graphics/RenderObject.h>
 #include <gf2/graphics/RenderRecorder.h>
+#include <gf2/physics/PhysicsChain.h>
 #include <gf2/physics/PhysicsShape.h>
-#include <gf2/physics/PhysicsShapeEx.h>
 
 #include "GameHub.h"
 
@@ -31,22 +31,22 @@ namespace home {
 
       std::vector<gf::SegmentI> segments;
 
-      for (auto position : tile_layer.tiles.position_range()) {
+      for (const gf::Vec2I position : tile_layer.tiles.position_range()) {
         if (tile_layer.tiles(position).gid != 0) {
           continue;
         }
 
-        auto contour = grid.compute_contour(position);
+        std::vector<gf::Vec2I> contour = grid.compute_contour(position);
         std::sort(contour.begin(), contour.end(), vec_compare);
 
-        auto neighbors = grid.compute_neighbors(position, gf::CellNeighborQuery::Valid);
+        const std::vector<gf::Vec2I> neighbors = grid.compute_neighbors(position, gf::CellNeighborQuery::Valid);
 
-        for (auto neighbor : neighbors) {
+        for (const gf::Vec2I neighbor : neighbors) {
           if (tile_layer.tiles(neighbor).gid == 0) {
             continue;
           }
 
-          auto neighbor_contour = grid.compute_contour(neighbor);
+          std::vector<gf::Vec2I> neighbor_contour = grid.compute_contour(neighbor);
           std::sort(neighbor_contour.begin(), neighbor_contour.end(), vec_compare);
 
           std::vector<gf::Vec2I> intersection;
@@ -60,36 +60,43 @@ namespace home {
         }
       }
 
-      auto lines = gf::compute_lines(segments);
+      std::vector<gf::Polyline> lines = gf::compute_lines(segments);
       gf::Log::info("Number of segments: {}", segments.size());
       gf::Log::info("Number of lines: {}", lines.size());
       return lines;
+    }
+
+    gf::PhysicsBodyData compute_map_body_data()
+    {
+      gf::PhysicsBodyData data;
+      data.type = gf::PhysicsBodyType::Static;
+      return data;
     }
 
   }
 
   MapEntity::MapEntity(GameHub* hub, const WorldResources& resources, gf::PhysicsWorld* physics_world)
   : m_map_renderer(resources.map, hub->render_manager(), hub->resource_manager())
+  , m_body(physics_world, compute_map_body_data())
   {
 
     const gf::TiledMap* tiled_map = m_map_renderer.tiled_map();
     assert(tiled_map->orientation == gf::GridOrientation::Staggered);
 
     const gf::StaggeredGrid grid(tiled_map->map_size, tiled_map->tile_size, tiled_map->cell_axis, tiled_map->cell_index);
-    auto contour = find_contour(tiled_map->tile_layers.front(), grid);
+    std::vector<gf::Polyline> contour = find_contour(tiled_map->tile_layers.front(), grid);
 
-    gf::PhysicsBody body = physics_world->static_body();
-
-    for (auto& polyline : contour) {
-      for (auto& point : polyline.points) {
+    for (gf::Polyline& polyline : contour) {
+      for (gf::Vec2F& point : polyline.points) {
         point.y -= static_cast<float>(tiled_map->tile_size.h) / 2;
       }
 
-      auto shapes = make_polyline_shapes(&body, polyline, 1.0f);
+      gf::PhysicsChainData data;
+      data.loop = polyline.type == gf::PolylineType::Loop;
+      data.points = polyline.points;
 
-      for (auto& shape : shapes) {
-        physics_world->add_shape(std::move(shape));
-      }
+      gf::PhysicsChain chain(&m_body, data);
+      m_chains.push_back(std::move(chain));
     }
 
     for (const auto& object_layer : tiled_map->object_layers) {
@@ -103,8 +110,11 @@ namespace home {
         }
 
         const gf::Vec2F location = object.location + object_layer.layer.offset + gf::vec(384.0f / 2, -384.0f / 2);
-        auto shape = gf::PhysicsShape::make_circle(&body, 150.0f, location);
-        physics_world->add_shape(std::move(shape));
+
+        gf::PhysicsShapeData data;
+
+        gf::PhysicsShape shape = gf::PhysicsShape::create_circle(&m_body, data, gf::CircF::from_center_radius(location, 150.0f));
+        m_shapes.push_back(std::move(shape));
       }
     }
   }

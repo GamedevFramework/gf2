@@ -3,6 +3,9 @@
 
 #include <gf2/graphics/Entity.h>
 #include <gf2/graphics/RichMapRenderer.h>
+#include <gf2/physics/PhysicsBody.h>
+#include <gf2/physics/PhysicsChain.h>
+#include <gf2/physics/PhysicsShape.h>
 #include <gf2/physics/PhysicsWorld.h>
 
 #include "WorldResources.h"
@@ -21,6 +24,9 @@ namespace home {
   private:
     gf::RichMapRenderer m_map_renderer;
     gf::Vec2F m_location = { 0.0f, 0.0f };
+    gf::PhysicsBody m_body;
+    std::vector<gf::PhysicsChain> m_chains;
+    std::vector<gf::PhysicsShape> m_shapes;
   };
 
 }

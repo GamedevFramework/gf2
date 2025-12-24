@@ -15,10 +15,23 @@
 namespace gf {
 
   template<typename T>
-  using Segment = std::array<Vec2<T>, 2>;
+  struct GF_CORE_API Segment {
+    Vec2<T> p0;
+    Vec2<T> p1;
+  };
 
   using SegmentI = Segment<int32_t>;
   using SegmentF = Segment<float>;
+
+  template<typename T>
+  struct GF_CORE_API Capsule {
+    Vec2<T> center0;
+    Vec2<T> center1;
+    T radius;
+  };
+
+  using CapsuleI = Capsule<int32_t>;
+  using CapsuleF = Capsule<float>;
 
   GF_CORE_API std::vector<Polyline> compute_lines(Span<const SegmentI> segments);
 

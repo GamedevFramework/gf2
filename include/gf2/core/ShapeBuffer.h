@@ -11,6 +11,7 @@
 #include "Circ.h"
 #include "Color.h"
 #include "CoreApi.h"
+#include "Geometry.h"
 #include "Rect.h"
 #include "Span.h"
 #include "TypeTraits.h"
@@ -27,6 +28,8 @@ namespace gf {
     static ShapeBuffer make_rhombus(RectF rectangle);
     static ShapeBuffer make_circle(float radius, uint32_t point_count = 32);
     static ShapeBuffer make_circle(CircF circle, uint32_t point_count = 32);
+    static ShapeBuffer make_capsule(Vec2F center0, Vec2F center1, float radius, uint32_t point_count = 32);
+    static ShapeBuffer make_capsule(CapsuleF capsule, uint32_t point_count = 32);
     static ShapeBuffer make_pie(float radius, float from_angle, float to_angle, uint32_t point_count = 32);
     static ShapeBuffer make_pie(CircF circle, float from_angle, float to_angle, uint32_t point_count = 32);
     static ShapeBuffer make_star(float max_radius, float min_radius, uint32_t branches);

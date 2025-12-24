@@ -97,6 +97,31 @@ namespace gf {
     return buffer;
   }
 
+  CurveBuffer CurveBuffer::make_line(SegmentF segment)
+  {
+    return make_line(segment.p0, segment.p1);
+  }
+
+  CurveBuffer CurveBuffer::make_circle(float radius, uint32_t point_count)
+  {
+    return make_circle(CircF::from_radius(radius), point_count);
+  }
+
+  CurveBuffer CurveBuffer::make_circle(CircF circle, uint32_t point_count)
+  {
+    point_count = std::max<uint32_t>(point_count, 3);
+
+    CurveBuffer buffer = {};
+    buffer.type = PolylineType::Loop;
+
+    for (uint32_t i = 0; i < point_count; ++i) {
+      const float angle = (static_cast<float>(i) * 2.0f * Pi / static_cast<float>(point_count)) - Pi2;
+      buffer.points.push_back(circle.center + circle.radius * unit(angle));
+    }
+
+    return buffer;
+  }
+
   CurveBuffer CurveBuffer::make_compound_curve(Span<const Vec2F> points, PolylineType type)
   {
     CurveBuffer buffer;

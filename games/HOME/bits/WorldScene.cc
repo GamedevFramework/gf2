@@ -1,11 +1,26 @@
 #include "WorldScene.h"
 
-#include <gf2/physics/PhysicsArbiter.h>
-#include <gf2/physics/PhysicsCollisionHandler.h>
-
 #include "GameHub.h"
 
 namespace home {
+
+  namespace {
+
+    gf::PhysicsWorldData world_data()
+    {
+      gf::PhysicsWorldData data;
+      data.gravity = { 0.0f, 0.0f };
+      return data;
+    }
+
+    gf::PhysicsDebugOptions debug_option()
+    {
+      gf::PhysicsDebugOptions options;
+      options.features = gf::All;
+      return options;
+    }
+
+  }
 
   WorldScene::WorldScene(GameHub* hub, const WorldResources& resources)
   : m_hub(hub)
@@ -14,7 +29,8 @@ namespace home {
   , m_breath_low_o2_sound(hub->resource_manager()->get<gf::Sound>(resources.breath_low_o2_sound.filename))
   , m_victory_sound(hub->resource_manager()->get<gf::Sound>(resources.victory_sound.filename))
   , m_death_sound(hub->resource_manager()->get<gf::Sound>(resources.death_sound.filename))
-  , m_physics_debug(&m_physics_world, hub->render_manager())
+  , m_physics_world(world_data())
+  , m_physics_debug(debug_option(), &m_physics_world, hub->render_manager())
   , m_map_entity(hub, resources, &m_physics_world)
   , m_supply_entity(hub, resources)
   , m_hero_entity(hub, resources, &m_physics_world)

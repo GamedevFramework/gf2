@@ -23,11 +23,17 @@ namespace gf {
 
   void TextEntity::render(RenderRecorder& recorder)
   {
+    RenderGeometry geometry = m_text.geometry();
+
+    if (geometry.count == 0) {
+      return;
+    }
+
     recorder.update_text_effect(m_text.effects());
 
     RenderObject object = {};
     object.priority = priority();
-    object.geometry = m_text.geometry();
+    object.geometry = geometry;
     object.transform = compute_matrix(m_text.bounds());
     recorder.record(object);
   }
@@ -48,11 +54,17 @@ namespace gf {
 
   void RichTextEntity::render(RenderRecorder& recorder)
   {
+    RenderGeometry geometry = m_text.geometry();
+
+    if (geometry.count == 0) {
+      return;
+    }
+
     recorder.update_text_effect(m_text.effects());
 
     RenderObject object = {};
     object.priority = priority();
-    object.geometry = m_text.geometry();
+    object.geometry = geometry;
     object.transform = compute_matrix(m_text.bounds());
     recorder.record(object);
   }
