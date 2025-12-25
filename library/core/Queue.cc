@@ -1,4 +1,4 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
 
-#include <gf2/network/Queue.h>
+#include <gf2/core/Queue.h>

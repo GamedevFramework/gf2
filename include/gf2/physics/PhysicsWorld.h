@@ -24,6 +24,7 @@ namespace gf {
   struct PhysicsContactEvents;
   struct PhysicsJointEvents;
   struct PhysicsSensorEvents;
+  class PhysicsTaskManager;
 
   GF_PHYSICS_API void set_physics_length_units_per_meter(float length_units);
 
@@ -60,7 +61,7 @@ namespace gf {
   class GF_PHYSICS_API PhysicsWorld : public Model {
   public:
     constexpr PhysicsWorld() = default;
-    PhysicsWorld(const PhysicsWorldData& data);
+    PhysicsWorld(const PhysicsWorldData& data, PhysicsTaskManager* task_manager = nullptr);
     PhysicsWorld(const PhysicsWorld&) = delete;
     PhysicsWorld(PhysicsWorld&& other) noexcept;
     ~PhysicsWorld() override;

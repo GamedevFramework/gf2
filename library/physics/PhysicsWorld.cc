@@ -8,6 +8,7 @@
 #include <gf2/core/Log.h>
 
 #include <gf2/physics/PhysicsEvents.h>
+#include <gf2/physics/PhysicsTaskManager.h>
 
 namespace gf {
 
@@ -189,7 +190,7 @@ namespace gf {
     b2SetLengthUnitsPerMeter(length_units);
   }
 
-  PhysicsWorld::PhysicsWorld(const PhysicsWorldData& data)
+  PhysicsWorld::PhysicsWorld(const PhysicsWorldData& data, PhysicsTaskManager* task_manager)
   : m_owner(details::PhysicsOwner::Object)
   {
     ++g_world_loaded;
@@ -199,6 +200,13 @@ namespace gf {
     def.enableSleep = data.enable_sleep;
     def.enableContinuous = data.enable_continuous;
     def.userData = data.user_data;
+
+    if (task_manager != nullptr && task_manager->worker_count() > 1) {
+      def.workerCount = task_manager->worker_count();
+      def.enqueueTask = PhysicsTaskManager::enqueue_task;
+      def.finishTask = PhysicsTaskManager::finish_task;
+      def.userTaskContext = task_manager;
+    }
 
     m_id = b2CreateWorld(&def);
   }

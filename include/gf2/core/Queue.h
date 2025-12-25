@@ -15,7 +15,7 @@ namespace gf {
   public:
     std::optional<T> poll()
     {
-      std::lock_guard<std::mutex> lock(m_mutex);
+      std::unique_lock<std::mutex> lock(m_mutex);
 
       if (m_queue.empty()) {
         return std::nullopt;
@@ -30,28 +30,28 @@ namespace gf {
     {
       std::unique_lock<std::mutex> lock(m_mutex);
       m_condition.wait(lock, [this]() { return !m_queue.empty(); });
-      T value = m_queue.front();
+      T value = std::move(m_queue.front());
       m_queue.pop_front();
       return value;
     }
 
     void push(const T& value)
     {
-      std::lock_guard<std::mutex> lock(m_mutex);
+      std::unique_lock<std::mutex> lock(m_mutex);
       m_queue.push_back(value);
       m_condition.notify_one();
     }
 
     void push(T&& value)
     {
-      std::lock_guard<std::mutex> lock(m_mutex);
+      std::unique_lock<std::mutex> lock(m_mutex);
       m_queue.push_back(std::move(value));
       m_condition.notify_one();
     }
 
     void clear()
     {
-      std::lock_guard<std::mutex> lock(m_mutex);
+      std::unique_lock<std::mutex> lock(m_mutex);
       m_queue.clear();
     }
 

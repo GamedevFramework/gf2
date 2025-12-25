@@ -3,11 +3,13 @@
 
 #include <gf2/core/Random.h>
 
+#include <gf2/graphics/RenderRecorder.h>
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/SceneManager.h>
-#include <gf2/graphics/ShapeEntity.h>
+#include <gf2/graphics/Shape.h>
 #include <gf2/physics/PhysicsBody.h>
 #include <gf2/physics/PhysicsShape.h>
+#include <gf2/physics/PhysicsTaskManager.h>
 #include <gf2/physics/PhysicsWorld.h>
 
 namespace {
@@ -27,7 +29,9 @@ namespace {
   class PhysicsEntity : public gf::Entity {
   public:
     PhysicsEntity(gf::RenderManager* render_manager, gf::Random& random)
-    : m_ball_entity(nullptr, gf::ShapeBuffer::make_circle(1.5f), render_manager)
+    : m_render_manager(render_manager)
+    , m_task_manager(4)
+    , m_shape_group({}, render_manager)
     {
       setup_world(random);
     }
@@ -43,15 +47,22 @@ namespace {
         m_time -= StepTime;
       }
 
-      m_ball_entity.update(time);
+      gf::ShapeGroupBuffer buffer;
+
+      for (const gf::PhysicsBody& body : m_bodies) {
+        gf::ShapeBuffer ball = gf::ShapeBuffer::make_circle(gf::CircF::from_center_radius(body.location(), 1.5f), 8);
+        ball.color = gf::Black;
+        buffer.shapes.push_back(std::move(ball));
+      }
+
+      m_shape_group.update(buffer, m_render_manager);
     }
 
     void render(gf::RenderRecorder& recorder) override
     {
-      for (const gf::PhysicsBody& body : m_bodies) {
-        m_ball_entity.set_location(body.location());
-        m_ball_entity.render(recorder);
-      }
+      gf::RenderObject object = {};
+      object.geometry = m_shape_group.geometry();
+      recorder.record(object);
     }
 
     void reset_world(gf::Random& random)
@@ -68,7 +79,7 @@ namespace {
       world_data.gravity = { 0.0f, 0.0f };
       // world_data.enable_continuous = true;
 
-      m_world = { world_data };
+      m_world = { world_data }; //, &m_task_manager };
 
       const gf::Vec2I center = gf::vec(ImageWidth, ImageHeight) / 2;
 
@@ -116,11 +127,13 @@ namespace {
       m_shapes.push_back(std::move(shape));
     }
 
+    gf::RenderManager* m_render_manager = nullptr;
     gf::Time m_time;
+    gf::PhysicsTaskManager m_task_manager;
     gf::PhysicsWorld m_world;
     std::vector<gf::PhysicsBody> m_bodies;
     std::vector<gf::PhysicsShape> m_shapes;
-    gf::ShapeEntity m_ball_entity;
+    gf::ShapeGroup m_shape_group;
   };
 
   class PhysicsScene : public gf::Scene {
