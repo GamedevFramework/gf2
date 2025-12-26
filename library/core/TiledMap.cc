@@ -61,7 +61,7 @@ namespace gf {
         return c - 'A' + 10;
       }
 
-      Log::error("Invalid character: '{}' ({#X}).", c, c);
+      Log::error("Invalid character: '{}' ({:#04X}).", c, c);
       return 0;
     }
 
@@ -296,7 +296,7 @@ namespace gf {
                 assert(false);
             }
           } else {
-            Log::fatal("Unknown character: '{}' ({#X}).", c, c);
+            Log::fatal("Unknown character: '{}' ({:#04X}).", c, c);
           }
 
           ++i;

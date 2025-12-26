@@ -52,9 +52,9 @@ int main()
 
   const std::string_view text = "This is a simple but long text with <style=warn>multiple</> lines.";
 
-  console.print_area(rect({ 2, 5 }, { 16, 5 }), gf::ConsoleAlignment::Left, rich_style, text);
-  console.print_area(rect({ 2, 15 }, { 16, 5 }), gf::ConsoleAlignment::Center, rich_style, text);
-  console.print_area(rect({ 2, 25 }, { 16, 5 }), gf::ConsoleAlignment::Right, rich_style, text);
+  console.print_area(rect({ 2, 5 }, { 16, 5 }), gf::ConsoleAlignment::Left, rich_style, "{}", text);
+  console.print_area(rect({ 2, 15 }, { 16, 5 }), gf::ConsoleAlignment::Center, rich_style, "{}", text);
+  console.print_area(rect({ 2, 25 }, { 16, 5 }), gf::ConsoleAlignment::Right, rich_style, "{}", text);
 
   console.clear(rect({ 30, 5 }, { 16, 5 }), style);
   console.draw_frame(rect({ 30, 5 }, { 16, 5 }), style);

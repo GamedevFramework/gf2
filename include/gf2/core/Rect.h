@@ -18,8 +18,6 @@ namespace gf {
     Vec2<T> offset;
     Vec2<T> extent;
 
-    Rect() = default;
-
     static constexpr Rect from_position_size(Vec2<T> position, Vec2<T> size) noexcept
     {
       return { position, size };

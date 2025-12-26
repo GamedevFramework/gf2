@@ -16,8 +16,6 @@ namespace gf {
     Vec2<T> center;
     T radius;
 
-    Circ() = default;
-
     static constexpr Circ from_center_radius(Vec2<T> center, T radius) noexcept
     {
       return { center, radius };

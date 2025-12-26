@@ -20,7 +20,7 @@ end
 
 set_policy("build.warning", true)
 set_warnings("allextra")
-set_languages("cxx17")
+set_languages("cxx20")
 set_encodings("utf-8")
 set_exceptions("cxx")
 
