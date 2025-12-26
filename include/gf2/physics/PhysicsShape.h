@@ -79,6 +79,9 @@ namespace gf {
     PhysicsShapeId id() const;
     static PhysicsShape from_id(PhysicsShapeId id);
 
+    void acquire();
+    void release();
+
     bool valid() const;
 
     PhysicsShapeType type() const;

@@ -72,6 +72,16 @@ namespace gf {
     return { details::PhysicsOwner::None, details::to_raw(id) };
   }
 
+  void PhysicsChain::acquire()
+  {
+    m_owner = details::PhysicsOwner::Object;
+  }
+
+  void PhysicsChain::release()
+  {
+    m_owner = details::PhysicsOwner::None;
+  }
+
   PhysicsWorld PhysicsChain::world() const
   {
     return PhysicsWorld::from_id(details::to_id(b2Chain_GetWorld(m_id)));

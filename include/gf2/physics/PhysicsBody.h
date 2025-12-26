@@ -65,6 +65,9 @@ namespace gf {
     PhysicsBodyId id() const;
     static PhysicsBody from_id(PhysicsBodyId id);
 
+    void acquire();
+    void release();
+
     bool valid() const;
 
     PhysicsBodyType type() const;

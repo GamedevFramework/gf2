@@ -68,6 +68,16 @@ namespace gf {
     return { details::PhysicsOwner::None, details::to_raw(id) };
   }
 
+  void PhysicsBody::acquire()
+  {
+    m_owner = details::PhysicsOwner::Object;
+  }
+
+  void PhysicsBody::release()
+  {
+    m_owner = details::PhysicsOwner::None;
+  }
+
   bool PhysicsBody::valid() const
   {
     return b2Body_IsValid(m_id);

@@ -44,6 +44,9 @@ namespace gf {
     PhysicsChainId id() const;
     static PhysicsChain from_id(PhysicsChainId id);
 
+    void acquire();
+    void release();
+
     PhysicsWorld world() const;
 
     bool valid() const;

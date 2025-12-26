@@ -131,6 +131,9 @@ namespace gf {
     PhysicsJointId id() const;
     static PhysicsJoint from_id(PhysicsJointId id);
 
+    void acquire();
+    void release();
+
     bool valid() const;
 
     PhysicsJointType type() const;

@@ -86,6 +86,10 @@ namespace gf {
 
   void RenderRecorder::record(const RenderObject& object)
   {
+    if (object.geometry.count == 0) {
+      return;
+    }
+
     const RawMat3F raw_model_matrix = compute_raw(object.transform);
 
     if (m_next_model_matrix_index == m_model_matrix_buffers.size()) {
