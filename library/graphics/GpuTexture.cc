@@ -106,7 +106,7 @@ namespace gf {
   RenderTarget GpuTexture::as_render_target()
   {
     assert(m_usage.test(GpuTextureUsage::ColorTarget));
-    return { m_texture_handle };
+    return { m_texture_handle.object() };
   }
 
 }

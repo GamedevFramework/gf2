@@ -10,6 +10,7 @@
 
 #include <gf2/core/Color.h>
 #include <gf2/core/Mat4.h>
+#include <gf2/core/Portability.h>
 #include <gf2/core/Rect.h>
 
 #include "GpuBuffer.h"
@@ -24,15 +25,7 @@ namespace gf {
   public:
     RenderRecorder(RenderManager* render_manager);
 
-#ifdef _MSC_VER
-    // why?
-    RenderRecorder(const RenderRecorder&) = delete;
-    RenderRecorder(RenderRecorder&&) noexcept = default;
-    ~RenderRecorder() = default;
-
-    RenderRecorder& operator=(const RenderRecorder&) = delete;
-    RenderRecorder& operator=(RenderRecorder&&) noexcept = default;
-#endif
+    GF_FIX_DUMB_MSVC(RenderRecorder)
 
     void update_view(const Mat3F& view_matrix, const RectF& viewport);
     void update_scissor(const RectI& scissor);

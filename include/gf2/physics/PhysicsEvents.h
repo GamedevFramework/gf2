@@ -5,6 +5,8 @@
 
 #include <vector>
 
+#include <gf2/core/Portability.h>
+
 #include "PhysicsApi.h"
 #include "PhysicsBody.h"
 #include "PhysicsContact.h"
@@ -25,6 +27,9 @@ namespace gf {
   };
 
   struct GF_PHYSICS_API PhysicsSensorEvents {
+
+    GF_FIX_DUMB_MSVC_FULL(PhysicsSensorEvents)
+
     std::vector<PhysicsSensorBeginTouchEvent> begin_events;
     std::vector<PhysicsSensorEndTouchEvent> end_events;
   };
@@ -51,6 +56,9 @@ namespace gf {
   };
 
   struct GF_PHYSICS_API PhysicsContactEvents {
+
+    GF_FIX_DUMB_MSVC_FULL(PhysicsContactEvents)
+
     std::vector<PhysicsContactBeginTouchEvent> begin_events;
     std::vector<PhysicsContactEndTouchEvent> end_events;
     std::vector<PhysicsContactHitEvent> hit_events;
@@ -64,6 +72,9 @@ namespace gf {
   };
 
   struct GF_PHYSICS_API PhysicsBodyEvents {
+
+    GF_FIX_DUMB_MSVC_FULL(PhysicsBodyEvents)
+
     std::vector<PhysicsBodyMoveEvent> move_events;
   };
 
@@ -73,6 +84,9 @@ namespace gf {
   };
 
   struct GF_PHYSICS_API PhysicsJointEvents {
+
+    GF_FIX_DUMB_MSVC_FULL(PhysicsJointEvents)
+
     std::vector<PhysicsJointEvent> joint_events;
   };
 

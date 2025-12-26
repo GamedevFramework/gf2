@@ -21,4 +21,21 @@
 #  endif
 #endif
 
+#ifdef _MSC_VER
+#  define GF_FIX_DUMB_MSVC(name)                  \
+     name(const name&) = delete;                  \
+     name(name&&) noexcept = default;             \
+     ~name() = default;                           \
+     name& operator=(const name&) = delete;       \
+     name& operator=(name&&) noexcept = default;
+
+#  define GF_FIX_DUMB_MSVC_FULL(name)             \
+     name() = default                             \
+     GF_FIX_DUMB_MSVC(name)
+#else
+#  define GF_FIX_DUMB_MSVC(name)
+#  define GF_FIX_DUMB_MSVC_FULL(name)
+#endif
+
+
 #endif // GF_PORTABILITY_H
