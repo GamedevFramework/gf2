@@ -51,7 +51,7 @@ namespace gf {
     std::vector<PhysicsShape> segments() const;
 
     PhysicsSurfaceMaterial surface_material() const;
-    void set_surface_materiel(const PhysicsSurfaceMaterial& material);
+    void set_surface_material(const PhysicsSurfaceMaterial& material);
 
   private:
     constexpr PhysicsChain(details::PhysicsOwner owner, b2ChainId id)

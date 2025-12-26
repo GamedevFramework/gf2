@@ -105,7 +105,7 @@ namespace gf {
     return details::to_material(b2Chain_GetSurfaceMaterial(m_id, 0));
   }
 
-  void PhysicsChain::set_surface_materiel(const PhysicsSurfaceMaterial& material)
+  void PhysicsChain::set_surface_material(const PhysicsSurfaceMaterial& material)
   {
     const b2SurfaceMaterial raw = details::to_raw(material);
     b2Chain_SetSurfaceMaterial(m_id, &raw, 0);
