@@ -13,6 +13,7 @@
 #include <gf2/physics/PhysicsChain.h>
 #include <gf2/physics/PhysicsContact.h>
 #include <gf2/physics/PhysicsWorld.h>
+#include "box2d/math_functions.h"
 
 namespace gf {
 
@@ -330,9 +331,12 @@ namespace gf {
     b2Shape_SetPolygon(m_id, &raw_polygon);
   }
 
-  void PhysicsShape::set_box(Vec2F half_size, Vec2F center, PhysicsRotation rotation)
+  void PhysicsShape::set_box(const RectF& box, float rotation)
   {
-    const b2Polygon raw_polygon = b2MakeOffsetBox(half_size.w, half_size.h, { center.x, center.y }, { rotation.cosine, rotation.sine });
+    const Vec2F half_size = box.size() / 2.0f;
+    const Vec2F center = box.center();
+    const b2Rot rot = b2MakeRot(rotation);
+    const b2Polygon raw_polygon = b2MakeOffsetBox(half_size.w, half_size.h, { center.x, center.y }, rot);
     b2Shape_SetPolygon(m_id, &raw_polygon);
   }
 
@@ -342,9 +346,12 @@ namespace gf {
     b2Shape_SetPolygon(m_id, &raw_polygon);
   }
 
-  void PhysicsShape::set_rounded_box(Vec2F half_size, Vec2F center, PhysicsRotation rotation, float radius)
+  void PhysicsShape::set_rounded_box(const RectF& box, float radius, float rotation)
   {
-    const b2Polygon raw_polygon = b2MakeOffsetRoundedBox(half_size.w, half_size.h, { center.x, center.y }, { rotation.cosine, rotation.sine }, radius);
+    const Vec2F half_size = box.size() / 2.0f;
+    const Vec2F center = box.center();
+    const b2Rot rot = b2MakeRot(rotation);
+    const b2Polygon raw_polygon = b2MakeOffsetRoundedBox(half_size.w, half_size.h, { center.x, center.y }, rot, radius);
     b2Shape_SetPolygon(m_id, &raw_polygon);
   }
 
@@ -488,13 +495,16 @@ namespace gf {
     return { details::PhysicsOwner::Object, b2CreatePolygonShape(details::to_raw(body->id()), &def, &raw) };
   }
 
-  PhysicsShape PhysicsShape::create_box(PhysicsBody* body, const PhysicsShapeData& data, Vec2F half_size, Vec2F center, PhysicsRotation rotation)
+  PhysicsShape PhysicsShape::create_box(PhysicsBody* body, const PhysicsShapeData& data, const RectF& box, float rotation)
   {
     assert(body != nullptr);
     assert(body->valid());
 
     const b2ShapeDef def = to_raw(data);
-    const b2Polygon raw = b2MakeOffsetBox(half_size.w, half_size.h, { center.x, center.y }, { rotation.cosine, rotation.sine });
+    const Vec2F half_size = box.size() / 2.0f;
+    const Vec2F center = box.center();
+    const b2Rot rot = b2MakeRot(rotation);
+    const b2Polygon raw = b2MakeOffsetBox(half_size.w, half_size.h, { center.x, center.y }, rot);
     return { details::PhysicsOwner::Object, b2CreatePolygonShape(details::to_raw(body->id()), &def, &raw) };
   }
 
@@ -508,13 +518,16 @@ namespace gf {
     return { details::PhysicsOwner::Object, b2CreatePolygonShape(details::to_raw(body->id()), &def, &raw) };
   }
 
-  PhysicsShape PhysicsShape::create_rounded_box(PhysicsBody* body, const PhysicsShapeData& data, Vec2F half_size, Vec2F center, PhysicsRotation rotation, float radius)
+  PhysicsShape PhysicsShape::create_rounded_box(PhysicsBody* body, const PhysicsShapeData& data, const RectF& box, float radius, float rotation)
   {
     assert(body != nullptr);
     assert(body->valid());
 
     const b2ShapeDef def = to_raw(data);
-    const b2Polygon raw = b2MakeOffsetRoundedBox(half_size.w, half_size.h, { center.x, center.y }, { rotation.cosine, rotation.sine }, radius);
+    const Vec2F half_size = box.size() / 2.0f;
+    const Vec2F center = box.center();
+    const b2Rot rot = b2MakeRot(rotation);
+    const b2Polygon raw = b2MakeOffsetRoundedBox(half_size.w, half_size.h, { center.x, center.y }, rot, radius);
     return { details::PhysicsOwner::Object, b2CreatePolygonShape(details::to_raw(body->id()), &def, &raw) };
   }
 

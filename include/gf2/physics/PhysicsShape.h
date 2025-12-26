@@ -133,9 +133,9 @@ namespace gf {
     void set_polygon(Span<const Vec2F> polygon, float radius = 0.0f);
     void set_square(float half_size);
     void set_box(Vec2F half_size);
-    void set_box(Vec2F half_size, Vec2F center, PhysicsRotation rotation);
+    void set_box(const RectF& box, float rotation = 0.0f);
     void set_rounded_box(Vec2F half_size, float radius);
-    void set_rounded_box(Vec2F half_size, Vec2F center, PhysicsRotation rotation, float radius);
+    void set_rounded_box(const RectF& box, float radius, float rotation = 0.0f);
 
     PhysicsChain parent_chain() const;
 
@@ -165,9 +165,9 @@ namespace gf {
     static PhysicsShape create_polygon(PhysicsBody* body, const PhysicsShapeData& data, Span<const Vec2F> polygon, float radius = 0.0f);
     static PhysicsShape create_square(PhysicsBody* body, const PhysicsShapeData& data, float half_size);
     static PhysicsShape create_box(PhysicsBody* body, const PhysicsShapeData& data, Vec2F half_size);
-    static PhysicsShape create_box(PhysicsBody* body, const PhysicsShapeData& data, Vec2F half_size, Vec2F center, PhysicsRotation rotation);
+    static PhysicsShape create_box(PhysicsBody* body, const PhysicsShapeData& data, const RectF& box, float rotation = 0.0f);
     static PhysicsShape create_rounded_box(PhysicsBody* body, const PhysicsShapeData& data, Vec2F half_size, float radius);
-    static PhysicsShape create_rounded_box(PhysicsBody* body, const PhysicsShapeData& data, Vec2F half_size, Vec2F center, PhysicsRotation rotation, float radius);
+    static PhysicsShape create_rounded_box(PhysicsBody* body, const PhysicsShapeData& data, const RectF& box, float radius, float rotation = 0.0f);
 
   private:
     constexpr PhysicsShape(details::PhysicsOwner owner, b2ShapeId id)
