@@ -79,7 +79,7 @@ namespace gf {
 
       for (std::size_t i = 0; i < shape.size(); ++i) {
         const Vec2F point = shape[i];
-        proxy.points[i] = { point.x, point.y };
+        proxy.points[i] = { point.x, point.y }; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
       }
 
       proxy.radius = radius;
@@ -115,7 +115,7 @@ namespace gf {
 
       for (int i = 0; i < raw_vertex_count; ++i) {
         const b2Vec2 raw = raw_vertices[i];
-        vertices[i] = { raw.x, raw.y };
+        vertices[i] = { raw.x, raw.y }; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
       }
 
       auto* debug = static_cast<PhysicsDebug*>(context);
@@ -129,7 +129,7 @@ namespace gf {
 
       for (int i = 0; i < raw_vertex_count; ++i) {
         const b2Vec2 raw = b2TransformPoint(raw_transform, raw_vertices[i]);
-        vertices[i] = { raw.x, raw.y };
+        vertices[i] = { raw.x, raw.y }; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
       }
 
       auto* debug = static_cast<PhysicsDebug*>(context);

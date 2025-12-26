@@ -10,6 +10,7 @@
 #include <gf2/core/Log.h>
 
 #include <gf2/physics/PhysicsBody.h>
+#include <gf2/physics/PhysicsChain.h>
 #include <gf2/physics/PhysicsContact.h>
 #include <gf2/physics/PhysicsWorld.h>
 
@@ -242,6 +243,47 @@ namespace gf {
     };
   }
 
+  CircF PhysicsShape::circle() const
+  {
+    const b2Circle raw = b2Shape_GetCircle(m_id);
+    return CircF::from_center_radius({ raw.center.x, raw.center.y }, raw.radius);
+  }
+
+  SegmentF PhysicsShape::segment() const
+  {
+    const b2Segment raw = b2Shape_GetSegment(m_id);
+    return { { raw.point1.x, raw.point1.y }, { raw.point2.x, raw.point2.y }};
+  }
+
+  PhysicsChainSegment PhysicsShape::chain_segment() const
+  {
+    const b2ChainSegment raw = b2Shape_GetChainSegment(m_id);
+    return {
+      { raw.ghost1.x, raw.ghost1.y },
+      { { raw.segment.point1.x, raw.segment.point1.y }, { raw.segment.point2.x, raw.segment.point2.y } },
+      { raw.ghost2.x, raw.ghost2.y }
+    };
+  }
+
+  CapsuleF PhysicsShape::capsule() const
+  {
+    const b2Capsule raw = b2Shape_GetCapsule(m_id);
+    return { { raw.center1.x, raw.center1.y }, { raw.center2.x, raw.center2.y }, raw.radius };
+  }
+
+  std::vector<Vec2F> PhysicsShape::polygon() const
+  {
+    const b2Polygon raw = b2Shape_GetPolygon(m_id);
+    std::vector<Vec2F> polygon;
+    polygon.reserve(raw.count);
+
+    for (int i = 0; i < raw.count; ++i) {
+      polygon.emplace_back(raw.vertices[i].x, raw.vertices[i].y); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    }
+
+    return polygon;
+  }
+
   void PhysicsShape::set_circle(const CircF& circle)
   {
     const b2Circle raw = to_raw(circle);
@@ -250,13 +292,13 @@ namespace gf {
 
   void PhysicsShape::set_segment(const SegmentF& segment)
   {
-    b2Segment raw = to_raw(segment);
+    const b2Segment raw = to_raw(segment);
     b2Shape_SetSegment(m_id, &raw);
   }
 
   void PhysicsShape::set_capsule(const CapsuleF& capsule)
   {
-    b2Capsule raw = to_raw(capsule);
+    const b2Capsule raw = to_raw(capsule);
     b2Shape_SetCapsule(m_id, &raw);
   }
 
@@ -296,16 +338,51 @@ namespace gf {
     b2Shape_SetPolygon(m_id, &raw_polygon);
   }
 
-  // TODO: parent_chain();
+  PhysicsChain PhysicsShape::parent_chain() const
+  {
+    return PhysicsChain::from_id(details::to_id(b2Shape_GetParentChain(m_id)));
+  }
 
   std::vector<PhysicsContactFeatures> PhysicsShape::contact_features() const
   {
-    return {}; // TODO
+    const int capacity = b2Shape_GetContactCapacity(m_id);
+
+    std::vector<b2ContactData> raw_contacts(capacity);
+    const int count = b2Shape_GetContactData(m_id, raw_contacts.data(), capacity);
+    assert(count <= capacity);
+    raw_contacts.resize(count);
+
+    std::vector<PhysicsContactFeatures> contacts;
+    contacts.reserve(count);
+
+    for (const b2ContactData& raw : raw_contacts) {
+      contacts.push_back(details::to_contact_features(raw));
+    }
+
+    return contacts;
   }
 
   std::vector<PhysicsShape> PhysicsShape::sensors() const
   {
-    return {}; // TODO
+    const int capacity = b2Shape_GetSensorCapacity(m_id);
+
+    if (capacity == 0) {
+      return {};
+    }
+
+    std::vector<b2ShapeId> raw_sensors(capacity);
+    const int count = b2Shape_GetSensorData(m_id, raw_sensors.data(), capacity);
+    assert(count <= capacity);
+    raw_sensors.resize(count);
+
+    std::vector<PhysicsShape> sensors;
+    sensors.reserve(count);
+
+    for (const b2ShapeId raw : raw_sensors) {
+      sensors.push_back(PhysicsShape::from_id(details::to_id(raw)));
+    }
+
+    return sensors;
   }
 
   RectF PhysicsShape::bouding_box() const

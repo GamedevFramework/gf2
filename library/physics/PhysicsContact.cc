@@ -22,18 +22,7 @@ namespace gf {
 
   PhysicsContactFeatures PhysicsContact::features() const
   {
-    b2ContactData raw = b2Contact_GetData(m_id);
-
-    PhysicsContactFeatures features;
-    features.shape0 = PhysicsShape::from_id(details::to_id(raw.shapeIdA));
-    features.shape1 = PhysicsShape::from_id(details::to_id(raw.shapeIdB));
-    features.contact = PhysicsContact::from_id(details::to_id(raw.contactId));
-
-    features.manifold.normal = { raw.manifold.normal.x, raw.manifold.normal.y };
-    features.manifold.rolling_impulse = raw.manifold.rollingImpulse;
-    features.manifold.point_count = raw.manifold.pointCount;
-
-    return features;
+    return details::to_contact_features(b2Contact_GetData(m_id));
   }
 
 }

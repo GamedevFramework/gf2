@@ -309,17 +309,57 @@ namespace gf {
 
   std::vector<PhysicsShape> PhysicsBody::shapes() const
   {
-    return {}; // TODO
+    const int count = b2Body_GetShapeCount(m_id);
+
+    std::vector<b2ShapeId> raw_shapes(count);
+    [[maybe_unused]] const int actual_count = b2Body_GetShapes(m_id, raw_shapes.data(), count);
+    assert(count == actual_count);
+
+    std::vector<PhysicsShape> shapes;
+    shapes.reserve(count);
+
+    for (const b2ShapeId raw : raw_shapes) {
+      shapes.push_back(PhysicsShape::from_id(details::to_id(raw)));
+    }
+
+    return shapes;
   }
 
   std::vector<PhysicsJoint> PhysicsBody::joints() const
   {
-    return {}; // TODO
+    const int count = b2Body_GetJointCount(m_id);
+
+    std::vector<b2JointId> raw_joints(count);
+    [[maybe_unused]] const int actual_count = b2Body_GetJoints(m_id, raw_joints.data(), count);
+    assert(count == actual_count);
+
+    std::vector<PhysicsJoint> joints;
+    joints.reserve(count);
+
+    for (const b2JointId raw : raw_joints) {
+      joints.push_back(PhysicsJoint::from_id(details::to_id(raw)));
+    }
+
+    return joints;
   }
 
   std::vector<PhysicsContactFeatures> PhysicsBody::contact_features() const
   {
-    return {}; // TODO
+    const int capacity = b2Body_GetContactCapacity(m_id);
+
+    std::vector<b2ContactData> raw_contacts(capacity);
+    const int count = b2Body_GetContactData(m_id, raw_contacts.data(), capacity);
+    assert(count <= capacity);
+    raw_contacts.resize(count);
+
+    std::vector<PhysicsContactFeatures> contacts;
+    contacts.reserve(count);
+
+    for (const b2ContactData& raw : raw_contacts) {
+      contacts.push_back(details::to_contact_features(raw));
+    }
+
+    return contacts;
   }
 
   RectF PhysicsBody::bouding_box() const

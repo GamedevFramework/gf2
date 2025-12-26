@@ -16,6 +16,7 @@
 #include <gf2/core/Vec2.h>
 
 #include "PhysicsApi.h"
+#include "PhysicsChainSegment.h"
 #include "PhysicsId.h"
 #include "PhysicsFilter.h"
 #include "PhysicsMassData.h"
@@ -27,6 +28,7 @@ namespace gf {
   struct PhysicsContactFeatures;
 
   class PhysicsBody;
+  class PhysicsChain;
   class PhysicsWorld;
 
   struct GF_PHYSICS_API PhysicsShapeData {
@@ -116,6 +118,12 @@ namespace gf {
     bool test_point(Vec2F point);
     PhysicsCastOutput ray_cast(const PhysicsRayCastInput& input);
 
+    CircF circle() const;
+    SegmentF segment() const;
+    PhysicsChainSegment chain_segment() const;
+    CapsuleF capsule() const;
+    std::vector<Vec2F> polygon() const;
+
     void set_circle(const CircF& circle);
     void set_segment(const SegmentF& segment);
     void set_capsule(const CapsuleF& capsule);
@@ -126,7 +134,7 @@ namespace gf {
     void set_rounded_box(Vec2F half_size, float radius);
     void set_rounded_box(Vec2F half_size, Vec2F center, PhysicsRotation rotation, float radius);
 
-    // TODO: parent_chain();
+    PhysicsChain parent_chain() const;
 
     std::vector<PhysicsContactFeatures> contact_features() const;
     std::vector<PhysicsShape> sensors() const;
