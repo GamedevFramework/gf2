@@ -119,7 +119,7 @@ namespace gf {
       }
 
       auto* debug = static_cast<PhysicsDebug*>(context);
-      debug->draw_polygon(span(vertices.data(), raw_vertex_count), { raw_color, PhysicsDebugAlpha });
+      debug->draw_polygon(span(vertices.data(), raw_vertex_count), { static_cast<uint32_t>(raw_color), PhysicsDebugAlpha });
     }
 
     void draw_solid_polygon_fn(b2Transform raw_transform, const b2Vec2* raw_vertices, int raw_vertex_count, float radius, b2HexColor raw_color, void* context)
@@ -133,32 +133,32 @@ namespace gf {
       }
 
       auto* debug = static_cast<PhysicsDebug*>(context);
-      debug->draw_solid_polygon(span(vertices.data(), raw_vertex_count), radius, { raw_color, PhysicsDebugAlpha });
+      debug->draw_solid_polygon(span(vertices.data(), raw_vertex_count), radius, { static_cast<uint32_t>(raw_color), PhysicsDebugAlpha });
     }
 
     void draw_circle_fn(b2Vec2 center, float radius, b2HexColor raw_color, void* context)
     {
       auto* debug = static_cast<PhysicsDebug*>(context);
-      debug->draw_circle({ { center.x, center.y }, radius }, { raw_color, PhysicsDebugAlpha });
+      debug->draw_circle({ { center.x, center.y }, radius }, { static_cast<uint32_t>(raw_color), PhysicsDebugAlpha });
     }
 
     void draw_solid_circle_fn(b2Transform raw_transform, float radius, b2HexColor raw_color, void* context)
     {
       const b2Vec2 center = raw_transform.p;
       auto* debug = static_cast<PhysicsDebug*>(context);
-      debug->draw_solid_circle({ { center.x, center.y }, radius }, b2Rot_GetAngle(raw_transform.q), { raw_color, PhysicsDebugAlpha });
+      debug->draw_solid_circle({ { center.x, center.y }, radius }, b2Rot_GetAngle(raw_transform.q), { static_cast<uint32_t>(raw_color), PhysicsDebugAlpha });
     }
 
     void draw_solid_capsule_fn(b2Vec2 p1, b2Vec2 p2, float radius, b2HexColor raw_color, void* context)
     {
       auto* debug = static_cast<PhysicsDebug*>(context);
-      debug->draw_solid_capsule({ { p1.x, p1.y }, { p2.x, p2.y }, radius }, { raw_color, PhysicsDebugAlpha });
+      debug->draw_solid_capsule({ { p1.x, p1.y }, { p2.x, p2.y }, radius }, { static_cast<uint32_t>(raw_color), PhysicsDebugAlpha });
     }
 
     void draw_line_fn(b2Vec2 p1, b2Vec2 p2, b2HexColor raw_color, void* context)
     {
       auto* debug = static_cast<PhysicsDebug*>(context);
-      debug->draw_line({ { p1.x, p1.y }, { p2.x, p2.y } }, { raw_color, PhysicsDebugAlpha });
+      debug->draw_line({ { p1.x, p1.y }, { p2.x, p2.y } }, { static_cast<uint32_t>(raw_color), PhysicsDebugAlpha });
     }
 
     void draw_transform_fn(b2Transform raw_transform, void* context)
@@ -170,13 +170,13 @@ namespace gf {
     void draw_point_fn(b2Vec2 p, float size, b2HexColor raw_color, void* context)
     {
       auto* debug = static_cast<PhysicsDebug*>(context);
-      debug->draw_point({ { p.x, p.y }, size}, { raw_color, PhysicsDebugAlpha });
+      debug->draw_point({ { p.x, p.y }, size}, { static_cast<uint32_t>(raw_color), PhysicsDebugAlpha });
     }
 
     void draw_string_fn(b2Vec2 p, const char* s, b2HexColor raw_color, void* context)
     {
       auto* debug = static_cast<PhysicsDebug*>(context);
-      debug->draw_string({ p.x, p.y }, s, { raw_color, PhysicsDebugAlpha });
+      debug->draw_string({ p.x, p.y }, s, { static_cast<uint32_t>(raw_color), PhysicsDebugAlpha });
     }
 
   }
