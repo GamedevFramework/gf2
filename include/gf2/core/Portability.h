@@ -30,7 +30,7 @@
      name& operator=(name&&) noexcept = default;
 
 #  define GF_FIX_DUMB_MSVC_FULL(name)             \
-     name() = default                             \
+     name() = default;                            \
      GF_FIX_DUMB_MSVC(name)
 #else
 #  define GF_FIX_DUMB_MSVC(name)
