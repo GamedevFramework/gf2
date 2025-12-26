@@ -12,9 +12,11 @@
 
 #include <gf2/core/Queue.h>
 
+#include "PhysicsApi.h"
+
 namespace gf {
 
-  class PhysicsTaskManager {
+  class GF_PHYSICS_API PhysicsTaskManager {
   public:
     PhysicsTaskManager(std::size_t thread_count);
     PhysicsTaskManager(const PhysicsTaskManager&) = delete;
