@@ -95,7 +95,7 @@ namespace {
     : m_scene_manager(scene_manager)
     , m_grid_map(gf::GridMap::make_orthogonal(MapSize, CellSize))
     {
-      for (auto position : gf::position_range(MapSize)) {
+      for (const gf::Vec2I position : gf::position_range(MapSize)) {
         switch (Grid[position.y][position.x]) {
           case ' ':
             m_grid_map.set_properties(position, gf::CellProperty::Walkable | gf::CellProperty::Transparent);
@@ -120,7 +120,7 @@ namespace {
     {
       gf::ShapeGroupBuffer buffer;
 
-      for (auto position : gf::position_range(MapSize)) {
+      for (const gf::Vec2I position : gf::position_range(MapSize)) {
         gf::ShapeBuffer shape = gf::ShapeBuffer::make_rectangle(gf::RectF::from_position_size(position * CellSize, CellSize));
 
         if (m_grid_map.transparent(position) && m_grid_map.walkable(position)) {
@@ -199,9 +199,9 @@ namespace {
       switch (event.type()) {
         case gf::EventType::MouseMoved:
           {
-            const auto& mouse_motion_event = event.from<gf::EventType::MouseMoved>();
-            auto mouse_position = mouse_motion_event.position;
-            auto mouse_location = position_to_world_location(mouse_position);
+            const gf::MouseMovedEvent& mouse_motion_event = event.from<gf::EventType::MouseMoved>();
+            const gf::Vec2F mouse_position = mouse_motion_event.position;
+            const gf::Vec2F mouse_location = position_to_world_location(mouse_position);
             const gf::Vec2I position = m_grid_entity.grid().compute_position(mouse_location);
 
             if (position != m_state.light) {

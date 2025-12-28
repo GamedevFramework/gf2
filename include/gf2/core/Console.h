@@ -63,7 +63,7 @@ namespace gf {
     template<typename... T>
     void print(Vec2I position, ConsoleAlignment alignment, const ConsoleStyle& style, fmt::format_string<T...> fmt, T&&... args)
     {
-      auto message = fmt::format(fmt, std::forward<T>(args)...);
+      const std::string message = fmt::format(fmt, std::forward<T>(args)...);
       const ConsoleRichStyle rich_style(style);
       raw_print(RectI::from_position_size(position, { 0, 0 }), message, alignment, rich_style, PrintSimple);
     }
@@ -71,7 +71,7 @@ namespace gf {
     template<typename... T>
     void print_area(RectI area, ConsoleAlignment alignment, const ConsoleStyle& style, fmt::format_string<T...> fmt, T&&... args)
     {
-      auto message = fmt::format(fmt, std::forward<T>(args)...);
+      const std::string message = fmt::format(fmt, std::forward<T>(args)...);
       const ConsoleRichStyle rich_style(style);
       raw_print(area, message, alignment, rich_style, PrintSplit | PrintSimple);
     }
@@ -79,7 +79,7 @@ namespace gf {
     template<typename... T>
     int print_area_height(RectI area, ConsoleAlignment alignment, const ConsoleStyle& style, fmt::format_string<T...> fmt, T&&... args)
     {
-      auto message = fmt::format(fmt, std::forward<T>(args)...);
+      const std::string message = fmt::format(fmt, std::forward<T>(args)...);
       const ConsoleRichStyle rich_style(style);
       return raw_print(area, message, alignment, rich_style, PrintSplit | PrintCount | PrintSimple);
     }
@@ -89,21 +89,21 @@ namespace gf {
     template<typename... T>
     void print(Vec2I position, ConsoleAlignment alignment, const ConsoleRichStyle& style, fmt::format_string<T...> fmt, T&&... args)
     {
-      auto message = fmt::format(fmt, std::forward<T>(args)...);
+      const std::string message = fmt::format(fmt, std::forward<T>(args)...);
       raw_print(RectI::from_position_size(position, { 0, 0 }), message, alignment, style);
     }
 
     template<typename... T>
     void print_area(RectI area, ConsoleAlignment alignment, const ConsoleRichStyle& style, fmt::format_string<T...> fmt, T&&... args)
     {
-      auto message = fmt::format(fmt, std::forward<T>(args)...);
+      const std::string message = fmt::format(fmt, std::forward<T>(args)...);
       raw_print(area, message, alignment, style, PrintSplit);
     }
 
     template<typename... T>
     int print_area_height(RectI area, ConsoleAlignment alignment, const ConsoleRichStyle& style, fmt::format_string<T...> fmt, T&&... args)
     {
-      auto message = fmt::format(fmt, std::forward<T>(args)...);
+      const std::string message = fmt::format(fmt, std::forward<T>(args)...);
       return raw_print(area, message, alignment, style, PrintSplit | PrintCount);
     }
 
@@ -119,7 +119,7 @@ namespace gf {
     template<typename... T>
     void draw_frame(RectI area, const ConsoleStyle& style, fmt::format_string<T...> title, T&&... args)
     {
-      auto actual_title = fmt::format(title, std::forward<T>(args)...);
+      const std::string actual_title = fmt::format(title, std::forward<T>(args)...);
       raw_draw_frame(area, style, actual_title);
     }
 

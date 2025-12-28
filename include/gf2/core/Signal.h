@@ -25,7 +25,7 @@ namespace gf {
     SignalId connect(Func&& callback)
     {
       const std::scoped_lock<std::mutex> lock(m_mutex);
-      auto id = SignalId{ m_slots.size() };
+      const SignalId id = SignalId{ m_slots.size() };
       m_slots.emplace_back(std::forward<Func>(callback));
       return id;
     }
@@ -42,7 +42,7 @@ namespace gf {
     {
       const std::scoped_lock<std::mutex> lock(m_mutex);
 
-      for (auto& slot : m_slots) {
+      for (std::function<void(Args...)>& slot : m_slots) {
         if (slot == nullptr) {
           continue;
         }

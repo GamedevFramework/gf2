@@ -77,9 +77,9 @@ namespace gf {
 
   class GF_CORE_API BufferInputStream : public InputStream {
   public:
-    explicit BufferInputStream(std::vector<uint8_t>* bytes);
+    explicit BufferInputStream(const std::vector<uint8_t>* bytes);
 
-    std::vector<uint8_t>& bytes()
+    const std::vector<uint8_t>& bytes()
     {
       return *m_bytes;
     }
@@ -90,7 +90,7 @@ namespace gf {
     bool finished() override;
 
   private:
-    std::vector<uint8_t>* m_bytes;
+    const std::vector<uint8_t>* m_bytes;
     std::size_t m_offset = 0;
   };
 

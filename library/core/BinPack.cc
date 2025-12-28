@@ -163,14 +163,14 @@ namespace gf {
 
   std::optional<std::vector<RectI>> BinPack::insert(const std::vector<Vec2I>& sizes, BinPackChoice choice, BinPackSplit split, BinPackSort sort)
   {
-    auto saved_free_rectangles = m_free_rectangles;
+    std::vector<RectI> saved_free_rectangles = m_free_rectangles;
 
     std::vector<std::size_t> indices(sizes.size());
     std::iota(indices.begin(), indices.end(), 0);
 
     // sort
 
-    auto comparator = sort_heuristic_comparator(sort);
+    SizeComparator comparator = sort_heuristic_comparator(sort);
 
     std::ranges::sort(indices, [&sizes, &comparator](std::size_t lhs, std::size_t rhs) {
       return comparator(sizes[lhs], sizes[rhs]);
@@ -180,8 +180,8 @@ namespace gf {
 
     std::vector<RectI> rectangles(sizes.size());
 
-    for (auto index : indices) {
-      auto maybe_rectangle = insert(sizes[index], choice, split);
+    for (const std::size_t index : indices) {
+      std::optional<RectI> maybe_rectangle = insert(sizes[index], choice, split);
 
       if (!maybe_rectangle) {
         m_free_rectangles = saved_free_rectangles;
@@ -201,7 +201,7 @@ namespace gf {
     std::size_t best_index = std::numeric_limits<std::size_t>::max();
 
     for (std::size_t i = 0; i < m_free_rectangles.size(); ++i) {
-      auto current_rectangle = m_free_rectangles[i];
+      RectI current_rectangle = m_free_rectangles[i];
 
       if (current_rectangle.size() == size) { // perfect match
         return std::make_tuple(i, current_rectangle);

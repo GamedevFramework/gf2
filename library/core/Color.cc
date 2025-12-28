@@ -107,7 +107,7 @@ namespace gf {
   Color lighter(Color color, float percent)
   {
     assert(0.0f <= percent && percent <= 1.0f);
-    auto hsv = rgb_to_hsv(color);
+    HSV hsv = rgb_to_hsv(color);
     hsv.v += hsv.v * percent;
 
     if (hsv.v > 1) {
@@ -122,7 +122,7 @@ namespace gf {
   Color darker(Color color, float percent)
   {
     assert(0.0f <= percent && percent <= 1.0f);
-    auto hsv = rgb_to_hsv(color);
+    HSV hsv = rgb_to_hsv(color);
     hsv.v -= hsv.v * percent;
     return hsv_to_rgb(hsv);
   }

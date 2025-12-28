@@ -677,9 +677,9 @@ namespace gf {
   };
 
   template<typename T>
-  inline auto enumerate(T&& iterable)
+  inline Enumerate<T> enumerate(T&& iterable)
   {
-    return Enumerate<T>(std::forward<T>(iterable));
+    return { std::forward<T>(iterable) };
   }
 
 } // namespace gf

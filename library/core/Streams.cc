@@ -247,7 +247,7 @@ namespace gf {
    * BufferInputStream
    */
 
-  BufferInputStream::BufferInputStream(std::vector<uint8_t>* bytes)
+  BufferInputStream::BufferInputStream(const std::vector<uint8_t>* bytes)
   : m_bytes(bytes)
   {
     assert(bytes != nullptr);

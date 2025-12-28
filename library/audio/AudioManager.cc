@@ -16,7 +16,7 @@ namespace gf {
   : m_engine(std::make_unique<ma_engine>())
   {
     using namespace std::literals;
-    if (auto result = ma_engine_init(nullptr, m_engine.get()); result != MA_SUCCESS) {
+    if (const ma_result result = ma_engine_init(nullptr, m_engine.get()); result != MA_SUCCESS) {
       Log::fatal("Unable to initialize audio engine: {}", ma_result_description(result));
     }
   }

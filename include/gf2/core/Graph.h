@@ -132,7 +132,7 @@ namespace gf {
 
     VertexId add_vertex(V v)
     {
-      auto id = Graph::add_vertex();
+      VertexId id = Graph::add_vertex();
       m_vertex_data.push_back(std::move(v));
       return id;
     }
@@ -149,7 +149,7 @@ namespace gf {
 
     EdgeId add_edge(VertexId source, VertexId target, E e)
     {
-      auto id = Graph::add_edge(source, target);
+      EdgeId id = Graph::add_edge(source, target);
       m_edge_data.push_back(std::move(e));
       return id;
     }

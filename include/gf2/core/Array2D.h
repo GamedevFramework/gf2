@@ -107,22 +107,22 @@ namespace gf {
     T* begin() noexcept { return m_data.data(); }
     T* end() noexcept { return m_data.data() + m_data.size(); }
 
-    auto compute_4_neighbors_range(Vec2I position) const noexcept
+    NeighborDiamondRange<int> compute_4_neighbors_range(Vec2I position) const noexcept
     {
       return diamond_range(position, 1);
     }
 
-    auto compute_8_neighbors_range(Vec2I position) const noexcept
+    NeighborSquareRange<int> compute_8_neighbors_range(Vec2I position) const noexcept
     {
       return square_range(position, 1);
     }
 
-    auto compute_12_neighbors_range(Vec2I position) const noexcept
+    NeighborDiamondRange<int> compute_12_neighbors_range(Vec2I position) const noexcept
     {
       return diamond_range(position, 2);
     }
 
-    auto compute_24_neighbors_range(Vec2I position) const noexcept
+    NeighborSquareRange<int> compute_24_neighbors_range(Vec2I position) const noexcept
     {
       return square_range(position, 2);
     }
@@ -131,8 +131,8 @@ namespace gf {
     {
       assert(valid(position));
 
-      auto dx = range(position.x - std::min(position.x, radius), position.x + std::min(m_size.w - position.x - 1, radius) + 1);
-      auto dy = range(position.y - std::min(position.y, radius), position.y + std::min(m_size.h - position.y - 1, radius) + 1);
+      const Range<int> dx = range(position.x - std::min(position.x, radius), position.x + std::min(m_size.w - position.x - 1, radius) + 1);
+      const Range<int> dy = range(position.y - std::min(position.y, radius), position.y + std::min(m_size.h - position.y - 1, radius) + 1);
 
       return { dx, dy, position };
     }
@@ -141,8 +141,8 @@ namespace gf {
     {
       assert(valid(position));
 
-      auto dx = range(position.x - std::min(position.x, radius), position.x + std::min(m_size.w - position.x - 1, radius) + 1);
-      auto dy = range(position.y - std::min(position.y, radius), position.y + std::min(m_size.h - position.y - 1, radius) + 1);
+      const Range<int> dx = range(position.x - std::min(position.x, radius), position.x + std::min(m_size.w - position.x - 1, radius) + 1);
+      const Range<int> dy = range(position.y - std::min(position.y, radius), position.y + std::min(m_size.h - position.y - 1, radius) + 1);
 
       return { dx, dy, position, radius };
     }
@@ -167,7 +167,7 @@ namespace gf {
       return false;
     }
 
-    for (auto i : lhs.index_range()) {
+    for (const std::size_t i : lhs.index_range()) {
       if (lhs[i] != rhs[i]) {
         return false;
       }

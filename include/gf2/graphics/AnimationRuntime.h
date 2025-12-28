@@ -48,7 +48,7 @@ namespace gf {
       std::vector<GpuTexture*> resources;
       resources.reserve(resource.textures.size());
 
-      for (const auto& texture : resource.textures) {
+      for (const std::filesystem::path& texture : resource.textures) {
         resources.push_back(resource_manager->get<GpuTexture>(texture));
       }
 

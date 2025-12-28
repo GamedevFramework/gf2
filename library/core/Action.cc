@@ -15,7 +15,7 @@ namespace gf {
   Action::Action(const ActionSettings& settings)
   : m_type(settings.type)
   {
-    for (const auto& control_settings : settings.controls) {
+    for (const ControlSettings& control_settings : settings.controls) {
       add_control_settings(control_settings);
     }
   }
@@ -86,21 +86,21 @@ namespace gf {
       return;
     }
 
-    for (auto& control : m_controls) {
+    for (Control& control : m_controls) {
       control.reset();
     }
   }
 
   void Action::hard_reset()
   {
-    for (auto& control : m_controls) {
+    for (Control& control : m_controls) {
       control.reset();
     }
   }
 
   void Action::process_event(const Event& event)
   {
-    for (auto& control : m_controls) {
+    for (Control& control : m_controls) {
       control.process_event(event);
     }
   }

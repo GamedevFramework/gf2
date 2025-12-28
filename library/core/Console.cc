@@ -27,7 +27,7 @@ namespace gf {
       {
         std::size_t length = 0;
 
-        for (const auto& part : parts) {
+        for (const ConsoleWordPart& part : parts) {
           length += part.data.size();
         }
 
@@ -64,7 +64,7 @@ namespace gf {
 
       std::vector<ConsoleParagraph> parser_with(TextLexer& lexer)
       {
-        auto raw_paragraphs = compute_raw_paragraphs(lexer);
+        std::vector<ConsoleLine> raw_paragraphs = compute_raw_paragraphs(lexer);
         return compute_paragraphs(raw_paragraphs);
       }
 
@@ -79,10 +79,10 @@ namespace gf {
         ConsoleWord current_word;
 
         for (;;) {
-          auto token = lexer.next();
+          const TextToken token = lexer.next();
 
           if (token.type == TextTokenType::StartTag) {
-            auto data = std::get<TextTag>(token.data);
+            const TextTag data = std::get<TextTag>(token.data);
 
             if (data.tag != "style") {
               Log::fatal("Unknown tag: {}.", data.tag);
@@ -102,7 +102,7 @@ namespace gf {
           }
 
           if (token.type == TextTokenType::Word) {
-            auto word = std::get<std::string_view>(token.data);
+            const std::string_view word = std::get<std::string_view>(token.data);
 
             assert(!m_stack.empty());
             current_word.parts.push_back({ word, m_stack.back() });
@@ -147,7 +147,7 @@ namespace gf {
       {
         std::vector<ConsoleParagraph> paragraphs;
 
-        for (auto& raw_paragraph : raw_paragraphs) {
+        for (ConsoleLine& raw_paragraph : raw_paragraphs) {
           ConsoleParagraph paragraph;
 
           ConsoleLine line;
@@ -159,7 +159,7 @@ namespace gf {
             switch (item) {
               case ConsoleTextItem::Space:
                 {
-                  assert(space_index <raw_paragraph.spaces.size());
+                  assert(space_index < raw_paragraph.spaces.size());
                   const ConsoleColorStyle& space = raw_paragraph.spaces[space_index];
                   line.spaces.push_back(space);
                   line.items.push_back(ConsoleTextItem::Space);
@@ -170,7 +170,7 @@ namespace gf {
 
               case ConsoleTextItem::Word:
                 {
-                  assert(word_index <raw_paragraph.words.size());
+                  assert(word_index < raw_paragraph.words.size());
                   ConsoleWord& word = raw_paragraph.words[word_index];
                   const int word_width = word.width();
 
@@ -249,7 +249,7 @@ namespace gf {
 
   void Console::clear(const ConsoleStyle& style)
   {
-    for (auto& cell : m_cells) {
+    for (ConsoleCell& cell : m_cells) {
       cell.background = style.color.background;
       cell.foreground = style.color.foreground;
       cell.character = u' ';
@@ -258,17 +258,17 @@ namespace gf {
 
   void Console::clear(RectI area, const ConsoleStyle& style)
   {
-    auto maybe_area = area.intersection(RectI::from_size(m_cells.size()));
+    std::optional<RectI> maybe_area = area.intersection(RectI::from_size(m_cells.size()));
 
     if (!maybe_area) {
       return;
     }
 
-    area = *maybe_area;
+    area = maybe_area.value();
 
-    for (auto position : position_range(area.extent)) {
+    for (Vec2I position : position_range(area.extent)) {
       position += area.offset;
-      auto& cell = m_cells(position);
+      ConsoleCell& cell = m_cells(position);
       cell.background = style.color.background;
       cell.foreground = style.color.foreground;
       cell.character = u' ';
@@ -326,7 +326,7 @@ namespace gf {
       return;
     }
 
-    auto& cell = m_cells(position);
+    ConsoleCell& cell = m_cells(position);
     cell.foreground = style.color.foreground;
     cell.background = style.effect.compute_color(cell.background, style.color.background);
     cell.character = character;
@@ -380,8 +380,8 @@ namespace gf {
         assert(console.m_cells.valid(blit.target_offset + offset));
         assert(m_cells.valid(blit.source_region.offset + offset));
 
-        auto& target_cell = console.m_cells(blit.target_offset + offset);
-        const auto& origin_cell = m_cells(blit.source_region.offset + offset);
+        ConsoleCell& target_cell = console.m_cells(blit.target_offset + offset);
+        const ConsoleCell& origin_cell = m_cells(blit.source_region.offset + offset);
 
         target_cell.background = gf::lerp(target_cell.background, origin_cell.background, background_alpha);
         target_cell.foreground = gf::lerp(target_cell.foreground, origin_cell.foreground, foreground_alpha);
@@ -394,7 +394,7 @@ namespace gf {
   {
     int width = 0;
 
-    for (auto c : gf::codepoints(message)) {
+    for (char32_t c : gf::codepoints(message)) {
       if (c >= 0x10000 || c < 0x20) {
         // outside BMP or control chars
         c = '\0';
@@ -410,9 +410,9 @@ namespace gf {
 
   int Console::raw_print(RectI area, const std::string& message, ConsoleAlignment alignment, const ConsoleRichStyle& style, uint8_t flags)
   {
-    auto size = m_cells.size();
-    auto min = area.min();
-    auto max = area.max();
+    const Vec2I size = m_cells.size();
+    const Vec2I min = area.min();
+    const Vec2I max = area.max();
 
     if (min.x < 0 || min.y < 0 || max.x > size.w || max.y > size.h) {
       Log::warning("Position of console text is outside the console.");
@@ -425,7 +425,7 @@ namespace gf {
     // single line
     assert(area.extent == gf::vec(0, 0));
 
-    auto position = area.position();
+    const Vec2I position = area.position();
 
     RectI single_line_area = {};
 
@@ -454,7 +454,7 @@ namespace gf {
 
   int Console::raw_print_multiline(RectI area, const std::string& message, ConsoleAlignment alignment, const ConsoleRichStyle& style, uint8_t flags)
   {
-    auto size = m_cells.size();
+    const Vec2I size = m_cells.size();
     int line_count = 0;
     int paragraph_width = area.extent.w;
 
@@ -487,14 +487,14 @@ namespace gf {
       paragraphs = parser.parser_with(lexer);
     }
 
-    auto position = area.position();
+    Vec2I position = area.position();
     ConsoleStyle current_style = style.default_style();
 
-    for (const auto& paragraph : paragraphs) {
+    for (const ConsoleParagraph& paragraph : paragraphs) {
       if ((flags & PrintCount) != 0) {
         line_count += static_cast<int>(paragraph.lines.size());
       } else {
-        for (const auto& line : paragraph.lines) {
+        for (const ConsoleLine& line : paragraph.lines) {
           if (area.offset.y + line_count >= area.offset.y + area.extent.y) {
             break;
           }
@@ -504,7 +504,7 @@ namespace gf {
           std::size_t word_index = 0;
           std::size_t space_index = 0;
 
-          for (auto item : line.items) {
+          for (ConsoleTextItem item : line.items) {
             switch (item) {
               case ConsoleTextItem::Space:
                 {
@@ -522,7 +522,7 @@ namespace gf {
                   assert(word_index < line.words.size());
                   const ConsoleWord& word = line.words[word_index];
 
-                  for (const auto& parts : word.parts) {
+                  for (const ConsoleWordPart& parts : word.parts) {
                     current_style.color = parts.style;
                     line_position.x += put_string(line_position, parts.data, current_style);
                   }
@@ -546,7 +546,7 @@ namespace gf {
   {
     draw_rectangle(area, style);
     area.extent -= 1;
-    auto size = area.extent - 1;
+    const Vec2I size = area.extent - 1;
     const Vec2I min = area.offset;
     const Vec2I max = area.offset + area.extent;
 

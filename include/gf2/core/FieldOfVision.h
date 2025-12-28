@@ -89,8 +89,8 @@ namespace gf {
 
       PositionRange tiles() const
       {
-        auto min_x = round_ties_down(depth * start_slope);
-        auto max_x = round_ties_up(depth * end_slope);
+        const int32_t min_x = round_ties_down(depth * start_slope);
+        const int32_t max_x = round_ties_up(depth * end_slope);
         return rectangle_range(RectI::from_position_size({ min_x, depth }, { max_x - min_x + 1, 1 }));
       }
 
@@ -182,7 +182,7 @@ namespace gf {
     OutputCell& cell = output_cells(origin);
     set_visible(origin, cell);
 
-    for (auto direction : { Direction::Up, Direction::Left, Direction::Down, Direction::Right }) {
+    for (const Direction direction : { Direction::Up, Direction::Left, Direction::Down, Direction::Right }) {
       const details::Quadrant quadrant = { direction, origin };
       details::compute_visibility_in_quadrant(input_cells, output_cells, origin, range_limit, quadrant, set_visible);
     }

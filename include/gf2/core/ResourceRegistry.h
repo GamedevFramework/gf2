@@ -53,14 +53,14 @@ namespace gf {
         while (base_path.has_relative_path()) {
           const std::filesystem::path relative_path = std::filesystem::relative(path, base_path);
 
-          if (auto* resource = try_get(relative_path); resource != nullptr) {
+          if (T* resource = try_get(relative_path); resource != nullptr) {
             return resource;
           }
 
           base_path = base_path.parent_path();
         }
       } else {
-        if (auto* resource = try_get(path); resource != nullptr) {
+        if (T* resource = try_get(path); resource != nullptr) {
           return resource;
         }
       }
@@ -76,14 +76,14 @@ namespace gf {
         while (base_path.has_relative_path()) {
           const std::filesystem::path relative_path = std::filesystem::relative(path, base_path);
 
-          if (auto* resource = try_load(relative_path, context); resource != nullptr) {
+          if (T* resource = try_load(relative_path, context); resource != nullptr) {
             return resource;
           }
 
           base_path = base_path.parent_path();
         }
       } else {
-        if (auto* resource = try_load(path, context); resource != nullptr) {
+        if (T* resource = try_load(path, context); resource != nullptr) {
           return resource;
         }
       }
@@ -143,7 +143,7 @@ namespace gf {
         return counted.pointer.get();
       }
 
-      for (auto& loader : m_loaders) {
+      for (ResourceLoader<T>& loader : m_loaders) {
         std::unique_ptr<T> pointer;
 
         if constexpr (std::is_empty_v<ResourceContext<T>>) {

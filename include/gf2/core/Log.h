@@ -31,35 +31,35 @@ namespace gf {
     template<typename... T>
     static void debug(fmt::format_string<T...> fmt, T&&... args)
     {
-      auto string = fmt::format(fmt, std::forward<T>(args)...);
+      const std::string string = fmt::format(fmt, std::forward<T>(args)...);
       log(LogLevel::Debug, string);
     }
 
     template<typename... T>
     static void info(fmt::format_string<T...> fmt, T&&... args)
     {
-      auto string = fmt::format(fmt, std::forward<T>(args)...);
+      const std::string string = fmt::format(fmt, std::forward<T>(args)...);
       log(LogLevel::Info, string);
     }
 
     template<typename... T>
     static void warning(fmt::format_string<T...> fmt, T&&... args)
     {
-      auto string = fmt::format(fmt, std::forward<T>(args)...);
+      const std::string string = fmt::format(fmt, std::forward<T>(args)...);
       log(LogLevel::Warn, string);
     }
 
     template<typename... T>
     static void error(fmt::format_string<T...> fmt, T&&... args)
     {
-      auto string = fmt::format(fmt, std::forward<T>(args)...);
+      const std::string string = fmt::format(fmt, std::forward<T>(args)...);
       log(LogLevel::Error, string);
     }
 
     template<typename... T>
     [[noreturn]] static void fatal(fmt::format_string<T...> fmt, T&&... args)
     {
-      auto string = fmt::format(fmt, std::forward<T>(args)...);
+      const std::string string = fmt::format(fmt, std::forward<T>(args)...);
       log(LogLevel::Fatal, string);
       throw std::runtime_error(string);
     }
@@ -67,7 +67,7 @@ namespace gf {
     template<typename... T>
     static void print(LogLevel level, fmt::format_string<T...> fmt, T&&... args)
     {
-      auto string = fmt::format(fmt, std::forward<T>(args)...);
+      const std::string string = fmt::format(fmt, std::forward<T>(args)...);
       log(level, string);
     }
 

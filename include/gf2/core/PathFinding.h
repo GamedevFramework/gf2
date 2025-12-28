@@ -221,7 +221,7 @@ namespace gf {
 
       const std::vector<Vec2I> neighbors = grid.compute_neighbors(heap_data.position, flags);
 
-      for (auto position : neighbors) {
+      for (const Vec2I position : neighbors) {
         assert(position != heap_data.position);
 
         const Cell& cell = cells(position);

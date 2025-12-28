@@ -176,7 +176,7 @@ namespace gf {
         return;
       }
 
-      auto gcd = std::gcd(m_numerator, m_denominator);
+      const T gcd = std::gcd(m_numerator, m_denominator);
       m_numerator /= gcd;
       m_denominator /= gcd;
 

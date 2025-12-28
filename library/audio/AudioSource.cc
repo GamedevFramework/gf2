@@ -21,7 +21,7 @@ namespace gf {
 
     assert(manager != nullptr);
 
-    if (auto result = ma_sound_init_from_file(manager->engine(), filename.string().c_str(), m_flags, nullptr, nullptr, m_source.get()); result != MA_SUCCESS) {
+    if (const ma_result result = ma_sound_init_from_file(manager->engine(), filename.string().c_str(), m_flags, nullptr, nullptr, m_source.get()); result != MA_SUCCESS) {
       Log::fatal("Unable to initialize audio source: {}", ma_result_description(result));
     }
   }
@@ -92,12 +92,12 @@ namespace gf {
 
   AudioListener AudioSource::listener() const
   {
-    return AudioListener(ma_sound_get_engine(m_source.get()), ma_sound_get_listener_index(m_source.get()));
+    return { ma_sound_get_engine(m_source.get()), ma_sound_get_listener_index(m_source.get()) };
   }
 
   Vec3F AudioSource::direction_to_listener() const
   {
-    auto direction = ma_sound_get_direction_to_listener(m_source.get());
+    const ma_vec3f direction = ma_sound_get_direction_to_listener(m_source.get());
     return { direction.x, direction.y, direction.z };
   }
 
@@ -108,7 +108,7 @@ namespace gf {
 
   Vec3F AudioSource::position() const
   {
-    auto position = ma_sound_get_position(m_source.get());
+    const ma_vec3f position = ma_sound_get_position(m_source.get());
     return { position.x, position.y, position.z };
   }
 
@@ -119,7 +119,7 @@ namespace gf {
 
   Vec3F AudioSource::direction() const
   {
-    auto direction = ma_sound_get_direction(m_source.get());
+    const ma_vec3f direction = ma_sound_get_direction(m_source.get());
     return { direction.x, direction.y, direction.z };
   }
 
@@ -130,7 +130,7 @@ namespace gf {
 
   Vec3F AudioSource::velocity() const
   {
-    auto velocity = ma_sound_get_velocity(m_source.get());
+    const ma_vec3f velocity = ma_sound_get_velocity(m_source.get());
     return { velocity.x, velocity.y, velocity.z };
   }
 

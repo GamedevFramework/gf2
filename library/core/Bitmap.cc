@@ -38,7 +38,7 @@ namespace gf {
   : m_size(size)
   , m_pixels(compute_bitmap_size(size))
   {
-    auto* target = m_pixels.data();
+    uint8_t* target = m_pixels.data();
 
     if (pitch == static_cast<ptrdiff_t>(m_size.w)) {
       std::copy_n(source, compute_bitmap_size(size), target);
@@ -81,13 +81,13 @@ namespace gf {
 
   void Bitmap::blit(RectI source_region, const Bitmap& source, Vec2I target_offset)
   {
-    auto blit = compute_blit(source_region, source.size(), target_offset, m_size);
+    const Blit blit = compute_blit(source_region, source.size(), target_offset, m_size);
 
     if (blit.source_region.empty()) {
       return;
     }
 
-    for (auto offset : gf::position_range(blit.source_region.extent)) {
+    for (const Vec2I offset : gf::position_range(blit.source_region.extent)) {
       put_pixel(blit.target_offset + offset, source(blit.source_region.offset + offset));
     }
   }

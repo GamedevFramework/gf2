@@ -21,7 +21,7 @@ namespace gf {
     template<typename T>
     std::unique_ptr<T> operator()(const std::filesystem::path& path, const ResourceContext<T>& context = {})
     {
-      auto absolute_path = search(path);
+      const std::filesystem::path absolute_path = search(path);
 
       if (absolute_path.empty()) {
         return nullptr;
@@ -46,7 +46,7 @@ namespace gf {
     template<typename T>
     std::unique_ptr<T> operator()(const std::filesystem::path& path, const ResourceContext<T>& context = {})
     {
-      auto buffer = search(path);
+      const Span<uint8_t> buffer = search(path);
 
       if (buffer.empty()) {
         return nullptr;
@@ -74,7 +74,7 @@ namespace gf {
     template<typename T>
     std::unique_ptr<T> operator()(const std::filesystem::path& path, const ResourceContext<T>& context = {})
     {
-      auto buffer = search(path);
+      const std::vector<uint8_t> buffer = search(path);
 
       if (buffer.empty()) {
         return nullptr;
