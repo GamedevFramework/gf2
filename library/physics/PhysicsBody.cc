@@ -30,6 +30,7 @@ namespace gf {
     def.linearDamping = data.linear_damping;
     def.angularDamping = data.angular_damping;
     def.gravityScale = data.gravity_scale;
+    def.name = data.name.c_str();
     def.motionLocks.linearX = data.motion_locks.linear_x;
     def.motionLocks.linearY = data.motion_locks.linear_y;
     def.motionLocks.angularZ = data.motion_locks.angular_z;
@@ -99,7 +100,7 @@ namespace gf {
     return b2Body_GetName(m_id);
   }
 
-  void PhysicsBody::set_string(const std::string& name)
+  void PhysicsBody::set_name(const std::string& name)
   {
     b2Body_SetName(m_id, name.c_str());
   }

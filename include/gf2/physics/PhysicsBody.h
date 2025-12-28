@@ -45,6 +45,7 @@ namespace gf {
     float linear_damping = 0.0f;
     float angular_damping = 0.0f;
     float gravity_scale = 1.0f;
+    std::string name;
     PhysicsMotionLocks motion_locks;
     bool enable_sleep = true;
     void* user_data = nullptr;
@@ -73,7 +74,7 @@ namespace gf {
     void set_type(PhysicsBodyType type);
 
     std::string name() const;
-    void set_string(const std::string& name);
+    void set_name(const std::string& name);
 
     Vec2F location() const;
     void set_location(Vec2F location);
