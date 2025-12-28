@@ -95,8 +95,14 @@ namespace home {
       data.loop = polyline.type == gf::PolylineType::Loop;
       data.points = polyline.points;
 
-      gf::PhysicsChain chain(&m_body, data);
-      m_chains.push_back(std::move(chain));
+      gf::PhysicsChain chain_ccw(&m_body, data);
+      m_chains.push_back(std::move(chain_ccw));
+
+      std::reverse(polyline.points.begin(), polyline.points.end());
+      data.points = polyline.points;
+
+      gf::PhysicsChain chain_cw(&m_body, data);
+      m_chains.push_back(std::move(chain_cw));
     }
 
     for (const auto& object_layer : tiled_map->object_layers) {
