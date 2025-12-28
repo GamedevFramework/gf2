@@ -13,7 +13,6 @@
 #include "PhysicsApi.h"
 #include "PhysicsId.h"
 #include "PhysicsOwner.h"
-#include "PhysicsTransform.h"
 
 namespace gf {
   class PhysicsBody;
@@ -32,10 +31,12 @@ namespace gf {
 
   struct GF_PHYSICS_API PhysicsJointData {
     PhysicsBodyId body0 = {};
-    PhysicsBodyId body1 = {};
+    Vec2F location0;
+    float rotation0;
 
-    PhysicsTransform frame0;
-    PhysicsTransform frame1;
+    PhysicsBodyId body1 = {};
+    Vec2F location1;
+    float rotation1;
 
     float force_threshold = std::numeric_limits<float>::max();
     float torque_threshold = std::numeric_limits<float>::max();;
@@ -143,11 +144,15 @@ namespace gf {
 
     PhysicsWorld world() const;
 
-    PhysicsTransform frame0() const;
-    void set_frame0(const PhysicsTransform& frame);
+    Vec2F location0() const;
+    float rotation0() const;
 
-    PhysicsTransform frame1() const;
-    void set_frame1(const PhysicsTransform& frame);
+    void set_transform0(Vec2F location, float rotation);
+
+    Vec2F location1() const;
+    float rotation1() const;
+
+    void set_transform1(Vec2F location, float rotation);
 
     Vec2F constraint_force() const;
     float constraint_torque() const;

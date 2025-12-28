@@ -32,7 +32,7 @@ namespace gf {
     void draw_solid_circle(CircF circle, float angle, Color color) override;
     void draw_solid_capsule(const CapsuleF& capsule, Color color) override;
     void draw_line(const SegmentF& segment, Color color) override;
-    void draw_transform(const PhysicsTransform& transform) override;
+    void draw_transform(Vec2F location, float rotation) override;
     void draw_point(CircF point, Color color) override;
     void draw_string(Vec2F point, std::string_view string, Color color) override;
 

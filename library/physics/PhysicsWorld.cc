@@ -9,6 +9,7 @@
 
 #include <gf2/physics/PhysicsEvents.h>
 #include <gf2/physics/PhysicsTaskManager.h>
+#include "box2d/math_functions.h"
 
 namespace gf {
 
@@ -60,7 +61,8 @@ namespace gf {
     PhysicsBodyMoveEvent to_event(const b2BodyMoveEvent& raw)
     {
       return {
-        details::to_transform(raw.transform),
+        { raw.transform.p.x, raw.transform.p.y },
+        b2Rot_GetAngle(raw.transform.q),
         PhysicsBody::from_id(details::to_id(raw.bodyId)),
         raw.fellAsleep,
         raw.userData
@@ -164,7 +166,7 @@ namespace gf {
     void draw_transform_fn(b2Transform raw_transform, void* context)
     {
       auto* debug = static_cast<PhysicsDebug*>(context);
-      debug->draw_transform(details::to_transform(raw_transform));
+      debug->draw_transform({ raw_transform.p.x, raw_transform.p.y }, b2Rot_GetAngle(raw_transform.q));
     }
 
     void draw_point_fn(b2Vec2 p, float size, b2HexColor raw_color, void* context)

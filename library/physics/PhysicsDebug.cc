@@ -31,7 +31,7 @@ namespace gf {
     // nothing to do by default
   }
 
-  void PhysicsDebug::draw_transform([[maybe_unused]] const PhysicsTransform& transform) {
+  void PhysicsDebug::draw_transform([[maybe_unused]] Vec2F location, [[maybe_unused]] float rotation) {
     // nothing to do by default
   }
 

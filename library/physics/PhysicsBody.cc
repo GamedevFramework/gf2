@@ -11,6 +11,7 @@
 #include <gf2/physics/PhysicsJoint.h>
 #include <gf2/physics/PhysicsShape.h>
 #include <gf2/physics/PhysicsWorld.h>
+#include "box2d/math_functions.h"
 
 namespace gf {
 
@@ -109,20 +110,30 @@ namespace gf {
     return { raw.x, raw.y };
   }
 
-  PhysicsRotation PhysicsBody::rotation() const
+  void  PhysicsBody::set_location(Vec2F location)
+  {
+    b2Transform raw = b2Body_GetTransform(m_id);
+    raw.p = { location.x, location.y };
+    b2Body_SetTransform(m_id, raw.p, raw.q);
+  }
+
+
+  float PhysicsBody::rotation() const
   {
     const b2Rot raw = b2Body_GetRotation(m_id);
-    return { raw.c, raw.s };
+    return b2Rot_GetAngle(raw);
   }
 
-  PhysicsTransform PhysicsBody::transform() const
+  void PhysicsBody::set_rotation(float rotation)
   {
-    return details::to_transform(b2Body_GetTransform(m_id));
+    b2Transform raw = b2Body_GetTransform(m_id);
+    raw.q = b2MakeRot(rotation);
+    b2Body_SetTransform(m_id, raw.p, raw.q);
   }
 
-  void PhysicsBody::set_transform(Vec2F location, PhysicsRotation rotation)
+  void PhysicsBody::set_transform(Vec2F location, float rotation)
   {
-    b2Body_SetTransform(m_id, { location.x, location.y }, { rotation.cosine, rotation.sine });
+    b2Body_SetTransform(m_id, { location.x, location.y }, b2MakeRot(rotation));
   }
 
   Vec2F PhysicsBody::compute_world_to_local_point(Vec2F world_point) const

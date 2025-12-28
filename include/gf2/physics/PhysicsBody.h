@@ -16,7 +16,6 @@
 #include "PhysicsId.h"
 #include "PhysicsMassData.h"
 #include "PhysicsOwner.h"
-#include "PhysicsTransform.h"
 
 namespace gf {
   struct PhysicsContactFeatures;
@@ -77,9 +76,12 @@ namespace gf {
     void set_string(const std::string& name);
 
     Vec2F location() const;
-    PhysicsRotation rotation() const;
-    PhysicsTransform transform() const;
-    void set_transform(Vec2F location, PhysicsRotation rotation);
+    void set_location(Vec2F location);
+
+    float rotation() const;
+    void set_rotation(float rotation);
+
+    void set_transform(Vec2F location, float rotation);
 
     Vec2F compute_world_to_local_point(Vec2F world_point) const;
     Vec2F compute_local_to_world_point(Vec2F local_point) const;

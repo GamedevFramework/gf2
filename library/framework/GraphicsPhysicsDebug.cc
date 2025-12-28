@@ -82,19 +82,17 @@ namespace gf {
     m_curve_group_buffer.curves.push_back(std::move(curve));
   }
 
-  void GraphicsPhysicsDebug::draw_transform(const PhysicsTransform& transform)
+  void GraphicsPhysicsDebug::draw_transform(Vec2F location, float rotation)
   {
-    const float angle = transform.rotation.angle();
-    const Vec2F origin = transform.location;
-    const Vec2F unit_x = origin + gf::unit(angle) * DebugTransformLength;
-    const Vec2F unit_y = origin + gf::unit(angle + Pi2) * DebugTransformLength;
+    const Vec2F unit_x = location + gf::unit(rotation) * DebugTransformLength;
+    const Vec2F unit_y = location + gf::unit(rotation + Pi2) * DebugTransformLength;
 
-    CurveBuffer curve_x = CurveBuffer::make_line(origin, unit_x);
+    CurveBuffer curve_x = CurveBuffer::make_line(location, unit_x);
     curve_x.color = Red;
     curve_x.thickness = DebugLineThickness;
     m_curve_group_buffer.curves.push_back(std::move(curve_x));
 
-    CurveBuffer curve_y = CurveBuffer::make_line(origin, unit_y);
+    CurveBuffer curve_y = CurveBuffer::make_line(location, unit_y);
     curve_y.color = Green;
     curve_y.thickness = DebugLineThickness;
     m_curve_group_buffer.curves.push_back(std::move(curve_y));

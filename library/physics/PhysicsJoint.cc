@@ -9,6 +9,7 @@
 
 #include <gf2/physics/PhysicsBody.h>
 #include <gf2/physics/PhysicsWorld.h>
+#include "box2d/math_functions.h"
 
 namespace gf {
 
@@ -81,24 +82,38 @@ namespace gf {
     return PhysicsWorld::from_id(details::to_id(b2Joint_GetWorld(m_id)));
   }
 
-  PhysicsTransform PhysicsJoint::frame0() const
+  Vec2F PhysicsJoint::location0() const
   {
-    return details::to_transform(b2Joint_GetLocalFrameA(m_id));
+    const b2Transform raw = b2Joint_GetLocalFrameA(m_id);
+    return { raw.p.x, raw.p.y };
   }
 
-  void PhysicsJoint::set_frame0(const PhysicsTransform& frame)
+  float PhysicsJoint::rotation0() const
   {
-    b2Joint_SetLocalFrameA(m_id, details::to_raw(frame));
+    const b2Transform raw = b2Joint_GetLocalFrameA(m_id);
+    return b2Rot_GetAngle(raw.q);
   }
 
-  PhysicsTransform PhysicsJoint::frame1() const
+  void PhysicsJoint::set_transform0(Vec2F location, float rotation)
   {
-    return details::to_transform(b2Joint_GetLocalFrameB(m_id));
+    b2Joint_SetLocalFrameA(m_id, { { location.x, location.y }, b2MakeRot(rotation) });
   }
 
-  void PhysicsJoint::set_frame1(const PhysicsTransform& frame)
+  Vec2F PhysicsJoint::location1() const
   {
-    b2Joint_SetLocalFrameB(m_id, details::to_raw(frame));
+    const b2Transform raw = b2Joint_GetLocalFrameB(m_id);
+    return { raw.p.x, raw.p.y };
+  }
+
+  float PhysicsJoint::rotation1() const
+  {
+    const b2Transform raw = b2Joint_GetLocalFrameB(m_id);
+    return b2Rot_GetAngle(raw.q);
+  }
+
+  void PhysicsJoint::set_transform1(Vec2F location, float rotation)
+  {
+    b2Joint_SetLocalFrameB(m_id, { { location.x, location.y }, b2MakeRot(rotation) });
   }
 
   Vec2F PhysicsJoint::constraint_force() const
@@ -159,8 +174,8 @@ namespace gf {
       b2JointDef def = {};
       def.bodyIdA = details::to_raw(data.body0);
       def.bodyIdB = details::to_raw(data.body1);
-      def.localFrameA = details::to_raw(data.frame0);
-      def.localFrameB = details::to_raw(data.frame1);
+      def.localFrameA = { { data.location0.x, data.location0.y }, b2MakeRot(data.rotation0) };
+      def.localFrameB = { { data.location1.x, data.location1.y }, b2MakeRot(data.rotation1) };
       def.forceThreshold = data.force_threshold;
       def.torqueThreshold = data.torque_threshold;
       def.userData = data.user_data;

@@ -12,7 +12,6 @@
 #include "PhysicsContact.h"
 #include "PhysicsJoint.h"
 #include "PhysicsShape.h"
-#include "PhysicsTransform.h"
 
 namespace gf {
 
@@ -65,7 +64,8 @@ namespace gf {
   };
 
   struct GF_PHYSICS_API PhysicsBodyMoveEvent {
-    PhysicsTransform transform;
+    Vec2F location;
+    float rotation;
     PhysicsBody body;
     bool fell_asleep;
     void* user_data;

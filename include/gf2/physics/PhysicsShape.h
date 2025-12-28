@@ -22,7 +22,6 @@
 #include "PhysicsMassData.h"
 #include "PhysicsOwner.h"
 #include "PhysicsSurfaceMaterial.h"
-#include "PhysicsTransform.h"
 
 namespace gf {
   struct PhysicsContactFeatures;

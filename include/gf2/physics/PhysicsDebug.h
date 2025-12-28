@@ -17,7 +17,6 @@
 #include <gf2/core/Vec2.h>
 
 #include "PhysicsApi.h"
-#include "PhysicsTransform.h"
 
 namespace gf {
 
@@ -73,7 +72,7 @@ namespace gf {
     virtual void draw_solid_circle(CircF circle, float angle, Color color);
     virtual void draw_solid_capsule(const CapsuleF& capsule, Color color);
     virtual void draw_line(const SegmentF& segment, Color color);
-    virtual void draw_transform(const PhysicsTransform& transform);
+    virtual void draw_transform(Vec2F location, float rotation);
     virtual void draw_point(CircF point, Color color);
     virtual void draw_string(Vec2F point, std::string_view string, Color color);
   };
