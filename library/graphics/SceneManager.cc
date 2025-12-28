@@ -309,7 +309,7 @@ namespace gf {
       m_scene->render(recorder);
       recorder.sort();
 
-      RenderTarget target = render_manager()->current_render_target();
+      GpuRenderTarget target = render_manager()->current_render_target();
       GpuRenderPass render_pass = command_buffer.begin_render_pass(target, m_scene->clear_color());
 
       render_records(render_pass, recorder);
@@ -357,7 +357,7 @@ namespace gf {
       Vec2I surface_size = window()->surface_size();
       Vec2I window_size = window()->size();
 
-      std::for_each(scenes.begin(), scenes.end(), [surface_size, window_size](BasicScene* scene) {
+      std::ranges::for_each(scenes, [surface_size, window_size](BasicScene* scene) {
         scene->set_surface_size(surface_size);
         scene->set_window_size(window_size);
       });
@@ -377,12 +377,12 @@ namespace gf {
 
             case EventType::WindowResized:
               window_size = event->from<EventType::WindowResized>().size;
-              std::for_each(scenes.begin(), scenes.end(), [window_size](BasicScene* scene) { scene->set_window_size(window_size); });
+              std::ranges::for_each(scenes, [window_size](BasicScene* scene) { scene->set_window_size(window_size); });
               break;
 
             case EventType::WindowPixelSizeChanged:
               surface_size = event->from<EventType::WindowPixelSizeChanged>().size;
-              std::for_each(scenes.begin(), scenes.end(), [surface_size](BasicScene* scene) { scene->set_surface_size(surface_size); });
+              std::ranges::for_each(scenes, [surface_size](BasicScene* scene) { scene->set_surface_size(surface_size); });
               break;
 
             default:
@@ -391,25 +391,25 @@ namespace gf {
           }
 
           const Event& actual_event = *event;
-          std::for_each(scenes.begin(), scenes.end(), [&actual_event](BasicScene* scene) { scene->process_event(actual_event); });
+          std::ranges::for_each(scenes, [&actual_event](BasicScene* scene) { scene->process_event(actual_event); });
         }
 
-        std::for_each(scenes.begin(), scenes.end(), [](BasicScene* scene) { scene->handle_actions(); });
+        std::ranges::for_each(scenes, [](BasicScene* scene) { scene->handle_actions(); });
 
         // update
 
         const Time time = clock.restart();
-        std::for_each(scenes.begin(), scenes.end(), [time](BasicScene* scene) { scene->update(time); });
+        std::ranges::for_each(scenes, [time](BasicScene* scene) { scene->update(time); });
 
         // render
 
         GpuCommandBuffer command_buffer = render_manager()->begin_command_buffer();
 
         recorder.clear();
-        std::for_each(scenes.begin(), scenes.end(), [&recorder](BasicScene* scene) { scene->render(recorder); });
+        std::ranges::for_each(scenes, [&recorder](BasicScene* scene) { scene->render(recorder); });
         recorder.sort();
 
-        RenderTarget target = render_manager()->current_render_target();
+        GpuRenderTarget target = render_manager()->current_render_target();
         GpuRenderPass render_pass = command_buffer.begin_render_pass(target, current_scene->clear_color());
 
         render_records(render_pass, recorder);

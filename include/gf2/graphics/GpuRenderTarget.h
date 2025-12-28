@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
-#ifndef GF_RENDER_TARGET_H
-#define GF_RENDER_TARGET_H
+#ifndef GF_GPU_RENDER_TARGET_H
+#define GF_GPU_RENDER_TARGET_H
 
 #include <SDL3/SDL_gpu.h>
 
@@ -11,16 +11,16 @@
 
 namespace gf {
 
-  class GF_GRAPHICS_API RenderTarget {
+  class GF_GRAPHICS_API GpuRenderTarget {
   public:
-    RenderTarget() = default;
+    GpuRenderTarget() = default;
 
   private:
     friend class RenderManager;
     friend class GpuCommandBuffer;
     friend class GpuTexture;
 
-    RenderTarget(SDL_GPUTexture* texture)
+    GpuRenderTarget(SDL_GPUTexture* texture)
     : m_texture(texture)
     {
     }
@@ -30,4 +30,4 @@ namespace gf {
 
 }
 
-#endif // GF_RENDER_TARGET_H
+#endif // GF_GPU_RENDER_TARGET_H

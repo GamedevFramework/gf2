@@ -17,7 +17,7 @@ namespace gf {
    * CommandBuffer
    */
 
-  GpuRenderPass GpuCommandBuffer::begin_render_pass(RenderTarget target, Color clear_color) const
+  GpuRenderPass GpuCommandBuffer::begin_render_pass(GpuRenderTarget target, Color clear_color) const
   {
     assert(m_command_buffer);
 

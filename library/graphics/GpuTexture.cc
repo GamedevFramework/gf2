@@ -103,7 +103,7 @@ namespace gf {
     render_manager->defer_release_transfer_buffer(std::move(buffer));
   }
 
-  RenderTarget GpuTexture::as_render_target()
+  GpuRenderTarget GpuTexture::as_render_target()
   {
     assert(m_usage.test(GpuTextureUsage::ColorTarget));
     return { m_texture_handle.object() };

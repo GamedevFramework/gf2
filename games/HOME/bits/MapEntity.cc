@@ -37,7 +37,7 @@ namespace home {
         }
 
         std::vector<gf::Vec2I> contour = grid.compute_contour(position);
-        std::sort(contour.begin(), contour.end(), vec_compare);
+        std::ranges::sort(contour, vec_compare);
 
         const std::vector<gf::Vec2I> neighbors = grid.compute_neighbors(position, gf::CellNeighborQuery::Valid);
 
@@ -47,10 +47,10 @@ namespace home {
           }
 
           std::vector<gf::Vec2I> neighbor_contour = grid.compute_contour(neighbor);
-          std::sort(neighbor_contour.begin(), neighbor_contour.end(), vec_compare);
+          std::ranges::sort(neighbor_contour, vec_compare);
 
           std::vector<gf::Vec2I> intersection;
-          std::set_intersection(contour.begin(), contour.end(), neighbor_contour.begin(), neighbor_contour.end(), std::back_inserter(intersection), vec_compare);
+          std::ranges::set_intersection(contour, neighbor_contour, std::back_inserter(intersection), vec_compare);
 
           if (intersection.size() == 2) {
             segments.push_back({ intersection[0], intersection[1] });
@@ -98,7 +98,7 @@ namespace home {
       gf::PhysicsChain chain_ccw(&m_body, data);
       m_chains.push_back(std::move(chain_ccw));
 
-      std::reverse(polyline.points.begin(), polyline.points.end());
+      std::ranges::reverse(polyline.points);
       data.points = polyline.points;
 
       gf::PhysicsChain chain_cw(&m_body, data);

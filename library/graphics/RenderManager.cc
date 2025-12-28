@@ -210,7 +210,7 @@ namespace gf {
     m_async_loading = false;
   }
 
-  RenderTarget RenderManager::current_render_target() const
+  GpuRenderTarget RenderManager::current_render_target() const
   {
     return { m_swapchain_texture };
   }

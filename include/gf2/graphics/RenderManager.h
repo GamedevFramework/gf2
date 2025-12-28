@@ -15,8 +15,8 @@
 #include "GpuDevice.h"
 #include "GpuTransferBuffer.h"
 #include "GpuTexture.h"
+#include "GpuRenderTarget.h"
 #include "GraphicsApi.h"
-#include "RenderTarget.h"
 #include "Window.h"
 
 namespace gf {
@@ -45,7 +45,7 @@ namespace gf {
     void end_asynchronous_load();
     void finish_asynchronous_load();
 
-    RenderTarget current_render_target() const;
+    GpuRenderTarget current_render_target() const;
 
     void wait_idle();
 

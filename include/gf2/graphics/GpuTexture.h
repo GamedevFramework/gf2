@@ -13,9 +13,9 @@
 #include <gf2/core/Flags.h>
 #include <gf2/core/Image.h>
 
+#include "GpuRenderTarget.h"
 #include "GraphicsApi.h"
 #include "GraphicsHandle.h"
-#include "RenderTarget.h"
 
 namespace gf {
   class RenderManager;
@@ -68,7 +68,7 @@ namespace gf {
       return m_image_size;
     }
 
-    RenderTarget as_render_target();
+    GpuRenderTarget as_render_target();
 
   private:
     friend class GpuCopyPass;

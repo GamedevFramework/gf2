@@ -12,8 +12,8 @@
 #include <gf2/core/Vec2.h>
 
 #include "GpuShader.h"
+#include "GpuRenderTarget.h"
 #include "GraphicsApi.h"
-#include "RenderTarget.h"
 
 namespace gf {
   class GpuTexture;
@@ -74,7 +74,7 @@ namespace gf {
   public:
     GpuCommandBuffer() = default;
 
-    GpuRenderPass begin_render_pass(RenderTarget target, Color clear_color = Black) const;
+    GpuRenderPass begin_render_pass(GpuRenderTarget target, Color clear_color = Black) const;
     void end_render_pass(GpuRenderPass pass) const;
 
     GpuCopyPass begin_copy_pass() const;
