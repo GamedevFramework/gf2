@@ -30,14 +30,14 @@ namespace gf {
 
   RectF FontAtlas::texture_region(uint32_t index, FontFace* face)
   {
-    auto key = std::make_pair(index, face);
+    const std::pair key = std::make_pair(index, face);
 
     if (auto iterator = m_atlas.find(key); iterator != m_atlas.end()) {
       return iterator->second;
     }
 
-    auto font_glyph = glyph(index, face);
-    auto maybe_rectangle = m_bin_pack.insert(font_glyph.bitmap.size() + 2 * FontAtlasPadding);
+    const FontGlyph font_glyph = glyph(index, face);
+    std::optional<RectI> maybe_rectangle = m_bin_pack.insert(font_glyph.bitmap.size() + 2 * FontAtlasPadding);
 
     if (!maybe_rectangle) {
       Log::fatal("Unable to insert rectangle in the bin pack.");
@@ -62,10 +62,10 @@ namespace gf {
   {
     std::vector<uint32_t> new_indices;
 
-    for (auto index : indices) {
-      auto key = std::make_pair(index, face);
+    for (const uint32_t index : indices) {
+      const std::pair key = std::make_pair(index, face);
 
-      if (auto it = m_atlas.find(key); it != m_atlas.end()) {
+      if (m_atlas.contains(key)) {
         continue;
       }
 
@@ -76,8 +76,9 @@ namespace gf {
       return;
     }
 
-    std::sort(new_indices.begin(), new_indices.end());
-    new_indices.erase(std::unique(new_indices.begin(), new_indices.end()), new_indices.end());
+    std::ranges::sort(new_indices);
+    auto [ first, last ] = std::ranges::unique(new_indices);
+    new_indices.erase(first, last);
 
     const std::size_t count = new_indices.size();
 

@@ -155,11 +155,12 @@ namespace gf {
           std::size_t word_index = 0;
           std::size_t space_index = 0;
 
-          for (auto item : raw_paragraph.items) {
+          for (ConsoleTextItem item : raw_paragraph.items) {
             switch (item) {
               case ConsoleTextItem::Space:
                 {
-                  auto& space = raw_paragraph.spaces[space_index];
+                  assert(space_index <raw_paragraph.spaces.size());
+                  const ConsoleColorStyle& space = raw_paragraph.spaces[space_index];
                   line.spaces.push_back(space);
                   line.items.push_back(ConsoleTextItem::Space);
                   ++line_width;
@@ -169,7 +170,8 @@ namespace gf {
 
               case ConsoleTextItem::Word:
                 {
-                  auto& word = raw_paragraph.words[word_index];
+                  assert(word_index <raw_paragraph.words.size());
+                  ConsoleWord& word = raw_paragraph.words[word_index];
                   const int word_width = word.width();
 
                   if (!line.words.empty() && line_width + word_width > m_paragraph_width) {
@@ -506,7 +508,8 @@ namespace gf {
             switch (item) {
               case ConsoleTextItem::Space:
                 {
-                  const auto& space = line.spaces[space_index];
+                  assert(space_index < line.spaces.size());
+                  const ConsoleColorStyle& space = line.spaces[space_index];
                   current_style.color = space;
                   put_character(line_position, ' ', current_style);
                   ++line_position.x;
@@ -516,7 +519,8 @@ namespace gf {
 
               case ConsoleTextItem::Word:
                 {
-                  const auto& word = line.words[word_index];
+                  assert(word_index < line.words.size());
+                  const ConsoleWord& word = line.words[word_index];
 
                   for (const auto& parts : word.parts) {
                     current_style.color = parts.style;

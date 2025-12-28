@@ -82,7 +82,7 @@ namespace gf {
   SocketResult UdpSocket::send_bytes_to(Span<const uint8_t> buffer, const SocketAddress& remote_address)
   {
     if (buffer.size() > MaxDatagramSize) {
-      return std::size_t(0);
+      return static_cast<std::size_t>(0);
     }
 
     return send_raw_bytes_to(buffer, remote_address);
@@ -91,7 +91,7 @@ namespace gf {
   SocketResult UdpSocket::recv_bytes_from(Span<uint8_t> buffer, SocketAddress* remote_address)
   {
     if (buffer.size() > MaxDatagramSize) {
-      return std::size_t(0);
+      return static_cast<std::size_t>(0);
     }
 
     return recv_raw_bytes_from(buffer, remote_address);

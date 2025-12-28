@@ -84,13 +84,11 @@ namespace gf {
     assert(0 <= raw.count && raw.count < CP_MAX_CONTACTS_PER_ARBITER);
 
     for (int i = 0; i < raw.count; ++i) {
-      // NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index)
       set.points[i].distance = static_cast<float>(raw.points[i].distance);
       auto point_a = raw.points[i].pointA;
       set.points[i].point_a = gf::vec(point_a.x, point_a.y);
       auto point_b = raw.points[i].pointB;
       set.points[i].point_b = gf::vec(point_b.x, point_b.y);
-      // NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)
     }
 
     return set;
@@ -103,13 +101,11 @@ namespace gf {
     raw.normal = cpv(set.normal.x, set.normal.y);
 
     for (std::size_t i = 0; i < set.size; ++i) {
-      // NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index)
       raw.points[i].distance = set.points[i].distance;
       auto point_a = set.points[i].point_a;
       raw.points[i].pointA = cpv(point_a.x, point_a.y);
       auto point_b = set.points[i].point_b;
       raw.points[i].pointB = cpv(point_b.x, point_b.y);
-      // NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)
     }
 
     cpArbiterSetContactPointSet(m_arbiter, &raw);

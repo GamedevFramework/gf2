@@ -16,12 +16,12 @@ namespace gf {
 
     GpuBuffer& buffer()
     {
-      return m_buffers[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+      return m_buffers[m_current_buffer];
     }
 
     const GpuBuffer& buffer() const
     {
-      return m_buffers[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+      return m_buffers[m_current_buffer];
     }
 
     void update(std::size_t member_size, std::size_t member_count, const void* data, RenderManager* render_manager);

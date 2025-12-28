@@ -14,65 +14,65 @@
 
 namespace gf {
 
+  enum class LogLevel : uint8_t {
+    Debug,
+    Info,
+    Warn,
+    Error,
+    Fatal,
+  };
+
   class GF_CORE_API Log {
   public:
     Log() = delete;
 
-    enum Level : uint8_t {
-      Debug,
-      Info,
-      Warn,
-      Error,
-      Fatal,
-    };
-
-    static void set_level(Level level);
+    static void set_level(LogLevel level);
 
     template<typename... T>
     static void debug(fmt::format_string<T...> fmt, T&&... args)
     {
       auto string = fmt::format(fmt, std::forward<T>(args)...);
-      log(Level::Debug, string);
+      log(LogLevel::Debug, string);
     }
 
     template<typename... T>
     static void info(fmt::format_string<T...> fmt, T&&... args)
     {
       auto string = fmt::format(fmt, std::forward<T>(args)...);
-      log(Level::Info, string);
+      log(LogLevel::Info, string);
     }
 
     template<typename... T>
     static void warning(fmt::format_string<T...> fmt, T&&... args)
     {
       auto string = fmt::format(fmt, std::forward<T>(args)...);
-      log(Level::Warn, string);
+      log(LogLevel::Warn, string);
     }
 
     template<typename... T>
     static void error(fmt::format_string<T...> fmt, T&&... args)
     {
       auto string = fmt::format(fmt, std::forward<T>(args)...);
-      log(Level::Error, string);
+      log(LogLevel::Error, string);
     }
 
     template<typename... T>
     [[noreturn]] static void fatal(fmt::format_string<T...> fmt, T&&... args)
     {
       auto string = fmt::format(fmt, std::forward<T>(args)...);
-      log(Level::Fatal, string);
+      log(LogLevel::Fatal, string);
       throw std::runtime_error(string);
     }
 
     template<typename... T>
-    static void print(Level level, fmt::format_string<T...> fmt, T&&... args)
+    static void print(LogLevel level, fmt::format_string<T...> fmt, T&&... args)
     {
       auto string = fmt::format(fmt, std::forward<T>(args)...);
       log(level, string);
     }
 
   private:
-    static void log(Level level, const std::string& string);
+    static void log(LogLevel level, const std::string& string);
   };
 
 } // namespace gf

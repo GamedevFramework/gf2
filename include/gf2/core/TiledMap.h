@@ -25,7 +25,7 @@ namespace gf {
 
   constexpr uint32_t NoIndex = 0xFFFFFFFF;
 
-  enum MapLayerType : uint8_t {
+  enum class MapLayerType : uint8_t {
     Tile,
     Object,
     Group,

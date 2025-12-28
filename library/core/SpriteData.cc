@@ -11,11 +11,11 @@ namespace gf {
   {
     for (auto [index, known_texture_path] : enumerate(textures)) {
       if (texture_path == known_texture_path) {
-        return uint32_t(index);
+        return static_cast<uint32_t>(index);
       }
     }
 
-    auto index = uint32_t(textures.size());
+    const auto index = static_cast<uint32_t>(textures.size());
     textures.push_back(texture_path);
     return index;
   }

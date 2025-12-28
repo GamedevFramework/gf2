@@ -37,7 +37,7 @@ namespace gf {
     struct TouchIdDeleter {
       void operator()(SDL_TouchID* ids)
       {
-        SDL_free(ids);
+        SDL_free(ids); // NOLINT(cppcoreguidelines-no-malloc)
       }
     };
 
@@ -46,7 +46,7 @@ namespace gf {
   std::vector<TouchId> Touch::devices()
   {
     int count = 0;
-    std::unique_ptr<SDL_TouchID[], TouchIdDeleter> raw_devices(SDL_GetTouchDevices(&count));
+    const std::unique_ptr<SDL_TouchID[], TouchIdDeleter> raw_devices(SDL_GetTouchDevices(&count));
 
     std::vector<TouchId> devices;
     devices.reserve(count);

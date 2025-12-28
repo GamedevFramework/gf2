@@ -35,20 +35,23 @@ namespace gf {
       assert(size == Size);
     }
 
-    template<typename U, typename = std::enable_if_t<std::is_convertible_v<U (*)[], T (*)[]>>>
+    template<typename U>
     constexpr StaticSpan(U (&data)[N]) noexcept
+    requires (std::is_convertible_v<U (*)[], T (*)[]>)
     : m_data(std::begin(data))
     {
     }
 
-    template<typename U, typename = std::enable_if_t<std::is_convertible_v<U (*)[], T (*)[]>>>
+    template<typename U>
     constexpr StaticSpan(std::array<U, N>& values) noexcept
+    requires (std::is_convertible_v<U (*)[], T (*)[]>)
     : m_data(values.data())
     {
     }
 
-    template<typename U, typename = std::enable_if_t<std::is_convertible_v<U (*)[], T (*)[]>>>
+    template<typename U>
     constexpr StaticSpan(StaticSpan<U, N> other) noexcept
+    requires (std::is_convertible_v<U (*)[], T (*)[]>)
     : m_data(other.data())
     {
     }
@@ -233,43 +236,49 @@ namespace gf {
     {
     }
 
-    template<typename U, std::size_t N, typename = std::enable_if_t<std::is_convertible_v<U (*)[], T (*)[]>>>
+    template<typename U, std::size_t N>
     constexpr Span(U (&data)[N])
+    requires (std::is_convertible_v<U (*)[], T (*)[]>)
     : m_data(std::begin(data))
     , m_size(N)
     {
     }
 
-    template<typename U, typename = std::enable_if_t<std::is_convertible_v<U (*)[], T (*)[]>>>
+    template<typename U>
     Span(std::vector<U>& values)
+    requires (std::is_convertible_v<U (*)[], T (*)[]>)
     : m_data(values.data())
     , m_size(values.size())
     {
     }
 
-    template<typename U, typename = std::enable_if_t<std::is_convertible_v<U (*)[], T (*)[]> && std::is_const_v<T>>>
+    template<typename U>
     Span(const std::vector<U>& values)
+    requires (std::is_convertible_v<U (*)[], T (*)[]> && std::is_const_v<T>)
     : m_data(values.data())
     , m_size(values.size())
     {
     }
 
-    template<typename U, std::size_t N, typename = std::enable_if_t<std::is_convertible_v<U (*)[], T (*)[]>>>
+    template<typename U, std::size_t N>
     Span(std::array<U, N>& values)
+    requires (std::is_convertible_v<U (*)[], T (*)[]>)
     : m_data(values.data())
     , m_size(values.size())
     {
     }
 
-    template<typename U, typename = std::enable_if_t<std::is_convertible_v<U (*)[], T (*)[]>>>
+    template<typename U>
     constexpr Span(Span<U> other)
+    requires (std::is_convertible_v<U (*)[], T (*)[]>)
     : m_data(other.data())
     , m_size(other.size())
     {
     }
 
-    template<typename U, std::size_t N, typename = std::enable_if_t<std::is_convertible_v<U (*)[], T (*)[]>>>
+    template<typename U, std::size_t N>
     constexpr Span(StaticSpan<U, N> other)
+    requires (std::is_convertible_v<U (*)[], T (*)[]>)
     : m_data(other.data())
     , m_size(other.size())
     {

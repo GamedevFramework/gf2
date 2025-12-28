@@ -146,7 +146,7 @@ namespace gf {
 
   constexpr IndexRange index_range(std::size_t size)
   {
-    return { std::size_t(0), size };
+    return { static_cast<std::size_t>(0), size };
   }
 
   /*

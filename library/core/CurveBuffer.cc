@@ -15,7 +15,7 @@ namespace gf {
   CompoundCurveBuilder& CompoundCurveBuilder::set_origin(Vec2F origin)
   {
     assert(!points.empty());
-    points[0] = origin;
+    points.front() = origin;
     return *this;
   }
 
@@ -161,7 +161,7 @@ namespace gf {
     assert(point_count >= 2);
     const PolylineView polyline_view = { type, points };
 
-    auto size = points.size();
+    const std::size_t size = points.size();
     const Vec2F prev_extension_point = 2 * points[0] - points[1];               // == p_0 - (p_1 - p_0);
     const Vec2F next_extension_point = 2 * points[size - 1] - points[size - 2]; // = p_{n-1} - (p_{n-2} - p_{n-1})
 

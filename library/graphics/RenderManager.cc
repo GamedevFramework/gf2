@@ -72,11 +72,11 @@ namespace gf {
     RenderSynchronizationObjects& sync = m_render_synchronization[m_current_frame];
 
     if (sync.render_fence != nullptr) {
-      SDL_GPUFence* render_fence = sync.render_fence;
+      SDL_GPUFence* const render_fence = sync.render_fence;
       SDL_WaitForGPUFences(m_device, true, &render_fence, 1);
     }
 
-    MemOps& memops = m_memops[m_current_memops];
+    const MemOps& memops = m_memops[m_current_memops];
     SDL_EndGPUCopyPass(memops.copy_pass);
 
     SDL_CancelGPUCommandBuffer(memops.command_buffer);
@@ -102,13 +102,13 @@ namespace gf {
     // synchronize and acquire the next image
 
     if (sync.render_fence != nullptr) {
-      SDL_GPUFence* render_fence = sync.render_fence;
+      SDL_GPUFence* const render_fence = sync.render_fence;
       SDL_WaitForGPUFences(m_device, true, &render_fence, 1);
     }
 
     // submit memory command buffer
 
-    MemOps& memops = m_memops[m_current_memops];
+    const MemOps& memops = m_memops[m_current_memops];
     SDL_EndGPUCopyPass(memops.copy_pass);
     sync.memops_fence = { m_device, SDL_SubmitGPUCommandBufferAndAcquireFence(memops.command_buffer) };
 
@@ -142,7 +142,7 @@ namespace gf {
 
     // wait for memops end
 
-    SDL_GPUFence* memops_fence = sync.memops_fence;
+    SDL_GPUFence* const memops_fence = sync.memops_fence;
     SDL_WaitForGPUFences(m_device, true, &memops_fence, 1);
 
     // delete staging buffers

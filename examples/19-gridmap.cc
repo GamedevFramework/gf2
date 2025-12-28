@@ -87,7 +87,7 @@ namespace {
   }
 
   static_assert(std::size(Grid) == static_cast<std::size_t>(MapSize.y));
-  static_assert(check(std::begin(Grid), std::end(Grid), [](std::string_view line) { return line.size() == std::size_t(MapSize.x); }));
+  static_assert(check(std::begin(Grid), std::end(Grid), [](std::string_view line) { return line.size() == static_cast<std::size_t>(MapSize.x); }));
 
   class GridEntity : public gf::Entity {
   public:
@@ -96,7 +96,7 @@ namespace {
     , m_grid_map(gf::GridMap::make_orthogonal(MapSize, CellSize))
     {
       for (auto position : gf::position_range(MapSize)) {
-        switch (Grid[position.y][position.x]) { // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+        switch (Grid[position.y][position.x]) {
           case ' ':
             m_grid_map.set_properties(position, gf::CellProperty::Walkable | gf::CellProperty::Transparent);
             break;

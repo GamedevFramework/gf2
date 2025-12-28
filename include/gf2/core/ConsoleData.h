@@ -13,34 +13,32 @@
 
 namespace gf {
 
-  struct GF_CORE_API ConsoleFontFormat {
-    enum Transparency : uint8_t {
-      Alpha,
-      Grayscale,
-      ColorKey,
-    };
-
-    Transparency transparency;
-
-    enum Layout : uint8_t {
-      InColumn,
-      InRow,
-    };
-
-    Layout layout;
-
-    enum Mapping : uint8_t {
-      CodePage437,
-      ModifiedCodePage437,
-      Special,
-      Custom,
-    };
-
-    Mapping mapping;
+  enum class ConsoleFontTransparency : uint8_t {
+    Alpha,
+    Grayscale,
+    ColorKey,
   };
 
-  inline constexpr ConsoleFontFormat LibtcodFormat = { ConsoleFontFormat::ColorKey, ConsoleFontFormat::InRow, ConsoleFontFormat::Special };
-  inline constexpr ConsoleFontFormat DwarfFortressFormat = { ConsoleFontFormat::ColorKey, ConsoleFontFormat::InRow, ConsoleFontFormat::CodePage437 };
+  enum class ConsoleFontLayout : uint8_t {
+    InColumn,
+    InRow,
+  };
+
+  enum class ConsoleFontMapping : uint8_t {
+    CodePage437,
+    ModifiedCodePage437,
+    Special,
+    Custom,
+  };
+
+  struct GF_CORE_API ConsoleFontFormat {
+    ConsoleFontTransparency transparency;
+    ConsoleFontLayout layout;
+    ConsoleFontMapping mapping;
+  };
+
+  inline constexpr ConsoleFontFormat LibtcodFormat = { ConsoleFontTransparency::ColorKey, ConsoleFontLayout::InRow, ConsoleFontMapping::Special };
+  inline constexpr ConsoleFontFormat DwarfFortressFormat = { ConsoleFontTransparency::ColorKey, ConsoleFontLayout::InRow, ConsoleFontMapping::CodePage437 };
 
   struct GF_CORE_API ConsoleData {
     ConsoleFontFormat font_format;

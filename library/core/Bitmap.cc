@@ -117,7 +117,7 @@ namespace gf {
     file << "P7\nWIDTH " << m_size.w << "\nHEIGHT " << m_size.h << "\nDEPTH 1\nMAXVAL 255\nTUPLTYPE GRAYSCALE\nENDHDR\n";
 
     for (const uint8_t value : m_pixels) {
-      file << value;
+      file.put(static_cast<char>(value));
     }
   }
 

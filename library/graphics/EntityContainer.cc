@@ -5,22 +5,20 @@
 
 #include <cassert>
 
-#include <algorithm>
-
 #include <gf2/graphics/Entity.h>
 
 namespace gf {
 
   void EntityContainer::update(Time time)
   {
-    for (auto* entity : m_entities) {
+    for (Entity* entity : m_entities) {
       entity->update(time);
     }
   }
 
   void EntityContainer::render(RenderRecorder& recorder)
   {
-    for (auto* entity : m_entities) {
+    for (Entity* entity : m_entities) {
       entity->render(recorder);
     }
   }
@@ -50,8 +48,7 @@ namespace gf {
       return;
     }
 
-    // erase-remove idiom
-    m_entities.erase(std::remove(m_entities.begin(), m_entities.end(), entity), m_entities.end());
+    std::erase(m_entities, entity);
   }
 
   void EntityContainer::clear()

@@ -485,7 +485,7 @@ namespace gf {
     struct KeyboardIdDeleter {
       void operator()(SDL_KeyboardID* ids)
       {
-        SDL_free(ids);
+        SDL_free(ids); // NOLINT(cppcoreguidelines-no-malloc)
       }
     };
 
@@ -499,7 +499,7 @@ namespace gf {
   std::vector<KeyboardId> Keyboard::devices()
   {
     int count = 0;
-    std::unique_ptr<SDL_KeyboardID[], KeyboardIdDeleter> raw_devices(SDL_GetKeyboards(&count));
+    const std::unique_ptr<SDL_KeyboardID[], KeyboardIdDeleter> raw_devices(SDL_GetKeyboards(&count));
 
     std::vector<KeyboardId> devices;
     devices.reserve(count);
@@ -549,7 +549,7 @@ namespace gf {
   std::tuple<Scancode, Flags<Modifier>> Keyboard::unlocalize(Keycode keycode)
   {
     SDL_Keymod modifiers = 0;
-    SDL_Scancode scancode = SDL_GetScancodeFromKey(static_cast<SDL_Keycode>(keycode), &modifiers);
+    const SDL_Scancode scancode = SDL_GetScancodeFromKey(static_cast<SDL_Keycode>(keycode), &modifiers);
     return { static_cast<Scancode>(scancode), static_cast<Modifier>(modifiers) };
   }
 

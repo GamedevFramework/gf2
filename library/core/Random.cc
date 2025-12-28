@@ -223,13 +223,13 @@ namespace gf {
   double Random::compute_raw_double()
   {
     const uint64_t value = m_engine();
-    return double(value >> 11) * 0x1.0p-53;
+    return static_cast<double>(value >> 11) * 0x1.0p-53;
   }
 
   float Random::compute_raw_float()
   {
     const uint64_t value = m_engine();
-    return float(value >> 40) * 0x1.0p-24f;
+    return static_cast<float>(value >> 40) * 0x1.0p-24f;
   }
 
 } // namespace gf

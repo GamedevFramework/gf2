@@ -4,7 +4,6 @@
 #include <gf2/core/Action.h>
 
 #include <algorithm>
-#include <functional>
 
 namespace gf {
 
@@ -78,7 +77,7 @@ namespace gf {
 
   bool Action::active() const
   {
-    return std::any_of(m_controls.begin(), m_controls.end(), std::mem_fn(&Control::active));
+    return std::ranges::any_of(m_controls, &Control::active);
   }
 
   void Action::reset()

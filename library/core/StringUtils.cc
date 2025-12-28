@@ -56,7 +56,7 @@ namespace gf {
         result += '-';
       }
 
-      std::reverse(result.begin(), result.end());
+      std::ranges::reverse(result);
     } else {
       result = "0";
     }
@@ -94,7 +94,7 @@ namespace gf {
   namespace {
     bool is_delimiter(char c, std::string_view delimiters)
     {
-      return std::any_of(delimiters.begin(), delimiters.end(), [c](char d) { return c == d; });
+      return std::ranges::any_of(delimiters, [c](char d) { return c == d; });
     }
   }
 

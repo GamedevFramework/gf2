@@ -117,7 +117,7 @@ namespace home {
 
         const gf::Vec2F location = object.location + object_layer.layer.offset + gf::vec(384.0f / 2, -384.0f / 2);
 
-        gf::PhysicsShapeData data;
+        const gf::PhysicsShapeData data;
 
         gf::PhysicsShape shape = gf::PhysicsShape::create_circle(&m_body, data, gf::CircF::from_center_radius(location, 150.0f));
         m_shapes.push_back(std::move(shape));

@@ -13,7 +13,7 @@ namespace gf {
   void GpuDynamicBuffer::update(std::size_t member_size, std::size_t member_count, const void* data, RenderManager* render_manager)
   {
     m_current_buffer = (m_current_buffer + 1) % FramesInFlight;
-    auto& current_buffer = m_buffers[m_current_buffer]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    auto& current_buffer = m_buffers[m_current_buffer];
 
     if (member_count > current_buffer.member_count()) {
       current_buffer = GpuBuffer(m_usage, member_size, member_count, data, render_manager);

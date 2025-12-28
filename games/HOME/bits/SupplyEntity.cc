@@ -113,11 +113,7 @@ namespace home {
       m_mining_sound->stop();
     }
 
-    // clang-format off
-    m_supplies.erase(std::remove_if(m_supplies.begin(), m_supplies.end(), [](const Supply& supply) {
-      return supply.current_quantity <= 0;
-    }), m_supplies.end());
-    // clang-format on
+    std::erase_if(m_supplies, [](const Supply& supply) { return supply.current_quantity <= 0; });
 
     if (is_mining) {
       gf::ShapeGroupBuffer shape_group_buffer;

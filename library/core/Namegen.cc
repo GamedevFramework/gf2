@@ -155,7 +155,7 @@ namespace gf {
     std::vector<std::u32string> to_utf32_strings(const std::vector<std::string>& data)
     {
       std::vector<std::u32string> utf32_data;
-      std::transform(data.begin(), data.end(), std::back_inserter(utf32_data), to_utf32);
+      std::ranges::transform(data, std::back_inserter(utf32_data), to_utf32);
       return utf32_data;
     }
 
@@ -166,11 +166,11 @@ namespace gf {
 
     bool satisfy_settings(const std::string& word, const NamegenSettings& settings)
     {
-      if (settings.starts_with.size() > word.size() || word.substr(0, settings.starts_with.size()) != settings.starts_with) {
+      if (settings.starts_with.size() > word.size() || !word.starts_with(settings.starts_with)) {
         return false;
       }
 
-      if (settings.ends_with.size() > word.size() || word.substr(word.size() - settings.ends_with.size()) != settings.ends_with) {
+      if (settings.ends_with.size() > word.size() || !word.ends_with(settings.ends_with)) {
         return false;
       }
 
@@ -195,7 +195,7 @@ namespace gf {
   std::optional<std::string> NamegenManager::generate_single(Random& random, const NamegenSettings& settings) const
   {
     std::u32string name = m_generator.generate(random);
-    name.erase(std::remove(name.begin(), name.end(), WordLimit), name.end());
+    std::erase(name, WordLimit);
 
     if (!satisfy_size_settings(name, settings)) {
       return std::nullopt;
@@ -203,11 +203,11 @@ namespace gf {
 
     std::string utf8_name = to_utf8(name);
 
-    if (satisfy_settings(utf8_name, settings)) {
-      return utf8_name;
+    if (!satisfy_settings(utf8_name, settings)) {
+      return std::nullopt;
     }
 
-    return std::nullopt;
+    return utf8_name;
   }
 
   std::vector<std::string> NamegenManager::generate_multiple(Random& random, std::size_t count, Time max_time_per_name, const NamegenSettings& settings) const

@@ -164,7 +164,7 @@ namespace gf {
 
       std::vector<VertexId> operator()()
       {
-        VertexRange range = m_graph.vertices();
+        const VertexRange range = m_graph.vertices();
         m_color.clear();
         m_color.resize(range.size(), Color::White);
 
@@ -178,7 +178,7 @@ namespace gf {
             }
           }
 
-          std::reverse(vertices.begin(), vertices.end());
+          std::ranges::reverse(vertices);
           return vertices;
 
         } catch ([[maybe_unused]] std::exception& ex) {
@@ -278,7 +278,7 @@ namespace gf {
       {
         paths[to_index(origin)].distance = 0.0;
 
-        for (VertexId vertex : m_graph.vertices()) {
+        for (const VertexId vertex : m_graph.vertices()) {
           GraphDijkstraHeapData data = {};
           data.vertex = vertex;
           data.distance = paths[to_index(vertex)].distance;
@@ -304,7 +304,7 @@ namespace gf {
         }
       }
 
-      const Graph& m_graph; // NOLINT
+      const Graph& m_graph; // NOLINT(cppcoreguidelines-avoid-const-or-ref-data-members)
       GraphDijkstraHeap m_heap;
       std::vector<GraphDijkstraHeap::handle_type> m_handles;
     };

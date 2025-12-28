@@ -27,7 +27,7 @@ namespace gf {
     template<typename T>
     void add_registry(ResourceRegistry<T>* registry)
     {
-      const std::lock_guard<std::recursive_mutex> lock(m_mutex);
+      const std::scoped_lock<std::recursive_mutex> lock(m_mutex);
       assert(registry != nullptr);
       [[maybe_unused]] auto [iterator, inserted] = m_resources.emplace(std::type_index(typeid(T)), registry);
       assert(inserted);
@@ -36,7 +36,7 @@ namespace gf {
     template<typename T>
     T* get(const std::filesystem::path& path)
     {
-      const std::lock_guard<std::recursive_mutex> lock(m_mutex);
+      const std::scoped_lock<std::recursive_mutex> lock(m_mutex);
       ResourceRegistry<T>* registry = search_registry<T>();
       return registry->get(path);
     }
@@ -44,7 +44,7 @@ namespace gf {
     template<typename T>
     T* acquire(const std::filesystem::path& path, const ResourceContext<T>& context = {})
     {
-      const std::lock_guard<std::recursive_mutex> lock(m_mutex);
+      const std::scoped_lock<std::recursive_mutex> lock(m_mutex);
       ResourceRegistry<T>* registry = search_registry<T>();
 
       if (registry->loaded(path)) {
@@ -57,7 +57,7 @@ namespace gf {
     template<typename T>
     T* load(const std::filesystem::path& path, const ResourceContext<T>& context = {})
     {
-      const std::lock_guard<std::recursive_mutex> lock(m_mutex);
+      const std::scoped_lock<std::recursive_mutex> lock(m_mutex);
       ResourceRegistry<T>* registry = search_registry<T>();
       return registry->load(path, context);
     }
@@ -65,7 +65,7 @@ namespace gf {
     template<typename T>
     void unload(const std::filesystem::path& path)
     {
-      const std::lock_guard<std::recursive_mutex> lock(m_mutex);
+      const std::scoped_lock<std::recursive_mutex> lock(m_mutex);
       ResourceRegistry<T>* registry = search_registry<T>();
       registry->unload(path);
     }

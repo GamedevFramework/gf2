@@ -225,7 +225,7 @@ namespace gf {
 
   GamepadDevice Gamepad::open(GamepadId id)
   {
-    Log::debug("New gamepad with id {}", uint32_t(id));
+    Log::debug("New gamepad with id {}", static_cast<uint32_t>(id));
     Log::debug("\tname: '{}'", name(id).c_str());
     Log::debug("\tpath: '{}'", path(id).c_str());
     Log::debug("\tvendor: {:04X}", vendor(id));
@@ -235,10 +235,10 @@ namespace gf {
     SDL_Gamepad* gamepad = SDL_OpenGamepad(static_cast<SDL_JoystickID>(id));
 
     if (gamepad == nullptr) {
-      Log::error("Could not open gamepad with id {}: {}", uint32_t(id), SDL_GetError());
+      Log::error("Could not open gamepad with id {}: {}", static_cast<uint32_t>(id), SDL_GetError());
     } else {
       auto device = GamepadDevice(gamepad);
-      Log::debug("\tserial: {:016X} ({})", uint64_t(device.serial_id()), device.serial().c_str());
+      Log::debug("\tserial: {:016X} ({})", static_cast<uint64_t>(device.serial_id()), device.serial().c_str());
     }
 
     return { gamepad };
@@ -249,7 +249,7 @@ namespace gf {
     SDL_Gamepad* gamepad = SDL_GetGamepadFromID(static_cast<SDL_JoystickID>(id));
 
     if (gamepad == nullptr) {
-      Log::error("Could not get gamepad from id {}: {}", uint32_t(id), SDL_GetError());
+      Log::error("Could not get gamepad from id {}: {}", static_cast<uint32_t>(id), SDL_GetError());
     }
 
     return { gamepad };

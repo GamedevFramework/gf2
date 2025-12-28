@@ -157,7 +157,7 @@ namespace gf {
         }
 
       case EventType::TextInput:
-        io.AddInputCharactersUTF8(event.from<EventType::TextInput>().text.data());
+        io.AddInputCharactersUTF8(event.from<EventType::TextInput>().text.data()); // NOLINT(bugprone-suspicious-stringview-data-usage)
         return io.WantCaptureKeyboard;
 
       default:

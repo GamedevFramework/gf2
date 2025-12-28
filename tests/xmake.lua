@@ -5,7 +5,6 @@ if has_config("tests") then
 
     target("gf2_core_tests")
         set_kind("binary")
-        set_languages("cxx17")
         add_files("tests_core_*.cc", "main_core.cc")
         add_deps("gf2core0")
         add_packages("gtest")
@@ -17,7 +16,6 @@ if has_config("tests") then
 
     target("gf2_network_tests")
         set_kind("binary")
-        set_languages("cxx17")
         add_files("tests_network_*.cc", "main_network.cc")
         add_deps("gf2network0")
         add_packages("gtest")
@@ -25,7 +23,6 @@ if has_config("tests") then
 
     target("gf2_audio_tests")
         set_kind("binary")
-        set_languages("cxx17")
         add_files("tests_audio_*.cc", "main_audio.cc")
         add_deps("gf2audio0")
         add_packages("gtest")

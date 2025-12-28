@@ -31,9 +31,9 @@ namespace gf {
         if (max == color.r) {
           hue = std::fmod((60.0f * (color.g - color.b) / (max - min)) + 360.0f, 360.0f);
         } else if (max == color.g) {
-          hue = 60.0f * (color.b - color.r) / (max - min) + 120.0f;
+          hue = (60.0f * (color.b - color.r) / (max - min)) + 120.0f;
         } else if (max == color.b) {
-          hue = 60.0f * (color.r - color.g) / (max - min) + 240.0f;
+          hue = (60.0f * (color.r - color.g) / (max - min)) + 240.0f;
         } else {
           assert(false);
         }

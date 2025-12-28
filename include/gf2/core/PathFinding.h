@@ -125,7 +125,7 @@ namespace gf {
       }
 
       route.push_back(origin);
-      std::reverse(route.begin(), route.end());
+      std::ranges::reverse(route);
 
       assert(!route.empty());
       return route;
@@ -265,7 +265,7 @@ namespace gf {
         return 1.0f * static_cast<float>(manhattan_distance(position, neighbor));
       }
 
-      Vec2F d = gf::abs(position - neighbor);
+      const Vec2F d = gf::abs(position - neighbor);
       return (1.0f * (d.x + d.y)) + ((Sqrt2 - 2.0f) * std::min(d.x, d.y));
     }
 
@@ -284,7 +284,7 @@ namespace gf {
       }
 
       route.push_back(origin);
-      std::reverse(route.begin(), route.end());
+      std::ranges::reverse(route);
 
       assert(!route.empty());
       return route;

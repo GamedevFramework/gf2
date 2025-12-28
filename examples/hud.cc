@@ -20,10 +20,21 @@ namespace {
     : m_render_manager(render_manager)
     , m_entity({}, render_manager)
     {
-      resize(render_manager->surface_size());
+      do_resize(render_manager->surface_size());
     }
 
     void resize(gf::Vec2I surface_size) override
+    {
+      do_resize(surface_size);
+    }
+
+    void render(gf::RenderRecorder& recorder) override
+    {
+      m_entity.render(recorder);
+    }
+
+  private:
+    void do_resize(gf::Vec2I surface_size)
     {
       const gf::RectF surface = gf::RectF::from_size(surface_size);
 
@@ -53,12 +64,6 @@ namespace {
       m_entity.set_location(surface_size / 2.0f);
     }
 
-    void render(gf::RenderRecorder& recorder) override
-    {
-      m_entity.render(recorder);
-    }
-
-  private:
     gf::RenderManager* m_render_manager;
     gf::ShapeGroupEntity m_entity;
   };

@@ -18,13 +18,13 @@ namespace gf {
 
   void Heightmap::reset()
   {
-    std::fill(m_data.begin(), m_data.end(), 0.0);
+    std::ranges::fill(m_data, 0.0);
   }
 
   std::tuple<double, double> Heightmap::get_min_max() const
   {
-    auto p = std::minmax_element(m_data.begin(), m_data.end());
-    return std::make_tuple(*p.first, *p.second);
+    auto [ pmin, pmax ] = std::ranges::minmax_element(m_data);
+    return std::make_tuple(*pmin, *pmax);
   }
 
   void Heightmap::normalize(double min, double max)
@@ -42,7 +42,7 @@ namespace gf {
     }
 
     for (auto& value : m_data) {
-      value = min + (value - current_min) * factor;
+      value = min + ((value - current_min) * factor);
     }
   }
 
@@ -154,7 +154,7 @@ namespace gf {
 
     for (int k = 0; k < iterations; ++k) {
       // initialize material map
-      std::fill(material.begin(), material.end(), 0.0);
+      std::ranges::fill(material, 0.0);
 
       // compute material map
       for (auto position : rectangle_range(outer)) {
@@ -164,7 +164,7 @@ namespace gf {
 
         for (auto displacement : rectangle_range(inner)) {
           const double difference = m_data(position) - m_data(position + displacement);
-          difference_array[1 + displacement.x][1 + displacement.y] = difference; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+          difference_array[1 + displacement.x][1 + displacement.y] = difference;
 
           if (difference > talus) {
             difference_total += difference;
@@ -173,7 +173,7 @@ namespace gf {
         }
 
         for (auto displacement : rectangle_range(inner)) {
-          const double difference = difference_array[1 + displacement.x][1 + displacement.y]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+          const double difference = difference_array[1 + displacement.x][1 + displacement.y];
 
           if (difference > talus) {
             material(position + displacement) += fraction * (difference_max - talus) * (difference / difference_total);
@@ -202,22 +202,22 @@ namespace gf {
 
     for (int k = 0; k < iterations; ++k) {
       // 1. appearance of new water
-      for (auto& water : water_map) {
+      for (double& water : water_map) {
         water += rain_amount;
       }
 
       // 2. water erosion of the terrain
-      for (auto position : water_map.position_range()) {
+      for (const Vec2I position : water_map.position_range()) {
         const double material = solubility * water_map(position);
         m_data(position) -= material;
         material_map(position) += material;
       }
 
       // 3. transportation of water
-      std::fill(water_difference.begin(), water_difference.end(), 0.0);
-      std::fill(material_difference.begin(), material_difference.end(), 0.0);
+      std::ranges::fill(water_difference, 0.0);
+      std::ranges::fill(material_difference, 0.0);
 
-      for (auto position : rectangle_range(outer)) {
+      for (const Vec2I position : rectangle_range(outer)) {
         double altitude_difference_total = 0.0;
         double altitude_total = 0.0;
         const double altitude = m_data(position) + water_map(position);
@@ -227,7 +227,7 @@ namespace gf {
         for (auto displacement : rectangle_range(inner)) {
           const double altitude_neighbor = m_data(position + displacement) + water_map(position + displacement);
           const double altitude_difference = altitude - altitude_neighbor;
-          difference_array[1 + displacement.x][1 + displacement.y] = altitude_difference; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+          difference_array[1 + displacement.x][1 + displacement.y] = altitude_difference;
 
           if (altitude_difference > 0.0) {
             altitude_difference_total += altitude_difference;
@@ -243,8 +243,8 @@ namespace gf {
         const double altitude_average = altitude_total / count;
         const double altitude_relative = std::min(water_map(position), altitude - altitude_average);
 
-        for (auto displacement : rectangle_range(inner)) {
-          const double altitude_difference = difference_array[1 + displacement.x][1 + displacement.y]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+        for (const Vec2I displacement : rectangle_range(inner)) {
+          const double altitude_difference = difference_array[1 + displacement.x][1 + displacement.y];
 
           if (altitude_difference > 0.0) {
             const double water = altitude_relative * (altitude_difference / altitude_difference_total);
@@ -258,13 +258,13 @@ namespace gf {
         }
       }
 
-      for (auto position : m_data.position_range()) {
+      for (const Vec2I position : m_data.position_range()) {
         water_map(position) += water_difference(position);
         material_map(position) += material_difference(position);
       }
 
       // 4. evaporation of water
-      for (auto position : water_map.position_range()) {
+      for (const Vec2I position : water_map.position_range()) {
         const double water = water_map(position) * (1 - evaporation);
         water_map(position) = water;
 
@@ -283,16 +283,16 @@ namespace gf {
     for (int k = 0; k < iterations; ++k) {
 
       // initialize material map
-      std::fill(material.begin(), material.end(), 0.0);
+      std::ranges::fill(material, 0.0);
 
       // compute material map
-      for (auto position : m_data.position_range()) {
+      for (const Vec2I position : m_data.position_range()) {
         double altitude_difference_max = 0.0;
         Vec2I position_max = position;
 
         const double altitude = m_data(position);
 
-        for (auto neighbor : m_data.compute_8_neighbors_range(position)) {
+        for (const Vec2I neighbor : m_data.compute_8_neighbors_range(position)) {
           const double altitude_neighbor = m_data(neighbor);
           const double altitude_difference = altitude - altitude_neighbor;
 
@@ -309,7 +309,7 @@ namespace gf {
       }
 
       // add material map to the map
-      for (auto position : m_data.position_range()) {
+      for (const Vec2I position : m_data.position_range()) {
         m_data(position) += material(position);
       }
     }

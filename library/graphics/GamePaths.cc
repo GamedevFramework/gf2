@@ -14,7 +14,7 @@ namespace gf {
     struct StringDeleter {
       void operator()(char* str) const noexcept
       {
-        SDL_free(str);
+        SDL_free(str); // NOLINT(cppcoreguidelines-no-malloc)
       }
     };
 
@@ -22,7 +22,7 @@ namespace gf {
 
   std::filesystem::path user_data_path(const std::string& organization, const std::string& application)
   {
-    std::unique_ptr<char[], StringDeleter> pref_path(SDL_GetPrefPath(organization.c_str(), application.c_str()));
+    const std::unique_ptr<char[], StringDeleter> pref_path(SDL_GetPrefPath(organization.c_str(), application.c_str()));
     return pref_path.get();
   }
 

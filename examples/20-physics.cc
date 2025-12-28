@@ -64,7 +64,7 @@ namespace {
   int pixel(int x, int y)
   {
     const uint32_t shift = x % 32;
-    return (ImageBitmap[y][x / 32] >> (UINT32_C(31) - shift)) & UINT32_C(1); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    return (ImageBitmap[y][x / 32] >> (UINT32_C(31) - shift)) & UINT32_C(1);
   }
 
   class PhysicsEntity : public gf::Entity {

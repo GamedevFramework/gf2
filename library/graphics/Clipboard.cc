@@ -16,7 +16,7 @@ namespace gf {
     struct ClipboardStringDeleter {
       void operator()(char* str) const noexcept
       {
-        SDL_free(str);
+        SDL_free(str); // NOLINT(cppcoreguidelines-no-malloc)
       }
     };
 
@@ -28,7 +28,7 @@ namespace gf {
       return "";
     }
 
-    std::unique_ptr<char[], ClipboardStringDeleter> raw_text(SDL_GetClipboardText());
+    const std::unique_ptr<char[], ClipboardStringDeleter> raw_text(SDL_GetClipboardText());
 
     if (raw_text == nullptr) {
       Log::error("Unable to get clipboard text: {}.", SDL_GetError());

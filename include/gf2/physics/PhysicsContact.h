@@ -80,8 +80,8 @@ namespace gf {
       assert(features.manifold.point_count < 2);
 
       for (int i = 0; i < raw.manifold.pointCount; ++i) {
-        const b2ManifoldPoint& raw_point = raw.manifold.points[i]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
-        PhysicsManifoldPoint& point = features.manifold.points[i]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+        const b2ManifoldPoint& raw_point = raw.manifold.points[i];
+        PhysicsManifoldPoint& point = features.manifold.points[i];
 
         point.point = { raw_point.point.x, raw_point.point.y };
         point.anchor0 = { raw_point.anchorA.x, raw_point.anchorA.y };

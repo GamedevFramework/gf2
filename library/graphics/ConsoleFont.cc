@@ -14,12 +14,12 @@ namespace gf {
 
   namespace {
 
-    int compute_index(Vec2I position, ConsoleFontFormat::Layout layout, Vec2I size)
+    int compute_index(Vec2I position, ConsoleFontLayout layout, Vec2I size)
     {
       switch (layout) {
-        case ConsoleFontFormat::InColumn:
+        case ConsoleFontLayout::InColumn:
           return (position.x * size.h) + position.y;
-        case ConsoleFontFormat::InRow:
+        case ConsoleFontLayout::InRow:
           return (position.y * size.w) + position.x;
       }
 
@@ -27,12 +27,12 @@ namespace gf {
       return 0;
     }
 
-    Vec2I compute_position(uint8_t index, ConsoleFontFormat::Layout layout, Vec2I size)
+    Vec2I compute_position(uint8_t index, ConsoleFontLayout layout, Vec2I size)
     {
       switch (layout) {
-        case ConsoleFontFormat::InColumn:
+        case ConsoleFontLayout::InColumn:
           return { index / size.h, index % size.h };
-        case ConsoleFontFormat::InRow:
+        case ConsoleFontLayout::InRow:
           return { index % size.w, index / size.w };
       }
 
@@ -183,7 +183,7 @@ namespace gf {
 
   ConsoleFont::ConsoleFont()
   : m_mapping(MappingSize, 0x00)
-  , m_format({ ConsoleFontFormat::Alpha, ConsoleFontFormat::InRow, ConsoleFontFormat::Custom })
+  , m_format({ ConsoleFontTransparency::Alpha, ConsoleFontLayout::InRow, ConsoleFontMapping::Custom })
   , m_size(0, 0)
   , m_character_size(0, 0)
   {
@@ -201,33 +201,33 @@ namespace gf {
   , m_character_size(0, 0)
   {
     switch (format.mapping) {
-      case ConsoleFontFormat::CodePage437:
+      case ConsoleFontMapping::CodePage437:
         map_elements(CodePage437Mapping);
         break;
-      case ConsoleFontFormat::ModifiedCodePage437:
+      case ConsoleFontMapping::ModifiedCodePage437:
         map_elements(CodePage437Mapping);
         map_elements(ModifiedCodePage437Mapping);
         break;
-      case ConsoleFontFormat::Special:
+      case ConsoleFontMapping::Special:
         map_elements(SpecialMapping);
         break;
-      case ConsoleFontFormat::Custom:
+      case ConsoleFontMapping::Custom:
         // nothing to map
         break;
     }
 
     if (size == gf::vec(0, 0)) {
       switch (format.mapping) {
-        case ConsoleFontFormat::CodePage437:
-        case ConsoleFontFormat::ModifiedCodePage437:
+        case ConsoleFontMapping::CodePage437:
+        case ConsoleFontMapping::ModifiedCodePage437:
           m_size = { 16, 16 };
           break;
 
-        case ConsoleFontFormat::Special:
+        case ConsoleFontMapping::Special:
           m_size = { 32, 8 };
           break;
 
-        case ConsoleFontFormat::Custom:
+        case ConsoleFontMapping::Custom:
           Log::fatal("Undefined size for a custom font");
       }
     }
@@ -243,11 +243,11 @@ namespace gf {
     Image copy(image);
 
     switch (format.transparency) {
-      case ConsoleFontFormat::Alpha:
+      case ConsoleFontTransparency::Alpha:
         // nothing to do
         break;
 
-      case ConsoleFontFormat::Grayscale:
+      case ConsoleFontTransparency::Grayscale:
         for (auto position : copy.position_range()) {
           const Color color = copy(position);
           assert(color.r == color.g && color.g == color.b);
@@ -255,7 +255,7 @@ namespace gf {
         }
         break;
 
-      case ConsoleFontFormat::ColorKey:
+      case ConsoleFontTransparency::ColorKey:
         {
           const Color key = copy(color_key_position());
 
@@ -316,14 +316,14 @@ namespace gf {
 
   void ConsoleFont::map_elements(Span<const ConsoleFontElement> elements)
   {
-    for (auto element : elements) {
+    for (const ConsoleFontElement element : elements) {
       m_mapping[element.character] = element.index;
     }
   }
 
   void ConsoleFont::clear_mapping()
   {
-    std::fill(m_mapping.begin(), m_mapping.end(), 0x00);
+    std::ranges::fill(m_mapping, 0x00);
     assert(m_mapping.size() == MappingSize);
   }
 
@@ -338,13 +338,13 @@ namespace gf {
   Vec2I ConsoleFont::color_key_position() const
   {
     switch (m_format.mapping) {
-      case ConsoleFontFormat::CodePage437:
-      case ConsoleFontFormat::ModifiedCodePage437:
+      case ConsoleFontMapping::CodePage437:
+      case ConsoleFontMapping::ModifiedCodePage437:
         // space character at index 0x20
         return compute_position(0x20, m_format.layout, m_size) * m_character_size;
-      case ConsoleFontFormat::Special:
+      case ConsoleFontMapping::Special:
         // space character at index 0
-      case ConsoleFontFormat::Custom:
+      case ConsoleFontMapping::Custom:
         // assume the top left pixel is the color key
         return { 0, 0 };
     }

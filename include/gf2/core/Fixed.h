@@ -29,7 +29,7 @@ namespace gf {
     // clang-format on
 
     template<typename T>
-    using Larger = typename LargerType<T>::type;
+    using Larger = LargerType<T>::type;
 
   }
 

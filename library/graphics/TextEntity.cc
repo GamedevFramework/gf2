@@ -23,7 +23,7 @@ namespace gf {
 
   void TextEntity::render(RenderRecorder& recorder)
   {
-    RenderGeometry geometry = m_text.geometry();
+    const RenderGeometry geometry = m_text.geometry();
 
     if (geometry.count == 0) {
       return;
@@ -54,7 +54,7 @@ namespace gf {
 
   void RichTextEntity::render(RenderRecorder& recorder)
   {
-    RenderGeometry geometry = m_text.geometry();
+    const RenderGeometry geometry = m_text.geometry();
 
     if (geometry.count == 0) {
       return;

@@ -17,20 +17,20 @@ namespace gf {
 
   namespace {
 
-    Log::Level g_level = Log::Debug; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
+    LogLevel g_level = LogLevel::Debug; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
 
-    const char* to_string(Log::Level level)
+    const char* to_string(LogLevel level)
     {
       switch (level) {
-        case Log::Debug:
+        case LogLevel::Debug:
           return "Debug";
-        case Log::Info:
+        case LogLevel::Info:
           return "Info";
-        case Log::Warn:
+        case LogLevel::Warn:
           return "Warn";
-        case Log::Error:
+        case LogLevel::Error:
           return "Error";
-        case Log::Fatal:
+        case LogLevel::Fatal:
           return "Fatal";
       }
 
@@ -38,18 +38,18 @@ namespace gf {
       return "?";
     }
 
-    fmt::color to_color(Log::Level level)
+    fmt::color to_color(LogLevel level)
     {
       switch (level) {
-        case Log::Debug:
+        case LogLevel::Debug:
           return fmt::color::blue;
-        case Log::Info:
+        case LogLevel::Info:
           return fmt::color::green;
-        case Log::Warn:
+        case LogLevel::Warn:
           return fmt::color::orange;
-        case Log::Error:
+        case LogLevel::Error:
           return fmt::color::red;
-        case Log::Fatal:
+        case LogLevel::Fatal:
           return fmt::color::purple;
       }
 
@@ -57,7 +57,7 @@ namespace gf {
       return fmt::color::yellow;
     }
 
-    void print_timestamp_and_level(Log::Level level)
+    void print_timestamp_and_level(LogLevel level)
     {
       const auto now = std::chrono::system_clock::now();
       const auto epoch = now.time_since_epoch();
@@ -78,12 +78,12 @@ namespace gf {
 
   } // namespace
 
-  void Log::set_level(Level level)
+  void Log::set_level(LogLevel level)
   {
     g_level = level;
   }
 
-  void Log::log(Level level, const std::string& string)
+  void Log::log(LogLevel level, const std::string& string)
   {
     if (level < g_level) {
       return;

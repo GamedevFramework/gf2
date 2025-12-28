@@ -11,42 +11,6 @@
 
 namespace gf {
 
-  namespace {
-
-    struct PollFdEqualTo {
-      explicit PollFdEqualTo(details::SocketHandle reference)
-      : m_reference(reference)
-      {
-      }
-
-      bool operator()(const pollfd& other) const
-      {
-        return m_reference == other.fd;
-      }
-
-    private:
-      details::SocketHandle m_reference;
-    };
-
-    struct PollFdLess {
-      bool operator()(const pollfd& lhs, const pollfd& rhs) const
-      {
-        return lhs.fd < rhs.fd;
-      }
-
-      bool operator()(details::SocketHandle lhs, const pollfd& rhs) const
-      {
-        return lhs < rhs.fd;
-      }
-
-      bool operator()(const pollfd& lhs, details::SocketHandle rhs) const
-      {
-        return lhs.fd < rhs;
-      }
-    };
-
-  } // namespace
-
   void SocketSelector::add_socket(const Socket& socket)
   {
     m_fds.push_back(pollfd{ socket.m_handle, POLLIN, 0 });
@@ -55,7 +19,8 @@ namespace gf {
 
   void SocketSelector::remove_socket(const Socket& socket)
   {
-    m_fds.erase(std::remove_if(m_fds.begin(), m_fds.end(), PollFdEqualTo(socket.m_handle)), m_fds.end());
+    auto removed_fd = std::ranges::remove(m_fds, socket.m_handle, &pollfd::fd);
+    m_fds.erase(removed_fd.begin(), removed_fd.end());
     // the vector is still sorted (or unsorted)
   }
 
@@ -73,7 +38,7 @@ namespace gf {
     }
 
     if (!m_sorted) {
-      std::sort(m_fds.begin(), m_fds.end(), PollFdLess());
+      std::ranges::sort(m_fds, {}, &pollfd::fd);
       m_sorted = true;
     }
 
@@ -93,7 +58,7 @@ namespace gf {
   auto SocketSelector::find_socket(const Socket& socket) -> decltype(m_fds)::iterator
   {
     if (m_sorted) {
-      auto iterator = std::lower_bound(m_fds.begin(), m_fds.end(), socket.m_handle, PollFdLess());
+      auto iterator = std::ranges::lower_bound(m_fds, socket.m_handle, {}, &pollfd::fd);
 
       if (iterator != m_fds.end() && iterator->fd == socket.m_handle) {
         return iterator;
@@ -102,7 +67,7 @@ namespace gf {
       return m_fds.end();
     }
 
-    return std::find_if(m_fds.begin(), m_fds.end(), PollFdEqualTo(socket.m_handle));
+    return std::ranges::find(m_fds, socket.m_handle, &pollfd::fd);
   }
 
 } // namespace gf

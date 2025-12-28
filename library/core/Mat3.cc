@@ -10,16 +10,16 @@ namespace gf {
   Vec2F transform_point(const Mat3F& mat, Vec2F vec)
   {
     Vec2F result;
-    result.x = mat(0, 0) * vec.x + mat(0, 1) * vec.y + mat(0, 2);
-    result.y = mat(1, 0) * vec.x + mat(1, 1) * vec.y + mat(1, 2);
+    result.x = (mat(0, 0) * vec.x) + (mat(0, 1) * vec.y) + mat(0, 2);
+    result.y = (mat(1, 0) * vec.x) + (mat(1, 1) * vec.y) + mat(1, 2);
     return result;
   }
 
   Vec2F transform_vector(const Mat3F& mat, Vec2F vec)
   {
     Vec2F result;
-    result.x = mat(0, 0) * vec.x + mat(0, 1) * vec.y;
-    result.y = mat(1, 0) * vec.x + mat(1, 1) * vec.y;
+    result.x = (mat(0, 0) * vec.x) + (mat(0, 1) * vec.y);
+    result.y = (mat(1, 0) * vec.x) + (mat(1, 1) * vec.y);
     return result;
   }
 

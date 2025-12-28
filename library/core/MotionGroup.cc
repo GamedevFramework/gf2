@@ -43,7 +43,7 @@ namespace gf {
       return { 0, 0 };
     }
 
-    return m_last_mouse_button_pressed_position[index]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    return m_last_mouse_button_pressed_position[index];
   }
 
   Vec2I MotionGroup::last_mouse_button_released_position(MouseButton button) const
@@ -54,7 +54,7 @@ namespace gf {
       return { 0, 0 };
     }
 
-    return m_last_mouse_button_released_position[index]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    return m_last_mouse_button_released_position[index];
   }
 
   Vec2I MotionGroup::last_mouse_wheel_offset() const
@@ -70,7 +70,7 @@ namespace gf {
       return { 0.0f, 0.0f };
     }
 
-    return m_last_gamepad_stick_location[index]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    return m_last_gamepad_stick_location[index];
   }
 
   Vec2F MotionGroup::last_touch_location() const
@@ -98,7 +98,7 @@ namespace gf {
           const auto& mouse_button_pressed = event.from<EventType::MouseButtonPressed>();
           auto index = static_cast<std::size_t>(mouse_button_pressed.button);
           assert(index < m_last_mouse_button_pressed_position.size());
-          m_last_mouse_button_pressed_position[index] = mouse_button_pressed.position; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+          m_last_mouse_button_pressed_position[index] = mouse_button_pressed.position;
         }
         break;
       case EventType::MouseButtonReleased:
@@ -106,7 +106,7 @@ namespace gf {
           const auto& mouse_button_released = event.from<EventType::MouseButtonReleased>();
           auto index = static_cast<std::size_t>(mouse_button_released.button);
           assert(index < m_last_mouse_button_released_position.size());
-          m_last_mouse_button_released_position[index] = mouse_button_released.position; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+          m_last_mouse_button_released_position[index] = mouse_button_released.position;
         }
         break;
       case EventType::MouseWheelScrolled:

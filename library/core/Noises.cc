@@ -238,7 +238,7 @@ namespace gf {
 
         if (d < 4) {
           const double t = 1 - (d / 4);
-          value += dot(at(static_cast<uint8_t>(qx + i), static_cast<uint8_t>(qy + j)), r) * t * t * t * t * (4 * t - 3);
+          value += dot(at(static_cast<uint8_t>(qx + i), static_cast<uint8_t>(qy + j)), r) * t * t * t * t * ((4 * t) - 3);
         }
       }
     }
@@ -493,7 +493,7 @@ namespace gf {
       for (std::ptrdiff_t i = 0; i < n / 2; ++i) {
         double value = 0;
 
-        for (std::ptrdiff_t k = (2 * i) - DownCoefficientsCount; k <= 2 * i - DownCoefficientsCount; ++k) {
+        for (std::ptrdiff_t k = (2 * i) - DownCoefficientsCount; k <= (2 * i) - DownCoefficientsCount; ++k) {
           const std::ptrdiff_t index = k - (2 * i);
           assert(-DownCoefficientsCount <= index && index < DownCoefficientsCount);
           value += coeffs[index] * from[positive_mod(k, n) * stride];
@@ -516,7 +516,7 @@ namespace gf {
       for (std::ptrdiff_t i = 0; i < n; ++i) {
         double value = 0;
 
-        for (std::ptrdiff_t k = i / 2; k <= i / 2 + 1; ++k) {
+        for (std::ptrdiff_t k = i / 2; k <= (i / 2) + 1; ++k) {
           const std::ptrdiff_t index = i - (2 * k);
           assert(-UpCoefficientsCount <= index && index < UpCoefficientsCount);
           value += coeffs[index] * from[positive_mod(k, n / 2) * stride];
@@ -621,13 +621,11 @@ namespace gf {
     // evaluate quadratic B-spline basis functions
 
     for (std::ptrdiff_t i = 0; i < 3; ++i) {
-      // NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index)
       mid[i] = static_cast<std::ptrdiff_t>(std::ceil(p[i] - 0.5));
       const double t = static_cast<double>(mid[i]) - (p[i] - 0.5);
       w[i][0] = t * t / 2;
       w[i][2] = (1 - t) * (1 - t) / 2;
       w[i][1] = 1 - w[i][0] - w[i][2];
-      // NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)
     }
 
     // evaluate noise by weighting noise coefficients by basis function values
@@ -638,10 +636,8 @@ namespace gf {
           double weight = 1;
 
           for (std::ptrdiff_t i = 0; i < 3; ++i) {
-            // NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index)
             c[i] = positive_mod(mid[i] + f[i], m_wavelet_tile_size);
             weight *= w[i][f[i] + 1];
-            // NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)
           }
 
           value += weight * m_data[c[0] + (c[1] * m_wavelet_tile_size) + (c[2] * m_wavelet_tile_size * m_wavelet_tile_size)];
@@ -762,7 +758,7 @@ namespace gf {
      */
 
     for (int k = 0; k < m_octaves; ++k) {
-      value *= m_noise->value(x * frequency, y * frequency) * std::pow(amplitude, m_dimension) + 1.0;
+      value *= (m_noise->value(x * frequency, y * frequency) * std::pow(amplitude, m_dimension)) + 1.0;
 
       frequency *= m_lacunarity;
       amplitude *= m_persistence;
@@ -924,7 +920,7 @@ namespace gf {
     double z = 0.0;
 
     if (std::abs(m_normal.z) > gf::Epsilon) {
-      z = m_point.z + (m_normal.x * (m_point.x - x) + m_normal.y * (m_point.y - y)) / m_normal.z;
+      z = m_point.z + (((m_normal.x * (m_point.x - x)) + (m_normal.y * (m_point.y - y))) / m_normal.z);
     }
 
     return m_noise->value(x, y, z);

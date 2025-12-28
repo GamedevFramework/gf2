@@ -8,7 +8,7 @@
 
 int main(int argc, char* argv[])
 {
-  gf::Log::set_level(gf::Log::Fatal);
+  gf::Log::set_level(gf::LogLevel::Fatal);
 
   [[maybe_unused]] const gf::NetworkInitializer network_initializer;
 

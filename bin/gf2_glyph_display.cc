@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
     const std::size_t index = gray * Gray.size() / 256;
 
     assert(index < Gray.size());
-    std::cout << Gray[index]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    std::cout << Gray[index];
 
     if (position.x + 1 == size.w) {
       std::cout << '\n';
@@ -77,7 +77,7 @@ int main(int argc, char* argv[])
     const std::size_t index = gray * Gray.size() / 256;
 
     assert(index < Gray.size());
-    std::cout << Gray[index]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+    std::cout << Gray[index];
 
     if (position.x + 1 == size.w) {
       std::cout << '\n';

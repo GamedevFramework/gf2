@@ -7,7 +7,6 @@
 
 #include <algorithm>
 #include <array>
-#include <functional>
 #include <iterator>
 #include <string_view>
 #include <utility>
@@ -100,7 +99,7 @@ namespace gf {
   std::vector<std::filesystem::path> Tarball::entries() const
   {
     std::vector<std::filesystem::path> entries;
-    std::transform(m_entries.begin(), m_entries.end(), std::back_inserter(entries), std::mem_fn(&Entry::path));
+    std::ranges::transform(m_entries, std::back_inserter(entries), &Entry::path);
     return entries;
   }
 
@@ -117,7 +116,7 @@ namespace gf {
         break;
       }
 
-      if (std::all_of(record.data.begin(), record.data.end(), [](uint8_t byte) { return byte == 0; })) {
+      if (std::ranges::all_of(record.data, [](uint8_t byte) { return byte == 0; })) {
         // skip all zero records
         continue;
       }
@@ -132,7 +131,7 @@ namespace gf {
           break;
         }
 
-        size = size * 8 + (c - '0');
+        size = (size * 8) + (c - '0');
       }
 
       if (record.header.typeflag != '0' && record.header.typeflag != 0) {

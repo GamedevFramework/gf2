@@ -37,7 +37,7 @@ namespace gf {
     struct MouseIdDeleter {
       void operator()(SDL_MouseID* ids)
       {
-        SDL_free(ids);
+        SDL_free(ids); // NOLINT(cppcoreguidelines-no-malloc)
       }
     };
 
@@ -51,7 +51,7 @@ namespace gf {
   std::vector<MouseId> Mouse::devices()
   {
     int count = 0;
-    std::unique_ptr<SDL_MouseID[], MouseIdDeleter> raw_devices(SDL_GetMice(&count));
+    const std::unique_ptr<SDL_MouseID[], MouseIdDeleter> raw_devices(SDL_GetMice(&count));
 
     std::vector<MouseId> devices;
     devices.reserve(count);

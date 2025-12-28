@@ -3,6 +3,7 @@
 
 #include <gf2/imgui/ImguiEntity.h>
 
+#include <algorithm>
 #include <cassert>
 #include <cstdint>
 
@@ -187,7 +188,7 @@ namespace gf {
 
           auto* texture = static_cast<GpuTexture*>(data->BackendUserData);
 
-          auto iterator = std::find_if(m_textures.begin(), m_textures.end(), [texture](const std::unique_ptr<GpuTexture>& other) { return other.get() == texture; });
+          auto iterator = std::ranges::find_if(m_textures, [texture](const std::unique_ptr<GpuTexture>& other) { return other.get() == texture; });
           assert(iterator != m_textures.end());
           m_unused_textures.push_back(std::move(*iterator)); // do not remove now, texture may still be in use for the current frame
           m_textures.erase(iterator);

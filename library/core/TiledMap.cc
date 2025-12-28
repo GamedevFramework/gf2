@@ -11,6 +11,7 @@
 
 #include <fmt/std.h>
 #include <pugixml.hpp>
+#include <ranges>
 #include <zlib.h>
 
 #include <gf2/core/Blit.h>
@@ -74,7 +75,7 @@ namespace gf {
       std::string value = attribute.as_string();
       assert(!value.empty());
 
-      if (value[0] == '#') {
+      if (value.front() == '#') {
         value.erase(value.begin());
       }
 
@@ -265,7 +266,7 @@ namespace gf {
     // http://en.wikibooks.org/wiki/Algorithm_implementation/Miscellaneous/Base64
     std::vector<uint8_t> parse_data_base64(std::string input)
     {
-      input.erase(std::remove_if(input.begin(), input.end(), [](char c) { return c == '\n' || c == ' '; }), input.end());
+      std::erase_if(input, [](char c) { return c == '\n' || c == ' '; });
       const std::size_t len = input.size();
       assert(len % 4 == 0);
       const size_t padding = parse_data_base64_compute_padding(input);
@@ -305,7 +306,7 @@ namespace gf {
         // clang-format off
         decoded.push_back((tmp >> 16) & 0x000000FF);
         decoded.push_back((tmp >> 8 ) & 0x000000FF);
-        decoded.push_back((tmp      ) & 0x000000FF);
+        decoded.push_back((tmp >> 0 ) & 0x000000FF);
         // clang-format on
       }
 
@@ -508,7 +509,7 @@ namespace gf {
         } else {
           auto tiles = parse_tmx_tiles(data_node, format);
           assert(tiles.size() == static_cast<std::size_t>(map.map_size.w * map.map_size.h));
-          std::copy(tiles.begin(), tiles.end(), tile_layer.tiles.begin());
+          std::ranges::copy(tiles, tile_layer.tiles.begin());
         }
       }
 
@@ -646,23 +647,6 @@ namespace gf {
      * tileset
      */
 
-    struct MapTilesetTileComparator {
-      constexpr bool operator()(const MapTilesetTile& lhs, const MapTilesetTile& rhs)
-      {
-        return lhs.id < rhs.id;
-      }
-
-      constexpr bool operator()(uint32_t lhs, const MapTilesetTile& rhs)
-      {
-        return lhs < rhs.id;
-      }
-
-      constexpr bool operator()(const MapTilesetTile& lhs, uint32_t rhs)
-      {
-        return lhs.id < rhs;
-      }
-    };
-
     MapTilesetTile parse_tmx_tileset_tile(const pugi::xml_node node, TiledMap& map)
     {
       assert(node.name() == "tile"sv);
@@ -713,7 +697,7 @@ namespace gf {
         tileset.tiles.push_back(parse_tmx_tileset_tile(tile, map));
       }
 
-      std::sort(tileset.tiles.begin(), tileset.tiles.end(), MapTilesetTileComparator());
+      std::ranges::sort(tileset.tiles, {}, &MapTilesetTile::id);
 
       unsupported_node(node, "wangsets");
 
@@ -859,7 +843,7 @@ namespace gf {
 
   const MapTilesetTile* MapTileset::tile(uint32_t id) const
   {
-    auto [first, last] = std::equal_range(tiles.begin(), tiles.end(), id, MapTilesetTileComparator());
+    auto [first, last] = std::ranges::equal_range(tiles, id, {}, &MapTilesetTile::id);
 
     if (std::distance(first, last) != 1) {
       return nullptr;
@@ -892,9 +876,9 @@ namespace gf {
 
   const MapTileset* TiledMap::tileset_from_gid(uint32_t gid) const noexcept
   {
-    for (auto it = tilesets.rbegin(); it != tilesets.rend(); ++it) {
-      if (it->first_gid <= gid) {
-        return &(*it);
+    for (const MapTileset& tileset : std::views::reverse(tilesets)) {
+      if (tileset.first_gid <= gid) {
+        return &tileset;
       }
     }
 
@@ -903,10 +887,10 @@ namespace gf {
 
   const std::vector<MapLayerStructure>& TiledMap::compute_structure(std::string_view path) const
   {
-    auto path_elements = split_path(path);
-    const auto* structure = &layers;
+    const std::vector<std::string_view> path_elements = split_path(path);
+    const std::vector<MapLayerStructure>* structure = &layers;
 
-    for (auto layer_name : path_elements) {
+    for (std::string_view layer_name : path_elements) {
       auto predicate = [this, layer_name](const MapLayerStructure& current) {
         if (current.type != MapLayerType::Group) {
           return false;
@@ -915,7 +899,7 @@ namespace gf {
         return group_layers[current.layer_index].layer.name == layer_name;
       };
 
-      if (auto iterator = std::find_if(structure->begin(), structure->end(), predicate); iterator != structure->end()) {
+      if (auto iterator = std::ranges::find_if(*structure, predicate); iterator != structure->end()) {
         structure = &group_layers[iterator->layer_index].sub_layers;
       } else {
         Log::fatal("Unknown layer '{}' in path '{}'", layer_name, path);

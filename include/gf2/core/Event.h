@@ -14,6 +14,7 @@
 #include "Modifier.h"
 #include "MouseTypes.h"
 #include "Scancode.h"
+#include "TaggedVariant.h"
 #include "TouchTypes.h"
 #include "Vec2.h"
 #include "WindowId.h"
@@ -140,7 +141,7 @@ namespace gf {
     Keycode keycode;
     Scancode scancode;
     Flags<Modifier> modifiers;
-    uint8_t repeat;
+    bool repeat;
   };
 
   struct GF_CORE_API KeyReleasedEvent {
@@ -270,45 +271,44 @@ namespace gf {
 
     constexpr EventType type() const
     {
-      return static_cast<EventType>(m_data.index());
+      return m_data.type();
     }
 
     template<typename T>
     constexpr bool is() const
     {
-      return std::holds_alternative<T>(m_data);
+      return m_data.is<T>();
     }
 
     template<typename T>
     constexpr T& as()
     {
-      return std::get<T>(m_data);
+      return std::get<T>(m_data.raw());
     }
 
     template<typename T>
     constexpr const T& as() const
     {
-      return std::get<T>(m_data);
+      return std::get<T>(m_data.raw());
     }
 
     template<EventType E>
     constexpr auto& from()
     {
-      return std::get<static_cast<std::size_t>(E)>(m_data);
+      return m_data.from<E>();
     }
 
     template<EventType E>
     constexpr const auto& from() const
     {
-      return std::get<static_cast<std::size_t>(E)>(m_data);
+      return m_data.from<E>();
     }
 
   private:
     uint64_t m_timestamp = 0;
 
     // clang-format off
-    std::variant<
-      std::monostate,
+    TaggedVariant<EventType,
       QuitEvent,
 
       WindowShownEvent,

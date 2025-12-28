@@ -116,7 +116,7 @@ namespace gf {
     assert(m_render_pass);
     assert(buffer->m_usage.test(GpuBufferUsage::GraphicsStorageRead));
 
-    SDL_GPUBuffer *storage_buffer = buffer->m_handle;
+    SDL_GPUBuffer* const storage_buffer = buffer->m_handle;
 
     switch (stage) {
       case GpuShaderStage::Vertex:

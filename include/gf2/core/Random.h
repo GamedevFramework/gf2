@@ -56,14 +56,16 @@ namespace gf {
     }
 
     template<typename T>
-    std::enable_if_t<std::is_integral_v<T>, T> compute_uniform_integer(T max)
+    T compute_uniform_integer(T max)
+    requires (std::is_integral_v<T>)
     {
       assert(max > 0);
       return static_cast<T>(compute_raw_integer(max));
     }
 
     template<typename T>
-    std::enable_if_t<std::is_integral_v<T>, T> compute_uniform_integer(T min, T max)
+    T compute_uniform_integer(T min, T max)
+    requires (std::is_integral_v<T>)
     {
       assert(min < max);
       using U = std::make_unsigned_t<T>;
@@ -71,7 +73,8 @@ namespace gf {
     }
 
     template<typename T>
-    std::enable_if_t<std::is_floating_point_v<T>, T> compute_uniform_float()
+    T compute_uniform_float()
+    requires (std::is_floating_point_v<T>)
     {
       if constexpr (std::is_same_v<T, double>) {
         return compute_raw_double();
@@ -83,13 +86,15 @@ namespace gf {
     }
 
     template<typename T>
-    std::enable_if_t<std::is_floating_point_v<T>, T> compute_uniform_float(T max)
+    T compute_uniform_float(T max)
+    requires (std::is_floating_point_v<T>)
     {
       return compute_uniform_float<T>() * max;
     }
 
     template<typename T>
-    std::enable_if_t<std::is_floating_point_v<T>, T> compute_uniform_float(T min, T max)
+    T compute_uniform_float(T min, T max)
+    requires (std::is_floating_point_v<T>)
     {
       return min + compute_uniform_float<T>() * (max - min);
     }

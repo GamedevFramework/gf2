@@ -19,7 +19,7 @@ namespace gf {
       details::AnimationStateRuntime runtime;
       runtime.properties = animation_data.properties;
 
-      for (const auto& frame_data : animation_data.frames) {
+      for (const AnimationFrameData& frame_data : animation_data.frames) {
         runtime.frames.push_back(frame_data.duration);
       }
 
@@ -48,7 +48,7 @@ namespace gf {
 
   void AnimationGroupState::update(Time time)
   {
-    const auto* animation = current_animation();
+    const details::AnimationStateRuntime* animation = current_animation();
 
     if (animation->frames.empty()) {
       return;
@@ -70,7 +70,7 @@ namespace gf {
   {
     m_current_frame = 0;
 
-    const auto* animation = current_animation();
+    const details::AnimationStateRuntime* animation = current_animation();
 
     if (animation->frames.empty()) {
       m_current_time = Time();
@@ -81,7 +81,7 @@ namespace gf {
 
   bool AnimationGroupState::finished() const
   {
-    const auto* animation = current_animation();
+    const details::AnimationStateRuntime* animation = current_animation();
     return !animation->properties.test(AnimationProperties::Loop) && m_current_time <= Time() && m_current_frame + 1 >= animation->frames.size();
   }
 
@@ -130,11 +130,11 @@ namespace gf {
       return {};
     }
 
-    const auto& animation = iterator->second;
+    const details::AnimationGraphicsRuntime& animation = iterator->second;
 
     assert(frame_index < animation.frames.size());
 
-    const auto& frame = animation.frames[frame_index];
+    const details::AnimationGraphicsFrameRuntime& frame = animation.frames[frame_index];
 
     RenderGeometry geometry;
     geometry.vertices = &m_vertices;

@@ -53,7 +53,7 @@ namespace gf {
 
   bool PropertyMap::has_property(std::string_view key) const
   {
-    return m_properties.find(key) != m_properties.end();
+    return m_properties.contains(key);
   }
 
   const Property& PropertyMap::operator()(std::string_view path) const

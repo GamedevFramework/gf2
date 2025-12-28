@@ -7,6 +7,7 @@
 #include <cmath>
 
 #include <limits>
+#include <numbers>
 #include <type_traits>
 
 namespace gf {
@@ -14,13 +15,13 @@ namespace gf {
   namespace constants {
 
     template<typename T>
-    constexpr T Pi = T(3.141592653589793238462643383279502884197169399L);
+    constexpr T Pi = std::numbers::pi_v<T>;
 
     template<typename T>
-    constexpr T Sqrt2 = T(1.4142135623730950488016887242096980785696718753769480731L);
+    constexpr T Sqrt2 = std::numbers::sqrt2_v<T>;
 
     template<typename T>
-    constexpr T Sqrt3 = T(1.7320508075688772935274463415058723669428052538103806280L);
+    constexpr T Sqrt3 = std::numbers::sqrt3_v<T>;
 
   } // namespace constants
 
@@ -39,25 +40,29 @@ namespace gf {
 
     // std::abs is not constexpr in C++17
     template<typename T>
-    constexpr std::enable_if_t<std::is_arithmetic_v<T>, T> abs(T value)
+    constexpr T abs(T value)
+    requires (std::is_arithmetic_v<T>)
     {
       return value < T(0) ? -value : value;
     }
 
     template<typename T>
-    constexpr std::enable_if_t<std::is_arithmetic_v<T>, T> max(T a, T b)
+    constexpr T max(T a, T b)
+    requires (std::is_arithmetic_v<T>)
     {
       return a < b ? b : a;
     }
 
     template<typename T>
-    constexpr std::enable_if_t<std::is_arithmetic_v<T>, T> min(T a, T b)
+    constexpr T min(T a, T b)
+    requires (std::is_arithmetic_v<T>)
     {
       return a < b ? a : b;
     }
 
     template<typename T>
-    constexpr std::enable_if_t<std::is_arithmetic_v<T>, T> clamp(T val, T min, T max)
+    constexpr T clamp(T val, T min, T max)
+    requires (std::is_arithmetic_v<T>)
     {
       if (val < min) {
         return min;
@@ -92,13 +97,15 @@ namespace gf {
   }
 
   template<typename T>
-  constexpr std::enable_if_t<std::is_floating_point_v<T>, T> degrees_to_radians(T degrees)
+  constexpr T degrees_to_radians(T degrees)
+  requires (std::is_floating_point_v<T>)
   {
     return degrees * constants::Pi<T> / T(180);
   }
 
   template<typename T>
-  constexpr std::enable_if_t<std::is_floating_point_v<T>, T> radians_to_degrees(T radians)
+  constexpr T radians_to_degrees(T radians)
+  requires (std::is_floating_point_v<T>)
   {
     return radians * T(180) / constants::Pi<T>;
   }
@@ -115,13 +122,13 @@ namespace gf {
   template<typename T>
   constexpr T cubic_step(T t)
   {
-    return (-T(2) * t + T(3)) * t * t;
+    return ((-T(2) * t) + T(3)) * t * t;
   }
 
   template<typename T>
   constexpr T quintic_step(T t)
   {
-    return ((T(6) * t - T(15)) * t + T(10)) * t * t * t;
+    return ((((T(6) * t) - T(15)) * t) + T(10)) * t * t * t;
   }
 
   template<typename T>
@@ -174,19 +181,22 @@ namespace gf {
   }
 
   template<typename T>
-  constexpr std::enable_if_t<std::is_integral_v<T>, T> parity(T val)
+  constexpr T parity(T val)
+  requires (std::is_integral_v<T>)
   {
     return (val % T(2) == T(0)) ? T(0) : T(1);
   }
 
   template<typename T>
-  constexpr std::enable_if_t<std::is_integral_v<T>, T> div_floor(T dividend, T divisor)
+  constexpr T div_floor(T dividend, T divisor)
+  requires (std::is_integral_v<T>)
   {
     return (dividend / divisor) - ((dividend % divisor != 0) * ((dividend < 0) ^ (divisor < 0)));
   }
 
   template<typename T>
-  constexpr std::enable_if_t<std::is_integral_v<T>, T> div_ceil(T dividend, T divisor)
+  constexpr T div_ceil(T dividend, T divisor)
+  requires (std::is_integral_v<T>)
   {
     return (dividend / divisor) + ((dividend % divisor != 0) * ((dividend > 0) ^ (divisor < 0)));
   }

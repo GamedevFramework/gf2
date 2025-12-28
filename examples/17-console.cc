@@ -28,7 +28,7 @@ int main()
   gf::SingleSceneManager scene_manager("17-console | gf2", gf::vec(1600, 900));
 
   gf::ConsoleFontContext font_context;
-  font_context.format = { gf::ConsoleFontFormat::Grayscale, gf::ConsoleFontFormat::InRow, gf::ConsoleFontFormat::ModifiedCodePage437 };
+  font_context.format = { gf::ConsoleFontTransparency::Grayscale, gf::ConsoleFontLayout::InRow, gf::ConsoleFontMapping::ModifiedCodePage437 };
   font_context.render_manager = scene_manager.render_manager();
 
   gf::ConsoleFont console_font(font_file, font_context);

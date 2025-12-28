@@ -56,7 +56,7 @@ namespace gf {
 
       const T g1 = std::gcd(denominator, m_denominator);
       m_denominator /= g1;
-      m_numerator = m_numerator * (denominator / g1) + numerator * m_denominator;
+      m_numerator = (m_numerator * (denominator / g1)) + (numerator * m_denominator);
 
       const T g2 = std::gcd(m_numerator, g1);
       m_numerator /= g2;
@@ -78,7 +78,7 @@ namespace gf {
 
       const T g1 = std::gcd(denominator, m_denominator);
       m_denominator /= g1;
-      m_numerator = m_numerator * (denominator / g1) - numerator * m_denominator;
+      m_numerator = (m_numerator * (denominator / g1)) - (numerator * m_denominator);
 
       const T g2 = std::gcd(m_numerator, g1);
       m_numerator /= g2;

@@ -48,7 +48,7 @@ int main()
     std::filesystem::path filename = name;
     filename.concat(".png");
 
-    gf::Image image(Size, color);
+    const gf::Image image(Size, color);
     image.save_to_file(filename);
   }
 }

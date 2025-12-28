@@ -78,14 +78,16 @@ namespace gf {
     uint32_t tag(Vec2I position) const;
     void set_tag(Vec2I position, uint32_t tag);
 
-    template<typename E, typename = std::enable_if_t<std::is_enum_v<E>>>
+    template<typename E>
     E tag_as(Vec2I position) const
+    requires (std::is_enum_v<E>)
     {
       return static_cast<E>(static_cast<std::underlying_type_t<E>>(tag(position)));
     }
 
-    template<typename E, typename = std::enable_if_t<std::is_enum_v<E>>>
+    template<typename E>
     void set_tag(Vec2I position, E tag)
+    requires (std::is_enum_v<E>)
     {
       set_tag(position, static_cast<uint32_t>(static_cast<std::underlying_type_t<E>>(tag)));
     }

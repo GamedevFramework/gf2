@@ -172,7 +172,7 @@ namespace gf {
 
     auto comparator = sort_heuristic_comparator(sort);
 
-    std::sort(indices.begin(), indices.end(), [&sizes, &comparator](std::size_t lhs, std::size_t rhs) {
+    std::ranges::sort(indices, [&sizes, &comparator](std::size_t lhs, std::size_t rhs) {
       return comparator(sizes[lhs], sizes[rhs]);
     });
 

@@ -6,7 +6,7 @@
 
 int main(int argc, char* argv[])
 {
-  gf::Log::set_level(gf::Log::Fatal);
+  gf::Log::set_level(gf::LogLevel::Fatal);
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }

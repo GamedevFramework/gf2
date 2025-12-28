@@ -116,7 +116,7 @@ namespace gf {
         // to understand why index is 0 and not 1
         render_pass.bind_storage_buffer(GpuShaderStage::Fragment, 0, text_effect);
       },
-      [&](RenderObject& object, GpuBuffer* model_matrix) {
+      [&](RenderObject object, GpuBuffer* model_matrix) {
         // pipeline
 
         if (m_last_pipeline == nullptr || object.geometry.pipeline != m_last_object.geometry.pipeline) {
@@ -185,7 +185,7 @@ namespace gf {
 
     // fullscreen vertex shader
 
-    GpuShaderInput fullscreen_vertex_shader_input = {};
+    const GpuShaderInput fullscreen_vertex_shader_input = {};
 
     m_fullscreen_vertex_shader = GpuShader(GpuShaderStage::Vertex, gf::span(fullscreen_vert_shader_code), fullscreen_vertex_shader_input, device, "[gf2] Fullscreen vertex shader");
 
@@ -303,14 +303,14 @@ namespace gf {
 
       // render
 
-      GpuCommandBuffer command_buffer = render_manager()->begin_command_buffer();
+      const GpuCommandBuffer command_buffer = render_manager()->begin_command_buffer();
 
       recorder.clear();
       m_scene->render(recorder);
       recorder.sort();
 
-      GpuRenderTarget target = render_manager()->current_render_target();
-      GpuRenderPass render_pass = command_buffer.begin_render_pass(target, m_scene->clear_color());
+      const GpuRenderTarget target = render_manager()->current_render_target();
+      const GpuRenderPass render_pass = command_buffer.begin_render_pass(target, m_scene->clear_color());
 
       render_records(render_pass, recorder);
 
@@ -403,14 +403,14 @@ namespace gf {
 
         // render
 
-        GpuCommandBuffer command_buffer = render_manager()->begin_command_buffer();
+        const GpuCommandBuffer command_buffer = render_manager()->begin_command_buffer();
 
         recorder.clear();
         std::ranges::for_each(scenes, [&recorder](BasicScene* scene) { scene->render(recorder); });
         recorder.sort();
 
-        GpuRenderTarget target = render_manager()->current_render_target();
-        GpuRenderPass render_pass = command_buffer.begin_render_pass(target, current_scene->clear_color());
+        const GpuRenderTarget target = render_manager()->current_render_target();
+        const GpuRenderPass render_pass = command_buffer.begin_render_pass(target, current_scene->clear_color());
 
         render_records(render_pass, recorder);
 

@@ -27,14 +27,16 @@ namespace gf {
   public:
     constexpr Result() = default;
 
-    template<typename U = T, typename = std::enable_if_t<std::is_constructible_v<T, U>>>
+    template<typename U = T>
     constexpr Result(U&& result)
+    requires (std::is_constructible_v<T, U>)
     : m_result(std::in_place_index<0>, std::forward<U>(result))
     {
     }
 
-    template<typename... Args, typename = std::enable_if_t<std::is_constructible_v<T, Args...>>>
+    template<typename... Args>
     constexpr Result(std::in_place_t /* unused */, Args&&... args)
+    requires (std::is_constructible_v<T, Args...>)
     : m_result(std::in_place_index<0>, std::forward<Args>(args)...)
     {
     }
@@ -56,8 +58,9 @@ namespace gf {
     Result& operator=(const Result&) = default;
     Result& operator=(Result&&) noexcept = default;
 
-    template<typename U = T, typename = std::enable_if_t<std::is_constructible_v<T, U>>>
+    template<typename U = T>
     Result& operator=(U&& other)
+    requires (std::is_constructible_v<T, U>)
     {
       m_result.template emplace<0>(std::forward<U>(other));
       return *this;

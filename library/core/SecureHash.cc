@@ -70,7 +70,7 @@ namespace gf {
   void SecureHash::input(gf::Span<const uint8_t> data)
   {
     for (auto byte : data) {
-      m_message_block[m_message_block_index++] = byte; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+      m_message_block[m_message_block_index++] = byte;
       m_length += 8;
 
       if (m_message_block_index == MessageBlockSize) {
@@ -87,7 +87,7 @@ namespace gf {
     std::array<uint8_t, HashSize> digest = {};
 
     for (std::size_t i = 0; i < HashSize; ++i) {
-      digest[i] = uint8_t(m_digest[i >> 2] >> (8 * (3 - (i & 0x03)))); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+      digest[i] = static_cast<uint8_t>(m_digest[i >> 2] >> (8 * (3 - (i & 0x03))));
     }
 
     return digest;
@@ -110,15 +110,15 @@ namespace gf {
 
     for (int i = 0; i < 16; ++i) {
       // clang-format off
-      w[i] = (uint32_t(m_message_block[(4 * i) + 0]) << 24) // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
-           | (uint32_t(m_message_block[(4 * i) + 1]) << 16) // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
-           | (uint32_t(m_message_block[(4 * i) + 2]) << 8)  // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
-           | (uint32_t(m_message_block[(4 * i) + 3]) << 0); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+      w[i] = (static_cast<uint32_t>(m_message_block[(4 * i) + 0]) << 24)
+           | (static_cast<uint32_t>(m_message_block[(4 * i) + 1]) << 16)
+           | (static_cast<uint32_t>(m_message_block[(4 * i) + 2]) << 8)
+           | (static_cast<uint32_t>(m_message_block[(4 * i) + 3]) << 0);
       // clang-format on
     }
 
     for (int i = 16; i < 64; ++i) {
-      w[i] = small_sigma1(w[i - 2]) + w[i - 7] + small_sigma0(w[i - 15]) + w[i - 16]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+      w[i] = small_sigma1(w[i - 2]) + w[i - 7] + small_sigma0(w[i - 15]) + w[i - 16];
     }
 
     uint32_t a = m_digest[0];
@@ -131,7 +131,7 @@ namespace gf {
     uint32_t h = m_digest[7];
 
     for (int i = 0; i < 64; ++i) {
-      const uint32_t t1 = h + big_sigma1(e) + ch(e, f, g) + K[i] + w[i]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+      const uint32_t t1 = h + big_sigma1(e) + ch(e, f, g) + K[i] + w[i];
       const uint32_t t2 = big_sigma0(a) + maj(a, b, c);
       h = g;
       g = f;
@@ -171,29 +171,29 @@ namespace gf {
   void SecureHash::pad_message(uint8_t pad)
   {
     if (m_message_block_index >= MessageBlockSize - 8) {
-      m_message_block[m_message_block_index++] = pad; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+      m_message_block[m_message_block_index++] = pad;
 
       while (m_message_block_index < MessageBlockSize) {
-        m_message_block[m_message_block_index++] = 0x00; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+        m_message_block[m_message_block_index++] = 0x00;
       }
 
       process_message_block();
     } else {
-      m_message_block[m_message_block_index++] = pad; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+      m_message_block[m_message_block_index++] = pad;
     }
 
     while (m_message_block_index < MessageBlockSize - 8) {
-      m_message_block[m_message_block_index++] = 0x00; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+      m_message_block[m_message_block_index++] = 0x00;
     }
 
-    m_message_block[56] = uint8_t(m_length >> 56);
-    m_message_block[57] = uint8_t(m_length >> 48);
-    m_message_block[58] = uint8_t(m_length >> 40);
-    m_message_block[59] = uint8_t(m_length >> 32);
-    m_message_block[60] = uint8_t(m_length >> 24);
-    m_message_block[61] = uint8_t(m_length >> 16);
-    m_message_block[62] = uint8_t(m_length >> 8);
-    m_message_block[63] = uint8_t(m_length >> 0);
+    m_message_block[56] = static_cast<uint8_t>(m_length >> 56);
+    m_message_block[57] = static_cast<uint8_t>(m_length >> 48);
+    m_message_block[58] = static_cast<uint8_t>(m_length >> 40);
+    m_message_block[59] = static_cast<uint8_t>(m_length >> 32);
+    m_message_block[60] = static_cast<uint8_t>(m_length >> 24);
+    m_message_block[61] = static_cast<uint8_t>(m_length >> 16);
+    m_message_block[62] = static_cast<uint8_t>(m_length >> 8);
+    m_message_block[63] = static_cast<uint8_t>(m_length >> 0);
 
     process_message_block();
   }

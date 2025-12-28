@@ -133,19 +133,22 @@ namespace gf {
   namespace operators {
 
     template<typename E>
-    constexpr std::enable_if_t<EnableBitmaskOperators<E>::value, Flags<E>> operator|(E lhs, E rhs)
+    constexpr Flags<E> operator|(E lhs, E rhs)
+    requires EnableBitmaskOperators<E>::value
     {
       return Flags<E>(lhs) | Flags<E>(rhs);
     }
 
     template<typename E>
-    constexpr std::enable_if_t<EnableBitmaskOperators<E>::value, Flags<E>> operator&(E lhs, E rhs)
+    constexpr Flags<E> operator&(E lhs, E rhs)
+    requires EnableBitmaskOperators<E>::value
     {
       return Flags<E>(lhs) & Flags<E>(rhs);
     }
 
     template<typename E>
-    constexpr std::enable_if_t<EnableBitmaskOperators<E>::value, Flags<E>> operator~(E val)
+    constexpr Flags<E> operator~(E val)
+    requires EnableBitmaskOperators<E>::value
     {
       return ~Flags<E>(val);
     }

@@ -103,7 +103,7 @@ namespace gf {
   void PhysicsTaskManager::run(uint32_t worker_index)
   {
     for (;;) {
-      Work work = m_workers[worker_index].work.wait();
+      const Work work = m_workers[worker_index].work.wait();
 
       if (work.task == nullptr) {
         return;

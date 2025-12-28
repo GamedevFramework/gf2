@@ -20,7 +20,7 @@ namespace gf {
     struct JoystickIdDeleter {
       void operator()(SDL_JoystickID* list)
       {
-        SDL_free(list);
+        SDL_free(list); // NOLINT(cppcoreguidelines-no-malloc)
       }
     };
 
@@ -64,7 +64,7 @@ namespace gf {
 
       if (SDL_HasGamepad()) {
         int count = 0;
-        std::unique_ptr<SDL_JoystickID[], JoystickIdDeleter> gamepads(SDL_GetGamepads(&count));
+        const std::unique_ptr<SDL_JoystickID[], JoystickIdDeleter> gamepads(SDL_GetGamepads(&count));
 
         for (int i = 0; i < count; ++i) {
           Gamepad::open(GamepadId{gamepads[i]});

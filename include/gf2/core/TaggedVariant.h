@@ -12,7 +12,7 @@ namespace gf {
   template<typename Enum, typename... Args>
   class TaggedVariant {
   public:
-    TaggedVariant() = default;
+    constexpr TaggedVariant() = default;
 
     template<typename T, typename = PreventHiddenCopyMove<T, TaggedVariant>>
     constexpr TaggedVariant(T&& data)
@@ -20,7 +20,7 @@ namespace gf {
     {
     }
 
-    Enum type() const
+    constexpr Enum type() const
     {
       return static_cast<Enum>(m_data.index());
     }

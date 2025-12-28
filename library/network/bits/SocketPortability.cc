@@ -91,7 +91,7 @@ namespace gf::details {
   std::string last_error_string()
   {
     static constexpr std::size_t BufferSize = 1024;
-    auto err = last_error_code();
+    int err = last_error_code();
     std::array<char, BufferSize> buffer = { '\0' };
     [[maybe_unused]] auto ret = ::strerror_r(err, buffer.data(), buffer.size()); // NOLINT
     return buffer.data();
@@ -123,9 +123,9 @@ namespace gf::details {
 
   SocketHandle native_bind_listen(const std::string& service, SocketFamily family)
   {
-    auto addresses = local_address_info(service, SocketType::Tcp, family);
+    const std::vector<SocketAddressInfo> addresses = local_address_info(service, SocketType::Tcp, family);
 
-    for (auto info : addresses) {
+    for (const SocketAddressInfo& info : addresses) {
       const SocketHandle sock = ::socket(static_cast<int>(info.family), static_cast<int>(info.type), 0);
 
       if (sock == InvalidSocketHandle) {
@@ -155,9 +155,9 @@ namespace gf::details {
 
   SocketHandle native_connect(const std::string& hostname, const std::string& service, SocketFamily family)
   {
-    auto addresses = remote_address_info(hostname, service, SocketType::Tcp, family);
+    const std::vector<SocketAddressInfo> addresses = remote_address_info(hostname, service, SocketType::Tcp, family);
 
-    for (auto info : addresses) {
+    for (const SocketAddressInfo& info : addresses) {
       const SocketHandle sock = ::socket(static_cast<int>(info.family), static_cast<int>(info.type), 0);
 
       if (sock == InvalidSocketHandle) {
@@ -178,9 +178,9 @@ namespace gf::details {
 
   SocketHandle native_bind(const std::string& service, SocketFamily family)
   {
-    auto addresses = local_address_info(service, SocketType::Udp, family);
+    const std::vector<SocketAddressInfo> addresses = local_address_info(service, SocketType::Udp, family);
 
-    for (auto info : addresses) {
+    for (const SocketAddressInfo& info : addresses) {
       const SocketHandle sock = ::socket(static_cast<int>(info.family), static_cast<int>(info.type), 0);
 
       if (sock == InvalidSocketHandle) {
@@ -226,7 +226,7 @@ namespace gf::details {
         return result;
       }
 
-      for (addrinfo* rp = first; rp != nullptr; rp = rp->ai_next) {
+      for (const addrinfo* rp = first; rp != nullptr; rp = rp->ai_next) {
         SocketAddressInfo info;
         info.family = static_cast<SocketFamily>(rp->ai_family);
         info.type = static_cast<SocketType>(rp->ai_socktype);

@@ -13,7 +13,7 @@ namespace gf::details {
 
     AnimationGraphicsRuntime runtime;
 
-    for (const auto& frame_data : data.frames) {
+    for (const AnimationFrameData& frame_data : data.frames) {
       assert(frame_data.texture_index < textures.size());
 
       AnimationGraphicsFrameRuntime frame = {};

@@ -76,7 +76,7 @@ namespace gf {
     {
       static constexpr T C1 = T(1.70158);
       static constexpr T C2 = T(1) + C1;
-      return t * t * (C2 * t - C1);
+      return t * t * ((C2 * t) - C1);
     }
 
     template<typename T>
@@ -92,14 +92,14 @@ namespace gf {
       }
 
       if (u < T(2) * C1) {
-        return T(1) - (C2 * gf::square(u - (T(1.5) * C1)) + T(0.75));
+        return T(1) - ((C2 * gf::square(u - (T(1.5) * C1))) + T(0.75));
       }
 
       if (u < T(2.5) * C1) {
-        return T(1) - (C2 * gf::square(u - (T(2.25) * C1)) + T(0.9375));
+        return T(1) - ((C2 * gf::square(u - (T(2.25) * C1))) + T(0.9375));
       }
 
-      return T(1) - (C2 * gf::square(u - (T(2.625) * C1)) + T(0.984375));
+      return T(1) - ((C2 * gf::square(u - (T(2.625) * C1))) + T(0.984375));
     }
 
     template<typename T>
@@ -109,7 +109,7 @@ namespace gf {
 
       const T u = t - T(1);
 
-      return -std::pow(T(2.0), T(10) * u) * std::sin((u - C0 / T(4)) * T(2) * constants::Pi<T> / C0);
+      return -std::pow(T(2.0), T(10) * u) * std::sin((u - (C0 / T(4))) * T(2) * constants::Pi<T> / C0);
     }
 
     template<typename T>

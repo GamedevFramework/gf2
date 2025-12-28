@@ -24,7 +24,7 @@ namespace gf {
     template<typename Func>
     SignalId connect(Func&& callback)
     {
-      const std::lock_guard<std::mutex> lock(m_mutex);
+      const std::scoped_lock<std::mutex> lock(m_mutex);
       auto id = SignalId{ m_slots.size() };
       m_slots.emplace_back(std::forward<Func>(callback));
       return id;
@@ -32,7 +32,7 @@ namespace gf {
 
     void disconnect(SignalId id)
     {
-      const std::lock_guard<std::mutex> lock(m_mutex);
+      const std::scoped_lock<std::mutex> lock(m_mutex);
       auto index = static_cast<std::size_t>(id);
       assert(index < m_slots.size());
       m_slots[index] = nullptr;
@@ -40,7 +40,7 @@ namespace gf {
 
     void emit(Args... args)
     {
-      const std::lock_guard<std::mutex> lock(m_mutex);
+      const std::scoped_lock<std::mutex> lock(m_mutex);
 
       for (auto& slot : m_slots) {
         if (slot == nullptr) {

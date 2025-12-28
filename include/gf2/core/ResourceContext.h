@@ -21,11 +21,11 @@ namespace gf {
 
   template<typename T>
   struct ResourceContextTraits {
-    using Type = typename std::conditional_t<details::HasContext<T>, T, details::NoContextResource>::Context;
+    using Type = std::conditional_t<details::HasContext<T>, T, details::NoContextResource>::Context;
   };
 
   template<typename T>
-  using ResourceContext = typename ResourceContextTraits<T>::Type;
+  using ResourceContext = ResourceContextTraits<T>::Type;
 
 }
 

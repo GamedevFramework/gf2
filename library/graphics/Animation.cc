@@ -19,7 +19,7 @@ namespace gf {
   {
     m_animation.properties = data.properties;
 
-    for (const auto& frame_data : data.frames) {
+    for (const AnimationFrameData& frame_data : data.frames) {
       m_animation.frames.push_back(frame_data.duration);
     }
 
@@ -89,7 +89,7 @@ namespace gf {
   {
     assert(frame_index < m_animation.frames.size());
 
-    const auto& frame = m_animation.frames[frame_index];
+    const details::AnimationGraphicsFrameRuntime& frame = m_animation.frames[frame_index];
 
     assert(frame.offset == frame_index * details::IndicesPerAnimationFrame);
 

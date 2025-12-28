@@ -289,7 +289,7 @@ namespace gf {
     polygon.reserve(raw.count);
 
     for (int i = 0; i < raw.count; ++i) {
-      polygon.emplace_back(raw.vertices[i].x, raw.vertices[i].y); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+      polygon.emplace_back(raw.vertices[i].x, raw.vertices[i].y);
     }
 
     return polygon;

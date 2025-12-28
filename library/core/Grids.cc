@@ -88,11 +88,7 @@ namespace gf {
 
     if (flags.test(CellNeighborQuery::Valid)) {
       const RectI bounds = RectI::from_size(m_layer_size);
-      // clang-format off
-      neighbors.erase(std::remove_if(neighbors.begin(), neighbors.end(), [bounds](Vec2I neighbor) {
-        return !bounds.contains(neighbor);
-      }), neighbors.end());
-      // clang-format on
+      std::erase_if(neighbors, [bounds](Vec2I neighbor) { return !bounds.contains(neighbor); });
     }
 
     return neighbors;
@@ -172,11 +168,7 @@ namespace gf {
 
     if (flags.test(CellNeighborQuery::Valid)) {
       const RectI bounds = RectI::from_size(m_layer_size);
-      // clang-format off
-      neighbors.erase(std::remove_if(neighbors.begin(), neighbors.end(), [bounds](Vec2I neighbor) {
-        return !bounds.contains(neighbor);
-      }), neighbors.end());
-      // clang-format on
+      std::erase_if(neighbors, [bounds](Vec2I neighbor) { return !bounds.contains(neighbor); });
     }
 
     return neighbors;
@@ -290,11 +282,11 @@ namespace gf {
     const Vec2F half = m_tile_size / 2.0f;
 
     const float qx = std::floor(location.x / half.x);
-    const float rx = (location.x - qx * half.x) / half.x;
+    const float rx = (location.x - (qx * half.x)) / half.x;
     assert(0 <= rx && rx < 1.0f);
 
     const float qy = std::floor(location.y / half.y);
-    const float ry = (location.y - qy * half.y) / half.y;
+    const float ry = (location.y - (qy * half.y)) / half.y;
     assert(0 <= ry && ry < 1.0f);
 
     const int x = static_cast<int>(qx);
@@ -382,11 +374,7 @@ namespace gf {
 
     if (flags.test(CellNeighborQuery::Valid)) {
       const RectI bounds = RectI::from_size(m_layer_size);
-      // clang-format off
-      neighbors.erase(std::remove_if(neighbors.begin(), neighbors.end(), [bounds](Vec2I neighbor) {
-        return !bounds.contains(neighbor);
-      }), neighbors.end());
-      // clang-format on
+      std::erase_if(neighbors, [bounds](Vec2I neighbor) { return !bounds.contains(neighbor); });
     }
 
     return neighbors;
@@ -406,7 +394,7 @@ namespace gf {
     }
 
     const Vec2I offset = position1 - position0;
-    return std::any_of(diagonal.begin(), diagonal.end(), [offset](auto other) { return other == offset; });
+    return std::ranges::any_of(diagonal, [offset](Vec2I other) { return other == offset; });
   }
 
   /*
@@ -447,13 +435,13 @@ namespace gf {
 
     switch (m_axis) {
       case CellAxis::X:
-        size.w = m_layer_size.w * (m_tile_size.w - offset.w) + offset.w;
-        size.h = m_layer_size.h * m_tile_size.h + m_tile_size.h / 2;
+        size.w = (m_layer_size.w * (m_tile_size.w - offset.w)) + offset.w;
+        size.h = (m_layer_size.h * m_tile_size.h) + (m_tile_size.h / 2);
         break;
 
       case CellAxis::Y:
-        size.w = m_layer_size.w * m_tile_size.w + m_tile_size.w / 2;
-        size.h = m_layer_size.h * (m_tile_size.h - offset.h) + offset.h;
+        size.w = (m_layer_size.w * m_tile_size.w) + (m_tile_size.w / 2);
+        size.h = (m_layer_size.h * (m_tile_size.h - offset.h)) + offset.h;
         break;
     }
 
@@ -738,11 +726,7 @@ namespace gf {
 
     if (flags.test(CellNeighborQuery::Valid)) {
       const RectI bounds = RectI::from_size(m_layer_size);
-      // clang-format off
-      neighbors.erase(std::remove_if(neighbors.begin(), neighbors.end(), [bounds](Vec2I neighbor) {
-        return !bounds.contains(neighbor);
-      }), neighbors.end());
-      // clang-format on
+      std::erase_if(neighbors, [bounds](Vec2I neighbor) { return !bounds.contains(neighbor); });
     }
 
     return neighbors;
