@@ -3,6 +3,8 @@
 
 #include <gf2/framework/GraphicsPhysicsDebug.h>
 
+#include <limits>
+
 #include <gf2/core/Mat3.h>
 
 #include <gf2/graphics/RenderObject.h>
@@ -123,6 +125,7 @@ namespace gf {
   , m_physics_world(physics_world)
   , m_render_manager(render_manager)
   {
+    set_priority(std::numeric_limits<int32_t>::max());
   }
 
   void GraphicsPhysicsDebugEntity::update([[maybe_unused]] Time time)
