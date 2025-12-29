@@ -103,6 +103,12 @@ namespace gf {
   };
 
   template<typename E>
+  constexpr bool operator==(Flags<E> lhs, Flags<E> rhs)
+  {
+    return lhs.value() == rhs.value();
+  }
+
+  template<typename E>
   constexpr Flags<E> operator|(Flags<E> lhs, E rhs)
   {
     return lhs | Flags<E>(rhs);
