@@ -133,7 +133,7 @@ namespace gf {
   }
 
   template<typename E>
-  struct EnableBitmaskOperators : std::false_type {
+  struct EnableBitmaskOperators {
   };
 
   namespace operators {
