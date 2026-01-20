@@ -131,7 +131,7 @@ namespace gf {
     line.push_back(p0);
 
     for (;;) {
-      if (auto maybe_next = bresenham.step(); maybe_next) {
+      if (std::optional<Vec2I> maybe_next = bresenham.step(); maybe_next) {
         line.push_back(*maybe_next);
       } else {
         break;
@@ -192,7 +192,7 @@ namespace gf {
     };
 
     for (;;) {
-      if (auto maybe_next = andres.step(); maybe_next) {
+      if (std::optional<Vec2I> maybe_next = andres.step(); maybe_next) {
         plot_8_pixels(*maybe_next);
       } else {
         break;

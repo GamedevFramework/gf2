@@ -46,7 +46,7 @@ namespace gf {
   {
     FT_Library library = nullptr;
 
-    if (auto err = FT_Init_FreeType(&library)) {
+    if (const FT_Error err = FT_Init_FreeType(&library)) {
       Log::fatal("Could not init Freetype library: {}", ft_error_message(err));
     }
 
@@ -54,7 +54,7 @@ namespace gf {
 
     FT_Stroker stroker = nullptr;
 
-    if (auto err = FT_Stroker_New(library, &stroker)) {
+    if (const FT_Error err = FT_Stroker_New(library, &stroker)) {
       Log::fatal("Could not create the stroker: {}", ft_error_message(err));
     }
 
@@ -62,7 +62,7 @@ namespace gf {
 
     auto spread = static_cast<FT_Int>(Spread);
 
-    if (auto err = FT_Property_Set(library, "bsdf", "spread", &spread)) {
+    if (const FT_Error err = FT_Property_Set(library, "bsdf", "spread", &spread)) {
       Log::warning("Could not set spread: {}", ft_error_message(err));
     }
   }
@@ -81,7 +81,7 @@ namespace gf {
     }
 
     if (m_library != nullptr) {
-      [[maybe_unused]] auto err = FT_Done_FreeType(library_as<FT_Library>());
+      [[maybe_unused]] const FT_Error err = FT_Done_FreeType(library_as<FT_Library>());
       assert(err == FT_Err_Ok);
     }
   }

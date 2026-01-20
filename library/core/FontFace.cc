@@ -55,7 +55,7 @@ namespace gf {
 
     FT_Face face = nullptr;
 
-    if (auto err = FT_New_Face(m_manager->library_as<FT_Library>(), filename.string().c_str(), 0, &face)) {
+    if (const FT_Error err = FT_New_Face(m_manager->library_as<FT_Library>(), filename.string().c_str(), 0, &face)) {
       Log::fatal("Could not create the font face '{}': {}\n", filename.string(), FontManager::error_message(err));
     }
 
@@ -86,7 +86,7 @@ namespace gf {
 
     FT_Face face = nullptr;
 
-    if (auto err = FT_Open_Face(m_manager->library_as<FT_Library>(), &args, 0, &face)) {
+    if (const FT_Error err = FT_Open_Face(m_manager->library_as<FT_Library>(), &args, 0, &face)) {
       Log::fatal("Could not create the font face from stream: {}", FontManager::error_message(err));
     }
 
@@ -104,7 +104,7 @@ namespace gf {
   FontFace::~FontFace()
   {
     if (m_face != nullptr) {
-      [[maybe_unused]] auto err = FT_Done_Face(face_as<FT_Face>());
+      [[maybe_unused]] const FT_Error err = FT_Done_Face(face_as<FT_Face>());
       assert(err == FT_Err_Ok);
     }
   }
@@ -141,7 +141,7 @@ namespace gf {
       return 0;
     }
 
-    auto* face = face_as<FT_Face>();
+    FT_Face face = face_as<FT_Face>();
     return FT_Get_Char_Index(face, character);
   }
 
@@ -153,9 +153,9 @@ namespace gf {
       return result;
     }
 
-    auto* face = face_as<FT_Face>();
+    FT_Face face = face_as<FT_Face>();
 
-    if (auto err = FT_Load_Glyph(face, index, FT_LOAD_TARGET_NORMAL)) {
+    if (const FT_Error err = FT_Load_Glyph(face, index, FT_LOAD_TARGET_NORMAL)) {
       Log::error("Could not load the glyph: {}", FontManager::error_message(err));
       return result;
     }
@@ -164,24 +164,24 @@ namespace gf {
      * BSDF mode
      */
 
-    auto* glyph = face->glyph;
+    FT_GlyphSlot glyph = face->glyph;
 
-    if (auto err = FT_Render_Glyph(glyph, FT_RENDER_MODE_NORMAL)) {
+    if (const FT_Error err = FT_Render_Glyph(glyph, FT_RENDER_MODE_NORMAL)) {
       Log::error("Could not create a bitmap from the glyph (index {}): {}", index, FontManager::error_message(err));
       return result;
     }
 
-    if (auto err = FT_Render_Glyph(glyph, FT_RENDER_MODE_SDF)) {
+    if (const FT_Error err = FT_Render_Glyph(glyph, FT_RENDER_MODE_SDF)) {
       Log::error("Could not create a bitmap from the glyph (index {}): {}", index, FontManager::error_message(err));
       return result;
     }
 
     assert(glyph->format == FT_GLYPH_FORMAT_BITMAP);
-    auto* bitmap = &glyph->bitmap;
+    const FT_Bitmap& bitmap = glyph->bitmap;
 
     // size
 
-    const Vec2I glyph_size(static_cast<int>(bitmap->width), static_cast<int>(bitmap->rows));
+    const Vec2I glyph_size(static_cast<int>(bitmap.width), static_cast<int>(bitmap.rows));
 
     if (glyph_size.h == 0 || glyph_size.w == 0) {
       return result;
@@ -197,7 +197,7 @@ namespace gf {
 
     // bitmap
 
-    result.bitmap = Bitmap(glyph_size, bitmap->buffer, bitmap->pitch);
+    result.bitmap = Bitmap(glyph_size, bitmap.buffer, bitmap.pitch);
     return result;
   }
 
@@ -216,9 +216,9 @@ namespace gf {
       return 0.0f;
     }
 
-    auto* face = face_as<FT_Face>();
+    FT_Face face = face_as<FT_Face>();
 
-    if (auto err = FT_Load_Char(face, U' ', FT_LOAD_DEFAULT)) {
+    if (const FT_Error err = FT_Load_Char(face, U' ', FT_LOAD_DEFAULT)) {
       Log::error("Could not load the glyph: {}", FontManager::error_message(err));
       return 0.0f;
     }
@@ -233,7 +233,7 @@ namespace gf {
 
   bool FontFace::set_current_character_size(uint32_t character_size)
   {
-    if (auto err = FT_Set_Pixel_Sizes(face_as<FT_Face>(), 0, character_size)) {
+    if (const FT_Error err = FT_Set_Pixel_Sizes(face_as<FT_Face>(), 0, character_size)) {
       Log::error("Could not change the font size: {}", FontManager::error_message(err));
       return false;
     }

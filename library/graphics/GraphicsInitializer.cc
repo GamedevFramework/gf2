@@ -45,7 +45,7 @@ namespace gf {
 #endif
 
 #ifdef SDL_PLATFORM_LINUX
-      SDL_SetHint(SDL_HINT_VIDEO_DRIVER, "wayland,x11");
+//      SDL_SetHint(SDL_HINT_VIDEO_DRIVER, "wayland,x11");
 #endif
 
       if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD)) {
