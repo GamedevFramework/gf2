@@ -54,8 +54,9 @@ namespace gf {
 
     const uint8_t fullscreen_frag_shader_code[] = {
 #if SDL_PLATFORM_MACOS
+#include "fullscreen.frag.msl.h"
 #else
-#include "fullscreen.frag.h"
+#include "fullscreen.frag.spirv.h"
 #endif
     };
 
