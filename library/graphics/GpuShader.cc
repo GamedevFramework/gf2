@@ -15,7 +15,11 @@ namespace gf {
     info.code_size = binary.size();
     info.code = binary.data();
     info.entrypoint = "main";
+#if SDL_PLATFORM_MACOS
+    info.format = SDL_GPU_SHADERFORMAT_MSL;
+#else
     info.format = SDL_GPU_SHADERFORMAT_SPIRV;
+#endif
     info.stage = static_cast<SDL_GPUShaderStage>(stage);
     info.num_samplers = static_cast<Uint32>(input.samplers);
     info.num_storage_textures = static_cast<Uint32>(input.storage_textures);

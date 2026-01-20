@@ -21,23 +21,42 @@ namespace gf {
   namespace {
 
     const uint8_t default_vert_shader_code[] = {
-#include "default.vert.h"
+#if SDL_PLATFORM_MACOS
+#include "default.vert.msl.h"
+#else
+#include "default.vert.spirv.h"
+#endif
     };
 
     const uint8_t default_frag_shader_code[] = {
-#include "default.frag.h"
+#if SDL_PLATFORM_MACOS
+#include "default.frag.msl.h"
+#else
+#include "default.frag.spirv.h"
+#endif
     };
 
     const uint8_t text_frag_shader_code[] = {
-#include "text.frag.h"
+#if SDL_PLATFORM_MACOS
+#include "text.frag.msl.h"
+#else
+#include "text.frag.spirv.h"
+#endif
     };
 
     const uint8_t fullscreen_vert_shader_code[] = {
-#include "fullscreen.vert.h"
+#if SDL_PLATFORM_MACOS
+#include "fullscreen.vert.msl.h"
+#else
+#include "fullscreen.vert.spirv.h"
+#endif
     };
 
     const uint8_t fullscreen_frag_shader_code[] = {
+#if SDL_PLATFORM_MACOS
+#else
 #include "fullscreen.frag.h"
+#endif
     };
 
     struct ImguiVertex {
