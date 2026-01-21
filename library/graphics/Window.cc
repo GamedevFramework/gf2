@@ -20,8 +20,8 @@ namespace gf {
     {
       Uint32 flags = SDL_WINDOW_HIGH_PIXEL_DENSITY;
 
-#if SDL_PLATFORM_MACOS
-      flags |= SDL_WINDOW_METAL
+#ifdef SDL_PLATFORM_MACOS
+      flags |= SDL_WINDOW_METAL;
 #else
       flags |= SDL_WINDOW_VULKAN;
 #endif

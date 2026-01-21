@@ -21,7 +21,7 @@ namespace gf {
   namespace {
 
     const uint8_t default_vert_shader_code[] = {
-#if SDL_PLATFORM_MACOS
+#ifdef SDL_PLATFORM_MACOS
 #include "default.vert.msl.h"
 #else
 #include "default.vert.spirv.h"
@@ -29,7 +29,7 @@ namespace gf {
     };
 
     const uint8_t default_frag_shader_code[] = {
-#if SDL_PLATFORM_MACOS
+#ifdef SDL_PLATFORM_MACOS
 #include "default.frag.msl.h"
 #else
 #include "default.frag.spirv.h"
@@ -37,7 +37,7 @@ namespace gf {
     };
 
     const uint8_t text_frag_shader_code[] = {
-#if SDL_PLATFORM_MACOS
+#ifdef SDL_PLATFORM_MACOS
 #include "text.frag.msl.h"
 #else
 #include "text.frag.spirv.h"
@@ -45,7 +45,7 @@ namespace gf {
     };
 
     const uint8_t fullscreen_vert_shader_code[] = {
-#if SDL_PLATFORM_MACOS
+#ifdef SDL_PLATFORM_MACOS
 #include "fullscreen.vert.msl.h"
 #else
 #include "fullscreen.vert.spirv.h"
@@ -53,7 +53,7 @@ namespace gf {
     };
 
     const uint8_t fullscreen_frag_shader_code[] = {
-#if SDL_PLATFORM_MACOS
+#ifdef SDL_PLATFORM_MACOS
 #include "fullscreen.frag.msl.h"
 #else
 #include "fullscreen.frag.spirv.h"

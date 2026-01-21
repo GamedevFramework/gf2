@@ -23,7 +23,11 @@ namespace gf {
     Vec2I size = {};
     SDL_GetWindowSizeInPixels(m_window, &size.w, &size.h);
 
+#ifdef SDL_PLATFORM_MACOS
+    m_device = SDL_CreateGPUDevice(SDL_GPU_SHADERFORMAT_MSL, true, "metal");
+#else
     m_device = SDL_CreateGPUDevice(SDL_GPU_SHADERFORMAT_SPIRV, true, "vulkan");
+#endif
 
     if (!m_device.valid()) {
       Log::fatal("Could not create device: {}", SDL_GetError());
