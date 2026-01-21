@@ -17,5 +17,5 @@ do
   hexdump -ve '1/1 "0x%.2x, "' "${TEXT_MSL}" > "${HEADER_MSL}"
   echo >> "${HEADER_MSL}"
 
-#   rm -f ${BINARY} ${TEXT_MSL}
+  rm -f ${BINARY} ${TEXT_MSL}
 done
