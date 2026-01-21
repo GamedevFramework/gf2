@@ -13,9 +13,9 @@ do
 
   TEXT_MSL="${SOURCE}.msl"
   HEADER_MSL="${SOURCE}.msl.h"
-  spirv-cross --msl "${BINARY}" > "${TEXT_MSL}"
+  spirv-cross --msl --msl-decoration-binding "${BINARY}" > "${TEXT_MSL}"
   hexdump -ve '1/1 "0x%.2x, "' "${TEXT_MSL}" > "${HEADER_MSL}"
   echo >> "${HEADER_MSL}"
 
-  rm -f ${BINARY} ${TEXT_MSL}
+#   rm -f ${BINARY} ${TEXT_MSL}
 done
