@@ -18,7 +18,13 @@ namespace gf {
   namespace {
     Uint32 to_flags(Flags<WindowHints> hints)
     {
-      Uint32 flags = SDL_WINDOW_HIGH_PIXEL_DENSITY | SDL_WINDOW_VULKAN;
+      Uint32 flags = SDL_WINDOW_HIGH_PIXEL_DENSITY;
+
+#if SDL_PLATFORM_MACOS
+      flags |= SDL_WINDOW_METAL
+#else
+      flags |= SDL_WINDOW_VULKAN;
+#endif
 
       if (hints.test(WindowHints::Resizable)) {
         flags |= SDL_WINDOW_RESIZABLE;
