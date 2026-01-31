@@ -37,7 +37,7 @@ namespace home {
       assert(object_layer.objects.size() == 1);
       const auto& object = object_layer.objects.front();
 
-      assert(object.type == gf::MapObjectType::Tile);
+      assert(object.object_type == gf::MapObjectType::Tile);
       const gf::MapTile tile = std::get<gf::MapTile>(object.feature);
 
       const gf::MapTileset* tileset = tiled_map->tileset_from_gid(tile.gid);

@@ -42,7 +42,7 @@ namespace home {
         if (object_layer.layer.name == "Locations") {
           for (const gf::MapObject& object : object_layer.objects) {
             if (object.name == "start") {
-              assert(object.type == gf::MapObjectType::Point);
+              assert(object.object_type == gf::MapObjectType::Point);
               return object.location;
             }
           }
