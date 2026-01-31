@@ -2,7 +2,7 @@
 
 #include <gf2/core/Log.h>
 
-#include <gf2/graphics/RichMap.h>
+#include <gf2/graphics/TiledMapAssets.h>
 
 #include "GameHub.h"
 
@@ -36,7 +36,7 @@ namespace home {
 
     gf::Vec2F compute_initial_location(const WorldResources& data, gf::ResourceManager* resource_manager)
     {
-      const gf::RichMap* map = resource_manager->get<gf::RichMap>(data.map.filename);
+      const gf::TiledMapAssets* map = resource_manager->get<gf::TiledMapAssets>(data.map.filename);
 
       for (const gf::MapObjectLayer& object_layer : map->tiled_map()->object_layers) {
         if (object_layer.layer.name == "Locations") {

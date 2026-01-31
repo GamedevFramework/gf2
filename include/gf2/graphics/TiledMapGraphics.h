@@ -16,38 +16,38 @@
 #include "GpuBuffer.h"
 #include "GraphicsApi.h"
 #include "RenderObject.h"
-#include "RichMap.h"
+#include "TiledMapAssets.h"
 
 namespace gf {
   class RenderManager;
 
-  enum class RichMapQuery : uint8_t {
+  enum class TiledMapQuery : uint8_t {
     Tile = 0x01,
     Object = 0x02,
     Recursive = 0x04,
   };
 
   template<>
-  struct EnableBitmaskOperators<RichMapQuery> : std::true_type {
+  struct EnableBitmaskOperators<TiledMapQuery> : std::true_type {
   };
 
-  class GF_GRAPHICS_API RichMapRenderer {
+  class GF_GRAPHICS_API TiledMapGraphics {
   public:
-    RichMapRenderer(RichMap* map, RenderManager* render_manager);
-    RichMapRenderer(const RichMapResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
+    TiledMapGraphics(TiledMapAssets* map, RenderManager* render_manager);
+    TiledMapGraphics(const TiledMapResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
-    RichMapRenderer(const RichMapRenderer&) = delete;
-    RichMapRenderer(RichMapRenderer&&) noexcept = default;
-    ~RichMapRenderer() = default;
+    TiledMapGraphics(const TiledMapGraphics&) = delete;
+    TiledMapGraphics(TiledMapGraphics&&) noexcept = default;
+    ~TiledMapGraphics() = default;
 
-    RichMapRenderer& operator=(const RichMapRenderer&) = delete;
-    RichMapRenderer& operator=(RichMapRenderer&&) noexcept = default;
+    TiledMapGraphics& operator=(const TiledMapGraphics&) = delete;
+    TiledMapGraphics& operator=(TiledMapGraphics&&) noexcept = default;
 
-    std::vector<RenderGeometry> select_geometry(Vec2I position, std::string_view path, Flags<RichMapQuery> query = All);
-    std::vector<RenderGeometry> select_geometry(std::string_view path, Flags<RichMapQuery> query = All);
+    std::vector<RenderGeometry> select_geometry(Vec2I position, std::string_view path, Flags<TiledMapQuery> query = All);
+    std::vector<RenderGeometry> select_geometry(std::string_view path, Flags<TiledMapQuery> query = All);
 
-    std::vector<RenderGeometry> select_geometry(Vec2I position, Span<const MapLayerStructure> structure, Flags<RichMapQuery> query = All);
-    std::vector<RenderGeometry> select_geometry(Span<const MapLayerStructure> structure, Flags<RichMapQuery> query = All);
+    std::vector<RenderGeometry> select_geometry(Vec2I position, Span<const MapLayerStructure> structure, Flags<TiledMapQuery> query = All);
+    std::vector<RenderGeometry> select_geometry(Span<const MapLayerStructure> structure, Flags<TiledMapQuery> query = All);
 
     Vec2I compute_position(Vec2F location) const;
 
@@ -56,14 +56,14 @@ namespace gf {
       return m_grid;
     }
 
-    RichMap* rich_map()
+    TiledMapAssets* assets()
     {
-      return m_map;
+      return m_assets;
     }
 
     const TiledMap* tiled_map() const
     {
-      return m_map->tiled_map();
+      return m_assets->tiled_map();
     }
 
   private:
@@ -90,11 +90,11 @@ namespace gf {
       LayerBuffers buffers;
     };
 
-    void compute_geometries(RectI view, Flags<RichMapQuery> query, Span<const MapLayerStructure> structure, std::vector<RenderGeometry>& geometries);
+    void compute_geometries(RectI view, Flags<TiledMapQuery> query, Span<const MapLayerStructure> structure, std::vector<RenderGeometry>& geometries);
     void compute_tile_geometry(RectI view, TileLayer& tile_layer, std::vector<RenderGeometry>& geometries);
     void compute_object_geometry(ObjectLayer& object_layer, std::vector<RenderGeometry>& geometries);
 
-    RichMap* m_map;
+    TiledMapAssets* m_assets;
     AnyGrid m_grid;
     std::vector<TileLayer> m_tile_layers;
     std::vector<ObjectLayer> m_object_layers;

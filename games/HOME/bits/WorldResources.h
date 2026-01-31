@@ -5,7 +5,7 @@
 #include <gf2/core/AnimationData.h>
 #include <gf2/core/AudioSourceData.h>
 #include <gf2/core/ResourceBundle.h>
-#include <gf2/core/RichMapResource.h>
+#include <gf2/core/TiledMapResource.h>
 #include <gf2/core/SpriteData.h>
 #include <gf2/core/TextData.h>
 
@@ -17,7 +17,7 @@ namespace home {
 
     gf::ResourceBundle bundle(GameHub* hub) const;
 
-    gf::RichMapResource map;
+    gf::TiledMapResource map;
 
     gf::AudioSourceResource main_theme_music;
 

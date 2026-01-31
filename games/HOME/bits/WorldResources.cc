@@ -5,7 +5,7 @@
 #include <gf2/audio/Music.h>
 #include <gf2/audio/Sound.h>
 #include <gf2/framework/BundleBuilder.h>
-#include <gf2/graphics/RichMap.h>
+#include <gf2/graphics/TiledMapAssets.h>
 
 #include "GameHub.h"
 #include "SupplyType.h"

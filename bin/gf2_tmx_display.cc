@@ -8,15 +8,15 @@
 #include <gf2/core/ResourceLoaders.h>
 #include <gf2/core/ResourceManager.h>
 #include <gf2/core/ResourceRegistry.h>
-#include <gf2/core/RichMapResource.h>
+#include <gf2/core/TiledMapResource.h>
 #include <gf2/core/TiledMap.h>
 #include <gf2/core/Zoom.h>
 
 #include <gf2/graphics/Entity.h>
 #include <gf2/graphics/RenderManager.h>
 #include <gf2/graphics/RenderRecorder.h>
-#include <gf2/graphics/RichMap.h>
-#include <gf2/graphics/RichMapRenderer.h>
+#include <gf2/graphics/TiledMapAssets.h>
+#include <gf2/graphics/TiledMapGraphics.h>
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/SceneManager.h>
 
@@ -25,7 +25,7 @@ namespace {
 
   class MapEntity : public gf::Entity {
   public:
-    MapEntity(gf::RichMap* map, gf::RenderManager* render_manager)
+    MapEntity(gf::TiledMapAssets* map, gf::RenderManager* render_manager)
     : m_renderer(map, render_manager)
     {
     }
@@ -47,18 +47,18 @@ namespace {
       }
     }
 
-    const gf::RichMapRenderer* map_renderer() const
+    const gf::TiledMapGraphics* map_renderer() const
     {
       return &m_renderer;
     }
 
   private:
-    gf::RichMapRenderer m_renderer;
+    gf::TiledMapGraphics m_renderer;
   };
 
   class TmxScene : public gf::Scene {
   public:
-    TmxScene(gf::RichMap* map, gf::RenderManager* render_manager)
+    TmxScene(gf::TiledMapAssets* map, gf::RenderManager* render_manager)
     : m_zoom(world_camera())
     , m_map_entity(map, render_manager)
     {
@@ -109,8 +109,8 @@ int main(int argc, char* argv[])
     gf::ResourceRegistry<gf::GpuTexture> texture_registry;
     texture_registry.add_loader(gf::loader_for<gf::GpuTexture>(file_loader));
 
-    gf::ResourceRegistry<gf::RichMap> rich_map_registry;
-    rich_map_registry.add_loader(gf::loader_for<gf::RichMap>(file_loader));
+    gf::ResourceRegistry<gf::TiledMapAssets> rich_map_registry;
+    rich_map_registry.add_loader(gf::loader_for<gf::TiledMapAssets>(file_loader));
 
     gf::ResourceManager resource_manager;
     resource_manager.add_registry(&tiled_map_registry);
@@ -118,14 +118,14 @@ int main(int argc, char* argv[])
     resource_manager.add_registry(&rich_map_registry);
 
     gf::ResourceBundle bundle([filename, &scene_manager](gf::ResourceBundle* bundle, gf::ResourceManager* resource_manager, gf::ResourceAction action) {
-      bundle->handle<gf::RichMap>(filename, { scene_manager.render_manager(), resource_manager }, resource_manager, action);
+      bundle->handle<gf::TiledMapAssets>(filename, { scene_manager.render_manager(), resource_manager }, resource_manager, action);
     });
 
     bundle.load_from(&resource_manager);
 
     // scene
 
-    TmxScene scene(resource_manager.get<gf::RichMap>(filename), scene_manager.render_manager());
+    TmxScene scene(resource_manager.get<gf::TiledMapAssets>(filename), scene_manager.render_manager());
 
     return scene_manager.run(&scene);
   } catch (...) {

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
 
-#include <gf2/graphics/RichMapRenderer.h>
+#include <gf2/graphics/TiledMapGraphics.h>
 
 #include <cstdint>
 
@@ -60,32 +60,32 @@ namespace gf {
 
   }
 
-  RichMapRenderer::RichMapRenderer(RichMap* map, RenderManager* render_manager)
-  : m_map(map)
-  , m_grid(compute_grid(m_map->tiled_map()))
+  TiledMapGraphics::TiledMapGraphics(TiledMapAssets* map, RenderManager* render_manager)
+  : m_assets(map)
+  , m_grid(compute_grid(m_assets->tiled_map()))
   {
     compute_tile_layers(render_manager);
     compute_object_layers(render_manager);
   }
 
-  RichMapRenderer::RichMapRenderer(const RichMapResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
-  : RichMapRenderer(resource_manager->get<RichMap>(resource.filename), render_manager)
+  TiledMapGraphics::TiledMapGraphics(const TiledMapResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
+  : TiledMapGraphics(resource_manager->get<TiledMapAssets>(resource.filename), render_manager)
   {
   }
 
-  std::vector<RenderGeometry> RichMapRenderer::select_geometry(Vec2I position, std::string_view path, Flags<RichMapQuery> query)
+  std::vector<RenderGeometry> TiledMapGraphics::select_geometry(Vec2I position, std::string_view path, Flags<TiledMapQuery> query)
   {
     const auto& structure = tiled_map()->compute_structure(path);
     return select_geometry(position, structure, query);
   }
 
-  std::vector<RenderGeometry> RichMapRenderer::select_geometry(std::string_view path, Flags<RichMapQuery> query)
+  std::vector<RenderGeometry> TiledMapGraphics::select_geometry(std::string_view path, Flags<TiledMapQuery> query)
   {
     const auto& structure = tiled_map()->compute_structure(path);
     return select_geometry(structure, query);
   }
 
-  std::vector<RenderGeometry> RichMapRenderer::select_geometry(Vec2I position, Span<const MapLayerStructure> structure, Flags<RichMapQuery> query)
+  std::vector<RenderGeometry> TiledMapGraphics::select_geometry(Vec2I position, Span<const MapLayerStructure> structure, Flags<TiledMapQuery> query)
   {
     std::vector<RenderGeometry> geometries;
     const RectI neighbors = RectI::from_center_size(position / ChunkSize, { 3, 3 });
@@ -93,7 +93,7 @@ namespace gf {
     return geometries;
   }
 
-  std::vector<RenderGeometry> RichMapRenderer::select_geometry(Span<const MapLayerStructure> structure, Flags<RichMapQuery> query)
+  std::vector<RenderGeometry> TiledMapGraphics::select_geometry(Span<const MapLayerStructure> structure, Flags<TiledMapQuery> query)
   {
     RectI neighbors = RectI::from_size({ 1, 1 });
 
@@ -106,13 +106,13 @@ namespace gf {
     return geometries;
   }
 
-  Vec2I RichMapRenderer::compute_position(Vec2F location) const
+  Vec2I TiledMapGraphics::compute_position(Vec2F location) const
   {
     return m_grid.compute_position(location);
   }
 
   // useful documentation: http://eishiya.com/articles/tiled/#rendering-maps
-  void RichMapRenderer::compute_tile_layers(RenderManager* render_manager)
+  void TiledMapGraphics::compute_tile_layers(RenderManager* render_manager)
   {
     const TiledMap* map = tiled_map();
 
@@ -144,7 +144,7 @@ namespace gf {
           assert(tileset != nullptr);
           const uint32_t gid = tile.gid - tileset->first_gid;
 
-          const GpuTexture* texture = rich_map()->texture(tileset->texture_index);
+          const GpuTexture* texture = assets()->texture(tileset->texture_index);
           const RectF texture_region = tileset->compute_texture_region(gid, texture->size());
 
           RectI bounds = m_grid.compute_cell_bounds(position);
@@ -189,7 +189,7 @@ namespace gf {
     }
   }
 
-  void RichMapRenderer::compute_object_layers(RenderManager* render_manager)
+  void TiledMapGraphics::compute_object_layers(RenderManager* render_manager)
   {
     const TiledMap* map = tiled_map();
 
@@ -197,7 +197,7 @@ namespace gf {
       RawSplitGeometry split_geometry;
 
       for (const auto& object : raw_object_layer.objects) {
-        if (object.type != MapObjectType::Tile) {
+        if (object.object_type != MapObjectType::Tile) {
           continue;
         }
 
@@ -206,7 +206,7 @@ namespace gf {
         assert(tileset != nullptr);
         const uint32_t gid = tile.gid - tileset->first_gid;
 
-        const GpuTexture* texture = rich_map()->texture(tileset->texture_index);
+        const GpuTexture* texture = assets()->texture(tileset->texture_index);
         const RectF texture_region = tileset->compute_texture_region(gid, texture->size());
 
         const RectF bounds = RectF::from_size(tileset->tile_size);
@@ -251,27 +251,27 @@ namespace gf {
   }
 
   // NOLINTNEXTLINE(misc-no-recursion)
-  void RichMapRenderer::compute_geometries(RectI view, Flags<RichMapQuery> query, Span<const MapLayerStructure> structure, std::vector<RenderGeometry>& geometries)
+  void TiledMapGraphics::compute_geometries(RectI view, Flags<TiledMapQuery> query, Span<const MapLayerStructure> structure, std::vector<RenderGeometry>& geometries)
   {
     const TiledMap* map = tiled_map();
 
     for (const auto& layer : structure) {
       switch (layer.type) {
         case MapLayerType::Group:
-          if (query.test(RichMapQuery::Recursive)) {
+          if (query.test(TiledMapQuery::Recursive)) {
             const std::vector<MapLayerStructure>& sub_structure = map->group_layers[layer.layer_index].sub_layers;
             compute_geometries(view, query, sub_structure, geometries);
           }
           break;
 
         case MapLayerType::Tile:
-          if (query.test(RichMapQuery::Tile)) {
+          if (query.test(TiledMapQuery::Tile)) {
             compute_tile_geometry(view, m_tile_layers[layer.layer_index], geometries);
           }
           break;
 
         case MapLayerType::Object:
-          if (query.test(RichMapQuery::Object)) {
+          if (query.test(TiledMapQuery::Object)) {
             compute_object_geometry(m_object_layers[layer.layer_index], geometries);
           }
           break;
@@ -279,7 +279,7 @@ namespace gf {
     }
   }
 
-  void RichMapRenderer::compute_tile_geometry(RectI view, TileLayer& tile_layer, std::vector<RenderGeometry>& geometries)
+  void TiledMapGraphics::compute_tile_geometry(RectI view, TileLayer& tile_layer, std::vector<RenderGeometry>& geometries)
   {
     if (auto maybe_view = view.intersection(RectI::from_size(tile_layer.chunks.size()))) {
       for (auto xy : gf::position_range(maybe_view->size())) {
@@ -297,7 +297,7 @@ namespace gf {
         geometry.indices = &chunk.indices;
 
         for (auto range : chunk.ranges) {
-          geometry.texture = rich_map()->texture(range.texture_index);
+          geometry.texture = assets()->texture(range.texture_index);
           geometry.first = range.first;
           geometry.count = range.size;
 
@@ -307,7 +307,7 @@ namespace gf {
     }
   }
 
-  void RichMapRenderer::compute_object_geometry(ObjectLayer& object_layer, std::vector<RenderGeometry>& geometries)
+  void TiledMapGraphics::compute_object_geometry(ObjectLayer& object_layer, std::vector<RenderGeometry>& geometries)
   {
     RenderGeometry geometry = {};
     geometry.pipeline = RenderPipelineType::Default;
@@ -315,7 +315,7 @@ namespace gf {
     geometry.indices = &object_layer.buffers.indices;
 
     for (auto range : object_layer.buffers.ranges) {
-      geometry.texture = rich_map()->texture(range.texture_index);
+      geometry.texture = assets()->texture(range.texture_index);
       geometry.first = range.first;
       geometry.count = range.size;
 

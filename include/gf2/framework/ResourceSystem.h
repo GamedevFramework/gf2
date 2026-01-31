@@ -16,7 +16,7 @@
 #include <gf2/audio/Sound.h>
 #include <gf2/graphics/ConsoleFont.h>
 #include <gf2/graphics/GpuTexture.h>
-#include <gf2/graphics/RichMap.h>
+#include <gf2/graphics/TiledMapAssets.h>
 
 #include "FrameworkApi.h"
 
@@ -47,7 +47,7 @@ namespace gf {
     // from graphics
     ResourceRegistry<ConsoleFont> m_console_font_registry;
     ResourceRegistry<GpuTexture> m_texture_registry;
-    ResourceRegistry<RichMap> m_rich_map_registry;
+    ResourceRegistry<TiledMapAssets> m_map_assets_registry;
     // from audio
     ResourceRegistry<Sound> m_sound_registry;
     ResourceRegistry<Music> m_music_registry;

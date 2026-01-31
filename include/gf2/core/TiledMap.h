@@ -33,6 +33,7 @@ namespace gf {
 
   struct GF_CORE_API MapLayer {
     uint32_t properties_index = NoIndex;
+    bool visible;
     std::string name;
     std::string type;
     Vec2I offset = { 0, 0 };
@@ -77,9 +78,11 @@ namespace gf {
 
   struct GF_CORE_API MapObject {
     uint32_t properties_index = NoIndex;
-    MapObjectType type = MapObjectType::Point;
+    MapObjectType object_type = MapObjectType::Point;
+    bool visible;
     Id id = InvalidId;
     std::string name;
+    std::string type;
     Vec2F location = { 0.0f, 0.0f };
     float rotation = 0.0f;
     std::variant<std::monostate, Vec2F, MapTile, std::vector<Vec2F>> feature;

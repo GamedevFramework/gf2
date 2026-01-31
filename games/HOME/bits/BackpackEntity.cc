@@ -26,7 +26,7 @@ namespace home {
   , m_oxygen_sprite(resources.oxygen_icon, hub->render_manager(), hub->resource_manager())
   {
 
-    const auto* rich_map = hub->resource_manager()->get<gf::RichMap>(resources.map.filename);
+    const auto* rich_map = hub->resource_manager()->get<gf::TiledMapAssets>(resources.map.filename);
     const gf::TiledMap* tiled_map = rich_map->tiled_map();
 
     for (const auto& object_layer : tiled_map->object_layers) {

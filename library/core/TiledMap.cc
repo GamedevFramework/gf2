@@ -201,12 +201,12 @@ namespace gf {
     {
       MapLayer layer;
       layer.properties_index = parse_tmx_properties(node, map);
+      layer.visible = node.attribute("visible").as_bool(true);
       layer.name = node.attribute("name").as_string();
       layer.type = node.attribute("class").as_string();
       layer.offset.x = node.attribute("offsetx").as_int(0);
       layer.offset.y = node.attribute("offsety").as_int(0);
       unsupported_attribute(node, "opacity");
-      unsupported_attribute(node, "visible");
       return layer;
     }
 
@@ -543,34 +543,33 @@ namespace gf {
     {
       MapObject object;
       object.properties_index = parse_tmx_properties(node, map);
+      object.visible = node.attribute("visible").as_bool(true);
       object.id = gf::id(node.attribute("id").as_int());
       object.name = node.attribute("name").as_string();
+      object.type = node.attribute("type").as_string();
       object.location.x = node.attribute("x").as_float();
       object.location.y = node.attribute("y").as_float();
       object.rotation = node.attribute("rotation").as_float();
 
-      unsupported_attribute(node, "type"); // TODO?
-      unsupported_attribute(node, "visible");
-
       if (const pugi::xml_node polygon = node.child("polygon"); polygon) {
-        object.type = MapObjectType::Polygon;
+        object.object_type = MapObjectType::Polygon;
         object.feature = parse_points(polygon.attribute("points").as_string());
       } else if (const pugi::xml_node polyline = node.child("polyline"); polyline) {
-        object.type = MapObjectType::Polyline;
+        object.object_type = MapObjectType::Polyline;
         object.feature = parse_points(polyline.attribute("points").as_string());
       } else if (!node.child("text").empty()) {
         unsupported_node(node, "text");
       } else if (const pugi::xml_attribute gid = node.attribute("gid"); gid) {
-        object.type = MapObjectType::Tile;
+        object.object_type = MapObjectType::Tile;
         object.feature = parse_gid(gid.as_uint());
       } else if (!node.child("point").empty()) {
-        object.type = MapObjectType::Point;
+        object.object_type = MapObjectType::Point;
       } else if (!node.child("ellipse").empty()) {
-        object.type = MapObjectType::Ellipse;
+        object.object_type = MapObjectType::Ellipse;
         const Vec2F size = { node.attribute("width").as_float(), node.attribute("height").as_float() };
         object.feature = size;
       } else {
-        object.type = MapObjectType::Rectangle;
+        object.object_type = MapObjectType::Rectangle;
         const Vec2F size = { node.attribute("width").as_float(), node.attribute("height").as_float() };
         object.feature = size;
       }

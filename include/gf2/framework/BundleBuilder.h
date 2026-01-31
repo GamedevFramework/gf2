@@ -22,7 +22,7 @@ namespace gf {
   struct ConsoleData;
   struct FontResource;
   struct NinePatchResource;
-  struct RichMapResource;
+  struct TiledMapResource;
   struct RichTextResource;
   struct SpriteResource;
   struct TextResource;
@@ -36,7 +36,7 @@ namespace gf {
     void add_in_bundle(const AnimationGroupResource& resource);
     void add_in_bundle(const AudioSourceResource& resource);
     void add_in_bundle(const NinePatchResource& resource);
-    void add_in_bundle(const RichMapResource& resource);
+    void add_in_bundle(const TiledMapResource& resource);
     void add_in_bundle(const RichTextResource& resource);
     void add_in_bundle(const SpriteResource& resource);
     void add_in_bundle(const TextResource& resource);

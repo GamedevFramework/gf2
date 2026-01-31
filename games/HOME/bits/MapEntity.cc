@@ -111,7 +111,7 @@ namespace home {
       }
 
       for (const auto& object : object_layer.objects) {
-        if (object.type != gf::MapObjectType::Tile) {
+        if (object.object_type != gf::MapObjectType::Tile) {
           continue;
         }
 

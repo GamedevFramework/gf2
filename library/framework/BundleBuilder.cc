@@ -9,14 +9,14 @@
 #include <gf2/core/FontFace.h>
 #include <gf2/core/FontResource.h>
 #include <gf2/core/NinePatchData.h>
-#include <gf2/core/RichMapResource.h>
 #include <gf2/core/SpriteData.h>
 #include <gf2/core/TextData.h>
+#include <gf2/core/TiledMapResource.h>
 
 #include <gf2/audio/Music.h>
 #include <gf2/audio/Sound.h>
 #include <gf2/graphics/GpuTexture.h>
-#include <gf2/graphics/RichMap.h>
+#include <gf2/graphics/TiledMapAssets.h>
 #include <gf2/framework/SceneSystem.h>
 
 namespace gf {
@@ -75,7 +75,7 @@ namespace gf {
     add_raw_texture(resource.texture);
   }
 
-  void BundleBuilder::add_in_bundle(const RichMapResource& resource)
+  void BundleBuilder::add_in_bundle(const TiledMapResource& resource)
   {
     add_raw_map(resource.filename);
   }
@@ -142,7 +142,7 @@ namespace gf {
       }
 
       for (const std::filesystem::path& map : m_maps) {
-        bundle->handle<RichMap>(map, { m_render_manager, resource_manager }, resource_manager, action);
+        bundle->handle<TiledMapAssets>(map, { m_render_manager, resource_manager }, resource_manager, action);
       }
 
       for (const std::filesystem::path& sound : m_sounds) {

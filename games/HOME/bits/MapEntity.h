@@ -2,7 +2,7 @@
 #define HOME_MAP_ENTITY_H
 
 #include <gf2/graphics/Entity.h>
-#include <gf2/graphics/RichMapRenderer.h>
+#include <gf2/graphics/TiledMapGraphics.h>
 #include <gf2/physics/PhysicsBody.h>
 #include <gf2/physics/PhysicsChain.h>
 #include <gf2/physics/PhysicsShape.h>
@@ -22,7 +22,7 @@ namespace home {
     void render(gf::RenderRecorder& recorder) override;
 
   private:
-    gf::RichMapRenderer m_map_renderer;
+    gf::TiledMapGraphics m_map_renderer;
     gf::Vec2F m_location = { 0.0f, 0.0f };
     gf::PhysicsBody m_body;
     std::vector<gf::PhysicsChain> m_chains;

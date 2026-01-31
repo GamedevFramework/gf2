@@ -51,7 +51,7 @@ namespace home {
   , m_metal_sprite(resources.metal_sprite, hub->render_manager(), hub->resource_manager())
   , m_oxygen_sprite(resources.oxygen_sprite, hub->render_manager(), hub->resource_manager())
   {
-    const gf::RichMap* rich_map = hub->resource_manager()->get<gf::RichMap>(resources.map.filename);
+    const gf::TiledMapAssets* rich_map = hub->resource_manager()->get<gf::TiledMapAssets>(resources.map.filename);
     const gf::TiledMap* tiled_map = rich_map->tiled_map();
 
     for (const auto& object_layer : tiled_map->object_layers) {
@@ -60,7 +60,7 @@ namespace home {
       }
 
       for (const auto& object : object_layer.objects) {
-        if (object.type != gf::MapObjectType::Tile) {
+        if (object.object_type != gf::MapObjectType::Tile) {
           continue;
         }
 

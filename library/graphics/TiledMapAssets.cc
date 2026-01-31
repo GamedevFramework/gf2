@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
 
-#include <gf2/graphics/RichMap.h>
+#include <gf2/graphics/TiledMapAssets.h>
 
 #include <gf2/core/ResourceBundle.h>
 #include <gf2/core/ResourceManager.h>
@@ -10,7 +10,7 @@
 
 namespace gf {
 
-  RichMap::RichMap(const TiledMap* map, std::vector<GpuTexture*> textures)
+  TiledMapAssets::TiledMapAssets(const TiledMap* map, std::vector<GpuTexture*> textures)
   : m_tiled_map(map)
   , m_textures(std::move(textures))
   {
@@ -32,19 +32,19 @@ namespace gf {
 
   }
 
-  RichMap::RichMap(const RichMapResource& resource, ResourceManager* resource_manager)
+  TiledMapAssets::TiledMapAssets(const TiledMapResource& resource, ResourceManager* resource_manager)
   : m_tiled_map(resource_manager->get<TiledMap>(resource.filename))
   , m_textures(load_resources(m_tiled_map, resource_manager))
   {
   }
 
-  RichMap::RichMap(const std::filesystem::path& filename, RichMapContext context)
+  TiledMapAssets::TiledMapAssets(const std::filesystem::path& filename, TiledMapAssetsContext context)
   : m_tiled_map(context.resource_manager->get<TiledMap>(filename))
   , m_textures(load_resources(m_tiled_map, context.resource_manager))
   {
   }
 
-  ResourceBundle RichMap::bundle(const std::filesystem::path& filename, RichMapContext context)
+  ResourceBundle TiledMapAssets::bundle(const std::filesystem::path& filename, TiledMapAssetsContext context)
   {
     const TiledMap* map = context.resource_manager->get<TiledMap>(filename);
 
@@ -55,12 +55,12 @@ namespace gf {
     });
   }
 
-  const TiledMap* RichMap::tiled_map() const
+  const TiledMap* TiledMapAssets::tiled_map() const
   {
     return m_tiled_map;
   }
 
-  GpuTexture* RichMap::texture(uint32_t i)
+  GpuTexture* TiledMapAssets::texture(uint32_t i)
   {
     assert(i < m_textures.size());
     return m_textures[i];
