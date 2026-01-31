@@ -10,6 +10,7 @@
 #include <gf2/core/FontResource.h>
 #include <gf2/core/NinePatchData.h>
 #include <gf2/core/SpriteData.h>
+#include <gf2/core/ShapeBuffer.h>
 #include <gf2/core/TextData.h>
 #include <gf2/core/TiledMapResource.h>
 
@@ -88,6 +89,11 @@ namespace gf {
     add_raw_font(resource.bold_italic_font);
   }
 
+  void BundleBuilder::add_in_bundle(const ShapeResource& resource)
+  {
+    add_raw_texture(resource.texture);
+  }
+
   void BundleBuilder::add_in_bundle(const SpriteResource& resource)
   {
     add_raw_texture(resource.texture);
@@ -100,32 +106,44 @@ namespace gf {
 
   void BundleBuilder::add_raw_texture(const std::filesystem::path& path)
   {
-    m_textures.push_back(path);
+    if (!path.empty()) {
+      m_textures.push_back(path);
+    }
   }
 
   void BundleBuilder::add_raw_font(const std::filesystem::path& path)
   {
-    m_fonts.push_back(path);
+    if (!path.empty()) {
+      m_fonts.push_back(path);
+    }
   }
 
   void BundleBuilder::add_raw_map(const std::filesystem::path& path)
   {
-    m_maps.push_back(path);
+    if (!path.empty()) {
+      m_maps.push_back(path);
+    }
   }
 
   void BundleBuilder::add_raw_sound(const std::filesystem::path& path)
   {
-    m_sounds.push_back(path);
+    if (!path.empty()) {
+      m_sounds.push_back(path);
+    }
   }
 
   void BundleBuilder::add_raw_music(const std::filesystem::path& path)
   {
-    m_musics.push_back(path);
+    if (!path.empty()) {
+      m_musics.push_back(path);
+    }
   }
 
   void BundleBuilder::add_raw_console_font(const std::filesystem::path& path, const ConsoleData& data)
   {
-    m_console_fonts.push_back({ path, data });
+    if (!path.empty()) {
+      m_console_fonts.push_back({ path, data });
+    }
   }
 
 
