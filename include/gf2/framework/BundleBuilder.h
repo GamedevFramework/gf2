@@ -49,10 +49,10 @@ namespace gf {
     void add_raw_texture(const std::filesystem::path& path);
     void add_raw_font(const std::filesystem::path& path);
     void add_raw_map(const std::filesystem::path& path);
-    void add_raw_sound(const std::filesystem::path& path);
-    void add_raw_music(const std::filesystem::path& path);
+    void add_raw_sound(const AudioSourceResource& resource);
+    void add_raw_music(const AudioSourceResource& resource);
 
-    void add_raw_console_font(const std::filesystem::path& path, const ConsoleData& data);
+    void add_raw_console_font(const ConsoleResource& resource);
 
     ResourceBundle make_bundle() const;
 
@@ -64,8 +64,8 @@ namespace gf {
     std::vector<std::filesystem::path> m_textures;
     std::vector<std::filesystem::path> m_fonts;
     std::vector<std::filesystem::path> m_maps;
-    std::vector<std::filesystem::path> m_sounds;
-    std::vector<std::filesystem::path> m_musics;
+    std::vector<AudioSourceResource> m_sounds;
+    std::vector<AudioSourceResource> m_musics;
 
     std::vector<ConsoleResource> m_console_fonts;
   };

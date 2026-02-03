@@ -53,17 +53,17 @@ namespace gf {
   {
     switch (resource.data.type) {
       case AudioSourceType::Sound:
-        add_raw_sound(resource.filename);
+        add_raw_sound(resource);
         break;
       case AudioSourceType::Music:
-        add_raw_music(resource.filename);
+        add_raw_music(resource);
         break;
     }
   }
 
   void BundleBuilder::add_in_bundle(const ConsoleResource& resource)
   {
-    add_raw_console_font(resource.console_font, resource.data);
+    add_raw_console_font(resource);
   }
 
   void BundleBuilder::add_in_bundle(const FontResource& resource)
@@ -125,24 +125,24 @@ namespace gf {
     }
   }
 
-  void BundleBuilder::add_raw_sound(const std::filesystem::path& path)
+  void BundleBuilder::add_raw_sound(const AudioSourceResource& resource)
   {
-    if (!path.empty()) {
-      m_sounds.push_back(path);
+    if (!resource.filename.empty()) {
+      m_sounds.push_back(resource);
     }
   }
 
-  void BundleBuilder::add_raw_music(const std::filesystem::path& path)
+  void BundleBuilder::add_raw_music(const AudioSourceResource& resource)
   {
-    if (!path.empty()) {
-      m_musics.push_back(path);
+    if (!resource.filename.empty()) {
+      m_musics.push_back(resource);
     }
   }
 
-  void BundleBuilder::add_raw_console_font(const std::filesystem::path& path, const ConsoleData& data)
+  void BundleBuilder::add_raw_console_font(const ConsoleResource& resource)
   {
-    if (!path.empty()) {
-      m_console_fonts.push_back({ path, data });
+    if (!resource.console_font.empty()) {
+      m_console_fonts.push_back(resource);
     }
   }
 
@@ -163,12 +163,12 @@ namespace gf {
         bundle->handle<TiledMapAssets>(map, { m_render_manager, resource_manager }, resource_manager, action);
       }
 
-      for (const std::filesystem::path& sound : m_sounds) {
-        bundle->handle<Sound>(sound, m_audio_manager, resource_manager, action);
+      for (const AudioSourceResource& resource : m_sounds) {
+        bundle->handle<Sound>(resource.filename, { resource.data.loop, resource.data.volume, m_audio_manager }, resource_manager, action);
       }
 
-      for (const std::filesystem::path& music : m_musics) {
-        bundle->handle<Music>(music, m_audio_manager, resource_manager, action);
+      for (const AudioSourceResource& resource : m_musics) {
+        bundle->handle<Music>(resource.filename, { resource.data.loop, resource.data.volume, m_audio_manager }, resource_manager, action);
       }
 
       for (const ConsoleResource& console_resource : m_console_fonts) {

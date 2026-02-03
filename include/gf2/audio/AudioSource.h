@@ -20,6 +20,12 @@ using ma_sound = struct ma_sound;
 namespace gf {
   class AudioManager;
 
+  struct AudioSourceContext {
+    bool loop = false;
+    float volume = 1.0f;
+    AudioManager* audio_manager = nullptr;
+  };
+
   class GF_AUDIO_API AudioSource {
   public:
     AudioSource(const AudioSource&) = delete;

@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
   }
 
   gf::AudioManager audio_manager;
-  gf::Sound sound(argv[1], &audio_manager);
+  gf::Sound sound(argv[1], { false, 1.0, &audio_manager });
   sound.start();
 
   std::cout << "Press enter to stop...\n";

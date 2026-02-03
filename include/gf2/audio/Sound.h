@@ -11,9 +11,9 @@ namespace gf {
 
   class GF_AUDIO_API Sound : public AudioSource {
   public:
-    using Context = AudioManager*;
+    using Context = AudioSourceContext;
 
-    Sound(const std::filesystem::path& filename, AudioManager* manager);
+    Sound(const std::filesystem::path& filename, const AudioSourceContext& context);
   };
 
 }
