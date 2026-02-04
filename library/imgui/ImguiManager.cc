@@ -68,6 +68,8 @@ namespace gf {
     io.GetClipboardTextFn = get_clipboard_text;
     io.ClipboardUserData = nullptr;
 
+    window->start_text_input(); // TODO: use IME function?
+
     io.BackendPlatformUserData = static_cast<void*>(window);
 
     io.BackendRendererName = "imgui_impl_gf2";
@@ -79,6 +81,10 @@ namespace gf {
   ImguiManager::~ImguiManager()
   {
     ImGuiIO& io = ImGui::GetIO();
+
+    auto* window = static_cast<Window*>(io.BackendPlatformUserData);
+    window->stop_text_input();
+
     io.BackendRendererUserData = nullptr;
     io.BackendPlatformUserData = nullptr;
   }

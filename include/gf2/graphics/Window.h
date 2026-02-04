@@ -77,6 +77,10 @@ namespace gf {
     void set_decorated(bool decorated = true);
     bool decorated();
 
+    void start_text_input();
+    void stop_text_input();
+    bool text_input_active();
+
   private:
     friend class RenderManager;
 

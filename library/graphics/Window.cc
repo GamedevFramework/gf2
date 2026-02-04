@@ -7,7 +7,6 @@
 #include <utility>
 
 #include <SDL3/SDL.h>
-#include <SDL3/SDL_vulkan.h>
 
 #include <gf2/core/Log.h>
 
@@ -268,6 +267,29 @@ namespace gf {
     assert(m_window);
     auto flags = SDL_GetWindowFlags(m_window);
     return (flags & SDL_WINDOW_BORDERLESS) == 0;
+  }
+
+  void Window::start_text_input()
+  {
+    bool result = SDL_StartTextInput(m_window);
+
+    if (!result) {
+      Log::fatal("Could not start text input: {}", SDL_GetError());
+    }
+  }
+
+  void Window::stop_text_input()
+  {
+    bool result = SDL_StopTextInput(m_window);
+
+    if (!result) {
+      Log::fatal("Could not start text input: {}", SDL_GetError());
+    }
+  }
+
+  bool Window::text_input_active()
+  {
+    return SDL_TextInputActive(m_window);
   }
 
 }
