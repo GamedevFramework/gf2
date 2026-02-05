@@ -10,11 +10,11 @@
 namespace gf {
 
   struct GF_CORE_API Blit {
-    RectI source_region;
+    RectI origin_region;
     Vec2I target_offset;
   };
 
-  GF_CORE_API Blit compute_blit(RectI source_region, Vec2I source_size, Vec2I target_offset, Vec2I target_size);
+  GF_CORE_API Blit compute_blit(RectI origin_region, Vec2I origin_size, Vec2I target_offset, Vec2I target_size);
 
 }
 

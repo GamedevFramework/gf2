@@ -83,12 +83,12 @@ namespace gf {
   {
     const Blit blit = compute_blit(source_region, source.size(), target_offset, m_size);
 
-    if (blit.source_region.empty()) {
+    if (blit.origin_region.empty()) {
       return;
     }
 
-    for (const Vec2I offset : gf::position_range(blit.source_region.extent)) {
-      put_pixel(blit.target_offset + offset, source(blit.source_region.offset + offset));
+    for (const Vec2I offset : gf::position_range(blit.origin_region.extent)) {
+      put_pixel(blit.target_offset + offset, source(blit.origin_region.offset + offset));
     }
   }
 

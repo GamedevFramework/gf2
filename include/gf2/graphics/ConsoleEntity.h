@@ -13,7 +13,7 @@ namespace gf {
   public:
     ConsoleEntity() = default;
     ConsoleEntity(ConsoleFont* font);
-    ConsoleEntity(const ConsoleResource& resource, ResourceManager* resource_manager);
+    ConsoleEntity(const ConsoleFontResource& resource, ResourceManager* resource_manager);
 
     ConsoleGraphics& graphics()
     {

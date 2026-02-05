@@ -4,7 +4,7 @@
 #define GF_CONSOLE_GRAPHICS_H
 
 #include <gf2/core/Console.h>
-#include <gf2/core/ConsoleData.h>
+#include <gf2/core/ConsoleFontResource.h>
 
 #include "ConsoleFont.h"
 #include "GpuDynamicBuffer.h"
@@ -18,23 +18,35 @@ namespace gf {
   class GF_GRAPHICS_API ConsoleGraphics {
   public:
     ConsoleGraphics();
-    ConsoleGraphics(ConsoleFont* font);
-    ConsoleGraphics(const ConsoleResource& resource, ResourceManager* resource_manager);
+    ConsoleGraphics(ConsoleFont* picture_font, ConsoleFont* text_font = nullptr);
+    ConsoleGraphics(const ConsoleFontResource& resource, ResourceManager* resource_manager);
+    ConsoleGraphics(const MixedConsoleFontResource& resource, ResourceManager* resource_manager);
 
-    ConsoleFont* font()
+    ConsoleFont* picture_font()
     {
-      return m_font;
+      return m_picture_font;
     }
 
-    void set_font(ConsoleFont* font)
+    ConsoleFont* text_font()
     {
-      m_font = font;
+      return m_text_font;
     }
 
-    void update(const Console& buffer, RenderManager* render_manager);
+    void set_picture_font(ConsoleFont* font)
+    {
+      m_picture_font = font;
+    }
+
+    void set_text_font(ConsoleFont* font)
+    {
+      m_text_font = font;
+    }
+
+    void update(const Console& console, RenderManager* render_manager);
 
     RenderGeometry background_geometry();
-    RenderGeometry foreground_geometry();
+    RenderGeometry foreground_picture_geometry();
+    RenderGeometry foreground_text_geometry();
 
     RectF bounds() const
     {
@@ -42,14 +54,18 @@ namespace gf {
     }
 
   private:
-    void update_background(const Console& buffer, RenderManager* render_manager);
-    void update_foreground(const Console& buffer, RenderManager* render_manager);
+    void update_background(const Console& console, RenderManager* render_manager);
+    void update_foreground_picture(const Console& console, RenderManager* render_manager);
+    void update_foreground_text(const Console& console, RenderManager* render_manager);
 
-    ConsoleFont* m_font = nullptr;
+    ConsoleFont* m_picture_font = nullptr;
+    ConsoleFont* m_text_font = nullptr;
     GpuDynamicBuffer m_background_vertices;
     GpuDynamicBuffer m_background_indices;
-    GpuDynamicBuffer m_foreground_vertices;
-    GpuDynamicBuffer m_foreground_indices;
+    GpuDynamicBuffer m_foreground_picture_vertices;
+    GpuDynamicBuffer m_foreground_picture_indices;
+    GpuDynamicBuffer m_foreground_text_vertices;
+    GpuDynamicBuffer m_foreground_text_indices;
     RectF m_bounds = {};
   };
 

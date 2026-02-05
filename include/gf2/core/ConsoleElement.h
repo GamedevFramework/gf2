@@ -3,11 +3,11 @@
 #ifndef GF_CONSOLE_ELEMENT_H
 #define GF_CONSOLE_ELEMENT_H
 
+#include "Console.h"
 #include "CoreApi.h"
 #include "Time.h"
 
 namespace gf {
-  class Console;
 
   class GF_CORE_API ConsoleElement {
   public:

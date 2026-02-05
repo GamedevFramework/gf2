@@ -5,6 +5,8 @@
 
 #include <cassert>
 
+#include <gf2/core/ConsoleOperations.h>
+
 namespace gf {
 
   ConsoleSceneManager::ConsoleSceneManager(Vec2I size)
@@ -86,7 +88,7 @@ namespace gf {
       return;
     }
 
-    m_console.clear(m_scenes.back()->clear_style());
+    console_clear(m_console, m_scenes.back()->clear_style());
 
     for (ConsoleScene* scene : m_scenes) {
       if (!scene->hidden()) {

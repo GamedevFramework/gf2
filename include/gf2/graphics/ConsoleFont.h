@@ -7,7 +7,7 @@
 
 #include <filesystem>
 
-#include <gf2/core/ConsoleData.h>
+#include <gf2/core/ConsoleFontData.h>
 #include <gf2/core/Span.h>
 
 #include "GraphicsApi.h"

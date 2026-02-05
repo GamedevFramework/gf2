@@ -5,11 +5,11 @@
 
 #include <vector>
 
+#include "Console.h"
 #include "ConsoleElement.h"
 #include "CoreApi.h"
 
 namespace gf {
-  class Console;
 
   class GF_CORE_API ConsoleElementContainer {
   public:

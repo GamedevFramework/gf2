@@ -13,7 +13,7 @@ namespace gf {
   {
   }
 
-  ConsoleEntity::ConsoleEntity(const ConsoleResource& resource, ResourceManager* resource_manager)
+  ConsoleEntity::ConsoleEntity(const ConsoleFontResource& resource, ResourceManager* resource_manager)
   : m_console(resource, resource_manager)
   {
   }
@@ -29,8 +29,12 @@ namespace gf {
     object.geometry = m_console.background_geometry();
     recorder.record(object);
 
-    // foreground
-    object.geometry = m_console.foreground_geometry();
+    // foreground picture
+    object.geometry = m_console.foreground_picture_geometry();
+    recorder.record(object);
+
+    // foreground text
+    object.geometry = m_console.foreground_text_geometry();
     recorder.record(object);
   }
 

@@ -5,7 +5,7 @@
 
 #include <gf2/core/AnimationData.h>
 #include <gf2/core/AudioSourceData.h>
-#include <gf2/core/ConsoleData.h>
+#include <gf2/core/ConsoleFontResource.h>
 #include <gf2/core/FontFace.h>
 #include <gf2/core/FontResource.h>
 #include <gf2/core/NinePatchData.h>
@@ -61,7 +61,13 @@ namespace gf {
     }
   }
 
-  void BundleBuilder::add_in_bundle(const ConsoleResource& resource)
+  void BundleBuilder::add_in_bundle(const MixedConsoleFontResource& resource)
+  {
+    add_raw_console_font(resource.picture);
+    add_raw_console_font(resource.text);
+  }
+
+  void BundleBuilder::add_in_bundle(const ConsoleFontResource& resource)
   {
     add_raw_console_font(resource);
   }
@@ -139,7 +145,7 @@ namespace gf {
     }
   }
 
-  void BundleBuilder::add_raw_console_font(const ConsoleResource& resource)
+  void BundleBuilder::add_raw_console_font(const ConsoleFontResource& resource)
   {
     if (!resource.console_font.empty()) {
       m_console_fonts.push_back(resource);
@@ -171,7 +177,7 @@ namespace gf {
         bundle->handle<Music>(resource.filename, { resource.data.loop, resource.data.volume, m_audio_manager }, resource_manager, action);
       }
 
-      for (const ConsoleResource& console_resource : m_console_fonts) {
+      for (const ConsoleFontResource& console_resource : m_console_fonts) {
         bundle->handle<ConsoleFont>(console_resource.console_font, { console_resource.data.font_format, console_resource.data.font_size, m_render_manager }, resource_manager, action);
       }
 

@@ -7,6 +7,8 @@
 #include <vector>
 
 #include <gf2/core/ResourceBundle.h>
+#include <gf2/core/ConsoleFontResource.h>
+#include <gf2/core/AudioSourceData.h>
 
 #include "FrameworkApi.h"
 
@@ -17,9 +19,6 @@ namespace gf {
   class SceneSystem;
   struct AnimationResource;
   struct AnimationGroupResource;
-  struct AudioSourceResource;
-  struct ConsoleResource;
-  struct ConsoleData;
   struct FontResource;
   struct NinePatchResource;
   struct RichTextResource;
@@ -43,7 +42,8 @@ namespace gf {
     void add_in_bundle(const SpriteResource& resource);
     void add_in_bundle(const TextResource& resource);
 
-    void add_in_bundle(const ConsoleResource& resource);
+    void add_in_bundle(const MixedConsoleFontResource& resource);
+    void add_in_bundle(const ConsoleFontResource& resource);
     void add_in_bundle(const FontResource& resource);
 
     void add_raw_texture(const std::filesystem::path& path);
@@ -52,7 +52,7 @@ namespace gf {
     void add_raw_sound(const AudioSourceResource& resource);
     void add_raw_music(const AudioSourceResource& resource);
 
-    void add_raw_console_font(const ConsoleResource& resource);
+    void add_raw_console_font(const ConsoleFontResource& resource);
 
     ResourceBundle make_bundle() const;
 
@@ -67,7 +67,7 @@ namespace gf {
     std::vector<AudioSourceResource> m_sounds;
     std::vector<AudioSourceResource> m_musics;
 
-    std::vector<ConsoleResource> m_console_fonts;
+    std::vector<ConsoleFontResource> m_console_fonts;
   };
 
 }

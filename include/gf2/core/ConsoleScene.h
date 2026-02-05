@@ -3,6 +3,7 @@
 #ifndef GF_CONSOLE_SCENE_H
 #define GF_CONSOLE_SCENE_H
 
+#include "Console.h"
 #include "ConsoleElementContainer.h"
 #include "ConsoleStyle.h"
 #include "CoreApi.h"
@@ -10,7 +11,6 @@
 #include "SceneTypes.h"
 
 namespace gf {
-  class Console;
   class Event;
 
   class GF_CORE_API ConsoleScene {

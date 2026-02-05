@@ -1,11 +1,9 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
-#ifndef GF_CONSOLE_DATA_H
-#define GF_CONSOLE_DATA_H
+#ifndef GF_CONSOLE_FONT_DATA_H
+#define GF_CONSOLE_FONT_DATA_H
 
 #include <cstdint>
-
-#include <filesystem>
 
 #include "CoreApi.h"
 #include "TypeTraits.h"
@@ -40,28 +38,17 @@ namespace gf {
   inline constexpr ConsoleFontFormat LibtcodFormat = { ConsoleFontTransparency::ColorKey, ConsoleFontLayout::InRow, ConsoleFontMapping::Special };
   inline constexpr ConsoleFontFormat DwarfFortressFormat = { ConsoleFontTransparency::ColorKey, ConsoleFontLayout::InRow, ConsoleFontMapping::CodePage437 };
 
-  struct GF_CORE_API ConsoleData {
+  struct GF_CORE_API ConsoleFontData {
     ConsoleFontFormat font_format;
     Vec2I font_size = { 0, 0 };
   };
 
   template<typename Archive>
-  inline Archive& operator|(Archive& ar, MaybeConst<ConsoleData, Archive>& data)
+  inline Archive& operator|(Archive& ar, MaybeConst<ConsoleFontData, Archive>& data)
   {
     return ar | data.font_format.transparency | data.font_format.layout | data.font_format.mapping | data.font_size;
   }
 
-  struct GF_CORE_API ConsoleResource {
-    std::filesystem::path console_font;
-    ConsoleData data;
-  };
-
-  template<typename Archive>
-  inline Archive& operator|(Archive& ar, MaybeConst<ConsoleResource, Archive>& resource)
-  {
-    return ar | resource.console_font | resource.data;
-  }
-
 }
 
-#endif // GF_CONSOLE_FONT_DATA_H
+#endif // GF_CONSOLE_FONT_FONT_DATA_H

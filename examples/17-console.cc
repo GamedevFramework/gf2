@@ -4,6 +4,7 @@
 
 #include <gf2/core/ConsoleChar.h>
 #include <gf2/core/ConsoleStyle.h>
+#include <gf2/core/ConsoleOperations.h>
 
 #include <gf2/graphics/ConsoleEntity.h>
 #include <gf2/graphics/Scene.h>
@@ -43,22 +44,22 @@ int main()
 
   gf::Console console({ 80, 50 });
 
-  console.put_character({ 40, 25 }, '@', style);
-  console.put_character({ 42, 25 }, gf::ConsoleChar::WhiteSmilingFace, style);
+  gf::console_write_picture(console, { 40, 25 }, '@', style);
+  gf::console_write_picture(console, { 42, 25 }, gf::ConsoleChar::WhiteSmilingFace, style);
 
-  console.print({ 1, 1 }, gf::ConsoleAlignment::Left, rich_style, "String with a <style=red>red</> word.");
+  gf::console_print_picture(console, { 1, 1 }, gf::ConsoleAlignment::Left, rich_style, "String with a <style=red>red</> word.");
 
-  console.print(console.size() - 2, gf::ConsoleAlignment::Right, rich_style, "Made with <style=gf>gf</>!");
+  gf::console_print_picture(console, console.size() - 2, gf::ConsoleAlignment::Right, rich_style, "Made with <style=gf>gf</>!");
 
   const std::string_view text = "This is a simple but long text with <style=warn>multiple</> lines.";
 
-  console.print_area(rect({ 2, 5 }, { 16, 5 }), gf::ConsoleAlignment::Left, rich_style, "{}", text);
-  console.print_area(rect({ 2, 15 }, { 16, 5 }), gf::ConsoleAlignment::Center, rich_style, "{}", text);
-  console.print_area(rect({ 2, 25 }, { 16, 5 }), gf::ConsoleAlignment::Right, rich_style, "{}", text);
+  gf::console_print_picture(console, rect({ 2, 5 }, { 16, 5 }), gf::ConsoleAlignment::Left, rich_style, "{}", text);
+  gf::console_print_picture(console, rect({ 2, 15 }, { 16, 5 }), gf::ConsoleAlignment::Center, rich_style, "{}", text);
+  gf::console_print_picture(console, rect({ 2, 25 }, { 16, 5 }), gf::ConsoleAlignment::Right, rich_style, "{}", text);
 
-  console.clear(rect({ 30, 5 }, { 16, 5 }), style);
-  console.draw_frame(rect({ 30, 5 }, { 16, 5 }), style);
-  console.draw_frame(rect({ 30, 15 }, { 16, 5 }), style, "Frame title");
+  gf::console_clear(console, rect({ 30, 5 }, { 16, 5 }), style);
+  gf::console_draw_frame(console, rect({ 30, 5 }, { 16, 5 }), style);
+  gf::console_draw_frame(console, rect({ 30, 15 }, { 16, 5 }), style, gf::ConsoleMode::Picture, "Frame title");
 
   gf::ConsoleEntity console_entity(&console_font);
   console_entity.graphics().update(console, scene_manager.render_manager());

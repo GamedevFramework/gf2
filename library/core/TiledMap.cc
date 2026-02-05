@@ -500,7 +500,7 @@ namespace gf {
             auto blit = compute_blit(RectI::from_size(chunk_size), chunk_size, chunk_position, tile_layer.tiles.size());
             auto tiles = parse_tmx_tiles(chunk_node, format);
 
-            for (auto offset : gf::position_range(blit.source_region.size())) {
+            for (auto offset : gf::position_range(blit.origin_region.size())) {
               const std::size_t index = (offset.y * chunk_size.w) + offset.x;
               const Vec2I position = blit.target_offset + offset;
               tile_layer.tiles(position) = tiles[index];
