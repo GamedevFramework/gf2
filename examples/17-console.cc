@@ -51,17 +51,17 @@ int main()
 
   gf::console_print_picture(console, { 1, 1 }, gf::ConsoleAlignment::Left, rich_style, "String with a <style=red>red</> word.");
 
-  gf::console_print_picture(console, { 78, 48 }, gf::ConsoleAlignment::Right, rich_style, "Made with <style=gf>gf</>!");
-  gf::console_print_text(console, { 78, 47 }, gf::ConsoleAlignment::Right, rich_style, "Made with <style=gf>gf</>!");
+  gf::console_print_picture(console, { 78, 48 }, gf::ConsoleAlignment::Right, rich_style, "Made with <style=gf>gf2</>!");
+  gf::console_print_text(console, { 78, 47 }, gf::ConsoleAlignment::Right, rich_style, "Made with <style=gf>gf2</>!");
 
   const std::string_view text = "This is a simple but long text with <style=warn>multiple</> lines.";
 
   gf::console_print_picture(console, rect({ 2, 5 }, { 16, 5 }), gf::ConsoleAlignment::Left, rich_style, "{}", text);
   gf::console_print_picture(console, rect({ 2, 13 }, { 16, 5 }), gf::ConsoleAlignment::Center, rich_style, "{}", text);
   gf::console_print_picture(console, rect({ 2, 21 }, { 16, 5 }), gf::ConsoleAlignment::Right, rich_style, "{}", text);
-  gf::console_print_text(console, rect({ 2, 29 }, { 16, 5 }), gf::ConsoleAlignment::Left, rich_style, "{}", text);
-  gf::console_print_text(console, rect({ 2, 37 }, { 16, 5 }), gf::ConsoleAlignment::Center, rich_style, "{}", text);
-  gf::console_print_text(console, rect({ 2, 45 }, { 16, 5 }), gf::ConsoleAlignment::Right, rich_style, "{}", text);
+  gf::console_print_text(console, rect({ 2, 29 }, { 8, 5 }), gf::ConsoleAlignment::Left, rich_style, "{}", text);
+  gf::console_print_text(console, rect({ 2, 37 }, { 8, 5 }), gf::ConsoleAlignment::Center, rich_style, "{}", text);
+  gf::console_print_text(console, rect({ 2, 45 }, { 8, 5 }), gf::ConsoleAlignment::Right, rich_style, "{}", text);
 
 
   gf::console_clear(console, rect({ 30, 5 }, { 16, 5 }), style);
