@@ -63,8 +63,8 @@ namespace gf {
     details::raw_draw_frame(console, area, style, mode, message);
   }
 
-  GF_CORE_API void console_blit_to(const Console& origin_console, Console& target_console, RectI origin, Vec2I target, float foreground_alpha, float background_alpha);
-  inline void console_blit_to(const Console& origin_console, Console& target_console, Vec2I target, float foreground_alpha, float background_alpha)
+  GF_CORE_API void console_blit_to(const Console& origin_console, Console& target_console, RectI origin, Vec2I target, float foreground_alpha = 1.0f, float background_alpha = 1.0f);
+  inline void console_blit_to(const Console& origin_console, Console& target_console, Vec2I target, float foreground_alpha = 1.0f, float background_alpha = 1.0f)
   {
     console_blit_to(origin_console, target_console, RectI::from_size(origin_console.size()), target, foreground_alpha, background_alpha);
   }
