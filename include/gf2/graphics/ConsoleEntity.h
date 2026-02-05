@@ -12,8 +12,9 @@ namespace gf {
   class GF_GRAPHICS_API ConsoleEntity : public TransformableEntity {
   public:
     ConsoleEntity() = default;
-    ConsoleEntity(ConsoleFont* font);
+    ConsoleEntity(ConsoleFont* picture_font, ConsoleFont* text_font = nullptr);
     ConsoleEntity(const ConsoleFontResource& resource, ResourceManager* resource_manager);
+    ConsoleEntity(const MixedConsoleFontResource& resource, ResourceManager* resource_manager);
 
     ConsoleGraphics& graphics()
     {

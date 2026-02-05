@@ -247,8 +247,8 @@ namespace gf {
 
     }
 
-    m_foreground_picture_vertices.update(geometry.vertices.data(), geometry.vertices.size(), render_manager);
-    m_foreground_picture_indices.update(geometry.indices.data(), geometry.indices.size(), render_manager);
+    m_foreground_text_vertices.update(geometry.vertices.data(), geometry.vertices.size(), render_manager);
+    m_foreground_text_indices.update(geometry.indices.data(), geometry.indices.size(), render_manager);
   }
 
 }

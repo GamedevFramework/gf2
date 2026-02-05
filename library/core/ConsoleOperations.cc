@@ -533,7 +533,7 @@ namespace gf {
         position.x += line.indent / 2;
         std::size_t word_index = 0;
         std::size_t space_index = 0;
-        uint8_t part_index = 0;
+        uint8_t part_index = line.indent % 2;
 
         for (ConsoleTextItem item : line.items) {
           switch (item) {
