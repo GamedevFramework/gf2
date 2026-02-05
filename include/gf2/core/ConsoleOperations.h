@@ -8,6 +8,7 @@
 #include "Console.h"
 #include "ConsoleEffect.h"
 #include "ConsoleStyle.h"
+#include "CoreApi.h"
 #include "Rect.h"
 
 namespace gf {
@@ -32,25 +33,25 @@ namespace gf {
       ConsoleMode mode = ConsoleMode::Picture;
     };
 
-    int32_t raw_console_print_line(Console& console, Vec2I position, const ConsolePrintParameters& params, std::string_view message);
-    int32_t raw_console_print_multiline(Console& console, RectI area, const ConsolePrintParameters& params, std::string_view message);
-    void raw_draw_frame(Console& console, RectI area, const ConsoleStyle& style, ConsoleMode mode, std::string_view title);
+    GF_CORE_API int32_t raw_console_print_line(Console& console, Vec2I position, const ConsolePrintParameters& params, std::string_view message);
+    GF_CORE_API int32_t raw_console_print_multiline(Console& console, RectI area, const ConsolePrintParameters& params, std::string_view message);
+    GF_CORE_API void raw_draw_frame(Console& console, RectI area, const ConsoleStyle& style, ConsoleMode mode, std::string_view title);
 
   }
 
-  void console_clear(Console& console, const ConsoleStyle& style);
-  void console_clear(Console& console, RectI area, const ConsoleStyle& style);
+  GF_CORE_API void console_clear(Console& console, const ConsoleStyle& style);
+  GF_CORE_API void console_clear(Console& console, RectI area, const ConsoleStyle& style);
 
-  void console_write_background(Console& console, Vec2I position, Color color, ConsoleEffect effect = ConsoleEffect::set());
+  GF_CORE_API void console_write_background(Console& console, Vec2I position, Color color, ConsoleEffect effect = ConsoleEffect::set());
 
-  void console_write_picture(Console& console, Vec2I position, char16_t character, const ConsoleStyle& style);
-  int32_t console_write_picture(Console& console, Vec2I position, std::string_view message, const ConsoleStyle& style);
-  void console_write_text(Console& console, Vec2I position, uint8_t part_index, char16_t character, const ConsoleStyle& style);
-  int32_t console_write_text(Console& console, Vec2I position, std::string_view message, const ConsoleStyle& style);
+  GF_CORE_API void console_write_picture(Console& console, Vec2I position, char16_t character, const ConsoleStyle& style);
+  GF_CORE_API int32_t console_write_picture(Console& console, Vec2I position, std::string_view message, const ConsoleStyle& style);
+  GF_CORE_API void console_write_text(Console& console, Vec2I position, uint8_t part_index, char16_t character, const ConsoleStyle& style);
+  GF_CORE_API int32_t console_write_text(Console& console, Vec2I position, std::string_view message, const ConsoleStyle& style);
 
-  void console_draw_rectangle(Console& console, RectI area, const ConsoleStyle& style);
-  void console_draw_horizontal_line(Console& console, Vec2I left, int width, const ConsoleStyle& style);
-  void console_draw_vertical_line(Console& console, Vec2I top, int height, const ConsoleStyle& style);
+  GF_CORE_API void console_draw_rectangle(Console& console, RectI area, const ConsoleStyle& style);
+  GF_CORE_API void console_draw_horizontal_line(Console& console, Vec2I left, int width, const ConsoleStyle& style);
+  GF_CORE_API void console_draw_vertical_line(Console& console, Vec2I top, int height, const ConsoleStyle& style);
   inline void console_draw_frame(Console& console, RectI area, const ConsoleStyle& style)
   {
     details::raw_draw_frame(console, area, style, ConsoleMode::Picture, "");
@@ -62,7 +63,7 @@ namespace gf {
     details::raw_draw_frame(console, area, style, mode, message);
   }
 
-  void console_blit_to(const Console& origin_console, Console& target_console, RectI origin, Vec2I target, float foreground_alpha, float background_alpha);
+  GF_CORE_API void console_blit_to(const Console& origin_console, Console& target_console, RectI origin, Vec2I target, float foreground_alpha, float background_alpha);
   inline void console_blit_to(const Console& origin_console, Console& target_console, Vec2I target, float foreground_alpha, float background_alpha)
   {
     console_blit_to(origin_console, target_console, RectI::from_size(origin_console.size()), target, foreground_alpha, background_alpha);
