@@ -289,6 +289,17 @@ namespace gf {
     cell.parts[1].background = effect.compute_color(cell.parts[1].background, color);
   }
 
+  void console_write_picture(Console& console, Vec2I position, char16_t character)
+  {
+    if (!console.valid(position)) {
+      return;
+    }
+
+    ConsoleCell& cell = console(position);
+    cell.mode = ConsoleMode::Picture;
+    cell.parts[0].character = character;
+  }
+
   void console_write_picture(Console& console, Vec2I position, char16_t character, const ConsoleStyle& style)
   {
     if (!console.valid(position)) {
@@ -318,6 +329,17 @@ namespace gf {
     }
 
     return width;
+  }
+
+  void console_write_text(Console& console, Vec2I position, uint8_t part_index, char16_t character)
+  {
+    if (!console.valid(position)) {
+      return;
+    }
+
+    ConsoleCell& cell = console(position);
+    cell.mode = ConsoleMode::Text;
+    cell.parts[part_index].character = character;
   }
 
   void console_write_text(Console& console, Vec2I position, uint8_t part_index, char16_t character, const ConsoleStyle& style)

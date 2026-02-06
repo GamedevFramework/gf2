@@ -33,9 +33,9 @@ namespace gf {
       ConsoleMode mode = ConsoleMode::Picture;
     };
 
-    GF_CORE_API int32_t raw_console_print_line(Console& console, Vec2I position, const ConsolePrintParameters& params, std::string_view message);
-    GF_CORE_API int32_t raw_console_print_multiline(Console& console, RectI area, const ConsolePrintParameters& params, std::string_view message);
-    GF_CORE_API void raw_draw_frame(Console& console, RectI area, const ConsoleStyle& style, ConsoleMode mode, std::string_view title);
+    int32_t raw_console_print_line(Console& console, Vec2I position, const ConsolePrintParameters& params, std::string_view message);
+    int32_t raw_console_print_multiline(Console& console, RectI area, const ConsolePrintParameters& params, std::string_view message);
+    void raw_draw_frame(Console& console, RectI area, const ConsoleStyle& style, ConsoleMode mode, std::string_view title);
 
   }
 
@@ -44,8 +44,10 @@ namespace gf {
 
   GF_CORE_API void console_write_background(Console& console, Vec2I position, Color color, ConsoleEffect effect = ConsoleEffect::set());
 
+  GF_CORE_API void console_write_picture(Console& console, Vec2I position, char16_t character);
   GF_CORE_API void console_write_picture(Console& console, Vec2I position, char16_t character, const ConsoleStyle& style);
   GF_CORE_API int32_t console_write_picture(Console& console, Vec2I position, std::string_view message, const ConsoleStyle& style);
+  GF_CORE_API void console_write_text(Console& console, Vec2I position, uint8_t part_index, char16_t character);
   GF_CORE_API void console_write_text(Console& console, Vec2I position, uint8_t part_index, char16_t character, const ConsoleStyle& style);
   GF_CORE_API int32_t console_write_text(Console& console, Vec2I position, std::string_view message, const ConsoleStyle& style);
 

@@ -26,6 +26,19 @@ namespace gf {
   };
 
   struct GF_CORE_API ConsoleStyle {
+    ConsoleStyle() = default;
+
+    ConsoleStyle(Color foreground)
+    : color({ foreground, Transparent })
+    , effect(ConsoleEffect::none())
+    {
+    }
+
+    ConsoleStyle(Color foreground, Color background)
+    : color({ foreground, background })
+    {
+    }
+
     ConsoleColorStyle color;
     ConsoleEffect effect = ConsoleEffect::set();
   };
