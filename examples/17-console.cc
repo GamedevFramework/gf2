@@ -44,15 +44,15 @@ int main()
   rich_style.set_style("gf", { gf::Orange, gf::Azure });
   rich_style.set_style("warn", { gf::Black, gf::Yellow });
 
-  gf::Console console({ 80, 50 });
+  gf::Console console({ 96, 54 });
 
   gf::console_write_picture(console, { 70, 25 }, '@', style);
   gf::console_write_picture(console, { 72, 25 }, gf::ConsoleChar::WhiteSmilingFace, style);
 
   gf::console_print_picture(console, { 1, 1 }, gf::ConsoleAlignment::Left, rich_style, "String with a <style=red>red</> word.");
 
-  gf::console_print_picture(console, { 78, 48 }, gf::ConsoleAlignment::Right, rich_style, "Made with <style=gf>gf2</>!");
-  gf::console_print_text(console, { 78, 47 }, gf::ConsoleAlignment::Right, rich_style, "Made with <style=gf>gf2</>!");
+  gf::console_print_picture(console, { 94, 52 }, gf::ConsoleAlignment::Right, rich_style, "Made with <style=gf>gf2</>!");
+  gf::console_print_text(console, { 94, 51 }, gf::ConsoleAlignment::Right, rich_style, "Made with <style=gf>gf2</>!");
 
   const std::string_view text = "This is a simple but long text with <style=warn>multiple</> lines.";
 
