@@ -15,11 +15,13 @@ if has_config("binaries") then
         add_deps("gf2core0")
         set_rundir("$(projectdir)")
 
-    target("gf2_play_sound")
-        set_kind("binary")
-        add_files("gf2_play_sound.cc")
-        add_deps("gf2audio0")
-        set_rundir("$(projectdir)")
+    if has_config("audio") then
+        target("gf2_play_sound")
+            set_kind("binary")
+            add_files("gf2_play_sound.cc")
+            add_deps("gf2audio0")
+            set_rundir("$(projectdir)")
+    end
 
     target("gf2_tarball_listfiles")
         set_kind("binary")
@@ -27,10 +29,12 @@ if has_config("binaries") then
         add_deps("gf2core0")
         set_rundir("$(projectdir)")
 
-    target("gf2_tmx_display")
-        set_kind("binary")
-        add_files("gf2_tmx_display.cc")
-        add_deps("gf2graphics0")
-        set_rundir("$(projectdir)")
+    if has_config("graphics") then
+        target("gf2_tmx_display")
+            set_kind("binary")
+            add_files("gf2_tmx_display.cc")
+            add_deps("gf2graphics0")
+            set_rundir("$(projectdir)")
+    end
 
 end

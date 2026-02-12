@@ -7,14 +7,16 @@ if has_config("games") then
     set_configvar("GF_HOME_ASSETS_DIRECTORY", "$(projectdir)/games/HOME/assets")
     add_configfiles("config.h.in", {pattern = "@(.-)@"})
 
-    target("HOME")
-        set_kind("binary")
-        add_files("HOME.cc")
-        add_files("bits/*.cc")
-        add_deps("gf2audio0")
-        add_deps("gf2physics0")
-        add_deps("gf2graphics0")
-        add_deps("gf2framework0")
-        add_includedirs("$(builddir)/config/games/HOME")
+    if has_config("framework") and has_config("graphics") and has_config("audio") and has_config("physics") then
+        target("HOME")
+            set_kind("binary")
+            add_files("HOME.cc")
+            add_files("bits/*.cc")
+            add_deps("gf2audio0")
+            add_deps("gf2physics0")
+            add_deps("gf2graphics0")
+            add_deps("gf2framework0")
+            add_includedirs("$(builddir)/config/games/HOME")
+    end
 
 end
