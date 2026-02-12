@@ -6,6 +6,7 @@
 #include <cstdint>
 
 #include "CoreApi.h"
+#include "Span.h"
 #include "TypeTraits.h"
 #include "Vec2.h"
 
@@ -48,6 +49,13 @@ namespace gf {
   {
     return ar | data.font_format.transparency | data.font_format.layout | data.font_format.mapping | data.font_size;
   }
+
+  struct GF_CORE_API ConsoleFontElement {
+    char16_t character = '\0';
+    uint8_t index = 0;
+  };
+
+  GF_CORE_API Span<const ConsoleFontElement> load_console_font_mapping(ConsoleFontMapping mapping);
 
 }
 

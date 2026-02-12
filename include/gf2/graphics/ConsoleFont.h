@@ -15,11 +15,6 @@
 
 namespace gf {
 
-  struct GF_GRAPHICS_API ConsoleFontElement {
-    char16_t character = '\0';
-    uint8_t index = 0;
-  };
-
   struct GF_GRAPHICS_API ConsoleFontContext {
     ConsoleFontFormat format;
     Vec2I size = { 0, 0 };
