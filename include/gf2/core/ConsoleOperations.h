@@ -33,9 +33,9 @@ namespace gf {
       ConsoleMode mode = ConsoleMode::Picture;
     };
 
-    int32_t raw_console_print_line(Console& console, Vec2I position, const ConsolePrintParameters& params, std::string_view message);
-    int32_t raw_console_print_multiline(Console& console, RectI area, const ConsolePrintParameters& params, std::string_view message);
-    void raw_draw_frame(Console& console, RectI area, const ConsoleStyle& style, ConsoleMode mode, std::string_view title);
+    GF_CORE_API int32_t raw_console_print_line(Console& console, Vec2I position, const ConsolePrintParameters& params, std::string_view message);
+    GF_CORE_API int32_t raw_console_print_multiline(Console& console, RectI area, const ConsolePrintParameters& params, std::string_view message);
+    GF_CORE_API void raw_draw_frame(Console& console, RectI area, const ConsoleStyle& style, ConsoleMode mode, std::string_view title);
 
   }
 
