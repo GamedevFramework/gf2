@@ -13,6 +13,12 @@ if has_config("examples") then
         add_deps("gf2core0")
         set_rundir("$(projectdir)/docs/assets/colors")
 
+    target("02-image-blit")
+        set_kind("binary")
+        add_files("02-image-blit.cc")
+        add_deps("gf2core0")
+        add_includedirs("$(builddir)/config/examples")
+
     if has_config("graphics") then
         target("events")
             set_kind("binary")
