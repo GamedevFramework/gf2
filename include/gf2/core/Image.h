@@ -38,6 +38,9 @@ namespace gf {
 
     void save_to_file(const std::filesystem::path& filename) const;
 
+    void blit_to(RectI origin_region, Image& target_image, Vec2I target_offset) const;
+    void blit_to(Image& target_image, Vec2I target_offset) const;
+
     Image sub_image(RectI area) const;
 
     std::size_t raw_size() const;

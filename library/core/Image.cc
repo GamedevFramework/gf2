@@ -17,6 +17,7 @@
 #include <stb_image_write.h>
 // clang-format on
 
+#include <gf2/core/Blit.h>
 #include <gf2/core/Log.h>
 #include <gf2/core/Stream.h>
 
@@ -202,7 +203,7 @@ namespace gf {
       return;
     }
 
-    auto extension = filename.extension().string();
+    std::string extension = filename.extension().string();
 
     for (char& c : extension) {
       c = std::tolower(c, std::locale::classic());
@@ -228,10 +229,28 @@ namespace gf {
     Log::error("Format not supported: '{}'\n", extension);
   }
 
+  void Image::blit_to(RectI origin_region, Image& target_image, Vec2I target_offset) const
+  {
+    const Blit blit = compute_blit(origin_region, m_size, target_offset, target_image.size());
+
+    if (blit.origin_region.empty()) {
+      return;
+    }
+
+    for (const Vec2I offset : gf::position_range(blit.origin_region.extent)) {
+      target_image.put_pixel(blit.target_offset + offset, (*this)(blit.origin_region.offset + offset));
+    }
+  }
+
+  void Image::blit_to(Image& target_image, Vec2I target_offset) const
+  {
+    blit_to(RectI::from_size(m_size), target_image, target_offset);
+  }
+
   Image Image::sub_image(RectI area) const
   {
     const RectI current_area = RectI::from_size(m_size);
-    auto maybe_intersection = current_area.intersection(area);
+    const std::optional<RectI> maybe_intersection = current_area.intersection(area);
 
     if (!maybe_intersection) {
       return {};

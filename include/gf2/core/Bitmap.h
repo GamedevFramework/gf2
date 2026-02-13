@@ -29,13 +29,15 @@ namespace gf {
     uint8_t operator()(Vec2I position) const;
     void put_pixel(Vec2I position, uint8_t gray);
 
-    void blit(RectI source_region, const Bitmap& source, Vec2I target_offset);
-    void blit(const Bitmap& source, Vec2I target_offset);
+    void save_to_file(const std::filesystem::path& filename) const;
+
+    void blit_to(RectI origin_region, Bitmap& target_bitmap, Vec2I target_offset) const;
+    void blit_to(Bitmap& target_bitmap, Vec2I target_offset) const;
+
+    Bitmap sub_bitmap(RectI area) const;
 
     std::size_t raw_size() const;
     const uint8_t* raw_data() const;
-
-    void export_to(const std::filesystem::path& filename) const;
 
   private:
     std::ptrdiff_t offset_from_position(Vec2I position) const;

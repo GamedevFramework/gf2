@@ -46,7 +46,7 @@ namespace gf {
     const RectI bounds = *maybe_rectangle;
     assert(bounds.size() == font_glyph.bitmap.size() + 2 * FontAtlasPadding);
 
-    m_bitmap.blit(font_glyph.bitmap, bounds.position() + FontAtlasPadding);
+    font_glyph.bitmap.blit_to(m_bitmap, bounds.position() + FontAtlasPadding);
 
     const Vec2F texture_abs_position = bounds.position() + FontAtlasPadding;
     const Vec2F texture_abs_size = bounds.size() - 2 * FontAtlasPadding;
@@ -110,7 +110,7 @@ namespace gf {
       assert(bounds.size() == sizes[i]);
       assert(bounds.size() == glyphs[i]->bitmap.size() + 2 * FontAtlasPadding);
 
-      m_bitmap.blit(glyphs[i]->bitmap, bounds.position() + FontAtlasPadding);
+      glyphs[i]->bitmap.blit_to(m_bitmap, bounds.position() + FontAtlasPadding);
 
       const Vec2F texture_abs_position = bounds.position() + FontAtlasPadding;
       const Vec2F texture_abs_size = bounds.size() - 2 * FontAtlasPadding;

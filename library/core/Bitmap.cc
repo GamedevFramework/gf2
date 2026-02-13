@@ -4,9 +4,9 @@
 #include <gf2/core/Bitmap.h>
 
 #include <algorithm>
-#include <fstream>
 
 #include <gf2/core/Blit.h>
+#include <gf2/core/Image.h>
 
 namespace gf {
 
@@ -79,22 +79,59 @@ namespace gf {
     m_pixels[offset_from_position(position)] = gray;
   }
 
-  void Bitmap::blit(RectI source_region, const Bitmap& source, Vec2I target_offset)
+  void Bitmap::save_to_file(const std::filesystem::path& filename) const
   {
-    const Blit blit = compute_blit(source_region, source.size(), target_offset, m_size);
+    Image image(m_size);
+
+    for (const Vec2I position : position_range()) {
+      image.put_pixel(position, White * opaque(static_cast<float>((*this)(position)) / 255.0f));
+    }
+
+    image.save_to_file(filename);
+  }
+
+  void Bitmap::blit_to(RectI origin_region, Bitmap& target_bitmap, Vec2I target_offset) const
+  {
+    const Blit blit = compute_blit(origin_region, m_size, target_offset, target_bitmap.size());
 
     if (blit.origin_region.empty()) {
       return;
     }
 
     for (const Vec2I offset : gf::position_range(blit.origin_region.extent)) {
-      put_pixel(blit.target_offset + offset, source(blit.origin_region.offset + offset));
+      target_bitmap.put_pixel(blit.target_offset + offset, (*this)(blit.origin_region.offset + offset));
     }
   }
 
-  void Bitmap::blit(const Bitmap& source, Vec2I target_offset)
+  void Bitmap::blit_to(Bitmap& target_bitmap, Vec2I target_offset) const
   {
-    blit(RectI::from_size(source.m_size), source, target_offset);
+    blit_to(RectI::from_size(m_size), target_bitmap, target_offset);
+  }
+
+  Bitmap Bitmap::sub_bitmap(RectI area) const
+  {
+    const RectI current_area = RectI::from_size(m_size);
+    const std::optional<RectI> maybe_intersection = current_area.intersection(area);
+
+    if (!maybe_intersection) {
+      return {};
+    }
+
+    const Vec2I position = maybe_intersection->position();
+    const Vec2I size = maybe_intersection->size();
+
+    Bitmap bitmap(size);
+
+    const uint8_t* src = m_pixels.data() + offset_from_position(position);
+    uint8_t* dst = bitmap.m_pixels.data();
+
+    for (int y = 0; y < size.h; ++y) {
+      std::copy_n(src, size.w, dst);
+      src += static_cast<std::ptrdiff_t>(m_size.w);
+      dst += static_cast<std::ptrdiff_t>(size.w);
+    }
+
+    return bitmap;
   }
 
   std::size_t Bitmap::raw_size() const
@@ -109,16 +146,6 @@ namespace gf {
     }
 
     return m_pixels.data();
-  }
-
-  void Bitmap::export_to(const std::filesystem::path& filename) const
-  {
-    std::ofstream file(filename);
-    file << "P7\nWIDTH " << m_size.w << "\nHEIGHT " << m_size.h << "\nDEPTH 1\nMAXVAL 255\nTUPLTYPE GRAYSCALE\nENDHDR\n";
-
-    for (const uint8_t value : m_pixels) {
-      file.put(static_cast<char>(value));
-    }
   }
 
   std::ptrdiff_t Bitmap::offset_from_position(Vec2I position) const
