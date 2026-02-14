@@ -160,4 +160,17 @@ namespace gf {
     return utf8;
   }
 
+  std::size_t utf8_length(std::string_view utf8)
+  {
+    std::size_t size = 0;
+
+    for (const char c : utf8) {
+      if ((c & 0b11000000) != 0b10000000) {
+        ++size;
+      }
+    }
+
+    return size;
+  }
+
 }

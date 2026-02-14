@@ -157,7 +157,7 @@ namespace gf {
       .style_choice = details::ConsoleStyleChoice::Simple,
       .action = details::ConsoleAction::Count,
       .alignment = alignment,
-      .mode = ConsoleMode::Picture
+      .mode = ConsoleMode::Text
     };
     const std::string message = fmt::format(fmt, std::forward<T>(args)...);
     return details::raw_console_print_multiline(console, area, params, message);
@@ -249,7 +249,7 @@ namespace gf {
       .style_choice = details::ConsoleStyleChoice::Rich,
       .action = details::ConsoleAction::Count,
       .alignment = alignment,
-      .mode = ConsoleMode::Picture
+      .mode = ConsoleMode::Text
     };
     const std::string message = fmt::format(fmt, std::forward<T>(args)...);
     return details::raw_console_print_multiline(console, area, params, message);

@@ -28,7 +28,7 @@ namespace gf {
         std::size_t length = 0;
 
         for (const ConsoleWordPart& part : parts) {
-          length += part.data.size();
+          length += utf8_length(part.data);
         }
 
         return static_cast<int>(length);
@@ -468,13 +468,19 @@ namespace gf {
         ConsoleCell& target_cell = target_console(blit.target_offset + offset);
         const ConsoleCell& origin_cell = origin_console(blit.origin_region.offset + offset);
 
-        target_cell.mode = origin_cell.mode;
+        if (origin_cell.mode == ConsoleMode::Text) {
+          ConsoleCellPart& target_part = (target_cell.mode == ConsoleMode::Text) ? target_cell.parts[1] : target_cell.parts[0];
+
+          target_cell.parts[1].background = gf::lerp(target_part.background, origin_cell.parts[1].background, background_alpha);
+          target_cell.parts[1].foreground = gf::lerp(target_part.foreground, origin_cell.parts[1].foreground, foreground_alpha);
+          target_cell.parts[1].character = origin_cell.parts[1].character;
+        }
+
         target_cell.parts[0].background = gf::lerp(target_cell.parts[0].background, origin_cell.parts[0].background, background_alpha);
         target_cell.parts[0].foreground = gf::lerp(target_cell.parts[0].foreground, origin_cell.parts[0].foreground, foreground_alpha);
         target_cell.parts[0].character = origin_cell.parts[0].character;
-        target_cell.parts[1].background = gf::lerp(target_cell.parts[1].background, origin_cell.parts[1].background, background_alpha);
-        target_cell.parts[1].foreground = gf::lerp(target_cell.parts[1].foreground, origin_cell.parts[1].foreground, foreground_alpha);
-        target_cell.parts[1].character = origin_cell.parts[1].character;
+
+        target_cell.mode = origin_cell.mode;
       }
     }
   }
