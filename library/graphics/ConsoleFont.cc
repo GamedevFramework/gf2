@@ -74,6 +74,12 @@ namespace gf {
       case ConsoleFontMapping::Special:
         map_elements(load_console_font_mapping(ConsoleFontMapping::Special));
         break;
+      case ConsoleFontMapping::Text:
+        map_elements(load_console_font_mapping(ConsoleFontMapping::Text));
+        break;
+      case ConsoleFontMapping::Picture:
+        map_elements(load_console_font_mapping(ConsoleFontMapping::Picture));
+        break;
       case ConsoleFontMapping::Custom:
         // nothing to map
         break;
@@ -83,6 +89,8 @@ namespace gf {
       switch (format.mapping) {
         case ConsoleFontMapping::CodePage437:
         case ConsoleFontMapping::ModifiedCodePage437:
+        case ConsoleFontMapping::Text:
+        case ConsoleFontMapping::Picture:
           m_size = { 16, 16 };
           break;
 
@@ -203,6 +211,8 @@ namespace gf {
     switch (m_format.mapping) {
       case ConsoleFontMapping::CodePage437:
       case ConsoleFontMapping::ModifiedCodePage437:
+      case ConsoleFontMapping::Text:
+      case ConsoleFontMapping::Picture:
         // space character at index 0x20
         return compute_position(0x20, m_format.layout, m_size) * m_character_size;
       case ConsoleFontMapping::Special:

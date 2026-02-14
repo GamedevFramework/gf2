@@ -27,6 +27,8 @@ namespace gf {
     CodePage437,
     ModifiedCodePage437,
     Special,
+    Text,
+    Picture,
     Custom,
   };
 
@@ -38,6 +40,8 @@ namespace gf {
 
   inline constexpr ConsoleFontFormat LibtcodFormat = { ConsoleFontTransparency::ColorKey, ConsoleFontLayout::InRow, ConsoleFontMapping::Special };
   inline constexpr ConsoleFontFormat DwarfFortressFormat = { ConsoleFontTransparency::ColorKey, ConsoleFontLayout::InRow, ConsoleFontMapping::CodePage437 };
+  inline constexpr ConsoleFontFormat ConsoleTextFormat = { ConsoleFontTransparency::Alpha, ConsoleFontLayout::InRow, ConsoleFontMapping::Text };
+  inline constexpr ConsoleFontFormat ConsolePictureFormat = { ConsoleFontTransparency::Alpha, ConsoleFontLayout::InRow, ConsoleFontMapping::Picture };
 
   struct GF_CORE_API ConsoleFontData {
     ConsoleFontFormat font_format;
