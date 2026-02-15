@@ -62,9 +62,9 @@ namespace gf {
     m_models.add_model(model);
   }
 
-  void ConsoleScene::add_element(ConsoleElement* element)
+  void ConsoleScene::add_entity(ConsoleEntity* entity)
   {
-    m_elements.add_element(element);
+    m_entities.add_entity(entity);
   }
 
   void ConsoleScene::process_event([[maybe_unused]] const Event& event)
@@ -79,23 +79,23 @@ namespace gf {
 
   void ConsoleScene::update(Time time)
   {
-    update_elements(time);
+    update_entities(time);
   }
 
-  void ConsoleScene::render([[maybe_unused]] Console& buffer)
+  void ConsoleScene::render(Console& buffer)
   {
-    render_elements(buffer);
+    render_entities(buffer);
   }
 
-  void ConsoleScene::update_elements(Time time)
+  void ConsoleScene::update_entities(Time time)
   {
     m_models.update(time);
-    m_elements.update(time);
+    m_entities.update(time);
   }
 
-  void ConsoleScene::render_elements(Console& buffer)
+  void ConsoleScene::render_entities(Console& buffer)
   {
-    m_elements.render(buffer);
+    m_entities.render(buffer);
   }
 
 }

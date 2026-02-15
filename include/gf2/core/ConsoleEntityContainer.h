@@ -6,21 +6,21 @@
 #include <vector>
 
 #include "Console.h"
-#include "ConsoleElement.h"
+#include "ConsoleEntity.h"
 #include "CoreApi.h"
 
 namespace gf {
 
-  class GF_CORE_API ConsoleElementContainer {
+  class GF_CORE_API ConsoleEntityContainer {
   public:
 
-    void add_element(ConsoleElement* element);
+    void add_entity(ConsoleEntity* entity);
 
     void update(Time time);
     void render(Console& buffer);
 
   private:
-    std::vector<ConsoleElement*> m_elements;
+    std::vector<ConsoleEntity*> m_entities;
   };
 
 }

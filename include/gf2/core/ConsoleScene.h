@@ -4,7 +4,7 @@
 #define GF_CONSOLE_SCENE_H
 
 #include "Console.h"
-#include "ConsoleElementContainer.h"
+#include "ConsoleEntityContainer.h"
 #include "ConsoleStyle.h"
 #include "CoreApi.h"
 #include "ModelContainer.h"
@@ -38,7 +38,7 @@ namespace gf {
     const ConsoleStyle& clear_style() const;
 
     void add_model(Model* model);
-    void add_element(ConsoleElement* element);
+    void add_entity(ConsoleEntity* entity);
 
     virtual void process_event(const Event& event);
     virtual void handle_actions();
@@ -46,8 +46,8 @@ namespace gf {
     virtual void render(Console& buffer);
 
   protected:
-    void update_elements(Time time);
-    void render_elements(Console& buffer);
+    void update_entities(Time time);
+    void render_entities(Console& buffer);
 
   private:
     SceneRank m_rank = SceneRank::None;
@@ -55,7 +55,7 @@ namespace gf {
     SceneVisibility m_visibility = SceneVisibility::Shown;
 
     ConsoleStyle m_clear_style;
-    ConsoleElementContainer m_elements;
+    ConsoleEntityContainer m_entities;
     ModelContainer m_models;
   };
 
