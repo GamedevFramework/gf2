@@ -6,7 +6,7 @@
 #include <gf2/core/ConsoleStyle.h>
 #include <gf2/core/ConsoleOperations.h>
 
-#include <gf2/graphics/ConsoleEntity.h>
+#include <gf2/graphics/ConsoleGraphicsEntity.h>
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/SceneManager.h>
 
@@ -69,7 +69,7 @@ int main()
   gf::console_draw_frame(console, rect({ 30, 15 }, { 16, 5 }), style, gf::ConsoleMode::Picture, "Frame title");
   gf::console_draw_frame(console, rect({ 30, 25 }, { 16, 5 }), style, gf::ConsoleMode::Text, "Frame title");
 
-  gf::ConsoleEntity console_entity(&console_picture_font, &console_text_font);
+  gf::ConsoleGraphicsEntity console_entity(&console_picture_font, &console_text_font);
   console_entity.graphics().update(console, scene_manager.render_manager());
   console_entity.set_location({ 0.0f, 0.0f });
   console_entity.set_origin({ 0.5f, 0.5f });

@@ -1,29 +1,29 @@
 // SPDX-License-Identifier: Zlib
 // Copyright (c) 2023-2025 Julien Bernard
 
-#include <gf2/graphics/ConsoleEntity.h>
+#include <gf2/graphics/ConsoleGraphicsEntity.h>
 
 #include <gf2/graphics/RenderObject.h>
 #include <gf2/graphics/RenderRecorder.h>
 
 namespace gf {
 
-  ConsoleEntity::ConsoleEntity(ConsoleFont* picture_font, ConsoleFont* text_font)
+  ConsoleGraphicsEntity::ConsoleGraphicsEntity(ConsoleFont* picture_font, ConsoleFont* text_font)
   : m_console(picture_font, text_font)
   {
   }
 
-  ConsoleEntity::ConsoleEntity(const ConsoleFontResource& resource, ResourceManager* resource_manager)
+  ConsoleGraphicsEntity::ConsoleGraphicsEntity(const ConsoleFontResource& resource, ResourceManager* resource_manager)
   : m_console(resource, resource_manager)
   {
   }
 
-  ConsoleEntity::ConsoleEntity(const MixedConsoleFontResource& resource, ResourceManager* resource_manager)
+  ConsoleGraphicsEntity::ConsoleGraphicsEntity(const MixedConsoleFontResource& resource, ResourceManager* resource_manager)
   : m_console(resource, resource_manager)
   {
   }
 
-  void ConsoleEntity::render(RenderRecorder& recorder)
+  void ConsoleGraphicsEntity::render(RenderRecorder& recorder)
   {
     // common
     RenderObject object = {};
