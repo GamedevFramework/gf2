@@ -24,6 +24,7 @@ namespace gf {
   struct RichTextResource;
   struct ShapeResource;
   struct SpriteResource;
+  struct SpriteGroupResource;
   struct TextResource;
   struct TiledMapResource;
 
@@ -40,6 +41,7 @@ namespace gf {
     void add_in_bundle(const RichTextResource& resource);
     void add_in_bundle(const ShapeResource& resource);
     void add_in_bundle(const SpriteResource& resource);
+    void add_in_bundle(const SpriteGroupResource& resource);
     void add_in_bundle(const TextResource& resource);
 
     void add_in_bundle(const MixedConsoleFontResource& resource);

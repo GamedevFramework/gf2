@@ -105,6 +105,13 @@ namespace gf {
     add_raw_texture(resource.texture);
   }
 
+  void BundleBuilder::add_in_bundle(const SpriteGroupResource& resource)
+  {
+    for (const std::filesystem::path& texture : resource.textures) {
+      add_raw_texture(texture);
+    }
+  }
+
   void BundleBuilder::add_in_bundle(const TextResource& resource)
   {
     add_raw_font(resource.font);
