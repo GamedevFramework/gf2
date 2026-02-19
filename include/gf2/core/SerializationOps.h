@@ -10,6 +10,7 @@
 #include <string>
 #include <type_traits>
 
+#include "BinaryHeap.h"
 #include "Flags.h"
 #include "Serialization.h"
 
@@ -125,6 +126,18 @@ namespace gf {
   Serializer& operator|(Serializer& ar, Flags<E> data)
   {
     return ar | data.m_data;
+  }
+
+  template<typename T, typename Compare>
+  Serializer& operator|(Serializer& ar, const BinaryHeap<T, Compare>& data)
+  {
+    ar.write_raw_size(data.m_size);
+
+    for (std::size_t i = 0; i < data.m_size; ++i) {
+      ar | data.m_elements[i].element;
+    }
+
+    return ar;
   }
 
   template<typename K, typename V>
@@ -256,6 +269,21 @@ namespace gf {
   Deserializer& operator|(Deserializer& ar, Flags<E>& data)
   {
     return ar | data.m_data;
+  }
+
+  template<typename T, typename Compare>
+  Deserializer& operator|(Deserializer& ar, BinaryHeap<T, Compare>& data)
+  {
+    std::size_t size = 0;
+    ar.read_raw_size(&size);
+
+    for (std::size_t i = 0; i < size; ++i) {
+      T element;
+      ar | element;
+      data.push(std::move(element));
+    }
+
+    return ar;
   }
 
   template<typename K, typename V>

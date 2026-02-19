@@ -9,6 +9,8 @@
 #include <vector>
 
 namespace gf {
+  class Serializer;
+  class Deserializer;
 
   namespace details {
 
@@ -142,6 +144,12 @@ namespace gf {
       m_elements.clear();
       m_heap.clear();
     }
+
+    template<typename U, typename V>
+    friend Serializer& operator|(Serializer& ar, const BinaryHeap<U, V>& data);
+
+    template<typename U, typename V>
+    friend Deserializer& operator|(Deserializer& ar, BinaryHeap<U, V>& data);
 
   private:
     struct ElementIndex {

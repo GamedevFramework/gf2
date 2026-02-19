@@ -7,6 +7,7 @@
 
 #include <gf2/core/Array2D.h>
 #include <gf2/core/Color.h>
+#include <gf2/core/BinaryHeap.h>
 #include <gf2/core/Flags.h>
 #include <gf2/core/Property.h>
 #include <gf2/core/PropertyMap.h>
@@ -811,6 +812,37 @@ TEST(SerialTest, PropertyMap) {
 
   EXPECT_EQ(in, out);
 }
+
+TEST(SerialTest, BinaryHeap) {
+  static constexpr std::size_t Size = 128;
+
+  gf::BinaryHeap<std::size_t> in;
+
+  for (std::size_t i = 0; i < Size; ++i) {
+    in.push(i);
+  }
+
+  gf::BinaryHeap<std::size_t> out;
+
+  save_and_load(in, out);
+
+  EXPECT_EQ(in.size(), Size);
+  EXPECT_EQ(out.size(), Size);
+
+  for (std::size_t i = 0; i < Size; ++i) {
+    ASSERT_FALSE(in.empty());
+    ASSERT_FALSE(out.empty());
+
+    const std::size_t top_in = in.top();
+    const std::size_t top_out = out.top();
+
+    EXPECT_EQ(top_in, top_out);
+
+    in.pop();
+    out.pop();
+  }
+}
+
 
 // TEST(SerialTest, Path) {
 //   gf::Path filename = "/etc/passwd";
