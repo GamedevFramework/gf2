@@ -51,13 +51,13 @@ namespace gf {
 
     reference operator()(handle_type handle)
     {
-      assert(handle.index < m_size);
+      assert(handle.index < m_elements.size());
       return m_elements[handle.index].element;
     }
 
     const_reference operator()(handle_type handle) const
     {
-      assert(handle.index < m_size);
+      assert(handle.index < m_elements.size());
       return m_elements[handle.index].element;
     }
 
