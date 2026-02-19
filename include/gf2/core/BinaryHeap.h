@@ -8,6 +8,8 @@
 #include <limits>
 #include <vector>
 
+#include "CoreApi.h"
+
 namespace gf {
   class Serializer;
   class Deserializer;
@@ -24,6 +26,12 @@ namespace gf {
 
   }
 
+  struct GF_CORE_API BinaryHeapHandle {
+    std::size_t index = std::numeric_limits<std::size_t>::max();
+  };
+
+  constexpr BinaryHeapHandle BinaryHeapNullHandle = {};
+
   template<typename T, typename Compare = details::LessCompare<T>>
   class BinaryHeap {
   public:
@@ -33,11 +41,7 @@ namespace gf {
     using reference = T&;
     using const_reference = const T&;
 
-    struct Handle {
-      size_type index = std::numeric_limits<size_type>::max();
-    };
-
-    using handle_type = Handle;
+    using handle_type = BinaryHeapHandle;
 
     BinaryHeap() = default;
     BinaryHeap(const value_compare& compare)
@@ -47,11 +51,13 @@ namespace gf {
 
     reference operator()(handle_type handle)
     {
+      assert(handle.index < m_size);
       return m_elements[handle.index].element;
     }
 
     const_reference operator()(handle_type handle) const
     {
+      assert(handle.index < m_size);
       return m_elements[handle.index].element;
     }
 
@@ -143,6 +149,22 @@ namespace gf {
       m_size = 0;
       m_elements.clear();
       m_heap.clear();
+    }
+
+    handle_type find(const value_type& value)
+    {
+      for (size_type i = 0; i < m_size; ++i) {
+        if (m_elements[i].element == value) {
+          return { i };
+        }
+      }
+
+      return {};
+    }
+
+    bool valid(handle_type handle)
+    {
+      return handle.index < m_size;
     }
 
     template<typename U, typename V>
