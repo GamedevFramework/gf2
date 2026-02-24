@@ -236,7 +236,7 @@ namespace {
 
 int main()
 {
-  gf::SingleSceneManager scene_manager("18-activities | gf2", gf::vec(1600, 900));
+  gf::SingleSceneManager scene_manager("19-gridmap | gf2", gf::vec(1600, 900));
 
   GridScene scene(&scene_manager);
 
