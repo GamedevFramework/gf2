@@ -6,10 +6,9 @@
 #include <utility>
 
 #include <gf2/core/Log.h>
+#include <gf2/core/Math.h>
 
 #include <gf2/physics/PhysicsEvents.h>
-#include <gf2/physics/PhysicsTaskManager.h>
-#include "box2d/math_functions.h"
 
 namespace gf {
 
@@ -192,7 +191,7 @@ namespace gf {
     b2SetLengthUnitsPerMeter(length_units);
   }
 
-  PhysicsWorld::PhysicsWorld(const PhysicsWorldData& data, PhysicsTaskManager* task_manager)
+  PhysicsWorld::PhysicsWorld(const PhysicsWorldData& data)
   : m_owner(details::PhysicsOwner::Object)
   {
     ++g_world_loaded;
@@ -202,13 +201,6 @@ namespace gf {
     def.enableSleep = data.enable_sleep;
     def.enableContinuous = data.enable_continuous;
     def.userData = data.user_data;
-
-    if (task_manager != nullptr && task_manager->worker_count() > 1) {
-      def.workerCount = task_manager->worker_count();
-      def.enqueueTask = PhysicsTaskManager::enqueue_task;
-      def.finishTask = PhysicsTaskManager::finish_task;
-      def.userTaskContext = task_manager;
-    }
 
     m_id = b2CreateWorld(&def);
   }
@@ -270,13 +262,13 @@ namespace gf {
     raw.drawingBounds = to_aabb(options.bounds);
     raw.forceScale = options.force_scale;
     raw.jointScale = options.joint_scale;
+    raw.contactDrawType = static_cast<b2ContactDrawType>(options.contact_draw_type);
     raw.drawShapes = options.features.test(PhysicsDebugFeature::DrawShapes);
     raw.drawJoints = options.features.test(PhysicsDebugFeature::DrawJoints);
     raw.drawJointExtras = options.features.test(PhysicsDebugFeature::DrawJointsExtra);
     raw.drawBounds = options.features.test(PhysicsDebugFeature::DrawBounds);
     raw.drawMass = options.features.test(PhysicsDebugFeature::DrawMass);
     raw.drawBodyNames = options.features.test(PhysicsDebugFeature::DrawBodyNames);
-    raw.drawContactPoints = options.features.test(PhysicsDebugFeature::DrawContactPoints);
     raw.drawGraphColors = options.features.test(PhysicsDebugFeature::DrawGraphColors);
     raw.drawContactFeatures = options.features.test(PhysicsDebugFeature::DrawContactFeatures);
     raw.drawContactNormals = options.features.test(PhysicsDebugFeature::DrawContactNormals);
@@ -440,6 +432,16 @@ namespace gf {
   void* PhysicsWorld::user_data()
   {
     return b2World_GetUserData(m_id);
+  }
+
+  int PhysicsWorld::worker_count() const
+  {
+    return b2World_GetWorkerCount(m_id);
+  }
+
+  void PhysicsWorld::set_worker_count(int count)
+  {
+    b2World_SetWorkerCount(m_id, count);
   }
 
   void PhysicsWorld::update(Time time)

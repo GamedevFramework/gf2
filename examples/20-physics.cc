@@ -9,7 +9,6 @@
 #include <gf2/graphics/Shape.h>
 #include <gf2/physics/PhysicsBody.h>
 #include <gf2/physics/PhysicsShape.h>
-#include <gf2/physics/PhysicsTaskManager.h>
 #include <gf2/physics/PhysicsWorld.h>
 
 namespace {
@@ -71,10 +70,10 @@ namespace {
   public:
     PhysicsEntity(gf::RenderManager* render_manager, gf::Random& random)
     : m_render_manager(render_manager)
-    , m_task_manager(4)
     , m_shape_group({}, render_manager)
     {
       setup_world(random);
+      m_world.set_worker_count(4);
     }
 
     void update(gf::Time time) override
@@ -172,7 +171,6 @@ namespace {
 
     gf::RenderManager* m_render_manager = nullptr;
     gf::Time m_time;
-    gf::PhysicsTaskManager m_task_manager;
     gf::PhysicsWorld m_world;
     std::vector<gf::PhysicsBody> m_bodies;
     std::vector<gf::PhysicsShape> m_shapes;

@@ -7,6 +7,9 @@
 
 #include <limits>
 #include <string_view>
+#include <type_traits>
+
+#include <box2d/box2d.h>
 
 #include <gf2/core/Circ.h>
 #include <gf2/core/Color.h>
@@ -27,17 +30,24 @@ namespace gf {
     DrawBounds          = 0x0008,
     DrawMass            = 0x0010,
     DrawBodyNames       = 0x0020,
-    DrawContactPoints   = 0x0040,
-    DrawGraphColors     = 0x0080,
-    DrawContactFeatures = 0x0100,
-    DrawContactNormals  = 0x0200,
-    DrawContactForces   = 0x0400,
-    DrawFrictionForces  = 0x0800,
-    DrawIslands         = 0x1000,
+    DrawGraphColors     = 0x0040,
+    DrawContactFeatures = 0x0080,
+    DrawContactNormals  = 0x0100,
+    DrawContactForces   = 0x0200,
+    DrawFrictionForces  = 0x0400,
+    DrawIslands         = 0x0800,
   };
 
   template<>
   struct EnableBitmaskOperators<PhysicsDebugFeature> : std::true_type {
+  };
+
+  enum class PhysicsContactDrawType : std::underlying_type_t<b2ContactDrawType> { // NOLINT(performance-enum-size)
+    None = b2_drawContacts_None,
+    Clip = b2_drawContacts_Clip,
+    AnchorA = b2_drawContacts_AnchorA,
+    AnchorB = b2_drawContacts_AnchorB,
+    Average = b2_drawContacts_Average,
   };
 
   namespace details {
@@ -54,6 +64,7 @@ namespace gf {
     float force_scale = 1.0f;
     float joint_scale = 1.0f;
     Flags<PhysicsDebugFeature> features = PhysicsDebugFeature::DrawShapes;
+    PhysicsContactDrawType contact_draw_type = PhysicsContactDrawType::None;
   };
 
   class GF_PHYSICS_API PhysicsDebug {
