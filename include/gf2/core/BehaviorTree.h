@@ -30,35 +30,34 @@ namespace gf {
     virtual BehaviorStatus process(Blackboard& blackboard) const = 0;
   };
 
-  namespace details {
-    // inspired by https://accu.org/journals/overload/25/139/williams_2382/
-
-    template<typename Blackboard, typename Tuple, std::size_t I>
-    const BehaviorNode<Blackboard>& behavior_tuple_get(Tuple& tuple)
-    {
-      return std::get<I>(tuple);
-    }
-
-    template<typename Blackboard, typename Tuple, typename Indices = std::make_index_sequence<std::tuple_size_v<Tuple>>>
-    struct BehaviorTupleGetters;
-
-    template<typename Blackboard, typename Tuple, std::size_t... Indices>
-    struct BehaviorTupleGetters<Blackboard, Tuple, std::index_sequence<Indices...>> {
-      using Getter = const BehaviorNode<Blackboard>& (*)(Tuple&);
-      static constexpr Getter Table[std::tuple_size_v<Tuple>] = { &behavior_tuple_get<Blackboard, Tuple, Indices>... };
-    };
-
-    template<typename Blackboard, typename Tuple>
-    const BehaviorNode<Blackboard>& behavior_tuple_get_ith(Tuple& tuple, std::size_t i)
-    {
-      assert(i < std::tuple_size_v<Tuple>);
-      return BehaviorTupleGetters<Blackboard, Tuple>::Table[i](tuple);
-    }
-
-  }
-
-
   namespace behavior {
+
+    namespace details {
+      // inspired by https://accu.org/journals/overload/25/139/williams_2382/
+
+      template<typename Blackboard, typename Tuple, std::size_t I>
+      const BehaviorNode<Blackboard>& behavior_tuple_get(Tuple& tuple)
+      {
+        return std::get<I>(tuple);
+      }
+
+      template<typename Blackboard, typename Tuple, typename Indices = std::make_index_sequence<std::tuple_size_v<Tuple>>>
+      struct BehaviorTupleGetters;
+
+      template<typename Blackboard, typename Tuple, std::size_t... Indices>
+      struct BehaviorTupleGetters<Blackboard, Tuple, std::index_sequence<Indices...>> {
+        using Getter = const BehaviorNode<Blackboard>& (*)(Tuple&);
+        static constexpr Getter Table[std::tuple_size_v<Tuple>] = { &behavior_tuple_get<Blackboard, Tuple, Indices>... };
+      };
+
+      template<typename Blackboard, typename Tuple>
+      const BehaviorNode<Blackboard>& behavior_tuple_get_ith(Tuple& tuple, std::size_t i)
+      {
+        assert(i < std::tuple_size_v<Tuple>);
+        return BehaviorTupleGetters<Blackboard, Tuple>::Table[i](tuple);
+      }
+
+    }
 
     /*
      * Sequence
