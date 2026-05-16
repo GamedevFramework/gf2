@@ -11,6 +11,11 @@
 
 namespace gf {
 
+  void PropertyMap::add_property(std::string key, Property property)
+  {
+    m_properties.emplace(std::move(key), std::move(property));
+  }
+
   void PropertyMap::add_property(std::string key, bool value)
   {
     m_properties.emplace(std::move(key), Property(value));
@@ -58,7 +63,7 @@ namespace gf {
 
   const Property& PropertyMap::operator()(std::string_view path) const
   {
-    auto keys = split_path(path);
+    std::vector<std::string_view> keys = split_path(path);
 
     if (keys.empty()) {
       Log::fatal("Failed to get a property, empty path.");
@@ -69,11 +74,11 @@ namespace gf {
 
     const PropertyMap* current_map = this;
 
-    for (auto key : keys) {
-      const auto& properties = current_map->m_properties;
+    for (std::string_view key : keys) {
+      const Properties& properties = current_map->m_properties;
 
       if (auto iterator = properties.find(key); iterator != properties.end()) {
-        const auto& [dontcare, property] = *iterator;
+        const Property& property = iterator->second;
 
         if (!property.is_class()) {
           Log::fatal("Failed to get a property, property is not a class: {}", key);
@@ -86,7 +91,7 @@ namespace gf {
     }
 
     assert(current_map != nullptr);
-    const auto& properties = current_map->m_properties;
+    const Properties& properties = current_map->m_properties;
 
     if (auto iterator = properties.find(last_key); iterator != properties.end()) {
       return iterator->second;

@@ -134,45 +134,38 @@ namespace gf {
      * properties
      */
 
+    Property parse_tmx_raw_property(pugi::xml_node node);
+
     // NOLINTNEXTLINE(misc-no-recursion)
-    PropertyMap parse_tmx_raw_properties(const pugi::xml_node node)
+    std::vector<Property> parse_tmx_raw_property_list(const pugi::xml_node node)
     {
-      PropertyMap property_map;
+      std::vector<Property> list;
+
+      for (const pugi::xml_node item : node.children("item")) {
+        Property property = parse_tmx_raw_property(item);
+
+        if (!property.empty()) {
+          list.push_back(std::move(property));
+        }
+      }
+
+      return list;
+    }
+
+    // NOLINTNEXTLINE(misc-no-recursion)
+    PropertyMap parse_tmx_property_map(const pugi::xml_node node, const std::string& property_type = "")
+    {
+      PropertyMap property_map(property_type);
 
       for (const pugi::xml_node properties : node.children("properties")) {
         for (const pugi::xml_node property : properties.children("property")) {
           std::string name = property.attribute("name").as_string();
           assert(!name.empty());
 
-          auto type_attribute = property.attribute("type");
-          auto value_attribute = property.attribute("value");
-          assert(value_attribute);
+          Property value = parse_tmx_raw_property(property);
 
-          if (!type_attribute.empty()) {
-            std::string type = type_attribute.as_string();
-
-            if (type == "string") {
-              property_map.add_property(std::move(name), std::string(value_attribute.as_string()));
-            } else if (type == "int") {
-              property_map.add_property(std::move(name), static_cast<int64_t>(value_attribute.as_int()));
-            } else if (type == "float") {
-              property_map.add_property(std::move(name), value_attribute.as_double());
-            } else if (type == "bool") {
-              property_map.add_property(std::move(name), value_attribute.as_bool());
-            } else if (type == "color") {
-              property_map.add_property(std::move(name), parse_color(value_attribute));
-            } else if (type == "file") {
-              property_map.add_property(std::move(name), std::filesystem::path(value_attribute.as_string()));
-            } else if (type == "object") {
-              property_map.add_property(std::move(name), gf::hash_string(value_attribute.as_string()));
-            } else if (type == "class") {
-              property_map.add_property(std::move(name), parse_tmx_raw_properties(property));
-            } else {
-              Log::error("Wrong type string: '{}'.", type);
-            }
-
-          } else {
-            property_map.add_property(std::move(name), std::string(value_attribute.as_string()));
+          if (!value.empty()) {
+            property_map.add_property(std::move(name), std::move(value));
           }
         }
       }
@@ -180,9 +173,62 @@ namespace gf {
       return property_map;
     }
 
+    // NOLINTNEXTLINE(misc-no-recursion)
+    Property parse_tmx_raw_property(const pugi::xml_node node)
+    {
+      pugi::xml_attribute type_attribute = node.attribute("type");
+      pugi::xml_attribute value_attribute = node.attribute("value");
+
+      if (type_attribute.empty()) {
+        return Property(std::string(value_attribute.as_string()));
+      }
+
+      const std::string_view type = type_attribute.as_string();
+
+      if (type == "string") {
+        return Property(std::string(value_attribute.as_string()));
+      }
+
+      if (type == "int") {
+        return Property(static_cast<int64_t>(value_attribute.as_int()));
+      }
+
+      if (type == "float") {
+        return Property(value_attribute.as_double());
+      }
+
+      if (type == "bool") {
+        return Property(value_attribute.as_bool());
+      }
+
+      if (type == "color") {
+        return Property(parse_color(value_attribute));
+      }
+
+      if (type == "file") {
+        return Property(std::filesystem::path(value_attribute.as_string()));
+      }
+
+      if (type == "object") {
+        return Property(gf::hash_string(value_attribute.as_string()));
+      }
+
+      if (type == "class") {
+        pugi::xml_attribute property_type_attribute = node.attribute("propertytype");
+        return Property(parse_tmx_property_map(node, property_type_attribute.as_string()));
+      }
+
+      if (type == "list") {
+        return Property(parse_tmx_raw_property_list(node));
+      }
+
+      Log::error("Wrong type string: '{}'.", type);
+      return {};
+    }
+
     uint32_t parse_tmx_properties(const pugi::xml_node node, TiledMap& map)
     {
-      PropertyMap property_map = parse_tmx_raw_properties(node);
+      PropertyMap property_map = parse_tmx_property_map(node);
 
       if (property_map.empty()) {
         return NoIndex;

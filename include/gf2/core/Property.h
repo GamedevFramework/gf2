@@ -8,6 +8,7 @@
 #include <filesystem>
 #include <string>
 #include <variant>
+#include <vector>
 
 #include "Color.h"
 #include "CoreApi.h"
@@ -26,6 +27,11 @@ namespace gf {
     explicit Property(T&& value)
     : m_value(std::forward<T>(value))
     {
+    }
+
+    bool empty() const
+    {
+      return is<std::monostate>();
     }
 
     bool is_bool() const
@@ -68,6 +74,11 @@ namespace gf {
       return is<PropertyMap>();
     }
 
+    bool is_list() const
+    {
+      return is<std::vector<Property>>();
+    }
+
     bool as_bool() const
     {
       return as<bool>();
@@ -108,6 +119,11 @@ namespace gf {
       return as<PropertyMap>();
     }
 
+    const std::vector<Property>& as_list() const
+    {
+      return as<std::vector<Property>>();
+    }
+
   private:
     friend inline bool operator==(const Property& lhs, const Property& rhs);
 
@@ -127,7 +143,7 @@ namespace gf {
       return std::get<T>(m_value);
     }
 
-    std::variant<std::monostate, bool, int64_t, double, std::string, std::filesystem::path, Id, Color, PropertyMap> m_value;
+    std::variant<std::monostate, bool, int64_t, double, std::string, std::filesystem::path, Id, Color, PropertyMap, std::vector<Property>> m_value;
   };
 
   // NOLINTNEXTLINE(misc-no-recursion)

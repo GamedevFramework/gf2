@@ -22,6 +22,17 @@ namespace gf {
   // NOLINTNEXTLINE(misc-no-recursion)
   class GF_CORE_API PropertyMap {
   public:
+    PropertyMap(std::string type = "")
+    : m_type(std::move(type))
+    {
+    }
+
+    const std::string& type() const
+    {
+      return m_type;
+    }
+
+    void add_property(std::string key, Property property);
 
     void add_property(std::string key, bool value);
     void add_property(std::string key, int64_t value);
@@ -47,7 +58,10 @@ namespace gf {
     template<typename Archive>
     friend Archive& operator|(Archive& ar, MaybeConst<PropertyMap, Archive>& map);
 
-    std::map<std::string, Property, std::less<void>> m_properties;
+    std::string m_type;
+
+    using Properties = std::map<std::string, Property, std::less<void>>;
+    Properties m_properties;
   };
 
   GF_CORE_API bool operator==(const PropertyMap& lhs, const PropertyMap& rhs);
@@ -55,7 +69,7 @@ namespace gf {
   template<typename Archive>
   Archive& operator|(Archive& ar, MaybeConst<PropertyMap, Archive>& map)
   {
-    return ar | map.m_properties;
+    return ar | map.m_type | map.m_properties;
   }
 
 }
