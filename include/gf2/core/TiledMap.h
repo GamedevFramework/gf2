@@ -74,6 +74,7 @@ namespace gf {
     Tile,
     Polygon,
     Polyline,
+    Capsule,
   };
 
   struct GF_CORE_API MapObject {

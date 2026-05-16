@@ -614,6 +614,10 @@ namespace gf {
         object.object_type = MapObjectType::Ellipse;
         const Vec2F size = { node.attribute("width").as_float(), node.attribute("height").as_float() };
         object.feature = size;
+      } else if(!node.child("capsule").empty()) {
+        object.object_type = MapObjectType::Capsule;
+        const Vec2F size = { node.attribute("width").as_float(), node.attribute("height").as_float() };
+        object.feature = size;
       } else {
         object.object_type = MapObjectType::Rectangle;
         const Vec2F size = { node.attribute("width").as_float(), node.attribute("height").as_float() };
