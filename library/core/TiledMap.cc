@@ -19,6 +19,7 @@
 #include <gf2/core/Property.h>
 #include <gf2/core/ResourceBundle.h>
 #include <gf2/core/StringUtils.h>
+#include "gf2/core/ColorCompositing.h"
 
 using namespace std::literals;
 
@@ -518,6 +519,31 @@ namespace gf {
       return tiles;
     }
 
+    BlendMode parse_blend_monde(const pugi::xml_attribute attribute) {
+      if (!attribute) {
+        return BlendMode::Normal;
+      }
+
+      std::string_view mode = attribute.as_string();
+
+      if (mode == "normal") { return BlendMode::Normal; }
+      if (mode == "add") { return BlendMode::LinearDodge; }
+      if (mode == "multiply") { return BlendMode::Multiply; }
+      if (mode == "screen") { return BlendMode::Screen; }
+      if (mode == "overlay") { return BlendMode::Overlay; }
+      if (mode == "darken") { return BlendMode::Darken; }
+      if (mode == "lighten") { return BlendMode::Lighten; }
+      if (mode == "color-dodge") { return BlendMode::ColorDodge; }
+      if (mode == "color-burn") { return BlendMode::ColorBurn; }
+      if (mode == "hard-light") { return BlendMode::HardLight; }
+      if (mode == "soft-light") { return BlendMode::SoftLight; }
+      if (mode == "difference") { return BlendMode::Difference; }
+      if (mode == "exclusion") { return BlendMode::Exclusion; }
+
+      assert(false);
+      return BlendMode::Normal;
+    }
+
     MapLayerStructure parse_tmx_tile_layer(const pugi::xml_node node, TiledMap& map)
     {
       assert(node.name() == "layer"sv);
@@ -526,6 +552,7 @@ namespace gf {
 
       MapTileLayer tile_layer;
       tile_layer.layer = parse_tmx_layer_common(node, map);
+      tile_layer.mode = parse_blend_monde(node.attribute("mode"));
 
       for (const pugi::xml_node data_node : node.children("data")) {
         tile_layer.tiles = Array2D<MapTile>(map.map_size);

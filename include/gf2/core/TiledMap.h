@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "Array2D.h"
+#include "ColorCompositing.h"
 #include "CoreApi.h"
 #include "GridTypes.h"
 #include "Id.h"
@@ -59,6 +60,7 @@ namespace gf {
   struct GF_CORE_API MapTileLayer {
     MapLayer layer;
     Array2D<MapTile> tiles;
+    BlendMode mode = BlendMode::Normal;
   };
 
   template<typename Archive>
