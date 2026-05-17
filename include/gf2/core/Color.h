@@ -230,6 +230,11 @@ namespace gf {
     return { details::clamp(color.r, min, max), details::clamp(color.g, min, max), details::clamp(color.b, min, max), details::clamp(color.a, min, max) };
   }
 
+  constexpr Color abs(Color color)
+  {
+    return { details::abs(color.r), details::abs(color.g), details::abs(color.b), details::abs(color.a) };
+  }
+
   constexpr Color opaque(float value = 0.5f)
   {
     return { 1.0f, 1.0f, 1.0f, value };

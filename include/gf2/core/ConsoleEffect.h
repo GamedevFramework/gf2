@@ -6,114 +6,99 @@
 #include <cstdint>
 
 #include "Color.h"
+#include "ColorCompositing.h"
 #include "CoreApi.h"
 
 namespace gf {
 
-  enum class ConsoleEffectType : uint8_t {
-    None,
-    Set,
-    Multiply,
-    Lighten,
-    Darken,
-    Screen,
-    ColorDodge,
-    ColorBurn,
-    Add,
-    AddAlpha,
-    Burn,
-    Overlay,
-    Alpha,
-  };
-
   class GF_CORE_API ConsoleEffect {
   public:
+    constexpr ConsoleEffect(BlendMode mode = BlendMode::Normal, CompositingOperation operation = CompositingOperation::Source)
+    : m_mode(mode)
+    , m_operation(operation)
+    {
+    }
+
     static constexpr ConsoleEffect none()
     {
-      return ConsoleEffectType::None;
+      return { BlendMode::Normal, CompositingOperation::Destination };
     }
 
     static constexpr ConsoleEffect set()
     {
-      return ConsoleEffectType::Set;
+      return BlendMode::Normal;
     }
 
     static constexpr ConsoleEffect multiply()
     {
-      return ConsoleEffectType::Multiply;
+      return BlendMode::Multiply;
     }
 
     static constexpr ConsoleEffect lighten()
     {
-      return ConsoleEffectType::Lighten;
+      return BlendMode::Lighten;
     }
 
     static constexpr ConsoleEffect darken()
     {
-      return ConsoleEffectType::Darken;
+      return BlendMode::Darken;
     }
 
     static constexpr ConsoleEffect screen()
     {
-      return ConsoleEffectType::Screen;
+      return BlendMode::Screen;
     }
 
     static constexpr ConsoleEffect color_dodge()
     {
-      return ConsoleEffectType::ColorDodge;
+      return BlendMode::ColorDodge;
     }
 
     static constexpr ConsoleEffect color_burn()
     {
-      return ConsoleEffectType::ColorBurn;
+      return BlendMode::ColorBurn;
     }
 
     static constexpr ConsoleEffect add()
     {
-      return ConsoleEffectType::Add;
+      return BlendMode::LinearDodge;
     }
 
-    static constexpr ConsoleEffect add_alpha(float alpha)
+    static constexpr ConsoleEffect linear_dodge()
     {
-      return { ConsoleEffectType::AddAlpha, alpha };
+      return BlendMode::LinearDodge;
     }
 
-    static constexpr ConsoleEffect burn()
+    static constexpr ConsoleEffect linear_burn()
     {
-      return ConsoleEffectType::Burn;
+      return BlendMode::LinearBurn;
     }
 
     static constexpr ConsoleEffect overlay()
     {
-      return ConsoleEffectType::Overlay;
+      return BlendMode::Overlay;
     }
 
-    static constexpr ConsoleEffect alpha(float alpha)
+    static constexpr ConsoleEffect alpha()
     {
-      return { ConsoleEffectType::Alpha, alpha };
+      return { BlendMode::Normal, CompositingOperation::SourceOver };
     }
 
-    constexpr ConsoleEffectType type() const
+    constexpr BlendMode blend_mode() const
     {
-      return m_type;
+      return m_mode;
     }
 
-    constexpr float alpha() const
+    constexpr CompositingOperation compositing_operation() const
     {
-      return m_alpha;
+      return m_operation;
     }
 
     Color compute_color(Color existing, Color proposed) const;
 
   private:
-    constexpr ConsoleEffect(ConsoleEffectType type, float alpha = 0.0f)
-    : m_type(type)
-    , m_alpha(alpha)
-    {
-    }
-
-    ConsoleEffectType m_type = ConsoleEffectType::None;
-    float m_alpha = 0.0f;
+    BlendMode m_mode;
+    CompositingOperation m_operation;
   };
 
 }
