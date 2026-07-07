@@ -39,7 +39,6 @@ namespace gf {
   };
 
   struct GF_PHYSICS_API PhysicsManifoldPoint {
-    Vec2F clip_point;
     Vec2F anchor0;
     Vec2F anchor1;
     float separation;
@@ -83,7 +82,6 @@ namespace gf {
         const b2ManifoldPoint& raw_point = raw.manifold.points[i];
         PhysicsManifoldPoint& point = features.manifold.points[i];
 
-        point.clip_point = { raw_point.clipPoint.x, raw_point.clipPoint.y };
         point.anchor0 = { raw_point.anchorA.x, raw_point.anchorA.y };
         point.anchor1 = { raw_point.anchorB.x, raw_point.anchorB.y };
         point.separation = raw_point.separation;

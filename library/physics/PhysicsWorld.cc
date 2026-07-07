@@ -109,13 +109,13 @@ namespace gf {
 
     constexpr uint8_t PhysicsDebugAlpha = 0x80;
 
-    void draw_polygon_fn(const b2Vec2* raw_vertices, int raw_vertex_count, b2HexColor raw_color, void* context)
+    void draw_polygon_fn(b2WorldTransform raw_transform, const b2Vec2* raw_vertices, int raw_vertex_count, b2HexColor raw_color, void* context)
     {
       assert(raw_vertex_count < B2_MAX_POLYGON_VERTICES);
       std::array<Vec2F, B2_MAX_POLYGON_VERTICES> vertices = {};
 
       for (int i = 0; i < raw_vertex_count; ++i) {
-        const b2Vec2 raw = raw_vertices[i];
+        const b2Vec2 raw = b2TransformPoint(raw_transform, raw_vertices[i]);
         vertices[i] = { raw.x, raw.y };
       }
 
@@ -143,9 +143,9 @@ namespace gf {
       debug->draw_circle({ { center.x, center.y }, radius }, { static_cast<uint32_t>(raw_color), PhysicsDebugAlpha });
     }
 
-    void draw_solid_circle_fn(b2Transform raw_transform, float radius, b2HexColor raw_color, void* context)
+    void draw_solid_circle_fn(b2Transform raw_transform, b2Vec2 center, float radius, b2HexColor raw_color, void* context)
     {
-      const b2Vec2 center = raw_transform.p;
+      center = b2TransformPoint(raw_transform, center);
       auto* debug = static_cast<PhysicsDebug*>(context);
       debug->draw_solid_circle({ { center.x, center.y }, radius }, b2Rot_GetAngle(raw_transform.q), { static_cast<uint32_t>(raw_color), PhysicsDebugAlpha });
     }
@@ -262,7 +262,8 @@ namespace gf {
     raw.drawingBounds = to_aabb(options.bounds);
     raw.forceScale = options.force_scale;
     raw.jointScale = options.joint_scale;
-    raw.contactDrawType = static_cast<b2ContactDrawType>(options.contact_draw_type);
+    raw.drawContacts = options.features.test(PhysicsDebugFeature::DrawContacts);
+    raw.drawAnchorA = options.features.test(PhysicsDebugFeature::DrawAnchorA);
     raw.drawShapes = options.features.test(PhysicsDebugFeature::DrawShapes);
     raw.drawJoints = options.features.test(PhysicsDebugFeature::DrawJoints);
     raw.drawJointExtras = options.features.test(PhysicsDebugFeature::DrawJointsExtra);
@@ -353,15 +354,15 @@ namespace gf {
     return events;
   }
 
-  void PhysicsWorld::overlap_bounds(RectF bounds, PhysicsQueryFilter filter, PhysicsOverlapResultFn fn)
+  void PhysicsWorld::overlap_bounds(Vec2F origin, RectF bounds, PhysicsQueryFilter filter, PhysicsOverlapResultFn fn)
   {
-    b2World_OverlapAABB(m_id, to_aabb(bounds), details::to_raw(filter), overlap_result_fn, &fn);
+    b2World_OverlapAABB(m_id, { origin.x, origin.y }, to_aabb(bounds), details::to_raw(filter), overlap_result_fn, &fn);
   }
 
-  void PhysicsWorld::overlap_shape(Span<const Vec2F> shape, float radius, PhysicsQueryFilter filter, PhysicsOverlapResultFn fn)
+  void PhysicsWorld::overlap_shape(Vec2F origin, Span<const Vec2F> shape, float radius, PhysicsQueryFilter filter, PhysicsOverlapResultFn fn)
   {
     const b2ShapeProxy proxy = to_raw(shape, radius);
-    b2World_OverlapShape(m_id, &proxy, details::to_raw(filter), overlap_result_fn, &fn);
+    b2World_OverlapShape(m_id, { origin.x, origin.y }, &proxy, details::to_raw(filter), overlap_result_fn, &fn);
   }
 
   void PhysicsWorld::cast_ray(Vec2F origin, Vec2F translation, PhysicsQueryFilter filter, PhysicsCastResultFn fn)
@@ -375,10 +376,10 @@ namespace gf {
     return { PhysicsShape::from_id(details::to_id(raw.shapeId)), { raw.point.x, raw.point.y }, { raw.normal.x, raw.normal.y }, raw.fraction, raw.hit };
   }
 
-  void PhysicsWorld::cast_shape(Span<const Vec2F> shape, float radius, Vec2F translation, PhysicsQueryFilter filter, PhysicsCastResultFn fn)
+  void PhysicsWorld::cast_shape(Vec2F origin, Span<const Vec2F> shape, float radius, Vec2F translation, PhysicsQueryFilter filter, PhysicsCastResultFn fn)
   {
     const b2ShapeProxy proxy = to_raw(shape, radius);
-    b2World_CastShape(m_id, &proxy, { translation.x, translation.y }, details::to_raw(filter), cast_result_fn, &fn);
+    b2World_CastShape(m_id, { origin.x, origin.y }, &proxy, { translation.x, translation.y }, details::to_raw(filter), cast_result_fn, &fn);
   }
 
   bool PhysicsWorld::is_sleep_enabled() const

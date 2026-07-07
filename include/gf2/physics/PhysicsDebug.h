@@ -24,30 +24,24 @@
 namespace gf {
 
   enum class PhysicsDebugFeature : uint16_t {
-    DrawShapes          = 0x0001,
-    DrawJoints          = 0x0002,
-    DrawJointsExtra     = 0x0004,
-    DrawBounds          = 0x0008,
-    DrawMass            = 0x0010,
-    DrawBodyNames       = 0x0020,
-    DrawGraphColors     = 0x0040,
-    DrawContactFeatures = 0x0080,
-    DrawContactNormals  = 0x0100,
-    DrawContactForces   = 0x0200,
-    DrawFrictionForces  = 0x0400,
-    DrawIslands         = 0x0800,
+    DrawContacts        = 0x0001,
+    DrawAnchorA         = 0x0002,
+    DrawShapes          = 0x0004,
+    DrawJoints          = 0x0008,
+    DrawJointsExtra     = 0x0010,
+    DrawBounds          = 0x0020,
+    DrawMass            = 0x0040,
+    DrawBodyNames       = 0x0080,
+    DrawGraphColors     = 0x0100,
+    DrawContactFeatures = 0x0200,
+    DrawContactNormals  = 0x0400,
+    DrawContactForces   = 0x0800,
+    DrawFrictionForces  = 0x1000,
+    DrawIslands         = 0x2000,
   };
 
   template<>
   struct EnableBitmaskOperators<PhysicsDebugFeature> : std::true_type {
-  };
-
-  enum class PhysicsContactDrawType : std::underlying_type_t<b2ContactDrawType> { // NOLINT(performance-enum-size)
-    None = b2_drawContacts_None,
-    Clip = b2_drawContacts_Clip,
-    AnchorA = b2_drawContacts_AnchorA,
-    AnchorB = b2_drawContacts_AnchorB,
-    Average = b2_drawContacts_Average,
   };
 
   namespace details {
@@ -64,7 +58,6 @@ namespace gf {
     float force_scale = 1.0f;
     float joint_scale = 1.0f;
     Flags<PhysicsDebugFeature> features = PhysicsDebugFeature::DrawShapes;
-    PhysicsContactDrawType contact_draw_type = PhysicsContactDrawType::None;
   };
 
   class GF_PHYSICS_API PhysicsDebug {

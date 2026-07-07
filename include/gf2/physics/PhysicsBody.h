@@ -116,8 +116,8 @@ namespace gf {
     float mass() const;
     float rotational_inertia() const;
 
-    Vec2F local_center_of_mass() const;
-    Vec2F world_center_of_mass() const;
+    Vec2F local_center() const;
+    Vec2F world_center() const;
 
     PhysicsMassData mass_data() const;
     void set_mass_data(const PhysicsMassData& data);

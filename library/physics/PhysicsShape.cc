@@ -237,14 +237,9 @@ namespace gf {
     return b2Shape_TestPoint(m_id, { point.x, point.y });
   }
 
-  PhysicsCastOutput PhysicsShape::ray_cast(const PhysicsRayCastInput& input)
+  PhysicsCastOutput PhysicsShape::ray_cast(Vec2F origin, Vec2F translation)
   {
-    b2RayCastInput raw_input = {};
-    raw_input.origin = { input.origin.x, input.origin.y };
-    raw_input.translation = { input.translation.x, input.translation.y };
-    raw_input.maxFraction = input.max_fraction;
-
-    const b2CastOutput raw = b2Shape_RayCast(m_id, &raw_input);
+    const b2CastOutput raw = b2Shape_RayCast(m_id, { origin.x, origin.y }, { translation.x, translation.y });
     return {
       { raw.normal.x, raw.normal.y },
       { raw.point.x, raw.point.y },

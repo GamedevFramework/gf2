@@ -51,12 +51,6 @@ namespace gf {
     ChainSegment = b2_chainSegmentShape,
   };
 
-  struct GF_PHYSICS_API PhysicsRayCastInput {
-    Vec2F origin;
-    Vec2F translation;
-    float max_fraction;
-  };
-
   struct GF_PHYSICS_API PhysicsCastOutput {
     Vec2F normal;
     Vec2F point;
@@ -118,7 +112,7 @@ namespace gf {
     void enable_hit_events(bool flag);
 
     bool test_point(Vec2F point);
-    PhysicsCastOutput ray_cast(const PhysicsRayCastInput& input);
+    PhysicsCastOutput ray_cast(Vec2F origin, Vec2F translation);
 
     CircF circle() const;
     SegmentF segment() const;

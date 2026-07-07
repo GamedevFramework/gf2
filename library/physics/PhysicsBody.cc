@@ -249,15 +249,15 @@ namespace gf {
     return b2Body_GetRotationalInertia(m_id);
   }
 
-  Vec2F PhysicsBody::local_center_of_mass() const
+  Vec2F PhysicsBody::local_center() const
   {
-    const b2Vec2 raw = b2Body_GetLocalCenterOfMass(m_id);
+    const b2Vec2 raw = b2Body_GetLocalCenter(m_id);
     return { raw.x, raw.y };
   }
 
-  Vec2F PhysicsBody::world_center_of_mass() const
+  Vec2F PhysicsBody::world_center() const
   {
-    const b2Vec2 raw = b2Body_GetWorldCenterOfMass(m_id);
+    const b2Vec2 raw = b2Body_GetWorldCenter(m_id);
     return { raw.x, raw.y };
   }
 
