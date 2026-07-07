@@ -4,6 +4,7 @@
 #include <gf2/core/FontFace.h>
 
 #include <cassert>
+#include <cstring>
 
 #include <utility>
 

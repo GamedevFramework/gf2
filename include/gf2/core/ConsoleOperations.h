@@ -4,6 +4,7 @@
 #define GF_CONSOLE_OPERATIONS_H
 
 #include <fmt/core.h>
+#include <fmt/format.h>
 
 #include "Console.h"
 #include "ConsoleEffect.h"
