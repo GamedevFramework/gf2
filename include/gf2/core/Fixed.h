@@ -7,6 +7,8 @@
 
 #include <type_traits>
 
+#include "Math.h"
+
 namespace gf {
   namespace details {
 
@@ -60,6 +62,16 @@ namespace gf {
     constexpr T as_int() const
     {
       return m_raw / Factor;
+    }
+
+    constexpr T ceil() const
+    {
+      return div_ceil(m_raw, Factor);
+    }
+
+    constexpr T floor() const
+    {
+      return div_floor(m_raw, Factor);
     }
 
     constexpr float as_float() const
