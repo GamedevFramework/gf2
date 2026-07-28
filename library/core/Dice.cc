@@ -9,7 +9,7 @@ namespace gf {
     int result = m_modifier;
 
     for (int i = 0; i < m_count; ++i) {
-      result += random->compute_uniform_integer(1, m_faces);
+      result += 1 + random->compute_uniform_integer(m_faces);
     }
 
     return result;
