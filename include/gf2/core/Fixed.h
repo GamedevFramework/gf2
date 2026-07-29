@@ -66,12 +66,12 @@ namespace gf {
 
     constexpr T ceil() const
     {
-      return div_ceil(m_raw, Factor);
+      return static_cast<T>(div_ceil(static_cast<Intermediary>(m_raw), Factor));
     }
 
     constexpr T floor() const
     {
-      return div_floor(m_raw, Factor);
+      return static_cast<T>(div_floor(static_cast<Intermediary>(m_raw), Factor));
     }
 
     constexpr float as_float() const
@@ -228,10 +228,34 @@ namespace gf {
     return lhs.raw() == rhs.raw();
   }
 
+  template<typename T, std::size_t Shift, typename U>
+  constexpr bool operator==(Fixed<T, Shift> lhs, U rhs)
+  {
+    return lhs.raw() == Fixed<T, Shift>(rhs).raw();
+  }
+
+  template<typename T, std::size_t Shift, typename U>
+  constexpr bool operator==(U lhs, Fixed<T, Shift> rhs)
+  {
+    return Fixed<T, Shift>(lhs).raw() == rhs.raw();
+  }
+
   template<typename T, std::size_t Shift>
   constexpr bool operator!=(Fixed<T, Shift> lhs, Fixed<T, Shift> rhs)
   {
     return lhs.raw() != rhs.raw();
+  }
+
+  template<typename T, std::size_t Shift, typename U>
+  constexpr bool operator!=(Fixed<T, Shift> lhs, U rhs)
+  {
+    return lhs.raw() != Fixed<T, Shift>(rhs).raw();
+  }
+
+  template<typename T, std::size_t Shift, typename U>
+  constexpr bool operator!=(U lhs, Fixed<T, Shift> rhs)
+  {
+    return Fixed<T, Shift>(lhs).raw() != rhs.raw();
   }
 
   template<typename T, std::size_t Shift>
@@ -240,10 +264,34 @@ namespace gf {
     return lhs.raw() < rhs.raw();
   }
 
+  template<typename T, std::size_t Shift, typename U>
+  constexpr bool operator<(Fixed<T, Shift> lhs, U rhs)
+  {
+    return lhs.raw() < Fixed<T, Shift>(rhs).raw();
+  }
+
+  template<typename T, std::size_t Shift, typename U>
+  constexpr bool operator<(U lhs, Fixed<T, Shift> rhs)
+  {
+    return Fixed<T, Shift>(lhs).raw() < rhs.raw();
+  }
+
   template<typename T, std::size_t Shift>
   constexpr bool operator<=(Fixed<T, Shift> lhs, Fixed<T, Shift> rhs)
   {
     return lhs.raw() <= rhs.raw();
+  }
+
+  template<typename T, std::size_t Shift, typename U>
+  constexpr bool operator<=(Fixed<T, Shift> lhs, U rhs)
+  {
+    return lhs.raw() <= Fixed<T, Shift>(rhs).raw();
+  }
+
+  template<typename T, std::size_t Shift, typename U>
+  constexpr bool operator<=(U lhs, Fixed<T, Shift> rhs)
+  {
+    return Fixed<T, Shift>(lhs).raw() <= rhs.raw();
   }
 
   template<typename T, std::size_t Shift>
@@ -252,10 +300,34 @@ namespace gf {
     return lhs.raw() > rhs.raw();
   }
 
+  template<typename T, std::size_t Shift, typename U>
+  constexpr bool operator>(Fixed<T, Shift> lhs, U rhs)
+  {
+    return lhs.raw() > Fixed<T, Shift>(rhs).raw();
+  }
+
+  template<typename T, std::size_t Shift, typename U>
+  constexpr bool operator>(U lhs, Fixed<T, Shift> rhs)
+  {
+    return Fixed<T, Shift>(lhs).raw() > rhs.raw();
+  }
+
   template<typename T, std::size_t Shift>
   constexpr bool operator>=(Fixed<T, Shift> lhs, Fixed<T, Shift> rhs)
   {
     return lhs.raw() >= rhs.raw();
+  }
+
+  template<typename T, std::size_t Shift, typename U>
+  constexpr bool operator>=(Fixed<T, Shift> lhs, U rhs)
+  {
+    return lhs.raw() >= Fixed<T, Shift>(rhs).raw();
+  }
+
+  template<typename T, std::size_t Shift, typename U>
+  constexpr bool operator>=(U lhs, Fixed<T, Shift> rhs)
+  {
+    return Fixed<T, Shift>(lhs).raw() >= rhs.raw();
   }
 
   using Fixed32 = Fixed<int32_t, 16>;
