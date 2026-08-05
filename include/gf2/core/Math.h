@@ -201,6 +201,29 @@ namespace gf {
     return (dividend / divisor) + ((dividend % divisor != 0) * ((dividend > 0) ^ (divisor < 0)));
   }
 
+  template<typename T>
+  constexpr T isqrt(const T n) noexcept(std::is_unsigned_v<T>)
+  requires (std::is_integral_v<T>)
+  {
+    assert(std::is_unsigned_v<T> || n >= 0);
+
+    if (n <= T{1}) {
+      return n;
+    }
+
+    const auto exponent = (std::bit_width(std::make_unsigned_t<T>(n - 1)) + 1) >> 1;
+    T current = 0;
+    T next(T(1) << exponent);
+
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-do-while)
+    do {
+      current = next;
+      next = static_cast<T>((current + (n / current)) >> 1);
+    } while (next < current);
+
+    return current;
+  }
+
 } // namespace gf
 
 #endif // GF_MATH_H

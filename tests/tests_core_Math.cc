@@ -1,3 +1,4 @@
+#include <cstdint>
 #include <type_traits>
 
 #include <gf2/core/Math.h>
@@ -206,4 +207,16 @@ TEST(MathTest, DivCeil) {
   static_assert(gf::div_ceil(+4, -2) == -2, "Check div_ceil");
   static_assert(gf::div_ceil(-4, +2) == -2, "Check div_ceil");
   static_assert(gf::div_ceil(-4, -2) == +2, "Check div_ceil");
+}
+
+TEST(MathTest, ISqrt) {
+  EXPECT_EQ(gf::isqrt(0), 0);
+  EXPECT_EQ(gf::isqrt(1), 1);
+  EXPECT_EQ(gf::isqrt(INT64_C(4503599761588224)), INT64_C(67108864));
+  EXPECT_EQ(gf::isqrt(UINT64_C(4503599761588224)), UINT64_C(67108864));
+
+  static_assert(gf::isqrt(0) == 0);
+  static_assert(gf::isqrt(1) == 1);
+  static_assert(gf::isqrt(INT64_C(4503599761588224)) == INT64_C(67108864));
+  static_assert(gf::isqrt(UINT64_C(4503599761588224)) == UINT64_C(67108864));
 }

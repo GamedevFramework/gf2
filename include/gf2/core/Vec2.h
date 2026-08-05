@@ -301,15 +301,23 @@ namespace gf {
   }
 
   template<typename T>
-  inline auto euclidean_length(Vec2<T> vec)
+  inline T euclidean_length(Vec2<T> vec)
   {
-    return std::sqrt(square_length(vec));
+    if constexpr (std::is_integral_v<T>) {
+      return isqrt(square_length(vec));
+    } else {
+      return std::sqrt(square_length(vec));
+    }
   }
 
   template<typename T>
-  inline auto euclidean_distance(Vec2<T> lhs, Vec2<T> rhs)
+  inline T euclidean_distance(Vec2<T> lhs, Vec2<T> rhs)
   {
-    return std::sqrt(square_distance(lhs, rhs));
+    if constexpr (std::is_integral_v<T>) {
+      return isqrt(square_distance(lhs, rhs));
+    } else {
+      return std::sqrt(square_distance(lhs, rhs));
+    }
   }
 
   template<typename T>
