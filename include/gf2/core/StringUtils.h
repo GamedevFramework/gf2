@@ -6,6 +6,7 @@
 #include <cassert>
 #include <cstdint>
 
+#include <ranges>
 #include <string>
 #include <vector>
 
@@ -34,7 +35,7 @@ namespace gf {
     return split_string(path_like, "/");
   }
 
-  class GF_CORE_API CodepointRange {
+  class GF_CORE_API CodepointRange : public std::ranges::view_interface<CodepointRange> {
   public:
     class Iterator {
     public:
@@ -43,6 +44,11 @@ namespace gf {
       using pointer = value_type;
       using reference = value_type;
       using iterator_category = std::forward_iterator_tag;
+
+      constexpr Iterator() noexcept
+      :m_current(nullptr)
+      {
+      }
 
       constexpr Iterator(const char* ptr) noexcept
       : m_current(ptr)

@@ -173,4 +173,6 @@ namespace gf {
     return size;
   }
 
+  static_assert(std::ranges::view<CodepointRange>);
+
 }
