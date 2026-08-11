@@ -69,8 +69,6 @@ namespace gf {
 
     assert(0.0f <= normalized && normalized < 2 * Pi);
 
-    static constexpr float Pi4 = Pi / 4.0f;
-
     if (normalized < 1 * Pi4) {
       return Direction::Right;
     }
