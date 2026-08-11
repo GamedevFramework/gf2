@@ -6,6 +6,7 @@
 #include <cassert>
 #include <cmath>
 
+#include <bit>
 #include <limits>
 #include <numbers>
 #include <type_traits>
