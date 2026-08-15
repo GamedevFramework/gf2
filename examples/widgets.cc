@@ -40,6 +40,27 @@ namespace {
     return data;
   }
 
+  gf::TextButtonWidgetData compute_text_button_widget_data(std::string_view content)
+  {
+    gf::TextButtonWidgetData data = {};
+
+    static_cast<gf::TextWidgetData&>(data) = compute_text_widget_data(content);
+
+    data.disabled_button.color = gf::gray(0.95f);
+    data.disabled_button.outline_thickness = 1.0f;
+    data.disabled_button.outline_color = gf::Gray;
+
+    data.default_button.color = gf::White;
+    data.default_button.outline_thickness = 1.0f;
+    data.default_button.outline_color = gf::Black;
+
+    data.selected_button.color = gf::White;
+    data.selected_button.outline_thickness = 1.0f;
+    data.selected_button.outline_color = gf::Gray;
+
+    return data;
+  }
+
   class WidgetScene : public gf::Scene {
   public:
     WidgetScene(gf::FontFace* face, gf::RenderManager* render_manager)
@@ -47,6 +68,9 @@ namespace {
     , m_start_widget(&m_atlas, face, compute_text_widget_data("Start"), render_manager)
     , m_options_widget(&m_atlas, face, compute_text_widget_data("Options"), render_manager)
     , m_disabled_widget(&m_atlas, face, compute_text_widget_data("Disabled"), render_manager)
+    , m_quit_widget(&m_atlas, face, compute_text_button_widget_data("Quit"), render_manager)
+    , m_transformed_widget(&m_atlas, face, compute_text_button_widget_data("Transformed"), render_manager)
+    , m_disabled_again_widget(&m_atlas, face, compute_text_button_widget_data("Disabled again"), render_manager)
     {
       set_clear_color(gf::White);
       set_world_size({ 640, 480 });
@@ -67,6 +91,24 @@ namespace {
       m_disabled_widget.set_disabled();
       add_world_entity(&m_disabled_widget);
       m_widgets.add_widget(&m_disabled_widget);
+
+      m_quit_widget.set_location({ 50.0f, 200.0f });
+      m_quit_widget.set_callback([]() { gf::Log::info("Quit!"); });
+      add_world_entity(&m_quit_widget);
+      m_widgets.add_widget(&m_quit_widget);
+
+      m_transformed_widget.set_location({ 50.0f, 250.0f });
+      m_transformed_widget.set_rotation(gf::Pi4);
+      m_transformed_widget.set_scale({ 1.0f, 0.8f });
+      m_transformed_widget.set_callback([]() { gf::Log::info("Transformed!"); });
+      add_world_entity(&m_transformed_widget);
+      m_widgets.add_widget(&m_transformed_widget);
+
+      m_disabled_again_widget.set_location({ 50.0f, 400.0f });
+      m_disabled_again_widget.set_callback([]() { gf::Log::info("Disabled again?"); });
+      m_disabled_again_widget.set_disabled();
+      add_world_entity(&m_disabled_again_widget);
+      m_widgets.add_widget(&m_disabled_again_widget);
     }
 
   private:
@@ -107,6 +149,9 @@ namespace {
     gf::TextWidget m_start_widget;
     gf::TextWidget m_options_widget;
     gf::TextWidget m_disabled_widget;
+    gf::TextButtonWidget m_quit_widget;
+    gf::TextButtonWidget m_transformed_widget;
+    gf::TextButtonWidget m_disabled_again_widget;
     gf::WidgetContainer m_widgets;
   };
 

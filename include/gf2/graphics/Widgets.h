@@ -7,6 +7,7 @@
 
 #include "FontAtlas.h"
 #include "GraphicsApi.h"
+#include "Shape.h"
 #include "Text.h"
 #include "Widget.h"
 
@@ -19,31 +20,37 @@ namespace gf {
     TextWidget(FontAtlas* atlas, FontFace* face, const TextWidgetData& data, RenderManager* render_manager);
     TextWidget(FontAtlas* atlas, const TextWidgetResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
-    Text& disabled_text()
-    {
-      return m_disabled_text;
-    }
+    bool contains(Vec2F pointer) override;
+    void render(RenderRecorder& recorder) override;
 
-    Text& default_text()
-    {
-      return m_default_text;
-    }
+  protected:
+    RectF bounds() const;
+    Text& current_text();
+    void render_text(RenderRecorder& recorder);
 
-    Text& selected_text()
-    {
-      return m_selected_text;
-    }
+  private:
+    Text m_disabled_text;
+    Text m_default_text;
+    Text m_selected_text;
+  };
+
+
+  class GF_GRAPHICS_API TextButtonWidget : public TextWidget {
+  public:
+    TextButtonWidget(FontAtlas* atlas, FontFace* face, const TextButtonWidgetData& data, RenderManager* render_manager);
+    TextButtonWidget(FontAtlas* atlas, const TextButtonWidgetResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
 
     bool contains(Vec2F pointer) override;
     void render(RenderRecorder& recorder) override;
 
   private:
     RectF bounds() const;
-    Text& current_text();
+    Shape& current_shape();
+    void render_shape(RenderRecorder& recorder);
 
-    Text m_disabled_text;
-    Text m_default_text;
-    Text m_selected_text;
+    Shape m_disabled_shape;
+    Shape m_default_shape;
+    Shape m_selected_shape;
   };
 
 }

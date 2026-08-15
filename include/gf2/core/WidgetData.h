@@ -36,6 +36,48 @@ namespace gf {
     return ar | resource.font | resource.data;
   }
 
+  /*
+   * TextButtonWidget
+   */
+
+  struct GF_CORE_API ButtonWidgetData {
+    Color color = Black;
+    float outline_thickness = 0.0f;
+    Color outline_color = White;
+    float border_padding = 0.0f;
+    float corner_radius = 0.0f;
+  };
+
+  template<typename Archive>
+  Archive& operator|(Archive& ar, MaybeConst<ButtonWidgetData, Archive>& data)
+  {
+    return ar | data.color | data.outline_thickness | data.outline_color | data.border_padding | data.corner_radius;
+  }
+
+  struct GF_CORE_API TextButtonWidgetData : TextWidgetData {
+    ButtonWidgetData disabled_button;
+    ButtonWidgetData default_button;
+    ButtonWidgetData selected_button;
+  };
+
+  template<typename Archive>
+  Archive& operator|(Archive& ar, MaybeConst<TextButtonWidgetData, Archive>& data)
+  {
+    MaybeConst<TextWidgetData, Archive>& text_widget_data = data;
+    return ar | text_widget_data | data.disabled_button | data.default_button | data.selected_button;
+  }
+
+  struct GF_CORE_API TextButtonWidgetResource {
+    std::filesystem::path font;
+    TextButtonWidgetData data;
+  };
+
+  template<typename Archive>
+  Archive& operator|(Archive& ar, MaybeConst<TextButtonWidgetResource, Archive>& resource)
+  {
+    return ar | resource.font | resource.data;
+  }
+
 }
 
 #endif // GF_WIDGET_DATA_H

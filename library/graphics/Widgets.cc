@@ -33,20 +33,7 @@ namespace gf {
 
   void TextWidget::render(RenderRecorder& recorder)
   {
-    Text& text = current_text();
-    const RenderGeometry geometry = text.geometry();
-
-    if (geometry.count == 0) {
-      return;
-    }
-
-    recorder.update_text_effect(text.effects());
-
-    RenderObject object = {};
-    object.priority = priority();
-    object.geometry = geometry;
-    object.transform = compute_matrix(text.bounds());
-    recorder.record(object);
+    render_text(recorder);
   }
 
   RectF TextWidget::bounds() const
@@ -67,6 +54,124 @@ namespace gf {
 
     assert(false);
     return m_default_text;
+  }
+
+  void TextWidget::render_text(RenderRecorder& recorder)
+  {
+    Text& text = current_text();
+    const RenderGeometry geometry = text.geometry();
+
+    if (geometry.count == 0) {
+      return;
+    }
+
+    recorder.update_text_effect(text.effects());
+
+    RenderObject object = {};
+    object.priority = priority();
+    object.geometry = geometry;
+    object.transform = compute_matrix(bounds());
+    recorder.record(object);
+  }
+
+  /*
+   * TextButtonWidget
+   */
+
+  namespace {
+
+    ShapeBuffer make_basic_shape_buffer(const ButtonWidgetData& data, RectF bounds)
+    {
+      const RectF shape_bounds = bounds.grow_by(data.border_padding);
+
+      if (data.corner_radius == 0.0f) {
+        return ShapeBuffer::make_rectangle(shape_bounds);
+      }
+
+      return ShapeBuffer::make_rounded_rectangle(shape_bounds, data.corner_radius);
+    }
+
+
+    ShapeBuffer make_shape_buffer(const ButtonWidgetData& data, RectF bounds)
+    {
+      ShapeBuffer buffer = make_basic_shape_buffer(data, bounds);
+      buffer.color = data.color;
+      buffer.outline_thickness = data.outline_thickness;
+      buffer.outline_color = data.outline_color;
+      return buffer;
+    }
+
+  }
+
+  TextButtonWidget::TextButtonWidget(FontAtlas* atlas, FontFace* face, const TextButtonWidgetData& data, RenderManager* render_manager)
+  : TextWidget(atlas, face, data, render_manager)
+  , m_disabled_shape(nullptr, make_shape_buffer(data.disabled_button, TextWidget::bounds()), render_manager)
+  , m_default_shape(nullptr, make_shape_buffer(data.default_button, TextWidget::bounds()), render_manager)
+  , m_selected_shape(nullptr, make_shape_buffer(data.selected_button, TextWidget::bounds()), render_manager)
+  {
+  }
+
+  TextButtonWidget::TextButtonWidget(FontAtlas* atlas, const TextButtonWidgetResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
+  : TextWidget(atlas, { resource.font, static_cast<const TextWidgetData&>(resource.data) }, render_manager, resource_manager )
+  , m_disabled_shape({ "", make_shape_buffer(resource.data.disabled_button, TextWidget::bounds()) }, render_manager, resource_manager)
+  , m_default_shape({ "", make_shape_buffer(resource.data.disabled_button, TextWidget::bounds()) }, render_manager, resource_manager)
+  , m_selected_shape({ "", make_shape_buffer(resource.data.disabled_button, TextWidget::bounds()) }, render_manager, resource_manager)
+  {
+  }
+
+  bool TextButtonWidget::contains(Vec2F pointer)
+  {
+    const RectF object_bounds = bounds();
+    const Transform object_transform = transform();
+    return transformed_contains(object_bounds, object_transform, pointer);
+  }
+
+  void TextButtonWidget::render(RenderRecorder& recorder)
+  {
+    render_shape(recorder);
+    render_text(recorder);
+  }
+
+  RectF TextButtonWidget::bounds() const
+  {
+    return m_disabled_shape.bounds().extend_to(m_default_shape.bounds()).extend_to(m_selected_shape.bounds());
+  }
+
+  Shape& TextButtonWidget::current_shape()
+  {
+    switch (state()) {
+      case WidgetState::Disabled:
+        return m_disabled_shape;
+      case WidgetState::Default:
+        return m_default_shape;
+      case WidgetState::Selected:
+        return m_selected_shape;
+    }
+
+    assert(false);
+    return m_default_shape;
+  }
+
+  void TextButtonWidget::render_shape(RenderRecorder& recorder)
+  {
+    Shape& shape = current_shape();
+    const ShapeGeometry geometry = shape.geometry();
+
+    if (geometry.shape.count == 0) {
+      return;
+    }
+
+    RenderObject object = {};
+    object.priority = priority();
+    object.transform = compute_matrix(bounds());
+
+    if (geometry.outline) {
+      object.geometry = geometry.outline.value();
+      recorder.record(object);
+    }
+
+    object.geometry = geometry.shape;
+    recorder.record(object);
   }
 
 }
