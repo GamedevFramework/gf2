@@ -32,6 +32,12 @@ if has_config("examples") then
             add_deps("gf2graphics0")
             add_includedirs("$(builddir)/config/examples")
 
+        target("widgets")
+            set_kind("binary")
+            add_files("widgets.cc")
+            add_deps("gf2graphics0")
+            add_includedirs("$(builddir)/config/examples")
+
         target("10-sprite")
             set_kind("binary")
             add_files("10-sprite.cc")
