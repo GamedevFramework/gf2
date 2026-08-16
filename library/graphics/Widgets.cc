@@ -4,6 +4,7 @@
 #include <gf2/graphics/Widgets.h>
 
 #include <gf2/graphics/RenderRecorder.h>
+#include "gf2/graphics/Sprite.h"
 
 namespace gf {
   /*
@@ -172,6 +173,67 @@ namespace gf {
 
     object.geometry = geometry.shape;
     recorder.record(object);
+  }
+
+  /*
+   * SpriteWidget
+   */
+
+  SpriteWidget::SpriteWidget(GpuTexture* disabled_texture, GpuTexture* default_texture, GpuTexture* selected_texture, const SpriteWidgetData& data, RenderManager* render_manager)
+  : m_disabled_sprite(disabled_texture, data.disabled_sprite, render_manager)
+  , m_default_sprite(default_texture, data.default_sprite, render_manager)
+  , m_selected_sprite(selected_texture, data.selected_sprite, render_manager)
+  {
+  }
+
+  SpriteWidget::SpriteWidget(const SpriteWidgetResource& resource, RenderManager* render_manager, ResourceManager* resource_manager)
+  : m_disabled_sprite({ resource.disabled_texture, resource.data.disabled_sprite }, render_manager, resource_manager)
+  , m_default_sprite({ resource.default_texture, resource.data.default_sprite }, render_manager, resource_manager)
+  , m_selected_sprite({ resource.selected_texture, resource.data.selected_sprite }, render_manager, resource_manager)
+  {
+  }
+
+  bool SpriteWidget::contains(Vec2F pointer)
+  {
+    const RectF object_bounds = bounds();
+    const Transform object_transform = transform();
+    return transformed_contains(object_bounds, object_transform, pointer);
+  }
+
+  void SpriteWidget::render(RenderRecorder& recorder)
+  {
+    Sprite& sprite = current_sprite();
+    const RenderGeometry geometry = sprite.geometry();
+
+    if (geometry.count == 0) {
+      return;
+    }
+
+    RenderObject object = {};
+    object.priority = priority();
+    object.geometry = geometry;
+    object.transform = compute_matrix(bounds());
+    recorder.record(object);
+  }
+
+  RectF SpriteWidget::bounds() const
+  {
+    return m_disabled_sprite.bounds().extend_to(m_default_sprite.bounds()).extend_to(m_selected_sprite.bounds());
+  }
+
+  Sprite& SpriteWidget::current_sprite()
+  {
+    switch (state()) {
+      case WidgetState::Disabled:
+        return m_disabled_sprite;
+      case WidgetState::Default:
+        return m_default_sprite;
+      case WidgetState::Selected:
+        return m_selected_sprite;
+    }
+
+    assert(false);
+    return m_default_sprite;
   }
 
 }

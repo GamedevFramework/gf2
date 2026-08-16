@@ -5,6 +5,7 @@
 #include <gf2/core/FontFace.h>
 #include <gf2/core/FontManager.h>
 #include <gf2/core/Log.h>
+#include <gf2/core/SpriteSheet.h>
 #include <gf2/graphics/Scene.h>
 #include <gf2/graphics/SceneManager.h>
 #include <gf2/graphics/Widgets.h>
@@ -15,6 +16,19 @@
 namespace {
 
   constexpr gf::Vec2I SceneSize = { 1600, 9000 };
+
+  struct WidgetResources {
+    WidgetResources(const std::filesystem::path& assets_directory, gf::FontManager* font_manager, gf::RenderManager* render_manager)
+    : face(assets_directory / "LinLibertine_R.otf", font_manager)
+    , sprite_sheet(assets_directory / "ui.xml")
+    , texture(assets_directory / sprite_sheet.texture_path(), render_manager)
+    {
+    }
+
+    gf::FontFace face;
+    gf::SpriteSheet sprite_sheet;
+    gf::GpuTexture texture;
+  };
 
   gf::TextWidgetData compute_text_widget_data(std::string_view content)
   {
@@ -61,16 +75,28 @@ namespace {
     return data;
   }
 
+  gf::SpriteWidgetData compute_sprite_widget_data(const gf::SpriteSheet& sprite_sheet)
+  {
+    gf::SpriteWidgetData data = {};
+
+    data.disabled_sprite.texture_region = sprite_sheet.texture_region("grey_button05.png");
+    data.default_sprite.texture_region = sprite_sheet.texture_region("grey_button04.png");
+    data.selected_sprite.texture_region = sprite_sheet.texture_region("grey_button02.png");
+
+    return data;
+  }
+
   class WidgetScene : public gf::Scene {
   public:
-    WidgetScene(gf::FontFace* face, gf::RenderManager* render_manager)
+    WidgetScene(WidgetResources& resources, gf::RenderManager* render_manager)
     : m_atlas({ 1024, 1024 }, render_manager)
-    , m_start_widget(&m_atlas, face, compute_text_widget_data("Start"), render_manager)
-    , m_options_widget(&m_atlas, face, compute_text_widget_data("Options"), render_manager)
-    , m_disabled_widget(&m_atlas, face, compute_text_widget_data("Disabled"), render_manager)
-    , m_quit_widget(&m_atlas, face, compute_text_button_widget_data("Quit"), render_manager)
-    , m_transformed_widget(&m_atlas, face, compute_text_button_widget_data("Transformed"), render_manager)
-    , m_disabled_again_widget(&m_atlas, face, compute_text_button_widget_data("Disabled again"), render_manager)
+    , m_start_widget(&m_atlas, &resources.face, compute_text_widget_data("Start"), render_manager)
+    , m_options_widget(&m_atlas, &resources.face, compute_text_widget_data("Options"), render_manager)
+    , m_disabled_widget(&m_atlas, &resources.face, compute_text_widget_data("Disabled"), render_manager)
+    , m_quit_widget(&m_atlas, &resources.face, compute_text_button_widget_data("Quit"), render_manager)
+    , m_transformed_widget(&m_atlas, &resources.face, compute_text_button_widget_data("Transformed"), render_manager)
+    , m_disabled_again_widget(&m_atlas, &resources.face, compute_text_button_widget_data("Disabled again"), render_manager)
+    , m_sprite_widget(&resources.texture, &resources.texture, &resources.texture, compute_sprite_widget_data(resources.sprite_sheet), render_manager)
     {
       set_clear_color(gf::White);
       set_world_size({ 640, 480 });
@@ -109,6 +135,11 @@ namespace {
       m_disabled_again_widget.set_disabled();
       add_world_entity(&m_disabled_again_widget);
       m_widgets.add_widget(&m_disabled_again_widget);
+
+      m_sprite_widget.set_location({ 300.0f, 50.0f });
+      m_sprite_widget.set_callback([]() { gf::Log::info("Sprite!"); });
+      add_world_entity(&m_sprite_widget);
+      m_widgets.add_widget(&m_sprite_widget);
     }
 
   private:
@@ -152,6 +183,8 @@ namespace {
     gf::TextButtonWidget m_quit_widget;
     gf::TextButtonWidget m_transformed_widget;
     gf::TextButtonWidget m_disabled_again_widget;
+    gf::SpriteWidget m_sprite_widget;
+
     gf::WidgetContainer m_widgets;
   };
 
@@ -160,13 +193,11 @@ namespace {
 int main()
 {
   const std::filesystem::path assets_directory = GF_EXAMPLE_ASSETS_DIRECTORY;
-  const std::filesystem::path font_file = assets_directory / "LinLibertine_R.otf";
 
   gf::FontManager font_manager;
-  gf::FontFace face(font_file, &font_manager);
-
   gf::SingleSceneManager scene_manager("widgets | gf2", SceneSize);
 
-  WidgetScene scene(&face, scene_manager.render_manager());
+  WidgetResources resources(assets_directory, &font_manager, scene_manager.render_manager());
+  WidgetScene scene(resources, scene_manager.render_manager());
   return scene_manager.run(&scene);
 }

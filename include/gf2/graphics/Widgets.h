@@ -8,6 +8,7 @@
 #include "FontAtlas.h"
 #include "GraphicsApi.h"
 #include "Shape.h"
+#include "Sprite.h"
 #include "Text.h"
 #include "Widget.h"
 
@@ -51,6 +52,23 @@ namespace gf {
     Shape m_disabled_shape;
     Shape m_default_shape;
     Shape m_selected_shape;
+  };
+
+  class GF_GRAPHICS_API SpriteWidget : public Widget {
+  public:
+    SpriteWidget(GpuTexture* disabled_texture, GpuTexture* default_texture, GpuTexture* selected_texture, const SpriteWidgetData& data, RenderManager* render_manager);
+    SpriteWidget(const SpriteWidgetResource& resource, RenderManager* render_manager, ResourceManager* resource_manager);
+
+    bool contains(Vec2F pointer) override;
+    void render(RenderRecorder& recorder) override;
+
+  private:
+    RectF bounds() const;
+    Sprite& current_sprite();
+
+    Sprite m_disabled_sprite;
+    Sprite m_default_sprite;
+    Sprite m_selected_sprite;
   };
 
 }

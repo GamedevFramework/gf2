@@ -4,6 +4,7 @@
 #define GF_WIDGET_DATA_H
 
 #include "CoreApi.h"
+#include "SpriteData.h"
 #include "TextData.h"
 #include "TypeTraits.h"
 
@@ -76,6 +77,35 @@ namespace gf {
   Archive& operator|(Archive& ar, MaybeConst<TextButtonWidgetResource, Archive>& resource)
   {
     return ar | resource.font | resource.data;
+  }
+
+  /*
+   * SpriteWidget
+   */
+
+  struct GF_CORE_API SpriteWidgetData {
+    SpriteData disabled_sprite;
+    SpriteData default_sprite;
+    SpriteData selected_sprite;
+  };
+
+  template<typename Archive>
+  Archive& operator|(Archive& ar, MaybeConst<SpriteWidgetData, Archive>& data)
+  {
+    return ar | data.disabled_sprite | data.default_sprite | data.selected_sprite;
+  }
+
+  struct GF_CORE_API SpriteWidgetResource {
+    std::filesystem::path disabled_texture;
+    std::filesystem::path default_texture;
+    std::filesystem::path selected_texture;
+    SpriteWidgetData data;
+  };
+
+  template<typename Archive>
+  Archive& operator|(Archive& ar, MaybeConst<SpriteWidgetResource, Archive>& resource)
+  {
+    return ar | resource.disabled_texture | resource.default_texture | resource.selected_texture | resource.data;
   }
 
 }
