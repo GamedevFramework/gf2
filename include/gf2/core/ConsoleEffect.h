@@ -3,8 +3,6 @@
 #ifndef GF_CONSOLE_EFFECT_H
 #define GF_CONSOLE_EFFECT_H
 
-#include <cstdint>
-
 #include "Color.h"
 #include "ColorCompositing.h"
 #include "CoreApi.h"

@@ -17,7 +17,7 @@ namespace gf {
   namespace {
     struct ConsoleWordPart {
       std::string_view data;
-      ConsoleColorStyle style;
+      ConsoleStyle style;
     };
 
     struct ConsoleWord {
@@ -43,7 +43,7 @@ namespace gf {
     struct ConsoleLine {
       std::vector<ConsoleTextItem> items;
       std::vector<ConsoleWord> words;
-      std::vector<ConsoleColorStyle> spaces;
+      std::vector<ConsoleStyle> spaces;
       int indent = 0;
     };
 
@@ -59,7 +59,7 @@ namespace gf {
       , m_alignment(alignment)
       , m_rich_style(rich_style)
       {
-        m_stack.push_back(m_rich_style->default_style().color);
+        m_stack.push_back(m_rich_style->default_style());
       }
 
       std::vector<ConsoleParagraph> parser_with(TextLexer& lexer)
@@ -160,7 +160,7 @@ namespace gf {
               case ConsoleTextItem::Space:
                 {
                   assert(space_index < raw_paragraph.spaces.size());
-                  const ConsoleColorStyle& space = raw_paragraph.spaces[space_index];
+                  const ConsoleStyle& space = raw_paragraph.spaces[space_index];
                   line.spaces.push_back(space);
                   line.items.push_back(ConsoleTextItem::Space);
                   ++line_width;
@@ -242,7 +242,7 @@ namespace gf {
       int m_paragraph_width = 0;
       ConsoleAlignment m_alignment = ConsoleAlignment::Left;
       const ConsoleRichStyle* m_rich_style = nullptr;
-      std::vector<ConsoleColorStyle> m_stack;
+      std::vector<ConsoleStyle> m_stack;
     };
 
   }
@@ -529,8 +529,7 @@ namespace gf {
             case ConsoleTextItem::Space:
               {
                 assert(space_index < line.spaces.size());
-                const ConsoleColorStyle& space = line.spaces[space_index];
-                current_style.color = space;
+                current_style = line.spaces[space_index];
 
                 console_write_picture(console, line_position, ' ', current_style);
                 ++line_position.x;
@@ -545,7 +544,7 @@ namespace gf {
                 const ConsoleWord& word = line.words[word_index];
 
                 for (const ConsoleWordPart& parts : word.parts) {
-                  current_style.color = parts.style;
+                  current_style = parts.style;
                   line_position.x += console_write_picture(console, line_position, parts.data, current_style);
                 }
 
@@ -568,8 +567,7 @@ namespace gf {
             case ConsoleTextItem::Space:
               {
                 assert(space_index < line.spaces.size());
-                const ConsoleColorStyle& space = line.spaces[space_index];
-                current_style.color = space;
+                current_style = line.spaces[space_index];
 
                 console_write_text(console, position, part_index, ' ', current_style);
                 position.x += part_index;
@@ -585,7 +583,7 @@ namespace gf {
                 const ConsoleWord& word = line.words[word_index];
 
                 for (const ConsoleWordPart& parts : word.parts) {
-                  current_style.color = parts.style;
+                  current_style = parts.style;
 
                   for (char32_t character : gf::codepoints(parts.data)) {
                     if (character >= 0x10000 || character < 0x20) {

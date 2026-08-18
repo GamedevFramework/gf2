@@ -56,15 +56,15 @@ namespace gf {
     void set_default_style(const ConsoleStyle& style);
     ConsoleStyle default_style() const;
 
-    void set_style(std::string_view name, const ConsoleColorStyle& style);
-    void set_style(Id id, const ConsoleColorStyle& style);
+    void set_style(std::string_view name, const ConsoleStyle& style);
+    void set_style(Id id, const ConsoleStyle& style);
 
-    ConsoleColorStyle style(std::string_view name) const;
-    ConsoleColorStyle style(Id id) const;
+    ConsoleStyle style(std::string_view name) const;
+    ConsoleStyle style(Id id) const;
 
   private:
     ConsoleStyle m_default_style;
-    std::map<Id, ConsoleColorStyle> m_styles;
+    std::map<Id, ConsoleStyle> m_styles;
   };
 
 }

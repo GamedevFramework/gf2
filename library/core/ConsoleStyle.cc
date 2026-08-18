@@ -20,28 +20,28 @@ namespace gf {
     return m_default_style;
   }
 
-  void ConsoleRichStyle::set_style(std::string_view name, const ConsoleColorStyle& style)
+  void ConsoleRichStyle::set_style(std::string_view name, const ConsoleStyle& style)
   {
     set_style(gf::hash_string(name), style);
   }
 
-  void ConsoleRichStyle::set_style(Id id, const ConsoleColorStyle& style)
+  void ConsoleRichStyle::set_style(Id id, const ConsoleStyle& style)
   {
     m_styles.emplace(id, style);
   }
 
-  ConsoleColorStyle ConsoleRichStyle::style(std::string_view name) const
+  ConsoleStyle ConsoleRichStyle::style(std::string_view name) const
   {
     return style(gf::hash_string(name));
   }
 
-  ConsoleColorStyle ConsoleRichStyle::style(Id id) const
+  ConsoleStyle ConsoleRichStyle::style(Id id) const
   {
     if (auto iterator = m_styles.find(id); iterator != m_styles.end()) {
       return iterator->second;
     }
 
-    return m_default_style.color;
+    return m_default_style;
   }
 
 }
