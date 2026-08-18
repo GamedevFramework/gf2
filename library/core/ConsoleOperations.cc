@@ -517,7 +517,7 @@ namespace gf {
 
     namespace {
 
-      void raw_console_print_line_picture(Console& console, Vec2I position, const ConsoleLine& line, ConsoleStyle& current_style)
+      void raw_console_print_line_picture(Console& console, Vec2I position, const ConsoleLine& line)
       {
         Vec2I line_position = position;
         line_position.x += line.indent;
@@ -529,9 +529,8 @@ namespace gf {
             case ConsoleTextItem::Space:
               {
                 assert(space_index < line.spaces.size());
-                current_style = line.spaces[space_index];
-
-                console_write_picture(console, line_position, ' ', current_style);
+                const ConsoleStyle& style = line.spaces[space_index];
+                console_write_picture(console, line_position, ' ', style);
                 ++line_position.x;
 
                 ++space_index;
@@ -544,8 +543,7 @@ namespace gf {
                 const ConsoleWord& word = line.words[word_index];
 
                 for (const ConsoleWordPart& parts : word.parts) {
-                  current_style = parts.style;
-                  line_position.x += console_write_picture(console, line_position, parts.data, current_style);
+                  line_position.x += console_write_picture(console, line_position, parts.data, parts.style);
                 }
 
                 ++word_index;
@@ -555,7 +553,7 @@ namespace gf {
         }
       }
 
-      void raw_console_print_line_text(Console& console, Vec2I position, const ConsoleLine& line, ConsoleStyle& current_style)
+      void raw_console_print_line_text(Console& console, Vec2I position, const ConsoleLine& line)
       {
         position.x += line.indent / 2;
         std::size_t word_index = 0;
@@ -567,9 +565,9 @@ namespace gf {
             case ConsoleTextItem::Space:
               {
                 assert(space_index < line.spaces.size());
-                current_style = line.spaces[space_index];
+                const ConsoleStyle& style = line.spaces[space_index];
 
-                console_write_text(console, position, part_index, ' ', current_style);
+                console_write_text(console, position, part_index, ' ', style);
                 position.x += part_index;
                 part_index = 1 - part_index;
 
@@ -583,15 +581,13 @@ namespace gf {
                 const ConsoleWord& word = line.words[word_index];
 
                 for (const ConsoleWordPart& parts : word.parts) {
-                  current_style = parts.style;
-
                   for (char32_t character : gf::codepoints(parts.data)) {
                     if (character >= 0x10000 || character < 0x20) {
                       // outside BMP or control chars
                       character = '\0';
                     }
 
-                    console_write_text(console, position, part_index, static_cast<char16_t>(character), current_style);
+                    console_write_text(console, position, part_index, static_cast<char16_t>(character), parts.style);
                     position.x += part_index;
                     part_index = 1 - part_index;
                   }
@@ -657,9 +653,7 @@ namespace gf {
       std::vector<ConsoleParagraph> paragraphs = raw_compute_paragraphs(console.size(), area, params, message);
 
       int32_t line_count = 0;
-
       Vec2I position = area.position();
-      ConsoleStyle current_style = params.style.default_style();
 
       for (const ConsoleParagraph& paragraph : paragraphs) {
         if (params.action == ConsoleAction::Count) {
@@ -671,9 +665,9 @@ namespace gf {
             }
 
             if (params.mode == ConsoleMode::Picture) {
-              raw_console_print_line_picture(console, position, line, current_style);
+              raw_console_print_line_picture(console, position, line);
             } else {
-              raw_console_print_line_text(console, position, line, current_style);
+              raw_console_print_line_text(console, position, line);
             }
 
             ++line_count;
