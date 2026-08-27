@@ -26,7 +26,7 @@ namespace gf {
   PhysicsJoint::~PhysicsJoint()
   {
     if (m_owner == details::PhysicsOwner::Object) {
-      b2DestroyJoint(m_id, true);
+      b2DestroyJoint(m_id);
     }
   }
 
