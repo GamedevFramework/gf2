@@ -30,7 +30,7 @@ namespace gf {
 
     b2ChainDef def = b2DefaultChainDef();
     def.points = raw_points.data();
-    def.count = static_cast<int>(raw_points.size());
+    def.pointCount = static_cast<int>(raw_points.size());
     def.materials = &raw_material;
     def.materialCount = 1;
     def.filter = details::to_raw(data.filter);
