@@ -386,7 +386,7 @@ namespace gf {
 
   RectF PhysicsBody::bouding_box() const
   {
-    const b2AABB raw = b2Body_ComputeAABB(m_id);
+    const b2AABB raw = b2Body_ComputeBounds(m_id);
     return RectF::from_min_max({ raw.lowerBound.x, raw.lowerBound.y }, { raw.upperBound.x, raw.upperBound.y });
   }
 

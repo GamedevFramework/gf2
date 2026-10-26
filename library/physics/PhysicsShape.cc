@@ -239,7 +239,7 @@ namespace gf {
 
   PhysicsCastOutput PhysicsShape::ray_cast(Vec2F origin, Vec2F translation)
   {
-    const b2CastOutput raw = b2Shape_RayCast(m_id, { origin.x, origin.y }, { translation.x, translation.y });
+    const b2WorldCastOutput raw = b2Shape_CastRay(m_id, { origin.x, origin.y }, { translation.x, translation.y });
     return {
       { raw.normal.x, raw.normal.y },
       { raw.point.x, raw.point.y },
@@ -399,7 +399,7 @@ namespace gf {
 
   RectF PhysicsShape::bouding_box() const
   {
-    const b2AABB raw = b2Shape_GetAABB(m_id);
+    const b2AABB raw = b2Shape_GetBounds(m_id);
     return RectF::from_min_max({ raw.lowerBound.x, raw.lowerBound.y }, { raw.upperBound.x, raw.upperBound.y });
   }
 
