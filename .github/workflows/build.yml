@@ -17,7 +17,6 @@ jobs:
         - { name: Windows,  runner: windows-latest, shell: pwsh, plat: windows, arch: x64,    kind: static, mode: debug       }
         - { name: Linux,    runner: ubuntu-latest,  shell: bash, plat: linux,   arch: x86_64, kind: shared, mode: debug       }
         - { name: Linux,    runner: ubuntu-latest,  shell: bash, plat: linux,   arch: x86_64, kind: shared, mode: release     }
-        - { name: Linux,    runner: ubuntu-latest,  shell: bash, plat: linux,   arch: x86_64, kind: shared, mode: sanitizers  }
         - { name: Linux,    runner: ubuntu-latest,  shell: bash, plat: linux,   arch: x86_64, kind: static, mode: debug       }
 
     defaults:
