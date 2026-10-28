@@ -17,9 +17,9 @@ namespace gf {
     Noise2D& operator=(const Noise2D&) = default;
     Noise2D& operator=(Noise2D&&) noexcept = default;
 
-    virtual double value(double x, double y) = 0;
+    virtual float value(float x, float y) = 0;
 
-    double operator()(double x, double y)
+    float operator()(float x, float y)
     {
       return value(x, y);
     }
@@ -35,9 +35,9 @@ namespace gf {
     Noise3D& operator=(const Noise3D&) = default;
     Noise3D& operator=(Noise3D&&) noexcept = default;
 
-    virtual double value(double x, double y, double z) = 0;
+    virtual float value(float x, float y, float z) = 0;
 
-    double operator()(double x, double y, double z)
+    float operator()(float x, float y, float z)
     {
       return value(x, y, z);
     }

@@ -34,39 +34,39 @@ namespace gf {
 
     void reset();
 
-    double value(Vec2I position) const
+    float value(Vec2I position) const
     {
       return m_data(position);
     }
 
-    void set_value(Vec2I position, double value)
+    void set_value(Vec2I position, float value)
     {
       m_data(position) = value;
     }
 
-    std::tuple<double, double> get_min_max() const;
+    std::tuple<float, float> get_min_max() const;
 
-    void normalize(double min = 0.0, double max = 1.0);
-    void add_hill(Vec2D center, double radius, double height);
-    void dig_hill(Vec2D center, double radius, double height);
-    void add_noise(Noise2D* noise, double scale = 1.0);
-    void translate(double offset);
-    void scale(double factor);
-    void clamp(double min = 0.0, double max = 1.0);
+    void normalize(float min = 0.0, float max = 1.0);
+    void add_hill(Vec2F center, float radius, float height);
+    void dig_hill(Vec2F center, float radius, float height);
+    void add_noise(Noise2D* noise, float scale = 1.0);
+    void translate(float offset);
+    void scale(float factor);
+    void clamp(float min = 0.0, float max = 1.0);
 
-    double slope(Vec2I position) const;
-    void thermal_erosion(int iterations, double talus, double fraction);
-    void hydraulic_erosion(int iterations, double rain_amount, double solubility, double evaporation, double capacity);
-    void fast_erosion(int iterations, double talus, double fraction);
-    double erosion_score() const;
+    float slope(Vec2I position) const;
+    void thermal_erosion(int iterations, float talus, float fraction);
+    void hydraulic_erosion(int iterations, float rain_amount, float solubility, float evaporation, float capacity);
+    void fast_erosion(int iterations, float talus, float fraction);
+    float erosion_score() const;
 
     Heightmap sub_map(RectI area) const;
     Image copy_to_grayscale_image() const;
 
-    Image copy_to_colored_image(const ColorRamp& ramp, double water_level = 0.5, HeightmapRender render = HeightmapRender::Colored) const;
+    Image copy_to_colored_image(const ColorRamp& ramp, float water_level = 0.5f, HeightmapRender render = HeightmapRender::Colored) const;
 
   private:
-    Array2D<double> m_data;
+    Array2D<float> m_data;
   };
 
 }

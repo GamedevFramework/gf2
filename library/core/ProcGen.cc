@@ -65,7 +65,7 @@ namespace gf {
       return actual_size;
     }
 
-    void initialize_corners(Heightmap& map, Span<const double> initial_values, int d)
+    void initialize_corners(Heightmap& map, Span<const float> initial_values, int d)
     {
       if (initial_values.empty()) {
         map.set_value({ 0, 0 }, 0.0);
@@ -87,7 +87,7 @@ namespace gf {
 
   } // anonymous namespace
 
-  GF_CORE_API Heightmap midpoint_displacement_2d(Vec2I size, Random& random, Span<const double> initial_values)
+  GF_CORE_API Heightmap midpoint_displacement_2d(Vec2I size, Random& random, Span<const float> initial_values)
   {
     int actual_size = compute_power_of_two_size(size);
 
@@ -100,33 +100,33 @@ namespace gf {
     while (d >= 2) {
       const int d2 = d / 2;
 
-      std::uniform_real_distribution<double> dist(-static_cast<double>(d), static_cast<double>(d));
+      std::uniform_real_distribution<float> dist(-static_cast<float>(d), static_cast<float>(d));
 
       for (int y = d2; y < actual_size; y += d) {
         for (int x = d2; x < actual_size; x += d) {
-          const double ne = map.value({ x - d2, y - d2 });
-          const double nw = map.value({ x - d2, y + d2 });
-          const double se = map.value({ x + d2, y - d2 });
-          const double sw = map.value({ x + d2, y + d2 });
+          const float ne = map.value({ x - d2, y - d2 });
+          const float nw = map.value({ x - d2, y + d2 });
+          const float se = map.value({ x + d2, y - d2 });
+          const float sw = map.value({ x + d2, y + d2 });
 
           // center
-          const double center = (ne + nw + se + sw) / 4;
+          const float center = (ne + nw + se + sw) / 4;
           map.set_value({ x, y }, center + dist(random.engine()));
 
           // north
-          const double north = (ne + nw) / 2;
+          const float north = (ne + nw) / 2;
           map.set_value({ x - d2, y }, north + dist(random.engine()));
 
           // south
-          const double south = (se + sw) / 2;
+          const float south = (se + sw) / 2;
           map.set_value({ x + d2, y }, south + dist(random.engine()));
 
           // east
-          const double east = (ne + se) / 2;
+          const float east = (ne + se) / 2;
           map.set_value({ x, y - d2 }, east + dist(random.engine()));
 
           // west
-          const double west = (nw + sw) / 2;
+          const float west = (nw + sw) / 2;
           map.set_value({ x, y + d2 }, west + dist(random.engine()));
         }
       }
@@ -147,13 +147,13 @@ namespace gf {
     void diamond(Heightmap& map, Random& random, Vec2I pos, int d)
     {
       // clang-format off
-      const double value = (map.value({ pos.x - d, pos.y - d })
+      const float value = (map.value({ pos.x - d, pos.y - d })
                           + map.value({ pos.x - d, pos.y + d })
                           + map.value({ pos.x + d, pos.y - d })
                           + map.value({ pos.x + d, pos.y + d })) / 4;
       // clang-format on
 
-      const double noise = random.compute_uniform_float(-static_cast<double>(d), +static_cast<double>(d));
+      const float noise = random.compute_uniform_float(-static_cast<float>(d), +static_cast<float>(d));
       map.set_value(pos, value + noise);
     }
 
@@ -161,7 +161,7 @@ namespace gf {
     {
       const Vec2I size = map.size();
 
-      double value = 0.0;
+      float value = 0.0f;
       int n = 0;
 
       if (pos.x >= d) {
@@ -185,15 +185,15 @@ namespace gf {
       }
 
       assert(n > 0);
-      value = value / n;
+      value = value / static_cast<float>(n);
 
-      const double noise = random.compute_uniform_float(-static_cast<double>(d), static_cast<double>(d));
+      const float noise = random.compute_uniform_float(-static_cast<float>(d), static_cast<float>(d));
       map.set_value(pos, value + noise);
     }
 
   } // anonymous namespace
 
-  GF_CORE_API Heightmap diamond_square_2d(Vec2I size, Random& random, Span<const double> initial_values)
+  GF_CORE_API Heightmap diamond_square_2d(Vec2I size, Random& random, Span<const float> initial_values)
   {
     int actual_size = compute_power_of_two_size(size);
 

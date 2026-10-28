@@ -18,95 +18,95 @@ namespace gf {
 
   class GF_CORE_API ValueNoise2D : public Noise2D {
   public:
-    ValueNoise2D(Random* random, Step<double> step);
+    ValueNoise2D(Random* random, Step<float> step);
 
-    double value(double x, double y) final;
+    float value(float x, float y) final;
 
   private:
-    double at(uint8_t i, uint8_t j) const;
+    float at(uint8_t i, uint8_t j) const;
 
-    Step<double> m_step;
+    Step<float> m_step;
     std::array<uint8_t, 256> m_permutation = {};
-    std::array<double, 256> m_values = {};
+    std::array<float, 256> m_values = {};
   };
 
   class GF_CORE_API GradientNoise2D : public Noise2D {
   public:
-    GradientNoise2D(Random* random, Step<double> step);
+    GradientNoise2D(Random* random, Step<float> step);
 
-    double value(double x, double y) final;
+    float value(float x, float y) final;
 
   private:
-    Vec2D at(uint8_t i, uint8_t j) const;
+    Vec2F at(uint8_t i, uint8_t j) const;
 
-    Step<double> m_step;
+    Step<float> m_step;
     std::array<uint8_t, 256> m_permutation = {};
-    std::array<Vec2D, 256> m_gradients = {};
+    std::array<Vec2F, 256> m_gradients = {};
   };
 
   class GF_CORE_API GradientNoise3D : public Noise3D {
   public:
-    GradientNoise3D(Random* random, Step<double> step);
+    GradientNoise3D(Random* random, Step<float> step);
 
-    double value(double x, double y, double z) final;
+    float value(float x, float y, float z) final;
 
   private:
-    Vec3D at(uint8_t i, uint8_t j, uint8_t k) const;
+    Vec3F at(uint8_t i, uint8_t j, uint8_t k) const;
 
-    Step<double> m_step;
+    Step<float> m_step;
     std::array<uint8_t, 256> m_permutation = {};
-    std::array<Vec3D, 256> m_gradients = {};
+    std::array<Vec3F, 256> m_gradients = {};
   };
 
   class GF_CORE_API BetterGradientNoise2D : public Noise2D {
   public:
     BetterGradientNoise2D(Random* random);
 
-    double value(double x, double y) final;
+    float value(float x, float y) final;
 
   private:
-    Vec2D at(uint8_t i, uint8_t j) const;
+    Vec2F at(uint8_t i, uint8_t j) const;
 
     std::array<uint8_t, 256> m_permutation_x = {};
     std::array<uint8_t, 256> m_permutation_y = {};
-    std::array<Vec2D, 256> m_gradients = {};
+    std::array<Vec2F, 256> m_gradients = {};
   };
 
   class GF_CORE_API FractalNoise2D : public Noise2D {
   public:
-    FractalNoise2D(Noise2D* noise, double scale, int octaves = 8, double lacunarity = 2.0, double persistence = 0.5, double dimension = 1.0);
+    FractalNoise2D(Noise2D* noise, float scale, int octaves = 8, float lacunarity = 2.0f, float persistence = 0.5f, float dimension = 1.0f);
 
-    double value(double x, double y) final;
+    float value(float x, float y) final;
 
   private:
     Noise2D* m_noise = nullptr;
-    double m_scale = 1.0;
+    float m_scale = 1.0f;
     int m_octaves = 8;
-    double m_lacunarity = 2.0;
-    double m_persistence = 0.5;
-    double m_dimension = 1.0;
+    float m_lacunarity = 2.0f;
+    float m_persistence = 0.5f;
+    float m_dimension = 1.0f;
   };
 
   class GF_CORE_API FractalNoise3D : public Noise3D {
   public:
-    FractalNoise3D(Noise3D* noise, double scale, int octaves = 8, double lacunarity = 2.0, double persistence = 0.5, double dimension = 1.0);
+    FractalNoise3D(Noise3D* noise, float scale, int octaves = 8, float lacunarity = 2.0f, float persistence = 0.5f, float dimension = 1.0f);
 
-    double value(double x, double y, double z) final;
+    float value(float x, float y, float z) final;
 
   private:
     Noise3D* m_noise = nullptr;
-    double m_scale = 1.0;
+    float m_scale = 1.0f;
     int m_octaves = 8;
-    double m_lacunarity = 2.0;
-    double m_persistence = 0.5;
-    double m_dimension = 1.0;
+    float m_lacunarity = 2.0f;
+    float m_persistence = 0.5f;
+    float m_dimension = 1.0f;
   };
 
   class GF_CORE_API PerlinNoise2D : public Noise2D {
   public:
-    PerlinNoise2D(Random* random, double scale, int octaves = 8);
+    PerlinNoise2D(Random* random, float scale, int octaves = 8);
 
-    double value(double x, double y) final;
+    float value(float x, float y) final;
 
   private:
     GradientNoise2D m_gradient_noise;
@@ -115,9 +115,9 @@ namespace gf {
 
   class GF_CORE_API PerlinNoise3D : public Noise3D {
   public:
-    PerlinNoise3D(Random* random, double scale, int octaves = 8);
+    PerlinNoise3D(Random* random, float scale, int octaves = 8);
 
-    double value(double x, double y, double z) final;
+    float value(float x, float y, float z) final;
 
   private:
     GradientNoise3D m_gradient_noise;
@@ -128,10 +128,10 @@ namespace gf {
   public:
     SimplexNoise2D(Random* random);
 
-    double value(double x, double y) final;
+    float value(float x, float y) final;
 
   private:
-    Vec2D at(uint8_t i, uint8_t j) const;
+    Vec2F at(uint8_t i, uint8_t j) const;
 
     std::array<uint8_t, 256> m_permutation{};
   };
@@ -140,100 +140,100 @@ namespace gf {
   public:
     WaveletNoise3D(Random* random, std::ptrdiff_t wavelet_tile_size = 32);
 
-    double value(double x, double y, double z) final;
+    float value(float x, float y, float z) final;
 
   private:
     std::ptrdiff_t m_wavelet_tile_size;
-    std::vector<double> m_data;
+    std::vector<float> m_data;
   };
 
   class GF_CORE_API WorleyNoise2D : public Noise2D {
   public:
-    WorleyNoise2D(Random* random, std::size_t points_count, Distance2<double> distance, std::vector<double> coefficients);
+    WorleyNoise2D(Random* random, std::size_t points_count, Distance2<float> distance, std::vector<float> coefficients);
 
-    double value(double x, double y) final;
+    float value(float x, float y) final;
 
   private:
     std::size_t m_points_count;
-    Distance2<double> m_distance;
-    std::vector<double> m_coefficients;
-    std::vector<Vec2D> m_cells;
+    Distance2<float> m_distance;
+    std::vector<float> m_coefficients;
+    std::vector<Vec2F> m_cells;
   };
 
   class GF_CORE_API Multifractal2D : public Noise2D {
   public:
-    Multifractal2D(Noise2D* noise, double scale, int octaves = 8, double lacunarity = 2.0, double persistence = 0.5, double dimension = 1.0);
+    Multifractal2D(Noise2D* noise, float scale, int octaves = 8, float lacunarity = 2.0f, float persistence = 0.5f, float dimension = 1.0f);
 
-    double value(double x, double y) final;
+    float value(float x, float y) final;
 
   private:
     Noise2D* m_noise = nullptr;
-    double m_scale = 1.0;
+    float m_scale = 1.0f;
     int m_octaves = 8;
-    double m_lacunarity = 2.0;
-    double m_persistence = 0.5;
-    double m_dimension = 1.0;
+    float m_lacunarity = 2.0f;
+    float m_persistence = 0.5f;
+    float m_dimension = 1.0f;
   };
 
   class GF_CORE_API HeteroTerrain2D : public Noise2D {
   public:
-    HeteroTerrain2D(Noise2D* noise, double scale, double offset = 0.0, int octaves = 8, double lacunarity = 2.0, double persistence = 0.5, double dimension = 1.0);
+    HeteroTerrain2D(Noise2D* noise, float scale, float offset = 0.0f, int octaves = 8, float lacunarity = 2.0f, float persistence = 0.5f, float dimension = 1.0f);
 
-    double value(double x, double y) final;
+    float value(float x, float y) final;
 
   private:
     Noise2D* m_noise = nullptr;
-    double m_scale = 1.0;
-    double m_offset = 0.0;
+    float m_scale = 1.0f;
+    float m_offset = 0.0f;
     int m_octaves = 8;
-    double m_lacunarity = 2.0;
-    double m_persistence = 0.5;
-    double m_dimension = 1.0;
+    float m_lacunarity = 2.0f;
+    float m_persistence = 0.5f;
+    float m_dimension = 1.0f;
   };
 
   class GF_CORE_API HybridMultifractal2D : public Noise2D {
   public:
-    HybridMultifractal2D(Noise2D* noise, double scale, double offset = 0.0, int octaves = 8, double lacunarity = 2.0, double persistence = 0.5, double dimension = 1.0);
+    HybridMultifractal2D(Noise2D* noise, float scale, float offset = 0.0f, int octaves = 8, float lacunarity = 2.0f, float persistence = 0.5f, float dimension = 1.0f);
 
-    double value(double x, double y) final;
+    float value(float x, float y) final;
 
   private:
     Noise2D* m_noise = nullptr;
-    double m_scale = 1.0;
-    double m_offset = 0.0;
+    float m_scale = 1.0f;
+    float m_offset = 0.0f;
     int m_octaves = 8;
-    double m_lacunarity = 2.0;
-    double m_persistence = 0.5;
-    double m_dimension = 1.0;
+    float m_lacunarity = 2.0f;
+    float m_persistence = 0.5f;
+    float m_dimension = 1.0f;
   };
 
   class GF_CORE_API RidgedMultifractal2D : public Noise2D {
   public:
-    RidgedMultifractal2D(Noise2D* noise, double scale, double offset = 1.0, double gain = 1.0, int octaves = 8, double lacunarity = 2.0, double persistence = 0.5, double dimension = 1.0);
+    RidgedMultifractal2D(Noise2D* noise, float scale, float offset = 1.0f, float gain = 1.0f, int octaves = 8, float lacunarity = 2.0f, float persistence = 0.5f, float dimension = 1.0f);
 
-    double value(double x, double y) final;
+    float value(float x, float y) final;
 
   private:
     Noise2D* m_noise = nullptr;
-    double m_scale = 1.0;
-    double m_offset = 1.0;
-    double m_gain = 1.0;
+    float m_scale = 1.0f;
+    float m_offset = 1.0f;
+    float m_gain = 1.0f;
     int m_octaves = 8;
-    double m_lacunarity = 2.0;
-    double m_persistence = 0.5;
-    double m_dimension = 1.0;
+    float m_lacunarity = 2.0f;
+    float m_persistence = 0.5f;
+    float m_dimension = 1.0f;
   };
 
   class GF_CORE_API Noise3DTo2DAdapter : public Noise2D {
   public:
-    Noise3DTo2DAdapter(Noise3D* noise, Vec3D normal = { 0.0, 0.0, 1.0 }, Vec3D point = { 0.0, 0.0, 0.0 });
+    Noise3DTo2DAdapter(Noise3D* noise, Vec3F normal = { 0.0f, 0.0f, 1.0f }, Vec3F point = { 0.0f, 0.0f, 0.0f });
 
-    double value(double x, double y) final;
+    float value(float x, float y) final;
 
   private:
     Noise3D* m_noise;
-    Vec3D m_normal;
-    Vec3D m_point;
+    Vec3F m_normal;
+    Vec3F m_point;
   };
 
 }
