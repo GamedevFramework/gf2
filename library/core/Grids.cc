@@ -7,9 +7,9 @@
 #include <cstdlib>
 
 #include <algorithm>
+#include <span>
 
 #include <gf2/core/Math.h>
-#include <gf2/core/Span.h>
 
 namespace gf {
 
@@ -334,8 +334,8 @@ namespace gf {
 
   std::vector<Vec2I> StaggeredGrid::compute_neighbors(Vec2I position, Flags<CellNeighborQuery> flags) const
   {
-    StaticSpan<const Vec2I, 4> relative;
-    StaticSpan<const Vec2I, 4> diagonal;
+    std::span<const Vec2I> relative;
+    std::span<const Vec2I> diagonal;
 
     switch (m_axis) {
       case CellAxis::X:
@@ -382,7 +382,7 @@ namespace gf {
 
   bool StaggeredGrid::are_diagonal_neighbors(Vec2I position0, Vec2I position1) const
   {
-    StaticSpan<const Vec2I, 4> diagonal;
+    std::span<const Vec2I> diagonal;
 
     switch (m_axis) {
       case CellAxis::X:
@@ -697,7 +697,7 @@ namespace gf {
       { { +1, +0 }, { +1, -1 }, { +0, -1 }, { -1, +0 }, { +0, +1 }, { +1, +1 } }
     };
 
-    StaticSpan<const Vec2I, 6> relative;
+    std::span<const Vec2I> relative;
 
     switch (m_axis) {
       case CellAxis::X:

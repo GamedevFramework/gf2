@@ -3,11 +3,11 @@
 #ifndef GF_PHYSICS_CHAIN_H
 #define GF_PHYSICS_CHAIN_H
 
+#include <span>
 #include <vector>
 
 #include <box2d/box2d.h>
 
-#include <gf2/core/Span.h>
 #include <gf2/core/Vec2.h>
 
 #include "PhysicsApi.h"
@@ -22,7 +22,7 @@ namespace gf {
   class PhysicsWorld;
 
   struct GF_PHYSICS_API PhysicsChainData {
-    Span<const Vec2F> points;
+    std::span<const Vec2F> points;
     PhysicsSurfaceMaterial material;
     PhysicsFilter filter;
     bool loop = false;

@@ -14,7 +14,7 @@ namespace {
 
   class NullInputStream : public gf::InputStream {
   public:
-    std::size_t read(gf::Span<uint8_t> buffer) override
+    std::size_t read(std::span<uint8_t> buffer) override
     {
       if (buffer.size() >= 2) {
         buffer[0] = 'g';
@@ -49,7 +49,7 @@ namespace {
 
   class NullOutputStream : public gf::OutputStream {
   public:
-    std::size_t write(gf::Span<const uint8_t> buffer) override
+    std::size_t write(std::span<const uint8_t> buffer) override
     {
       m_written += buffer.size();
       return buffer.size();

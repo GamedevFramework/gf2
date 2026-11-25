@@ -8,7 +8,6 @@
 #include <gf2/core/Property.h>
 #include <gf2/core/ResourceBundle.h>
 #include <gf2/core/ResourceManager.h>
-#include <gf2/core/Span.h>
 #include <gf2/core/StringUtils.h>
 #include <gf2/core/TiledMap.h>
 #include <gf2/core/Transform.h>
@@ -41,7 +40,7 @@ namespace gf {
       return {};
     }
 
-    void flip_vertices(StaticSpan<Vertex, 4> vertices, Flags<CellFlip> flip)
+    void flip_vertices(std::span<Vertex, 4> vertices, Flags<CellFlip> flip)
     {
       if (flip.test(CellFlip::Diagonally)) {
         std::swap(vertices[0].tex_coords, vertices[3].tex_coords);
@@ -85,7 +84,7 @@ namespace gf {
     return select_geometry(structure, query);
   }
 
-  std::vector<RenderGeometry> TiledMapGraphics::select_geometry(Vec2I position, Span<const MapLayerStructure> structure, Flags<TiledMapQuery> query)
+  std::vector<RenderGeometry> TiledMapGraphics::select_geometry(Vec2I position, std::span<const MapLayerStructure> structure, Flags<TiledMapQuery> query)
   {
     std::vector<RenderGeometry> geometries;
     const RectI neighbors = RectI::from_center_size(position / ChunkSize, { 3, 3 });
@@ -93,7 +92,7 @@ namespace gf {
     return geometries;
   }
 
-  std::vector<RenderGeometry> TiledMapGraphics::select_geometry(Span<const MapLayerStructure> structure, Flags<TiledMapQuery> query)
+  std::vector<RenderGeometry> TiledMapGraphics::select_geometry(std::span<const MapLayerStructure> structure, Flags<TiledMapQuery> query)
   {
     RectI neighbors = RectI::from_size({ 1, 1 });
 
@@ -251,7 +250,7 @@ namespace gf {
   }
 
   // NOLINTNEXTLINE(misc-no-recursion)
-  void TiledMapGraphics::compute_geometries(RectI view, Flags<TiledMapQuery> query, Span<const MapLayerStructure> structure, std::vector<RenderGeometry>& geometries)
+  void TiledMapGraphics::compute_geometries(RectI view, Flags<TiledMapQuery> query, std::span<const MapLayerStructure> structure, std::vector<RenderGeometry>& geometries)
   {
     const TiledMap* map = tiled_map();
 

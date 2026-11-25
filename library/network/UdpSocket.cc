@@ -42,7 +42,7 @@ namespace gf {
     return {};
   }
 
-  SocketResult UdpSocket::send_raw_bytes_to(Span<const uint8_t> buffer, const SocketAddress& remote_address)
+  SocketResult UdpSocket::send_raw_bytes_to(std::span<const uint8_t> buffer, const SocketAddress& remote_address)
   {
     auto ret = ::sendto(handle(), details::send_pointer(buffer), details::send_length(buffer), details::NoFlag, remote_address.storage_ptr(), remote_address.length());
 
@@ -58,7 +58,7 @@ namespace gf {
     return static_cast<std::size_t>(ret);
   }
 
-  SocketResult UdpSocket::recv_raw_bytes_from(Span<uint8_t> buffer, SocketAddress* remote_address)
+  SocketResult UdpSocket::recv_raw_bytes_from(std::span<uint8_t> buffer, SocketAddress* remote_address)
   {
     SocketAddress dummy;
     SocketAddress& address = remote_address != nullptr ? *remote_address : dummy;
@@ -79,7 +79,7 @@ namespace gf {
 
   static constexpr std::size_t MaxDatagramSize = 65507;
 
-  SocketResult UdpSocket::send_bytes_to(Span<const uint8_t> buffer, const SocketAddress& remote_address)
+  SocketResult UdpSocket::send_bytes_to(std::span<const uint8_t> buffer, const SocketAddress& remote_address)
   {
     if (buffer.size() > MaxDatagramSize) {
       return static_cast<std::size_t>(0);
@@ -88,7 +88,7 @@ namespace gf {
     return send_raw_bytes_to(buffer, remote_address);
   }
 
-  SocketResult UdpSocket::recv_bytes_from(Span<uint8_t> buffer, SocketAddress* remote_address)
+  SocketResult UdpSocket::recv_bytes_from(std::span<uint8_t> buffer, SocketAddress* remote_address)
   {
     if (buffer.size() > MaxDatagramSize) {
       return static_cast<std::size_t>(0);

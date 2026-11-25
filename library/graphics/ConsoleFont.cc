@@ -185,7 +185,7 @@ namespace gf {
     m_mapping[element.character] = element.index;
   }
 
-  void ConsoleFont::map_elements(Span<const ConsoleFontElement> elements)
+  void ConsoleFont::map_elements(std::span<const ConsoleFontElement> elements)
   {
     for (const ConsoleFontElement element : elements) {
       m_mapping[element.character] = element.index;

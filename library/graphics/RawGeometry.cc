@@ -34,7 +34,7 @@ namespace gf {
    * RawSplitGeometry
    */
 
-  void RawSplitGeometry::add_quad(uint32_t texture_index, StaticSpan<const Vertex, 4> vertices)
+  void RawSplitGeometry::add_quad(uint32_t texture_index, std::span<const Vertex, 4> vertices)
   {
     auto& geometry = map[texture_index];
     auto index = static_cast<uint16_t>(geometry.vertices.size());

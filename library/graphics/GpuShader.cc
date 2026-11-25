@@ -9,7 +9,7 @@
 
 namespace gf {
 
-  GpuShader::GpuShader(GpuShaderStage stage, gf::Span<const uint8_t> binary, const GpuShaderInput& input, GpuDevice* device, const std::string& name)
+  GpuShader::GpuShader(GpuShaderStage stage, std::span<const uint8_t> binary, const GpuShaderInput& input, GpuDevice* device, const std::string& name)
   {
     SDL_GPUShaderCreateInfo info = {};
     info.code_size = binary.size();

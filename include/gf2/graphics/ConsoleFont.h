@@ -6,9 +6,9 @@
 #include <cstdint>
 
 #include <filesystem>
+#include <span>
 
 #include <gf2/core/ConsoleFontData.h>
-#include <gf2/core/Span.h>
 
 #include "GraphicsApi.h"
 #include "GpuTexture.h"
@@ -48,7 +48,7 @@ namespace gf {
     void map_code_range(char16_t character, int count, Vec2I position);
     void map_string(std::string_view str, Vec2I position);
     void map_element(ConsoleFontElement element);
-    void map_elements(Span<const ConsoleFontElement> elements);
+    void map_elements(std::span<const ConsoleFontElement> elements);
     void clear_mapping();
 
     RectF texture_region(char16_t character) const;

@@ -49,7 +49,7 @@ namespace gf {
     return *this;
   }
 
-  std::size_t FileInputStream::read(Span<uint8_t> buffer)
+  std::size_t FileInputStream::read(std::span<uint8_t> buffer)
   {
     if (m_file == nullptr) {
       return 0;
@@ -89,12 +89,12 @@ namespace gf {
    * MemoryInputStream
    */
 
-  MemoryInputStream::MemoryInputStream(Span<const uint8_t> memory)
+  MemoryInputStream::MemoryInputStream(std::span<const uint8_t> memory)
   : m_memory(memory)
   {
   }
 
-  std::size_t MemoryInputStream::read(Span<uint8_t> buffer)
+  std::size_t MemoryInputStream::read(std::span<uint8_t> buffer)
   {
     if (buffer.empty()) {
       return 0;
@@ -191,7 +191,7 @@ namespace gf {
     return *this;
   }
 
-  std::size_t CompressedInputStream::read(Span<uint8_t> buffer)
+  std::size_t CompressedInputStream::read(std::span<uint8_t> buffer)
   {
     if (m_eof) {
       return 0;
@@ -253,7 +253,7 @@ namespace gf {
     assert(bytes != nullptr);
   }
 
-  std::size_t BufferInputStream::read(Span<uint8_t> buffer)
+  std::size_t BufferInputStream::read(std::span<uint8_t> buffer)
   {
     if (buffer.empty()) {
       return 0;
@@ -310,7 +310,7 @@ namespace gf {
     return m_hash.result();
   }
 
-  std::size_t HashedInputStream::read(Span<uint8_t> buffer)
+  std::size_t HashedInputStream::read(std::span<uint8_t> buffer)
   {
     auto result = m_stream->read(buffer);
     m_hash.input(buffer);
@@ -379,7 +379,7 @@ namespace gf {
     return *this;
   }
 
-  std::size_t FileOutputStream::write(Span<const uint8_t> buffer)
+  std::size_t FileOutputStream::write(std::span<const uint8_t> buffer)
   {
     if (m_file == nullptr) {
       return 0;
@@ -403,12 +403,12 @@ namespace gf {
    * MemoryOutputStream
    */
 
-  MemoryOutputStream::MemoryOutputStream(Span<uint8_t> memory)
+  MemoryOutputStream::MemoryOutputStream(std::span<uint8_t> memory)
   : m_memory(memory)
   {
   }
 
-  std::size_t MemoryOutputStream::write(Span<const uint8_t> buffer)
+  std::size_t MemoryOutputStream::write(std::span<const uint8_t> buffer)
   {
     const std::size_t remaining = m_memory.size() - m_offset;
     const std::size_t size = std::min(remaining, buffer.size());
@@ -464,7 +464,7 @@ namespace gf {
       const uInt written = buffer_size - m_stream.avail_out;
 
       if (written > 0) {
-        [[maybe_unused]] const std::size_t flushed = m_compressed->write(gf::span(m_buffer.data(), written));
+        [[maybe_unused]] const std::size_t flushed = m_compressed->write(std::span(m_buffer.data(), written));
         assert(flushed == written);
 
         m_stream.next_out = m_buffer.data();
@@ -495,7 +495,7 @@ namespace gf {
     return *this;
   }
 
-  std::size_t CompressedOutputStream::write(Span<const uint8_t> buffer)
+  std::size_t CompressedOutputStream::write(std::span<const uint8_t> buffer)
   {
     const uInt buffer_size = static_cast<uInt>(m_buffer.size());
 
@@ -510,7 +510,7 @@ namespace gf {
       const uInt written = buffer_size - m_stream.avail_out;
 
       if (written > 0) {
-        [[maybe_unused]] const std::size_t flushed = m_compressed->write(gf::span(m_buffer.data(), written));
+        [[maybe_unused]] const std::size_t flushed = m_compressed->write(std::span(m_buffer.data(), written));
         assert(flushed == written);
 
         m_stream.next_out = m_buffer.data();
@@ -538,7 +538,7 @@ namespace gf {
     assert(bytes != nullptr);
   }
 
-  std::size_t BufferOutputStream::write(Span<const uint8_t> buffer)
+  std::size_t BufferOutputStream::write(std::span<const uint8_t> buffer)
   {
     std::copy_n(buffer.data(), buffer.size(), std::back_inserter(*m_bytes));
     return buffer.size();
@@ -563,7 +563,7 @@ namespace gf {
     return m_hash.result();
   }
 
-  std::size_t HashedOutputStream::write(Span<const uint8_t> buffer)
+  std::size_t HashedOutputStream::write(std::span<const uint8_t> buffer)
   {
     m_hash.input(buffer);
     return m_stream->write(buffer);

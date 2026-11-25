@@ -29,7 +29,7 @@ namespace gf {
 
   }
 
-  std::vector<Polyline> compute_lines(Span<const SegmentI> segments)
+  std::vector<Polyline> compute_lines(std::span<const SegmentI> segments)
   {
     std::vector<Polyline> lines;
 

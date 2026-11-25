@@ -20,7 +20,7 @@ namespace {
 
     DummyResource(gf::InputStream& input)
     {
-      input.read(gf::bytes(&x));
+      input.read(std::span(reinterpret_cast<uint8_t*>(&x), 1)); // NOLINT
     }
 
     std::size_t x = 0;
@@ -247,7 +247,7 @@ TEST(ResourceTest, MemoryLoader) {
   std::size_t raw_resource = 42;
 
   gf::MemoryLoader loader;
-  loader.add_buffer("foo", gf::bytes(&raw_resource));
+  loader.add_buffer("foo", std::span(reinterpret_cast<uint8_t*>(&raw_resource), 1)); // NOLINT
 
   gf::ResourceRegistry<DummyResource> registry;
   registry.add_loader(gf::loader_for<DummyResource>(loader));

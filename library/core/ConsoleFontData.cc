@@ -281,7 +281,7 @@ namespace gf {
 
   }
 
-  Span<const ConsoleFontElement> load_console_font_mapping(ConsoleFontMapping mapping)
+  std::span<const ConsoleFontElement> load_console_font_mapping(ConsoleFontMapping mapping)
   {
     switch (mapping) {
       case ConsoleFontMapping::CodePage437:
@@ -295,10 +295,10 @@ namespace gf {
       case ConsoleFontMapping::Picture:
         return ConsolePictureMapping;
       case ConsoleFontMapping::Custom:
-        return nullptr;
+        return {};
     }
 
-    return nullptr;
+    return {};
   }
 
 

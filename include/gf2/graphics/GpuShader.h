@@ -3,12 +3,11 @@
 #ifndef GF_GPU_SHADER_H
 #define GF_GPU_SHADER_H
 
+#include <span>
 #include <string>
 #include <type_traits>
 
 #include <SDL3/SDL_gpu.h>
-
-#include <gf2/core/Span.h>
 
 #include "GraphicsApi.h"
 #include "GraphicsHandle.h"
@@ -32,7 +31,7 @@ namespace gf {
   class GF_GRAPHICS_API GpuShader {
   public:
     GpuShader() = default;
-    GpuShader(GpuShaderStage stage, gf::Span<const uint8_t> binary, const GpuShaderInput& input, GpuDevice* device, const std::string& name);
+    GpuShader(GpuShaderStage stage, std::span<const uint8_t> binary, const GpuShaderInput& input, GpuDevice* device, const std::string& name);
 
   private:
     friend class GpuDevice;

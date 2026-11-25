@@ -4,13 +4,13 @@
 #define GF_FONT_ATLAS_H
 
 #include <map>
+#include <span>
 #include <utility>
 
 #include <gf2/core/BinPack.h>
 #include <gf2/core/Bitmap.h>
 #include <gf2/core/Fixed.h>
 #include <gf2/core/FontFace.h>
-#include <gf2/core/Span.h>
 #include <gf2/core/Vec2.h>
 
 #include "GpuTexture.h"
@@ -24,7 +24,7 @@ namespace gf {
     FontAtlas(Vec2I size, RenderManager* render_manager);
 
     RectF texture_region(uint32_t index, FontFace* face);
-    void update_texture_regions_for(Span<uint32_t> indices, FontFace* face);
+    void update_texture_regions_for(std::span<uint32_t> indices, FontFace* face);
 
     const FontGlyph& glyph(uint32_t index, FontFace* face);
 

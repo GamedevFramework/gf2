@@ -165,7 +165,7 @@ namespace gf {
     return buffer;
   }
 
-  ShapeBuffer ShapeBuffer::make_polygon(Span<const Vec2F> contour)
+  ShapeBuffer ShapeBuffer::make_polygon(std::span<const Vec2F> contour)
   {
     ShapeBuffer buffer = {};
     buffer.points.assign(contour.begin(), contour.end());

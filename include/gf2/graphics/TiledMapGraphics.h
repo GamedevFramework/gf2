@@ -3,6 +3,7 @@
 #ifndef GF_RICH_MAP_RENDERER_H
 #define GF_RICH_MAP_RENDERER_H
 
+#include <span>
 #include <string_view>
 #include <vector>
 
@@ -10,7 +11,6 @@
 #include <gf2/core/Array2D.h>
 #include <gf2/core/Flags.h>
 #include <gf2/core/Rect.h>
-#include <gf2/core/Span.h>
 #include <gf2/core/Vec2.h>
 
 #include "GpuBuffer.h"
@@ -46,8 +46,8 @@ namespace gf {
     std::vector<RenderGeometry> select_geometry(Vec2I position, std::string_view path, Flags<TiledMapQuery> query = All);
     std::vector<RenderGeometry> select_geometry(std::string_view path, Flags<TiledMapQuery> query = All);
 
-    std::vector<RenderGeometry> select_geometry(Vec2I position, Span<const MapLayerStructure> structure, Flags<TiledMapQuery> query = All);
-    std::vector<RenderGeometry> select_geometry(Span<const MapLayerStructure> structure, Flags<TiledMapQuery> query = All);
+    std::vector<RenderGeometry> select_geometry(Vec2I position, std::span<const MapLayerStructure> structure, Flags<TiledMapQuery> query = All);
+    std::vector<RenderGeometry> select_geometry(std::span<const MapLayerStructure> structure, Flags<TiledMapQuery> query = All);
 
     Vec2I compute_position(Vec2F location) const;
 
@@ -90,7 +90,7 @@ namespace gf {
       LayerBuffers buffers;
     };
 
-    void compute_geometries(RectI view, Flags<TiledMapQuery> query, Span<const MapLayerStructure> structure, std::vector<RenderGeometry>& geometries);
+    void compute_geometries(RectI view, Flags<TiledMapQuery> query, std::span<const MapLayerStructure> structure, std::vector<RenderGeometry>& geometries);
     void compute_tile_geometry(RectI view, TileLayer& tile_layer, std::vector<RenderGeometry>& geometries);
     void compute_object_geometry(ObjectLayer& object_layer, std::vector<RenderGeometry>& geometries);
 

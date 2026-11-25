@@ -6,12 +6,12 @@
 #include <cassert>
 #include <cstdint>
 
+#include <span>
 #include <vector>
 
 #include <gf2/core/Id.h>
 #include <gf2/core/Serialization.h>
 #include <gf2/core/SerializationOps.h>
-#include <gf2/core/Span.h>
 #include <gf2/core/Streams.h>
 
 #include "NetworkApi.h"
@@ -64,12 +64,12 @@ namespace gf {
       m_bytes.resize(size);
     }
 
-    Span<uint8_t> as_span()
+    std::span<uint8_t> as_span()
     {
       return { m_bytes };
     }
 
-    Span<const uint8_t> as_span() const
+    std::span<const uint8_t> as_span() const
     {
       return { m_bytes };
     }

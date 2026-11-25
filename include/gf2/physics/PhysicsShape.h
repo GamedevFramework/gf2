@@ -5,6 +5,7 @@
 
 #include <cstdint>
 
+#include <span>
 #include <type_traits>
 #include <vector>
 
@@ -123,7 +124,7 @@ namespace gf {
     void set_circle(const CircF& circle);
     void set_segment(const SegmentF& segment);
     void set_capsule(const CapsuleF& capsule);
-    void set_polygon(Span<const Vec2F> polygon, float radius = 0.0f);
+    void set_polygon(std::span<const Vec2F> polygon, float radius = 0.0f);
     void set_square(float half_size);
     void set_box(Vec2F half_size);
     void set_box(const RectF& box, float rotation = 0.0f);
@@ -155,7 +156,7 @@ namespace gf {
     static PhysicsShape create_circle(PhysicsBody* body, const PhysicsShapeData& data, const CircF& circle);
     static PhysicsShape create_segment(PhysicsBody* body, const PhysicsShapeData& data, const SegmentF& segment);
     static PhysicsShape create_capsule(PhysicsBody* body, const PhysicsShapeData& data, const CapsuleF& capsule);
-    static PhysicsShape create_polygon(PhysicsBody* body, const PhysicsShapeData& data, Span<const Vec2F> polygon, float radius = 0.0f);
+    static PhysicsShape create_polygon(PhysicsBody* body, const PhysicsShapeData& data, std::span<const Vec2F> polygon, float radius = 0.0f);
     static PhysicsShape create_square(PhysicsBody* body, const PhysicsShapeData& data, float half_size);
     static PhysicsShape create_box(PhysicsBody* body, const PhysicsShapeData& data, Vec2F half_size);
     static PhysicsShape create_box(PhysicsBody* body, const PhysicsShapeData& data, const RectF& box, float rotation = 0.0f);

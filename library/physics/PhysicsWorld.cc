@@ -73,7 +73,7 @@ namespace gf {
       return { PhysicsJoint::from_id(details::to_id(raw.jointId)), raw.userData };
     }
 
-    b2ShapeProxy to_raw(Span<const Vec2F> shape, float radius)
+    b2ShapeProxy to_raw(std::span<const Vec2F> shape, float radius)
     {
       assert(shape.size() < B2_MAX_POLYGON_VERTICES);
       b2ShapeProxy proxy = {};
@@ -120,7 +120,7 @@ namespace gf {
       }
 
       auto* debug = static_cast<PhysicsDebug*>(context);
-      debug->draw_polygon(span(vertices.data(), raw_vertex_count), { static_cast<uint32_t>(raw_color), PhysicsDebugAlpha });
+      debug->draw_polygon(std::span(vertices.data(), raw_vertex_count), { static_cast<uint32_t>(raw_color), PhysicsDebugAlpha });
     }
 
     void draw_solid_polygon_fn(b2Transform raw_transform, const b2Vec2* raw_vertices, int raw_vertex_count, float radius, b2HexColor raw_color, void* context)
@@ -134,7 +134,7 @@ namespace gf {
       }
 
       auto* debug = static_cast<PhysicsDebug*>(context);
-      debug->draw_solid_polygon(span(vertices.data(), raw_vertex_count), radius, { static_cast<uint32_t>(raw_color), PhysicsDebugAlpha });
+      debug->draw_solid_polygon(std::span(vertices.data(), raw_vertex_count), radius, { static_cast<uint32_t>(raw_color), PhysicsDebugAlpha });
     }
 
     void draw_circle_fn(b2Vec2 center, float radius, b2HexColor raw_color, void* context)
@@ -359,7 +359,7 @@ namespace gf {
     b2World_OverlapAABB(m_id, { origin.x, origin.y }, to_aabb(bounds), details::to_raw(filter), overlap_result_fn, &fn);
   }
 
-  void PhysicsWorld::overlap_shape(Vec2F origin, Span<const Vec2F> shape, float radius, PhysicsQueryFilter filter, PhysicsOverlapResultFn fn)
+  void PhysicsWorld::overlap_shape(Vec2F origin, std::span<const Vec2F> shape, float radius, PhysicsQueryFilter filter, PhysicsOverlapResultFn fn)
   {
     const b2ShapeProxy proxy = to_raw(shape, radius);
     b2World_OverlapShape(m_id, { origin.x, origin.y }, &proxy, details::to_raw(filter), overlap_result_fn, &fn);
@@ -376,7 +376,7 @@ namespace gf {
     return { PhysicsShape::from_id(details::to_id(raw.shapeId)), { raw.point.x, raw.point.y }, { raw.normal.x, raw.normal.y }, raw.fraction, raw.hit };
   }
 
-  void PhysicsWorld::cast_shape(Vec2F origin, Span<const Vec2F> shape, float radius, Vec2F translation, PhysicsQueryFilter filter, PhysicsCastResultFn fn)
+  void PhysicsWorld::cast_shape(Vec2F origin, std::span<const Vec2F> shape, float radius, Vec2F translation, PhysicsQueryFilter filter, PhysicsCastResultFn fn)
   {
     const b2ShapeProxy proxy = to_raw(shape, radius);
     b2World_CastShape(m_id, { origin.x, origin.y }, &proxy, { translation.x, translation.y }, details::to_raw(filter), cast_result_fn, &fn);

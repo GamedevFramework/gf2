@@ -58,7 +58,7 @@ namespace gf {
     return texture_region;
   }
 
-  void FontAtlas::update_texture_regions_for(Span<uint32_t> indices, FontFace* face)
+  void FontAtlas::update_texture_regions_for(std::span<uint32_t> indices, FontFace* face)
   {
     std::vector<uint32_t> new_indices;
 

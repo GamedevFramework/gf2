@@ -6,9 +6,9 @@
 #include <cstdint>
 
 #include <array>
+#include <span>
 
 #include "CoreApi.h"
-#include "Span.h"
 
 namespace gf {
 
@@ -20,7 +20,7 @@ namespace gf {
     SecureHash();
 
     void reset();
-    void input(Span<const uint8_t> data);
+    void input(std::span<const uint8_t> data);
     Hash result();
 
   private:

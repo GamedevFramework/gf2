@@ -65,7 +65,7 @@ namespace gf {
       return actual_size;
     }
 
-    void initialize_corners(Heightmap& map, Span<const float> initial_values, int d)
+    void initialize_corners(Heightmap& map, std::span<const float> initial_values, int d)
     {
       if (initial_values.empty()) {
         map.set_value({ 0, 0 }, 0.0);
@@ -87,7 +87,7 @@ namespace gf {
 
   } // anonymous namespace
 
-  GF_CORE_API Heightmap midpoint_displacement_2d(Vec2I size, Random& random, Span<const float> initial_values)
+  GF_CORE_API Heightmap midpoint_displacement_2d(Vec2I size, Random& random, std::span<const float> initial_values)
   {
     int actual_size = compute_power_of_two_size(size);
 
@@ -193,7 +193,7 @@ namespace gf {
 
   } // anonymous namespace
 
-  GF_CORE_API Heightmap diamond_square_2d(Vec2I size, Random& random, Span<const float> initial_values)
+  GF_CORE_API Heightmap diamond_square_2d(Vec2I size, Random& random, std::span<const float> initial_values)
   {
     int actual_size = compute_power_of_two_size(size);
 

@@ -8,6 +8,7 @@
 #include <iterator>
 #include <map>
 #include <set>
+#include <span>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
@@ -22,6 +23,7 @@ namespace gf {
    * - std::deque
    * - std::map
    * - std::set
+   * - std::span
    * - std::unordered_map
    * - std::unordered_set
    * - std::vector
@@ -159,7 +161,7 @@ namespace gf {
   }
 
   template<typename T>
-  inline Deserializer& operator|(Deserializer& ar, Span<T> array)
+  inline Deserializer& operator|(Deserializer& ar, std::span<T> array)
   {
     return details::read_container<T>(ar, array.begin(), array.size());
   }

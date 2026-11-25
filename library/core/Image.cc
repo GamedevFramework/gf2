@@ -42,7 +42,7 @@ namespace gf {
     int stb_callback_read(void* user, char* data, int size)
     {
       auto* stream = static_cast<InputStream*>(user);
-      return static_cast<int>(stream->read(Span<uint8_t>(reinterpret_cast<uint8_t*>(data), size))); // NOLINT
+      return static_cast<int>(stream->read(std::span<uint8_t>(reinterpret_cast<uint8_t*>(data), size))); // NOLINT
     }
 
     void stb_callback_skip(void* user, int n)

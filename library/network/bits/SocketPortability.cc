@@ -99,7 +99,7 @@ namespace gf::details {
 
 #endif
 
-  SocketSelectorStatus native_poll(Span<pollfd> fds, Time duration)
+  SocketSelectorStatus native_poll(std::span<pollfd> fds, Time duration)
   {
     auto ms = duration.as_milliseconds();
 

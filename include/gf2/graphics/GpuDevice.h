@@ -5,8 +5,6 @@
 
 #include <SDL3/SDL_gpu.h>
 
-#include <gf2/core/Span.h>
-
 #include "GraphicsApi.h"
 
 namespace gf {

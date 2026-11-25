@@ -8,6 +8,7 @@
 
 #include <array>
 #include <filesystem>
+#include <vector>
 
 #include <zlib.h>
 
@@ -28,7 +29,7 @@ namespace gf {
     FileInputStream& operator=(const FileInputStream&) = delete;
     FileInputStream& operator=(FileInputStream&& other) noexcept;
 
-    std::size_t read(Span<uint8_t> buffer) override;
+    std::size_t read(std::span<uint8_t> buffer) override;
     void seek(std::ptrdiff_t position) override;
     void skip(std::ptrdiff_t position) override;
     bool finished() override;
@@ -39,15 +40,15 @@ namespace gf {
 
   class GF_CORE_API MemoryInputStream : public InputStream {
   public:
-    explicit MemoryInputStream(Span<const uint8_t> memory);
+    explicit MemoryInputStream(std::span<const uint8_t> memory);
 
-    std::size_t read(Span<uint8_t> buffer) override;
+    std::size_t read(std::span<uint8_t> buffer) override;
     void seek(std::ptrdiff_t position) override;
     void skip(std::ptrdiff_t position) override;
     bool finished() override;
 
   private:
-    Span<const uint8_t> m_memory;
+    std::span<const uint8_t> m_memory;
     std::size_t m_offset = 0;
   };
 
@@ -61,7 +62,7 @@ namespace gf {
     CompressedInputStream& operator=(const CompressedInputStream&) = delete;
     CompressedInputStream& operator=(CompressedInputStream&& other) noexcept;
 
-    std::size_t read(Span<uint8_t> buffer) override;
+    std::size_t read(std::span<uint8_t> buffer) override;
     void seek(std::ptrdiff_t position) override;
     void skip(std::ptrdiff_t position) override;
     bool finished() override;
@@ -84,7 +85,7 @@ namespace gf {
       return *m_bytes;
     }
 
-    std::size_t read(Span<uint8_t> buffer) override;
+    std::size_t read(std::span<uint8_t> buffer) override;
     void seek(std::ptrdiff_t position) override;
     void skip(std::ptrdiff_t position) override;
     bool finished() override;
@@ -100,7 +101,7 @@ namespace gf {
 
     SecureHash::Hash hash();
 
-    std::size_t read(Span<uint8_t> buffer) override;
+    std::size_t read(std::span<uint8_t> buffer) override;
     void seek(std::ptrdiff_t position) override;
     void skip(std::ptrdiff_t position) override;
     bool finished() override;
@@ -125,7 +126,7 @@ namespace gf {
     FileOutputStream& operator=(const FileOutputStream&) = delete;
     FileOutputStream& operator=(FileOutputStream&& other) noexcept;
 
-    std::size_t write(Span<const uint8_t> buffer) override;
+    std::size_t write(std::span<const uint8_t> buffer) override;
     std::size_t written_bytes() const override;
 
   private:
@@ -135,13 +136,13 @@ namespace gf {
 
   class GF_CORE_API MemoryOutputStream : public OutputStream {
   public:
-    explicit MemoryOutputStream(Span<uint8_t> memory);
+    explicit MemoryOutputStream(std::span<uint8_t> memory);
 
-    std::size_t write(Span<const uint8_t> buffer) override;
+    std::size_t write(std::span<const uint8_t> buffer) override;
     std::size_t written_bytes() const override;
 
   private:
-    Span<uint8_t> m_memory;
+    std::span<uint8_t> m_memory;
     std::size_t m_offset = 0;
   };
 
@@ -155,7 +156,7 @@ namespace gf {
     CompressedOutputStream& operator=(const CompressedOutputStream&) = delete;
     CompressedOutputStream& operator=(CompressedOutputStream&& other) noexcept;
 
-    std::size_t write(Span<const uint8_t> buffer) override;
+    std::size_t write(std::span<const uint8_t> buffer) override;
     std::size_t written_bytes() const override;
 
   private:
@@ -168,7 +169,7 @@ namespace gf {
   public:
     explicit BufferOutputStream(std::vector<uint8_t>* bytes);
 
-    std::size_t write(Span<const uint8_t> buffer) override;
+    std::size_t write(std::span<const uint8_t> buffer) override;
     std::size_t written_bytes() const override;
 
     std::vector<uint8_t>& bytes()
@@ -186,7 +187,7 @@ namespace gf {
 
     SecureHash::Hash hash();
 
-    std::size_t write(Span<const uint8_t> buffer) override;
+    std::size_t write(std::span<const uint8_t> buffer) override;
     std::size_t written_bytes() const override;
 
   private:

@@ -54,7 +54,7 @@ namespace gf {
     return address;
   }
 
-  SocketResult TcpSocket::send_raw_bytes(Span<const uint8_t> buffer)
+  SocketResult TcpSocket::send_raw_bytes(std::span<const uint8_t> buffer)
   {
 #ifdef MSG_NOSIGNAL
     static constexpr int SendFlags = MSG_NOSIGNAL;
@@ -75,7 +75,7 @@ namespace gf {
     return static_cast<std::size_t>(ret);
   }
 
-  SocketResult TcpSocket::recv_raw_bytes(Span<uint8_t> buffer)
+  SocketResult TcpSocket::recv_raw_bytes(std::span<uint8_t> buffer)
   {
     auto ret = ::recv(handle(), details::recv_pointer(buffer), details::recv_length(buffer), details::NoFlag);
 
@@ -95,7 +95,7 @@ namespace gf {
     return static_cast<std::size_t>(ret);
   }
 
-  SocketResult TcpSocket::send_bytes(Span<const uint8_t> buffer)
+  SocketResult TcpSocket::send_bytes(std::span<const uint8_t> buffer)
   {
     const std::size_t buffer_size = buffer.size();
 
@@ -103,7 +103,7 @@ namespace gf {
       auto result = send_raw_bytes(buffer);
 
       if (result) {
-        buffer = buffer.last_except(*result);
+        buffer = buffer.last(*result);
       } else {
         if (result.error() != SocketStatus::Block) {
           return result;
@@ -114,7 +114,7 @@ namespace gf {
     return buffer_size;
   }
 
-  SocketResult TcpSocket::recv_bytes(Span<uint8_t> buffer)
+  SocketResult TcpSocket::recv_bytes(std::span<uint8_t> buffer)
   {
     const std::size_t buffer_size = buffer.size();
 
@@ -122,7 +122,7 @@ namespace gf {
       auto result = recv_raw_bytes(buffer);
 
       if (result) {
-        buffer = buffer.last_except(*result);
+        buffer = buffer.last(*result);
       } else {
         if (result.error() != SocketStatus::Block) {
           return result;

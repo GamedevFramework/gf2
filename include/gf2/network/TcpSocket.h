@@ -5,10 +5,10 @@
 
 #include <cstdint>
 
+#include <span>
 #include <string>
 
 #include <gf2/core/Result.h>
-#include <gf2/core/Span.h>
 
 #include "NetworkApi.h"
 #include "Socket.h"
@@ -29,11 +29,11 @@ namespace gf {
 
     SocketAddress remote_address() const;
 
-    SocketResult send_raw_bytes(Span<const uint8_t> buffer);
-    SocketResult recv_raw_bytes(Span<uint8_t> buffer);
+    SocketResult send_raw_bytes(std::span<const uint8_t> buffer);
+    SocketResult recv_raw_bytes(std::span<uint8_t> buffer);
 
-    SocketResult send_bytes(Span<const uint8_t> buffer);
-    SocketResult recv_bytes(Span<uint8_t> buffer);
+    SocketResult send_bytes(std::span<const uint8_t> buffer);
+    SocketResult recv_bytes(std::span<uint8_t> buffer);
 
     SocketResult send_packet(const Packet& packet);
     SocketResult recv_packet(Packet& packet);

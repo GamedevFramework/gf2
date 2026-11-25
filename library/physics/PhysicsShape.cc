@@ -19,7 +19,7 @@ namespace gf {
 
   namespace {
 
-    b2Polygon to_raw(Span<const Vec2F> polygon, float radius)
+    b2Polygon to_raw(std::span<const Vec2F> polygon, float radius)
     {
       std::vector<b2Vec2> raw_points;
       raw_points.reserve(polygon.size());
@@ -308,7 +308,7 @@ namespace gf {
     b2Shape_SetCapsule(m_id, &raw);
   }
 
-  void PhysicsShape::set_polygon(Span<const Vec2F> polygon, float radius)
+  void PhysicsShape::set_polygon(std::span<const Vec2F> polygon, float radius)
   {
     const b2Polygon raw_polygon = to_raw(polygon, radius);
     b2Shape_SetPolygon(m_id, &raw_polygon);
@@ -460,7 +460,7 @@ namespace gf {
     return { details::PhysicsOwner::Object, b2CreateCapsuleShape(details::to_raw(body->id()), &def, &raw) };
   }
 
-  PhysicsShape PhysicsShape::create_polygon(PhysicsBody* body, const PhysicsShapeData& data, Span<const Vec2F> polygon, float radius)
+  PhysicsShape PhysicsShape::create_polygon(PhysicsBody* body, const PhysicsShapeData& data, std::span<const Vec2F> polygon, float radius)
   {
     assert(body != nullptr);
     assert(body->valid());

@@ -4,12 +4,12 @@
 #define GF_PHYSICS_WORLD_H
 
 #include <functional>
+#include <span>
 
 #include <box2d/box2d.h>
 
 #include <gf2/core/Model.h>
 #include <gf2/core/Rect.h>
-#include <gf2/core/Span.h>
 #include <gf2/core/Vec2.h>
 
 #include "PhysicsApi.h"
@@ -82,11 +82,11 @@ namespace gf {
     PhysicsJointEvents joint_events() const;
 
     void overlap_bounds(Vec2F origin, RectF bounds, PhysicsQueryFilter filter, PhysicsOverlapResultFn fn);
-    void overlap_shape(Vec2F origin, Span<const Vec2F> shape, float radius, PhysicsQueryFilter filter, PhysicsOverlapResultFn fn);
+    void overlap_shape(Vec2F origin, std::span<const Vec2F> shape, float radius, PhysicsQueryFilter filter, PhysicsOverlapResultFn fn);
 
     void cast_ray(Vec2F origin, Vec2F translation, PhysicsQueryFilter filter, PhysicsCastResultFn fn);
     PhysicsCastResult cast_ray_closest(Vec2F origin, Vec2F translation, PhysicsQueryFilter filter);
-    void cast_shape(Vec2F origin, Span<const Vec2F> shape, float radius, Vec2F translation, PhysicsQueryFilter filter, PhysicsCastResultFn fn);
+    void cast_shape(Vec2F origin, std::span<const Vec2F> shape, float radius, Vec2F translation, PhysicsQueryFilter filter, PhysicsCastResultFn fn);
 
     bool is_sleep_enabled() const;
     void enable_sleep(bool flag);

@@ -7,11 +7,11 @@ namespace gf {
 
   PhysicsDebug::~PhysicsDebug() = default;
 
-  void PhysicsDebug::draw_polygon([[maybe_unused]] Span<const Vec2F> polygon, [[maybe_unused]] Color color) {
+  void PhysicsDebug::draw_polygon([[maybe_unused]] std::span<const Vec2F> polygon, [[maybe_unused]] Color color) {
     // nothing to do by default
   }
 
-  void PhysicsDebug::draw_solid_polygon([[maybe_unused]] Span<const Vec2F> polygon, [[maybe_unused]] float radius, [[maybe_unused]] Color color) {
+  void PhysicsDebug::draw_solid_polygon([[maybe_unused]] std::span<const Vec2F> polygon, [[maybe_unused]] float radius, [[maybe_unused]] Color color) {
     // nothing to do by default
   }
 

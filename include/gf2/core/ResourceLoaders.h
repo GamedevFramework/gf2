@@ -4,10 +4,10 @@
 #define GF_RESOURCE_LOADERS_H
 
 #include <map>
+#include <span>
 
 #include "CoreApi.h"
 #include "ResourceContext.h"
-#include "Span.h"
 #include "Streams.h"
 #include "Tarball.h"
 
@@ -40,13 +40,13 @@ namespace gf {
 
   class GF_CORE_API MemoryLoader {
   public:
-    void add_buffer(std::filesystem::path path, Span<uint8_t> buffer);
-    Span<uint8_t> search(const std::filesystem::path& relative_path);
+    void add_buffer(std::filesystem::path path, std::span<uint8_t> buffer);
+    std::span<uint8_t> search(const std::filesystem::path& relative_path);
 
     template<typename T>
     std::unique_ptr<T> operator()(const std::filesystem::path& path, const ResourceContext<T>& context = {})
     {
-      const Span<uint8_t> buffer = search(path);
+      const std::span<uint8_t> buffer = search(path);
 
       if (buffer.empty()) {
         return nullptr;
@@ -62,7 +62,7 @@ namespace gf {
     }
 
   private:
-    std::map<std::filesystem::path, Span<uint8_t>> m_buffers;
+    std::map<std::filesystem::path, std::span<uint8_t>> m_buffers;
   };
 
   class GF_CORE_API TarballLoader {

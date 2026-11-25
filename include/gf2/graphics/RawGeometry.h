@@ -8,10 +8,10 @@
 #include <algorithm>
 #include <iterator>
 #include <map>
+#include <span>
 #include <vector>
 
 #include <gf2/core/Rect.h>
-#include <gf2/core/Span.h>
 
 #include "GraphicsApi.h"
 #include "Vertex.h"
@@ -38,7 +38,7 @@ namespace gf {
   struct GF_GRAPHICS_API RawSplitGeometry {
     std::map<uint32_t, RawGeometry> map;
 
-    void add_quad(uint32_t texture_index, StaticSpan<const Vertex, 4> vertices);
+    void add_quad(uint32_t texture_index, std::span<const Vertex, 4> vertices);
 
     RawGeometry merge() const;
   };

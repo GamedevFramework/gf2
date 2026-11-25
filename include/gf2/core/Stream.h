@@ -6,8 +6,9 @@
 #include <cstddef>
 #include <cstdint>
 
+#include <span>
+
 #include "CoreApi.h"
-#include "Span.h"
 
 namespace gf {
 
@@ -21,14 +22,14 @@ namespace gf {
     InputStream& operator=(const InputStream&) = delete;
     InputStream& operator=(InputStream&&) noexcept = default;
 
-    virtual std::size_t read(Span<uint8_t> buffer) = 0;
+    virtual std::size_t read(std::span<uint8_t> buffer) = 0;
     virtual void seek(std::ptrdiff_t position) = 0;
     virtual void skip(std::ptrdiff_t position) = 0;
     virtual bool finished() = 0;
 
     std::size_t read(uint8_t& byte)
     {
-      return read(Span<uint8_t>(&byte, 1));
+      return read(std::span<uint8_t>(&byte, 1));
     }
   };
 
@@ -42,12 +43,12 @@ namespace gf {
     OutputStream& operator=(const OutputStream&) = delete;
     OutputStream& operator=(OutputStream&&) noexcept = default;
 
-    virtual std::size_t write(Span<const uint8_t> buffer) = 0;
+    virtual std::size_t write(std::span<const uint8_t> buffer) = 0;
     virtual std::size_t written_bytes() const = 0;
 
     std::size_t write(uint8_t byte)
     {
-      return write(Span<const uint8_t>(&byte, 1));
+      return write(std::span<const uint8_t>(&byte, 1));
     }
   };
 

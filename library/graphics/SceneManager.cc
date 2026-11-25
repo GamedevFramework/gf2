@@ -186,14 +186,14 @@ namespace gf {
     GpuShaderInput default_vertex_shader_input = {};
     default_vertex_shader_input.storage_buffers = 2;
 
-    m_default_vertex_shader = GpuShader(GpuShaderStage::Vertex, gf::span(default_vert_shader_code), default_vertex_shader_input, device, "[gf2] Default vertex shader");
+    m_default_vertex_shader = GpuShader(GpuShaderStage::Vertex, default_vert_shader_code, default_vertex_shader_input, device, "[gf2] Default vertex shader");
 
     // default fragment shader
 
     GpuShaderInput default_fragment_shader_input = {};
     default_fragment_shader_input.samplers = 1;
 
-    m_default_fragment_shader = GpuShader(GpuShaderStage::Fragment, gf::span(default_frag_shader_code), default_fragment_shader_input, device, "[gf2] Default fragment shader");
+    m_default_fragment_shader = GpuShader(GpuShaderStage::Fragment, default_frag_shader_code, default_fragment_shader_input, device, "[gf2] Default fragment shader");
 
     // text fragment shader
 
@@ -201,20 +201,20 @@ namespace gf {
     text_fragment_shader_input.samplers = 1;
     text_fragment_shader_input.storage_buffers = 1;
 
-    m_text_fragment_shader = GpuShader(GpuShaderStage::Fragment, gf::span(text_frag_shader_code), text_fragment_shader_input, device, "[gf2] Text fragment shader");
+    m_text_fragment_shader = GpuShader(GpuShaderStage::Fragment, text_frag_shader_code, text_fragment_shader_input, device, "[gf2] Text fragment shader");
 
     // fullscreen vertex shader
 
     const GpuShaderInput fullscreen_vertex_shader_input = {};
 
-    m_fullscreen_vertex_shader = GpuShader(GpuShaderStage::Vertex, gf::span(fullscreen_vert_shader_code), fullscreen_vertex_shader_input, device, "[gf2] Fullscreen vertex shader");
+    m_fullscreen_vertex_shader = GpuShader(GpuShaderStage::Vertex, fullscreen_vert_shader_code, fullscreen_vertex_shader_input, device, "[gf2] Fullscreen vertex shader");
 
     // fullscreen fragment shader
 
     GpuShaderInput fullscreen_fragment_shader_input = {};
     fullscreen_fragment_shader_input.samplers = 1;
 
-    m_fullscreen_fragment_shader = GpuShader(GpuShaderStage::Fragment, gf::span(fullscreen_frag_shader_code), fullscreen_fragment_shader_input, device, "[gf2] Fullscreen fragment shader");
+    m_fullscreen_fragment_shader = GpuShader(GpuShaderStage::Fragment, fullscreen_frag_shader_code, fullscreen_fragment_shader_input, device, "[gf2] Fullscreen fragment shader");
   }
 
   void BasicSceneManager::build_default_pipelines()
@@ -459,7 +459,7 @@ namespace gf {
     m_curr_scenes.back()->set_rank(SceneRank::Top);
   }
 
-  void SceneManager::push_scenes(Span<BasicScene*> scenes)
+  void SceneManager::push_scenes(std::span<BasicScene*> scenes)
   {
     m_scenes_changed = true;
 

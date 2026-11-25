@@ -26,7 +26,7 @@ TEST(SecureHashTest, RFC4634) {
   for (const auto& test : Tests) {
     gf::SecureHash hash;
 
-    gf::Span<const uint8_t> span = gf::span(reinterpret_cast<const uint8_t*>(test.input.data()), test.input.size()); // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
+    std::span<const uint8_t> span = std::span(reinterpret_cast<const uint8_t*>(test.input.data()), test.input.size()); // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
 
     for (std::size_t i = 0; i < test.repeat; ++i) {
       hash.input(span);

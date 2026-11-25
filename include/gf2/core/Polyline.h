@@ -5,10 +5,10 @@
 
 #include <cstdint>
 
+#include <span>
 #include <vector>
 
 #include "CoreApi.h"
-#include "Span.h"
 #include "Vec2.h"
 
 namespace gf {
@@ -25,7 +25,7 @@ namespace gf {
 
   struct GF_CORE_API PolylineView {
     PolylineType type = PolylineType::Chain;
-    Span<const Vec2F> points;
+    std::span<const Vec2F> points;
 
     bool has_prev(std::size_t i) const;
     Vec2F prev_point(std::size_t i) const;

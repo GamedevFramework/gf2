@@ -5,6 +5,7 @@
 
 #include <cstdint>
 
+#include <span>
 #include <vector>
 
 #include "Circ.h"
@@ -13,7 +14,6 @@
 #include "Geometry.h"
 #include "Interpolation.h"
 #include "Polyline.h"
-#include "Span.h"
 #include "TypeTraits.h"
 #include "Vec2.h"
 
@@ -44,10 +44,10 @@ namespace gf {
     static CurveBuffer make_line(SegmentF segment);
     static CurveBuffer make_circle(float radius, uint32_t point_count = 32);
     static CurveBuffer make_circle(CircF circle, uint32_t point_count = 32);
-    static CurveBuffer make_compound_curve(Span<const Vec2F> points, PolylineType type = PolylineType::Chain);
+    static CurveBuffer make_compound_curve(std::span<const Vec2F> points, PolylineType type = PolylineType::Chain);
     static CurveBuffer make_quadratic_bezier(Vec2F p0, Vec2F p1, Vec2F p2, uint32_t point_count = 20);
     static CurveBuffer make_cubic_bezier(Vec2F p0, Vec2F p1, Vec2F p2, Vec2F p3, uint32_t point_count = 30);
-    static CurveBuffer make_cattmull_rom_spline(Span<const Vec2F> points, PolylineType type = PolylineType::Chain, CattmullRomType spline_type = CattmullRomType::Centripetal, uint32_t point_count = 30);
+    static CurveBuffer make_cattmull_rom_spline(std::span<const Vec2F> points, PolylineType type = PolylineType::Chain, CattmullRomType spline_type = CattmullRomType::Centripetal, uint32_t point_count = 30);
 
     std::vector<Vec2F> points;
     PolylineType type = PolylineType::Chain;

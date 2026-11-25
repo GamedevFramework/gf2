@@ -5,8 +5,9 @@
 
 #include <cstdint>
 
+#include <span>
+
 #include "CoreApi.h"
-#include "Span.h"
 #include "Vec2.h"
 
 namespace gf {
@@ -17,15 +18,15 @@ namespace gf {
     Counterclockwise,
   };
 
-  GF_CORE_API bool is_convex(Span<const Vec2F> polygon);
+  GF_CORE_API bool is_convex(std::span<const Vec2F> polygon);
 
-  GF_CORE_API float signed_area(Span<const Vec2F> polygon);
-  GF_CORE_API float area(Span<const Vec2F> polygon);
+  GF_CORE_API float signed_area(std::span<const Vec2F> polygon);
+  GF_CORE_API float area(std::span<const Vec2F> polygon);
 
-  GF_CORE_API Winding winding(Span<const Vec2F> polygon);
-  GF_CORE_API int winding_number(Vec2F point, Span<const Vec2F> polygon);
+  GF_CORE_API Winding winding(std::span<const Vec2F> polygon);
+  GF_CORE_API int winding_number(Vec2F point, std::span<const Vec2F> polygon);
 
-  GF_CORE_API bool contains(Span<const Vec2F> polygon, Vec2F point);
+  GF_CORE_API bool contains(std::span<const Vec2F> polygon, Vec2F point);
 
 }
 

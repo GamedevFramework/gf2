@@ -3,11 +3,12 @@
 #ifndef GF_SCENE_MANAGER_H
 #define GF_SCENE_MANAGER_H
 
+#include <span>
 #include <string>
 #include <vector>
 
-#include <gf2/core/Span.h>
 #include <gf2/core/Vec2.h>
+#include <gf2/core/Flags.h>
 
 #include "GpuCommandBuffer.h"
 #include "GpuGraphicsPipeline.h"
@@ -95,7 +96,7 @@ namespace gf {
     }
 
     void push_scene(BasicScene* scene);
-    void push_scenes(Span<BasicScene*> scenes);
+    void push_scenes(std::span<BasicScene*> scenes);
 
     void pop_scene();
     void pop_all_scenes();
@@ -106,7 +107,7 @@ namespace gf {
       push_scene(scene);
     }
 
-    void replace_scene(Span<BasicScene*> scenes)
+    void replace_scene(std::span<BasicScene*> scenes)
     {
       pop_scene();
       push_scenes(scenes);
@@ -118,7 +119,7 @@ namespace gf {
       push_scene(scene);
     }
 
-    void replace_all_scenes(Span<BasicScene*> scenes)
+    void replace_all_scenes(std::span<BasicScene*> scenes)
     {
       pop_all_scenes();
       push_scenes(scenes);

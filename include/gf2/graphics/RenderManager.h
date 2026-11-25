@@ -9,7 +9,6 @@
 
 #include <gf2/core/Camera.h>
 #include <gf2/core/Color.h>
-#include <gf2/core/Span.h>
 
 #include "GpuCommandBuffer.h"
 #include "GpuDevice.h"

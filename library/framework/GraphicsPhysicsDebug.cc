@@ -30,7 +30,7 @@ namespace gf {
     m_curve_group_buffer.curves.clear();
   }
 
-  void GraphicsPhysicsDebug::draw_polygon(Span<const Vec2F> polygon, Color color)
+  void GraphicsPhysicsDebug::draw_polygon(std::span<const Vec2F> polygon, Color color)
   {
     CurveBuffer curve = CurveBuffer::make_compound_curve(polygon, PolylineType::Loop);
     curve.color = color;
@@ -38,7 +38,7 @@ namespace gf {
     m_curve_group_buffer.curves.push_back(std::move(curve));
   }
 
-  void GraphicsPhysicsDebug::draw_solid_polygon(Span<const Vec2F> polygon, float radius, Color color)
+  void GraphicsPhysicsDebug::draw_solid_polygon(std::span<const Vec2F> polygon, float radius, Color color)
   {
     ShapeBuffer shape = ShapeBuffer::make_polygon(polygon);
     shape.color = color;

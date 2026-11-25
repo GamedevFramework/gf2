@@ -6,6 +6,7 @@
 #include <cstring>
 
 #include <array>
+#include <span>
 #include <string>
 #include <vector>
 
@@ -18,7 +19,6 @@
 #endif
 
 #include <gf2/core/Log.h>
-#include <gf2/core/Span.h>
 #include <gf2/core/Time.h>
 
 #include <gf2/network/SocketAddress.h>
@@ -34,7 +34,7 @@ namespace gf::details {
 
   bool native_would_block(int err);
 
-  SocketSelectorStatus native_poll(Span<pollfd> fds, Time duration);
+  SocketSelectorStatus native_poll(std::span<pollfd> fds, Time duration);
 
   SocketHandle native_bind_listen(const std::string& service, SocketFamily family);
 
@@ -43,42 +43,42 @@ namespace gf::details {
   SocketHandle native_bind(const std::string& service, SocketFamily family);
 
 #ifdef _WIN32
-  inline int send_length(Span<const uint8_t> buffer)
+  inline int send_length(std::span<const uint8_t> buffer)
   {
     return static_cast<int>(buffer.size());
   }
 
-  inline const char* send_pointer(Span<const uint8_t> buffer)
+  inline const char* send_pointer(std::span<const uint8_t> buffer)
   {
     return reinterpret_cast<const char*>(buffer.data()); // NOLINT
   }
 
-  inline int recv_length(Span<uint8_t> buffer)
+  inline int recv_length(std::span<uint8_t> buffer)
   {
     return static_cast<int>(buffer.size());
   }
 
-  inline char* recv_pointer(Span<uint8_t> buffer)
+  inline char* recv_pointer(std::span<uint8_t> buffer)
   {
     return reinterpret_cast<char*>(buffer.data());
   }
 #else
-  inline std::size_t send_length(Span<const uint8_t> buffer)
+  inline std::size_t send_length(std::span<const uint8_t> buffer)
   {
     return buffer.size();
   }
 
-  inline const void* send_pointer(Span<const uint8_t> buffer)
+  inline const void* send_pointer(std::span<const uint8_t> buffer)
   {
     return reinterpret_cast<const void*>(buffer.data()); // NOLINT
   }
 
-  inline std::size_t recv_length(Span<uint8_t> buffer)
+  inline std::size_t recv_length(std::span<uint8_t> buffer)
   {
     return buffer.size();
   }
 
-  inline void* recv_pointer(Span<uint8_t> buffer)
+  inline void* recv_pointer(std::span<uint8_t> buffer)
   {
     return reinterpret_cast<void*>(buffer.data()); // NOLINT
   }

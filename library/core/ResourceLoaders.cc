@@ -50,13 +50,13 @@ namespace gf {
    * MemoryLoader
    */
 
-  void MemoryLoader::add_buffer(std::filesystem::path path, Span<uint8_t> buffer)
+  void MemoryLoader::add_buffer(std::filesystem::path path, std::span<uint8_t> buffer)
   {
     [[maybe_unused]] auto [iterator, inserted] = m_buffers.emplace(std::move(path), buffer);
     assert(inserted);
   }
 
-  Span<uint8_t> MemoryLoader::search(const std::filesystem::path& relative_path)
+  std::span<uint8_t> MemoryLoader::search(const std::filesystem::path& relative_path)
   {
     if (auto iterator = m_buffers.find(relative_path); iterator != m_buffers.end()) {
       return iterator->second;

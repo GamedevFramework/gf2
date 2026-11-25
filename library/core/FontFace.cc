@@ -39,7 +39,7 @@ namespace gf {
         return 0;
       }
 
-      return static_cast<unsigned long>(stream->read(Span<uint8_t>(buffer, count)));
+      return static_cast<unsigned long>(stream->read(std::span<uint8_t>(buffer, count)));
     }
 
     void ft_callback_close([[maybe_unused]] FT_Stream rec)

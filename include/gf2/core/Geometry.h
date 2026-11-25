@@ -5,11 +5,11 @@
 
 #include <array>
 #include <optional>
+#include <span>
 #include <vector>
 
 #include "CoreApi.h"
 #include "Polyline.h"
-#include "Span.h"
 #include "Vec2.h"
 
 namespace gf {
@@ -33,7 +33,7 @@ namespace gf {
   using CapsuleI = Capsule<int32_t>;
   using CapsuleF = Capsule<float>;
 
-  GF_CORE_API std::vector<Polyline> compute_lines(Span<const SegmentI> segments);
+  GF_CORE_API std::vector<Polyline> compute_lines(std::span<const SegmentI> segments);
 
   class GF_CORE_API BresenhamAlgorithm {
   public:

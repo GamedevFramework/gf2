@@ -5,8 +5,9 @@
 
 #include <cstdint>
 
+#include <span>
+
 #include "CoreApi.h"
-#include "Span.h"
 #include "TypeTraits.h"
 #include "Vec2.h"
 
@@ -59,7 +60,7 @@ namespace gf {
     uint8_t index = 0;
   };
 
-  GF_CORE_API Span<const ConsoleFontElement> load_console_font_mapping(ConsoleFontMapping mapping);
+  GF_CORE_API std::span<const ConsoleFontElement> load_console_font_mapping(ConsoleFontMapping mapping);
 
 }
 

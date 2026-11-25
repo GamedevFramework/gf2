@@ -112,7 +112,7 @@ namespace gf {
     write_raw_size(size);
 
     if (size > 0) {
-      m_stream->write(gf::span(reinterpret_cast<const uint8_t*>(data), size)); // NOLINT
+      m_stream->write(std::span(reinterpret_cast<const uint8_t*>(data), size)); // NOLINT
     }
   }
 
@@ -378,7 +378,7 @@ namespace gf {
   {
     assert(data != nullptr);
 
-    if (m_stream->read(gf::span(reinterpret_cast<uint8_t*>(data), size)) != size) { // NOLINT
+    if (m_stream->read(std::span(reinterpret_cast<uint8_t*>(data), size)) != size) { // NOLINT
       Log::fatal("End of stream while reading string.");
     }
   }

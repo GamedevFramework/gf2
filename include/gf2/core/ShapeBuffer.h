@@ -6,6 +6,7 @@
 #include <cstdint>
 
 #include <filesystem>
+#include <span>
 #include <vector>
 
 #include "Circ.h"
@@ -13,7 +14,6 @@
 #include "CoreApi.h"
 #include "Geometry.h"
 #include "Rect.h"
-#include "Span.h"
 #include "TypeTraits.h"
 #include "Vec2.h"
 
@@ -34,7 +34,7 @@ namespace gf {
     static ShapeBuffer make_pie(CircF circle, float from_angle, float to_angle, uint32_t point_count = 32);
     static ShapeBuffer make_star(float max_radius, float min_radius, uint32_t branches);
     static ShapeBuffer make_star(CircF max_circle, float min_radius, uint32_t branches);
-    static ShapeBuffer make_polygon(Span<const Vec2F> contour);
+    static ShapeBuffer make_polygon(std::span<const Vec2F> contour);
 
     std::vector<Vec2F> points;
     Color color = Black;

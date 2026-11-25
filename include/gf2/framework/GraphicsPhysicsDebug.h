@@ -26,8 +26,8 @@ namespace gf {
   public:
     void clear();
 
-    void draw_polygon(Span<const Vec2F> polygon, Color color) override;
-    void draw_solid_polygon(Span<const Vec2F> polygon, float radius, Color color) override;
+    void draw_polygon(std::span<const Vec2F> polygon, Color color) override;
+    void draw_solid_polygon(std::span<const Vec2F> polygon, float radius, Color color) override;
     void draw_circle(CircF circle, Color color) override;
     void draw_solid_circle(CircF circle, float angle, Color color) override;
     void draw_solid_capsule(const CapsuleF& capsule, Color color) override;

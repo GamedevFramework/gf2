@@ -5,7 +5,7 @@
 
 namespace gf {
 
-  bool is_convex(Span<const Vec2F> polygon)
+  bool is_convex(std::span<const Vec2F> polygon)
   {
     const std::size_t size = polygon.size();
 
@@ -34,7 +34,7 @@ namespace gf {
 
   // https://en.wikipedia.org/wiki/Shoelace_formula
   // TODO: use Kahan summation?
-  float signed_area(Span<const Vec2F> polygon)
+  float signed_area(std::span<const Vec2F> polygon)
   {
     const std::size_t size = polygon.size();
     assert(size > 2);
@@ -48,12 +48,12 @@ namespace gf {
     return area;
   }
 
-  float area(Span<const Vec2F> polygon)
+  float area(std::span<const Vec2F> polygon)
   {
     return 0.5f * std::abs(signed_area(polygon));
   }
 
-  Winding winding(Span<const Vec2F> polygon)
+  Winding winding(std::span<const Vec2F> polygon)
   {
     const float area = signed_area(polygon);
 
@@ -68,7 +68,7 @@ namespace gf {
     return Winding::None;
   }
 
-  int winding_number(Vec2F point, Span<const Vec2F> polygon)
+  int winding_number(Vec2F point, std::span<const Vec2F> polygon)
   {
     const std::size_t size = polygon.size();
     int wn = 0;
@@ -95,7 +95,7 @@ namespace gf {
     return wn;
   }
 
-  bool contains(Span<const Vec2F> polygon, Vec2F point)
+  bool contains(std::span<const Vec2F> polygon, Vec2F point)
   {
     return winding_number(point, polygon) != 0;
   }

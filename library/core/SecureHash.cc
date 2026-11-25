@@ -67,7 +67,7 @@ namespace gf {
     m_digest = H0;
   }
 
-  void SecureHash::input(gf::Span<const uint8_t> data)
+  void SecureHash::input(std::span<const uint8_t> data)
   {
     for (auto byte : data) {
       m_message_block[m_message_block_index++] = byte;

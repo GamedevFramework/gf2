@@ -122,7 +122,7 @@ namespace gf {
     return buffer;
   }
 
-  CurveBuffer CurveBuffer::make_compound_curve(Span<const Vec2F> points, PolylineType type)
+  CurveBuffer CurveBuffer::make_compound_curve(std::span<const Vec2F> points, PolylineType type)
   {
     CurveBuffer buffer;
     buffer.points.assign(points.begin(), points.end());
@@ -156,7 +156,7 @@ namespace gf {
     return buffer;
   }
 
-  CurveBuffer CurveBuffer::make_cattmull_rom_spline(Span<const Vec2F> points, PolylineType type, CattmullRomType spline_type, uint32_t point_count)
+  CurveBuffer CurveBuffer::make_cattmull_rom_spline(std::span<const Vec2F> points, PolylineType type, CattmullRomType spline_type, uint32_t point_count)
   {
     assert(point_count >= 2);
     const PolylineView polyline_view = { type, points };

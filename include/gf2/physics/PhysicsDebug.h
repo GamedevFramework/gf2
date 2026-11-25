@@ -6,6 +6,7 @@
 #include <cstdint>
 
 #include <limits>
+#include <span>
 #include <string_view>
 #include <type_traits>
 
@@ -16,7 +17,6 @@
 #include <gf2/core/Flags.h>
 #include <gf2/core/Geometry.h>
 #include <gf2/core/Rect.h>
-#include <gf2/core/Span.h>
 #include <gf2/core/Vec2.h>
 
 #include "PhysicsApi.h"
@@ -70,8 +70,8 @@ namespace gf {
     PhysicsDebug& operator=(const PhysicsDebug&) = default;
     PhysicsDebug& operator=(PhysicsDebug&&) noexcept = default;
 
-    virtual void draw_polygon(Span<const Vec2F> polygon, Color color);
-    virtual void draw_solid_polygon(Span<const Vec2F> polygon, float radius, Color color);
+    virtual void draw_polygon(std::span<const Vec2F> polygon, Color color);
+    virtual void draw_solid_polygon(std::span<const Vec2F> polygon, float radius, Color color);
     virtual void draw_circle(CircF circle, Color color);
     virtual void draw_solid_circle(CircF circle, float angle, Color color);
     virtual void draw_solid_capsule(const CapsuleF& capsule, Color color);
